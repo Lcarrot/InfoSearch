@@ -1,0 +1,74 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Недавно я работал с <a href="https://developer.apple.com/documentation/foundation/nspredicate"><u>NSPredicate</u></a> — API, который существует с момента выхода Mac OS X Tiger в 2005 году — и в довольно простой ситуации на самом деле все оказалось не так, как я ожидал.</p>
+   <p>Я имплементировал поддержку Apple Shortcuts в свое <a href="https://douglashill.co/reading-app/"><u>приложение для чтения</u></a>, чтобы пользователи могли создавать автоматизированные рабочие процессы и заметил, что некоторые запросы статьи на основе свойств с использованием <a href="https://developer.apple.com/documentation/appintents/entitypropertyquery"><u>EntityPropertyQuery</u></a> не выдавали их ожидаемое количество. У меня было четырнадцать статей, сохраненных на симуляторе iPad. Четыре из них были написаны лично мной. Однако когда я осуществлял поиск статей, автором которых был не "Дуглас Хилл (Douglas Hill)", получилось всего два результата вместо ожидаемых десяти.</p>
+   <p>Стало ясно, что статьи не включились в режим поиска, когда автор не был задан. Другими словами, когда свойство author равнялось nil. (В этой статье я буду смешивать термины nil и null, потому что они представляют одну и ту же концепцию с различными названиями в разных программных стеках).</p>
+   <h3>Отслеживание проблемы</h3>
+   <p>Во-первых, давайте рассмотрим самый простой тест:</p>
+   <pre><code>let maybeString: String? = nil
+let condition = maybeString != "test"</code></pre>
+   <p>Ожидается, что <code>condition</code> в этом случае&nbsp; будет истинным. Если бы мы использовали <code>==</code>, то результат явно был бы ложным. Однако здесь применяется <code>!=</code>, поэтому мы предполагаем обратное. Хорошие новости: все действительно так и работает!</p>
+   <p>Во-вторых, я запустил быстрый тест на плейграунде, используя <code>NSPredicate</code> в простой ситуации:</p>
+   <pre><code>class MyObject: NSObject {
+    @objc var author: String?
+    init(author: String?) {
+        self.author = author
+    }
+}
+
+let array = [
+    MyObject(author: "Douglas Hill"),
+    MyObject(author: "Someone else"),
+    MyObject(author: nil),
+]
+
+(array as NSArray).filtered(using: NSPredicate(format: "author != %@", "Douglas Hill"))
+// [{NSObject, author "Someone else"}, {NSObject, nil}]</code></pre>
+   <p>Он показал, что в результате фильтрации объектов, автором которых является не "Douglas Hill", <em>были</em> включены объекты, где автором являлся “nil”. Именно такого поведения я и ожидал.</p>
+   <p>В этот момент у меня возникло сильное подозрение, что это связано с хранилищем SQLite, которое использует мой стек Core Data. Не сомневаюсь, на этот вопрос ветераны SQL уже знают ответ.</p>
+   <p>В-третьих, я выполнил отладку с моим хранилищем Core Data без использования Shortcuts и увидел то же самое, что и вместе с ним: фильтрация по атрибуту, не равному определенному значению, не включает объекты, у которых этот атрибут равен nil.</p>
+   <p>Я включил <code>-com.apple.CoreData.SQLDebug 3</code>, и это продемонстрировало простоту генерируемых SQL-команд. Данный предикат: <code>author != "Douglas Hill"</code> добавит нижеследующее в команду SQL <code>SELECT</code>:</p>
+   <pre><code>WHERE  t0.ZAUTHOR &lt;&gt; ?</code></pre>
+   <p>Где значением <code>?</code> является:</p>
+   <pre><code>SQLite bind[0] = "Douglas Hill"</code></pre>
+   <p>Я никогда не работал с SQL напрямую, а только как с составляющей имплементации (и производительности) Core Data. На данный момент моя гипотеза заключалась в том, что такая обработка null — это просто то, как работает SQL.</p>
+   <p>К сожалению, SQL, похоже, не является бесплатным и открытым стандартом, где вы можете легко прочитать ссылку/спецификацию, чтобы проверить данное обстоятельство. Я провел небольшое исследование в Интернете, и дополнительные источники подтвердили мою гипотезу. NULL не считается равным или неравным чему-либо в SQL, или, другими словами, сравнения с null не являются ни истинными, ни ложными.</p>
+   <p>Этот комментарий <a href="https://stackoverflow.com/questions/5658457/not-equal-operator-on-null"><u>jsumrall</u></a> к вопросу о переполнении стека хорошо подводит итог:</p>
+   <p>Следует также отметить, что поскольку <code>!=</code> применяется для сравнения значений, то, выполнение чего-то вроде <code>WHERE MyColumn != 'somevalue'</code>, не вернет записи NULL.</p>
+   <h3>Что ожидает пользователь?</h3>
+   <p>С точки зрения программиста, я бы не сказал, что тот или иной способ обработки null однозначно лучше. Однако от <code>NSPredicate</code> я бы ожидал стабильности. Меня удивляет то, что Core Data не сглаживает такое поведение SQL, в соответствии с тем, как сравнения обычно работают в программных стеках Apple.</p>
+   <p>С точки зрения пользователя, мне кажется, ситуация иная. Пользователи не будут так же четко осознавать смысл понятия null. Вероятно, они считают, что null и пустая строка — это одно и то же. Поскольку мои запросы будут доступны пользователям через Shortcuts, полагаю, более ожидаемым будет то, что фильтрация элементов со свойством, не равным некоторому значению, должна включать элементы, у которых это свойство равно null.</p>
+   <h3>Имплементация наилучшего поведения</h3>
+   <p>Эту недоработку легко исправить самостоятельно. Настраивая предикат для хранилища Core Data SQLite с условием не быть равным некоторому значению. Не задавайте предикат следующим образом:</p>
+   <pre><code>NSPredicate(format: "%K != %@", stringKey, nonNilValue)</code></pre>
+   <p>Вместо этого мы также проверяем равенство с nil/null, задавая предикат таким образом:</p>
+   <pre><code>NSPredicate(format: "%K != %@ OR %K == NIL", stringKey, nonNilValue, stringKey)</code></pre>
+   <p>На практике это выглядит как вспомогательное расширение <a href="https://developer.apple.com/documentation/appintents/notequaltocomparator"><u>NotEqualToComparator</u></a> из фреймворка Apple App Intents (API Shortcuts):</p>
+   <pre><code>private extension NotEqualToComparator&lt;EntityProperty&lt;String?&gt;, String?, NSPredicate&gt; {
+    /// Creates a comparator for case- and diacritic-insensitive matching of an optional string property using an NSPredicate for Core Data objects. (My objects are articles.)
+    convenience init(keyPath: KeyPath&lt;ArticleEntity, EntityProperty&lt;String?&gt;&gt;) {
+        // Maps from Swift key paths to string keys.
+        let stringKey = Article.stringKey(from: keyPath)
+        self.init() { value in
+            if let value {
+                return NSPredicate(format: "%K !=[cd] %@ OR %K == NIL", stringKey, value, stringKey)
+            } else {
+                // Ignore this branch for now since Shortcuts doesn’t have any UI that lets a nil value be passed here. My actual code is slightly different due to an interesting reason, but that’s not the topic of this article.
+            }
+        }
+    }
+}</code></pre>
+   <h3>Резюме</h3>
+   <ul>
+    <li><p>В Swift результат <code>nil != nonNilValue</code> является истинным.</p></li>
+    <li><p>Как правило, предикат <code>NSPredicate</code>, созданный в виде <code>NSPredicate(format: "%K != %@", stringKey, nonNilValue)</code>, будет соответствовать объектам, у которых свойство, соответствующее <code>stringKey</code>, равно <code>nil</code>.</p></li>
+    <li><p>При извлечении из хранилища Core Data SQLite предикат, созданный как описано выше, <em>не</em> будет совпадать с объектами, у которых свойство, соответствующее <code>stringKey</code>, равно <code>nil</code>. Это происходит потому, что Core Data напрямую мапирует команду с SQL, а SQL определяет, что не существует значения, равного или неравного <code>null</code>.</p></li>
+    <li><p>Это можно обойти, создав предикат так: <code>NSPredicate(format: "%K != %@ OR %K == NIL", stringKey, nonNilValue, stringKey)</code>.</p></li>
+    <li><p>Урок: Проверяйте все и всегда.</p></li>
+   </ul>
+   <hr>
+   <p>Приглашаем всех желающих на открытое занятие "Создание приложения таймер". На этом уроке создадим простое приложение, посмотрим, как за небольшой отрезок времени написать готовое решение и использовать его в повседневной жизни. Записаться можно <a href="https://otus.pw/oZnQ/">по ссылке.</a></p>
+  </div>
+ </div>
+</div> <!----> <!---->

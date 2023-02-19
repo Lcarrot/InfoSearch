@@ -1,0 +1,383 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/941/916/29c/94191629c75c11379faba92f59710d10.png" alt="Принципиальная схема" title="Принципиальная схема" width="2090" height="1316" data-src="https://habrastorage.org/getpro/habr/upload_files/941/916/29c/94191629c75c11379faba92f59710d10.png">
+    <figcaption>
+     Принципиальная схема
+    </figcaption>
+   </figure>
+   <p>Всем привет! Хочу поделиться вариантом организации динамических окружений для&nbsp;разработки и тестирования с&nbsp;помощью ArgoCD и применением GitOps подхода на&nbsp;реальном примере.</p>
+   <p>Статья рассчитана на&nbsp;DevOps инженеров и разработчиков уже хорошо знакомых с&nbsp;такими инструментами как:</p>
+   <ul>
+    <li><p>Kubernetes</p></li>
+    <li><p>Helm</p></li>
+    <li><p>Crossplane</p></li>
+    <li><p>ArgoCD</p></li>
+    <li><p>GitLab CI</p></li>
+   </ul>
+   <p>Краткая логика работы пайплайна.</p>
+   <ol>
+    <li><p>Разработчик пушит новую ветку c постфиксом ‑<em>dyn </em>в<em> </em>названии<em> </em>в&nbsp;репозиторий с <code>project-backend</code></p></li>
+    <li><p>Стартует GitLabCI пайплайн:</p>
+     <ul>
+      <li><p>билдит docker image, пушит его в&nbsp;image registry;</p></li>
+      <li><p>«идет» в&nbsp;репозиторий <code>manifests</code>, отрезает новую ветку&nbsp;— имя которой идентичное имени ветки в&nbsp;исходном репозитории&nbsp;— <code>project-backend</code>;</p></li>
+      <li><p>обновляет image tag контейнера в&nbsp;Helm values для&nbsp;окружения и пушит изменения.</p></li>
+     </ul></li>
+    <li><p>ApplicationSet в&nbsp;ArgoCD отслеживает изменение в&nbsp;репозитории manifests, «видит» новую ветку с&nbsp;постфиксом и создает новый Application вместе с&nbsp;базой.</p></li>
+    <li><p>При&nbsp;удалении ветки из&nbsp;репозитория&nbsp;— удаляется App и БД из&nbsp;облака.</p></li>
+   </ol>
+   <p>Из&nbsp;официальной документации ArgoCD с&nbsp;переводом:</p>
+   <blockquote>
+    <p>Argo CD следует схеме GitOps, использующей репозитории Git в&nbsp;качестве источника достоверной информации для&nbsp;определения&nbsp;желаемого состояния приложения.</p>
+    <p>Argo CD реализован как&nbsp;контроллер kubernetes, который постоянно отслеживает запущенные приложения и сравнивает текущее рабочее состояние с&nbsp;желаемым целевым состоянием (как указано в&nbsp;репозитории Git). Развернутое приложение, текущее состояние которого отличается от&nbsp;целевого состояния, считается OutOfSync. Argo CD сообщает и визуализирует различия, предоставляя средства для&nbsp;автоматической или&nbsp;ручной синхронизации реального состояния с&nbsp;желаемым целевым состоянием. Любые изменения, внесенные в&nbsp;желаемое целевое состояние в&nbsp;репозитории Git, могут автоматически применяться и отражаться в&nbsp;указанных целевых средах.</p>
+   </blockquote>
+   <p>Crossplane позволяет описывать облачные ресурсы в&nbsp;формате k8s yaml манифестов, «применять» их в&nbsp;кластер и создавать ресурсы в&nbsp;облаке согласно описанному состоянию.</p>
+   <p>Вводные:</p>
+   <ul>
+    <li><p>используем ресурсы в&nbsp;Yandex Cloud;</p></li>
+    <li><p>классический проект -2&nbsp;репозитория&nbsp;— <code>project-frontend</code>, <code>project-backend</code>;</p></li>
+    <li><p>артефакты (<code>docker image</code>) проекта «собираются» в&nbsp;GitLab CI;</p></li>
+    <li><p>собранные артефакты проекта&nbsp;— 2&nbsp;docker image&nbsp;— <code>project-frontend</code>, <code>project-backend</code>;</p></li>
+    <li><p>приложение деплоится в&nbsp;Kubernetes cluster через <code>Helm</code> (имеет <code>Helm chart</code>);</p></li>
+    <li><p>Git репозиторий <code>manifests</code> с&nbsp;Helm charts приложения и crossplane ресурсов (БД, DataTransfer и&nbsp;т.&nbsp;д.);</p></li>
+    <li><p>для&nbsp;работы <code>project-backend</code> необходима база данных&nbsp;— PostgreSQL&nbsp;— для&nbsp;создания БД используем Yandex Cloud DataTransfer&nbsp;— копируем данные из&nbsp;исходной&nbsp;— «эталонной» БД в&nbsp;новую.</p></li>
+   </ul>
+   <h2>Структура репозитория manifests</h2>
+   <pre><code class="yaml">argocd:
+  argo-application-sets:
+    - project-dyn-envs-manifest-repo-scm.yaml # AppSet for project
+  argo-projects:
+    - project-dyn.yaml # ArgoCD project for dyn envs
+
+charts: # project Helm Charts
+  project-backend:
+  project-dyn-infra
+  project-frontend
+  project-stack: # Main project chart - in deps has back, front and infra chart
+    ci:
+      dyn:
+        - dyn-values.yaml
+
+custom-manifests:
+  crossplane-dyn-envs
+    external: 
+      # external resources created not from crossplane 
+      # used for dyn envs (DB clusters, VPS, etc) - imported to crossplane
+      folders
+      postgres
+      vpc
+  crossplane-provider-config-yc # YC provider config</code></pre>
+   <p><strong>project-dyn-envs-manifest-repo-scm.yaml</strong></p>
+   <pre><code class="yaml">apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: project-stack-dyn
+  namespace: argocd
+spec:
+  generators:
+    - scmProvider:
+        cloneProtocol: ssh
+        filters:
+          - branchMatch: .*PROJECT.*-dyn
+            repositoryMatch: manifests
+        gitlab:
+          group: "12345678" 
+          allBranches: true
+          includeSubgroups: true
+          tokenRef:
+            secretName: gitlab-token
+            key: token
+  template:
+    metadata:
+      name: "{{branchNormalized}}"
+    spec:
+      source:
+        path: charts/project-stack
+        repoURL: https://gitlab.com/manifests.git
+        targetRevision: "{{branch}}"
+        helm:
+          valueFiles:
+            - ci/dyn/dyn-values.yaml
+          values: |
+            project-backend:
+              extraVolumes:
+                - name: dynenv
+                  configMap: 
+                    name: {{branchNormalized}}-project-backend
+                - name: dynentrypointinitdta
+                  configMap: 
+                    name: {{branchNormalized}}-project-backend-entrypointinitdta
+                    defaultMode: 0755
+              envConfig:
+                dynenv: |
+                  BRANCH_NAME="{{branchNormalized}}"
+                  TARGET_DB="{{branchNormalized}}-t-db"
+                FRONT_BASE_URL: {{branchNormalized}}.dyn.project.ru
+                APPLICATION_REDIS_KEY_PREFIX: "project:{{branchNormalized}}:"
+                DATASOURCE_URL: "jdbc:postgresql://db-dyn-project.ru:6432/{{branchNormalized}}-t-db"
+                DATASOURCE_USERNAME: "{{branchNormalized}}-t-db-user"
+                DATASOURCE_PASSWORD: "12345678"
+            project-ingress:
+              hosts:
+                - host: {{branchNormalized}}.dyn.project.ru
+              tls:
+                - secretName: {{branchNormalized}}-dyn-project-ru
+                  hosts:
+                    - {{branchNormalized}}.dyn.project.ru
+            project-dyn-infra:
+              enabled: true
+              fullnameOverride: {{branchNormalized}}
+              namespace: argo-app-project-dyn
+              dataTransfer:
+                enabled: "true"
+                endpoints:
+                  target:
+                    dbName: db-project-dyn-{{branchNormalized}}
+                    dbUser: db-user-project-dyn-{{branchNormalized}}
+      project: project-dyn
+      destination:
+        namespace: 'argo-app-project-dyn'
+        server: https://XXX.XXX.XXX.XXX
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
+          allowEmpty: true
+        syncOptions:
+          - CreateNamespace=true
+</code></pre>
+   <p>ApplicationSet использует SCM provider geneator&nbsp;— позволяет по&nbsp;тригеру (появлению в&nbsp;репозитории <code>manifests</code>новой ветки, имя которой попадает по&nbsp;Regexp создавать новое приложения в&nbsp;ArgoCD) AppSet генерирует параметры (helm values) для&nbsp;нового приложения на&nbsp;основе имени ветки. Можно использовать в&nbsp;параметрах sha комита или&nbsp;например имя репозитория, полный список параметров можно посмотреть в <a href="https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-SCM-Provider/#template" rel="noopener noreferrer nofollow">документации</a> генератора.</p>
+   <h2>project-stack Helm Chart</h2>
+   <pre><code class="yaml">apiVersion: v2
+description: project stack (project) Helm chart
+type: application
+maintainers:
+  - name: xxx
+    email: xxx
+version: 0.1.0
+appVersion: 1.0.0
+kubeVersion: "&gt;=1.23.0-0"
+keywords:
+- project
+annotations:
+  "finalizers": "resources-finalizer.argocd.argoproj.io"
+  "gitlab.com/links": |
+    - name: Chart Source
+      url: https://gitlab.com/project
+    - name: Upstream Projects
+      url: https://gitlab.com/project
+dependencies:
+  # Project
+  - name: project-frontend
+    condition: project-frontend.enabled
+    version: "0.1.*"
+    repository: "file://../project-frontend"
+  - name: project-backend
+    condition: project-backend.enabled
+    version: "0.1.*"
+    repository: "file://../project-backend"
+  - name: project-ingress
+    condition: project-ingress.enabled
+    version: "0.1.*"
+    repository: "file://../project-ingress"
+  - name: project-dyn-infra
+    condition: project-dyn-infra.enabled
+    version: "0.1.*"
+    repository: "file://../project-dyn-infra"</code></pre>
+   <h2>Crossplane</h2>
+   <p>Допустим crossplane уже установлен и сконфигурирован в&nbsp;кластере.</p>
+   <p>Crossplane используем для&nbsp;создания новой БД для <code>project-bakcned</code> и DataTranser. При&nbsp;создании окружения БД через DataTransfer копируется из&nbsp;исходной&nbsp;— эталонной БД в&nbsp;новую созданную для&nbsp;окружения.</p>
+   <p>Манифесты Crossplane «упакованы» в&nbsp;Helm chart, приведу пример <code>templates</code> и <code>values</code>для&nbsp;Yandex Cloud.</p>
+   <p>Новая БД для <code>project-backend</code> <code>db-target.yaml</code>.</p>
+   <p>Тут важный момент&nbsp;— мы используем отдельно созданный кластер PostgreSQL для&nbsp;всех БД в&nbsp;динамических окружениях, который под&nbsp;управлением Terraform&nbsp;— он импортирован в&nbsp;Crossplane как&nbsp;внешний ресурс. Но&nbsp;никто не&nbsp;мешает создавать новые кластера Postgres из&nbsp;Crosplane.</p>
+   <pre><code class="yaml">{{- if (eq .Values.dataTransfer.enabled "true") }}
+apiVersion: mdb.yandex-cloud.jet.crossplane.io/v1alpha1
+kind: PostgresqlDatabase
+metadata:
+  name: {{ template "project-dyn-infra.fullname" . }}-t-db
+spec:
+  #  deletionPolicy: Orphan
+  providerConfigRef:
+    name: {{ toYaml .Values.providerConfigRef.name }}
+  forProvider:
+    name: {{ template "project-dyn-infra.fullname" . }}-t-db
+    clusterId: {{ toYaml .Values.targetDb.clusterId }}
+    owner: {{ template "project-dyn-infra.fullname" . }}-t-db-user
+    lcCollate: en_US.UTF-8
+    lcType: en_US.UTF-8
+    extension:
+      - name: uuid-ossp
+{{- end }}
+</code></pre>
+   <p>БД пользователь&nbsp;— в&nbsp;Yandex Cloud пользователей можно создавать только через API:</p>
+   <p><code>db-user-target.yaml</code></p>
+   <pre><code class="yaml">{{- if (eq .Values.dataTransfer.enabled "true") }}
+apiVersion: mdb.yandex-cloud.jet.crossplane.io/v1alpha1
+kind: PostgresqlUser
+metadata:
+  name: {{ template "project-dyn-infra.fullname" . }}-t-db-user
+spec:
+  #  deletionPolicy: Orphan
+  providerConfigRef:
+    name: {{ toYaml .Values.providerConfigRef.name }}
+  forProvider:
+    name: {{ template "project-dyn-infra.fullname" . }}-t-db-user
+    passwordSecretRef:
+      name: {{ template "project-dyn-infra.fullname" . }}-t-db-password
+      namespace: {{ template "project-dyn-infra.namespace" . }}
+      key: password
+    clusterId: {{ toYaml .Values.targetDb.clusterId }}
+    connLimit: 35
+    login: true
+    grants:
+      - mdb_admin
+      - mdb_replication
+{{- end }}
+</code></pre>
+   <p><code>datatransfer.yaml</code></p>
+   <pre><code class="yaml"># Secret с паролем от новой БД
+{{- if (eq .Values.dataTransfer.enabled "true") }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ template "project-dyn-infra.fullname" . }}-t-db-password
+type: Opaque
+data:
+  password: {{ toYaml .Values.targetDb.password }}
+
+---
+# Secret с паролем от БД источника
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ template "project-dyn-infra.fullname" . }}-s-db-password
+type: Opaque
+data:
+  password: {{ toYaml .Values.dataTransfer.endpoints.source.password }}
+
+---
+apiVersion: datatransfer.yandex-cloud.jet.crossplane.io/v1alpha1
+kind: Endpoint
+metadata:
+  name: {{ template "project-dyn-infra.fullname" . }}-source
+spec:
+  #  deletionPolicy: Orphan
+  forProvider:
+    folderId: {{ toYaml .Values.dataTransfer.endpoints.source.folderId }}
+    name: {{ template "project-dyn-infra.fullname" . }}-source
+    settings:
+      - postgresSource:
+        - database: {{ toYaml .Values.dataTransfer.endpoints.source.dbName }}
+          user: {{ toYaml .Values.dataTransfer.endpoints.source.dbUser }}
+          password:
+            - rawSecretRef:
+                name: {{ template "project-dyn-infra.fullname" . }}-s-db-password
+                namespace: {{ template "project-dyn-infra.namespace" . }}
+                key: password
+          objectTransferSettings:
+            - function: AFTER_DATA
+          connection:
+          - mdbClusterIdRef:
+              name: {{ toYaml .Values.dataTransfer.endpoints.source.mdbClusterIdRef }}
+  providerConfigRef:
+    name: {{ toYaml .Values.providerConfigRef.name }}
+
+---
+apiVersion: datatransfer.yandex-cloud.jet.crossplane.io/v1alpha1
+kind: Endpoint
+metadata:
+  name: {{ template "project-dyn-infra.fullname" . }}-target
+spec:
+  #  deletionPolicy: Orphan
+  forProvider:
+    folderId: {{ toYaml .Values.dataTransfer.endpoints.target.folderId }}
+    name: {{ template "project-dyn-infra.fullname" . }}-target
+    settings:
+      - postgresTarget:
+        - database: {{ template "project-dyn-infra.fullname" . }}-t-db
+          user: {{ template "project-dyn-infra.fullname" . }}-t-db-user
+          password:
+            - rawSecretRef:
+                name: {{ template "project-dyn-infra.fullname" . }}-t-db-password
+                namespace: {{ template "project-dyn-infra.namespace" . }}
+                key: password
+          connection:
+          - mdbClusterIdRef:
+              name: {{ toYaml .Values.dataTransfer.endpoints.target.mdbClusterIdRef }}
+  providerConfigRef:
+    name: {{ toYaml .Values.providerConfigRef.name }}
+
+---
+apiVersion: datatransfer.yandex-cloud.jet.crossplane.io/v1alpha1
+kind: Transfer
+metadata:
+  name: {{ template "project-dyn-infra.fullname" . }}
+spec:
+#  deletionPolicy: Orphan
+  forProvider:
+    folderId: {{ toYaml .Values.dataTransfer.config.folderId }}
+    name: {{ template "project-dyn-infra.fullname" . }}
+    sourceIdRef:
+      name: {{ template "project-dyn-infra.fullname" . }}-source
+    targetIdRef:
+      name: {{ template "project-dyn-infra.fullname" . }}-target
+    type: {{ toYaml .Values.dataTransfer.config.type }}
+  providerConfigRef:
+    name: {{ toYaml .Values.providerConfigRef.name }}
+{{- end }}
+</code></pre>
+   <p>project-dyn-infra - values</p>
+   <pre><code class="yaml">enabled: false
+
+providerConfigRef:
+  name: yc
+
+targetDb:
+  clusterId: XXX
+  name: db-project-dyn-{{branchNormalized}}
+  owner: db-user-project-dyn-{{branchNormalized}}
+  user: db-user-project-dyn-{{branchNormalized}}
+  password: XXX # base64
+
+dataTransfer:
+  enabled: "false"
+  config:
+    folderId: XXX
+    type: "SNAPSHOT_ONLY"
+  endpoints:
+    source:
+      folderId: XXX
+      dbName: propject_source_db
+      dbUser: project_source_db_user
+      password: XXX
+      mdbClusterIdRef: XXX
+    target:
+      folderId: XXX
+      mdbClusterIdRef: project-dyn-envs
+</code></pre>
+   <p>Через Crossplane невозможно изменять параметры endpoints (политика копирования, порядок переноса данных) в&nbsp;DataTransfer, так&nbsp;же нет возможности активировать DataTransfer с&nbsp;параметром <code>SNAPSHOT_ONLY</code>&nbsp;— это возможно сделать только через API.</p>
+   <p>Для&nbsp;обхода ограничений в&nbsp;values (<code>project-backend</code>) init container который изменяет параметры DataTransfer после его создания, активирует трансфер и проверяет его статус. После успешного завершения&nbsp;— стартует контейнер с&nbsp;беком.</p>
+   <p>В&nbsp;чарт с&nbsp;беком (<code>project-backend</code>) добавлен ConfigMap в&nbsp;котором описан скрипт&nbsp;— entrypoint для <code>init container</code> (<code>dynInitEntrypointDta</code>)&nbsp;— скрипт монтируется как&nbsp;extraVolumes в&nbsp;init container.</p>
+   <p>Для&nbsp;определения&nbsp;— с&nbsp;каким именно трансфером должен работать скрипт «проброшено» имя ветки через <code>ConfigMap</code>&nbsp;— dynenv в <code>init container</code></p>
+   <h3>Транспорт&nbsp;</h3>
+   <p>Что&nbsp;бы не&nbsp;генерить новые DNS записи для&nbsp;окружений заведена запись указывающая на&nbsp;балансир кластера&nbsp;— <code>*.dyn.project.ru</code></p>
+   <h2>Ограничение и недостатки&nbsp;</h2>
+   <ul>
+    <li><p>имя ветки&nbsp;— <code>id</code> окружения;</p></li>
+    <li><p>постфикс <code>dyn</code> и имя проекта в&nbsp;имени ветки (<code>PROJECT-7777-my-branch-dyn</code>);</p></li>
+    <li><p>одинаковое имя ветки в&nbsp;репозитории фронта и бека;</p></li>
+    <li><p>длина имени ветки не&nbsp;более <code>63</code> символов;</p></li>
+    <li><p>при&nbsp;создании окружения берется из&nbsp;эталонной БД <strong>на&nbsp;момент деплоя окружения</strong>;</p></li>
+    <li><p>при&nbsp;обновлении версии бека&nbsp;— БД не&nbsp;пересоздается&nbsp;— если нужно пересоздать&nbsp;— дропаем App в&nbsp;ArgoCD;</p></li>
+    <li><p>трансфер БД требует времени;</p></li>
+    <li><p>нет актуализации версии бека и фронта с&nbsp;продом (деплоим фронт&nbsp;— фронт соберется, версия бека будет из <code>dev</code> ветки <code>manifests (project-stack/dyn/values.yaml)</code>;</p></li>
+    <li><p><strong>при&nbsp;копировании БД не&nbsp;переносятся math views&nbsp;— ограничение DataTransfer</strong>;</p></li>
+    <li><p>список созданных окружений можно посмотреть только в&nbsp;ArgoCD;</p></li>
+    <li><p>удаление окружения и ресурсов = удаление ветки в <code>manifests</code>.</p></li>
+   </ul>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

@@ -1,0 +1,504 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>«Чёрт, где искать эти ваши бесплатные и безвозмездные ресурсы для&nbsp;коммерческого и&nbsp;личного пользования в&nbsp;своих богоподобных разработках?»&nbsp;— именно так, неудачно и нетерпеливо воспользовавшись поиском, я решил создать анимацию с&nbsp;помощью кода, дабы украсить&nbsp;личный проект&nbsp;— приложение погоды «Weather Today».</p>
+   <div class="embed_link">
+    <div class="embed__thumb" style="background-image: url(&quot;https://play-lh.googleusercontent.com/sCzM99ufyAKjQJJwSi8K0Byn9lGADNofwOAB_56aUs6cy2VS7RKWb7zJD_20-iVYU7o=w600-h300-pc0xffffff-pd&quot;);"></div>
+    <div class="embed__caption">
+     <div class="embed__caption-title">
+      <span>Weather Today - Apps on Google Play</span>
+     </div><a href="https://play.google.com/store/apps/details?id=com.Ruble.Pack.weather_today&amp;hl=en_US&amp;gl=EE" target="_blank" rel="noopener noreferrer nofollow" class="embed__caption-link">play.google.com</a>
+    </div>
+   </div>
+   <p><strong>Задача</strong>: есть приложение погоды. И при&nbsp;первом запуске хочется показать красивое интро. И чтобы анимация&nbsp;была, а&nbsp;не&nbsp;просто картинки. И всё это приятно&nbsp;листалось. Срок реализации&nbsp;— 2&nbsp;недели.</p>
+   <p>Но нельзя ведь так просто взять, и не&nbsp;нагородить свой велосипед на&nbsp;такой простой задаче? Хех. Конечно, нам нужен отдельный пакет. Так и появился на&nbsp;свет «weather_animation».</p>
+   <div class="embed_link">
+    <div class="embed__thumb" style="background-image: url(&quot;https://pub.dev/static/hash-80r36pn7/img/pub-dev-icon-cover-image.png&quot;);"></div>
+    <div class="embed__caption">
+     <div class="embed__caption-title">
+      <span>weather_animation | Flutter Package</span>
+     </div><a href="https://pub.dev/packages/weather_animation" target="_blank" rel="noopener noreferrer nofollow" class="embed__caption-link">pub.dev</a>
+    </div>
+   </div>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/16e/d4d/6c1/16ed4d6c1e1341cc2c7699c17d583163.gif" width="778" height="438" data-src="https://habrastorage.org/getpro/habr/upload_files/16e/d4d/6c1/16ed4d6c1e1341cc2c7699c17d583163.gif">
+    <figcaption></figcaption>
+   </figure>
+   <p>На&nbsp;тот момент&nbsp;была ещё одна трудность&nbsp;— я не&nbsp;понимал, как&nbsp;работает анимация в&nbsp;flutter. Поэтому решил сделать так: взять какой‑нибудь имеющийся пакет, разобраться, как&nbsp;в&nbsp;нём устроена анимация, и использовать его в&nbsp;своей работе.</p>
+   <p>Но&nbsp;почему появился новый пакет тогда? Обо&nbsp;всём по&nbsp;порядку.</p>
+   <h2>Содержание</h2>
+   <ul>
+    <li><p><a href="#chapter1" rel="noopener noreferrer nofollow">Глава 1. Непринятие чужого</a></p></li>
+    <li><p><a href="#chapter2" rel="noopener noreferrer nofollow">Глава 2. Депрессивное переписывание</a></p></li>
+    <li><p><a href="#chapter3" rel="noopener noreferrer nofollow">Глава 3. Наторговывание конфигуратора</a></p></li>
+    <li><p><a href="#chapter4" rel="noopener noreferrer nofollow">Глава 4. Гнев от&nbsp;рефлексии или&nbsp;необдуманные решения</a></p></li>
+    <li><p><a href="#chapter5" rel="noopener noreferrer nofollow">Глава 5. Отрицательный рост облачка или&nbsp;как&nbsp;работает анимация</a></p></li>
+    <li><p><a href="#final" rel="noopener noreferrer nofollow">Заключение</a></p></li>
+    <li><p><a href="#links" rel="noopener noreferrer nofollow">Список ссылок</a></p></li>
+   </ul><a class="anchor" name="chapter1" id="chapter1"></a>
+   <h3>Глава 1. Непринятие чужого</h3>
+   <p>На <a href="https://pub.dev/" rel="noopener noreferrer nofollow">pub.dev</a> я нашел подходящий проект&nbsp;— <a href="https://pub.dev/packages/weather_widget" rel="noopener noreferrer nofollow">weather_widget</a> и начал разбираться. Действительно, анимированная погода, в&nbsp;меру интересная и приятная на&nbsp;взгляд, а&nbsp;под&nbsp;капотом&nbsp;— код на&nbsp;flutter. То, что&nbsp;нужно, подумал я.</p>
+   <p>Однако, кодовая база не&nbsp;обновлялась больше двух лет и проект не&nbsp;полагался на&nbsp;null safety. Есть документация какая‑никакая, да&nbsp;ещё и с&nbsp;gif (!) анимацией, и даже продублирована на&nbsp;китайском! Уже неплохо, но&nbsp;под&nbsp;капотом...</p>
+   <blockquote>
+    <p>Читатель правильно заметит, что&nbsp;обучаться на&nbsp;непонятно каких материалах&nbsp;— дело сомнительное. Но таков путь.</p>
+   </blockquote>
+   <p>Почти сразу я понял, что&nbsp;так дело не&nbsp;пойдет и код тут, скажем так, не&nbsp;соответствует не&nbsp;только моим принципам кодонаписания, но&nbsp;и официальным рекомендациям dart/flutter. Чтобы не&nbsp;быть голословным, вот некоторые примеры:</p>
+   <blockquote>
+    <p>На&nbsp;основе <a href="https://pub.dev/packages/weather_widget/versions/1.0.6" rel="noopener noreferrer nofollow">v 1.0.6</a>, последний commit <a href="https://github.com/carendule/WeatherWidget/commit/d7c6e2531fb62851cb0d7acc9bfd301467009a47" rel="noopener noreferrer nofollow">on Oct 26, 2021</a> в&nbsp;master. Здесь и далее все манипуляции будут проводиться именно с&nbsp;этой версией.</p>
+   </blockquote>
+   <ol>
+    <li><p>В&nbsp;папке <code>lib</code> содержится <code>example</code>, чего не&nbsp;нужно делать. Тот&nbsp;же <code>example</code> продублирован в&nbsp;корне проекта (только там он и должен&nbsp;быть).</p></li>
+    <li><p>Весь код содержится в&nbsp;одном единственном файле <code>WeatherWidget.dart</code>, который ещё и не&nbsp;обозначен как <code>library</code>. В&nbsp;добавок ко всему, есть рекомендация именовать проект и главный файл одинаковым способом. Например, если пакет называется <code>weather_widget</code>, то главный файл пакета должен&nbsp;быть <code>lib/weather_widget.dart</code>.</p><p>Инструмент анализа пакетов в&nbsp;pub.dev, переваривая два этих пункта, показывает вот что:</p>
+     <figure class="full-width ">
+      <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/690/619/9c4/6906199c4ccfd1312ed8aca7654ae1a7.png" width="873" height="194" data-src="https://habrastorage.org/getpro/habr/upload_files/690/619/9c4/6906199c4ccfd1312ed8aca7654ae1a7.png">
+      <figcaption></figcaption>
+     </figure></li>
+    <li><p>В&nbsp;файле <code>pubspec.yaml</code> подтягиваются&nbsp;лишние зависимости. Зависимость <code>cupertino_icons: ^1.0.3</code> в&nbsp;проекте не&nbsp;используется и явно там не&nbsp;нужна. Такого рода <a href="https://github.com/carendule/WeatherWidget/issues/1" rel="noopener noreferrer nofollow">issue</a>:</p></li>
+   </ol>
+   <blockquote>
+    <p>Because every version of weather_widget depends on cupertino_icons ^0.1.2&nbsp;and flutter_sun_set_rise_api depends on cupertino_icons ^1.0.0, weather_widget is forbidden.</p>
+   </blockquote>
+   <p>решается тем, что&nbsp;автор обновляет версию пакета <code>cupertino_icons</code> в <code>pubspec.yaml</code>, вместо того, чтобы его вообще убрать оттуда.</p>
+   <p>То&nbsp;же самое касается и <code>import 'package:flutter/cupertino.dart';</code>, который не&nbsp;используется в&nbsp;проекте (Кстати да, android studio очень вредный, и даже если ты провел с&nbsp;ним много времени и всегда использовал <code>import 'package:flutter/material.dart';</code>, то он всё равно будет предлагать первой рекомендацией импортировать нужный виджет именно из&nbsp;cupertino).</p>
+   <p>Я уже не&nbsp;буду говорить о&nbsp;semantic versions, о&nbsp;расставленных по&nbsp;всему коду TODO‑шках, которые уже реализованы, и о&nbsp;структуре самого кода (линтер никто не&nbsp;использовал и файла <code>analysis_options.yaml</code> там нет). В&nbsp;общем, я сначала подумывал, может законтрибьютить, но&nbsp;понял, что&nbsp;хочу изменить вообще всё. Благо, имеющаяся <em>Apache-2.0&nbsp;license</em> позволяет это сделать и, конечно, я указал автора в&nbsp;NOTICE.</p>
+   <blockquote>
+    <p>Нет никакого&nbsp;желания критиковать пакет с&nbsp;такой чудесной&nbsp;лицензией. Я&nbsp;лишь обращаю внимание на&nbsp;критические особенности проекта, исходя из&nbsp;которых&nbsp;было решено переписать его начисто. А&nbsp;также подчеркиваю, что&nbsp;проект выполнял свои функции (спорно), имел документацию (немного сомнительную) и красивые gif (это мы любим).</p>
+   </blockquote>
+   <p>Было решено переписывать всё и полностью.</p><a class="anchor" name="chapter2" id="chapter2"></a>
+   <h3>Глава 2. Депрессивное переписывание</h3>
+   <p>Собственно, процесс преобразования выглядел примерно так:</p>
+   <ol>
+    <li><p>Изымаем виджет и кладем в&nbsp;отдельный файл</p></li>
+    <li><p>Запускаем на&nbsp;отдельном экране. Если что‑то не&nbsp;работает, изменяем код так, чтобы заработало.</p></li>
+    <li><p>Глубоко перерабатываем (refactoring) код, периодически запуская hot reload.</p></li>
+    <li><p>Добавляем интересные поля для&nbsp;легкой конфигурации</p></li>
+   </ol>
+   <p>Необходимо обратить внимание на&nbsp;то, что&nbsp;код не «null safety». Мы могли&nbsp;бы использовать команду <code>dart migrate</code>, но&nbsp;поступим иначе.</p>
+   <blockquote>
+    <p>Чтобы узнать, что&nbsp;такое «null safety», ознакомьтесь с&nbsp;данной статьёй&nbsp;— <a href="https://habr.com/ru/post/513466/" rel="noopener noreferrer nofollow">Null safety в&nbsp;Dart</a>. Чтобы проект соответствовал данному критерию, необходимо использовать версию dart не&nbsp;ниже 2.12</p>
+   </blockquote>
+   <p>В&nbsp;нашем случае это:</p>
+   <pre><code>environment:
+  sdk: "&gt;=2.1.0 &lt;3.0.0"
+</code></pre>
+   <p>Ещё есть некоторая полезная информация из файла <code>.metadata</code>: автор использовал flutter версии <code>v1.12.13+hotfix.8</code>, что соответствует тому периоду времени.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/882/4b5/ff9/8824b5ff924a391bf833023c3b75e6ea.png" alt="в пакете weather_widget нет плашки &quot;Null safety&quot;. Также, критических изменений кода с версии 1.0.0+1 до 1.0.6 не произошло (разве что добавлен dispose в паре виджетов и произведено автоформатирование кода). " title="в пакете weather_widget нет плашки &quot;Null safety&quot;. Также, критических изменений кода с версии 1.0.0+1 до 1.0.6 не произошло (разве что добавлен dispose в паре виджетов и произведено автоформатирование кода). " width="1881" height="1812" data-src="https://habrastorage.org/getpro/habr/upload_files/882/4b5/ff9/8824b5ff924a391bf833023c3b75e6ea.png">
+    <figcaption>
+     в пакете weather_widget нет плашки "Null safety". Также, критических изменений кода с версии 1.0.0+1 до 1.0.6 не произошло (разве что добавлен dispose в паре виджетов и произведено автоформатирование кода).
+    </figcaption>
+   </figure>
+   <p>Стало очень интересно, а что же скажет линтер. Подключим таковой, но не последней версии, а наиболее близкий к периоду публикации пакета (<code>lint: ^1.1.1</code>), и добавим в файл <code>analysis_options.yaml</code> одну строчку кода:</p>
+   <pre><code class="yaml">analyzer:
+  strong-mode:
+    implicit-casts: true</code></pre>
+   <p>После завершения <code>dart analysis</code> видим:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/bdf/9d3/a58/bdf9d3a5839528f8a46e84723a9e7b89.png" width="999" height="458" data-src="https://habrastorage.org/getpro/habr/upload_files/bdf/9d3/a58/bdf9d3a5839528f8a46e84723a9e7b89.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Если мы отключим неявное приведение типов:</p>
+   <pre><code class="yaml">analyzer:
+  strong-mode:
+    implicit-casts: true</code></pre>
+   <p>то все ошибки (именно erros) исчезнут. Уже неплохо.</p>
+   <blockquote>
+    <p>Значение true гарантирует, что&nbsp;механизм вывода типов никогда не&nbsp;будет неявно приводить от&nbsp;dynamic к&nbsp;более конкретному типу, что&nbsp;может привести к&nbsp;сбою во&nbsp;время выполнения. Этот режим сообщает о&nbsp;потенциальной ошибке, требуя добавить явное приведение или&nbsp;иным образом скорректировать код.</p>
+   </blockquote>
+   <p>В&nbsp;dart версиях старше 2.16&nbsp;это можно активировать так:</p>
+   <pre><code class="yaml">analyzer:
+  language:
+    strict-casts: false</code></pre>
+   <p>Подробнее о&nbsp;настройке статического анализа здесь: <a href="https://dart.dev/guides/language/analysis-options" rel="noopener noreferrer nofollow">Customizing static analysis</a>.</p>
+   <blockquote>
+    <p><em>Итог</em>: ребята, используйте&nbsp;линтер. Ваш код будет качественней и, если повезет, понятней коллегам и вам через полгода:)</p>
+   </blockquote>
+   <p>Меня это всё не&nbsp;волновало, ибо переписать можно что&nbsp;угодно, если понять логику работы кода. Я попытался показать это на&nbsp;примере виджета дождика:</p>
+   <details class="spoiler">
+    <summary>Очень длинный участок кода</summary>
+    <div class="spoiler__content">
+     <p></p>
+     <figure class="full-width ">
+      <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/89e/5a9/940/89e5a994020d7f64a560fece3dbb2631.png" alt="было два облака с двумя дождями и фоном, а остался один дождь." title="было два облака с двумя дождями и фоном, а остался один дождь." width="1890" height="10919" data-src="https://habrastorage.org/getpro/habr/upload_files/89e/5a9/940/89e5a994020d7f64a560fece3dbb2631.png">
+      <figcaption>
+       было два облака с двумя дождями и фоном, а остался один дождь.
+      </figcaption>
+     </figure>
+     <p></p>
+    </div>
+   </details>
+   <p>Да, картинка <s>вылезает из&nbsp;штанов</s> необъятна и спрятана за&nbsp;спойлер. Но&nbsp;как&nbsp;иначе показать до/после? Некоторые рассуждения:</p>
+   <ol>
+    <li><p>Если виджет назван <code>RainWidget</code> должен&nbsp;ли он включать в&nbsp;себя облака? А&nbsp;фон? <s>Дыма без&nbsp;огня</s> Дождя без&nbsp;облака не&nbsp;бывает? Как&nbsp;по&nbsp;мне, таки&nbsp;бывает, и в&nbsp;данном случае дождь должен&nbsp;быть только виджетом дождя (это ведь про&nbsp;принцип единственной ответственности (Single Responsibility Principle)). По&nbsp;моей логике, если мы хотим сделать облако с&nbsp;дождем, то виджет назовём <code>RainOfCloudsWidget</code>, при&nbsp;этом всю логику облака (анимацию и&nbsp;т.&nbsp;д.) определим в&nbsp;классе <code>CloudWidget</code>. То&nbsp;же самое касается и определения фона всей картины <code>BackgroundWidget</code>&nbsp;— ни к&nbsp;чему это в&nbsp;виджете дождя.</p></li>
+    <li><p>Реализован метод <code>didUpdateWidget()</code>, т.к. конфигурация дождя <code>rainConfig</code> может измениться и в&nbsp;некоторых случаях наша анимация должна&nbsp;быть переопределена.</p></li>
+    <li><p>Переработана модель конфигурации. Признаюсь, мне визуально нравится определение переменных в&nbsp;одной строке (и я использовал это для&nbsp;полей виджетов). Однако,&nbsp;линтер dart рекомендует этого избегать (мы можем отключить данное поведение <a href="https://dart-lang.github.io/linter/lints/avoid_multiple_declarations_per_line.html" rel="noopener noreferrer nofollow">avoid_multiple_declarations_per_line</a>, добавив правило для&nbsp;линтера в&nbsp;файл <code>analysis_options.yaml</code>). В&nbsp;нашем случае, используя фабричный конструктор для&nbsp;создания модели, это невозможно. После я объясню, зачем здесь freezed и json.</p></li>
+    <li><p>По&nbsp;всему коду раскиданы значения по&nbsp;умолчанию. Теперь такие значения в&nbsp;модели.</p></li>
+   </ol>
+   <p>И так, виджет за&nbsp;виджетом,&nbsp;был произведен полный рефакторинг кода.</p><a class="anchor" name="chapter3" id="chapter3"></a>
+   <h3>Глава 3. Наторговывание конфигуратора</h3>
+   <p>Изначально я собирался реализовать только пакет и вручную менять конфигурацию наших моделей и запускать hot restart. Но после недолгих размышлений и некоторого неудобства настройки моделей принялся делать конфигуратор. Код конфигуратора писал так, чтобы инструмент выполнял свою работу, без&nbsp;долгосрочной поддержки. И это получилось.</p>
+   <p><strong>Задача</strong>: создать конфигуратор в&nbsp;короткий срок (максимум неделя), который позволяет составлять погодную сцену на&nbsp;основе доступных виджетов, которые можно изменять и сразу видеть результат.</p>
+   <p>Был составлен список с&nbsp;функциями, реализуемыми в&nbsp;зависимости от&nbsp;оставшегося времени и важности.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/7dc/df0/20f/7dcdf020fb0d33b868b022383b6219a6.png" alt="внешний вид конфигуратора погодных сцен" title="внешний вид конфигуратора погодных сцен" width="1399" height="788" data-src="https://habrastorage.org/getpro/habr/upload_files/7dc/df0/20f/7dcdf020fb0d33b868b022383b6219a6.png">
+    <figcaption>
+     внешний вид конфигуратора погодных сцен
+    </figcaption>
+   </figure>
+   <p>Проведу краткий экскурс по&nbsp;реализованным функциям конфигуратора. Вся рабочая область делится на&nbsp;три секции. Слева направо:</p>
+   <ol>
+    <li><p>Погодная сцена&nbsp;— это место, где вы увидите готовый результат вашей погодной картины (в realtime). Ниже имеется форма для&nbsp;настройки размеров холста; слева от&nbsp;неё значение соотношения сторон (aspect ratio), справа&nbsp;— возможность сброса позиций.</p></li>
+    <li><p>Стек погодных виджетов, где мы можем добавлять, удалять, дублировать и перемещать наши погодные виджеты (каждый такой я называю «Weathunit»), которые будут накладываться друг на&nbsp;друга в&nbsp;сцене. Слева рядом с&nbsp;кнопкой «добавление нового виджета» есть так называемые presets&nbsp;— набор разных сгенерированных сцен. Ниже имеется toolbar&nbsp;— кнопки «копирование всего кода», «показать на&nbsp;весь экран погодную сцену», «сбросить неправильное состояние» (позже расскажу), и светлая/системная/темная темы.</p></li>
+    <li><p>Конфигуратор виджетов. Выбираем во&nbsp;второй секции необходимый виджет и изменяем различные параметры, наблюдая результат в&nbsp;первой секции. Фон также настраивается: стек цветов и угол начала градиента.</p></li>
+   </ol>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/f92/75d/32b/f9275d32b4512cdb1326460f247b52d8.gif" width="1230" height="782" data-src="https://habrastorage.org/getpro/habr/upload_files/f92/75d/32b/f9275d32b4512cdb1326460f247b52d8.gif">
+    <figcaption></figcaption>
+   </figure>
+   <p>Слайдер настройки "Weathunit" представляет из себя следующее:</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/4a0/b7c/7e3/4a0b7c7e39117f486cf5ab4c31a74657.png" alt="извиняюсь за &quot;рваный красный край&quot;. Тестировал инструмент. " title="извиняюсь за &quot;рваный красный край&quot;. Тестировал инструмент. " width="511" height="149" data-src="https://habrastorage.org/getpro/habr/upload_files/4a0/b7c/7e3/4a0b7c7e39117f486cf5ab4c31a74657.png">
+    <figcaption>
+     извиняюсь за "рваный красный край". Тестировал инструмент.
+    </figcaption>
+   </figure>
+   <ol>
+    <li><p>Тип значения. В&nbsp;web числа представлены иначе, поэтому могут&nbsp;быть нюансы.</p></li>
+    <li><p>Параметр и его значение. Представлен ровно в&nbsp;том виде, в&nbsp;котором будет скопирован.</p></li>
+    <li><p>Кнопка копирования кода.&nbsp;Бывает удобно настроить некоторые отдельные параметры и скопировать именно их. После можно вставлять в&nbsp;код.</p></li>
+    <li><p>Кнопка разрядности. Возможные величины 0.01, 0.1, 1, 10, 100.</p></li>
+    <li><p>Кнопка изменения значения. Изменяет представленное значение на&nbsp;величину разрядности. Есть возможность долгого удержания, что&nbsp;ведет к&nbsp;линейному изменению значения. (подумываю о&nbsp;нелинейном)</p></li>
+    <li><p>Ползунок (Slider) для&nbsp;изменения значения. Он дискретный и зависит от&nbsp;разрядности.</p></li>
+    <li><p>Кнопка расширения диапазона. По&nbsp;клику наш диапазон увеличивается на&nbsp;магическую величину. Подробности в&nbsp;следующей главе.</p></li>
+   </ol>
+   <hr>
+   <p>&lt;<em>Рекламная пауза</em>&gt;: здесь пишу о&nbsp;чём‑то ещё&nbsp;— <a href="https://t.me/+JSkcGQ_Sh045Mzhi" rel="noopener noreferrer nofollow">TODO: change after</a> &lt;/<em>Рекламная пауза</em>&gt;</p>
+   <hr>
+   <p>Главная задача конфигуратора не&nbsp;только «нарисовать шедевр» и полюбоваться им, но&nbsp;и получить готовый код для&nbsp;быстрого использования в&nbsp;проекте. Функция копирования занимает ~60&nbsp;строк кода; freezed переопределяет метод <code>toString()</code> в&nbsp;соответствии с&nbsp;реальными полями, что&nbsp;играет здесь ключевую роль.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/e6b/08a/2d6/e6b08a2d6964f2dfa764933014223f9f.png" alt="Весь код, полученный через кнопку &quot;Скопировать код&quot;, находится в методе build(). " title="Весь код, полученный через кнопку &quot;Скопировать код&quot;, находится в методе build(). " width="850" height="650" data-src="https://habrastorage.org/getpro/habr/upload_files/e6b/08a/2d6/e6b08a2d6964f2dfa764933014223f9f.png">
+    <figcaption>
+     Весь код, полученный через кнопку "Скопировать код", находится в методе build().
+    </figcaption>
+   </figure>
+   <p>Осталось применить <code>dart format</code>, нажав <strong>Ctrl+Alt+L</strong> (в Android Studio), чтобы&nbsp;лицезреть красиво отформатированный код.</p>
+   <p><code>WrapperScene</code>&nbsp;— это виджет‑обертка, которая имеет некоторые полезные параметры для&nbsp;создания полноценной погодной сцены. Под&nbsp;капотом есть автоматическое масштабирование погодных виджетов в&nbsp;зависимости от&nbsp;размеров экрана/доступного места.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/8f9/165/368/8f9165368a53b36e66144414b6e9479f.png" width="1479" height="1358" data-src="https://habrastorage.org/getpro/habr/upload_files/8f9/165/368/8f9165368a53b36e66144414b6e9479f.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Масштабирование имеет крайне простой код:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/937/0d5/fdb/9370d5fdbba614f4d9db3ad50989d04c.png" alt=" насколько прост код, настолько незатейливо это и работает " title=" насколько прост код, настолько незатейливо это и работает " width="902" height="991" data-src="https://habrastorage.org/getpro/habr/upload_files/937/0d5/fdb/9370d5fdbba614f4d9db3ad50989d04c.png">
+    <figcaption>
+     насколько прост код, настолько незатейливо это и работает
+    </figcaption>
+   </figure>
+   <p>Протестировать сиё чудо можно онлайн&nbsp;— <a href="https://packruble.github.io/weather_animation/" rel="noopener noreferrer nofollow">Weather configurator</a>.</p>
+   <p>Слава <s>небесам</s> пользователям Stackoverflow: после открытого <a href="https://stackoverflow.com/questions/74597644/unable-to-deploy-flutter-project-to-github-pages" rel="noopener noreferrer nofollow">bounty</a> я получил некоторую дополнительную информацию о&nbsp;том, как&nbsp;преодолеть трудности и разместить приложение на&nbsp;Github Pages.</p>
+   <p><em>Ваша помощь:</em> помните,&nbsp;была информация о&nbsp;волшебной кнопочке, которая сбрасывает некорректное состояние? Так вот, есть открытое <a href="https://github.com/PackRuble/weather_animation/issues/3" rel="noopener noreferrer nofollow">issue</a>, согласно которому кнопка не&nbsp;всегда может спасти. Когда происходит сбой? При&nbsp;некорректных/несовместимых значениях некоторых полей конфигурации снежинок, мы теряем к&nbsp;ним доступ, и нет возможности сбросить это состояние. Если кто знает, каким образом 100% можно очистить состояние виджетов, не&nbsp;сбив при&nbsp;этом текущие настройки сцены, просьба откликнуться в&nbsp;комментариях.</p><a class="anchor" name="chapter4" id="chapter4"></a>
+   <h3>Глава 4. Гнев от рефлексии или необдуманные решения</h3>
+   <p>Основная идея: у&nbsp;нас есть очень много полей конфигурационных файлов (сейчас их больше 60). Эти поля нужно связать с&nbsp;виджетами (<code>Slider</code>, <code>ColorPicker</code>, <code>Switch</code> и&nbsp;т.&nbsp;д.), которые могли&nbsp;бы их изменять. И если виджетов‑погод сейчас 7&nbsp;и их легко описать одним <code>Enum</code>'ом, то вот с «бесконечными» полями этим заниматься очень не&nbsp;хотелось! Так я чуть не&nbsp;угодил в&nbsp;ловушку под&nbsp;названием <a href="https://api.dart.dev/stable/2.19.2/dart-mirrors/dart-mirrors-library.html" rel="noopener noreferrer nofollow">dart:mirrors library</a>.</p>
+   <p>Необходим&nbsp;был механизм под&nbsp;названием рефлексия (reflection) и одна из&nbsp;основных функций&nbsp;— самоанализ (introspection), который может&nbsp;быть доступен в&nbsp;dart. Так мы могли&nbsp;бы получить наши поля файлов конфигураций в&nbsp;режиме выполнения. Но&nbsp;когда я это трогал, мне&nbsp;было так больно, что&nbsp;хотелось порезаться flutter‑бабочкой, благо понял, что&nbsp;этим не&nbsp;получится воспользоваться в&nbsp;flutter. Конечно, есть ещё <a href="https://pub.dev/packages/reflectable" rel="noopener noreferrer nofollow">reflectable</a> пакет, который использует генерацию кода, и есть базовое <a href="https://github.com/eernstg/reflectable-flutter" rel="noopener noreferrer nofollow">руководство</a> по&nbsp;внедрению в&nbsp;flutter.</p>
+   <p>Но&nbsp;я решил пойти другим путём&nbsp;— использовать <a href="https://pub.dev/packages/json_serializable" rel="noopener noreferrer nofollow">json_serializable</a>. Через генерацию мы можем как&nbsp;получить все поля <code>toJson()</code> и отобразить их в&nbsp;интерфейсе, так и создать новую конфигурационную модель в&nbsp;одну строку <code>fromJson()</code>. Это показалось очень интересной мыслью, настолько, что&nbsp;я так и реализовал.</p>
+   <p>Естественно, возник целый ряд проблем.</p>
+   <p><strong>Проблема №&nbsp;1:</strong></p>
+   <p>Для&nbsp;начала хочу показать, как&nbsp;это можно&nbsp;было сделать адекватно через «перечисление» (или через простые «классы»):</p>
+   <pre><code class="dart">enum SunConfigHelper&lt;T&gt; {
+	width&lt;double&gt;(0.0, 360.0, 2000.0),
+	blurSigma&lt;double&gt;(0.0, 13.0, 36),
+	isLeftLocation&lt;bool&gt;(true, false, false),
+	coreColor&lt;Color&gt;(
+	    Color(0xFFFFFFFF), Color.fromARGB(255, 255, 152, 0), Color(0xFFFFFFFF)),
+	// midColor(...),
+	// outColor(...),
+	animMidMill&lt;int&gt;(0, 1500, 10000);
+	// animOutMill(...);
+	
+	const SunConfigHelper(this.minValue, this.defValue, this.maxValue)
+	
+	final T minValue;
+	final T defValue;
+	final T maxValue
+	
+	// final double scale;
+	// final String name;
+	// final String description;
+	// final double/int/...(enum with types) typeWidget/typeValue;
+}</code></pre>
+   <p>Заметка: это не&nbsp;сильно обдуманный код и, возможно, не&nbsp;решит нашу задачу.</p>
+   <p>Минусы:</p>
+   <ul>
+    <li><p>каждый раз, когда в&nbsp;библиотеке появляются новые поля в&nbsp;моделях конфигураций, мы обязаны обновить и эти модели;</p></li>
+    <li><p>преобразование этого в&nbsp;виджеты всё ещё может&nbsp;быть проблематичным.</p></li>
+   </ul>
+   <p>Плюсы:</p>
+   <ul>
+    <li><p>код больше типизирован;</p></li>
+    <li><p>У&nbsp;нас есть границы допустимых значений! Это означает, что&nbsp;Slider использовать очень просто&nbsp;— указывайте min и max и всё. Это также предотвратит опасные ситуации с&nbsp;отрицательными числами и слишком большими числами. А&nbsp;ещё использование <code>scale</code> для&nbsp;каждого поля позволяет определить количество дискретных делений (и, по&nbsp;сути, десятичную точность) и порекомендовать разрядность;</p></li>
+    <li><p>Не&nbsp;будет приведения типов (<code>value is int</code> и <code>value as int</code>), и мы проще и надежнее преобразуем данные в&nbsp;необходимые виджеты (после будет понятно, почему);</p></li>
+    <li><p>Избежим некоторых нюансов в&nbsp;web (я напомню, там dart превращается в&nbsp;js и, например, число <code>5.6</code> типа <code>double</code> может превратиться в <code>int</code>, если станет <code>5.0</code>).</p></li>
+   </ul>
+   <p>Как&nbsp;вы понимаете,&nbsp;было выбрано другое решение&nbsp;— посредством <code>ModelConfig.toJson()</code> получаем все поля и значения в&nbsp;виде <code>Map&lt;String, dynamic&gt;</code>. Далее, <code>dynamic</code> преобразуем в&nbsp;конкретный тип и, исходя из&nbsp;этого, показываем нужный виджет‑крутилку. Как&nbsp;только мы меняем значение, то обновляем конфигурацию посредством <code>.fromJson(newMap)</code>.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c2f/b12/288/c2fb1228800334e8ad1b52983d25ffe4.png" alt="&quot;офигенный&quot; код, который без пузыря не разберёшь. Не делайте так." title="&quot;офигенный&quot; код, который без пузыря не разберёшь. Не делайте так." width="992" height="1895" data-src="https://habrastorage.org/getpro/habr/upload_files/c2f/b12/288/c2fb1228800334e8ad1b52983d25ffe4.png">
+    <figcaption>
+     "офигенный" код, который без пузыря не разберёшь. Не делайте так.
+    </figcaption>
+   </figure>
+   <p><strong>Проблема №&nbsp;2:</strong></p>
+   <p>Предыдущее решение основано на&nbsp;типе поля в&nbsp;runtime. Самый простой для&nbsp;преобразования тип&nbsp;— <code>bool</code>, есть два значения&nbsp;— true и false. Виджет может&nbsp;быть обычным переключателем. А&nbsp;вот <code>int</code> и <code>double</code> уже так просто не&nbsp;определишь. Нужны диапазоны, точность и цена деления шкалы.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/00a/8ea/bc5/00a8eabc58402b8518d8f6b3e5b36e40.png" width="515" height="615" data-src="https://habrastorage.org/getpro/habr/upload_files/00a/8ea/bc5/00a8eabc58402b8518d8f6b3e5b36e40.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Хех, и вот она, ловушка работы по&nbsp;типам. Ведь в&nbsp;строке могут лежать любые данные. И я принял решение, что&nbsp;если поле конфигурации является строкой, то это определенно <code>ColorPickerWidget</code>, т.к. на&nbsp;данный момент нет никаких других полей с&nbsp;типом <code>String</code>, которые не&nbsp;хранили&nbsp;бы Color. Да, Color преобразуется именно в <code>String</code>, хотя можно&nbsp;было&nbsp;бы использовать <code>int</code>. Знайте наверняка, это отвратительное решение. Но&nbsp;другого, основанного на&nbsp;типах я не&nbsp;придумал.</p>
+   <p><strong>Проблема №&nbsp;3:</strong></p>
+   <p>У&nbsp;всех <code>int</code> и <code>double</code> полей должны&nbsp;быть разные границы, точность и цена деления. Решение банальное:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/1d7/c36/5d8/1d7c365d815fb0ea1f95f613ec419ebd.png" width="1265" height="230" data-src="https://habrastorage.org/getpro/habr/upload_files/1d7/c36/5d8/1d7c365d815fb0ea1f95f613ec419ebd.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Magic-click представляет из себя:</p>
+   <pre><code class="dart">final oldMin = _min;
+_min -= (_max * 2).abs();
+_max += (oldMin * 2).abs();  
+</code></pre>
+   <p>Да, мы можем улететь так в&nbsp;небеса, но&nbsp;произойдет это клик эдак на 20, да&nbsp;и грозить будет только потерей точности.</p>
+   <p><strong>Проблема №&nbsp;4:</strong></p>
+   <p>Некоторым величинам нужна разная разрядность. Во‑первых, чтобы с&nbsp;помощью кнопок слайдера (&lt;) ‑- (&gt;) величина изменялась на&nbsp;определенный порядок. Щелчок, и вот уже разрядность изменена (доступно 0.01, 0.1, 1, 10, 100), а наш слайдер перестроен.</p>
+   <p>Тут тоже нюанс:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/473/5f8/b1f/4735f8b1f77223b07a3519f7b15a4fde.png" width="872" height="775" data-src="https://habrastorage.org/getpro/habr/upload_files/473/5f8/b1f/4735f8b1f77223b07a3519f7b15a4fde.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Чтобы определить количество знаков после запятой, необходимо преобразовать число в <code>String</code> и просто посчитать их количество после точки. Но&nbsp;вот беда, в&nbsp;web всё ломается. Поэтому если вдруг <code>double</code> превратился в <code>int,</code> мы вернём 1. Есть очень хорошее <a href="https://dart.dev/guides/language/numbers" rel="noopener noreferrer nofollow">официальное руководство</a>, объясняющее, почему так происходит.</p>
+   <p>Бонус: в&nbsp;слайдер встроена поддержка удерживания для&nbsp;непрерывного&nbsp;линейного изменения значения (необязательно щелкать).</p>
+   <p>После всех страданий я понял, что&nbsp;dto‑решение&nbsp;было&nbsp;бы очень кстати, и в&nbsp;дальнейшем так и нужно делать. Но, господа, «быстро, качественно, недорого»&nbsp;— на&nbsp;выбор только два.</p><a class="anchor" name="chapter5" id="chapter5"></a>
+   <h3>Глава 5. Отрицательный рост облачка или как работает анимация</h3>
+   <p>Ну что&nbsp;же, после того, как&nbsp;я изучил материалы по&nbsp;анимации <s>намучался с&nbsp;реализацией конфигуратора</s>, самое время рассказать, как&nbsp;она работает. Ознакомимся с&nbsp;ней на&nbsp;примере полупрозрачных облачков:</p>
+   <figure class="">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/9a2/8a6/b2d/9a28a6b2da55381424fd035cfa136879.gif" width="407" height="407" data-src="https://habrastorage.org/getpro/habr/upload_files/9a2/8a6/b2d/9a28a6b2da55381424fd035cfa136879.gif">
+    <figcaption></figcaption>
+   </figure>
+   <p>Данная анимация&nbsp;была создана с&nbsp;помощью конфигуратора. Результирующий код после копирования из&nbsp;конфигуратора выглядит так:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/ef0/e0e/633/ef0e0e633797bdaf58c05fe2b158507a.png" alt="внимания удостоены только CloudWidget'ы, другие элементы упрощены. Хочу также заметить, что весь виджет WrapperScene является const. " title="внимания удостоены только CloudWidget'ы, другие элементы упрощены. Хочу также заметить, что весь виджет WrapperScene является const. " width="1051" height="2197" data-src="https://habrastorage.org/getpro/habr/upload_files/ef0/e0e/633/ef0e0e633797bdaf58c05fe2b158507a.png">
+    <figcaption>
+     внимания удостоены только CloudWidget'ы, другие элементы упрощены. Хочу также заметить, что весь виджет WrapperScene является const.
+    </figcaption>
+   </figure>
+   <p>Начнём с&nbsp;модели конфигурации <code>CloudConfig</code>. Будем использовать пакет <a href="https://pub.dev/packages/freezed" rel="noopener noreferrer nofollow">freezed</a> для&nbsp;сгенерированных переопределений <code>toString</code>, <code>operator ==</code>, <code>hashCode</code> + метод <code>copyWith()</code> для&nbsp;легкого получения нового объекта на&nbsp;основе старого и <a href="https://pub.dev/packages/json_serializable" rel="noopener noreferrer nofollow">json_serializable</a>, чтобы сгенерировать методы <code>fromJson()</code> и <code>toJson()</code>. По&nbsp;большей части, всё это нужно для&nbsp;неизменяемости (<code>@immutable</code>) объекта и легкой обработки его полей (в том числе, мы можем удобно «<em>передавать на&nbsp;сервер</em>/<em>сохранять в&nbsp;локальной бд</em>» эти модели). Выглядит немного монструозно, но&nbsp;фактически освобождает нас от&nbsp;шаблонного кода (boilerplate code).</p>
+   <pre><code class="dart">part 'cloud_config.freezed.dart';
+part 'cloud_config.g.dart';
+
+/// Configuration of the Cloud.
+@freezed
+class CloudConfig with _$CloudConfig {
+  @JsonSerializable(converters: [ColorSerializer()])
+  const factory CloudConfig({
+    /// Cloud size.
+    @Default(250.0) double size,
+
+    /// The color of the cloud.
+    @Default(Color.fromARGB(170, 255, 255, 255)) Color color,
+
+    /// Cloud icon. You can use a custom widget [widgetCloud].
+    @Default(Icons.cloud_rounded) @JsonKey(ignore: true) IconData icon,
+
+    /// Specify the cloud widget. In this case, the fields [icon] and
+    /// [color] be ignored.
+    @JsonKey(ignore: true) Widget? widgetCloud,
+
+    /// The coordinate of cloud displacement along the x-axis (in pixels).
+    @Default(70.0) double x,
+
+    /// The coordinate of cloud displacement along the x-axis (in pixels).
+    @Default(5.0) double y,
+
+    /// The scale factor of the widget at the beginning of the animation.
+    @Default(1.0) double scaleBegin,
+
+    /// The scale factor of the widget at the end of the animation.
+    @Default(1.1) double scaleEnd,
+
+    /// Animation curve for [ScaleTransition].
+    @Default(Curves.fastOutSlowIn) @JsonKey(ignore: true) Curve scaleCurve,
+
+    /// Offset of the widget along the X-axis during the slide animation (in pixels).
+    @Default(11.0) double slideX,
+
+    /// Offset of the widget along the Y-axis during the slide animation (in pixels).
+    @Default(5.0) double slideY,
+
+    /// Shift duration (in milliseconds).
+    @Default(2000) int slideDurMill,
+
+    /// Animation curve for [SlideTransition].
+    @Default(Curves.fastOutSlowIn) @JsonKey(ignore: true) Curve slideCurve,
+  }) = _CloudConfig;
+
+  factory CloudConfig.fromJson(Map&lt;String, dynamic&gt; json) =&gt;
+      _$CloudConfigFromJson(json);
+}</code></pre>
+   <p>После запускаем команду</p>
+   <pre><code class="bash">flutter pub run build_runner build</code></pre>
+   <p>и получаем всю мощь миксина <code>_$CloudConfig</code>.</p>
+   <p>Несколько интересных деталей.</p>
+   <ol>
+    <li><p>Строчка <code>@JsonSerializable(converters: [ColorSerializer()])</code> говорит, что там, где есть поля типа <code>Color</code>, мы будем применять конвертер и преобразовывать <code>Color</code> в <code>String</code> и наоборот (не в <code>int</code>, что было бы лучше):</p></li>
+   </ol>
+   <pre><code class="dart">/// Convert [Color] to/from json.
+class ColorSerializer implements JsonConverter&lt;Color, String&gt; {
+  const ColorSerializer();
+
+  @override
+  Color fromJson(String json) =&gt; Color(int.parse(json));
+
+  @override
+  String toJson(Color color) =&gt; color.value.toString();
+}</code></pre>
+   <ol start="2">
+    <li><p><code>@Default(&lt;значение&gt;)</code> это значение по умолчанию для данного поля. Если значение не может быть null, то данная аннотация обязательна.</p></li>
+    <li><p><code>@JsonKey(ignore: true)</code> эта аннотация указывает, что мы не используем при преобразованиях <code>fromJson()/toJson()</code> данное поле.</p></li>
+   </ol>
+   <blockquote>
+    <p>Хочу заметить, что&nbsp;это очень некорректный подход. Есть некоторые основания полагать, что&nbsp;происходит «подгонка» моего пакета под&nbsp;конфигуратор. Но&nbsp;ведь основной продукт моей работы будет использоваться без&nbsp;конфигуратора. Не&nbsp;делайте так.</p>
+   </blockquote>
+   <p>Конфигурационная модель готова, и теперь самое время создать виджет облака:</p>
+   <pre><code class="dart">class CloudWidget extends StatefulWidget {
+  const CloudWidget({Key? key, this.cloudConfig = const CloudConfig()})
+      : super(key: key);
+
+  final CloudConfig cloudConfig;
+
+  @override
+  State&lt;CloudWidget&gt; createState() =&gt; _CloudWidgetState();
+}
+
+class _CloudWidgetState extends State&lt;CloudWidget&gt;
+    with TickerProviderStateMixin {
+  late final AnimationController controller;
+  late Animation&lt;double&gt; scaleAnimation;
+  late Animation&lt;Offset&gt; slideAnimation;
+
+  late CloudConfig _config;
+
+  @override
+  void initState() {...}
+
+  void _initAnimation() {...}
+
+  @override
+  Widget build(BuildContext context) {...}
+
+  @override
+  void didUpdateWidget(covariant CloudWidget oldWidget) {...}
+
+  @override
+  void dispose() {...}
+}</code></pre>
+   <p>Что&nbsp;здесь за&nbsp;поля и методы?:</p>
+   <ol>
+    <li><p><code>controller</code>&nbsp;— контроллер для&nbsp;анимации. Именно это поле отвечает за&nbsp;длительность и осуществление анимации.</p></li>
+    <li><p><code>scaleAnimation</code>&nbsp;— анимация увеличения/уменьшения облака.</p></li>
+    <li><p><code>slideAnimation</code>&nbsp;— анимация движения облака.</p></li>
+    <li><p><code>_config</code> наша модель‑конфигурация. Изменяемое поле.</p></li>
+    <li><p><code>initState()</code> запускается один раз при&nbsp;создании виджета‑состояния.</p></li>
+    <li><p><code>_initAnimation()</code> метод запускается всякий раз, когда изменяются поля конфигурации <code>CloudConfig _config</code>, влияющие на&nbsp;анимацию.</p></li>
+    <li><p><code>build()</code> здесь происходит создание и отрисовка нашего виджета (грубо).</p></li>
+    <li><p><code>didUpdateWidget()</code>&nbsp;— вызывается всякий раз, когда изменяется конфигурация виджета. В&nbsp;данном случае, когда мы предоставляем новый <code>CloudConfig cloudConfig</code>, родительский виджет перестраивается и запрашивает обновление этого места в&nbsp;дереве для&nbsp;отображения нового виджета с&nbsp;тем&nbsp;же <code>runtimeType</code> и <code>Widget.key</code>. Фреймворк обновит свойство <code>widget</code> объекта <code>_CloudWidgetState</code> для&nbsp;ссылки на&nbsp;новый виджет, а&nbsp;затем вызовет этот метод с&nbsp;предыдущим виджетом в&nbsp;качестве аргумента.</p></li>
+    <li><p><code>dispose()</code> метод вызывается, когда объект (<code>CloudWidget</code>) удаляется из&nbsp;дерева навсегда.</p></li>
+   </ol>
+   <p>Поэтапно раскрываем реализацию:</p>
+   <pre><code class="dart">@override
+void initState() {
+  super.initState();
+  controller = AnimationController(vsync: this);
+  _initAnimation();
+}
+
+void _initAnimation() {
+  _config = widget.cloudConfig;
+  controller.duration = Duration(milliseconds: _config.slideDurMill);
+  
+  scaleAnimation =
+      Tween(begin: _config.scaleBegin, end: _config.scaleEnd).animate(
+    CurvedAnimation(parent: controller, curve: _config.scaleCurve),
+  );
+  slideAnimation = Tween(
+    begin: Offset.zero,
+    end: Offset(_config.slideX / _config.size, _config.slideY / _config.size),
+  ).animate(CurvedAnimation(parent: controller, curve: _config.slideCurve));
+  
+  controller.repeat(reverse: true);
+}</code></pre>
+   <p>По&nbsp;большому счёту, в&nbsp;методе <code>_initAnimation()</code> мы запускаем анимацию и определяем поля исходя из&nbsp;конфигурации. <code>Tween</code>&nbsp;— это&nbsp;линейная интерполяция между начальным и конечным значением, а <code>CurvedAnimation</code> позволяет применить кривую к&nbsp;анимации (по умолчанию, <code>Curves.fastOutSlowIn</code>).</p>
+   <p>Один контроллер отвечает за&nbsp;две анимации. В&nbsp;конце мы зацикливаем анимацию.</p>
+   <pre><code class="dart">@override
+void didUpdateWidget(covariant CloudWidget oldWidget) {
+  super.didUpdateWidget(oldWidget);
+  final oldConfig = oldWidget.cloudConfig;
+  final nowConfig = widget.cloudConfig;
+  // rebuild only what is used in the `build` method
+  if (oldConfig.x != nowConfig.x ||
+      oldConfig.y != nowConfig.y ||
+      oldConfig.icon != nowConfig.icon ||
+      oldConfig.color != nowConfig.color) {
+    _config = nowConfig;
+    return;
+  }
+  // rebuild all
+  if (oldConfig != nowConfig) {
+    _initAnimation();
+  }
+}</code></pre>
+   <p>Так‑так, наша конфигурация&nbsp;была изменена → запускается данный метод. Суть в&nbsp;том, что&nbsp;мы хотим перезапускать (и переопределять) анимацию только тогда, когда изменились значения от&nbsp;которых она зависит. Как&nbsp;видим, она не&nbsp;зависит от&nbsp;координат, виджета‑иконки (по умолчанию это <code>Icons.cloud_rounded</code>) и её цвета.</p>
+   <pre><code class="dart">@override
+Widget build(BuildContext context) {
+  return Stack(
+    fit: StackFit.expand,
+    clipBehavior: Clip.none,
+    children: [
+      Positioned(
+        left: _config.x,
+        top: _config.y,
+        child: SlideTransition(
+          position: slideAnimation,
+          child: ScaleTransition(
+            scale: scaleAnimation,
+            child: _config.widgetCloud ??
+                Icon(
+                  _config.icon,
+                  color: _config.color,
+                  size: _config.size,
+                ),
+          ),
+        ),
+      ),
+    ],
+  );
+}</code></pre>
+   <p>Всё достаточно просто. <code>Stack</code> необходим, чтобы расшириться в&nbsp;доступных пределах родителей и спозициционировать виджет‑облачко в&nbsp;координатной сетке. В&nbsp;данном случае никакого <code>CustomPainter</code> нет, т.к. используется&nbsp;либо пользовательский виджет,&nbsp;либо иконка.</p>
+   <p>Ну и не&nbsp;забываем утилизировать контроллер, когда виджет больше не&nbsp;используется (иначе, добро пожаловать, утечка памяти):</p>
+   <pre><code class="dart">@override
+void dispose() {
+  controller.dispose();
+  super.dispose();
+}</code></pre>
+   <p>Вот и всё, анимированный виджет создан. Хочу заметить, что&nbsp;если применить <code>useEffect</code> из&nbsp;пакета <a href="https://pub.dev/packages/flutter_hooks" rel="noopener noreferrer nofollow">flutter_hooks</a>, то код сократится на&nbsp;порядок. Хук <code>useEffect</code> эквивалентен <code>initState</code> + <code>didUpdateWidget</code> + <code>dispose</code>.</p><a class="anchor" name="final" id="final"></a>
+   <h3>Заключение</h3>
+   <p>Статья подошла к&nbsp;завершению: через месяц после этого проекта я снова&nbsp;был счастлив, здоров головой и телом. Хочу настоятельно порекомендовать не&nbsp;принимать необдуманных решений при&nbsp;проектировании приложений. А&nbsp;если уж и приняли такое&nbsp;— не&nbsp;побояться сделать следующее (шутливо):</p>
+   <pre><code class="bash">git switch --create other_solution last_stable_commit</code></pre>
+   <p>Всего хорошего! ( Пожалуйста, поделитесь в&nbsp;комментариях, насколько плох&nbsp;был код конфигуратора )</p><a class="anchor" name="links" id="links"></a>
+   <h3>Список ссылок:</h3>
+   <ol>
+    <li><p>«weather_animation» на&nbsp;github&nbsp;— <a href="https://github.com/PackRuble/weather_animation" rel="noopener noreferrer nofollow">Link</a></p></li>
+    <li><p>«weather_animation» на&nbsp;pub.dev&nbsp;— <a href="https://pub.dev/packages/weather_animation" rel="noopener noreferrer nofollow">Link</a></p></li>
+    <li><p>Покрутить конфигуратор онлайн&nbsp;— <a href="https://packruble.github.io/weather_animation/" rel="noopener noreferrer nofollow">Link</a></p></li>
+    <li><p>Посмотреть стартовый экран в&nbsp;приложении&nbsp;— <a href="https://play.google.com/store/apps/details?id=com.Ruble.Pack.weather_today" rel="noopener noreferrer nofollow">Weather Today</a>. Собираюсь опубликовать ряд статей о&nbsp;создании данного приложения и проблемах, с&nbsp;которыми столкнулся.</p></li>
+   </ol>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

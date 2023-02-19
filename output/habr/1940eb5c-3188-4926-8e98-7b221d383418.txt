@@ -1,0 +1,290 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/420/c45/298/420c4529827b4aaf5571f88cecb11cff.png" width="576" height="576" data-src="https://habrastorage.org/getpro/habr/upload_files/420/c45/298/420c4529827b4aaf5571f88cecb11cff.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Дело было к вечеру, делать было нечего. Загорелся я как-то созданием универсальной гусеничной платформы для изучения Tenserflow. Причем хотелось сделать управление через ESP32, которая будет регулировать моторчики, даст в случае желание управление через браузер в локальной сети, а Raspberry Pi будет управлять ей, имитируя собственно меня. Плюс возможность запаять навечно ESP32 и обновлять по воздуху. Здесь я хочу изложить примерную хронологию создания. <br></p>
+   <details class="spoiler">
+    <summary>Полный список запчастей:</summary>
+    <div class="spoiler__content">
+     <p><strong>Raspberry Pi 4b</strong> - 1 шт. // для машинного зрения.<br><strong>Камера для Raspberry Pi</strong> - 1 шт.<br><strong>ESP32</strong> - 1 шт. // МК для управления моторчиками и в будущем для считывания показаний с датчиков движения.<br><strong>TT мотор</strong> с металлической шестеренкой - 2 шт.<br><strong>L298N</strong> - 1 шт. //драйвер мотора - можно, даже нужно использовать что-то компактней и свежей, у меня же он валялся без дела.<br><strong>Гусеничные траки</strong> - 2 шт.<br><strong>Аккумуляторные батареи типа</strong> 1<strong>8650</strong> - 2 шт. <br><strong>Бокс для батареек</strong> - 1 шт.<br><strong>Провода</strong><br><strong>Винты, гайки и стойки M2, M2.5 и M3</strong>.</p>
+    </div>
+   </details>
+   <p><br>Сказано - сделано, из Aliexpres были добыты вот такие гусеничные траки, под ТТ мотор в комплекте идет распечатанная втулка, которая совсем не подходит по размера - но это не проблема, есть 3д принтер.<br></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/8e6/fac/e73/8e6face7306d4093a7284607051ecd00.jpeg" width="800" height="800" data-src="https://habrastorage.org/getpro/habr/upload_files/8e6/fac/e73/8e6face7306d4093a7284607051ecd00.jpeg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Почему выбраны были именно гусеничные траки? Хотелось бы сказать, что мечтал о высокой проходимости, показателях сцепления с поверхностью, но не буду лгать, модель небольшого размера и мне просто хотелось именно на гусеницах. <br><br>Определившись со всеми комплектующими начал проектировать в Fusion 360. Главная цель была - минимализм, хотел поделку небольшого размера, с четко распланированным рабочим пространством, чего мне кажется я смог добиться, но судить не мне.<br><br>Отдельно хочется обратить ваше внимание на некоторые детали рамы:<br><br>Вот так выглядит отдельно рама:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/70c/edf/ab8/70cedfab82c913370de1890b77a0b86a.png" width="1068" height="753" data-src="https://habrastorage.org/getpro/habr/upload_files/70c/edf/ab8/70cedfab82c913370de1890b77a0b86a.png">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/498/e9c/16d/498e9c16ddd6eff3b9dae5687ad6c5ca.png" width="1091" height="729" data-src="https://habrastorage.org/getpro/habr/upload_files/498/e9c/16d/498e9c16ddd6eff3b9dae5687ad6c5ca.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Пришлось усилить раму (выделил красным) иначе под натяжением траков раму гнуло. Естественно всему виной материал из которого я печатал данную модель - обычная фотополимерная смола от Anycubic. <br></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/ff4/c20/42a/ff4c2042ae147999078b68c8d6d0c3bc.png" width="1181" height="750" data-src="https://habrastorage.org/getpro/habr/upload_files/ff4/c20/42a/ff4c2042ae147999078b68c8d6d0c3bc.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>:Так же в самой модели предусмотрел быстрое снятие/установку траков с натяжением, а выглядит оно проще некуда:<br></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/882/c37/a8b/882c37a8bf0d290a23ceb2ec997cc0c8.png" width="771" height="544" data-src="https://habrastorage.org/getpro/habr/upload_files/882/c37/a8b/882c37a8bf0d290a23ceb2ec997cc0c8.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>В нижнюю левую часть вставляется опорный вал и ведется по пазу и вставляется винт, который с обратной стороны фиксируется гайкой. <br><br>Ну, а остальное обыденно - просто разъемы под все на свете:<br>Кнопку, разъемы TYPE-C, каналы для проводов, на всякий площадка под серву SG90 (дань китайским машинкам с HC-SR04).<br><br>Соответственно все детали под печать выглядят так:<br></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/59a/6a0/8ea/59a6a08ea528ac6c9baf24985abb82d1.png" alt="Справа находится втулка для установки гусеничного трака на ТТ мотор" title="Справа находится втулка для установки гусеничного трака на ТТ мотор" width="961" height="750" data-src="https://habrastorage.org/getpro/habr/upload_files/59a/6a0/8ea/59a6a08ea528ac6c9baf24985abb82d1.png">
+    <figcaption>
+     Справа находится втулка для установки гусеничного трака на ТТ мотор
+    </figcaption>
+   </figure>
+   <p>Печатал все на Anycubic M3. Напечатав первую модель я сразу же решил реализовать ручное управление через телефон. Так как я далеко не программист, решил использовать готовую библиотеку, выбор пал на GyverPortal. Выглядит все вот так:<br></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/1e0/1d6/c9a/1e01d6c9ae69e6bc2d8d4eba070d7319.png" width="576" height="1280" data-src="https://habrastorage.org/getpro/habr/upload_files/1e0/1d6/c9a/1e01d6c9ae69e6bc2d8d4eba070d7319.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Да, неказисто, но оно работает, а это самое главное, потом можно все доделать/переделать, сейчас же цель придти к работающему опытному образцу. Код тоже явно далек от идеала, но он работает.<br><br>Код от пульта:</p>
+   <details class="spoiler">
+    <summary>код пульта</summary>
+    <div class="spoiler__content">
+     <pre><code class="cpp">#define AP_SSID ""
+#define AP_PASS ""
+#include &lt;GyverPortal.h&gt;
+GyverPortal ui;
+
+// Motor A
+int motor1Pin1 = 27;
+int motor1Pin2 = 26;
+int enable1Pin = 14;
+// Motor B
+int motor2Pin1 = 25;
+int motor2Pin2 = 33;
+int enable2Pin = 32;
+
+int valSlider;
+int push=0;
+int speed=0;
+void setup() {
+pinMode(motor1Pin1, OUTPUT);
+pinMode(motor1Pin2, OUTPUT);
+pinMode(enable1Pin, OUTPUT);
+pinMode(motor2Pin1, OUTPUT);
+pinMode(motor2Pin2, OUTPUT);
+pinMode(enable2Pin, OUTPUT);
+
+digitalWrite(motor1Pin1, LOW);
+digitalWrite(motor1Pin2, LOW);
+digitalWrite(motor2Pin1, LOW);
+digitalWrite(motor2Pin2, LOW);
+
+startup();
+
+// подключаем конструктор и запускаем
+ui.attachBuild(build);
+ui.attach(action);
+ui.start();
+}
+
+void build() {
+GP.BUILD_BEGIN();
+//GP.THEME(GP_DARK);
+GP.THEME(GP_LIGHT);
+
+GP.TITLE("ESP32 ROBOT");
+GP.HR();
+
+M_BLOCK(
+GP.LABEL("Статус системы");
+GP.BREAK();
+GP.LABEL("19%🔋");
+
+);
+
+
+
+M_BLOCK_THIN_TAB(
+"Ручное Управление",
+GP.LABEL("Пульт");
+M_BOX(
+//GP_CENTER,
+GP.BUTTON("btntopleft", " ⬉ ");
+GP.BUTTON("btntop", " △ ");
+GP.BUTTON("btntopright", " ⬈ ");
+);
+GP.BREAK();
+M_BOX(
+//GP_LEFT,
+GP.BUTTON("btnleft", " ◁ ");
+GP.BUTTON("btnactive", " 🛑 ");
+GP.BUTTON("btnright", " ▷ ");
+);
+GP.BREAK();
+M_BOX(
+//GP_CENTER,
+GP.BUTTON("btnbottomleft", " ⬋ ");
+GP.BUTTON("btnbottom", " ▽ ");
+GP.BUTTON("btnbottomright", " ⬊ ");
+);
+M_BOX(GP.LABEL("Скорость"); GP.SLIDER("sld", valSlider, 0, 255); );
+);
+GP.BUILD_END();
+}
+
+
+void action() {
+// обработчик изменения состояния кнопок
+if (ui.clickInt("sld", valSlider)) {
+Serial.print("Slider: ");
+Serial.println(valSlider);
+}
+}
+
+void loop() {
+
+push=push-1;
+speed=valSlider;
+if (push&lt;=0){
+digitalWrite(motor1Pin1, LOW);
+digitalWrite(motor1Pin2, LOW);
+digitalWrite(motor2Pin1, LOW);
+digitalWrite(motor2Pin2, LOW);
+analogWrite(enable1Pin, 0);
+analogWrite(enable2Pin, 0);
+}
+
+
+ui.tick();
+
+// проверяем через свой флаг
+
+if (ui.hold("btntopleft")){
+  push=4;
+digitalWrite(motor2Pin1, LOW);
+digitalWrite(motor2Pin2, HIGH);
+digitalWrite(motor1Pin1, LOW);
+digitalWrite(motor1Pin2, HIGH);
+analogWrite(enable1Pin, 255);
+analogWrite(enable2Pin, 140);
+}
+if (ui.hold("btntop")){
+  push=4;
+digitalWrite(motor2Pin1, LOW);
+digitalWrite(motor2Pin2, HIGH);
+digitalWrite(motor1Pin1, LOW);
+digitalWrite(motor1Pin2, HIGH);
+analogWrite(enable1Pin, speed);
+analogWrite(enable2Pin, speed);
+}
+if (ui.hold("btntopright")){
+  push=4;
+digitalWrite(motor2Pin1, LOW);
+digitalWrite(motor2Pin2, HIGH);
+digitalWrite(motor1Pin1, LOW);
+digitalWrite(motor1Pin2, HIGH);
+analogWrite(enable2Pin, 255);
+analogWrite(enable1Pin, 140);
+}
+if (ui.hold("btnleft")){
+  push=4;
+digitalWrite(motor2Pin1, LOW);
+digitalWrite(motor2Pin2, LOW);
+digitalWrite(motor1Pin1, LOW);
+digitalWrite(motor1Pin2, HIGH);
+analogWrite(enable1Pin, speed);
+analogWrite(enable2Pin, speed);
+}
+if (ui.hold("btnactive")){
+  push=0;
+analogWrite(enable1Pin, 0);
+analogWrite(enable2Pin, 0);
+}
+if (ui.hold("btnright")){
+  push=4;
+digitalWrite(motor2Pin1, LOW);
+digitalWrite(motor2Pin2, HIGH);
+digitalWrite(motor1Pin1, LOW);
+digitalWrite(motor1Pin2, LOW);
+analogWrite(enable1Pin, speed);
+analogWrite(enable2Pin, speed);
+}
+if (ui.hold("btnbottomleft")){
+push=4;
+digitalWrite(motor2Pin1, HIGH);
+digitalWrite(motor2Pin2, LOW);
+digitalWrite(motor1Pin1, HIGH);
+digitalWrite(motor1Pin2, LOW);
+analogWrite(enable1Pin, 255);
+analogWrite(enable2Pin, 140);
+}
+if (ui.hold("btnbottom")){
+  push=4;
+digitalWrite(motor2Pin1, HIGH);
+digitalWrite(motor2Pin2, LOW);
+digitalWrite(motor1Pin1, HIGH);
+digitalWrite(motor1Pin2, LOW);
+analogWrite(enable1Pin, speed);
+analogWrite(enable2Pin, speed);
+}
+if (ui.hold("btnbottomright")){
+  push=4;
+digitalWrite(motor2Pin1, HIGH);
+digitalWrite(motor2Pin2, LOW);
+digitalWrite(motor1Pin1, HIGH);
+digitalWrite(motor1Pin2, LOW);
+analogWrite(enable2Pin, 255);
+analogWrite(enable1Pin, 140);
+}
+}
+
+
+// пишет в порт по своему таймеру
+void asyncPrint(const char* str) {
+static uint32_t tmr;
+if (millis() - tmr &gt;= 500) {
+tmr = millis();
+Serial.println(str);
+}
+}
+
+
+void startup() {
+Serial.begin(115200);
+WiFi.mode(WIFI_STA);
+WiFi.begin(AP_SSID, AP_PASS);
+while (WiFi.status() != WL_CONNECTED) {
+delay(500);
+Serial.print(".");
+}
+Serial.println(WiFi.localIP());
+}</code></pre>
+     <p></p>
+    </div>
+   </details>
+   <p>На момент первых тестов, все выглядело примерно вот так:<br></p>
+   <div class="tm-iframe_temp" data-src="https://embedd.srv.habr.com/iframe/63e54e2c9f1c6be050b461f1" data-style="" id="63e54e2c9f1c6be050b461f1" width=""></div>
+   <p>Оно ездит, значит можно идти дальше. Далее была спроектирована крышка-крепеж для Raspberry Pi, на которую крепится 5В кулер и камера, цели закрыть от всего мира ее нет, по крайней мере пока что. <br><br>Вот пока и все для первой части, в ближайшее время планирую поменять бокс батареек на китайскую самоделку со встроенной зарядкой и регулятором напряжение, но про это и про мучения с Raspberry Pi второй части, если первая будет кому-нибудь интересна.<br></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/593/7f9/b99/5937f9b99f46ebfb74a78d59da093e51.png" width="576" height="560" data-src="https://habrastorage.org/getpro/habr/upload_files/593/7f9/b99/5937f9b99f46ebfb74a78d59da093e51.png">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f1c/3d9/db3/f1c3d9db36ef6ec022fa8105076d39d6.png" width="576" height="576" data-src="https://habrastorage.org/getpro/habr/upload_files/f1c/3d9/db3/f1c3d9db36ef6ec022fa8105076d39d6.png">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/352/030/141/35203014127942cff408b6d438660400.png" width="1280" height="576" data-src="https://habrastorage.org/getpro/habr/upload_files/352/030/141/35203014127942cff408b6d438660400.png">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/ed1/dc8/819/ed1dc88199463ec9589ce656298a5607.png" width="1280" height="576" data-src="https://habrastorage.org/getpro/habr/upload_files/ed1/dc8/819/ed1dc88199463ec9589ce656298a5607.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Если кого-нибудь заинтересовал данный проект, то я готов выложить исходники модели с соответствующими дальнейшими обновлениями. Так же готов к критике/вопросам/предложениям. Спасибо за прочтение!</p>
+  </div>
+ </div>
+</div> <!----> <!---->

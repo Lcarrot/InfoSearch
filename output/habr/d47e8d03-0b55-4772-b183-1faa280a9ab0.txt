@@ -1,0 +1,116 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/2c5/d82/823/2c5d8282383ca60010cb1015c99e17bf.png" width="998" height="520" data-src="https://habrastorage.org/getpro/habr/upload_files/2c5/d82/823/2c5d8282383ca60010cb1015c99e17bf.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Python - элегантный язык программирования. Но у него есть слабые стороны. Иногда Python не так элегантен, как должен быть.</p>
+   <p>Например, когда нам нужно выйти из вложенных циклов:</p>
+   <pre><code class="python">for a in list_a:
+    for b in list_b:
+        if condition(a,b):
+            break</code></pre>
+   <p>break может помочь выйти только из внутреннего цикла. Можем ли мы напрямую выйти из двух вложенных циклов одновременно? Есть ли в Python какие-то встроенные ключевые слова или приемы для этого?</p>
+   <p>К сожалению, встроенная поддержка этой операции отсутствует.</p>
+   <p>В Python нет такой возможности, но она есть в других языках, например, PHP:</p>
+   <pre><code class="php">foreach ($a_list as $a)
+{
+    foreach ($b_list as $b)
+    {
+        if (condition($a, $b))
+        {
+            break 2; //break out of 2 loops
+        }
+    }
+}</code></pre>
+   <p>В PHP ключевое слово break имеет параметр, который определяет, из скольких вложенных циклов нужно выйти. Значение по умолчанию равно 1, что означает выход из самого внутреннего цикла.</p>
+   <p>Поскольку Python очень гибкий, у нас есть много других способов получить тот же результат без встроенной поддержки.</p>
+   <p>В этой статье будут представлены 5 способов выхода из вложенных циклов в Python. А в конце будет упомянуто, как избежать проблемы вложенных циклов, если это возможно.</p>
+   <p><strong>1. Добавьте флаг</strong></p>
+   <p>Определим переменную и используем ее в качестве флага. Рассмотрим простой пример:</p>
+   <pre><code class="python"># add a flag variable
+break_out_flag = False
+for i in range(5):
+    for j in range(5):
+        if j == 2 and i == 0:
+            break_out_flag = True
+            break
+    if break_out_flag:
+        break</code></pre>
+   <p>Как показано выше, переменная break_out_flag - это флаг, сообщающий программе, когда ей следует выйти из внешнего цикла.</p>
+   <p>Это работает, но код загрязняется, поскольку мы добавляем новую переменную для решения простой задачи.</p>
+   <p>Давайте рассмотрим другие варианты.</p>
+   <p><strong>2. Бросить исключение</strong></p>
+   <p>Если мы не можем использовать ключевое слово break, почему бы не реализовать выход из циклов другим способом? С помощью <a href="https://medium.com/techtofreedom/exceptions-handling-in-python-b8a753d47527" rel="noopener noreferrer nofollow">методов обработки исключений</a> в Python мы можем выйти из вложенных циклов следующим образом:</p>
+   <pre><code class="python"># raise an exception
+try:
+    for i in range(5):
+        for j in range(5):
+            if j == 2 and i == 0:
+                raise StopIteration
+except StopIteration:
+    pass</code></pre>
+   <p></p>
+   <p><strong>3. Проверьте то же условие еще раз</strong></p>
+   <p>Поскольку одно условие приводит к выходну из одного цикла, проверка одного и того же условия в каждом цикле также является допустимым решением. Вот пример:</p>
+   <pre><code class="python"># check the same condition again
+for i in range(5):
+    for j in range(5):
+        if j == 2 and i == 0:
+            break
+    if j == 2 and i == 0:
+        break</code></pre>
+   <p>Приведенный выше способ работает, но это не очень хорошая идея. Это не эффективно и вынуждает нас делать много лишних операций.</p>
+   <p><strong>4. Используйте синтаксис For-Else</strong></p>
+   <p>В Python есть специальный синтаксис: "for-else". Он не популярен, а кто-то даже никогда его не использовал. Потому что все привыкли использовать "else" после "if".</p>
+   <p>Однако, когда дело доходит до разрыва вложенных циклов. Этот нетрадиционный синтаксис может помочь.</p>
+   <pre><code class="python"># use the for-else syntax
+for i in range(5):
+    for j in range(5):
+        if j == 2 and i == 0:
+            break
+    else:  # only execute when it's no break in the inner loop
+        continue
+    break</code></pre>
+   <p>Приведенный выше код использует преимущества техники "for-else", поскольку код под оператором else будет выполняться только тогда, когда внутренний цикл завершится без break.</p>
+   <p><strong>5. Поместите циклы в функцию</strong></p>
+   <p>Если мы поместим вложенные циклы в функцию, проблема break становится простой. Потому что мы можем использовать ключевое слово return вместо break.</p>
+   <pre><code class="python"># make it as a function
+def check_sth():
+    for i in range(5):
+        for j in range(5):
+            if j == 2 and i == 0:
+                return
+check_sth() # Run the function when needed</code></pre>
+   <p>Как показано выше, это решение выглядит более элегантно. Здесь нет переменных флагов, синтаксиса "try-except" или "for-else" и ненужной проверки условий.</p>
+   <p>Кроме того, "<a href="https://llvm.org/docs/CodingStandards.html#turn-predicate-loops-into-predicate-functions" rel="noopener noreferrer nofollow"><u>Turn Predicate Loops into Predicate Functions</u></a>" - это хорошая практика написания кода, введенная командой компилятора <a href="https://en.wikipedia.org/wiki/LLVM" rel="noopener noreferrer nofollow">LLVM.</a></p>
+   <p>Функции в Python очень гибкие. Мы можем легко определять вложенные функции или <a href="https://medium.com/techtofreedom/5-levels-of-understanding-closures-in-python-a0e1212baf6d" rel="noopener noreferrer nofollow">замыкания</a>. Поэтому, если вложенные циклы будут использоваться только один раз и в пределах функции, мы можем просто определить их внутри этой функции:</p>
+   <pre><code class="python">
+def out_func():
+    # do something
+    def check_sth():
+        for i in range(5):
+            for j in range(5):
+                if j == 2 and i == 0:
+                    return
+    # do something
+    check_sth()  # Run the function when needed
+    # do something</code></pre>
+   <p></p>
+   <p><strong>Вывод: Избегайте вложенных циклов</strong></p>
+   <p>Если не существует элегантных решений для выхода из вложенных циклов, почему бы не избегать написания вложенных циклов?</p>
+   <p>Используя некоторые вспомогательные функции, мы действительно можем избежать вложенных циклов:</p>
+   <pre><code class="python"># Avoid nested loops
+import itertools
+for i, j in itertools.product(range(5), range(5)):
+    if j == 2 and i == 0:
+        break</code></pre>
+   <p>Как показано выше, наш предыдущий пример может избежать вложенных циклов с помощью функции itertools.product. Это простой способ получить декартово произведение входных <a href="https://medium.com/techtofreedom/iterable-and-iterator-in-python-dbe7011d1ff7" rel="noopener noreferrer nofollow">итераций</a>.</p>
+   <p>К сожалению, этот способ не позволяет избежать всех вложенных циклов. Например, если нам нужно обрабатывать бесконечные потоки данных в наших циклах, он не поможет. Но это все равно хорошая идея, чтобы избежать вложенных циклов и улучшить читабельность наших программ.</p>
+   <p>Спасибо за прочтение! Какой из способов вы считаете самым полезным? Пишите в комментариях!</p>
+   <p>Еще больше примеров использования Python и Machine Learning в современных сервисах можно посмотреть в&nbsp;<a href="https://t.me/dat2art" rel="noopener noreferrer nofollow"><strong>моем телеграм канале</strong></a>. Я пишу про разработку, ML, стартапы и релокацию в UK для IT специалистов.</p>
+  </div>
+ </div>
+</div> <!----> <!---->

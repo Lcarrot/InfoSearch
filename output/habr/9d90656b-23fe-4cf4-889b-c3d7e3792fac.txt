@@ -1,0 +1,245 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <figure class="float ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/17d/9dc/883/17d9dc8839b0f6adfe88f59b0a03e9d8.jpg" width="380" height="380" data-src="https://habrastorage.org/getpro/habr/upload_files/17d/9dc/883/17d9dc8839b0f6adfe88f59b0a03e9d8.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Наверное, практически каждому, кто имеет отношение к&nbsp;DIY, знаком контроллер ESP32. На&nbsp;нём создаются системы умного дома, роботы, квадрокоптеры и многое другое. Отдельным плюсом этого контроллера является невообразимое количество плат и модулей на&nbsp;его основе. Достаточно зайти на <a href="http://tindie.com" rel="noopener noreferrer nofollow">tindie.com</a> и можно увидеть всю палитру идей. Но&nbsp;сегодня, я хотел&nbsp;бы провести небольшой обзор устройства на&nbsp;базе ESP32&nbsp;от&nbsp;компании M5Stack&nbsp;— M5Stack ATOM Lite.</p>
+   <h3>Технические характеристики</h3>
+   <p>Рассмотрим технические характеристики, приведённые на&nbsp;официальном сайте, на&nbsp;странице устройства</p>
+   <div>
+    <div class="table">
+     <table>
+      <tbody>
+       <tr>
+        <th><p>Resources</p></th>
+        <th><p>Parameter</p></th>
+       </tr>
+       <tr>
+        <td><p align="left">ESP32</p></td>
+        <td><p align="left">240MHz dual core, 600 DMIPS, 520KB SRAM, Wi-Fi</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">Flash</p></td>
+        <td><p align="left">4MB</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">Power Input</p></td>
+        <td><p align="left">5V @ 500mA</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">Port</p></td>
+        <td><p align="left">TypeC x 1, GROVE(I2C+I/0+UART) x 1</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">PIN Port</p></td>
+        <td><p align="left">G19, G21, G22, G23, G25, G33, G26, G32</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">RGB LED</p></td>
+        <td><p align="left">SK6812 3535 x 1</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">IR</p></td>
+        <td><p align="left">Infrared transmission</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">Button</p></td>
+        <td><p align="left">Custom button x 1</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">Antenna</p></td>
+        <td><p align="left">2.4G 3D Antenna</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">Operating Temperature</p></td>
+        <td><p align="left">0°C to 60°C</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">Net weight</p></td>
+        <td><p align="left">3g</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">Gross weight</p></td>
+        <td><p align="left">12g</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">Product Size</p></td>
+        <td><p align="left">24x24x10mm</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">Package Size</p></td>
+        <td><p align="left">43x43x13mm</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">Case Material</p></td>
+        <td><p align="left">Plastic ( PC )</p></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+   </div>
+   <p>Итак, у&nbsp;нас в&nbsp;наличии:</p>
+   <ul>
+    <li><p>ESP32&nbsp;с 4&nbsp;мегабайтами памяти;</p></li>
+    <li><p>Порт USB TypeC для&nbsp;питания и передачи информации&nbsp;— в&nbsp;отличии от&nbsp;большинства моделей M5Stack, аккумулятор отсутствует;</p></li>
+    <li><p>8&nbsp;свободных портов ввода‑вывода, так&nbsp;же для&nbsp;подключения доступны пины 5V, 3.3V и GND&nbsp;— в&nbsp;общем с&nbsp;одной стороны немного, а&nbsp;с&nbsp;другой для&nbsp;большинства простых проектов&nbsp;— за&nbsp;глаза;</p></li>
+    <li><p>RGB светодиод, подключенный к&nbsp;пину G27;</p></li>
+    <li><p>Кнопка, подключенная к&nbsp;пину G39;</p></li>
+    <li><p>Инфракрасный светодиод, подключенный к&nbsp;пину G12;</p></li>
+    <li><p>Отдельно выведенная кнопка RESET.</p></li>
+   </ul>
+   <p>И всё это упаковано в&nbsp;миниатюрный корпус 24×24×10mm. Визуально смотрится неплохо, пластик приятный.</p>
+   <h3>Программирование</h3>
+   <p>Но&nbsp;мы собрались здесь не&nbsp;для&nbsp;того, что&nbsp;бы смотреть на&nbsp;устройство, а&nbsp;для&nbsp;того, что&nbsp;бы его программировать. Согласно <a href="https://docs.m5stack.com/en/core/atom_lite" rel="noopener noreferrer nofollow">официальной документации</a>, программирование возможно с&nbsp;помощью трёх систем:</p>
+   <ul>
+    <li><p>Официального инструмента для&nbsp;блочного программирования от&nbsp;M5Stack&nbsp;— UI Flow</p></li>
+    <li><p>Arduino IDE</p></li>
+    <li><p>Micropython</p></li>
+   </ul>
+   <p>На&nbsp;самом деле, UiFlow транслирует визуальные блоки в&nbsp;код Micropython, поэтому с&nbsp;точки зрения языков программирования&nbsp;— их всего два&nbsp;— Arduino C и Micropython. Но&nbsp;мы рассмотрим все варианты.</p>
+   <h4>UiFlow</h4>
+   <p>Перед тем, как&nbsp;начать программировать с&nbsp;помощью UiFlow, на&nbsp;наше устройство необходимо установить сборку Micropython, от&nbsp;компании M5Stack. Для&nbsp;этого существует утилита M5Burner, в&nbsp;которой хранятся ссылки на&nbsp;все официальные и некоторые неофициальные сборки для&nbsp;всех устройств M5Stack.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/5fb/e1c/a1b/5fbe1ca1b4739a60ad344ca1ad772b58.png" alt="Внешний вид программы M5Burner" title="Внешний вид программы M5Burner" width="2784" height="1824" data-src="https://habrastorage.org/getpro/habr/upload_files/5fb/e1c/a1b/5fbe1ca1b4739a60ad344ca1ad772b58.png">
+    <figcaption>
+     Внешний вид программы M5Burner
+    </figcaption>
+   </figure>
+   <p>Скачиваем необходимую нам сборку и устанавливаем её. В&nbsp;процессе установки возможно указать данные для&nbsp;подключения к&nbsp;WiFi сети. Зачем? Потому что&nbsp;для&nbsp;программирования с&nbsp;помощью UiFlow не&nbsp;обязательно&nbsp;быть подключенным к&nbsp;устройству с&nbsp;помощью провода, а&nbsp;достаточно указать данные для&nbsp;подключения к&nbsp;интернету, а&nbsp;затем в&nbsp;UiFlow указать API ключ для&nbsp;подключению к&nbsp;девайсу.<br><br>Все настройки можно так&nbsp;же посмотреть в&nbsp;M5Burner, после успешной установки у&nbsp;вас появится кнопка Configure, нажав на&nbsp;которую можно просмотреть и, при&nbsp;необходимости, изменить настройки.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/997/afd/d6a/997afdd6a9dbf011a1914b6c3409b690.png" alt="Вид конфигуратора UIFlow" title="Вид конфигуратора UIFlow" width="1530" height="1274" data-src="https://habrastorage.org/getpro/habr/upload_files/997/afd/d6a/997afdd6a9dbf011a1914b6c3409b690.png">
+    <figcaption>
+     Вид конфигуратора UIFlow
+    </figcaption>
+   </figure>
+   <p>Некоторые данные, такие как&nbsp;MAC‑адрес, или&nbsp;APIKEY&nbsp;— изменить нельзя. Start Mode&nbsp;— это указание, в&nbsp;каком режиме будет запускаться устройство:</p>
+   <ul>
+    <li><p>Internet Mode&nbsp;— будет пытаться подключиться к&nbsp;сети, а&nbsp;затем получать информацию с&nbsp;сервера <a href="https://flow.m5stack.com" rel="noopener noreferrer nofollow">flow.m5stack.com</a>;</p></li>
+    <li><p>USB Mode&nbsp;— будет подключаться и пытаться получать команды через USB кабель;</p></li>
+    <li><p>App Mode&nbsp;— будет пытаться запустить программу, которая уже сохранена в&nbsp;памяти.</p></li>
+   </ul>
+   <p>Я указал данные для&nbsp;подключения к&nbsp;своей сети, моё устройство перезагрузилось и RGB светодиод начал мигать зелёным. Подключимся к <a href="https://flow.m5stack.com" rel="noopener noreferrer nofollow">UIFlow</a> и попробуем написать нашу первую программу.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/6b3/6e1/825/6b36e1825bcdb1d8be5ea44202943d14.png" alt="Внешний вид UIFlow" title="Внешний вид UIFlow" width="3680" height="2216" data-src="https://habrastorage.org/getpro/habr/upload_files/6b3/6e1/825/6b36e1825bcdb1d8be5ea44202943d14.png">
+    <figcaption>
+     Внешний вид UIFlow
+    </figcaption>
+   </figure>
+   <p>В&nbsp;настройках(они довольно неплохо спрятаны, что&nbsp;бы открыть их&nbsp;— необходимо нажать на&nbsp;надпись Api в&nbsp;левом нижнем углу) необходимо выбрать устройство и ввести APIKEY, который мы посмотрели в&nbsp;M5Burner‑e. Если всё сделано правильно, то вы увидите зелёную надпись&nbsp;— Connected. UiFlow позволяет как&nbsp;запустить программу разово&nbsp;— используя кнопку Run, так и загрузить её на&nbsp;устройство, что&nbsp;позволит пользоваться ей, при&nbsp;переходе в&nbsp;App Mode.<br><br>Подключим светодиод к&nbsp;одному из&nbsp;доступных нам пинов и напишем простейшую программу&nbsp;— будем зажигать и гасить светодиод по&nbsp;нажатию кнопки.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/2d7/a84/746/2d7a84746ebae47516432f95f0deaeec.png" width="1198" height="638" data-src="https://habrastorage.org/getpro/habr/upload_files/2d7/a84/746/2d7a84746ebae47516432f95f0deaeec.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Вроде&nbsp;бы всё просто и понятно:</p>
+   <ul>
+    <li><p>Блок Setup&nbsp;— отвечает за&nbsp;то, что&nbsp;происходит при&nbsp;запуске программы&nbsp;— инициализировали пин, к&nbsp;которому подключен светодиод и установили на&nbsp;нём значение равное 0.</p></li>
+    <li><p>Блок обработки нажатия на&nbsp;кнопку&nbsp;— инвертирует значение на&nbsp;пине.</p></li>
+   </ul>
+   <p>Но&nbsp;давайте посмотрим, как&nbsp;выглядит программа на&nbsp;Micropython&nbsp;— которая&nbsp;была сгенерирована:</p>
+   <pre><code class="python">from m5stack import *
+from m5ui import *
+from uiflow import *
+import machine
+
+
+
+
+
+
+
+
+
+import math
+
+
+def buttonA_wasPressed():
+  global pin0, pin1
+  pin1.value(math.fabs(1 - (pin1.value())))
+  pass
+btnA.wasPressed(buttonA_wasPressed)
+
+
+pin1 = machine.Pin(25, mode=machine.Pin.OUT, pull=machine.Pin.PULL_UP)
+pin1.value(0)</code></pre>
+   <p>Программа&nbsp;была скопирована из&nbsp;редактора ASIS, давайте посмотрим, что&nbsp;сразу бросается в&nbsp;глаза:</p>
+   <ul>
+    <li><p>Большое количество пустых строк.</p></li>
+    <li><p>Импорты с&nbsp;использованием оператора <code>*</code>, что&nbsp;для&nbsp;такой минималистичной программы&nbsp;— излишне.</p></li>
+    <li><p>Использование глобальных переменных.</p></li>
+    <li><p>Непонятно откуда взявшаяся переменная pin0, и использование ключевого слова pass после кода функции.</p></li>
+   </ul>
+   <p>В&nbsp;общем, в&nbsp;использовании блоков есть своя простота и удобство, особенно для&nbsp;проведения занятий с&nbsp;детьми или&nbsp;мастер‑классов, но&nbsp;конвертация из&nbsp;блоков в&nbsp;код немного хромает. Попробуем исправить это и напишем программу на&nbsp;Micropython, без&nbsp;использования UIFlow. Для&nbsp;этого можно просто переключиться в&nbsp;USB режим используя M5Burner, но&nbsp;я для «чистоты эксперимента» установлю стандартную сборку Micropython.</p>
+   <h4>Micropython</h4>
+   <p>Для&nbsp;разработки с&nbsp;использованием Micropython я буду использовать недавно обнаруженную мной на&nbsp;просторах сети IDE&nbsp;— <a href="https://www.cnx-software.com/2023/02/07/esp32-mpy-jama-micropython-ide-for-esp32-boards/" rel="noopener noreferrer nofollow">ESP32&nbsp;MPY‑Jama</a>.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/d53/2d1/1bf/d532d11bfd6f7dacd3d77bd983f291a1.png" width="3680" height="2216" data-src="https://habrastorage.org/getpro/habr/upload_files/d53/2d1/1bf/d532d11bfd6f7dacd3d77bd983f291a1.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Напишем программу, которая по&nbsp;нажатию кнопки включает случайный цвет на&nbsp;встроенном светодиоде.</p>
+   <pre><code class="python">from machine import Pin
+from time import sleep
+import neopixel
+from random import randrange
+
+button = Pin(39, Pin.IN, Pin.PULL_UP)
+neo_strip = neopixel.NeoPixel(Pin(27), 1)
+
+def set_random_color(strip):
+	strip[0] = (randrange(255), randrange(255), randrange(255))
+	strip.write()
+	
+
+while True:
+    first = button.value()
+    sleep(0.01)
+    second = button.value()
+    if not first and second:
+        set_random_color(neo_strip)
+</code></pre>
+   <p>Выглядит получше, но&nbsp;тут свои недостатки, например, всё ещё нет встроенного механизма для&nbsp;обработки кнопок, приходится использовать проверку состояний кнопки с&nbsp;задержкой. На&nbsp;самом деле&nbsp;— существует <a href="https://gitlab.com/WiLED-Project/ubutton" rel="noopener noreferrer nofollow">реализация кнопок</a>, с&nbsp;красивым назначением функций, на&nbsp;основе библиотеки <code>uasyncio</code> , которая позволяет имитировать ассинхроность, но&nbsp;я с&nbsp;ней ещё не&nbsp;разобрался.</p>
+   <h4>Arduino IDE</h4>
+   <p>Напоследок, я оставил работу в&nbsp;Arduino IDE. Для&nbsp;работы с&nbsp;M5Stack можно использовать стандартные библиотеки и платы на&nbsp;основе ESP32&nbsp;— работать будет, контроллер‑то один и тот&nbsp;же, но&nbsp;компания‑разработчик предлагает добавить в&nbsp;менеджер плат свои наработки.<br><br>Для&nbsp;этого, в&nbsp;дополнительных платах, в&nbsp;настройках, необходимо добавить следующую ссылку:</p>
+   <pre><code>https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/arduino/package_m5stack_index.json</code></pre>
+   <p>А затем установить набор в менеджере плат.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/ac6/f56/397/ac6f56397561b5722314f0e0ef49e720.png" width="1824" height="1124" data-src="https://habrastorage.org/getpro/habr/upload_files/ac6/f56/397/ac6f56397561b5722314f0e0ef49e720.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Кроме этого, существует отдельная библиотека M5Atom, установим и её. Важно, что&nbsp;в&nbsp;этой библиотеке находятся функции и методы не&nbsp;только для&nbsp;нашего модуля, но&nbsp;и для&nbsp;его старшего брата&nbsp;— <a href="https://shop.m5stack.com/products/atom-matrix-esp32-development-kit" rel="noopener noreferrer nofollow">M5Stack ATOM Matrix</a>.</p>
+   <p>Из&nbsp;всего богатства доступных на&nbsp;борту модулей мы ещё не&nbsp;использовали инфракрасный светодиод. Его можно использовать только для&nbsp;отправки команд&nbsp;— так что&nbsp;управлять устройством с&nbsp;пульта не&nbsp;получится, зато этот самый пульт мы можем проэмулировать.<br><br>Напишем программу для&nbsp;эмуляции нажатия на&nbsp;кнопку вкл/выкл пульта от&nbsp;телевизора.<br>Для&nbsp;начала необходимо получить NEC код кнопки нашего пульта, для&nbsp;этих целей я воспользовался Flipper Zero и вот что&nbsp;увидел на&nbsp;экране:<br></p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/dfa/317/541/dfa3175419d67cdd5fe06214d5da033b.png" width="512" height="256" data-src="https://habrastorage.org/getpro/habr/upload_files/dfa/317/541/dfa3175419d67cdd5fe06214d5da033b.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>A&nbsp;— это адрес, C&nbsp;— это команда.</p>
+   <pre><code class="cpp">#include "M5Atom.h"
+#include "TinyIRSender.hpp"
+
+
+void setup() {
+  M5.begin();
+}
+
+void loop() {
+  if (M5.Btn.wasPressed()) {
+    // Указываем необходимые параметры
+    // 12 - пин, к которому подключен IR
+    // 4 - адрес
+    // 8 - команда
+    // 1 - сколько раз отправить команду
+    sendNECMinimal(12, 4, 8, 1); 
+  }
+  M5.update();
+}</code></pre>
+   <p>Подключаем необходимые библиотеки&nbsp;— <code>M5Atom</code> для&nbsp;обработки нажатия на&nbsp;кнопку и <code>TinyIRSender</code> (это часть библиотеки <a href="https://github.com/Arduino-IRremote/Arduino-IRremote" rel="noopener noreferrer nofollow">Arduino‑IRremote</a>)&nbsp;— для&nbsp;отправки команды. Теперь только докупить внешний аккумулятор и пульт с&nbsp;одной кнопкой&nbsp;— готов!</p>
+   <h3>Заключение</h3>
+   <p>В&nbsp;данной статье я постарался пробежаться по&nbsp;основным достоинствам M5Stack ATOM Lite. Мне кажется, что&nbsp;это неплохое устройство с&nbsp;большими возможностями, которые можно расширить за&nbsp;счёт дополнительных модулей, как&nbsp;и от&nbsp;компании производителя, так и кастомных.</p>
+   <p>Что&nbsp;касается использования ПО, такого как&nbsp;UiFlow и M5Burner, к&nbsp;нему нужно подходить аккуратно, используя по&nbsp;необходимости, потому что&nbsp;они не&nbsp;всегда предоставляют красивый и оптимальный код или&nbsp;прошивку.</p>
+   <p>К&nbsp;сожалению, найти полную документацию по&nbsp;M5Stack библиотекам для&nbsp;Micropython у&nbsp;меня не&nbsp;получилось, то есть ясно, что&nbsp;в&nbsp;них много чего интересного, но&nbsp;документацию приходится вытаскивать по&nbsp;частям из&nbsp;разных примеров, а&nbsp;так как&nbsp;часто используются импорты вида <code>from m5stack import *</code>, то разобраться довольно сложно.</p>
+   <p>В&nbsp;целом девайс интересный и ему можно найти массу применений, как&nbsp;и в&nbsp;хобби‑проектах, так и для&nbsp;обучения.</p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

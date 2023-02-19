@@ -1,0 +1,141 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <h2>Отладка HD color с помощью панели стилей</h2>
+   <p>Новые <a href="https://developer.chrome.com/blog/chrome-111-beta/#new-css-color-types-and-spaces" rel="noopener noreferrer nofollow">цветовые типы CSS и пространства</a> появляются в интернете! Не менее интересно, что DevTools получил новые инструменты, помогающие разработчикам создавать, конвертировать и отлаживать цвета высокой четкости.</p>
+   <p>Панель стилей теперь поддерживает 12 новых цветовых пространств и 7 новых гамм, как описано в спецификации <a href="https://www.w3.org/TR/css-color-4/" rel="noopener noreferrer nofollow">CSS Color Level 4</a>. Смотрите <a href="https://developer.chrome.com/articles/high-definition-css-color-guide/#debugging-color-with-chrome-devtools" rel="noopener noreferrer nofollow">Руководство по цвету CSS высокой четкости</a> для получения полного представления о вариантах цвета.</p>
+   <p>Вот примеры использования CSS стилей с помощью <code>color()</code>, <code>lch()</code>, <code>oklab()</code> и <code>color-mix()</code>.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/75a/2cc/777/75a2cc7778ce7bde7ac662bc79324bfc.png" width="1850" height="1178" data-src="https://habrastorage.org/getpro/habr/upload_files/75a/2cc/777/75a2cc7778ce7bde7ac662bc79324bfc.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>При использовании функции color-mix() вы можете просмотреть конечный результат цветопередачи на вычисляемой панели.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/fb9/427/7f4/fb94277f4825669bd615ddfd0c5f5951.png" width="2114" height="1286" data-src="https://habrastorage.org/getpro/habr/upload_files/fb9/427/7f4/fb94277f4825669bd615ddfd0c5f5951.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Средство выбора цвета поддерживает все новые цветовые пространства с большим количеством функций.</p>
+   <p>Например, щелкните по цветовому образцу <code>color(display-03 1 0 1)</code>. Также была добавлена линия границы гаммы, различающая <code>sRGB</code> и <code>display-p3</code> для лучшего понимания гаммы выбранного вами цвета.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/682/492/534/68249253475bd2dc8423123db48c7cc5.png" width="1228" height="1008" data-src="https://habrastorage.org/getpro/habr/upload_files/682/492/534/68249253475bd2dc8423123db48c7cc5.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>DevTools поддерживает преобразование цветов между цветовыми форматами. Используйте значок "Изменить формат цвета", чтобы открыть всплывающее окно преобразования, или просто нажмите <code>Shift</code> + <code>клик</code> на образец цвета на панели стилей.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/cbd/a53/b59/cbda53b59f86c50c1fbe4be82a971813.png" width="1928" height="1108" data-src="https://habrastorage.org/getpro/habr/upload_files/cbd/a53/b59/cbda53b59f86c50c1fbe4be82a971813.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>При преобразовании важно знать, было ли преобразование <code>обрезано</code>, чтобы соответствовать <a href="https://ru.wikipedia.org/wiki/%D0%A6%D0%B2%D0%B5%D1%82%D0%BE%D0%B2%D0%BE%D0%B5_%D0%BF%D1%80%D0%BE%D1%81%D1%82%D1%80%D0%B0%D0%BD%D1%81%D1%82%D0%B2%D0%BE" rel="noopener noreferrer nofollow">пространству</a> (вики). DevTools предупреждает вас об этом вырезании.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/35e/a2b/320/35ea2b320553640655f84b24376afaa3.png" width="1228" height="1008" data-src="https://habrastorage.org/getpro/habr/upload_files/35e/a2b/320/35ea2b320553640655f84b24376afaa3.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Кроме того, вы можете выбирать цвета со своего экрана с помощью нового ярлыка. Нажмите <code>C</code>, чтобы активировать пипетку, и <code>Escape</code>, чтобы деактивировать ее.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/026/8bf/49c/0268bf49c03d9c3c011d77ac70adff9f.png" width="1228" height="1008" data-src="https://habrastorage.org/getpro/habr/upload_files/026/8bf/49c/0268bf49c03d9c3c011d77ac70adff9f.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Наконец, пункт <code>Color format</code> теперь устарел, чтобы освободить место для нового цветового формата HD.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/5f0/44e/58d/5f044e58d7824e6e99727337c39a9c95.png" width="1328" height="732" data-src="https://habrastorage.org/getpro/habr/upload_files/5f0/44e/58d/5f044e58d7824e6e99727337c39a9c95.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Известные проблемы: <a href="https://crbug.com/1073895" rel="noopener noreferrer nofollow">1073895</a>, <a href="https://crbug.com/1395782" rel="noopener noreferrer nofollow">1395782</a>, <a href="https://crbug.com/1408777" rel="noopener noreferrer nofollow">1408777</a>, <a href="https://crbug.com/1395782" rel="noopener noreferrer nofollow">1395782</a>, <a href="https://crbug.com/1392717" rel="noopener noreferrer nofollow">1392717</a>, <a href="https://crbug.com/1382409" rel="noopener noreferrer nofollow">1382409</a>, <a href="https://crbug.com/1392054" rel="noopener noreferrer nofollow">1392054</a>.</p>
+   <h2>Улучшенный интерфейс брейкпоинтов (точка остановки программы)</h2>
+   <p>Переработанная панель <code>брейкпоинтов</code> позволяет получить быстрый доступ к часто используемым функциям, в частности, к их <strong>деактивации</strong>, <strong>редактированию</strong> и <strong>удалению</strong>.</p>
+   <p>Вот некоторые основные моменты:</p>
+   <ul>
+    <li><p>Оба параметра для<code>исключений</code> перенесены на панель <code>Брейкпоинтов</code> и помечены текстом, чтобы сделать их более понятными.</p>
+     <figure class="full-width ">
+      <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/8b5/19d/a7e/8b519da7e1fe3cf194da4f4eb2768ded.png" alt="" title="" width="2468" height="1400" data-src="https://habrastorage.org/getpro/habr/upload_files/8b5/19d/a7e/8b519da7e1fe3cf194da4f4eb2768ded.png">
+      <figcaption></figcaption>
+     </figure></li>
+   </ul>
+   <ul>
+    <li><p>Брейкпоинты сгруппированы по файлам, упорядочены по номерам строк или столбцов и являются сворачиваемыми.</p>
+     <figure class="full-width ">
+      <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/af6/547/51b/af654751b1377d02a3608b949c6a2549.png" width="2100" height="1360" data-src="https://habrastorage.org/getpro/habr/upload_files/af6/547/51b/af654751b1377d02a3608b949c6a2549.png">
+      <figcaption></figcaption>
+     </figure></li>
+    <li><p>Появились новые опции для деактивации, удаления и редактирования брейкпоинтов при наведении курсора мыши на них или файл.</p>
+     <figure class="full-width ">
+      <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/a09/de7/72c/a09de772c4a16a4e3c95b77099ba5486.png" alt="" title="" width="2256" height="1400" data-src="https://habrastorage.org/getpro/habr/upload_files/a09/de7/72c/a09de772c4a16a4e3c95b77099ba5486.png">
+      <figcaption></figcaption>
+     </figure></li>
+    <li><p>Нажмите <code>Редактировать</code> брейкпоинт, чтобы открыть редактор. Отсюда вы можете ввести условие брейкпоинта или переключиться на него.</p></li>
+   </ul>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/872/4d0/908/8724d09086749b85b2b3397c984ca544.png" width="1556" height="1356" data-src="https://habrastorage.org/getpro/habr/upload_files/872/4d0/908/8724d09086749b85b2b3397c984ca544.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Смотрите<a href="https://developer.chrome.com/docs/devtools/javascript/reference/" rel="noopener noreferrer nofollow"> справочник по отладке JavaScript</a>, чтобы узнать, как выполнять отладку с помощью DevTools эффективнее и используя их на максимум.</p>
+   <p>Известные проблемы: <a href="https://crbug.com/1407586" rel="noopener noreferrer nofollow">1407586</a>, <a href="https://crbug.com/1402891" rel="noopener noreferrer nofollow">1402891</a>, <a href="https://crbug.com/1402893" rel="noopener noreferrer nofollow">1402893</a>.</p>
+   <h2>Настраиваемые ярлыки рекордера</h2>
+   <p>Используйте сочетания клавиш для более быстрой записи и воспроизведения пользовательских потоков.</p>
+   <p>Рекордер содержит несколько удобных сочетаний клавиш для более быстрой записи и воспроизведения пользовательских потоков.</p>
+   <p>Не помните никаких сочетаний? Нет проблем, нажмите на <code>?</code> для просмотра всех сочетаний в любое время.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/841/a73/94f/841a7394fc81a7f06d9f1c35170ec1d4.png" width="1390" height="1086" data-src="https://habrastorage.org/getpro/habr/upload_files/841/a73/94f/841a7394fc81a7f06d9f1c35170ec1d4.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Вы даже можете настроить эти ярлыки через меню настроек.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/e7a/151/0ea/e7a1510eac5fefce26d706b599d750a5.png" width="1946" height="1202" data-src="https://habrastorage.org/getpro/habr/upload_files/e7a/151/0ea/e7a1510eac5fefce26d706b599d750a5.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Если вы работаете на другой панели и хотите запустить запись пользовательского потока, используйте команду <code>Создать новую запись</code> из <a href="https://developer.chrome.com/docs/devtools/command-menu/" rel="noopener noreferrer nofollow">меню команд</a> в DevTools.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f0b/c4b/059/f0bc4b0592328753be848fa233532f62.png" width="1792" height="974" data-src="https://habrastorage.org/getpro/habr/upload_files/f0b/c4b/059/f0bc4b0592328753be848fa233532f62.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Известная проблема: <a href="https://crbug.com/bbb" rel="noopener noreferrer nofollow">1339771</a>.</p>
+   <h2>Улучшенная подсветка синтаксиса Angular</h2>
+   <p>DevTools улучшил подсветку синтаксиса для шаблонов Angular HTML, что облегчает чтение кода и распознавание его структуры.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/94b/7d1/601/94b7d16018e9331d78c15e42d30915fc.png" width="2368" height="1502" data-src="https://habrastorage.org/getpro/habr/upload_files/94b/7d1/601/94b7d16018e9331d78c15e42d30915fc.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Известные проблемы: <a href="https://crbug.com/1385374" rel="noopener noreferrer nofollow">1385374</a>, <a href="https://crbug.com/1385678" rel="noopener noreferrer nofollow">1385678</a>.</p>
+   <h2>Реорганизация пункта Cache (кэш) на панели Application</h2>
+   <p>Панель <code>Cache Storage</code> теперь можно найти в разделе <code>Storage</code> в панели <code>Application</code>, в то время как пункт <code>Back/forward cache</code> была перемещена в раздел <code>Background Services</code>.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/e39/c31/a6b/e39c31a6b20a2e84d6be50113df19ccc.png" width="1780" height="1126" data-src="https://habrastorage.org/getpro/habr/upload_files/e39/c31/a6b/e39c31a6b20a2e84d6be50113df19ccc.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Известная проблема: <a href="https://crbug.com/1407166" rel="noopener noreferrer nofollow">1407166</a></p>
+   <h2>Разные мелкие исправления и улучшения</h2>
+   <p>Вот некоторые заслуживающие внимания исправления в этом обновлении:</p>
+   <ul>
+    <li><p>DevTools был обновлен, чтобы учитывать параметр <a href="https://developer.chrome.com/docs/devtools/network/reference/#disable-cache" rel="noopener noreferrer nofollow">отключения кэша</a> при загрузке <code>sourcemaps</code>. (<a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1407084" rel="noopener noreferrer nofollow">1407084</a>)</p></li>
+    <li><p>Панель элементов теперь сразу автоматически фокусируется на первом подходящем элементе в результатах поиска. (<a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1381853" rel="noopener noreferrer nofollow">1381853</a>)</p></li>
+    <li><p>Различные исправления для повышения надежности <code>sourcemap</code> и <code>брейкпоинтов</code>. (<a href="https://bugs.chromium.org/p/chromium/issues/detail?id=508270" rel="noopener noreferrer nofollow">508270</a>, <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1403362" rel="noopener noreferrer nofollow">1403362</a>, <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1403432" rel="noopener noreferrer nofollow">1403432</a>, <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1396298" rel="noopener noreferrer nofollow">1396298</a>, <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1395337" rel="noopener noreferrer nofollow">1395337</a>, <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1405134" rel="noopener noreferrer nofollow">1405134</a>)</p></li>
+    <li><p>Чтобы облегчить отладку, DevTools теперь поддерживает вычисление выражений с помощью частных членов класса. (<a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1381806" rel="noopener noreferrer nofollow">1381806</a>)</p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/157/6b6/98f/1576b698fc5c536e78098ec28b8b59d1.png" width="800" height="683" data-src="https://habrastorage.org/getpro/habr/upload_files/157/6b6/98f/1576b698fc5c536e78098ec28b8b59d1.png">
+      <figcaption></figcaption>
+     </figure></li>
+   </ul>
+   <h2>Где скачать и как получать обновления раньше релиза</h2>
+   <p>Рассмотрите возможность использования Chrome <a href="https://www.google.com/chrome/canary/" rel="noopener noreferrer nofollow">Canary</a>, <a href="https://www.google.com/chrome/dev/" rel="noopener noreferrer nofollow">Dev </a>или <a href="https://www.google.com/chrome/beta/" rel="noopener noreferrer nofollow">Beta </a>в качестве браузера разработки по умолчанию.</p>
+   <p>Эти каналы предварительного просмотра предоставляют вам доступ к новейшим функциям DevTools, тестируют передовые API веб-платформы и обнаруживают проблемы на вашем сайте раньше, чем это делают ваши пользователи!</p>
+   <h2>Как связаться с командой Chrome DevTools</h2>
+   <p>Используйте следующие опции, чтобы обсудить новые функции и изменения или что-либо еще, связанное с DevTools.</p>
+   <ul>
+    <li><p>Через <a href="https://crbug.com" rel="noopener noreferrer nofollow">crbug.com</a>.</p></li>
+    <li><p>Сообщите о проблеме DevTools, используя <strong>More options</strong> &gt; <strong>Help</strong> &gt; <strong>Report a DevTools issues</strong> в DevTools.</p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/05f/a20/1a4/05fa201a458b03f29184d248e3b7525c.png" width="459" height="289" data-src="https://habrastorage.org/getpro/habr/upload_files/05f/a20/1a4/05fa201a458b03f29184d248e3b7525c.png">
+      <figcaption></figcaption>
+     </figure></li>
+    <li><p>Оставляйте комментарии к нашим видеороликам <a href="https://www.youtube.com/playlist?list=PLNYkxOF6rcIBDSojZWBv4QJNoT4GNYzQD" rel="noopener noreferrer nofollow">Что нового в DevTools</a> или <a href="https://www.youtube.com/playlist?list=PLNYkxOF6rcIAcezfL8q0rjt13ufKseL5X" rel="noopener noreferrer nofollow">Гайды по DevTools</a>.</p></li>
+   </ul>
+   <p><a href="https://developer.chrome.com/tags/new-in-devtools/" rel="noopener noreferrer nofollow">Список </a>всех изменений в DevTools.</p>
+   <h2>Заключение</h2>
+   <blockquote>
+    <p>Надеюсь, что перевод был полезен и вы узнали что-то новое.</p>
+    <p>В комментариях можете смело обсуждать интересующие вас проблемы относительно DevTools, а ошибки лучше сразу отправлять в лс, спасибо! :)</p>
+   </blockquote>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

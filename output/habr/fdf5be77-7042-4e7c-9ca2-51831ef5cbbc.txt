@@ -1,0 +1,274 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Приветствую читатели, в этой статье я бы хотел рассказать о написанной мной OpenSource библиотеке <strong>MediaFileProcessor</strong> под платформу .NET (.netstandart 2.0).</p>
+   <pre><code class="bash">dotnet add package MediaFileProcessor --version 1.0.0</code></pre>
+   <p><a href="https://github.com/askatmaster/MediaFileProcessor" rel="noopener noreferrer nofollow">Исходный код доступен на GitHub</a></p>
+   <p>Данная библиотека является универсальной оболочкой для исполняемых процессов в операционной системе (Windows/Linux).Библиотека позволяет файлам взаимодействовать с процессами через именованные каналы, потоки, массивы байтов и пути в директориях. Так же имеет некоторые полезные функции, такие как возможность декодирования потока на лету и получения из него набора файлов по их сигнатурам.</p>
+   <p>В данной версии(1.0) в библиотеки реализованы оболочки над такими процессами как FFmpeg, ImageMagick и Pandoc.Эту библиотеку так же можно использовать для взаимодействия с сторонними процессами.</p>
+   <p>Сначала расскажу какие мотивы сподвигли меня приступить к написанию данной библиотеки и какие проблемы она решает.</p>
+   <p>В процессе работы над финтех проектом мне пришлось интегрироваться с такими сервисами Amazon как Rekognition (фото и видео распознавание), Kinesis (передача видеопотока с устройств) и Transcribe(распознавание речи).</p>
+   <p>Мне необходимо было обрабатывать фото и видеофайлы в процессе взаимодействия с сервисами Amazon. Под обработкой я подразумеваю сжатие и обрезку видеофайлов и изображений, извлечение из видеофайла звуковой дорожки с последующим распознаванием и обработкой голоса, извлечение из видеофайла кадров, конвертация и конкатенация набора видеофайлов.</p>
+   <p>Обработку медиафайлов приходилось выполнять программно получая данные из сторонних сервисов. Для этого я использовал такие процессы как FFmpeg и ImageMagick. Для тех кто не в курсе - FFmpeg и ImageMagick это OpenSource проекты для работы с видеофайлами и изображениями, использовать их инструменты приходится через их исполняемые файлы ffmpeg.exe и convert.exe. Конкретно в моем случае мне приходилось запускать эти процессы программно передавая туда аргументы.</p>
+   <p>Проблема была в том что я зачастую имел файлы в виде массива байтов или в виде потоков. Чтобы передать эти файлы в исполняемые процессы мне приходилось физически создавать файлы в директории и передавать пути в качестве аргументов в эту процессы.</p>
+   <p>У исполняемого процесса есть такие понятия как StandartInput и StandartOutput, это способы взаимодействия с процессом через потоки, т.к. у меня файл был в видео потока я мог не создавать его физически в директории, а вместо этого передать этот поток в StandartInput процесса напрямую. Исполняемый процесс так же может выдать свой результат в виде потока в StandartOutput, а не записывать его физически в директорию.</p>
+   <p>К примеру простейшая команда ffmpeg по конвертации видеофайла из одного формата в другой с получением входного файла через входной поток и выдачу результат в выходной поток.</p>
+   <pre><code class="bash">ffmpeg -i - -f avi -  </code></pre>
+   <p>В данном примере у нас лишь один входной аргумент и мы можем передать его в входной поток, а так же результатом будет лишь 1 файл который мы можем получить через выходной поток.</p>
+   <p>Но как быть в том случае когда нам надо передать через потоки 2 входных файла?</p>
+   <p>Пример добавления аудио файла в видеофайл</p>
+   <pre><code class="bash">ffmpeg -i - -i - -c:v copy -c:a aac -strict experimental -map 0:v:0 -map 1:a:0 -f avi -</code></pre>
+   <p>Или к примеру если нам надо извлечь набор кадров в формате jpg из видео в виде потока?</p>
+   <pre><code class="bash">ffmpeg -i - -f imagepipe - </code></pre>
+   <p>В первом случае у нас указано 2 входных аргумента <code>-i - -i - </code>. Но входной поток у нас один, и мы не можем передать 2 потока с данными в один входной поток.</p>
+   <p>Во втором случае исполняемый процесс выдаст нам набор кадров из видео в виде единого потока в выходной поток. Но как нам работать с этим одним потоком который содержит множество файлов.</p>
+   <p>Чтобы решить эти и подобные проблемы я и написал библиотеку <strong>MediaFileProcessor.</strong></p>
+   <p>Эта библиотека позволяет передавать данные в любом виде в процессы и обрабатывать их результат.</p>
+   <p>В первом случае, при использовании этой библиотеки потоки файлов будут переданы в входные аргументы в виде поток через именованные каналы (named pipes).</p>
+   <p>Во втором случае библиотека может налету декодировать выходной поток процесса и извлечь файлы из этого потока по отдельности. Так же эта библиотека предоставляет удобную оболочку над вышеуказанными процессами и более того может быть настроена на взаимодействие с сторонним исполняемым процессом.</p>
+   <p>Ниже представления инструкция по использованию данной библиотеки и ее более подробное описание.</p>
+   <p>После прочтения инструкции вы можете изучить исходный код т.к. он подробно закомментирован и имеет простую архитектуру.</p>
+   <p>В начале следует определить данные для обработки. Данными для обработки является класс <code>MediaFile</code>. Создать экземпляр данного класса можно из потока, пути к файлу, массива байтов, именованного канала, шаблона именования:</p>
+   <pre><code class="cs">var fromPath = new MediaFile(@"C:\fileTest.avi", MediaFileInputType.Path);
+
+var fromNamedPipe = new MediaFile(@"fileTestPipeName", MediaFileInputType.NamedPipe);
+
+var namingTemplate = new MediaFile(@"C:\fileTest%003d.avi", MediaFileInputType.Template);
+
+var fs = @"C:\fileTest.avi".ToStream();
+var fromStream = new MediaFile(fs);
+
+var bytes = @"C:\fileTest.avi".ToBytes();
+var fromBytes = new MediaFile(bytes);</code></pre>
+   <p>При создании экземпляра из пути, именованного канала и шаблона именования необходимо указать тип получения данный через параметр <code>MediaFileInputType</code>.</p>
+   <h3>Инструкция FFmpeg</h3>
+   <p>Для обработки видеофайлов средствами FFmpeg необходимо иметь его исполняемый файл ffmpeg.exe.Если вы не хотите скачивать его собственноручно то можете использовать следующий код: <code>await VideoFileProcessor.DownloadExecutableFiles();</code></p>
+   <p>Данный код скачает архив по адресу <a href="https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip" rel="noopener noreferrer nofollow">https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip</a> и распокует необходимый ffmpeg.exe в корневую директорию.</p>
+   <h3>Пример обработки файла</h3>
+   <p>Ниже представлен пример получения кадра из видео.</p>
+   <p>За обработку видеофайлов средствами ffmpeg отвечает класс VideoFileProcessor. Следует создать его экземпляр:</p>
+   <pre><code class="cs">var videoFileProcessor = new VideoFileProcessor();</code></pre>
+   <p>Создание через конструктор без параметров подразумевает что исполняемые файлы ffmpeg.exe и ffprobe.exe находятся в корневой папке.</p>
+   <p>Если вы определили исполняемые файлы в другой директории то создавать экземпляр процессора следует задав пути к исполняемым файлам через конструктор:</p>
+   <pre><code class="cs">var videoFileProcessor = new VideoFileProcessor("pathToFFmpeg.exe", "pathToFFprobe.exe");</code></pre>
+   <p>Чтобы указать как следует обрабатывать файл нам необходимо создать экземпляр VideoProcessingSettings. Далее следует определить конфигурацию для обработки:</p>
+   <pre><code class="cs">var settings = new VideoProcessingSettings();
+
+var mediaFile = new MediaFile(@"pathToOutputFile", MediaFileInputType.Path);
+
+settings.ReplaceIfExist()                          //Перезаписывать выходные файлы без запроса.
+        .Seek(TimeSpan.FromMilliseconds(47500))    //Кадр, с которого нужно начать поиск.
+        .SetInputFiles(mediaFile)                  //Установить входные файлы
+        .FramesNumber(1)                           //Количество видеокадров для вывода
+        .Format(FileFormatType.JPG)                //Форсировать формат входного или выходного файла.
+        .SetOutputArguments(@"pathToInputFile");   //Настройка выходных аргументов</code></pre>
+   <p>Далее надо лишь передать конфигурацию в метод <code>ExecuteAsync</code>:</p>
+   <pre><code class="cs">var result = await videoFileProcessor.ExecuteAsync(settings, new CancellationToken());</code></pre>
+   <p>Указанные методы конфигурации выдадут нам следующие аргументы для запуска процесса ffmpeg: <code>-y -ss 00:00:47.500 -i pathToOutputFile -frames:v 1 -f image2 pathToInputFile</code>. Необходимо СОБЛЮДАТЬ ПОРЯДОК конфигуарций, т.к. некоторые аргументы должны быть заданы до указания входного аргумента и некоторые после.</p>
+   <h3>Внимание</h3>
+   <p>При настройке конфигурации процесса вы можете задать входные данные используя метод <code>SetInputFiles</code> он принимает массив параметров в виде экземпляров класса <code>MediaFile</code>.</p>
+   <p>Вам следует просто создать экземпляры этого класса из данных представленных в любом виде(путь, поток, байты, каналы, шаблоны) и передать в метод ```SetInputFiles```.</p>
+   <p>Метод <code>SetOutputArguments</code> отвечает за установку аргумента выходного файла. Через этот метод можно установить путь выходного файла, адрес rtp сервера для трансляции и т.д.</p>
+   <p>Если этот метод не вызывать то это значит что результат обработки будет выдан в <code>StandardOutput</code> в виде потока. И метод <code>ExecuteAsync</code> вернет результат в потоке.</p>
+   <p>Если же вы установили свой выходной аргумент то <code>StandardOutput</code> будет пустой и <code>ExecuteAsync</code> вернет <code>null</code>.</p>
+   <p>Если вам нужно установить аргумент которого нету в методах конфигурации то вы можете задать кастомные аргументы с помощью метода <code>CustomArguments</code>.</p>
+   <p>Полный код:</p>
+   <pre><code class="cs">var mediaFile = new MediaFile(@"pathToOutputFile", MediaFileInputType.Path);
+
+var videoFileProcessor = new VideoFileProcessor();
+
+var settings = new VideoProcessingSettings();
+
+settings.ReplaceIfExist()                        //Overwrite output files without asking.
+        .Seek(TimeSpan.FromMilliseconds(47500))  //The frame to begin seeking from.
+        .SetInputFiles(mediaFile)                //Set input files
+        .FramesNumber(1)                         //Number of video frames to output
+        .Format(FileFormatType.JPG)              //Force input or output file format.
+        .SetOutputArguments(@"pathToInputFile"); //Setting Output Arguments
+
+var result = await videoFileProcessor.ExecuteAsync(settings, new CancellationToken());</code></pre>
+   <p>В текущей версии библиотеки уже реализованы некоторые варианты обработки видеофайлов с помощью ffmpeg:</p>
+   <ul>
+    <li><p>Извлечь кадр из видео</p></li>
+    <li><p>Обрезать видео</p></li>
+    <li><p>Конвертировать видео в набор изображений покадрово</p></li>
+    <li><p>Конвертировать изображения в видео</p></li>
+    <li><p>Извлечь аудиодорожку из видеофайла</p></li>
+    <li><p>Конвертировать в другой формат</p></li>
+    <li><p>Добавить Вотермарку</p></li>
+    <li><p>Удалить звук из видео</p></li>
+    <li><p>Добавить аудиофайл в видеофайл</p></li>
+    <li><p>Конвертировать видео в Gif анимацию</p></li>
+    <li><p>Сжать видео</p></li>
+    <li><p>Сжать изображение</p></li>
+    <li><p>Соединить набор видеофайлов в единый видеофайл</p></li>
+    <li><p>Добавить субтитры</p></li>
+    <li><p>Получить подробную информацию по метаданным видеофайла</p></li>
+   </ul>
+   <h3>Пример "Извлечь кадр из видео"</h3>
+   <p>Ниже представлен пример применения извлечения кадра из видеофайла на определенном тайминге при условии что файл существует ФИЗИЧЕСКИ в директории</p>
+   <pre><code class="cs">var videoFileProcessor = new VideoFileProcessor();
+ //Test block with physical paths to input and output files
+ await videoFileProcessor.GetFrameFromVideoAsync(TimeSpan.FromMilliseconds(47500),
+                                                 new MediaFile(@"C:\inputFile.avi", MediaFileInputType.Path),
+                                                 @"C:\resultPath.jpg",
+                                                 FileFormatType.JPG);</code></pre>
+   <p>Ниже представлен пример применения извлечения кадра из видеофайла на определенном тайминге при условии если у нас файл в видео массива байтов</p>
+   <pre><code class="cs">//Block for testing file processing as bytes without specifying physical paths
+ var bytes = await File.ReadAllBytesAsync(@"C:\inputFile.avi");
+ var resultBytes = await videoProcessor.GetFrameFromVideoAsBytesAsync(TimeSpan.FromMilliseconds(47500), new MediaFile(bytes), FileFormatType.JPG);
+ await using (var output = new FileStream(@"C:\resultPath.jpg", FileMode.Create))
+     output.Write(resultBytes);</code></pre>
+   <p>Ниже представлен пример применения извлечения кадра из видеофайла на определенном тайминге при условии если у нас файл в видео потока</p>
+   <pre><code class="cs">//Block for testing file processing as streams without specifying physical paths
+await using var stream = new FileStream(@"C:\inputFile.avi", FileMode.Open);
+var resultStream = await videoProcessor.GetFrameFromVideoAsStreamAsync(TimeSpan.FromMilliseconds(47500), new MediaFile(stream), FileFormatType.JPG);
+await using (var output = new FileStream(@"C:\resultPath.jpg", FileMode.Create))
+     resultStream.WriteTo(output);
+</code></pre>
+   <p>Все остальные методы работают точно также.&nbsp;Вы можете передать файлы в процесс в любом виде и получить в любом видео.</p>
+   <h2>Инструкция ImageMagick</h2>
+   <p>Для обработки изображений применяется ImageMagick его класс&nbsp;<code>ImageFileProcessor</code>&nbsp;и его исполняемый файл convert.exe</p>
+   <p>Для загрузки его исполняемого файла можете вызвать следующий код</p>
+   <pre><code class="cs">await ImageFileProcessor.DownloadExecutableFiles();
+</code></pre>
+   <p>Данный код скачать исполняемый файл в корневую директорию с адреса&nbsp;<a href="https://imagemagick.org/archive/binaries/ImageMagick-7.1.0-61-portable-Q16-x64.zip" rel="noopener noreferrer nofollow">https://imagemagick.org/archive/binaries/ImageMagick-7.1.0-61-portable-Q16-x64.zip</a></p>
+   <p>Вся инструкция которая относилась к ffmpeg,&nbsp;так же относится и к ImageMagick.&nbsp;Обработчиком ImageMagick является класс&nbsp;<code>ImageFileProcessor</code></p>
+   <pre><code class="cs">var i = new ImageFileProcessor();
+var j = new ImageFileProcessor("pathToConvert.exe");
+</code></pre>
+   <p>В текущей версии библиотеки уже реализованы некоторые варианты обработки изображений с помощью ImageMagick:</p>
+   <p>Сжать изображение&nbsp;-Конвертировать изображение в другой формат&nbsp;-Изменить размер изображения&nbsp;-Преобразовать набор изображений в Gif анимацию</p>
+   <h4>Пример сжатия изображения в трех вариантах (путь в директории, поток, массив байтов)</h4>
+   <pre><code class="cs">//Test block with physical paths to input and output files
+await processor.CompressImageAsync(new MediaFile(_image, MediaFileInputType.Path), ImageFormat.JPG, 60, FilterType.Lanczos, "x1080", @"С:\result.jpg", ImageFormat.JPG);
+
+//Block for testing file processing as streams without specifying physical paths
+await using var stream = new FileStream(_image, FileMode.Open);
+var resultStream = await processor.CompressImageAsStreamAsync(new MediaFile(stream), ImageFormat.JPG, 60, FilterType.Lanczos, "x1080", ImageFormat.JPG);
+await using (var output = new FileStream(@"С:\result.jpg", FileMode.Create))
+     resultStream.WriteTo(output);
+
+//Block for testing file processing as bytes without specifying physical paths
+var bytes = await File.ReadAllBytesAsync(_image);
+var resultBytes = await processor.CompressImageAsBytesAsync(new MediaFile(bytes), ImageFormat.JPG, 60, FilterType.Lanczos, "x1080", ImageFormat.JPG);
+await using (var output = new FileStream(@"С:\result.jpg", FileMode.Create))
+    output.Write(resultBytes);
+</code></pre>
+   <h2>Инструкция Pandoc</h2>
+   <p>Для обработки документов применяется процесс pandoc.exe,&nbsp;его процессор&nbsp;<code>DocumentFileProcessor</code>.</p>
+   <p>В текущей версии библиотеки уже реализованы некоторые варианты обработки документов с помощью pandoc:</p>
+   <p>-конвертирование файла&nbsp;.docx в&nbsp;.pdf</p>
+   <pre><code class="cs">var file = new MediaFile(@"C:\inputFile.docx", MediaFileInputType.Path);
+var processor = new DocumentFileProcessor();
+await processor.ConvertDocxToPdf(file, "test.pdf");
+</code></pre>
+   <h2>Полезные функции</h2>
+   <h3>MultiStream</h3>
+   <p>Класс&nbsp;<code>MultiStream</code>&nbsp;предназначен для работы с набором потоков как с единым целлым.</p>
+   <p>Если вам нужно передать множество файлов в единый входной поток процесса,&nbsp;то вам поможет класс&nbsp;<code>MultiStream</code>.&nbsp;К примеру вариант когда ffmpeg должен создать видео из набора изображений,&nbsp;и эти изображения следует передать единым потоком в входной поток процесса.</p>
+   <pre><code class="cs">var stream = new MultiStream();
+stream.AddStream(new FileStream(@"С:\inputfile1.jpg", FileMode.Open, FileAccess.Read, FileShare.Read));
+stream.AddStream(new FileStream(@"С:\inputfile2.jpg", FileMode.Open, FileAccess.Read, FileShare.Read));
+stream.AddStream(new FileStream(@"С:\inputfile3.jpg", FileMode.Open, FileAccess.Read, FileShare.Read));
+stream.AddStream(new FileStream(@"С:\inputfile4.jpg", FileMode.Open, FileAccess.Read, FileShare.Read));
+stream.AddStream(new FileStream(@"С:\inputfile5.jpg", FileMode.Open, FileAccess.Read, FileShare.Read));
+</code></pre>
+   <p>Здесь мы создаем экземпляр класса&nbsp;<code>MultiStream</code>&nbsp;и через метод&nbsp;<code>AddStream</code>&nbsp;добавляем в этот потом несколько потоков с различными файлами.&nbsp;Теперь мы может эти потоки передать в процесс одним потоком в один входной поток</p>
+   <h4>Пример использования MultiStream</h4>
+   <pre><code class="cs">var stream = new MultiStream();
+var files = new List&lt;string&gt;();
+for (var i = 1; i &lt;= 1000; i++)
+{
+    files.Add($@"C:\image{i:000}.jpg");
+}
+foreach (var file in files)
+{
+    stream.AddStream(new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read));
+}
+
+//Block for testing file processing as streams without specifying physical paths
+stream.Seek(0, SeekOrigin.Begin);
+var resultStream = await videoProcessor.ConvertImagesToVideoAsStreamAsync(new MediaFile(stream), 24, "yuv420p", FileFormatType.AVI);
+await using (var output = new FileStream(@"C:\mfptest\results\ConvertImagesToVideoTest\resultStream.avi", FileMode.Create))
+{
+   resultStream.WriteTo(output);
+}
+</code></pre>
+   <p>Собираем тысячу изображений в один&nbsp;<code>MultiStream</code>&nbsp;и передаем в процесс&nbsp;У класса&nbsp;<code>MultiStream</code>&nbsp;есть метод&nbsp;<code>ReadAsDataArray</code>&nbsp;чтобы получить содержащиеся потоки в виде массивов байтов,&nbsp;и&nbsp;<code>ReadAsStreamArray</code>&nbsp;чтобы получить содержащиеся потоки в виде массива потоков.</p>
+   <h3>Декодирование потока на лету</h3>
+   <p>Когда мы используем функцию ffmpeg по разбиению видеофайла покадрово на изображения то он создает нам в указанной выходной директорию набор изображений.</p>
+   <p>Но что если нам надо получить его результат на в директорию а в выходной поток.&nbsp;В таком случае он в единый выходной поток запищет все изображения полученные из видеофайла.&nbsp;В результате у нас в одном потоке будет множество файлов.&nbsp;Как нам получить эту файлы?&nbsp;Тут на помощь приходит метод расширения&nbsp;</p>
+   <p><code>GetMultiStreamBySignature(this Stream stream, byte[] fileSignature)</code>.&nbsp;</p>
+   <p>Этот следует вызвать на потоке который следует декодировать и передать в этот метод в качестве аргумента&nbsp;-&nbsp;сигнатуру извлекаемых файлов.&nbsp;Результатом этого метода будет&nbsp;<code>MultiStream</code>&nbsp;содержащий в себе массив потоков файлов.&nbsp;1 поток для 1 файла.&nbsp;И уже используя его методы&nbsp;<code>ReadAsDataArray</code>&nbsp;или&nbsp;<code>ReadAsStreamArray</code>&nbsp;мы можем получить эти файлы в виде массива байтов или потоков.</p>
+   <h4>Чтобы подробнее изучить процесс декодирования я советую изучить исходный код.</h4>
+   <p>Наглядный пример декодирования потока:</p>
+   <pre><code class="cs">//Block for testing file processing as streams without specifying physical paths
+await using var stream = new FileStream(@"C:\inputFile.avi", FileMode.Open);
+var resultMultiStream = await videoProcessor.ConvertVideoToImagesAsStreamAsync(new MediaFile(stream), FileFormatType.JPG);
+var count = 1;
+var data = resultMultiStream.ReadAsDataArray();
+
+foreach (var bytes in data)
+{
+   await using (var output = new FileStream(@$"C:\result{count++}.jpg", FileMode.Create))
+       output.Write(bytes, 0, bytes.Length);
+}
+</code></pre>
+   <p>Для получения сигнатуры определенного формата файла есть метод расширения</p>
+   <pre><code class="cs">public static byte[] GetSignature(this FileFormatType outputFormatType)
+</code></pre>
+   <p>Если данный метод расширения не поддерживает определение сигнатуры нужного вам формата то дайте мне знать и я максимально быстро исправлю недочет.</p>
+   <h3>FileDownloadProcessor</h3>
+   <p>Если вам необходимо скачать файл то можете использовать статичный метод&nbsp;<code>DownloadFile</code>&nbsp;класса&nbsp;<code>FileDownloadProcessor</code>.&nbsp;Этот метод использует для скачивания не устаревщий WebClient а HttpClient и позволяет в процентах отслеживать прогресс скачивания.</p>
+   <h3>ZipFileProcessor</h3>
+   <p>Для работы с zip архивами представлен класс&nbsp;<code>ZipFileProcessor</code>.</p>
+   <p>Применения для распаковки скачанного архива ffmpeg и извлечение исполняемых файлов</p>
+   <pre><code class="cs">// Open an existing zip file for reading
+            using(var zip = ZipFileProcessor.Open(fileName, FileAccess.Read))
+            {
+                // Read the central directory collection
+                var dir = zip.ReadCentralDir();
+
+                // Look for the desired file
+                foreach (var entry in dir)
+                {
+                    if (Path.GetFileName(entry.FilenameInZip) == "ffmpeg.exe")
+                    {
+                        zip.ExtractFile(entry, $@"ffmpeg.exe"); // File found, extract it
+                    }
+
+                    if (Path.GetFileName(entry.FilenameInZip) == "ffmpeg.exe")
+                    {
+                        zip.ExtractFile(entry, $@"ffprobe.exe"); // File found, extract it
+                    }
+                }
+            }
+</code></pre>
+   <h2>MediaFileProcess</h2>
+   <p>Пожалуй главным классом этой библиотеки является класс&nbsp;<code>MediaFileProcess</code>.&nbsp;Он является универсальной оболочкой для исполняемых процессов.</p>
+   <p>При создании его экземпляра следует задать ему путь/имя исполняемого процесса,&nbsp;аргументы процесса,&nbsp;<code>ProcessingSettings</code>,&nbsp;входные потоки и наименования входных именованных каналов.</p>
+   <h4>Примечание по входным потокам и именованным каналам:</h4>
+   <p>Если в процесс необходимо передать множество потоков в разные входные аргументы,&nbsp;то в входных аргументам следует указать наименования именованных каналов и передать эти имена и входные потоки в соответствующие аргументы конструктора&nbsp;<code>MediaFileProcess</code>.&nbsp;Это необходимо т.к.&nbsp;в случае передачи разным потоков в разные входные аргументы применяются именованные каналы.&nbsp;Настройку самого исполняемого процесса необходимо выполнить в классе&nbsp;<code>ProcessingSettings</code>.</p>
+   <pre><code class="cs">var inputStreamFile = @"C:\inputFile.txt".ToStream();
+
+var settings = new ProcessingSettings
+{
+    CreateNoWindow = true,
+    UseShellExecute = false,
+    EnableRaisingEvents = false,
+    WindowStyle = ProcessWindowStyle.Normal,
+    ProcessOnExitedHandler = null,
+    IsStandartOutputRedirect = true,
+    OutputDataReceivedEventHandler = null,
+    ErrorDataReceivedHandler = null
+};
+
+var process = new MediaFileProcess("program.exe", "-arg1 value1 -arg2 value2 -arg3 value3", settings, new Stream[] { inputStreamFile } );
+
+var result = await process.ExecuteAsync(new CancellationToken());</code></pre>
+   <p>Если при использовании этой библиотеки или при изучении исходного кода вы обнаружите какие либо ошибки то прошу дать мне знать и я постараюсь максимально быстро все поправить.</p>
+   <p>Спасибо за внимание.</p>
+  </div>
+ </div>
+</div> <!----> <!---->

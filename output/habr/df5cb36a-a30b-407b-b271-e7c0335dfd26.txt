@@ -1,0 +1,357 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-1">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <div style="text-align:center;">
+    <img src="https://habrastorage.org/r/w780q1/webt/w1/br/oi/w1broiflq1cuye8nzwg4ptlaeoc.jpeg" data-src="https://habrastorage.org/webt/w1/br/oi/w1broiflq1cuye8nzwg4ptlaeoc.jpeg" data-blurred="true">
+   </div><br> В этом посте мы начнём реализацию с нуля GPT всего в <a href="https://github.com/jaymody/picoGPT/blob/29e78cc52b58ed2c1c483ffea2eb46ff6bdec785/gpt2_pico.py#L3-L58" rel="nofollow noopener noreferrer"><code>60 строках numpy</code></a>. Во второй части статьи мы загрузим в нашу реализацию опубликованные OpenAI веса обученной модели GPT-2 и сгенерируем текст.<br> <a name="habracut"></a><br> <strong>Примечание:</strong><br> <br>
+   <ul>
+    <li>Для понимания этого поста нужно разбираться в Python, NumPy и обладать начальным опытом в обучении нейросетей.</li>
+    <li>В этой реализации отсутствует большая часть функциональности; это сделано намеренно, чтобы максимально упростить её, при этом сохранив целостность. Моя задача — создание <strong>простого, но завершённого технического введения в GPT как обучающего инструмента</strong>.</li>
+    <li>Понимание архитектуры GPT — всего лишь небольшая (хотя и жизненно важная) часть более масштабной темы больших языковых моделей (LLM). [Масштабное обучение, сбор терабайтов данных, обеспечение быстрой работы модели, оценка производительности и подстройка моделей под выполнение необходимых человеку задач — дело всей жизни для сотен инженеров и исследователей, работа которых потребовалась, чтобы превратить LLM в то, чем они являются сегодня; одной лишь архитектуры недостаточно. Архитектура GPT просто оказалась первой архитектурой нейросетей, обладающей удобными свойствами масштабирования, высокой параллелизации на GPU и качественного моделирования последовательностей. Настоящим секретным ингредиентом становится масштабирование данных и модели (<a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html" rel="nofollow noopener noreferrer">как обычно</a>), а GPT именно это и позволяет нам делать. Возможно, трансформер просто выиграл в <a href="https://hardwarelottery.github.io" rel="nofollow noopener noreferrer">аппаратную лотерею</a> и рано или поздно какая-то другая архитектура сбросит его с трона.]</li>
+    <li>Весь код из этого поста выложен в <a href="https://github.com/jaymody/picoGPT" rel="nofollow noopener noreferrer">github.com/jaymody/picoGPT</a>.</li>
+   </ul><br>
+   <h2>Что такое GPT?</h2><br> GPT расшифровывается как <strong>Generative Pre-trained Transformer</strong>. Этот тип архитектуры нейросети основан на <a href="https://arxiv.org/pdf/1706.03762.pdf" rel="nofollow noopener noreferrer"><strong>трансформере</strong></a>. Статья <a href="https://jalammar.github.io/how-gpt3-works-visualizations-animations/" rel="nofollow noopener noreferrer">How GPT3 Works</a> Джея Аламмара — прекрасное высокоуровневое введение в GPT, которое вкратце можно изложить так:<br> <br>
+   <ul>
+    <li><strong>Generative</strong>: GPT <em>генерирует</em> текст.</li>
+    <li><strong>Pre-trained</strong>: GPT <em>обучается</em> на множестве текстов из книг, Интернета и так далее</li>
+    <li><strong>Transformer</strong>: GPT — это нейронная сеть, содержащая в себе только декодирующий <em>трансформер</em>.</li>
+   </ul><br> Большие языковые модели (Large Language Model, LLM) наподобие <a href="https://en.wikipedia.org/wiki/GPT-3" rel="nofollow noopener noreferrer">GPT-3</a> компании OpenAI, <a href="https://blog.google/technology/ai/lamda/" rel="nofollow noopener noreferrer">LaMDA</a> компании Google и <a href="https://docs.cohere.ai/docs/command-beta" rel="nofollow noopener noreferrer">Command XLarge</a> компании Cohere по своему строению являются всего лишь GPT. Особенными их делает то, что они <strong>1)</strong> очень большие (миллиарды параметров) и <strong>2)</strong> обучены на множестве данных (сотни гигабайтов текста).<br> <br> По сути, GPT <strong>генерирует текст</strong> на основании <strong>промпта (запроса)</strong>. Даже при этом очень простом API (на входе текст, на выходе текст), хорошо обученная GPT способна выполнять потрясающие задачи, например, <a href="https://machinelearningknowledge.ai/ezoimgfmt/b2611031.smushcdn.com/2611031/wp-content/uploads/2022/12/ChatGPT-Demo-of-Drafting-an-Email.png?lossy=0&amp;amp;strip=1&amp;amp;webp=1&amp;amp;ezimgfmt=ng:webp/ngcb1" rel="nofollow noopener noreferrer">писать за вас электронные письма</a>, <a href="https://machinelearningknowledge.ai/ezoimgfmt/b2611031.smushcdn.com/2611031/wp-content/uploads/2022/12/ChatGPT-Example-Book-Summarization.png?lossy=0&amp;amp;strip=1&amp;amp;webp=1&amp;amp;ezimgfmt=ng:webp/ngcb1" rel="nofollow noopener noreferrer">составить резюме книги</a>, <a href="https://khrisdigital.com/wp-content/uploads/2022/12/image-1.png" rel="nofollow noopener noreferrer">давать идеи подписей к постам в соцсетях</a>, <a href="https://machinelearningknowledge.ai/ezoimgfmt/b2611031.smushcdn.com/2611031/wp-content/uploads/2022/12/ChatGPT-Examples-Explaining-Black-Holes.png?lossy=0&amp;amp;strip=1&amp;amp;webp=1&amp;amp;ezimgfmt=ng:webp/ngcb1" rel="nofollow noopener noreferrer">объяснить чёрные дыры пятилетнему ребёнку</a>, <a href="https://machinelearningknowledge.ai/ezoimgfmt/b2611031.smushcdn.com/2611031/wp-content/uploads/2022/12/ChatGPT-Demo-of-Writing-SQL-Queries.png?lossy=0&amp;amp;strip=1&amp;amp;webp=1&amp;amp;ezimgfmt=ng:webp/ngcb1" rel="nofollow noopener noreferrer">писать код на SQL</a> и <a href="https://machinelearningknowledge.ai/ezoimgfmt/b2611031.smushcdn.com/2611031/wp-content/uploads/2022/12/Chat-GPT-Example-Writing-a-Will.png?lossy=0&amp;amp;strip=1&amp;amp;webp=1&amp;amp;ezimgfmt=ng:webp/ngcb1" rel="nofollow noopener noreferrer">даже составить завещание</a>.<br> <br> Это было краткое описание GPT и их возможностей. А теперь давайте углубимся в подробности.<br> <br>
+   <h3>Ввод и вывод</h3><br> Сигнатура функции GPT выглядит примерно так:<br> <br>
+   <pre><code class="python">def gpt(inputs: list[int]) -&gt; list[list[float]]:
+    # вводы имеют форму [n_seq]
+    # выводы имеют форму [n_seq, n_vocab]
+    output = # бип-бип, магия нейронной сети
+    return output</code></pre><br>
+   <h4>Ввод</h4><br> Вводом является <strong>последовательность</strong> целых чисел, представляющих собой <em>токены</em> некоторого <em>текста</em>:<br> <br>
+   <pre><code class="python"># целые числа обозначают токены в нашем тексте, например:
+# текст = "not all heroes wear capes":
+# токены = "not"  "all" "heroes" "wear" "capes"
+inputs =   [1,     0,    2,      4,     6]</code></pre><br> Мы определяем целочисленное значение токена на основании вокабулярия <em>токенизатора</em>:<br> <br>
+   <pre><code class="python"># индекс токена в вокабулярии обозначает целочисленный идентификатор этого токена
+# например, целочисленный идентификатор для "heroes" будет равен 2, так как vocab[2] = "heroes"
+vocab = ["all", "not", "heroes", "the", "wear", ".", "capes"]
+
+# имитация токенизатора, выполняющая токенизацию по пробелу
+tokenizer = WhitespaceTokenizer(vocab)
+
+# метод encode() выполняет преобразование str -&gt; list[int]
+ids = tokenizer.encode("not all heroes wear") # ids = [1, 0, 2, 4]
+
+# мы видим реальные токены при помощи сопоставления вокабулярия
+tokens = [tokenizer.vocab[i] for i in ids] # tokens = ["not", "all", "heroes", "wear"]
+
+# метод decode() выполняет обратное преобразование list[int] -&gt; str
+text = tokenizer.decode(ids) # text = "not all heroes wear"</code></pre><br> Вкратце:<br> <br>
+   <ul>
+    <li>У нас есть строка.</li>
+    <li>Мы используем токенизатор, чтобы разбить её на части меньшего размера, называемые токенами.</li>
+    <li>Далее мы применяем вокабулярий, чтобы сопоставить токены с целочисленными значениями.</li>
+   </ul><br> На практике используются более сложные методы токенизации, чем простое разбиение по пробелам, например, <a href="https://huggingface.co/course/chapter6/5?fw=pt" rel="nofollow noopener noreferrer">Byte-Pair Encoding</a> или <a href="https://huggingface.co/course/chapter6/6?fw=pt" rel="nofollow noopener noreferrer">WordPiece</a>, но принцип остаётся тем же:<br> <br>
+   <ol>
+    <li>Существует <code>vocab</code>, сопоставляющий токены строк с целочисленными индексами</li>
+    <li>Есть метод <code>encode</code>, выполняющий преобразование <code>str -&gt; list[int]</code></li>
+    <li>Есть метод <code>decode</code>, выполняющий преобразование <code>list[int] -&gt; str</code></li>
+   </ol><br>
+   <h4>Вывод</h4><br> Выводом является <strong>2D-массив</strong>, в котором <code>output[i][j]</code> — это <strong>прогнозируемая вероятность</strong> модели того, что токен в <code>vocab[j]</code> является следующим токеном <code>inputs[i+1]</code>. Например:<br> <br>
+   <pre><code class="python">vocab = ["all", "not", "heroes", "the", "wear", ".", "capes"]
+inputs = [1, 0, 2, 4] # "not" "all" "heroes" "wear"
+output = gpt(inputs)
+#              ["all", "not", "heroes", "the", "wear", ".", "capes"]
+# output[0] =  [0.75    0.1     0.0       0.15    0.0   0.0    0.0  ]
+# на основе одного "not" модель с наибольшей вероятностью прогнозирует слово "all"
+
+#              ["all", "not", "heroes", "the", "wear", ".", "capes"]
+# output[1] =  [0.0     0.0      0.8     0.1    0.0    0.0   0.1  ]
+# на основе последовательности ["not", "all"] модель с наибольшей вероятностью прогнозирует слово "heroes"
+
+#              ["all", "not", "heroes", "the", "wear", ".", "capes"]
+# output[-1] = [0.0     0.0     0.0     0.1     0.0    0.05  0.85  ]
+# на основе полной последовательности ["not", "all", "heroes", "wear"] модель с наибольшей вероятностью прогнозирует слово "capes"</code></pre><br> Чтобы получить прогноз следующего токена для всей последовательности, мы просто берём токен с наибольшей вероятностью в <code>output[-1]</code>:<br> <br>
+   <pre><code class="python">vocab = ["all", "not", "heroes", "the", "wear", ".", "capes"]
+inputs = [1, 0, 2, 4] # "not" "all" "heroes" "wear"
+output = gpt(inputs)
+next_token_id = np.argmax(output[-1]) # next_token_id = 6
+next_token = vocab[next_token_id] # next_token = "capes"</code></pre><br> Взятие токена с наибольшей вероятностью в качестве окончательного прогноза часто называют <a href="https://docs.cohere.ai/docs/controlling-generation-with-top-k-top-p#1-pick-the-top-token-greedy-decoding" rel="nofollow noopener noreferrer"><strong>greedy decoding</strong></a> (жадным декодированием) или <strong>greedy sampling</strong> (жадным сэмплированием).<br> <br> Задача прогнозирования следующего логичного слова в тексте называется <strong>языковым моделированием</strong>. Поэтому можно назвать GPT <strong>языковой моделью</strong>.<br> <br> Генерировать одно слово — это, конечно, здорово, но как насчёт генерации целых предложений, абзацев и так далее?<br> <br>
+   <h3>Генерация текста</h3><br>
+   <h4>Авторегрессивная</h4><br> Мы можем генерировать законченные предложения, итеративно запрашивая у модели прогноз следующего токена. На каждой итерации мы добавляем спрогнозированный токен к вводу:<br> <br>
+   <pre><code class="python">def generate(inputs, n_tokens_to_generate):
+    for _ in range(n_tokens_to_generate): # цикл авторегрессивного декодирования
+        output = gpt(inputs) # прямой проход модели
+        next_id = np.argmax(output[-1]) # жадное сэмплирование
+        inputs = np.append(out, [next_id]) # добавление прогноза к вводу
+    return list(inputs[len(inputs) - n_tokens_to_generate :])  # возвращаем только сгенерированные id
+
+input_ids = [1, 0] # "not" "all"
+output_ids = generate(input_ids, 3) # output_ids = [2, 4, 6]
+output_tokens = [vocab[i] for i in output_ids] # "heroes" "wear" "capes"</code></pre><br> Этот процесс прогнозирования будущего значения (регрессия) и добавление его обратно во ввод («авто») и стал причиной того, что модель GPT иногда называют <strong>авторегрессивной</strong>.<br> <br>
+   <h4>Сэмплирование</h4><br> Мы можем добавить генерированию <strong>стохастичности</strong> (случайности), выполняя сэмплирование не жадным образом, а из распределения вероятностей:<br> <br>
+   <pre><code class="python">inputs = [1, 0, 2, 4] # "not" "all" "heroes" "wear"
+output = gpt(inputs)
+np.random.choice(np.arange(vocab_size), p=output[-1]) # capes
+np.random.choice(np.arange(vocab_size), p=output[-1]) # hats
+np.random.choice(np.arange(vocab_size), p=output[-1]) # capes
+np.random.choice(np.arange(vocab_size), p=output[-1]) # capes
+np.random.choice(np.arange(vocab_size), p=output[-1]) # pants</code></pre><br> Это не только позволяет нам генерировать разные предложения по одному вводу, но и повышает качество выводов по сравнению с жадным декодированием.<br> <br> Также часто используются техники наподобие <a href="https://docs.cohere.ai/docs/controlling-generation-with-top-k-top-p#2-pick-from-amongst-the-top-tokens-top-k" rel="nofollow noopener noreferrer"><strong>top-k</strong></a>, <a href="https://docs.cohere.ai/docs/controlling-generation-with-top-k-top-p#3-pick-from-amongst-the-top-tokens-whose-probabilities-add-up-to-15-top-p" rel="nofollow noopener noreferrer"><strong>top-p</strong></a> и <a href="https://docs.cohere.ai/docs/temperature" rel="nofollow noopener noreferrer"><strong>temperature</strong></a> для изменения распределения вероятностей перед сэмплированием из него. Это ещё больше увеличивает качество генераций и добавляет гиперпараметры, с которыми можно экспериментировать для получения разного поведения генераций (например, повышение «температуры» увеличивает рискованность модели, делая её более «творческой»).<br> <br> Если вы хотите почитать анализ других техник сэмплирования для управления генерациями языковых моделей, рекомендую <a href="https://lilianweng.github.io/posts/2021-01-02-controllable-text-generation/" rel="nofollow noopener noreferrer">Controllable Neural Text Generation</a> Лиллиан Венг.<br> <br>
+   <h3>Обучение</h3><br> Мы обучаем GPT как любую другую нейросеть — при помощи <a href="https://en.wikipedia.org/wiki/Gradient_descent" rel="nofollow noopener noreferrer"><strong>градиентного спуска</strong></a> с учётом некоей <strong>функции потерь</strong>. В случае GPT мы берём <a href="https://www.youtube.com/watch?v=ErfnhcEV1O8" rel="nofollow noopener noreferrer"><strong>потерю перекрёстной энтропии</strong></a> для задачи языкового моделирования:<br> <br>
+   <pre><code class="python">def lm_loss(inputs: list[int], params) -&gt; float:
+    # метки y - это просто input, сдвинутый на 1 влево
+    #
+    # inputs = [not,     all,   heros,   wear,   capes]
+    #      x = [not,     all,   heroes,  wear]
+    #      y = [all,  heroes,     wear,  capes]
+    # 
+    # разумеется, у нас нет метки для inputs[-1], поэтому мы исключаем её из x
+    #
+    # поэтому для N вводов у нас будет N - 1 примеров пар для языкового моделирования
+    x, y = inputs[:-1], inputs[1:]
+    
+    # прямой проход
+    # все распределения вероятностей спрогнозированных следующих токенов на каждой позиции
+    output = gpt(x, params)
+    
+    # потеря перекрёстной энтропии
+    # мы берём среднее по всем N-1 примерам
+    loss = np.mean(-np.log(output[y]))
+
+    return loss
+
+def train(texts: list[list[str]], params) -&gt; float:
+    for text in texts:
+        inputs = tokenizer.encode(text)
+        loss = lm_loss(inputs, params)
+        gradients = compute_gradients_via_backpropagation(loss, params)
+        params = gradient_descent_update_step(gradients, params)
+    return params</code></pre><br> Для понятности мы добавили аргумент <code>params</code> ко вводу <code>gpt</code>. При каждой итерации цикла обучения мы выполняем этап градиентного спуска для обновления параметров модели, делая нашу модель всё лучше и лучше в моделировании языка с каждым новым фрагментом текста, который она видит. Это крайне упрощённая структура обучения, однако она демонстрирует процесс в целом.<br> <br> Обратите внимание, что мы не используем явным образом размеченные данные. Создавать пары input/label можно и просто из сырого текста. Это называется <strong><a href="https://en.wikipedia.org/wiki/Self-supervised_learning" rel="nofollow noopener noreferrer">self-supervised learning</a></strong> (самообучением).<br> <br> Это означает, что мы можем очень просто масштабировать объём данных обучения, всего лишь показывая модели как можно большее количество сырых текстов. Например, GPT-3 была обучена на <strong>300 миллиардах токенов</strong> текста из Интернета и книг:<br> <br>
+   <div style="text-align:center;">
+    <img src="https://habrastorage.org/r/w1560/webt/dr/j-/3h/drj-3hjjvksa2awpm60kc8_qi3a.png" data-src="https://habrastorage.org/webt/dr/j-/3h/drj-3hjjvksa2awpm60kc8_qi3a.png">
+   </div><br> <i>Таблица 2.2 из статьи о GPT-3</i><br> <br> Чтобы учиться на всех этих данных, нам нужна модель существенно бОльших размеров, поэтому GPT-3 имеет <strong>175 миллиардов параметров</strong>, а вычислительные затраты на её обучение приблизительно составляют <a href="https://twitter.com/eturner303/status/1266264358771757057" rel="nofollow noopener noreferrer">$1-10 миллионов</a>. [Однако после статей про <a href="https://arxiv.org/pdf/2210.11416.pdf" rel="nofollow noopener noreferrer">InstructGPT</a> и <a href="https://arxiv.org/pdf/2203.15556.pdf" rel="nofollow noopener noreferrer">Chinchilla</a> мы осознали, что на самом деле необязательно обучать столь огромные модели. Оптимально обученная и подстроенная на основе инструкций GPT с 1,3 миллиардами параметров может превзойти GPT-3 с 175 миллиардами параметров.]<br> <br> Этот этап самообучения называется <strong>pre-training</strong> (предварительным обучением), поскольку мы можем повторно использовать веса «предварительно обученных» моделей для дальнейшего обучения модели для следующих задач, например, для определения токсичности твита.<br> <br> Обучение модели на углублённых задачах называется <strong>fine-tuning</strong> (подстройкой), поскольку веса модели уже были предварительно обучены пониманию языка и всего лишь подстраиваются под конкретную задачу.<br> <br> Стратегия «предварительное обучение на общей задаче + подстройка на конкретной задаче» называется <a href="https://en.wikipedia.org/wiki/Transfer_learning" rel="nofollow noopener noreferrer">трансферным обучением</a>.<br> <br>
+   <h3>Промптинг</h3><br> В принципе, исходная <a href="https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf" rel="nofollow noopener noreferrer">GPT</a> просто использовала преимущества предварительного обучения модели трансформера для трансферного обучения, аналогично <a href="https://arxiv.org/pdf/1810.04805.pdf" rel="nofollow noopener noreferrer">BERT</a>.<br> <br> И только после появления научных статей о <a href="https://d4mucfpksywv.cloudfront.net/better-language-models/language_models_are_unsupervised_multitask_learners.pdf" rel="nofollow noopener noreferrer">GPT-2</a> and <a href="https://arxiv.org/abs/2005.14165" rel="nofollow noopener noreferrer">GPT-3</a> мы осознали, что предварительно обученная модель GPT сама по себе способна выполнять любую задачу просто после создания промпта и выполнения авторегрессивного языкового моделирования, без необходимости подстройки. Это называется <strong>in-context learning</strong> (обучением в контексте), поскольку для выполнения задачи модель использует только контекст промпта. Обучение в контексте может быть без примеров (zero shot), с одним (one shot) или несколькими (few shot) примерами:<br> <br>
+   <div style="text-align:center;">
+    <img src="https://habrastorage.org/r/w1560/webt/u8/d6/6e/u8d66erpfwuwxuldc7gajqcrkjk.png" data-src="https://habrastorage.org/webt/u8/d6/6e/u8d66erpfwuwxuldc7gajqcrkjk.png">
+   </div><br> <i>Иллюстрация 2.1 из научной статьи про GPT-3</i><br> <br> Разумеется, можно использовать <a href="https://openai.com/blog/chatgpt/" rel="nofollow noopener noreferrer">GPT в качестве чат-бота</a>, а не заставлять её выполнять «задачи». История беседы передаётся в модель в качестве промпта, возможно, с каким-то предварительным описанием, например «Ты чат-бот, веди себя хорошо». Если изменить промпт, можно даже придать <a href="https://imgur.com/a/AbDFcgk" rel="nofollow noopener noreferrer">чат-боту черты личности</a>.<br> <br> Разобравшись со всем этим, можно, наконец, перейти к реализации!<br> <br>
+   <h2>Подготовка</h2><br> Клонируйте репозиторий для этого туториала:<br> <br>
+   <pre><code class="bash">git clone https://github.com/jaymody/picoGPT
+cd picoGPT</code></pre><br> Теперь давайте установим зависимости:<br> <br>
+   <pre><code class="bash">pip install -r requirements.txt</code></pre><br> Учтите, что если вы работаете на Macbook с M1, то прежде чем выполнять <code>pip install</code>, нужно будет заменить в <code>requirements.txt</code> <code>tensorflow</code> на <code>tensorflow-macos</code>. Этот код тестировался на <code>Python 3.9.10</code>.<br> <br> Краткое описание каждого из файлов:<br> <br>
+   <ul>
+    <li><strong><code>encoder.py</code></strong> содержит код BPE Tokenizer компании OpenAI, взятый напрямую из её <a href="https://github.com/openai/gpt-2/blob/master/src/encoder.py" rel="nofollow noopener noreferrer">репозитория gpt-2</a>.</li>
+    <li><strong><code>utils.py</code></strong> содержит код для скачивания и загрузки весов модели GPT-2, токенизатора и гиперпараметров.</li>
+    <li><strong><code>gpt2.py</code></strong> содержит саму модель GPT и код генерации, которые можно запускать как скрипт на Python.</li>
+    <li><strong><code>gpt2_pico.py</code></strong> — это то же самое, что и <code>gpt2.py</code>, но с меньшим количеством строк. Зачем? А почему бы и нет.</li>
+   </ul><br> Мы заново реализуем <code>gpt2.py</code> с нуля, так что удалим его и воссоздадим как пустой файл:<br> <br>
+   <pre><code class="bash">rm gpt2.py
+touch gpt2.py</code></pre><br> Для начала вставим в <code>gpt2.py</code> следующий код:<br> <br>
+   <pre><code class="python">import numpy as np
+
+
+def gpt2(inputs, wte, wpe, blocks, ln_f, n_head):
+    pass # TODO: реализовать это
+
+
+def generate(inputs, params, n_head, n_tokens_to_generate):
+    from tqdm import tqdm
+
+    for _ in tqdm(range(n_tokens_to_generate), "generating"):  # цикл авторегрессивного декодирования
+        logits = gpt2(inputs, **params, n_head=n_head)  # прямой проход модели
+        next_id = np.argmax(logits[-1])  # жадное сэмплирование
+        inputs = np.append(inputs, [next_id])  # добавляем прогноз к вводу
+
+    return list(inputs[len(inputs) - n_tokens_to_generate :])  # возвращаем только сгенерированные id
+
+
+def main(prompt: str, n_tokens_to_generate: int = 40, model_size: str = "124M", models_dir: str = "models"):
+    from utils import load_encoder_hparams_and_params
+
+    # загружаем encoder, hparams, и params из опубликованных open-ai файлов gpt-2
+    encoder, hparams, params = load_encoder_hparams_and_params(model_size, models_dir)
+
+    # кодируем строку ввода при помощи BPE tokenizer
+    input_ids = encoder.encode(prompt)
+
+    # убеждаемся, что не вышли за пределы максимальной длины последовательности нашей модели
+    assert len(input_ids) + n_tokens_to_generate &lt; hparams["n_ctx"]
+
+    # генерируем id вывода
+    output_ids = generate(input_ids, params, hparams["n_head"], n_tokens_to_generate)
+
+    # декодируем id обратно в строку
+    output_text = encoder.decode(output_ids)
+
+    return output_text
+
+
+if __name__ == "__main__":
+    import fire
+
+    fire.Fire(main)</code></pre><br> Опишем каждую из четырёх частей:<br> <br>
+   <ol>
+    <li>Функция <code>gpt2</code> — это сам код GPT, который мы должны реализовать. Можно заметить, что наряду с <code>inputs</code> сигнатура функции содержит дополнительные параметры:<br>
+     <ul>
+      <li><code>wte</code>, <code>wpe</code>, <code>blocks</code> и <code>ln_f</code> — параметры модели.</li>
+      <li><code>n_head</code> — гиперпараметр, который нужно передавать во время прямого прохода.</li>
+     </ul></li>
+    <li>Функция <code>generate</code> — это алгоритм авторегрессивного декодирования, который мы видели ранее. Для простоты мы пользуемся жадным сэмплированием. <a href="https://www.google.com/search?q=tqdm" rel="nofollow noopener noreferrer"><code>tqdm</code></a> — это шкала прогресса, помогающая визуализировать процесс декодирования, один за другим генерирующего токены.</li>
+    <li>Функция <code>main</code> выполняет следующие задачи:<br>
+     <ol>
+      <li>Загружает токенизатор (<code>encoder</code>), веса модели (<code>params</code>) и гиперпараметры (<code>hparams</code>)</li>
+      <li>Кодирует промпт ввода в ID токенов при помощи токенизатора</li>
+      <li>Вызывает функцию generate</li>
+      <li>Декодирует ID вывода в строку</li>
+     </ol><br></li>
+    <li><a href="https://github.com/google/python-fire" rel="nofollow noopener noreferrer"><code>fire.Fire(main)</code></a> просто превращает наш файл в приложение CLI, чтобы мы могли запускать наш код следующим образом: <code>python gpt2.py "здесь какой-то промпт"</code></li>
+   </ol><br> Давайте присмотримся к <code>encoder</code>, <code>hparams</code> и <code>params</code>. Выполним в ноутбуке или интерактивной сессии Python следующее:<br> <br>
+   <pre><code class="python">from utils import load_encoder_hparams_and_params
+encoder, hparams, params = load_encoder_hparams_and_params("124M", "models")</code></pre><br> При этом в <code>models/124M</code> <a href="https://github.com/jaymody/picoGPT/blob/a750c145ba4d09d5764806a6c78c71ffaff88e64/utils.py#L13-L40" rel="nofollow noopener noreferrer">скачаются необходимые файлы модели и токенизатора</a>, а в наш код <a href="https://github.com/jaymody/picoGPT/blob/a750c145ba4d09d5764806a6c78c71ffaff88e64/utils.py#L68-L82" rel="nofollow noopener noreferrer"><code>загрузятся encoder</code>, <code>hparams</code> и <code>params</code></a>.<br> <br>
+   <h3>Encoder</h3><br> <code>encoder</code> — это BPE tokenizer, используемый GPT-2:<br> <br>
+   <pre><code class="python">&gt;&gt;&gt; ids = encoder.encode("Not all heroes wear capes.")
+&gt;&gt;&gt; ids
+[3673, 477, 10281, 5806, 1451, 274, 13]
+
+&gt;&gt;&gt; encoder.decode(ids)
+"Not all heroes wear capes."</code></pre><br> При помощи вокабулярия токенизатора (хранящегося в <code>encoder.decoder</code>) мы можем узнать, как выглядят реальные токены:<br> <br>
+   <pre><code class="python">&gt;&gt;&gt; [encoder.decoder[i] for i in ids]
+['Not', 'Ġall', 'Ġheroes', 'Ġwear', 'Ġcap', 'es', '.']</code></pre><br> Обратите внимание, что иногда токены — это слова (например, <code>Not</code>), иногда это слова, но с пробелом в начале (например, <code>Ġall</code> (<a href="https://github.com/karpathy/minGPT/blob/37baab71b9abea1b76ab957409a1cc2fbfba8a26/mingpt/bpe.py#L22-L33" rel="nofollow noopener noreferrer"><code>Ġ</code> обозначает пробел</a>), иногда это часть слова (например, слово capes разделено на <code>Ġcap</code> и <code>es</code>), а иногда это знаки препинания (например, <code>.</code>).<br> <br> BPE удобен тем, что может кодировать любую произвольную строку. Если он встречает то, чего нет в вокабулярии, то просто разбивает это на подстроки, которые понимает:<br> <br>
+   <pre><code class="python">&gt;&gt;&gt; [encoder.decoder[i] for i in encoder.encode("zjqfl")]
+['z', 'j', 'q', 'fl']</code></pre><br> Также мы можем проверить размер вокабулярия:<br> <br>
+   <pre><code class="python">&gt;&gt;&gt; len(encoder.decoder)
+50257</code></pre><br> Вокабулярий, а также слияния байтовых пар, определяющие способ разбиения строк, получаются <em>обучением</em> токенизатора. Когда мы загружаем токенизатор, то загружаем уже обученный вокабулярий и слияния байтовых пар из каких-то файлов, которые были скачаны вместе с файлами модели, когда мы выполнили <code>load_encoder_hparams_and_params</code>. См. <code>models/124M/encoder.json</code> (вокабулярий) и <code>models/124M/vocab.bpe</code> (слияния байтовых пар).<br> <br>
+   <h3>Гиперпараметры</h3><br> <code>hparams</code> — это словарь, содержащий гиперпараметры модели:<br> <br>
+   <pre><code class="python">&gt;&gt;&gt; hparams
+{
+  "n_vocab": 50257, # количество токенов в вокабулярии
+  "n_ctx": 1024, # максимально возможная длина последовательности ввода
+  "n_embd": 768, # размерность эмбеддингов (определяет "ширину" сети)
+  "n_head": 12, # количество голов внимания (n_embd должно делиться на n_head)
+  "n_layer": 12 # количество слоёв (определяет "глубину" сети)
+}</code></pre><br> Мы будем использовать эти символы в комментариях к коду, чтобы показать внутреннюю структуру. Также мы будем использовать <code>n_seq</code> для обозначения длины последовательности ввода (например, <code>n_seq = len(inputs)</code>).<br> <br>
+   <h3>Параметры</h3><br> <code>params</code> — это вложенный json-словарь, содержащий обученные веса модели. Узлы листьев json — это массивы NumPy. Если мы выведем <code>params</code>, заменив массивы на их shape, то получим следующее:<br> <br>
+   <pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; def shape_tree(d):
+&gt;&gt;&gt;     if isinstance(d, np.ndarray):
+&gt;&gt;&gt;         return list(d.shape)
+&gt;&gt;&gt;     elif isinstance(d, list):
+&gt;&gt;&gt;         return [shape_tree(v) for v in d]
+&gt;&gt;&gt;     elif isinstance(d, dict):
+&gt;&gt;&gt;         return {k: shape_tree(v) for k, v in d.items()}
+&gt;&gt;&gt;     else:
+&gt;&gt;&gt;         ValueError("uh oh")
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print(shape_tree(params))
+{
+    "wpe": [1024, 768],
+    "wte": [50257, 768],    
+    "ln_f": {"b": [768], "g": [768]},
+    "blocks": [
+        {
+            "attn": {
+                "c_attn": {"b": [2304], "w": [768, 2304]},
+                "c_proj": {"b": [768], "w": [768, 768]},
+            },
+            "ln_1": {"b": [768], "g": [768]},
+            "ln_2": {"b": [768], "g": [768]},
+            "mlp": {
+                "c_fc": {"b": [3072], "w": [768, 3072]},
+                "c_proj": {"b": [768], "w": [3072, 768]},
+            },
+        },
+        ... # повторяем для n_layers
+    ]
+}</code></pre><br> Всё это загружается из исходного чекпоинта tensorflow компании OpenAI:<br> <br>
+   <pre><code class="python">&gt;&gt;&gt; import tensorflow as tf
+&gt;&gt;&gt; tf_ckpt_path = tf.train.latest_checkpoint("models/124M")
+&gt;&gt;&gt; for name, _ in tf.train.list_variables(tf_ckpt_path):
+&gt;&gt;&gt;     arr = tf.train.load_variable(tf_ckpt_path, name).squeeze()
+&gt;&gt;&gt;     print(f"{name}: {arr.shape}")
+model/h0/attn/c_attn/b: (2304,)
+model/h0/attn/c_attn/w: (768, 2304)
+model/h0/attn/c_proj/b: (768,)
+model/h0/attn/c_proj/w: (768, 768)
+model/h0/ln_1/b: (768,)
+model/h0/ln_1/g: (768,)
+model/h0/ln_2/b: (768,)
+model/h0/ln_2/g: (768,)
+model/h0/mlp/c_fc/b: (3072,)
+model/h0/mlp/c_fc/w: (768, 3072)
+model/h0/mlp/c_proj/b: (768,)
+model/h0/mlp/c_proj/w: (3072, 768)
+model/h1/attn/c_attn/b: (2304,)
+model/h1/attn/c_attn/w: (768, 2304)
+...
+model/h9/mlp/c_proj/b: (768,)
+model/h9/mlp/c_proj/w: (3072, 768)
+model/ln_f/b: (768,)
+model/ln_f/g: (768,)
+model/wpe: (1024, 768)
+model/wte: (50257, 768)</code></pre><br> <a href="https://github.com/jaymody/picoGPT/blob/29e78cc52b58ed2c1c483ffea2eb46ff6bdec785/utils.py#L43-L65" rel="nofollow noopener noreferrer">Показанный ниже код</a> преобразует представленные выше переменные tensorflow в словарь <code>params</code>.<br> <br> Для справки вот shape <code>params</code>, где числа заменены на <code>hparams</code>, которые они означают:<br> <br>
+   <pre><code class="python">{
+    "wpe": [n_ctx, n_embd],
+    "wte": [n_vocab, n_embd],    
+    "ln_f": {"b": [n_embd], "g": [n_embd]},
+    "blocks": [
+        {
+            "attn": {
+                "c_attn": {"b": [3*n_embd], "w": [n_embd, 3*n_embd]},
+                "c_proj": {"b": [n_embd], "w": [n_embd, n_embd]},
+            },
+            "ln_1": {"b": [n_embd], "g": [n_embd]},
+            "ln_2": {"b": [n_embd], "g": [n_embd]},
+            "mlp": {
+                "c_fc": {"b": [4*n_embd], "w": [n_embd, 4*n_embd]},
+                "c_proj": {"b": [n_embd], "w": [4*n_embd, n_embd]},
+            },
+        },
+        ... # повторяем для n_layers
+    ]
+}</code></pre><br> Вероятно, вы захотите возвращаться к этому словарю, чтобы проверять shape весов в процессе реализации нашей GPT. Для согласованности имена переменных в нашем коде будут соответствовать ключам этого словаря.<br> <br>
+   <h2>Базовые слои</h2><br> Прежде чем мы приступим к самой архитектуре GPT, давайте реализуем часть самых базовых слоёв сети, не специфичных конкретно для моделей GPT.<br> <br>
+   <h3>GELU</h3><br> Для нелинейности (<strong>функция активации</strong>) выбора GPT-2 используется <a href="https://arxiv.org/pdf/1606.08415.pdf" rel="nofollow noopener noreferrer">GELU (Gaussian Error Linear Units)</a>, альтернатива ReLU:<br> <br>
+   <div style="text-align:center;">
+    <img src="https://habrastorage.org/r/w1560/webt/sx/tp/4h/sxtp4h-zbrh3xgbx1luzkgltepa.png" data-src="https://habrastorage.org/webt/sx/tp/4h/sxtp4h-zbrh3xgbx1luzkgltepa.png">
+   </div><br> <i>Рисунок 1 из научной статьи о GELU</i><br> <br> Она аппроксимируется следующей функцией:<br> <br>
+   <pre><code class="python">def gelu(x):
+    return 0.5 * x * (1 + np.tanh(np.sqrt(2 / np.pi) * (x + 0.044715 * x**3)))</code></pre><br> Как и ReLU, GELU обрабатывает ввод поэлементно:<br> <br>
+   <pre><code class="python">&gt;&gt;&gt; gelu(np.array([[1, 2], [-2, 0.5]]))
+array([[ 0.84119,  1.9546 ],
+       [-0.0454 ,  0.34571]])</code></pre><br> Использование GELU в моделях-трансформерах популяризировала <a href="https://arxiv.org/pdf/1810.04805.pdf" rel="nofollow noopener noreferrer">BERT</a>, и я думаю, её продолжат применять ещё долго.<br> <br>
+   <h3>Softmax</h3><br> Старый добрый <a href="https://en.wikipedia.org/wiki/Softmax_function" rel="nofollow noopener noreferrer">softmax</a>:<br> <br>
+   <p></p>
+   <p><img src="https://habrastorage.org/getpro/habr/formulas/7c3/d92/ac3/7c3d92ac3c08cdb5a29ae9f22fbbc226.svg" alt="$\text{softmax}(x)_i = \frac{e^{x_i}}{\sum_j e^{x_j}}$" data-tex="display"></p><br>
+   <pre><code class="python">def softmax(x):
+    exp_x = np.exp(x - np.max(x, axis=-1, keepdims=True))
+    return exp_x / np.sum(exp_x, axis=-1, keepdims=True)</code></pre><br> Для числовой стабильности мы используем <a href="https://jaykmody.com/blog/stable-softmax/" rel="nofollow noopener noreferrer"><code>трюк с max(x)</code></a>.<br> <br> Softmax применяется для преобразования множества вещественных чисел (от <img src="https://habrastorage.org/getpro/habr/formulas/e14/250/606/e142506069924ab8e43f137e4f74835f.svg" alt="$-\infty$" data-tex="inline"> до <img src="https://habrastorage.org/getpro/habr/formulas/593/801/555/593801555e4ca493976f80bc4e9b5daa.svg" alt="$\infty$" data-tex="inline">) в вероятности (от 0 до 1, где сумма всех чисел равна 1). Мы применяем <code>softmax</code> для последней оси ввода.<br> <br>
+   <pre><code class="python">&gt;&gt;&gt; x = softmax(np.array([[2, 100], [-5, 0]]))
+&gt;&gt;&gt; x
+array([[0.00034, 0.99966],
+       [0.26894, 0.73106]])
+&gt;&gt;&gt; x.sum(axis=-1)
+array([1., 1.])</code></pre><br>
+   <h3>Нормализация слоёв</h3><br> <a href="https://arxiv.org/pdf/1607.06450.pdf" rel="nofollow noopener noreferrer">Нормализация слоёв</a> стандартизирует значения так, чтобы они имели среднее значение 0 и дисперсию 1:<br> <br>
+   <p></p>
+   <p><img src="https://habrastorage.org/getpro/habr/formulas/8aa/93d/854/8aa93d8540458f1954289537f3e31274.svg" alt="$\text{LayerNorm}(x) = \gamma \cdot \frac{x - \mu}{\sqrt{\sigma^2}} + \beta$" data-tex="display"></p><br> где <img src="https://habrastorage.org/getpro/habr/formulas/658/3bf/7e6/6583bf7e62f62291a44864774bbafe66.svg" alt="$\mu$" data-tex="inline"> — среднее <img src="https://habrastorage.org/getpro/habr/formulas/4cc/fd4/32e/4ccfd432ea4f2a64f3a5c8c7378517af.svg" alt="$x$" data-tex="inline">, <img src="https://habrastorage.org/getpro/habr/formulas/dff/37f/4b1/dff37f4b1259e9dd611dbe8abb952cc1.svg" alt="$\sigma^2$" data-tex="inline"> — дисперсия <img src="https://habrastorage.org/getpro/habr/formulas/4cc/fd4/32e/4ccfd432ea4f2a64f3a5c8c7378517af.svg" alt="$x$" data-tex="inline">, а <img src="https://habrastorage.org/getpro/habr/formulas/e70/a4d/c8c/e70a4dc8cfb514fee86d8651daf8c7eb.svg" alt="$\gamma$" data-tex="inline"> и <img src="https://habrastorage.org/getpro/habr/formulas/dde/35b/631/dde35b63133e1e49275c05ed00f4cd5d.svg" alt="$\beta$" data-tex="inline"> — изучаемые параметры.<br> <br>
+   <pre><code class="python">def layer_norm(x, g, b, eps: float = 1e-5):
+    mean = np.mean(x, axis=-1, keepdims=True)
+    variance = np.var(x, axis=-1, keepdims=True)
+    x = (x - mean) / np.sqrt(variance + eps)  # нормализуем x, чтобы иметь mean=0 и var=1 по последней оси
+    return g * x + b  # масштабируем и смещаем с параметрами gamma/beta</code></pre><br> Нормализация слоёв гарантирует, что вводы для каждого слоя будут находиться в согласованном интервале, что должно ускорить и стабилизировать процесс обучения. Как и при <a href="https://arxiv.org/pdf/1502.03167.pdf" rel="nofollow noopener noreferrer">Batch Normalization</a>, нормализированный вывод затем масштабируется и смещается при помощи двух изучаемых векторов gamma и beta. Небольшой член epsilon в делителе используется, чтобы избежать ошибку деления на ноль.<br> <br> По <a href="https://stats.stackexchange.com/questions/474440/why-do-transformers-use-layer-norm-instead-of-batch-norm" rel="nofollow noopener noreferrer">разным причинам</a> в трансформере используется не batch norm, а норма слоёв. Различия между разными методиками нормализации описаны в <a href="https://tungmphung.com/deep-learning-normalization-methods/" rel="nofollow noopener noreferrer">этом замечательном посте</a>.<br> <br> Мы применяем нормализацию слоёв для последней оси ввода.<br> <br>
+   <pre><code class="python">&gt;&gt;&gt; x = np.array([[2, 2, 3], [-5, 0, 1]])
+&gt;&gt;&gt; x = layer_norm(x, g=np.ones(x.shape[-1]), b=np.zeros(x.shape[-1]))
+&gt;&gt;&gt; x
+array([[-0.70709, -0.70709,  1.41418],
+       [-1.397  ,  0.508  ,  0.889  ]])
+&gt;&gt;&gt; x.var(axis=-1)
+array([0.99996, 1.     ]) # учитываем тонкости работы с плавающей запятой
+&gt;&gt;&gt; x.mean(axis=-1)
+array([-0., -0.])</code></pre><br>
+   <h3>Линейность</h3><br> Стандартное матричное умножение + перекос:<br> <br>
+   <pre><code class="python">def linear(x, w, b):  # [m, in], [in, out], [out] -&gt; [m, out]
+    return x @ w + b</code></pre><br> Линейные слои часто называют <strong>проекциями</strong> (поскольку они проецируют из одного векторного пространства в другое).<br> <br>
+   <pre><code class="python">&gt;&gt;&gt; x = np.random.normal(size=(64, 784)) # input dim = 784, batch/sequence dim = 64
+&gt;&gt;&gt; w = np.random.normal(size=(784, 10)) # output dim = 10
+&gt;&gt;&gt; b = np.random.normal(size=(10,))
+&gt;&gt;&gt; x.shape # shape до линейного проецирования
+(64, 784)
+&gt;&gt;&gt; linear(x, w, b).shape # shape после линейного проецирования
+(64, 10)</code></pre><br> <i>Продолжение следует.</i>
+  </div>
+ </div>
+</div> <!----> <!---->

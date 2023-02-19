@@ -1,0 +1,30 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Привет меня зовут Игорь, в свободное от основной профессии время я интересуюсь машинным обучением и занимаюсь разработкой OCR для мобильных устройств.</p>
+   <p>Современные решения OCR насколько мне известно в большинстве случаев состоят из двух компонентов, детектирование текста и последующее распознавание.</p>
+   <p>Для обучения требуется много качественно размеченных данных, и в случае с детектированием текста это настоящая проблема, найти в открытом доступе большой качественный датасет очень сложно.</p>
+   <p>Для решения проблемы я написал собственную программу для разметки данных.</p>
+   <p>Работа в программе должна быть проста предельно проста и эффективна, увеличение и уменьшение изображения, перетаскивание, создание и удаление объектов, разметка происходит только с помощью мышки.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/05b/1ba/e46/05b1bae461c41721938178d3d7b041b0.jpg" width="1022" height="750" data-src="https://habrastorage.org/getpro/habr/upload_files/05b/1ba/e46/05b1bae461c41721938178d3d7b041b0.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>На каком то этапе разметки я натренировал в keras <a href="https://arxiv.org/abs/1911.08947" rel="noopener noreferrer nofollow">сетку </a>DBNet, законвертил её в TensorFlow Lite, и дело пошло в разы быстрей, в полуавтоматическом режиме, теперь приходилось больше корректировать.</p>
+   <p>В течении нескольких месяцев в свободное время я собирал и размечал изображения.</p>
+   <p>В итоге удалось собрать и разметить 19 230 изображений содержащих преимущественно латинский и русский текст, а так же немного на китайском.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/0f1/3c1/a8f/0f13c1a8f62133812c9f1343a73dffb1.jpg" width="602" height="607" data-src="https://habrastorage.org/getpro/habr/upload_files/0f1/3c1/a8f/0f13c1a8f62133812c9f1343a73dffb1.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Используя данный датасет я натренировал в <a href="https://keras.io/api/applications/" rel="noopener noreferrer nofollow">Keras</a> выше указанную <a href="https://arxiv.org/abs/1911.08947" rel="noopener noreferrer nofollow">DBNet</a> сеть на основе ResNet50V2, результат детектирования после месячной тренировки на одной GeForce RTX 2060 Ghost 12GB выглядит следующим образом.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/099/3a2/f5c/0993a2f5c3e0aabe0c901cee4f517102.jpg" width="660" height="659" data-src="https://habrastorage.org/getpro/habr/upload_files/099/3a2/f5c/0993a2f5c3e0aabe0c901cee4f517102.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Похоже пора переходить ко второму этапу, распознавание текста.</p>
+   <p>А для тех кто не хочет собирать данные, вы можете использовать мой <a href="https://github.com/DonkeySmall/TextDetectionDataset" rel="noopener noreferrer nofollow"><strong><u>датасет</u></strong></a>.</p>
+   <p>Успехов в машинном обучении!</p>
+  </div>
+ </div>
+</div> <!----> <!---->

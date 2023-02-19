@@ -1,0 +1,108 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>В статье я хочу показать, каким образом можно реализовать отправку запросов с авторизацией при использовании Spring Cloud OpenFeign клиента для работы с АПИ.</p>
+   <h2>Что такое OpenFeign и зачем он нужен</h2>
+   <p>Spring Cloud OpenFeign - это реализация feign клиента для работы со Spring Boot. Feign - это декларативный HTTP клиент, для упрощения написания интеграций с различными АПИ. Подробнее можно почитать в официальной <a href="https://docs.spring.io/spring-cloud-openfeign/docs/current/reference/html/" rel="noopener noreferrer nofollow">документации</a> и посмотреть код на <a href="https://github.com/OpenFeign/feign" rel="noopener noreferrer nofollow">гитхаб</a> .</p>
+   <p>Можно выделить следующие плюсы использования OpenFeign:</p>
+   <ul>
+    <li><p>не нужно заморачиваться созданием и управлением конкретной реализацией HTTP клиента (клиент создается автоматически, а различные настройки, при необходимости, можно проводить через <code>application.yml</code>)</p></li>
+    <li><p>не нужно как-то настраивать обработку ошибок в ответе на ваш запрос, OpenFeign сам преобразовывает все не 2ХХ и не 3ХХ ответы в <code>FeignException</code></p></li>
+    <li><p>если вы используете метрики (а если и не используете) - OpenFeign из коробки настраивает набор Micrometer метрик.</p></li>
+   </ul>
+   <h2>Добавление токенов авторизации в запрос</h2>
+   <p>При необходимости отправить запрос с указанием данных авторизации OpenFeign позволяет нам идти несколькими путями.</p>
+   <p>Первый и самый простой - передать токен как параметр метода отправки запроса.</p>
+   <pre><code class="kotlin">@FeignClient(value = "example-client", url= "\${external.url}")
+interface ExampleClient {
+    @GetMapping("/info")
+    fun getInfo(@RequestHeader("Authorization") bearerToken: String): String
+}
+
+class Demo(
+    private val exampleClient: ExampleClient
+) {
+    val testResult = exampleClient.getInfo("Bearer customBearerToken")
+}</code></pre>
+   <p>Но в этом случае вся ответственность за получение и обновление токена ложится на плечи вызывающего сервиса, что не очень хорошо. Нам может помочь еще одна фишка OpenFeign, а именно использование <a href="https://docs.spring.io/spring-cloud-openfeign/docs/current/reference/html/#spring-cloud-feign-overriding-defaults" rel="noopener noreferrer nofollow">классов конфигурации клиента</a>.</p>
+   <p>Ниже рассмотрим два примера конфигурации клиента - для простой OAuth2 client_credentials авторизации с использование Spring Security и чуть более сложной, кастомной авторизации.</p>
+   <h3>OAuth2 авторизация</h3>
+   <p>В этом случае почти всю работу за нас делает магия Spring (а точнее Spring Security).</p>
+   <p>Сначала нужно настроить Spring Security для доступа к некоторому АПИ (в <code>application.yml</code>). Необходимо указать clienId, clientSecret и адрес для получения токена внешнего сервиса.</p>
+   <pre><code class="yaml">spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          external:
+            client-id: "client_id"
+            client-secret: "client_secret"
+            authorization-grant-type: client_credentials
+        provider:
+          external:
+            token-uri: https://external.service/oauth/access_token</code></pre>
+   <p>Затем нужно сконфигурировать добавление токенов при отправке запросов через OpenFeign клиент</p>
+   <pre><code class="kotlin">@FeignClient(value = "example-client", url= "\${external.url}", 
+             configuration = [FeignClientConfiguration::class])
+interface ExampleClient {
+    @GetMapping("/info")
+    fun getInfo()
+}</code></pre>
+   <p>Обратите внимание на параметр <code>configuration</code> в аннотации <code>@FeignClient</code> . Он указывает на то, какой класс будет использоваться для конфигурации клиента, реализующего этот интерфейс.</p>
+   <p>Посмотрим подробнее на класс конфигурации (подробно про возможности конфигурирования есть в <a href="https://docs.spring.io/spring-cloud-openfeign/docs/current/reference/html/#spring-cloud-feign-overriding-defaults" rel="noopener noreferrer nofollow">документации</a>). Обратите внимание, что мы не аннотируем этот класс <code>@Configuration</code>, если не хотим использовать бины из этого файла по умолчанию во всем проекте.</p>
+   <pre><code class="kotlin">class FeignClientConfiguration(
+ private val oAuth2AuthorizedClientManager: OAuth2AuthorizedClientManager
+) {
+    @Bean
+    fun requestInterceptor(): RequestInterceptor = RequestInterceptor { template -&gt;
+        val accessToken = getAccessToken()
+        template.header("Authorization", "Bearer ${accessToken?.tokenValue}")
+    }
+
+    private fun getAccessToken(): OAuth2AccessToken? {
+        val request = OAuth2AuthorizeRequest
+            .withClientRegistrationId("external")
+            .principal("principal-name")
+            .build()
+        return oAuth2AuthorizedClientManager.authorize(request)?.accessToken
+    }
+}</code></pre>
+   <p>В этом классе переопределяется bean типа <code>feign.RequestInterceptor</code>. Этот bean перехватывает запрос перед отправкой и дописывает заголовок <code>Authorization</code>. Токен при этом будет получен через экземпляр <code>OAuth2AuthorizedClientManager</code> - стандартную реализацию менеджера авторизации OAuth2 из состава Spring Security.</p>
+   <p>На этом всё, теперь каждый запрос перед отправкой будет обогащаться нужным заголовком, а за получение и обновление токена будет отвечать Spring.</p>
+   <h3>Кастомная авторизация</h3>
+   <p>Рассмотрим случай, когда Spring не предоставляет готовых решений по управлению токенами авторизации. Последовательность действий здесь будет та же самая, но менеджер авторизации придется реализовать самостоятельно.</p>
+   <p>Сам интерфейс OpenFeign клиента остается таким же, как в предыдущем разделе. Изменения будут только в классе конфигурации.</p>
+   <pre><code class="kotlin">class FeignClientConfiguration(
+    private val customAuthorizationManager: CustomAuthorizationManager
+) {
+    @Bean
+    fun requestInterceptor(): RequestInterceptor = RequestInterceptor { template -&gt;
+        if (!template.headers().containsKey("Authorization")) {
+            val accessToken = customAuthorizationManager.getAccessToken()
+            template.header("Authorization", "Bearer $accessToken")
+        }
+    }
+}</code></pre>
+   <p>Можно заметить, что вместо стандартного <code>OAuth2AuthorizedClientManager</code> появляется некий <code>CustomAuthorizationManager</code> . Квази-реализация такого менеджера приведена ниже</p>
+   <pre><code class="kotlin">@Component
+class CustomAuthorizationManager(
+    private val tokenManager: TokenManager,
+    private val tokenRepository: TokenRepository
+) {
+    fun getAccessToken(): String {
+        val userName = SecurityContextHolder.getContext().authentication.name
+        val token = tokenRepository.getTokenByUserName(userName)
+
+        return if (tokenManager.checkIfExpired(token)) {
+            tokenManager.refreshToken(token)
+        } else { 
+          token 
+        }
+    }
+}</code></pre>
+   <p>В примере <code>TokenManager</code> - это некий класс, который умеет проверять, не истекло ли время жизни токена (например через сумму created_at и expired_at токена или через отправку тестового запроса в сервис и разбора ответа) а также умеет отправлять запрос на обновление токена. <code>TokenRepository</code> - это репозиторий для поиска токена в нашем внутреннем хранилище.</p>
+   <p>Для получения токена нужна узнать, от чьего имени будем отправлять запрос. В примере используется Security Context приложения для определения текущего пользователя, а затем происходит поиск ассоциированных с пользователем токенов в хранилище токенов. И, при необходимости, происходит обновление токена.</p>
+   <p>Текущую схему можно оптимизировать. В примере, при отправке каждого запроса приходится ходить в хранилище за токеном. А если происходит несколько запросов от имени одного и того же пользователя приложения, то и запросов в хранилище будет несколько. Если же организовать некий кэш токенов или хранить токен в собственной реализации <code>org.springframework.security.core.Authentication</code>, то количество запросов к хранилищу можно существенно уменьшить.</p>
+  </div>
+ </div>
+</div> <!----> <!---->

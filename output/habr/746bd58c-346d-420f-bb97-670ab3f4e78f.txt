@@ -1,0 +1,262 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Трудно представить разработчика, использующего macOS, но&nbsp;не&nbsp;использующего <a href="https://brew.sh/" rel="noopener noreferrer nofollow">Homebrew</a>. Это менеджер пакетов, позволяющий устанавливать сторонние программы (кстати, недавно он получил поддержку платформ Linux и Windows).</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/d74/4fc/feb/d744fcfeb71431759acc9e886e995741.png" alt="Логотип Homebrew (https://brew.sh/)" title="Логотип Homebrew (https://brew.sh/)" width="256" height="256" data-src="https://habrastorage.org/getpro/habr/upload_files/d74/4fc/feb/d744fcfeb71431759acc9e886e995741.png">
+    <figcaption>
+     Логотип Homebrew (https://brew.sh/)
+    </figcaption>
+   </figure>
+   <p>Первоначально Homebrew работал, загружая программное обеспечение с&nbsp;upstream и собирая его на&nbsp;том&nbsp;же компьютере, где и производится установка. При&nbsp;сборке он следует инструкциям, указанным в <em>формулах</em> (formulæ), написанных на&nbsp;языке программирования Ruby (см. <a href="https://docs.brew.sh/Formula-Cookbook#homebrew-terminology" rel="noopener noreferrer nofollow">терминологию</a>).</p>
+   <p>Получив огромную популярность, Homebrew обзавёлся двумя важными возможностями.</p>
+   <p>Во‑первых, он стал управлять дистрибутивами приложений macOS от&nbsp;разных поставщиков, таких как&nbsp;Sublime Text или&nbsp;Firefox. Эта возможность называется <em>casks</em>. Во‑вторых, он начал скачивать готовые пакеты уже собранного программного обеспечения. Эта возможность называется «бутылки» (bottles).</p>
+   <p>Благодаря бутылкам не&nbsp;нужно компилировать программы и Homebrew достаточно скачать готовые пакеты под&nbsp;целевую систему. Однако эти пакеты надо где‑то хранить и раздавать. Как&nbsp;именно это работает для&nbsp;Homebrew?</p>
+   <hr>
+   <p>Рассмотрим пример <a href="https://sqlite.org/" rel="noopener noreferrer nofollow">SQLite</a>, встраиваемой реляционной базы данных. Если мы посмотрим на&nbsp;соответствующую формулу Homebrew, <a href="https://github.com/Homebrew/homebrew-core/blob/master/Formula/sqlite.rb" rel="noopener noreferrer nofollow">sqlite.rb</a>, то заметим инструкции по&nbsp;сборке в&nbsp;методе <code>install</code> и несколько шестнадцатеричных идентификаторов в&nbsp;блоке <code>bottle</code>. Homebrew использует эти инструкции для&nbsp;сборки и загружает бутылки в&nbsp;Интернет, чтобы затем их скачать и избежать компиляции на&nbsp;вашем компьютере.</p>
+   <p>Если запустить команду <code>brew install sqlite</code> в&nbsp;любой системе, для&nbsp;которой доступна бутылка, Homebrew загрузит её и установит в&nbsp;систему.</p>
+   <p>За&nbsp;последний месяц Homebrew раздал <a href="https://formulae.brew.sh/api/analytics/install/30d.json" rel="noopener noreferrer nofollow">более 52&nbsp;миллионов пакетов</a>. Это число может&nbsp;быть выше, поскольку некоторые пользователи <a href="https://docs.brew.sh/Analytics" rel="noopener noreferrer nofollow">отключают аналитику</a>. Даже если каждая бутылка занимает один мегабайт места, Homebrew должен&nbsp;был раздать более 50&nbsp;ТиБ трафика в&nbsp;месяц. Это запретительно дорого почти на&nbsp;всех популярных облачных хранилищах. Homebrew&nbsp;— некоммерческий проект, принимающий пожертвования от&nbsp;спонсоров. Маловероятно, что&nbsp;даже очень щедрые пожертвования покроют ежемесячный счет на&nbsp;тысячи долларов США для&nbsp;таких сервисов, как&nbsp;Amazon S3, при&nbsp;таком объёме трафика.</p>
+   <hr>
+   <p>К&nbsp;счастью, команде Homebrew удалось найти хостинг. Первоначально они использовали <a href="https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/" rel="noopener noreferrer nofollow">недавно закрытую</a> платформу Bintray. Позже Homebrew получил <a href="https://brew.sh/2020/11/18/homebrew-tap-with-bottles-uploaded-to-github-releases/" rel="noopener noreferrer nofollow">возможность размещения бутылок</a> в&nbsp;GitHub Releases. Это довольно распространенная практика, используемая во&nbsp;многих открытых проектах, таких как&nbsp;Gensim (см., например, репозиторий <a href="https://github.com/RaRe-Technologies/gensim-data/releases" rel="noopener noreferrer nofollow">gensim‑data</a>). К&nbsp;сожалению, в&nbsp;этом случае нет стандартного способа указания метаданных и нет тривиального способа различить, под&nbsp;какую систему собрана одна и та&nbsp;же версия пакета. Недавно они <a href="https://brew.sh/2021/04/12/homebrew-3.1.0/" rel="noopener noreferrer nofollow">перешли на&nbsp;GitHub Packages</a>&nbsp;— те самые GitHub Packages, которые используются для&nbsp;хранения артефактов Maven и Docker‑образов.</p>
+   <p>Реестр контейнеров хорошо подходит для&nbsp;хранения файлов разного размера, версий и свойств. GitHub&nbsp;же щедро предлагает неограниченный трафик для&nbsp;открытых проектов. Итак, когда вы открываете бутылку в&nbsp;Homebrew, вы скачиваете файлы из&nbsp;GitHub Packages, также известного как&nbsp;GitHub Container Registry.</p>
+   <hr>
+   <p>Но&nbsp;как именно Homebrew понимает, какие файлы загружать? Блок <code>bottle</code> в&nbsp;формуле содержит идентификаторы SHA-256, также известные как <em>дайджесты</em> архивов для&nbsp;конкретной платформы (см. снова <a href="https://github.com/Homebrew/homebrew-core/blob/master/Formula/sqlite.rb" rel="noopener noreferrer nofollow">sqlite.rb</a> в&nbsp;качестве примера). На&nbsp;момент написания последней версией SQLite в&nbsp;Homebrew&nbsp;была 3.40.1.</p>
+   <p>Поскольку GitHub Packages&nbsp;— это такой&nbsp;же реестр контейнеров, как&nbsp;Docker Hub и многие другие, и следует одним и тем&nbsp;же спецификациям, можно вручную собрать ссылку для&nbsp;загрузки файла, поскольку мы знаем имя образа (<code>homebrew/core/sqlite</code>) и его версию (<code>3.40.1</code>). Таким образом, бутылки находятся по&nbsp;адресу <a href="https://github.com/Homebrew/homebrew-core/pkgs/container/core%2Fsqlite/61066250?tag=3.40.1" rel="noopener noreferrer nofollow">ghcr.io/homebrew/core/sqlite:3.40.1</a>. Например, бинарники для&nbsp;x86_64&nbsp;Linux имеют дайджест <code>8d1bae…85bb06</code>.</p>
+   <p>Для&nbsp;скачивания файла нам не&nbsp;хватает только токена аутентификации для&nbsp;реестра. Значение этого токена по&nbsp;умолчанию <a href="https://github.com/Homebrew/brew/blob/master/Library/Homebrew/brew.sh" rel="noopener noreferrer nofollow">указано</a> в&nbsp;Homebrew как <code>QQ==</code>. Однако мы можем запросить собственный токен с&nbsp;помощью одного простого запроса.</p>
+   <pre><code class="bash">TOKEN=$(curl "https://ghcr.io/token?scope=repository:homebrew/core/sqlite:pull" | jq -r .token)
+# или просто
+TOKEN="QQ=="</code></pre>
+   <p>Независимо от&nbsp;того, как&nbsp;мы получили токен, мы можем теперь скачать SQLite 3.40.1&nbsp;для&nbsp;Linux (x86_64) в&nbsp;виде большого двоичного объекта (blob).</p>
+   <pre><code class="bash">curl -I \
+  -H "Authorization: Bearer $TOKEN" \
+  "https://ghcr.io/v2/homebrew/core/sqlite/blobs/sha256:8d1baebd808a5cdb47c3fedbefd4de5cf7983700c41191432f3a9bed4885bb06"</code></pre>
+   <details class="spoiler">
+    <summary>Результат</summary>
+    <div class="spoiler__content">
+     <pre><code>HTTP/2 200 
+content-length: 2682611
+content-type: application/vnd.oci.image.layer.v1.tar+gzip
+docker-content-digest: sha256:8d1baebd808a5cdb47c3fedbefd4de5cf7983700c41191432f3a9bed4885bb06
+docker-distribution-api-version: registry/2.0
+...</code></pre>
+     <p></p>
+    </div>
+   </details>
+   <p>Не&nbsp;забудьте включить параметр <code>--location</code> в&nbsp;cURL (<code>-L</code>), чтобы следовать HTTP‑перенаправлениям при&nbsp;загрузке файла; мой текущий пример просто извлекает заголовки файлов (<code>-I</code>). Таким образом, мы можем достаточно легко вручную скачивать файлы из&nbsp;реестров контейнеров, будь то пакеты Homebrew или&nbsp;же обычные образы контейнеров.</p>
+   <hr>
+   <p>Мы могли&nbsp;бы остановиться на&nbsp;скачивании файлов по&nbsp;уже известным дайджестам в&nbsp;формулах Homebrew, но&nbsp;давайте разберемся, откуда взялись все эти идентификаторы. Итак, нам известен идентификатор образа, <a href="https://github.com/Homebrew/homebrew-core/pkgs/container/core%2Fsqlite/61066250?tag=3.40.1" rel="noopener noreferrer nofollow">ghcr.io/homebrew/core/sqlite:3.40.1</a>, поэтому воспользуемся спецификациями образа Open Container Initiative (OCI), чтобы самостоятельно восстановить их.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/9d5/dd9/04a/9d5dd904adae2220f2364e50cd904133.png" alt="Спецификация OCI Image Format: типы данных (https://github.com/opencontainers/image-spec/blob/main/img/media-types.png)" title="Спецификация OCI Image Format: типы данных (https://github.com/opencontainers/image-spec/blob/main/img/media-types.png)" width="720" height="252" data-src="https://habrastorage.org/getpro/habr/upload_files/9d5/dd9/04a/9d5dd904adae2220f2364e50cd904133.png">
+    <figcaption>
+     Спецификация OCI Image Format: типы данных (https://github.com/opencontainers/image-spec/blob/main/img/media-types.png)
+    </figcaption>
+   </figure>
+   <p>Сущность верхнего уровня&nbsp;— это индекс образа (image index), который содержит информацию о&nbsp;вариантах операционной системы в&nbsp;формате JSON вместе с&nbsp;некоторыми другими метаданными. Давайте посмотрим на&nbsp;него.</p>
+   <pre><code class="bash">curl \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Accept: application/vnd.oci.image.index.v1+json" \
+  "https://ghcr.io/v2/homebrew/core/sqlite/manifests/3.40.1"</code></pre>
+   <details class="spoiler">
+    <summary>Результат</summary>
+    <div class="spoiler__content">
+     <pre><code class="json">{
+  "schemaVersion": 2,
+  "manifests": [
+    {
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "digest": "sha256:3b7ebf540cd60769c993131195e796e715ff4abc37bd9a467603759264360664",
+      "size": 1977,
+      "platform": {
+        "architecture": "amd64",
+        "os": "darwin",
+        "os.version": "macOS 13.0"
+      },
+      "annotations": {
+        "org.opencontainers.image.ref.name": "3.40.1.ventura",
+        "sh.brew.bottle.digest": "d3092d3c942b50278f82451449d2adc3d1dc1bd724e206ae49dd0def6eb6386d",
+        "sh.brew.tab": "{\"homebrew_version\":\"3.6.16-97-ge76c55e\",\"changed_files\":[\"lib/pkgconfig/sqlite3.pc\"],\"source_modified_time\":1672237605,\"compiler\":\"clang\",\"runtime_dependencies\":[{\"full_name\":\"readline\",\"version\":\"8.2.1\",\"declared_directly\":true}],\"arch\":\"x86_64\",\"built_on\":{\"os\":\"Macintosh\",\"os_version\":\"macOS 13.0\",\"cpu_family\":\"penryn\",\"xcode\":\"14.1\",\"clt\":\"14.1.0.0.1.1666437224\",\"preferred_perl\":\"5.30\"}}"
+      }
+    },
+    {
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "digest": "sha256:2a0bbff81707938631bffd395ae8c9d03d5ddf67b8d9669b18bf67de240534e2",
+      "size": 2010,
+      "platform": {
+        "architecture": "arm64",
+        "os": "darwin",
+        "os.version": "macOS 11"
+      },
+      "annotations": {
+        "org.opencontainers.image.ref.name": "3.40.1.arm64_big_sur",
+        "sh.brew.bottle.digest": "1dce645628978038d4615669728089f9e22259a8c461f5d81672b741189f1f29",
+        "sh.brew.tab": "{\"homebrew_version\":\"3.6.16-97-ge76c55e\",\"changed_files\":[\"lib/pkgconfig/sqlite3.pc\"],\"source_modified_time\":1672237605,\"compiler\":\"clang\",\"runtime_dependencies\":[{\"full_name\":\"readline\",\"version\":\"8.2.1\",\"declared_directly\":true}],\"arch\":\"arm64\",\"built_on\":{\"os\":\"Macintosh\",\"os_version\":\"macOS 11\",\"cpu_family\":\"arm_firestorm_icestorm\",\"xcode\":\"13.2.1\",\"clt\":\"13.2.0.0.1.1638488800\",\"preferred_perl\":\"5.30\"}}"
+      }
+    },
+    {
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "digest": "sha256:1f839eae57ab0bd81e915cfcb3227cb61d551d3cbe9a8a8bd93e9aace869a53a",
+      "size": 1980,
+      "platform": {
+        "architecture": "amd64",
+        "os": "darwin",
+        "os.version": "macOS 12.6"
+      },
+      "annotations": {
+        "org.opencontainers.image.ref.name": "3.40.1.monterey",
+        "sh.brew.bottle.digest": "ebdcd895a537933c8ae0111a96b02aa7e2ac8f8c991f0c3e4d9ec250619a29e5",
+        "sh.brew.tab": "{\"homebrew_version\":\"3.6.16-97-ge76c55e\",\"changed_files\":[\"lib/pkgconfig/sqlite3.pc\"],\"source_modified_time\":1672237605,\"compiler\":\"clang\",\"runtime_dependencies\":[{\"full_name\":\"readline\",\"version\":\"8.2.1\",\"declared_directly\":true}],\"arch\":\"x86_64\",\"built_on\":{\"os\":\"Macintosh\",\"os_version\":\"macOS 12.6\",\"cpu_family\":\"penryn\",\"xcode\":\"14.1\",\"clt\":\"14.1.0.0.1.1666437224\",\"preferred_perl\":\"5.30\"}}"
+      }
+    },
+    {
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "digest": "sha256:d0b67f3ac3c52498d0a4de161e68e60d0ca12ae74db08e241cf2f72e5d70048b",
+      "size": 1979,
+      "platform": {
+        "architecture": "amd64",
+        "os": "darwin",
+        "os.version": "macOS 11.7"
+      },
+      "annotations": {
+        "org.opencontainers.image.ref.name": "3.40.1.big_sur",
+        "sh.brew.bottle.digest": "c2b7d4f849d7af7e8be3c738e9670842c9c6b25053fd19a90ef8264b2a257158",
+        "sh.brew.tab": "{\"homebrew_version\":\"3.6.16-97-ge76c55e\",\"changed_files\":[\"lib/pkgconfig/sqlite3.pc\"],\"source_modified_time\":1672237605,\"compiler\":\"clang\",\"runtime_dependencies\":[{\"full_name\":\"readline\",\"version\":\"8.2.1\",\"declared_directly\":true}],\"arch\":\"x86_64\",\"built_on\":{\"os\":\"Macintosh\",\"os_version\":\"macOS 11.7\",\"cpu_family\":\"penryn\",\"xcode\":\"13.2.1\",\"clt\":\"13.2.0.0.1.1638488800\",\"preferred_perl\":\"5.30\"}}"
+      }
+    },
+    {
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "digest": "sha256:3e4e657d85ff3428660fe52265e10c9656dc063b3b8885e79632bcc22a6b9af5",
+      "size": 2011,
+      "platform": {
+        "architecture": "arm64",
+        "os": "darwin",
+        "os.version": "macOS 12"
+      },
+      "annotations": {
+        "org.opencontainers.image.ref.name": "3.40.1.arm64_monterey",
+        "sh.brew.bottle.digest": "45f18a632fd523c325bedda31a17ec8a1e577da0c4350b0342106ce360a925a5",
+        "sh.brew.tab": "{\"homebrew_version\":\"3.6.16-97-ge76c55e\",\"changed_files\":[\"lib/pkgconfig/sqlite3.pc\"],\"source_modified_time\":1672237605,\"compiler\":\"clang\",\"runtime_dependencies\":[{\"full_name\":\"readline\",\"version\":\"8.2.1\",\"declared_directly\":true}],\"arch\":\"arm64\",\"built_on\":{\"os\":\"Macintosh\",\"os_version\":\"macOS 12\",\"cpu_family\":\"arm_firestorm_icestorm\",\"xcode\":\"14.1\",\"clt\":\"14.1.0.0.1.1665256668\",\"preferred_perl\":\"5.30\"}}"
+      }
+    },
+    {
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "digest": "sha256:880727df1ae294f4df5f5dc0906c334b241f1283e5911974913ce3606d221bed",
+      "size": 1991,
+      "platform": {
+        "architecture": "arm64",
+        "os": "darwin",
+        "os.version": "macOS 13"
+      },
+      "annotations": {
+        "org.opencontainers.image.ref.name": "3.40.1.arm64_ventura",
+        "sh.brew.bottle.digest": "e19a160e1012ed0d58f0e1f631d6954c2bb6feb3cf9f8e9417d6f8955b81236d",
+        "sh.brew.tab": "{\"homebrew_version\":\"3.6.16-97-ge76c55e\",\"changed_files\":[\"lib/pkgconfig/sqlite3.pc\"],\"source_modified_time\":1672237605,\"compiler\":\"clang\",\"runtime_dependencies\":[{\"full_name\":\"readline\",\"version\":\"8.2.1\",\"declared_directly\":true}],\"arch\":\"arm64\",\"built_on\":{\"os\":\"Macintosh\",\"os_version\":\"macOS 13\",\"cpu_family\":\"dunno\",\"xcode\":\"14.1\",\"clt\":\"14.1.0.0.1.1665256668\",\"preferred_perl\":\"5.30\"}}"
+      }
+    },
+    {
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "digest": "sha256:ff58c21da5e58b82bae6e19207a8ec01e398a31512081e9b6560b2dec88c22da",
+      "size": 2213,
+      "platform": {
+        "architecture": "amd64",
+        "os": "linux",
+        "os.version": "5.15.0-1024-azure"
+      },
+      "annotations": {
+        "org.opencontainers.image.ref.name": "3.40.1.x86_64_linux",
+        "sh.brew.bottle.cpu.variant": "core2",
+        "sh.brew.bottle.digest": "8d1baebd808a5cdb47c3fedbefd4de5cf7983700c41191432f3a9bed4885bb06",
+        "sh.brew.bottle.glibc.version": "2.35",
+        "sh.brew.tab": "{\"homebrew_version\":\"3.6.16-97-ge76c55e\",\"changed_files\":[\"lib/pkgconfig/sqlite3.pc\"],\"source_modified_time\":1672237605,\"compiler\":\"gcc-11\",\"runtime_dependencies\":[{\"full_name\":\"ncurses\",\"version\":\"6.3\",\"declared_directly\":false},{\"full_name\":\"readline\",\"version\":\"8.2.1\",\"declared_directly\":true},{\"full_name\":\"zlib\",\"version\":\"1.2.13\",\"declared_directly\":true}],\"arch\":\"x86_64\",\"built_on\":{\"os\":\"Linux\",\"os_version\":\"5.15.0-1024-azure\",\"cpu_family\":\"skylake\",\"glibc_version\":\"2.35\",\"oldest_cpu_family\":\"core2\"}}"
+      }
+    }
+  ],
+  "annotations": {
+    "com.github.package.type": "homebrew_bottle",
+    "org.opencontainers.image.created": "2022-12-30",
+    "org.opencontainers.image.description": "Command-line interface for SQLite",
+    "org.opencontainers.image.documentation": "https://formulae.brew.sh/formula/sqlite",
+    "org.opencontainers.image.license": "blessing",
+    "org.opencontainers.image.ref.name": "3.40.1",
+    "org.opencontainers.image.revision": "24944d797567cd81c25a0627b3f373e0d6472d94",
+    "org.opencontainers.image.source": "https://github.com/homebrew/homebrew-core/blob/24944d797567cd81c25a0627b3f373e0d6472d94/Formula/sqlite.rb",
+    "org.opencontainers.image.title": "sqlite",
+    "org.opencontainers.image.url": "https://sqlite.org/index.html",
+    "org.opencontainers.image.vendor": "homebrew",
+    "org.opencontainers.image.version": "3.40.1"
+  }
+}</code></pre>
+     <p></p>
+    </div>
+   </details>
+   <p>Индекс ссылается на&nbsp;несколько манифестов образов (image manifest). Каждый манифест соответствует определённой платформе, определяемой архитектурой процессора, операционной системой и её версией. Поскольку все метаданные машиночитаемы (и иногда человекочитаемы), мы можем легко заметить две вещи. Во‑первых, в&nbsp;аннотациях есть поле <code>sh.brew.bottle.digest</code>, которое содержит тот&nbsp;же дайджест SHA-256, что&nbsp;и в&nbsp;формуле Homebrew. Но&nbsp;он&nbsp;был помещен туда намеренно в&nbsp;процессе сборки. Во‑вторых, мы не&nbsp;видим здесь никаких файлов, а&nbsp;дайджест манифеста для&nbsp;Linux (x86_64) другой: <code>ff58c2…8c22da</code>. Теперь нам нужно получить манифест нужного нам образа.</p>
+   <pre><code class="bash">curl \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Accept: application/vnd.oci.image.manifest.v1+json" \
+  "https://ghcr.io/v2/homebrew/core/sqlite/manifests/sha256:ff58c21da5e58b82bae6e19207a8ec01e398a31512081e9b6560b2dec88c22da"</code></pre>
+   <details class="spoiler">
+    <summary>Результат</summary>
+    <div class="spoiler__content">
+     <pre><code class="javascript">{
+  "schemaVersion": 2,
+  "config": {
+    "mediaType": "application/vnd.oci.image.config.v1+json",
+    "digest": "sha256:36d708da8f4d7e2450550b5179e41b4320628b97a2056cf56b8bb15a2759bb3d",
+    "size": 228
+  },
+  "layers": [
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:8d1baebd808a5cdb47c3fedbefd4de5cf7983700c41191432f3a9bed4885bb06",
+      "size": 2682611,
+      "annotations": {
+        "org.opencontainers.image.title": "sqlite--3.40.1.x86_64_linux.bottle.tar.gz"
+      }
+    }
+  ],
+  "annotations": {
+    "com.github.package.type": "homebrew_bottle",
+    "org.opencontainers.image.created": "2022-12-30",
+    "org.opencontainers.image.description": "Command-line interface for SQLite",
+    "org.opencontainers.image.documentation": "https://formulae.brew.sh/formula/sqlite",
+    "org.opencontainers.image.license": "blessing",
+    "org.opencontainers.image.ref.name": "3.40.1.x86_64_linux",
+    "org.opencontainers.image.revision": "24944d797567cd81c25a0627b3f373e0d6472d94",
+    "org.opencontainers.image.source": "https://github.com/homebrew/homebrew-core/blob/24944d797567cd81c25a0627b3f373e0d6472d94/Formula/sqlite.rb",
+    "org.opencontainers.image.title": "sqlite 3.40.1.x86_64_linux",
+    "org.opencontainers.image.url": "https://sqlite.org/index.html",
+    "org.opencontainers.image.vendor": "homebrew",
+    "org.opencontainers.image.version": "3.40.1",
+    "sh.brew.bottle.cpu.variant": "core2",
+    "sh.brew.bottle.digest": "8d1baebd808a5cdb47c3fedbefd4de5cf7983700c41191432f3a9bed4885bb06",
+    "sh.brew.bottle.glibc.version": "2.35",
+    "sh.brew.tab": "{\"homebrew_version\":\"3.6.16-97-ge76c55e\",\"changed_files\":[\"lib/pkgconfig/sqlite3.pc\"],\"source_modified_time\":1672237605,\"compiler\":\"gcc-11\",\"runtime_dependencies\":[{\"full_name\":\"ncurses\",\"version\":\"6.3\",\"declared_directly\":false},{\"full_name\":\"readline\",\"version\":\"8.2.1\",\"declared_directly\":true},{\"full_name\":\"zlib\",\"version\":\"1.2.13\",\"declared_directly\":true}],\"arch\":\"x86_64\",\"built_on\":{\"os\":\"Linux\",\"os_version\":\"5.15.0-1024-azure\",\"cpu_family\":\"skylake\",\"glibc_version\":\"2.35\",\"oldest_cpu_family\":\"core2\"}}"
+  }
+}</code></pre>
+     <p></p>
+    </div>
+   </details>
+   <p>Образ содержит список слоёв. Каждый слой хранится и скачивается в&nbsp;виде отдельного файла. В&nbsp;нашем случае образ имеет только один слой с&nbsp;заголовком <code>sqlite--3.40.1.x86_64_linux.bottle.tar.gz</code> и его дайджест полностью совпадает с&nbsp;указанным в&nbsp;формуле! Итак, нам удалось восстановить ту&nbsp;же ссылку, которую мы видели несколькими абзацами выше. Это означает, что&nbsp;теперь мы можем опрашивать реестр контейнеров, скачивать файлы и не&nbsp;полагаться на&nbsp;проставленные ссылки.</p>
+   <pre><code class="bash">curl -I \
+  -H "Authorization: Bearer $TOKEN" \
+  "https://ghcr.io/v2/homebrew/core/sqlite/blobs/sha256:8d1baebd808a5cdb47c3fedbefd4de5cf7983700c41191432f3a9bed4885bb06"</code></pre>
+   <hr>
+   <p>В&nbsp;образовательных целях мы использовали cURL, но&nbsp;это не&nbsp;самый надёжный способ, потому что&nbsp;мы не&nbsp;охватываем всю спецификацию и никак не&nbsp;обрабатываем возможные ошибки.</p>
+   <p>Поскольку реестры контейнеров постепенно становятся в&nbsp;хранилищами общего назначения, организация <a href="https://www.cncf.io/" rel="noopener noreferrer nofollow">Cloud Native Computing Foundation</a> (CNCF) профинансировала проект <a href="https://oras.land/" rel="noopener noreferrer nofollow">OCI Registry As Storage</a> (ORAS). Он позволяет скачивать и загружать образы и их метаданные так, как&nbsp;мы это делали с&nbsp;cURL, но&nbsp;с&nbsp;поддержкой со стороны CNCF и, надеюсь, с&nbsp;лучшей обработкой ошибок.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c82/fab/09e/c82fab09eee704de9450d1b75d152581.png" alt="ORAS, OCI Registry as Storage (https://oras.land/)" title="ORAS, OCI Registry as Storage (https://oras.land/)" width="250" height="91" data-src="https://habrastorage.org/getpro/habr/upload_files/c82/fab/09e/c82fab09eee704de9450d1b75d152581.png">
+    <figcaption>
+     ORAS, OCI Registry as Storage (https://oras.land/)
+    </figcaption>
+   </figure>
+   <p>ORAS реализован на языке программирования Go. Мы можем заменить наши вызовы cURL для опроса манифеста и получить точно такой же JSON-ответ.</p>
+   <pre><code class="bash">oras manifest fetch "ghcr.io/homebrew/core/sqlite:3.40.1"
+oras manifest fetch "ghcr.io/homebrew/core/sqlite:3.40.1@sha256:ff58c21da5e58b82bae6e19207a8ec01e398a31512081e9b6560b2dec88c22da"</code></pre>
+   <p>Отдельная команда ORAS позволяет скачать все образы в текущий каталог.</p>
+   <pre><code class="bash">oras pull "ghcr.io/homebrew/core/sqlite:3.40.1"</code></pre>
+   <p>При помощи команды <code>oras push</code> можно загрузить данные с компьютера в образ контейнера, но наш токен должен иметь соответствующие разрешения для реестра контейнеров (это не очень сложно, см. <a href="https://oras.land/cli/1_pushing/" rel="noopener noreferrer nofollow">документацию</a>).</p>
+   <hr>
+   <p>Реестры контейнеров&nbsp;— популярный способ распространения больших файлов, использующий хорошо поддерживаемую Интернет‑инфраструктуру. Вы можете хранить там больше, чем просто программное обеспечение: файлы с&nbsp;параметрами моделей машинного обучения, обучающие наборы данных, и многое другое.</p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

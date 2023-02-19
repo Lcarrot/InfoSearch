@@ -1,0 +1,99 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Примерно год назад я начал работать с этой библиотекой, а теперь настолько к ней привык, что не представляю как без нее можно обходиться. Так как многие знакомые разработчики на Unity совершенно не верят моим восторженным отзывам, здесь я попробую на пальцах показать, как немного улучшить жизнь при работе с ежедневными задачами.</p>
+   <h2>Введение</h2>
+   <p>На Хабре есть два исчерпывающих туториала на тему реактивов в юнити: <a href="https://habr.com/ru/post/342660/" rel="noopener noreferrer nofollow">первая</a> и <a href="https://habr.com/ru/company/otus/blog/531306/" rel="noopener noreferrer nofollow">вторая</a>. Я же попробую ответить на вопрос «зачем, если можно все сделать событиями?»</p>
+   <h2>События</h2>
+   <p>Предположим, у игрока меняется здоровье и мана. А мы их все время показываем в UI.<br>Очевидный способ — подписка на события изменения этих самых здоровья и маны</p>
+   <pre><code class="cs">public void Init(Player player)
+{
+  _player = player;
+  _player.HealthChanged += SetHealth;
+  _player.ManaChanged += SetMana;
+}
+
+public void Dispose()
+{
+  _player.HealthChanged += SetHealth;
+  _player.ManaChanged += SetMana;
+}</code></pre>
+   <p>А сам Player будет выглядеть как-то так</p>
+   <pre><code class="cs">public class Player : IPlayer
+{
+  private int _health;
+  private int _mana;
+
+  public int Health =&gt; _health;
+  public int Mana =&gt; _mana;
+
+  public event Action&lt;int&gt; HealthChanged;
+  public event Action&lt;int&gt; ManaChanged;
+}</code></pre>
+   <p>А если мы захотим добавить для игрока интерфейс, то придем к такому варианту</p>
+   <pre><code class="cs">public interface IPlayer
+{
+  public int Health { get; }
+  public int Mana { get; }
+
+  public event Action&lt;int&gt; HealthChanged;
+  public event Action&lt;int&gt; ManaChanged;
+}</code></pre>
+   <p>В чем проблема? В том, что при росте данных для показа надо будет каждый раз спускаться до метода Dispose и не забывать отписываться, а также создавать на каждое значение свой метод. Ведь я даже не могу создать n одинаковых вьюшек для показа значений</p>
+   <h2>ReactiveProperty</h2>
+   <p>Чем же поможет в таком случае реактивное поле? Оно позволяет совершать подписку и отписку в одном и том же месте, хотя диспоузом все равно придется воспользоваться.</p>
+   <pre><code class="cs">private List&lt;IDisposable&gt; _disposables = new List&lt;IDisposable&gt;();
+
+public void Init(Player player)
+{
+  player.Health
+    //создаем подписку
+    .Subscribe(v =&gt; { _healthView.text = v.ToString(); })
+    //добавляем подпику в список очищаемых обьектов
+    .AddTo(_disposables);
+  player.Mana.Subscribe(v =&gt; { _manaView.text = v.ToString(); }).AddTo(_disposables);
+}
+        
+public void Dispose()
+{
+  foreach (var disposable in _disposables)
+  {
+    disposable.Dispose();
+  }
+  _disposables.Clear();
+}</code></pre>
+   <p>В чем прелесть? В том, что метод Subscribe, которым мы подписываемся на поток, возвращает IDisposable, а значит, мы можем сразу добавлять это в список, который потом будет очищаться. При этом можно не опасаться подписок c помощью лямбд.<br><br>Теперь можно глянуть на Player</p>
+   <pre><code class="cs">public class Player : IPlayer
+{
+  private ReactiveProperty&lt;int&gt; _health = new();
+  private ReactiveProperty&lt;int&gt; _mana = new();
+        
+  public IReadOnlyReactiveProperty&lt;int&gt; Health =&gt; _health;
+  public IReadOnlyReactiveProperty&lt;int&gt; Mana =&gt; _mana;
+}</code></pre>
+   <p>Так как ReactiveProperty&lt;T&gt; реализует интерфейс IReadOnlyReactiveProperty&lt;T&gt;, мы можем оставлять его торчащим наружу, не опасаясь непрошенных изменений.</p>
+   <h2>ReactiveCollection/ReactiveDictionary</h2>
+   <p>То же самое что и реактивные поля, но здесь надо отдельно подписываться на каждое событие, связанное с коллекцией.</p>
+   <pre><code class="cs">public void Init(IReadOnlyReactiveCollection&lt;Player&gt; players)
+{
+  players
+    //говорим, что хотим отслеживать
+    .ObserveAdd()
+    //подписываемся
+    .Subscribe(v =&gt; 
+    {
+      //работаем с добавленным элементом
+      Debug.Log(v.Value);
+    }).AddTo(_disposables);
+  players.ObserveRemove().Subscribe(v =&gt; { Debug.Log(v.Value); }).AddTo(_disposables);
+  players.ObserveReplace().Subscribe(v =&gt;
+  {
+    Debug.Log(v.OldValue);
+    Debug.Log(v.NewValue);
+  }).AddTo(_disposables);
+}</code></pre>
+   <h2>А как же «все есть поток»?</h2>
+   <p>UniRx позволяет превращать в поток множество вещей: инпут, цикл обновлений юнити, компоненты. А еще пропускать изменения, делать задержки и многие другие вещи (о многих из которых я даже не знаю). Но я хотел показать прелести каждодневного использования, а не увеличить когнитивную нагрузку. Думаю, желающие углубиться могут перейти по прикрепленным на туториалы ссылкам или пойти читать документацию.</p>
+  </div>
+ </div>
+</div> <!----> <!---->

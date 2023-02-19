@@ -1,0 +1,184 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Всем привет! Сегодня я собираюсь показать вам, как работать с Swift Regex, который был добавлен в Swift 5.7</p>
+   <h3>Как мы работали с регулярными выражениями до Swift Regex?</h3>
+   <p>До того как мы получили в свой арсенал Swift Regex, мы были вынуждены использовать следующее:</p>
+   <ol>
+    <li><p><a href="https://developer.apple.com/documentation/foundation/nsregularexpression"><em><u>NSRegularExpression</u></em></a></p></li>
+    <li><p>Методы, которые предоставляет NSString<br><em>・</em><a href="https://developer.apple.com/documentation/foundation/nsstring/1417348-range"><em><u>range(of:options:range:locale:)<br></u></em></a><em>・</em><a href="https://developer.apple.com/documentation/foundation/nsstring/1416484-replacingoccurrences"><em><u>replacingOccurrences(of:with:options:range:)<br></u></em></a>・и т.д. …</p></li>
+   </ol>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/810/7c0/39a/8107c039a635a4375329205aeb79f1d1.png" alt="Пример проверки формата {год}-{месяц{-{день}} с помощью NSRegularExpression." title="Пример проверки формата {год}-{месяц{-{день}} с помощью NSRegularExpression." width="724" height="419" data-src="https://habrastorage.org/getpro/habr/upload_files/810/7c0/39a/8107c039a635a4375329205aeb79f1d1.png">
+    <figcaption>
+     Пример проверки формата {год}-{месяц{-{день}} с помощью NSRegularExpression.
+    </figcaption>
+   </figure>
+   <p>Есть несколько причин, по которым я считаю, что <code>NSRegularExpression</code> — не самый удобный в использовании инструмент.</p>
+   <ol>
+    <li><p>Мы должны сразу использовать “try” уже только для создания инстанса класса <code>NSRegularExpression</code>, что непременно заставляет нас ожидать ситуации, когда возникают какие-либо ошибки.</p></li>
+    <li><p>Чтобы написать регулярное выражение, нам нужно использовать двойные escape-символы.</p></li>
+    <li><p>Чтобы получить финального решения, мы должны использовать NSRange и Range.</p></li>
+    <li><p>Чтобы получить результат, нам необходима опциональная привязка (которую я пропустил в примере выше).</p></li>
+   </ol>
+   <p>Но, к счастью, нам не нужно беспокоиться обо всем этом, если мы используем Swift Regex.</p>
+   <h3>В чем заключаются преимущества Swift Regex по сравнению со старыми способами?</h3>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/e76/136/62d/e7613662d06aa43987d9329b0b78fe12.png" alt="“Meet Swift Regex” 6:28." title="“Meet Swift Regex” 6:28." width="875" height="450" data-src="https://habrastorage.org/getpro/habr/upload_files/e76/136/62d/e7613662d06aa43987d9329b0b78fe12.png">
+    <figcaption>
+     “Meet Swift Regex” 6:28.
+    </figcaption>
+   </figure>
+   <h3>1. Литералы лаконичны; билдеры вносят структуру.</h3>
+   <p>Swift Regex выглядит более интуитивно понятным благодаря своим билдерам регулярных выражений (в особенности <code>resultBuilder</code>, который будет описан чуть позже).</p>
+   <p>Сравнение NSRegularExpression и Swift Regex:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/1ea/d76/844/1ead7684471274eceeed31c3f8bfaf07.png" width="724" height="419" data-src="https://habrastorage.org/getpro/habr/upload_files/1ea/d76/844/1ead7684471274eceeed31c3f8bfaf07.png">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/d3b/75b/4e1/d3b75b4e10481d82e95f52e829b55c4f.png" width="680" height="381" data-src="https://habrastorage.org/getpro/habr/upload_files/d3b/75b/4e1/d3b75b4e10481d82e95f52e829b55c4f.png">
+    <figcaption></figcaption>
+   </figure>
+   <h3>2. Реальные парсеры как части регулярных выражений</h3>
+   <p>Мы можем использовать уже существующие готовые парсеры <em>(т.е.</em><a href="https://developer.apple.com/documentation/foundation/date/parsestrategy"><em><u>Date.ParseStrategy</u></em></a><em>)</em>.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/cb7/b5c/cf5/cb7b5ccf5dc9f23d3711c087a47fa16a.png" alt="“Meet Swift Regex” 8:57." title="“Meet Swift Regex” 8:57." width="875" height="491" data-src="https://habrastorage.org/getpro/habr/upload_files/cb7/b5c/cf5/cb7b5ccf5dc9f23d3711c087a47fa16a.png">
+    <figcaption>
+     “Meet Swift Regex” 8:57.
+    </figcaption>
+   </figure>
+   <p>А также, мы можем использовать кастомные парсеры, если мы подготовим тип, соответствующий <a href="https://developer.apple.com/documentation/swift/customconsumingregexcomponent?changes=_1"><em><u>CustomConsumingRegexComponent</u></em></a><em>.</em></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/ec6/a88/b22/ec6a88b22f6d52751f6a40875917ba52.png" alt="Как соответствовать CustomConsumingRegexComponent." title="Как соответствовать CustomConsumingRegexComponent." width="681" height="400" data-src="https://habrastorage.org/getpro/habr/upload_files/ec6/a88/b22/ec6a88b22f6d52751f6a40875917ba52.png">
+    <figcaption>
+     Как соответствовать CustomConsumingRegexComponent.
+    </figcaption>
+   </figure>
+   <p><strong>3. Regex умеет в Unicode</strong></p>
+   <p>Были реализованы следующие две фичи:</p>
+   <p>i: Каноническая эквивалентность<br>ii: Расширенные кластеры графем и классы символов со строками</p>
+   <p><strong>4. Предсказуемое выполнение, очевидные элементы управления</strong></p>
+   <p>Если мы будем использовать Swift Regex, мы сможем воспользоваться подсказками среды разработки и уменьшить количество ошибок во время компиляции!</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f9c/bd8/84c/f9cbd884c53bf90dd0ba6c02687561ab.png" alt="К нам на помощь приходят подсказки среды разработки." title="К нам на помощь приходят подсказки среды разработки." width="875" height="175" data-src="https://habrastorage.org/getpro/habr/upload_files/f9c/bd8/84c/f9cbd884c53bf90dd0ba6c02687561ab.png">
+    <figcaption>
+     К нам на помощь приходят подсказки среды разработки.
+    </figcaption>
+   </figure>
+   <h2>Как работать со Swift Regex?</h2>
+   <p>В нашем распоряжении есть три способа его использования.</p>
+   <h4>1. Regex-литералы</h4>
+   <p>Мы можем писать очень лаконично. На самом деле, нам больше не нужно использовать двойные escape-символы и беспокоиться о do-catch, как при работе с <code>NSRegularExpression</code>.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f1b/0de/e15/f1b0dee154b4eea68ae10bd70b5dadb0.png" alt="Как использовать Regex-литералы." title="Как использовать Regex-литералы." width="513" height="229" data-src="https://habrastorage.org/getpro/habr/upload_files/f1b/0de/e15/f1b0dee154b4eea68ae10bd70b5dadb0.png">
+    <figcaption>
+     Как использовать Regex-литералы.
+    </figcaption>
+   </figure>
+   <h4>2. Run-time конструкции</h4>
+   <p>Эта фича может очень пригодится для полей поиска в редакторах или консольных утилит.</p>
+   <p>Если ввод <a href="https://developer.apple.com/documentation/swift/regex/init(_:)-52kg"><em><u>Regex.init(_:)</u></em></a><em> </em>окажется невалидным, то мы получим ошибку времени выполнения. Типом вывода будет <a href="https://developer.apple.com/documentation/swift/anyregexoutput?changes=_1"><em><u>AnyRegexOutput</u></em></a>. А значение мы можем извлечь следующим образом:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/172/5a7/80b/1725a780b3809e615e18ccb0404dd31f.png" alt="Как использовать Run-time конструкции." title="Как использовать Run-time конструкции." width="724" height="248" data-src="https://habrastorage.org/getpro/habr/upload_files/172/5a7/80b/1725a780b3809e615e18ccb0404dd31f.png">
+    <figcaption>
+     Как использовать Run-time конструкции.
+    </figcaption>
+   </figure>
+   <p>Мы можем извлечь результат с помощью <a href="https://developer.apple.com/documentation/swift/anyregexoutput/extractvalues(as:)?changes=la__7_2&amp;language=objc"><em><u>extractValues(as:)</u></em></a>, но я не смог получить значение, когда пробовал использовать в качестве входных данных <code>String.self</code>.</p>
+   <p>Если вам интересно, содержимое match.output было следующим:</p>
+   <pre><code>AnyRegexOutput(input: “2023–03–20”, _elements: [_StringProcessing.AnyRegexOutput.ElementRepresentation(optionalDepth: 0, content: Optional((range: Range(Swift.String.Index(_rawBits: 15)..&lt;Swift.String.Index(_rawBits: 655367)), value: nil)), name: nil, referenceID: nil)])</code></pre>
+   <h3>3. Regex-билдеры</h3>
+   <p>Лично я считаю, что это самая хорошо структурированная форма написания регулярных выражений, доступная в Swift.</p>
+   <p>Это также наиболее интуитивно понятная форма с точки зрения чтения. И, конечно же, нам больше не нужна куча всяких мелочей, необходимых для <code>NSRegularExpression</code></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/58b/5d4/855/58b5d4855170c1a56e76759ed83a7b82.png" alt="Как использовать Regex-билдеры" title="Как использовать Regex-билдеры" width="680" height="381" data-src="https://habrastorage.org/getpro/habr/upload_files/58b/5d4/855/58b5d4855170c1a56e76759ed83a7b82.png">
+    <figcaption>
+     Как использовать Regex-билдеры
+    </figcaption>
+   </figure>
+   <p>А причина, по которой мы можем писать Regex таким интуитивно понятным способом, — это <code>resultBuilder</code>. Ниже приведена его реализация:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/5a8/a6c/e2c/5a8a6ce2c7c01606da20706781f5af0b.png" alt="Как реализован Regex-билдер." title="Как реализован Regex-билдер." width="690" height="305" data-src="https://habrastorage.org/getpro/habr/upload_files/5a8/a6c/e2c/5a8a6ce2c7c01606da20706781f5af0b.png">
+    <figcaption>
+     Как реализован Regex-билдер.
+    </figcaption>
+   </figure>
+   <h3>Некоторые типы, которые мы можем использовать для создания Regex</h3>
+   <p>На сегодня мне осталось только показать вам некоторые типы, которые соответствуют <a href="https://developer.apple.com/documentation/swift/regexcomponent"><u>RegexComponent</u></a>. Мы можем использовать эти типы для создания инстансов Regex.</p>
+   <h3>One</h3>
+   <p>Это тип нужен, чтобы подтвердить, что во входных данных есть только одно вхождение указанного символа (то есть <code>date(:locale:timeZone:calendar:)</code> в примере ниже).</p>
+   <p>Если их 0 или более 2, содержание “match” будет <code>nil</code>.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/753/9c7/025/7539c7025322569e8916ed209f9f6a28.png" alt="Как использовать One." title="Как использовать One." width="875" height="323" data-src="https://habrastorage.org/getpro/habr/upload_files/753/9c7/025/7539c7025322569e8916ed209f9f6a28.png">
+    <figcaption>
+     Как использовать One.
+    </figcaption>
+   </figure>
+   <h4>ZeroOrMore</h4>
+   <p>Этот тип нужен, чтобы подтвердить, что нет других символов, кроме указанного. Таким образом, даже если указанных символов нет, все в порядке.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/e86/b56/7a3/e86b567a35d6844f1cf1538b6e562796.png" width="680" height="761" data-src="https://habrastorage.org/getpro/habr/upload_files/e86/b56/7a3/e86b567a35d6844f1cf1538b6e562796.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Как использовать ZeroOrMore.</p>
+   <h4>OneOrMore</h4>
+   <p>Это тип нужен, чтобы подтвердить, что существует более одного указанного символа. Таким образом, если нет указанных символов, содержимое “match” будет <code>nil</code>.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/5ff/a49/f94/5ffa49f942947cfcc903a5550be4ffde.png" alt="Как использовать OneOrMore." title="Как использовать OneOrMore." width="680" height="514" data-src="https://habrastorage.org/getpro/habr/upload_files/5ff/a49/f94/5ffa49f942947cfcc903a5550be4ffde.png">
+    <figcaption>
+     Как использовать OneOrMore.
+    </figcaption>
+   </figure>
+   <h4>Repeat</h4>
+   <p>Это тип, подтверждающий наличие указанного количества указанных символов.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/8df/7db/0e9/8df7db0e9d4742e50062bcef003fc924.png" alt="Как использовать Repeat." title="Как использовать Repeat." width="680" height="514" data-src="https://habrastorage.org/getpro/habr/upload_files/8df/7db/0e9/8df7db0e9d4742e50062bcef003fc924.png">
+    <figcaption>
+     Как использовать Repeat.
+    </figcaption>
+   </figure>
+   <h4>Capture</h4>
+   <p>Если мы воспользуемся Capture, мы сможем извлечь каждое значение из указанного ключа.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/79b/7db/266/79b7db2662bb5e0e861c6972364d8fcd.png" alt="Как использовать Capture вместе с Regex-билдерами." title="Как использовать Capture вместе с Regex-билдерами." width="750" height="438" data-src="https://habrastorage.org/getpro/habr/upload_files/79b/7db/266/79b7db2662bb5e0e861c6972364d8fcd.png">
+    <figcaption>
+     Как использовать Capture вместе с Regex-билдерами.
+    </figcaption>
+   </figure>
+   <p>Нам не нужно указывать тип каждого ключа, если мы используем Regex-литералы.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/258/b5d/25f/258b5d25fe5251762900f62e515f642c.png" alt="Как использовать Capture вместе с Regex-литералами." title="Как использовать Capture вместе с Regex-литералами." width="725" height="381" data-src="https://habrastorage.org/getpro/habr/upload_files/258/b5d/25f/258b5d25fe5251762900f62e515f642c.png">
+    <figcaption>
+     Как использовать Capture вместе с Regex-литералами.
+    </figcaption>
+   </figure>
+   <h4>TryCapture</h4>
+   <p>Если мы используем TryCapture, мы можем преобразовать захваченное значение и конвертировать его!</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/771/531/c91/771531c91719e79165e8cb948caac666.png" alt="Как использовать TryCapture." title="Как использовать TryCapture." width="800" height="438" data-src="https://habrastorage.org/getpro/habr/upload_files/771/531/c91/771531c91719e79165e8cb948caac666.png">
+    <figcaption>
+     Как использовать TryCapture.
+    </figcaption>
+   </figure>
+   <h3>Возможности Xcode</h3>
+   <p>Вы можете автоматически конвертировать Regex-билдеры в Regex-литералы, как показано ниже. Таким образом, даже если вы не знакомы с Regex-билдерами, то вам не о чем беспокоиться!</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/95e/ba5/3c0/95eba53c08ca056b9aa00bdcbd7e4cb8.gif" alt="Функция Xcode для преобразования Regex-билдеров." title="Функция Xcode для преобразования Regex-билдеров." width="1104" height="460" data-src="https://habrastorage.org/getpro/habr/upload_files/95e/ba5/3c0/95eba53c08ca056b9aa00bdcbd7e4cb8.gif">
+    <figcaption>
+     Функция Xcode для преобразования Regex-билдеров.
+    </figcaption>
+   </figure>
+   <h3>Ссылки</h3>
+   <ul>
+    <li><p><a href="https://developer.apple.com/videos/play/wwdc2022/110357/"><u>https://developer.apple.com/videos/play/wwdc2022/110357/</u></a></p></li>
+    <li><p><a href="https://speakerdeck.com/ainame/swift-5-dot-7debian-waruzheng-gui-biao-xian-woshi-sitemiyou"><u>https://speakerdeck.com/ainame/swift-5-dot-7debian-waruzheng-gui-biao-xian-woshi-sitemiyou</u></a></p></li>
+   </ul>
+   <hr>
+   <p>Сегодня состоится открытое занятие "Поддержка многоязычности в приложениях iOS".</p>
+   <p>На уроке начнем с того, как обстоят дела со стандартной локализацией строк в типовом проекте под iOS, какие проблемы могут встретится при разработке и тестирования приложения. Узнаем, как эти проблемы решаются инструментами кодогенерации SwiftGen, R.swift, поговорим о различиях и о том, как их настроить для строк. Узнаем, что такое плюрализм и как его использовать для того, чтобы перевод строк был менее топорным.</p>
+   <p>Обсудим инструмент Localinter как решение, позволяющее автоматизировать ревью строковых констант. Рассмотрим различные способы и платформы для профессиональных переводов строк. Под конец спикер даст еще полезной информации, куда копать в реализации многонациональных приложений с учетом региональных различий.</p>
+   <p>Записаться можно <a href="https://otus.pw/XT9w/">на странице курса iOS Developer. Professional.</a></p>
+  </div>
+ </div>
+</div> <!----> <!---->

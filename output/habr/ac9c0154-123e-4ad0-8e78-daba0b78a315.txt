@@ -1,0 +1,102 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Всем привет, сегодня я вам покажу и расскажу, как можно легко написать парсер для сбора лучших статей дня в виде json файла, в формате, "Название статьи": "ссылка". Кто не понял о каких лучших статьях дня я говорю, вот ссылка "<a href="https://habr.com/ru/top/daily/" rel="noopener noreferrer nofollow">https://habr.com/ru/top/daily/</a>".</p>
+   <p>Итак, библиотеки, которые будут нам нужны (вставляем в командную строку, либо в терминале или куда вам удобно):</p>
+   <pre><code class="powershell">pip install beautifulsoup4
+pip install requests
+pip install fake-useragent
+pip install lxml</code></pre>
+   <p>Инициализируем модули в наш заранее созданный проект, т.е. файл с расширением py.</p>
+   <pre><code class="python">from bs4 import BeautifulSoup
+import random
+import json
+import requests
+import datetime
+from fake_useragent import UserAgent</code></pre>
+   <p>Создаем переменную с модулем fake_useragent, чтобы мы могли потом использовать для генерации user-agent:</p>
+   <pre><code class="python">ua = UserAgent()</code></pre>
+   <p>Определяем заголовки (для того чтобы сервер сайта мог понять, как он должен отправить ответ, а также помогает серверу определить отправителя запроса)</p>
+   <pre><code class="python">headers = {
+    'accept': 'application/json, text/plain, */*',
+    'user-Agent': ua.google,
+}</code></pre>
+   <p>Создаем словарь, где будут храниться название и ссылка на каждую статью:</p>
+   <pre><code>article_dict = {}</code></pre>
+   <p>Создаем цикл для сбора со всех страниц, а не с одной (с 1 по 3, т.к. страниц с ссылками в день, как я понимаю всего 3).</p>
+   <pre><code>for i in range(1, 4):</code></pre>
+   <p>Указываем url c форматирование кода, где i - номер страницы, которое вставляться при каждом проходе цикла.</p>
+   <pre><code class="python">url = f'https://habr.com/ru/top/daily/page{i}/'</code></pre>
+   <p>Отправляем get запрос на сайт, указывая в первом аргументе - переменную с url сайта, во-втором заголовки. Атрибут text, нужен чтобы получить текстовое содержанием html страницы.</p>
+   <pre><code class="python">req = requests.get(url, headers=headers).text</code></pre>
+   <p>Теперь с помощью BeautifulSoup соберем весь html код страницы.</p>
+   <pre><code class="python">soup = BeautifulSoup(req, 'lxml')</code></pre>
+   <p>Если попробовать вывести такой код с помощью print(soup), выведется весь html код страницы.</p>
+   <p>Далее, используя наш "soup" созданный в прошлом шаге, с помощью метода find_all собираем все ссылки с помощью тега "a" в первом аргументе, во-втором, с помощью F12, ищем класс у всех ссылок наших статей, как мы видим это - tm-article-snippet__title-link.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/3ea/6be/e7f/3ea6bee7f24865d04aa634b568982491.png" alt="a - это тег, после точки - класс тега." title="a - это тег, после точки - класс тега." width="736" height="181" data-src="https://habrastorage.org/getpro/habr/upload_files/3ea/6be/e7f/3ea6bee7f24865d04aa634b568982491.png">
+    <figcaption>
+     a - это тег, после точки - класс тега.
+    </figcaption>
+   </figure>
+   <pre><code class="python">all_hrefs_articles = soup.find_all('a', class_='tm-article-snippet__title-link')</code></pre>
+   <p>Класс указывается с нижним подчеркиванием, т.к. это ключевое (зарезервированное) слово в Python.</p>
+   <p>Создаем еще один цикл, где мы будем проходиться по всем статьям собранных в переменной all_hrefs_articles.</p>
+   <p>В теге "a" с классом "tm-article-snippet__title-link" находится еще один тег "span" c нашими именами ссылок, получим его с помощью метода find.</p>
+   <pre><code class="python">article_name = article.find('span').text # собираем названия статей</code></pre>
+   <p>Теперь получим ссылку на статью, указываем что это f строка, и с помощью get запроса в скобочках получаем атрибут "href" - основной атрибут тега "a".</p>
+   <pre><code class="python">article_link = f'https://habr.com{article.get("href")}'</code></pre>
+   <p>Получается ссылка, например: "https://habr.com/ru/company/tinkoff/blog/715604/"</p>
+   <p>Теперь указываем пару ключ - значение для названия и ссылку на статью (для нашего словаря):</p>
+   <pre><code class="python">article_dict[article_name] = article_link</code></pre>
+   <p><strong>Выходим из обоих циклов.</strong> С помощью конструкции "with open" создаем файл articles_ + дата и время создания файла с помощью модуля datetime, который мы импортировали, файл создаем с расширением .json (ну мне так удобнее), следующее мы указываем 'w', что означает, что нужно создать файл с таким-то названием и вписать следующий код, который мы укажем внутри файла, также указываем кодировку " encoding ='utf-8' ", чтобы файл мог отобразить русские символы.</p>
+   <pre><code class="python">with open(f"articles_{datetime.datetime.now().strftime('%d_%m_%Y')}.json", "w", encoding='utf-8') as f: </code></pre>
+   <p>Создаем конструкцию try, except (если нет ошибок при парсинге, выводится try, если выводится ошибка при парсинге =&gt; except)</p>
+   <pre><code class="python">try:
+
+except:
+  </code></pre>
+   <p>В try, мы "говорим", чтобы в json файл отправлялись данные, 1 - словарь с нашими статьями , 2 - имя файла, куда отправлять данные (в открытии файла мы указали в конце его как f, чтобы с ним можно было работать), 3 - отступы (я сделал 4 для удобства чтения, можно указать свое), 4 - экранирование ASCII символов, и следующей строкой вывод, что статьи успешно были получены.</p>
+   <pre><code class="python">print('Статьи были успешно получены')</code></pre>
+   <p>В except, мы выводим, что статьи не удалось получить и нужно искать проблемы в коде.</p>
+   <pre><code class="python">print('Статьи не удалось получить')</code></pre>
+   <p>В конечном итоге, должно получиться что-то похожее:</p>
+   <pre><code class="python">from bs4 import BeautifulSoup
+import random
+import json
+import requests
+import datetime
+from fake_useragent import UserAgent
+
+ua = UserAgent()
+
+headers = {
+    'accept': 'application/json, text/plain, */*',
+    'user-Agent': ua.google,
+}
+
+article_dict = {}
+
+for i in range(1, 4):
+    url = f'https://habr.com/ru/top/daily/page{i}/'
+
+    req = requests.get(url, headers=headers).text
+
+    soup = BeautifulSoup(req, 'lxml')
+    all_hrefs_articles = soup.find_all('a', class_='tm-article-snippet__title-link') # получаем статьи
+
+    for article in all_hrefs_articles: # проходимся по статьям
+        article_name = article.find('span').text # собираем названия статей
+        article_link = f'https://habr.com{article.get("href")}' # ссылки на статьи
+        article_dict[article_name] = article_link
+
+with open(f"articles_{datetime.datetime.now().strftime('%d_%m_%Y')}.json", "w", encoding='utf-8') as f: 
+    try:    
+        json.dump(article_dict, f, indent=4, ensure_ascii=False)
+        print('Статьи были успешно получены')
+    except:
+        print('Статьи не удалось получить')</code></pre>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

@@ -1,0 +1,123 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Дело&nbsp;было вечером, делать&nbsp;было нечего ©</p>
+   <p>Как‑то вошкаясь в&nbsp;сети, я наткнулся на&nbsp;один проект, на&nbsp;который даже&nbsp;был патент. Проект связан с&nbsp;силовыми гироскопами и системой стабилизации, но&nbsp;сейчас немного не&nbsp;об&nbsp;этом речь. Для&nbsp;реализации этого изделия, как&nbsp;вы поняли, необходимы гироскопы. Я попытался найти готовое решение, потому как&nbsp;понимал, что&nbsp;большая сложность в&nbsp;изготовлении&nbsp;— балансировка маховика гироскопа. И, конечно&nbsp;же, я его не&nbsp;нашёл. В&nbsp;качестве мотора использовал бесколлекторный мотор, наподобие <a href="https://aliexpress.ru/item/32402074695.html?_ga=2.177756579.76523465.1645071466-1201457290.1586885480&amp;_gac=1.120094202.1644314164.Cj0KCQiAxoiQBhCRARIsAPsvo-zca-cLVLt8z5zK0DLQgRXer-U0BKpRgdoboCUfhdD4OQKtBi4o-7kaAiitEALw_wcB&amp;sku_id=58490013804&amp;spm=a2g39.orderlist.0.0.76b54aa6MbuLVE">этого</a>, да&nbsp;что&nbsp;уж говорить, именно его и выбрал для&nbsp;своих экспериментов. Выбор пал на&nbsp;него, по&nbsp;той причине, что&nbsp;маховик крепится не&nbsp;одним центральным винтом, а&nbsp;четырьмя небольшими винтам, расположенными по&nbsp;окружности.</p>
+   <p>Ну и нужен маховик.&nbsp;Быстренько нарисовал чертёж, отправил токарю, чутка подождал и получил готовое изделие.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/cad/086/70d/cad08670d0c44f45e496599758a74cad.png" width="950" height="765" data-src="https://habrastorage.org/getpro/habr/upload_files/cad/086/70d/cad08670d0c44f45e496599758a74cad.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Одно прикрутил у другому и получил вот такую незамысловатую конструкцию.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/3cb/eb7/626/3cbeb7626d20b763a14efed3c509ffe2.png" alt="Здесь стопка из 4-х маховиков и только к верхнему прикручен мотор" title="Здесь стопка из 4-х маховиков и только к верхнему прикручен мотор" width="681" height="553" data-src="https://habrastorage.org/getpro/habr/upload_files/3cb/eb7/626/3cbeb7626d20b763a14efed3c509ffe2.png">
+    <figcaption>
+     Здесь стопка из 4-х маховиков и только к верхнему прикручен мотор
+    </figcaption>
+   </figure>
+   <p>Осталось прикрутить к основанию, чтобы по столу эта штука весело и безмятежно не каталась.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/311/ee4/093/311ee4093c0bfef5da86fbf469a2e583.png" width="790" height="488" data-src="https://habrastorage.org/getpro/habr/upload_files/311/ee4/093/311ee4093c0bfef5da86fbf469a2e583.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>При&nbsp;запуске вся эта неведома конструкция неистово вибрирует, того и гляди&nbsp;— сейчас развалится. От&nbsp;этого становилось страшно и как‑то не&nbsp;по&nbsp;себе.&nbsp;Было решение собрать самодельный стенд для&nbsp;балансировки. Т.к. опыта разработки электроники и прошивок для&nbsp;контроллеров у&nbsp;меня крайне мало, т.&nbsp;е. по&nbsp;сути нет, то и пришлось информацию собирать в&nbsp;разных источниках.</p>
+   <p>Я примерно понимал как&nbsp;работает балансировочный станок‑ищем пик вибрации, запоминаем или&nbsp;как‑то указываем место, где этот пик&nbsp;был найден. Всё просто. В&nbsp;моём случае&nbsp;— буду использовать светодиод для&nbsp;подсветки «тяжёлого» места маховика.</p>
+   <p>В&nbsp;качестве датчика я решил использовать акселерометр. Начитался этих ваших интернетов и понял, что&nbsp;нужно использовать аналоговый акселерометр, например <a href="https://www.ozon.ru/product/modul-akselerometra-adxl-335-588040791/?sh=Jqc5y7QsGA">ADXL-335.</a> Связано с&nbsp;тем, что&nbsp;у&nbsp;цифровых на&nbsp;выходе стоят фильтры, а&nbsp;мне нужны прям сырые данные и обрабатывать я их хочу сам. Возможно, это не&nbsp;так. Если не&nbsp;так, поправьте. Кстати, частоту больше 400Гц этим акселерометром не&nbsp;измерить.</p>
+   <p>В&nbsp;качестве светодиода решил использовать <a href="https://www.ozon.ru/product/svetodiodnyy-modul-angar-pokupok-1-vt-ip20-belyy-10-sht-628205971/">1Вт светодиод</a>. Поставил его через ограничивающий ток резистор в 27Ом, с&nbsp;надеждой что&nbsp;ардуинка его (светодиод) вытянет по&nbsp;нагрузке. В&nbsp;принципе, она и вытянула, перебоев каких‑то не&nbsp;было.</p>
+   <p>В&nbsp;качестве контроллера взял платку с <a href="https://aliexpress.ru/item/1005004194405375.html">Arduino Nano.</a> Она недорогая и прикольно мелкая.</p>
+   <p>Сначала всё повесил на&nbsp;сопли на&nbsp;имеющийся кронштейн для&nbsp;проверки работоспособности всей идеи. Выглядело это довольно печально.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/db6/942/423/db6942423b45e94cd39dd7d84411c521.png" alt="На фото не видно светодиода, он висит отдельно на проводе и в кадр не попал." title="На фото не видно светодиода, он висит отдельно на проводе и в кадр не попал." width="1188" height="780" data-src="https://habrastorage.org/getpro/habr/upload_files/db6/942/423/db6942423b45e94cd39dd7d84411c521.png">
+    <figcaption>
+     На фото не видно светодиода, он висит отдельно на проводе и в кадр не попал.
+    </figcaption>
+   </figure>
+   <p>Собрал всё, решил посмотреть что там на выходе с акселерометра. А вот же что там, такая себе синусоида.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/3ef/ce1/52f/3efce152f9218da7b0688d7563bc1534.png" width="1228" height="958" data-src="https://habrastorage.org/getpro/habr/upload_files/3ef/ce1/52f/3efce152f9218da7b0688d7563bc1534.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Что&nbsp;я думал и как&nbsp;себе представлял. Пока буду находиться на&nbsp;вершине синусоиды&nbsp;— буду включать светодиод. Выглядело это для&nbsp;меня крайне логично и вполне работоспособно. Добавил потенциометр для&nbsp;регулировки «высоты» порога срабатывания</p>
+   <p>Написал вот такую коротенькую программу.</p>
+   <details class="spoiler">
+    <summary>Первая прошивка</summary>
+    <div class="spoiler__content">
+     <p><code>int axel = A0; // аналоговый акселерометр<br> int reg = A1; // потенциометр<br> int ledPin = 13; // светодиод</code></p>
+     <p><code>void setup() { pinMode(ledPin, OUTPUT);} //мегакоТ</code></p>
+     <p><code>void loop() {<br> if (analogRead(axel)&gt;analogRead(reg)) digitalWrite(ledPin, HIGH); //чтение. сравнение и включение светодиода<br> else digitalWrite(ledPin, LOW);// выключение светодиода<br> }</code></p>
+    </div>
+   </details>
+   <p>С предвкушением её залил в микроконтроллер и ничего не произошло. Иногда, можно было разглядеть метки на маховике, но это случайности были.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/2db/af4/76e/2dbaf476e73334c7de73adcf3b8bc996.png" width="1115" height="953" data-src="https://habrastorage.org/getpro/habr/upload_files/2db/af4/76e/2dbaf476e73334c7de73adcf3b8bc996.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Посоветовавшись с&nbsp;умными людьми я понял, что&nbsp;детектировать пик нужно более точно и однозначно, это первое, второе&nbsp;— длину импульса светодиода нужно задавать самостоятельно, а&nbsp;не&nbsp;как&nbsp;у&nbsp;меня&nbsp;было (длина подсветки зависит от&nbsp;частоты вращения и порога срабатывания). А&nbsp;ещё можно специальной магией увеличить скорость работы АЦП.</p>
+   <p>На&nbsp;основе этих изменений родилась прошивка 2. Ничего не&nbsp;придумывал, взял <a href="https://zetlab.com/podderzhka/vibratsionnyie-ispyitaniya/teoriya-vibroispyitaniy/vzaimosvyaz-uskoreniya-skorosti-i-peremeshheniya-pri-sinusoidalnoy-vibratsii/">готовые</a> формулы.</p>
+   <details class="spoiler">
+    <summary>Вторая прошивка</summary>
+    <div class="spoiler__content">
+     <p><code>int axel = A0 ; // аналоговый акселерометр<br>int ledPin =13 ; // светодиод</code></p>
+     <p><code>int minADC = 1023; // присваиваю начальное значение переменной<br> int maxADC = 0; // присваиваю начальное значение переменной<br> int nowADC = 0; // присваиваю начальное значение переменной<br> bool maxIsWorked = true; // присваиваю начальное значение переменной<br> bool minIsWorked = true; // присваиваю начальное значение переменной<br> uint32_t timer; // присваиваю тип переменой (целые числа)<br> float freq, ampV, A, S, V, m; // присваиваю тип переменой (числа с плавающей запятой)</code></p>
+     <p><code>void setup() {<br> pinMode(ledPin, OUTPUT); // ledpin будет выход<br> Serial.begin(2000000); // настройка скорости com порта<br> ADCSRA |= (1 &lt;&lt; ADPS2); // магия 1<br> ADCSRA &amp;= ~ ((1 &lt;&lt; ADPS1) | (1 &lt;&lt; ADPS0)); // магия 2<br> }</code></p>
+     <p><code>void loop() {<br> nowADC = 1023-analogRead(axel); //реверс сигнала, изменения направления оси</code></p>
+     <p><code>if (nowADC &gt; maxADC) {<br> maxADC = nowADC;<br> }<br> else if (nowADC &lt; minADC) {<br> minADC = nowADC;<br> }<br> else if (maxADC &gt; nowADC + 10 and minIsWorked) {</code></p>
+     <p><code>maxIsWorked = true;<br> minIsWorked = false;</code></p>
+     <p><code>//кусок выше - условия, при которых ищу пик на синусоиде</code></p>
+     <p><code>uint32_t nowTime = micros(); //записываю текущее время в мкс в переменную nowTime<br> Serial.println("xx");<br> freq=1000000 / (nowTime - timer); //вычисляю частоту сигнала с акселерометра, Гц<br> ampV=(maxADC-minADC)4.87;//вычисляю амплитуду сигнала, мВ A=ampV/3009.8;//вычисляю виброускорение в м/с^2<br> S=A25.35/freq/freq;//вычисляю виброперемещение, мм V=S0.63freq;//вычисляю виброскорость, мм/с m=8040.3V/(2.5freq*60); // вычисляю массу на радиусе 2 см, при массе всего ротора 300 г, пытался вычислить массу, которую необходимо убрать с маховика. не вышло</code></p>
+     <p><code>Serial.println(freq, 0);<br> Serial.println(ampV);<br> Serial.println(S, 3);<br> Serial.println(V);<br> Serial.println(m, 3);<br> Serial.println(" ");<br> timer = nowTime;<br> digitalWrite(ledPin, HIGH);<br> delayMicroseconds(12); //время свечения светодиода в мкс<br> digitalWrite(ledPin, LOW);<br> minADC = 1023;</code></p>
+     <p><code>//кусок выше - вывод данных в порт</code></p>
+     <p><code>}<br> else if (minADC &lt; nowADC - 10 and maxIsWorked) {<br> maxADC = 0;<br> maxIsWorked = false;<br> minIsWorked = true;<br> }<br> }</code></p>
+    </div>
+   </details>
+   <p>И только после этого случилось то, что случилось!</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/563/6aa/32d/5636aa32dd689405c56d9b728cc86021.png" width="1541" height="898" data-src="https://habrastorage.org/getpro/habr/upload_files/563/6aa/32d/5636aa32dd689405c56d9b728cc86021.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Т.к. балансировать необходимо не&nbsp;одно изделие, а&nbsp;несколько, то запилил настольный микростенд. <s>Нарисовал</s> спроектировал, напечатал на&nbsp;принтере и собрал.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/ebf/3a7/5d7/ebf3a75d78b5e1f11bc82091227e3990.png" width="1280" height="960" data-src="https://habrastorage.org/getpro/habr/upload_files/ebf/3a7/5d7/ebf3a75d78b5e1f11bc82091227e3990.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Поставил мотор с&nbsp;маховиком на&nbsp;стенд, разметил маховик, раскрутил, измерил виброкорость (именно по&nbsp;этому параметру решил оценивать вибрацию). Нашёл место для&nbsp;облегчения маховика.</p>
+   <p>Виброскорость до&nbsp;балансировки составляла 1,9&nbsp;мм/с.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/58d/9a3/3df/58d9a33df23418ff541d42d7306cb063.png" width="1215" height="761" data-src="https://habrastorage.org/getpro/habr/upload_files/58d/9a3/3df/58d9a33df23418ff541d42d7306cb063.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Найденное место, с&nbsp;которого необходимо снять материал (около девяточки).</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/aa7/476/6ec/aa74766ecaab49a2e1961848e8d0da6f.png" alt="" title="" width="524" height="581" data-src="https://habrastorage.org/getpro/habr/upload_files/aa7/476/6ec/aa74766ecaab49a2e1961848e8d0da6f.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Процесс удаления&nbsp;лишней массы. Магнит нужен для&nbsp;того, чтобы стружка не&nbsp;разлеталась в&nbsp;разные стороны и не&nbsp;попала в&nbsp;мотор, например.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/37e/0ab/612/37e0ab61294abdc5c1375555fa9f3bc5.png" width="1275" height="862" data-src="https://habrastorage.org/getpro/habr/upload_files/37e/0ab/612/37e0ab61294abdc5c1375555fa9f3bc5.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>После сверловки запускаю маховик и смотрю на&nbsp;сколько изменилась картина. Сверлю или&nbsp;дальше отверстие по&nbsp;глубине, или&nbsp;сверлю отверстие в&nbsp;другом месте.</p>
+   <p>В&nbsp;результате виброскорость упала до 0,6&nbsp;мм/с.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/ecd/32d/473/ecd32d4737a272fc0378afe9af9386d6.png" width="1250" height="785" data-src="https://habrastorage.org/getpro/habr/upload_files/ecd/32d/473/ecd32d4737a272fc0378afe9af9386d6.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Вы скажете, а&nbsp;можно&nbsp;ли уменьшить ещё. В&nbsp;данной работе мне это сделать меньше мне не&nbsp;удалось. Видимо, уже начинает сказываться качество подшипников, люфты, ретроградный Меркурий или&nbsp;иные воздействия. А&nbsp;я пробовал, пытался. В&nbsp;результате получается сыр.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/d76/b6c/b3a/d76b6cb3a04402bd89f2d078062f2105.png" width="1267" height="771" data-src="https://habrastorage.org/getpro/habr/upload_files/d76/b6c/b3a/d76b6cb3a04402bd89f2d078062f2105.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Но, этого результата мне более чем достаточно. Вибрация, конечно, есть, её ногтем можно ощутить, но&nbsp;корпус, с&nbsp;установленным мотором и маховиком уже не&nbsp;прыгает на&nbsp;столе и не&nbsp;разрушает сам себя.</p>
+   <p>В&nbsp;целом, можно&nbsp;было исследовать виброскорость на&nbsp;разных частотах, озадачиться измерением виброскоростей в&nbsp;двух опорах, как&nbsp;делают взрослые дяди на&nbsp;больших станках, для&nbsp;проведения более точной балансировки, но&nbsp;я добился того, что&nbsp;мне необходимо&nbsp;было в&nbsp;первом приближении и остановился на&nbsp;этом.</p>
+   <p>Ниже&nbsp;— немного другое представление информации, но&nbsp;там голые ножки и зима.</p>
+   <details class="spoiler">
+    <summary>18+</summary>
+    <div class="spoiler__content">
+     <div class="tm-iframe_temp" data-src="https://embedd.srv.habr.com/iframe/63e8f70b200df56fc1947a2e" data-style="" id="63e8f70b200df56fc1947a2e" width=""></div>
+     <p></p>
+    </div>
+   </details>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

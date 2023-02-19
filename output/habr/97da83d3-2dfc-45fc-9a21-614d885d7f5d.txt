@@ -1,0 +1,218 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Провайдер мобильного интернета обычно выдаёт каждому клиенту модем 4G и приставку для&nbsp;просмотра ТВ или&nbsp;потоковых сервисов. В&nbsp;компанию Zeus тоже прислали это устройство, но&nbsp;пользы с&nbsp;него никакой&nbsp;— телевизор здесь не&nbsp;смотрят. Зато очень нужны компьютеры с&nbsp;низким энергопотреблением, которые могут работать под&nbsp;Linux. Так появилась идея взломать эту телевизионную приставку, чтобы вместо Android TV запустить на&nbsp;ней Linux.</p>
+   <p>Пускай обычно провайдеры списывают эти приставки сразу&nbsp;же, как&nbsp;только выдают их клиентам, теоретически они всё&nbsp;же могут попросить вернуть оборудование. Поэтому мы решили, что&nbsp;после наших манипуляций приставка должна легко возвращаться к&nbsp;работе с&nbsp;исходным программным обеспечением. Это означает, что&nbsp;мы не&nbsp;можем вносить деструктивные изменения в&nbsp;конструкцию или&nbsp;перезаписывать важные части памяти устройства. Кроме того, должно работать самое важное оборудование приставки: Ethernet и HDMI.</p>
+   <p>Наша телевизионная приставка имеет порт Ethernet, порт USB, разъемы питания и HDMI. Также в&nbsp;ней есть ИК‑датчик для&nbsp;пульта ДУ и несколько светодиодов, показывающих состояние устройства. На&nbsp;этикетке приставки мы нашли <a href="https://www.askey.com.tw/products-detail/sti6030/"><u>адрес сайта производителя</u></a>. Тут всё понятно, провайдер работает по&nbsp;схеме «White Label»: покупает приставки у&nbsp;поставщика, маркирует своим брендом, добавляет собственные приложения, а&nbsp;затем передаёт эти устройства клиентам. Проведя небольшое исследование, мы выяснили, что&nbsp;никто ещё не&nbsp;пытался поставить на&nbsp;эти приставки другую операционную систему: это предстояло сделать нам.</p>
+   <p>Вскрыв приставку, мы осмотрели печатную плату (PCB) с&nbsp;маркировкой STI6160-D323-ROHS. К&nbsp;сожалению, большая часть интересных чипов находится под&nbsp;алюминиевой RF защитой, поэтому определить, какие именно чипы там находятся, сложновато. Один видимый чип помечен как&nbsp;KLM8G1GETF. Судя по&nbsp;всему, это чип памяти eMMC производства Samsung. Хорошо&nbsp;бы получить данные, хранящиеся на&nbsp;нем, чтобы понимать, как&nbsp;действовать дальше. Мы решили, что&nbsp;сделать это можно двумя способами:</p>
+   <ul>
+    <li><p>Выпаиваем чип eMMC, припаиваем его к&nbsp;другой плате и считываем оттуда данные. У&nbsp;меня есть некоторый опыт в&nbsp;этом деле, так что&nbsp;идея казалась рабочей. Однако, поскольку чип eMMC сидит на&nbsp;плате BGA (массив из&nbsp;шариков: в&nbsp;нижней части чипа расположены очень маленькие шарики припоя, которые соединяют чип с&nbsp;печатной платой), выпаять его очень сложно, и высока вероятность испортить микросхему.</p></li>
+    <li><p>Припаиваем провода к&nbsp;самой плате, подключаясь к&nbsp;дорожкам, которые использует чип. Нужно&nbsp;было припаять всего 5&nbsp;проводов, но&nbsp;сложно&nbsp;было определить, куда именно их припаивать. Для&nbsp;этого используется техника наложения изображения цоколевки микросхемы на&nbsp;фото печатной платы. К&nbsp;сожалению, даже таким методом нам не&nbsp;удалось найти правильные трассировки печатной платы.</p></li>
+   </ul>
+   <p>Оба подхода оказались сложными, так что&nbsp;дамп флэш‑памяти на&nbsp;данный момент показался нецелесообразным. К&nbsp;счастью, мы также обнаружили подозрительный незанятый 4-контактный разъем, который потенциально мог являться отладочным портом.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/8b4/dc2/bea/8b4dc2beadcb839f91ade19ba7dfdc64.png" alt="Части открытого устройства" title="Части открытого устройства" width="1600" height="1200" data-src="https://habrastorage.org/getpro/habr/upload_files/8b4/dc2/bea/8b4dc2beadcb839f91ade19ba7dfdc64.png">
+    <figcaption>
+     Части открытого устройства
+    </figcaption>
+   </figure>
+   <p>С&nbsp;помощью мультиметра в&nbsp;режиме прозвонки мы определили, какой пин отладочного порта заземлён.</p>
+   <p>Визуальный осмотр показал, что&nbsp;у&nbsp;порта есть контакт заземления, контакт питания (VCC) и два контакта ввода‑вывода, подключённые к&nbsp;чему‑то, похожему на&nbsp;главный процессор, подтянутые резистором высокого сопротивления, подключёнными к&nbsp;VCC.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/654/ad9/5b4/654ad95b4fe199cb55f93bc3111a2537.png" alt="Цветные PCB дорожки, ведущие к загадочному разъёму" title="Цветные PCB дорожки, ведущие к загадочному разъёму" width="1600" height="1200" data-src="https://habrastorage.org/getpro/habr/upload_files/654/ad9/5b4/654ad95b4fe199cb55f93bc3111a2537.png">
+    <figcaption>
+     Цветные PCB дорожки, ведущие к загадочному разъёму
+    </figcaption>
+   </figure>
+   <p>Затем мы припаяли провода (это смотрится не&nbsp;очень красиво, но&nbsp;работает) к&nbsp;порту и использовали дешёвый логический анализатор, чтобы увидеть, что&nbsp;происходит на&nbsp;контактах ввода‑вывода. Вот что&nbsp;происходит после загрузки устройства:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/de7/f7f/d4c/de7f7fd4c5f2a046629464ade9c59598.png" alt="Логический анализатор, подключенный к плате" title="Логический анализатор, подключенный к плате" width="1200" height="1600" data-src="https://habrastorage.org/getpro/habr/upload_files/de7/f7f/d4c/de7f7fd4c5f2a046629464ade9c59598.png">
+    <figcaption>
+     Логический анализатор, подключенный к плате
+    </figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/2f5/e6c/6c7/2f5e6c6c7bcb71c2f0d88a8cc55f9a14.png" alt="Скриншот с логического анализатора" title="Скриншот с логического анализатора" width="1600" height="667" data-src="https://habrastorage.org/getpro/habr/upload_files/2f5/e6c/6c7/2f5e6c6c7bcb71c2f0d88a8cc55f9a14.png">
+    <figcaption>
+     Скриншот с логического анализатора
+    </figcaption>
+   </figure>
+   <p>На&nbsp;скриншоте видно, что&nbsp;есть один контакт, на&nbsp;котором постоянно высокий уровень сигнала (из‑за резистора между ним и VCC), и один контакт, на&nbsp;котором есть сигналы. Эти сигналы выглядят последовательными, поэтому мы использовали декодер последовательного протокола для&nbsp;декодирования сигнала. Оказалось, что&nbsp;это действительно последовательные сигналы со скоростью передачи 115&nbsp;200&nbsp;бод. Из&nbsp;этого следует, что&nbsp;другой контакт, вероятно, является контактом RX (принимающим): он постоянно находится на&nbsp;высоком уровне, потому что&nbsp;мы ещё ничего не&nbsp;отправили.</p>
+   <p>Мы отсоединили логический анализатор от&nbsp;устройства, а&nbsp;затем подключили USB‑адаптер к&nbsp;последовательному порту, позаботившись о&nbsp;подключении TX адаптера к&nbsp;RX на&nbsp;плате и наоборот. Мы также обеспечили правильное напряжение, установив переключатель адаптера на 3,3&nbsp;В (не хотелось&nbsp;бы случайно взорвать порт отладки).</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/47c/95f/41f/47c95f41f54d755cdabbae8aa2e649bc.png" alt="Последовательный адаптер, подключенный к плате" title="Последовательный адаптер, подключенный к плате" width="1600" height="1200" data-src="https://habrastorage.org/getpro/habr/upload_files/47c/95f/41f/47c95f41f54d755cdabbae8aa2e649bc.png">
+    <figcaption>
+     Последовательный адаптер, подключенный к плате
+    </figcaption>
+   </figure>
+   <p>После запуска устройства на&nbsp;последовательную консоль вывелось большое количество текста. Вот небольшая часть:</p>
+   <pre><code>G12A:BL:0253b8:61aa2d;FEAT:F2F839B2:32060;POC:F;RCY:0;EMMC:0;READ:0;5.0;5.0;
+
+...
+
+BL2 Built : 06:41:45, Feb 19 2020. g12a g9a5414b - jenkins@walle02-sh
+
+...
+
+LPDDR4_PHY_V_0_1_21-Built : 20:05:08, Jan 10 2020. g12a g3576a48 - zhiguang.ouyang@droid07-sz
+
+...
+
+[Image: g12a_v1.1.3482-c90792be1 2020-06-12 19:52:03 wencai.you@droid11-sz]
+
+...
+
+U-Boot 2015.01 (Sep 09 2021 - 15:53:17)
+
+...
+
+Filesystem: FAT12 "KEYBOX PART"
+
+gpio: pin GPIOAO_3 (gpio 3) value is 1
+
+Command: bcb uboot-command&nbsp;
+
+Start read misc partition datas!
+
+BCB hasn't any datas,exit!
+
+s_version: U-Boot 2015.01
+
+amlkey_init() enter!
+
+amlkey_init() 71: already init!
+
+[EFUSE_MSG]keynum is 4
+
+[KM]Error:f[key_manage_query_size]L515:key[oemkey] not programed yet
+
+Interface:&nbsp; MMC
+
+&nbsp;&nbsp;Device 1: Vendor: Man 000015 Snr 4baa48a1 Rev: 0.6 Prod: 8GTF4R
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Removable Hard Disk
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Capacity: 7456.0 MB = 7.2 GB (15269888 x 512)
+
+Filesystem: FAT12 "KEYBOX PART"
+
+Hit Enter or space or Ctrl+C key to stop autoboot -- :&nbsp; 0&nbsp;
+
+pll tsensor avg: 0x1dfe, u_efuse: 0x64
+
+temp1: 24
+
+ddr tsensor avg: 0x1e10, u_efuse: 0x50
+
+temp2: 24
+
+device cool done
+
+…
+
+Этот журнал загрузки содержит массу информации: даты сборки, имена пользователей и названия хостов компьютеров разработчиков, но, самое главное, строку “Hit Enter or space or Ctrl+C key to stop autoboot -- : 0” (Нажмите Enter, или Пробел, или Ctrl+C для остановки автозагрузки -- : 0). Если спамить Enter во время загрузки устройства, это действительно останавливает автозагрузку и сбрасывает нас в своего рода оболочку:
+
+Filesystem: FAT12 "KEYBOX PART"
+
+Hit Enter or space or Ctrl+C key to stop autoboot -- :&nbsp; 0&nbsp;
+
+g12a_u212_v1#
+
+g12a_u212_v1#
+
+g12a_u212_v1#
+
+g12a_u212_v1#help
+
+? &nbsp; &nbsp; &nbsp; - alias for 'help'
+
+aml_sysrecovery- Burning with amlogic format package from partition sysrecovery
+
+amlmmc&nbsp; - AMLMMC sub system
+
+amlnf &nbsp; - aml mtd nand sub-system
+
+autoscr - run script from memory
+
+…</code></pre>
+   <p>Теперь понятно, что&nbsp;мы имеем дело с&nbsp;uBoot, популярным загрузчиком с&nbsp;открытым исходным кодом. Производители аппаратного обеспечения почти никогда не&nbsp;используют uBoot без&nbsp;модификаций, так что&nbsp;имеет смысл проверить версию загрузчика и другую информацию:</p>
+   <pre><code>g12a_u212_v1#version
+U-Boot 2015.01 (Sep 09 2021 - 15:53:17)
+aarch64-none-elf-gcc (crosstool-NG linaro-1.13.1-4.8-2013.11 - Linaro GCC 2013.10) 4.8.3 20131111 (prerelease)
+GNU ld (crosstool-NG linaro-1.13.1-4.8-2013.11 - Linaro GCC 2013.10) 2.23.2.20130610 Linaro 2013.10-4</code></pre>
+   <p>Далее нам нужно сделать дамп памяти eMMC. В&nbsp;uBoot есть команда mmc, которая(среди прочего) может делать следующее:</p>
+   <pre><code>g12a_u212_v1#mmc help
+mmc - MMC sub system</code></pre>
+   <p>Использование:</p>
+   <pre><code>mmc info - display info of the current MMC device
+mmc read addr blk# cnt
+mmc write addr blk# cnt</code></pre>
+   <p>Мы использовали подкоманду <code>mmc read</code>, которая принимает адрес памяти, куда будут помещаться входные данные, номер блока, с&nbsp;которого они будут начинаться, и количество блоков для&nbsp;чтения. После того, как&nbsp;данные будут отображены в&nbsp;памяти, нам нужно их извлечь. Сначала мы попробовали команду md.b (отображение байтов памяти). Эта команда берет адрес и количество байтов и выводит их на&nbsp;последовательную консоль в&nbsp;виде шестнадцатеричного дампа. Этот процесс можно автоматизировать с&nbsp;помощью скрипта Python для&nbsp;считывания всей микросхемы памяти eMMC ёмкостью 8&nbsp;ГБ. К&nbsp;сожалению, этот подход оказался слишком медленным: грубые подсчеты показали, что&nbsp;для&nbsp;полного переноса всей памяти потребуется около 49&nbsp;дней.</p>
+   <p>К&nbsp;счастью, мы нашли ещё одну команду: <code>fatwrite</code>. Она запишет память в&nbsp;файл в&nbsp;файловой системе FAT. В&nbsp;приставке также есть порт USB, куда можно подключить карту памяти. Используя комбинацию mmc read и fatwrite, мы начали делать дамп памяти eMMC. Это тоже оказалось небыстро, процесс занял ~ 4&nbsp;дня. Команда <code>fatwrite</code><em> </em>была заменена на <code>usb write</code>, которая сняла нагрузку с&nbsp;файловой системы и напрямую сбрасывала данные на&nbsp;диск, байт за&nbsp;байтом.</p>
+   <p>Имея на&nbsp;руках резервную копию eMMC, можно смело переходить к&nbsp;попытке запустить Linux на&nbsp;приставке. Проверка дампа eMMC показала, что&nbsp;плата имеет эталонный дизайн U212&nbsp;с&nbsp;четырехъядерным процессором Amlogic S905×2&nbsp;ARM Cortex‑A53&nbsp;SoC.</p>
+   <p>Нам удалось найти репозиторий <a href="https://github.com/ophub/amlogic-s9xxx-armbian/"><u>amlogic‑s9xxx‑armbian на&nbsp;GitHub</u></a>. Эта версия Armbian специально сделана для&nbsp;чипа нашего устройства; нам повезло, что&nbsp;кто‑то уже потрудился и избавил нас от&nbsp;лишней работы. Armbian&nbsp;— это дистрибутив на&nbsp;основе Debian, специально предназначенный для&nbsp;чипов ARM (здесь ARM относится к&nbsp;набору инструкций ЦП; на&nbsp;большинстве ноутбуков этот набор инструкций&nbsp;— x86).</p>
+   <p>Чтобы заставить всё это работать, снова пришлось пройти тернистый путь. Критически важную информацию мы получили из <a href="https://7ji.github.io/embedded/2022/11/11/amlogic-booting.html"><u>поста в&nbsp;блоге 7Ji</u></a>, где описывается, как&nbsp;работает процесс загрузки на&nbsp;устройствах Amlogic. Стало ясно, что&nbsp;мы не&nbsp;сможем напрямую загрузить Linux из&nbsp;загрузчика, поставляемого с&nbsp;устройством. Сначала нужно будет загрузить его через загрузчик, которым мы управляем (это нужно, чтобы избавиться от&nbsp;странной конфигурации/кода поставщика). Это называется цепной загрузкой. Мы использовали один из&nbsp;загрузчиков, поставляемых с&nbsp;версией Armbian для&nbsp;чипа S905×2.</p>
+   <p>Мы выполняли цепную загрузку, сначала помещая загрузчик в&nbsp;память, а&nbsp;потом перейдя к&nbsp;нему.</p>
+   <pre><code>g12a_u212_v1#fatload usb 0:1 0x1000000 u-boot-s905x2-s922.bin
+740080 bytes read in 104 ms (6.8 MiB/s)
+g12a_u212_v1#go 0x1000000
+## Starting application at 0x01000000 ...
+U-Boot 2015.01-dirty (Aug 14 2020 - 19:56:34)
+DRAM:&nbsp; 2 GiB
+Relocation Offset is: 76eec000
+...
+odroidn2#</code></pre>
+   <p>Это запускает второй загрузчик и переводит нас в&nbsp;другую оболочку (с odroid2&nbsp;в&nbsp;качестве Shell Prompt, что&nbsp;является ещё одним одноплатным компьютером). Отсюда мы хотим загрузиться в&nbsp;Linux. Для&nbsp;этого нам понадобятся четыре вещи:</p>
+   <ul>
+    <li><p>Ядро Linux</p></li>
+    <li><p>Очень простой объект файловой системы под&nbsp;названием INITRD (Inital RAM Disk). Он содержит исходные файлы, необходимые для&nbsp;продолжения процесса загрузки.</p></li>
+    <li><p>Аргументы ядра. Тут всё стандартно.</p></li>
+    <li><p>Файл FDT (Flattened Device Tree или&nbsp;плоское дерево устройств). Этот файл описывает оборудование и используется ядром Linux для&nbsp;загрузки драйверов и настройки оборудования.</p></li>
+   </ul>
+   <p>Первые два предоставлены проектом Armbian, но&nbsp;FDT специфичен для&nbsp;платы и, похоже, ещё недоступен для&nbsp;основной версии Linux. Когда мы сбросили память eMMC, то нашли Device Tree Blob, что&nbsp;характерно для&nbsp;Android. Ядро Linux, используемое версией Android TV в&nbsp;приставке,&nbsp;было форкнуто из&nbsp;основной версии, чтобы включить поддержку аппаратного обеспечения. Эти изменения&nbsp;были внесены в&nbsp;версию&nbsp;Линуса Торвальдса не&nbsp;поставщиком оборудования, а&nbsp;другими разработчиками, что&nbsp;привело к&nbsp;несовместимости DTB Android и DTB основной версии Linux.</p>
+   <p>Чтобы исправить это, мы использовали&nbsp;быстрый и грязный хак: пробовали разные Device Tree Blob для&nbsp;других похожих плат, пока устройство не&nbsp;загрузилось и не&nbsp;получило необходимую аппаратную поддержку. В&nbsp;итоге подошёл блоб meson‑g12a‑sei510.dtb. Затем загрузка происходила так:</p>
+   <pre><code>fatload usb 0:1 0x11000000 uEnv.txt
+env import -t &nbsp; 0x11000000
+fatload usb 0:1 0x10000000 ${FDT}
+fatload usb 0:1 0x11000000 ${LINUX}
+fatload usb 0:1 0x13000000 ${INITRD}
+setenv bootargs ${APPEND}
+booti 0x11000000 0x13000000 0x10000000
+Со следующим содержанием uEnv.txt:
+LINUX=/zImage
+INITRD=/uInitrd
+FDT=/dtb/amlogic/meson-g12a-sei510.dtb
+APPEND=root=UUID=26bc1f8b-a9c1-4f86-91a9-c6c2b529f402 rootflags=data=writeback rw rootfstype=ext4 console=ttyAML0,115200n8 console=tty0 no_console_suspend consoleblank=0 fsck.fix=yes fsck.repair=yes net.ifnames=0 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory swapaccount=1</code></pre>
+   <p>Это загрузило нас в&nbsp;работающую оболочку Linux с&nbsp;работающими Ethernet и HDMI! Мы даже смогли установить XFCE, чтобы получить графическую оболочку.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/ad9/eb2/0cf/ad9eb20cf0db84f2258057f8cbb27288.png" width="1600" height="1200" data-src="https://habrastorage.org/getpro/habr/upload_files/ad9/eb2/0cf/ad9eb20cf0db84f2258057f8cbb27288.png">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/805/e1d/f85/805e1df853b65caa3362e48d1e2f039a.png" width="1600" height="1200" data-src="https://habrastorage.org/getpro/habr/upload_files/805/e1d/f85/805e1df853b65caa3362e48d1e2f039a.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Мы ещё не&nbsp;заставили встроенный чипсет Wi‑Fi работать, но&nbsp;это нормально, так как&nbsp;этот блок, скорее всего, и так будет использоваться с&nbsp;Ethernet.</p>
+   <p>Напоследок осталось добиться автоматической загрузки Linux при&nbsp;вставке USB‑накопителя: на&nbsp;данный момент загрузка Linux требует, чтобы сначала&nbsp;был загружен вторичный загрузчик, а&nbsp;затем уже выполняется запуск ядра. И то, и другое происходит интерактивно на&nbsp;последовательной консоли, что&nbsp;раздражает, потому что&nbsp;тогда мы не&nbsp;можем снова закрыть устройство.</p>
+   <p>Для&nbsp;автоматической загрузки во&nbsp;вторичный загрузчик мы изменили переменные среды, записанные в&nbsp;хранилище eMMC; это единственная запись, которую мы сделали в&nbsp;хранилище eMMC. Первоначально переменная окружения bootcmd содержала команду run storeboot, запускающую процесс загрузки Android:</p>
+   <pre><code>g12a_u212_v1#defenv
+g12a_u212_v1#setenv bootcmd 'usb start &amp;&amp; if fatload usb 0:1 0x1000000 u-boot-s905x2-s922.bin; then go 0x1000000; else run storeboot; fi'
+g12a_u212_v1#saveenv
+reboot</code></pre>
+   <p>Теперь вторичный загрузчик загружается автоматически, если это возможно. Мы попытались использовать файл конфигурации extlinux для&nbsp;автоматической загрузки Linux; extlinux.conf имеет очень простой формат конфигурации, в&nbsp;котором вы указываете ядро, initramfs, аргументы и дерево устройств; затем загрузчик выполняет остальную работу по&nbsp;загрузке устройства.</p>
+   <p>К&nbsp;сожалению, из‑за ошибки во&nbsp;вторичном загрузчике обработчик конфигурации extlinux сломался, поэтому автоматическая загрузка не&nbsp;работала. Мы также не&nbsp;нашли способ передачи команд от&nbsp;первого загрузчика ко второму. В&nbsp;сообщении блога 7Ji о&nbsp;загрузчике упоминается, что&nbsp;если на&nbsp;USB‑накопителе есть файл с&nbsp;именем boot.scr или&nbsp;aml_autoscript, он будет автоматически выполнен. Оказалось, что&nbsp;это не&nbsp;так: на&nbsp;самом деле есть команда boot_attempt, которая выполняет эти скрипты на&nbsp;любом хранилище, которое может найти, но&nbsp;она не&nbsp;выполняется командой bootcmd.</p>
+   <p>Нам не&nbsp;хотелось перекомпилировать загрузчик, поэтому мы пропатчили его шестнадцатеричным редактором. Новая команда короче старой, поэтому мы заполнили остальные части пробелами.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/388/0a5/c04/3880a5c04449f14cb89816afd1cb7237.png" width="1600" height="900" data-src="https://habrastorage.org/getpro/habr/upload_files/388/0a5/c04/3880a5c04449f14cb89816afd1cb7237.png">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/7a0/d33/00c/7a0d3300c61d8dbf27774d6f9f7764f3.png" width="1600" height="900" data-src="https://habrastorage.org/getpro/habr/upload_files/7a0/d33/00c/7a0d3300c61d8dbf27774d6f9f7764f3.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Теперь мы достигли всех наших целей: приставка автоматически загружается в&nbsp;Linux с&nbsp;поддержкой Ethernet и HDMI. Исходная установка Android по‑прежнему загружается, если не&nbsp;вставлен специальный USB‑накопитель.</p>
+   <p>Если остались вопросы, автор готов на&nbsp;них ответить и просит смело к&nbsp;нему обращаться&nbsp;— j(СОБАКА)zeus(ТОЧКА)ugent.be</p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

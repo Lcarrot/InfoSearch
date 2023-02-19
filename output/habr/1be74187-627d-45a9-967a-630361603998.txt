@@ -1,0 +1,129 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f1f/3c2/38c/f1f3c238c99c9bc534d15653eafee760.png" width="1590" height="1037" data-src="https://habrastorage.org/getpro/habr/upload_files/f1f/3c2/38c/f1f3c238c99c9bc534d15653eafee760.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Данная статья является вольным переводом статьи на <a href="https://medium.com/@AleksanderLutken/chatgpt-api-python-30ca187e2aef" rel="noopener noreferrer nofollow">medium.com</a>, плюсом от себя реализация API ChatGPT в Телеграм боте.</p>
+   <p>Тема как написать телеграм бота уже довольно тривиальная, статей в интернете полно, поэтому тут я затронул это дело не так глубоко, ниже выложу ссылки на исходный код, разобраться будет не сложно. Основным мотивом написания статьи послужил тот факт, что <a href="https://chat.openai.com/chat" rel="noopener noreferrer nofollow">ChatGPT</a> не доступен в ряде стран, в том числе в России, и хотелось сделать его по настоящему общедоступным.</p>
+   <p>Готовый/работающий телеграм бот ChatGPT <a href="https://t.me/ChatGPT_ForTelegramBot" rel="noopener noreferrer nofollow">доступен</a> <a href="https://t.me/ChatGPT_ForTelegramBot" rel="noopener noreferrer nofollow">тут</a>.</p>
+   <p>На вопрос "Кто ты?" сама нейросеть отвечает примерно следующее "Я - ChatGPT, крупнейшая языковая модель, созданная OpenAI. Я разработана для обработки естественного языка и могу помочь вам ответить на вопросы, обсудить темы или предоставить информацию на различные темы".</p>
+   <p>Другими словами, по моему субъективному мнению нейросеть затачивается в первую очередь для поддержки разговора, в идеале показать, что там сидит живой человек, а не обученная AI модель. Поэтому когда будете играть с чатом не забывайте об этом, не следует ожидать от чата достоверных и точных данных, или глубокого смысла, сейчас она не об этом, пока еще не об этом.</p>
+   <p>Итак, как получить доступ к сервису <a href="https://chat.openai.com/chat" rel="noopener noreferrer nofollow">ChatGPT</a> из запрещенных стран написано в статье на <a href="https://habr.com/ru/post/704600/" rel="noopener noreferrer nofollow">хабре</a>, хочу обратить ваше внимание, что будет необходимо сперва создать gmail почту с подтверждением по СМС на иностранный номер телефона, затем при регистрации на сайте ChatGPT также подтвердить номер телефона по СМС, и эти два номера телефона совсем не обязательно должны быть одинаковыми, поэтому сервисы по продаже номеров мобильных телефонов на одну смс вполне годятся.</p>
+   <p><strong>Установка пакета</strong></p>
+   <p>Сперва устанавливаем необходимый пакет в python:</p>
+   <pre><code class="python"># Install openai 
+pip install openai 
+
+# Import Library 
+import openai  </code></pre>
+   <p>Подробнее об API OpenAI можно прочитать в документации:</p>
+   <p><a href="https://platform.openai.com/docs/api-reference/introduction" rel="noopener noreferrer nofollow">https://beta.openai.com/docs/api-reference/introduction</a></p>
+   <p>Получаем API ключ</p>
+   <p>Сгенерировать API ключ можно после регистрации на сайте по адресу:</p>
+   <p><a href="https://beta.openai.com/account/api-keys" rel="noopener noreferrer nofollow">https://beta.openai.com/account/api-keys</a></p>
+   <pre><code class="python"># Предоставляем ключ API 
+openai.api_key = "Your_Key"</code></pre>
+   <p><strong>Выбираем обученную модель</strong></p>
+   <p>Выбираем обученную модель, а именно “text-davinci-003”, она является самой мощной моделью GPT-3 и обучалась на данных до июня 2021 года. Узнать больше о различных моделях Вы можете здесь:</p>
+   <p><a href="https://beta.openai.com/docs/models/gpt-3" rel="noopener noreferrer nofollow">https://beta.openai.com/docs/models/gpt-3</a></p>
+   <pre><code class="python"># Выбираем обученную модель
+engine="text-davinci-003" </code></pre>
+   <p><strong>Проверяем модель</strong></p>
+   <p>Протестируем модель! Начнем с того, что попросим ChatGPT назвать лучшую Python библиотеку по машинному обучению:</p>
+   <pre><code class="python"># Запрос 
+prompt = "Назови лучшую Python библиотеку по машинному обучению" 
+
+# Модель 
+completion = openai.Completion.create(engine=engine, 
+                                      prompt=prompt, 
+                                      temperature=0.5, 
+                                      max_tokens=1000) </code></pre>
+   <p>Код выше указывает использовать модель “text-davinci-003”, с температурой 0,5. Температура представляет собой число от 0 до 1. Меньшее число означает более четко определенный ответ, в то время как большее число позволяет модели брать на себя больший риск. Ответ будет выглядеть примерно так:</p>
+   <pre><code class="python"># Выводим ответ 
+print(completion)  </code></pre>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/05e/095/206/05e0952062d5af8aae9a648e3681d90d.png" width="1024" height="683" data-src="https://habrastorage.org/getpro/habr/upload_files/05e/095/206/05e0952062d5af8aae9a648e3681d90d.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Выводим только текст ответа:</p>
+   <pre><code class="python"># Печатаем только текст ответа
+print( completion.choices[0]['text'] )
+У меня был такой ответ:
+Scikit-learn.</code></pre>
+   <p>Идем дальше! Как насчет того, чтобы прописывать вопрос в терминале и там же получать ответ:</p>
+   <pre><code class="python">prompt = str(input())
+completion = openai.Completion.create(engine=engine,
+                                      prompt=prompt,
+                                      temperature=0.5,
+                                      max_tokens=1000)
+                                      print('\nОтвет:')
+print( completion.choices[0]['text'] )</code></pre>
+   <p>Собственно в коде выше после запуска, скрипт ждет ввода данных из-за функции input(). Ответ будет получен только после ввода запроса.</p>
+   <h2>Оборачиваем код в функцию</h2>
+   <p>Для удобства, обернем полученный код Python в простую функцию:</p>
+   <pre><code class="python"># Функция для ChatGPT
+def ask(prompt):
+    completion = openai.Completion.create(engine="text-davinci-003", 
+                                          prompt=prompt, 
+                                          temperature=0.5, 
+                                          max_tokens=1000)
+    print( 'Вопрос:', prompt )
+    print( '\nОтвет:' )
+    print( completion.choices[0]['text'] )</code></pre>
+   <p>Теперь все, что Вам нужно сделать, это написать свой вопрос в функции «ask()».</p>
+   <pre><code class="python">ask('самая красивая женщина на земле')
+# Ответ
+# На земле нет одной самой красивой женщины. Красота и прелесть относятся к индивидуальным вкусам и предпочтениям.</code></pre>
+   <p>Как видим API ChatGPT прост в использовании, но имейте в виду, что ответы, которые он дает, не всегда на 100% верны.</p>
+   <h2>Прикручиваем API ChatGPT к телеграм боту</h2>
+   <p>Исходники телеграм бота выложил в <a href="https://github.com/ViktorAllayarov/ChatGPT_telegram_bot" rel="noopener noreferrer nofollow">гитхаб репозиторий.</a></p>
+   <p>Для создания телеграм бота нам понадобится токен, который мы можем получить у <a href="https://t.me/BotFather" rel="noopener noreferrer nofollow">BotFather</a>. Там же можно задать название бота, изображение и описание.</p>
+   <p>Клонируем репозиторий:</p>
+   <pre><code class="bash">git clone git@github.com:ViktorAllayarov/ChatGPT_telegram_bot.git
+
+# переходим в папку с проектом
+cd ChatGPT_telegram_bot</code></pre>
+   <p>Далее создаем локальное виртуальное окружение:</p>
+   <pre><code>python3 -m venv env
+# или
+py -3.10 -m venv env</code></pre>
+   <p>Переходим в виртуальное окружение и обновляем пакетный менеджер pip:</p>
+   <pre><code># для Linux/macOS
+source env/bin/activate
+
+для Windows
+source env/scripts/activate
+
+далее обновляем pip
+python -m pip install --upgrade pip
+
+устанавливаем все зависимости
+pip install -r requirements.txt</code></pre>
+   <p>В файле main.py есть кусок кода, который тянет переменные среды окружения, с помощью библиотеки <code>dotenv</code>:</p>
+   <pre><code class="python">env = {
+    **dotenv_values(".env.prod"),
+    **dotenv_values(".env.dev"),  # override
+}
+openai.api_key = env["API_KEY_CHATGPT"]
+bot = telebot.TeleBot(env["TG_BOT_TOKEN"])
+db_link = env["DB_LINK"]</code></pre>
+   <p>поэтому нам необходимо создать файл&nbsp;<code>.env.prod</code> или&nbsp;<code>.env.dev</code> (или оба файла) и задать там необходимые переменные&nbsp;</p>
+   <pre><code class="powershell"># файл .env.prod
+API ключ CHATGPT
+API_KEY_CHATGPT=
+# токен телеграм бота
+TG_BOT_TOKEN=
+# ссылка на БД SQLite3,
+# файл базы создастся в корне проекта
+# при первом запросе в боте
+# база записывает всех пользователей, которые пользуются ботом
+DB_LINK=db.db</code></pre>
+   <p>Теперь можно запустить проект:</p>
+   <pre><code class="python">python main.py</code></pre>
+   <p>Надеюсь, что эта статья была интересной и полезной, спасибо, что посетили ее на этом сайте.</p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->
