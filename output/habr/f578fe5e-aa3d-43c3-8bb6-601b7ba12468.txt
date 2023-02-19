@@ -1,0 +1,158 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/d78/40a/ac3/d7840aac30e383af3259cca28ac947a5.png" width="780" height="439" data-src="https://habrastorage.org/getpro/habr/upload_files/d78/40a/ac3/d7840aac30e383af3259cca28ac947a5.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Kubernetes пожалуй является самым распространенным средством оркестрации контейнеризированных приложений. С&nbsp;его помощью можно автоматизировать развертывание, масштабирование и координацию работы с&nbsp;контейнером в&nbsp;условиях кластера. Благодаря этим свойствам Kubernetes (который также называют k8s) существенно сокращает время сборки, поставки и масштабирования контейнерных приложений.</p>
+   <p>Одним из&nbsp;замечательных свойств контейнеров k8s является их неизменяемость, то есть, если мы закрываем контейнер, то вся информация, хранящаяся в&nbsp;нем теряется. Это очень удобно для&nbsp;всевозможных тестовых и учебных сред, решений типа «песочница» и аналогичных. Суть сводится к&nbsp;тому, что&nbsp;что&nbsp;бы мы не&nbsp;делали с&nbsp;контейнером, после его закрытия все будет уничтожено. Мы можем запустить подозрительный файл в&nbsp;контейнере не&nbsp;опасаясь за&nbsp;последствия (если конечно у&nbsp;нас правильно настроено монтирование) и через пару минут уничтожить этот контейнер, также без&nbsp;последствий.</p>
+   <p>Однако существует также еще масса приложений, таких как&nbsp;базы данных, для&nbsp;которых требуется сохранение результатов работы контейнера, проще говоря, требуется постоянное хранилище. В&nbsp;этой статье мы подробно рассмотрим работу с&nbsp;постоянными хранилищами в&nbsp;Kubernetes.</p>
+   <h2>Что такое хранилище в K8s</h2>
+   <p>Для&nbsp;работы с&nbsp;постоянными томами в&nbsp;Kubernetes имеются объекты API позволяющие на&nbsp;постоянной основе выделять ресурсы хранения и управлять ими. Начнем с&nbsp;подсистемы Persistent Volumes (PV).</p>
+   <p>Данная подсистема позволяет создавать ресурс хранения, который не&nbsp;зависит от&nbsp;того, какой модуль использует его. Использование PV гарантирует, что&nbsp;хранилище останется постоянным. При&nbsp;этом PV могут&nbsp;быть динамически предоставлены с&nbsp;помощью классов хранилища (о них мы поговорим чуть дальше), а&nbsp;могут&nbsp;быть подготовлены администраторами вручную. Например, если у&nbsp;вас имеется несколько физических хранилищ, допустим&nbsp;быстрые SSD диски и медленные HDD. Тогда мы можем создать два PV и в&nbsp;зависимости от&nbsp;выполняемых приложениями задач выделять подам с&nbsp;соответствующими контейнерами место в&nbsp;этих томах. При&nbsp;этом стоит заметить, что&nbsp;Kubernetes умеет работать с&nbsp;множеством различных томов, такими как&nbsp;NFS, iSCSI, Fibre Channel и другими.</p>
+   <p>Еще одно понятие k8s, которое нам необходимо для&nbsp;работы с&nbsp;хранилищами это StorageClass (SC). С&nbsp;помощью SC можно описать классы хранения, которые предлагают хранилища. Как&nbsp;уже упоминалось, хранилища могут отличаться по&nbsp;скорости, по&nbsp;политикам бэкапа,&nbsp;либо какими‑то еще произвольными политиками. Каждый StorageClass содержит поля provisioner, parameters и reclaimPolicy, которые используются, чтобы динамически создавать PersistentVolume.</p>
+   <p>В&nbsp;качестве примера создадим Local Persistent Volume&nbsp;— хранилище Kubernetes на&nbsp;локальных дисках. Для&nbsp;промышленной эксплуатации это, наверное, не&nbsp;самая лучшая идея, а&nbsp;вот для&nbsp;разработки в&nbsp;контейнерах и отладки вполне подойдет.</p>
+   <p>Сначала объявим StorageClass в файле sc.yaml:</p>
+   <p><code>kind: StorageClass</code></p>
+   <p><code>apiVersion: storage.k8s.io/v1</code></p>
+   <p><code>metadata:</code></p>
+   <p><code>&nbsp; name: mystorage</code></p>
+   <p><code>provisioner: kubernetes.io/no-provisioner</code></p>
+   <p><code>volumeBindingMode: WaitForFirstConsumer</code></p>
+   <p>Обратите внимание на&nbsp;значение параметра provisioner&nbsp;— no provisioner. В&nbsp;k8s отсутствует встроенный провизионер для&nbsp;создания локальных хранилищ.</p>
+   <p>Применим созданный файл настроек.</p>
+   <p><code># kubectl apply -f sc.yaml</code></p>
+   <p>&nbsp;</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/d1f/e05/0bb/d1fe050bbeac9db28921bf3f7f77a0cb.png" width="805" height="83" data-src="https://habrastorage.org/getpro/habr/upload_files/d1f/e05/0bb/d1fe050bbeac9db28921bf3f7f77a0cb.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Далее нам необходимо создать Persistent Volume которое будет использовать ресурсы нашего локального хранилища. Для&nbsp;этого создадим файл pvlocal-1.yaml с&nbsp;описанием PV, который будет располагаться на&nbsp;сервере node-1&nbsp;в /mnt/local‑storage. Естественно, этот каталог должен&nbsp;быть создан на&nbsp;данном сервере.</p>
+   <p><code>apiVersion: v1</code></p>
+   <p><code>kind: PersistentVolume</code></p>
+   <p><code>metadata:</code></p>
+   <p><code>&nbsp; name: node-1</code></p>
+   <p><code>spec:</code></p>
+   <p><code>&nbsp; capacity:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; storage: 10Gi</code></p>
+   <p><code>&nbsp; volumeMode: Filesystem</code></p>
+   <p><code>&nbsp; accessModes:</code></p>
+   <p><code>&nbsp; - ReadWriteOnce</code></p>
+   <p><code>&nbsp; persistentVolumeReclaimPolicy: Retain</code></p>
+   <p><code>&nbsp; storageClassName: local-storage</code></p>
+   <p><code>&nbsp; local:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; path: /mnt/local-storage</code></p>
+   <p><code>&nbsp; nodeAffinity:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; required:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nodeSelectorTerms:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - matchExpressions:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - key: kubernetes.io/hostname</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; operator: In</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; values:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - kub-node-1</code></p>
+   <p>Мы создали Persistent Volume в&nbsp;нашем Kubernetes, далее посмотрим, как&nbsp;можно использовать данное хранилище.</p>
+   <p>Также применим созданный файл.</p>
+   <p><code># kubectl apply -f pvlocal.yaml</code></p>
+   <p>&nbsp;</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c74/50f/77e/c7450f77ebb72ab0659564c8513746dd.png" width="608" height="67" data-src="https://habrastorage.org/getpro/habr/upload_files/c74/50f/77e/c7450f77ebb72ab0659564c8513746dd.png">
+    <figcaption></figcaption>
+   </figure>
+   <h2>PersistentVolumeClaim</h2>
+   <p>Теперь, когда мы создали PV мы можем попробовать воспользоваться его ресурсами. Пользователь может сам запросить у&nbsp;PV ресурсы для&nbsp;хранения данных. Такая подсистема называется PersistentVolumeClaim (PVC). При&nbsp;этом важно понимать, что&nbsp;PVC может потреблять только тот ресурс PV, который соответствует требованиям к&nbsp;его размеру и режимам доступа. Если соответствующий PV доступен, он привязывается к&nbsp;PVC. В&nbsp;противном случае Kubernetes динамически подготавливает PV (если это технически возможно) или&nbsp;запрос завершается ошибкой. Обычно запрашивают следующие параметры: требуемый объем хранилища pvc и тип доступа.</p>
+   <p>Типы доступа у&nbsp;PVC могут&nbsp;быть следующие:</p>
+   <ul>
+    <li><p>ReadWriteOnce&nbsp;— том может&nbsp;быть смонтирован на&nbsp;чтение и запись к&nbsp;одному поду.</p></li>
+    <li><p>ReadOnlyMany&nbsp;— том может&nbsp;быть смонтирован на&nbsp;много подов в&nbsp;режиме только чтения.</p></li>
+    <li><p>ReadWriteMany&nbsp;— том может&nbsp;быть смонтирован к&nbsp;множеству подов в&nbsp;режиме чтения и записи.</p></li>
+   </ul>
+   <p>По&nbsp;поводу технических возможностей стоит отметить, что&nbsp;ограничения по&nbsp;типу доступа могут зависеть и от&nbsp;типа хранилища. Так, к&nbsp;примеру на&nbsp;iSCSI нельзя использовать ReadWriteMany.</p>
+   <p>Довольно теории, вернемся к&nbsp;нашему PV и рассмотрим пример запроса PVC c 2Гб и типом доступа ReadWriteOnce.</p>
+   <p><code>---</code></p>
+   <p><code>kind: PersistentVolumeClaim</code></p>
+   <p><code>apiVersion: v1</code></p>
+   <p><code>metadata:</code></p>
+   <p><code>&nbsp; name: mypvc</code></p>
+   <p><code>spec:</code></p>
+   <p><code>&nbsp; accessModes:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; - ReadWriteOnce</code></p>
+   <p><code>&nbsp; volumeMode: Filesystem</code></p>
+   <p><code>&nbsp; resources:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; requests:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; storage: 2Gi</code></p>
+   <p>Сохраняемся в файле pvc.yaml и применяем данный файл с помощью команды:</p>
+   <p><code>kubectl apply -f pvc.yaml</code></p>
+   <p>И посмотрим, результат:</p>
+   <p><code># kubectl get pvc</code></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/e3e/000/f9c/e3e000f9c7d5b9678dc0b592ab56d251.png" width="974" height="100" data-src="https://habrastorage.org/getpro/habr/upload_files/e3e/000/f9c/e3e000f9c7d5b9678dc0b592ab56d251.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Как&nbsp;видно, запрашиваемое PVC на 2&nbsp;Гигабайта нам успешно выделили. Теперь необходимо проверить работу нашего хранилища, для&nbsp;этого мы создадим сначала один под&nbsp;использующий pvc, в&nbsp;нем создадим текстовый файл. Затем немного поправив описание создадим второй под, использующий этот&nbsp;же PVC и убедимся в&nbsp;доступности в&nbsp;нем созданного файла.</p>
+   <p>Наши поды будут запускать /bin/bash и делать довольно продолжительную паузу. Для&nbsp;этого сначала создаем файл pod‑pvc.yaml следующего содержания:</p>
+   <p><code>kind: Pod</code></p>
+   <p><code>apiVersion: v1</code></p>
+   <p><code>metadata:</code></p>
+   <p><code>&nbsp; name: pod-pvc</code></p>
+   <p><code>spec:</code></p>
+   <p><code>&nbsp; containers:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; - name: app</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; image: alpine</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; volumeMounts:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - name: mystorage</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mountPath: /mnt</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; command: ["/bin/sh"]</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; args: ["-c", "sleep 100000"]</code></p>
+   <p><code>&nbsp; volumes:</code></p>
+   <p><code>&nbsp; - name: mystorage</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; persistentVolumeClaim:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; claimName: mypvc</code></p>
+   <p>Создадим наш под с помощью следующей команды:</p>
+   <p><code># kubectl apply -f pod-pvc.yaml</code></p>
+   <p>Для проверки&nbsp; работы нашего Local Persistent Volume мы создадим текстовый файл.</p>
+   <p><code># kubectl exec -it pod-pvc sh</code></p>
+   <p><code># echo "test file created" &gt;&gt; /mnt/local.txt</code></p>
+   <p>Теперь немного поправим наш файл для создания пода: поменяем значение name на pod-pvc2 и применим его с помощью kubectl.</p>
+   <p><code>kind: Pod</code></p>
+   <p><code>apiVersion: v1</code></p>
+   <p><code>metadata:</code></p>
+   <p><code>&nbsp; name: pod-pvc2</code></p>
+   <p><code>spec:</code></p>
+   <p><code>&nbsp; containers:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; - name: app</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; image: alpine</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; volumeMounts:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - name: mystorage</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mountPath: /mnt</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; command: ["/bin/sh"]</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; args: ["-c", "sleep 100000"]</code></p>
+   <p><code>&nbsp; volumes:</code></p>
+   <p><code>&nbsp; - name: mystorage</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; persistentVolumeClaim:</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; claimName: mypvc</code></p>
+   <p>и</p>
+   <p><code># kubectl apply -f pod-pvc.yaml</code></p>
+   <p>Посмотрим, как себя чувствуют наши поды:</p>
+   <p><code># kubectl get pod</code></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/b79/4a0/ce3/b794a0ce34869bcfefffa2a11efe5a43.png" width="806" height="147" data-src="https://habrastorage.org/getpro/habr/upload_files/b79/4a0/ce3/b794a0ce34869bcfefffa2a11efe5a43.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Зайдем на pod-pvc2 и посмотрим содержимое /mnt/local.txt</p>
+   <p><code># kubectl exec -it pod-pvc2 sh</code></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/354/c55/6b3/354c556b308a6c53e45268e0a8ada763.png" width="974" height="63" data-src="https://habrastorage.org/getpro/habr/upload_files/354/c55/6b3/354c556b308a6c53e45268e0a8ada763.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Как видно файл и его содержимое на месте.</p>
+   <h2>Заключение</h2>
+   <p>В&nbsp;этой статье мы рассмотрели основные моменты, связанные с&nbsp;созданием постоянных хранилищ в&nbsp;Kubernetes. Теперь вы можете без&nbsp;проблем использовать Persistent Volumes для&nbsp;своих приложений в&nbsp;K8s.</p>
+   <p>Также хочу пригласить всех на <a href="https://otus.pw/R8OU7/">бесплатный урок</a>, в&nbsp;рамках которого изучим тонкости архитектурного устройства kubernetes, поговорим о&nbsp;концепциях data и control plane и подробнее остановимся на&nbsp;ключевом компоненте&nbsp;— etcd и алгоритме консенсуса raft.</p>
+   <ul>
+    <li><p><a href="https://otus.pw/R8OU7/">Зарегистрироваться на бесплатный урок</a></p></li>
+   </ul>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

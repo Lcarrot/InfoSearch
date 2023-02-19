@@ -1,0 +1,366 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Продолжаем серию статей про установку Deckhouse в разные окружения. Мы уже рассказывали <a href="https://habr.com/ru/company/flant/blog/707422/"><u>про развертывание в Yandex Cloud</u></a>. Эта статья посвящена установке платформы в закрытое окружение, когда у машин, на которых разворачивается кластер, нет доступа в Интернет.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/0c9/4f2/344/0c94f2344041a8f6f3b8ef24468d1cf7.png" width="1878" height="1080" data-src="https://habrastorage.org/getpro/habr/upload_files/0c9/4f2/344/0c94f2344041a8f6f3b8ef24468d1cf7.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Установка Deckhouse в закрытое окружение почти не отличается от установки на bare metal. Главные особенности:</p>
+   <ul>
+    <li><p>Чтобы предоставить приложениям доступ в Интернет в закрытом контуре, нужно явно указать параметры прокси-сервера <a href="https://deckhouse.ru/documentation/v1/installing/configuration.html#parameters-proxy"><u>в конфигурации кластера</u></a>.</p></li>
+    <li><p>Для обновлений или подключения дополнительных компонентов кластера необходимо <a href="https://deckhouse.ru/documentation/latest/installing/configuration.html#initconfiguration-deckhouse-imagesrepo"><u>указать адрес</u></a> развернутого хранилища с образами контейнеров Deckhouse, прописав в случае необходимости <a href="https://deckhouse.ru/documentation/latest/installing/configuration.html#initconfiguration-deckhouse-registrydockercfg"><u>параметры прав доступа</u></a>.</p></li>
+   </ul>
+   <p>Рассмотрим все необходимые этапы по порядку.</p>
+   <h2>Исходные данные и требования к установке</h2>
+   <p>Пример схемы развертывания Deckhouse в закрытом контуре с прокси-сервером:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/72a/d24/a03/72ad24a03767ae5228070d6a556d859d.png" width="1600" height="827" data-src="https://habrastorage.org/getpro/habr/upload_files/72a/d24/a03/72ad24a03767ae5228070d6a556d859d.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Здесь между сетью Интернет и будущим кластером поднят прокси-сервер, через который предоставляется доступ к репозиториям пакетов ОС. Через этот же прокси-сервер можно открыть доступ в Интернет для приложений, настроив соответствующие параметры в конфигурации кластера. Однако использование прокси-сервера — не обязательное условие: кластер может работать и в полностью изолированном контуре.</p>
+   <p>Также внутри закрытого контура нужно организовать хранилище образов Docker, в котором разместятся образы Deckhouse и образы контейнеров будущих приложений.</p>
+   <h2>Требования</h2>
+   <p>Для установки Deckhouse понадобятся персональный компьютер, а также два сервера (или ВМ).</p>
+   <p>Требования к ПК:</p>
+   <ul>
+    <li><p>ОС Ubuntu 18.04+, Fedora 35+, Windows 10+ или macOS 10.15+;</p></li>
+    <li><p>Docker для запуска инсталлятора Deckhouse (см. инструкции по установке для <a href="https://docs.docker.com/engine/install/ubuntu/"><u>Ubuntu</u></a>, <a href="https://docs.docker.com/desktop/mac/install/"><u>macOS</u></a>, <a href="https://docs.docker.com/desktop/windows/install/"><u>Windows</u></a>);</p></li>
+    <li><p>SSH-доступ по ключу к master-узлу будущего кластера;</p></li>
+    <li><p>доступ к развернутому хранилищу с образами контейнеров Deckhouse;</p></li>
+    <li><p><a href="https://github.com/google/go-containerregistry/blob/main/cmd/crane/README.md"><u>crane</u></a>, jq.</p></li>
+   </ul>
+   <p>Требования к серверу или ВМ для master-узла:</p>
+   <ul>
+    <li><p>4 ядра CPU;</p></li>
+    <li><p>8 Гб RAM;</p></li>
+    <li><p>не менее 40 Гб на диске;</p></li>
+    <li><p>установленная ОС (<a href="https://deckhouse.ru/documentation/v1/supported_versions.html"><u>на выбор</u></a>);</p></li>
+    <li><p>доступ к развернутому хранилищу с образами контейнеров Deckhouse;</p></li>
+    <li><p>доступ к прокси-серверу для скачивания deb/rpm-пакетов ОС (при необходимости);</p></li>
+    <li><p>SSH-доступ от персонального компьютера (см. п.1) по ключу;</p></li>
+    <li><p>на узле не должно быть установлено пакетов container runtime, например containerd или Docker.</p></li>
+   </ul>
+   <p>Также нужен сервер или ВМ для развертывания хранилища образов Deckhouse и образов приложений.</p>
+   <h2>Установка container registry</h2>
+   <p>В качестве container registry будем использовать <a href="https://goharbor.io/"><u>Harbor</u></a> — популярный Open Source-инструмент, с помощью которого можно развернуть self-hosted хранилище Docker-образов.</p>
+   <h3>Подготовка машины</h3>
+   <p><a href="https://goharbor.io/docs/2.7.0/install-config/"><u>В официальной документации</u></a> разработчики Harbor рекомендуют следующие минимальные характеристики машины для хранилища:</p>
+   <ul>
+    <li><p>2 ядра CPU;</p></li>
+    <li><p>4 Гб RAM;</p></li>
+    <li><p>40 Гб на жестком диске.</p></li>
+   </ul>
+   <p><em>Рекомендуемые требования: 4 ядра, 8 Гб оперативной памяти и 160 Гб на жестком диске.</em></p>
+   <p>Для тестов возьмем машину с минимальными требованиями, установленной Ubuntu 22.04 и без прямого доступа к Интернету.&nbsp;</p>
+   <p>Помимо требований к «железу» в документации указаны также и требования к установленному ПО:</p>
+   <ul>
+    <li><p>Docker Engine 17.06.0+;</p></li>
+    <li><p>Docker Compose;</p></li>
+    <li><p>OpenSSL (желательно последней доступной версии).</p></li>
+   </ul>
+   <p>Для установки софта требуется доступ к репозиториям пакетов дистрибутива. Временно предоставим его через поднятый прокси-сервер.</p>
+   <p><em>Настройка прокси или NAT в этой статье не рассматривается, потому что выходит за ее рамки. К тому же это процесс зависит от инфраструктуры, на которой разворачивается Deckhouse</em>.</p>
+   <h4>Установка Docker Engine</h4>
+   <p>Подключимся по SSH к машине и добавим новый репозиторий в <code>/etc/sources.list</code>:</p>
+   <pre><code>sudo apt update
+sudo apt install \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release</code></pre>
+   <p>Добавим GPG-ключи репозитория:</p>
+   <pre><code>sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg</code></pre>
+   <p>Подключим новый репозиторий:</p>
+   <pre><code class="bash">echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null</code></pre>
+   <p>Установим последнюю версию Docker Engine:</p>
+   <pre><code>sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin</code></pre>
+   <p>Убедимся, что Docker Engine работает:</p>
+   <pre><code>sudo docker run hello-world</code></pre>
+   <p>Если все прошло успешно, будет запущен тестовый контейнер, который выведет сообщение <code>Hello from Docker!</code>.</p>
+   <h4>Установка Docker Compose</h4>
+   <p>Установим docker-compose командой:</p>
+   <pre><code>sudo apt install docker-compose</code></pre>
+   <h4>Установка OpenSSL</h4>
+   <p>Скорее всего, последняя версия OpenSSL уже установлена в системе. Если нет, выполним команду:</p>
+   <pre><code>sudo apt install openssl</code></pre>
+   <h3>Установка Harbor</h3>
+   <p>Harbor поддерживает установку двумя способами — онлайн и офлайн. У обоих схожий принцип. Но поскольку мы уже настроили доступ в Интернет на время подготовки машины к установке, воспользуемся первым вариантом.</p>
+   <p>В соответствии <a href="https://goharbor.io/docs/2.7.0/install-config/download-installer/"><u>с официальной документацией</u></a> скачиваем с GitHub <a href="https://github.com/goharbor/harbor/releases"><u>последний актуальный релиз</u></a> (на момент написания статьи это v2.5.5):</p>
+   <pre><code>$ curl -OL https://github.com/goharbor/harbor/releases/download/v2.5.5/harbor-online-installer-v2.5.5.tgz</code></pre>
+   <p><em>Ключ </em><strong><em>L</em></strong><em> нужен для того, чтобы curl прошел по всем редиректам, которые будет предлагать ему GitHub. Если попытаться просто скачать файл (только ключ </em><strong><em>-O</em></strong><em>), велика вероятность, что он окажется пустым.</em></p>
+   <p>Распаковываем установщик:</p>
+   <pre><code>$ tar -xzvf ./harbor-online-installer-v2.5.5.tgz
+harbor/prepare
+harbor/LICENSE
+harbor/install.sh
+harbor/common.sh
+harbor/harbor.yml.tmpl</code></pre>
+   <h4>Настройка перед установкой</h4>
+   <p>Harbor настраивается в файле <code>harbor.yml</code>. В распакованном архиве есть его шаблон с расширением <code>*.tmpl</code>, в котором уже заданы рекомендуемые параметры.&nbsp;</p>
+   <p>Переименуем шаблон в <code>harbor.yml</code> и отредактируем нужные параметры<strong>:</strong></p>
+   <pre><code>$ mv ./harbor.yml.tmpl ./harbor.yml
+$ vim ./harbor.yml</code></pre>
+   <p>На что следует обратить внимание:</p>
+   <ul>
+    <li><p><code>HTTPS</code> — важен, если хранилище используется в production. Для настройки поддержки HTTPS необходимо <a href="https://goharbor.io/docs/2.7.0/install-config/configure-https/"><u>добавить соответствующие сертификаты</u></a>. В нашем случае можно обойтись без него, поэтому закомментируем эти строки.</p></li>
+    <li><p><code>hostname</code> —&nbsp;имя хоста хранилища образов. Это может быть как доменное имя, так и IP-адрес.</p></li>
+    <li><p><code>harbor_admin_password</code> —&nbsp;пароль администратора для входа в систему.</p></li>
+   </ul>
+   <h4>Установка</h4>
+   <p>Запускаем установку командой:</p>
+   <pre><code>sudo ./install.sh</code></pre>
+   <p>Установщик скачает все необходимые для работы Harbor образы и запустит сервис. Если все прошло успешно, в конце лога будет сообщение <code>✔ ----Harbor has been installed and started successfully.----</code>.</p>
+   <p>Откроем браузер на машине, с которой будет разворачиваться Deckhouse, и перейдем по адресу машины, на которой развернут Harbor.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/24b/220/568/24b220568a9ebe7e9f3c801815f22dd3.png" alt="Страница входа в Harbor" title="Страница входа в Harbor" width="1600" height="851" data-src="https://habrastorage.org/getpro/habr/upload_files/24b/220/568/24b220568a9ebe7e9f3c801815f22dd3.png">
+    <figcaption>
+     Страница входа в Harbor
+    </figcaption>
+   </figure>
+   <p>Теперь переходим к установке платформы.</p>
+   <h2>Установка Deckhouse</h2>
+   <h3>Получение образов Deckhouse</h3>
+   <p>Для работы с Deckhouse необходим доступ к образам контейнеров, которые нужны для его работы. Получить доступ можно двумя способами:&nbsp;</p>
+   <ul>
+    <li><p>Настроить Proxy Cache в Harbor. В этом режиме он будет работать как прокси-сервер для всех запросов к хранилищу <code>https://registry.deckhouse.io</code><strong>,</strong> кэшируя получаемые образы и раздавая их в закрытое окружение.</p></li>
+    <li><p>Перенести в Harbor образы вручную. Актуально, если при установке использовался офлайн-способ, и доступа наружу из окружения нет.&nbsp;</p></li>
+   </ul>
+   <p>Рассмотрим первый вариант. (О ручном переносе образов можно прочитать <a href="https://deckhouse.ru/documentation/v1/deckhouse-faq.html#%D1%80%D1%83%D1%87%D0%BD%D0%B0%D1%8F-%D0%B7%D0%B0%D0%B3%D1%80%D1%83%D0%B7%D0%BA%D0%B0-%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2-%D0%B2-%D0%B8%D0%B7%D0%BE%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9-%D0%BF%D1%80%D0%B8%D0%B2%D0%B0%D1%82%D0%BD%D1%8B%D0%B9-registry"><u>в документации</u></a>.)</p>
+   <h4>Настройка Proxy Cache</h4>
+   <p>Войдем в систему: имя пользователя по умолчанию <code>admin</code>, пароль —&nbsp;тот, что указан в конфигурационном файле.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/b74/f98/93b/b74f9893bb25cb05401f267b21b25b0a.png" alt="Главная страница интерфейса Harbor" title="Главная страница интерфейса Harbor" width="1600" height="851" data-src="https://habrastorage.org/getpro/habr/upload_files/b74/f98/93b/b74f9893bb25cb05401f267b21b25b0a.png">
+    <figcaption>
+     Главная страница интерфейса Harbor
+    </figcaption>
+   </figure>
+   <p><em>При необходимости имя пользователя можно изменить в настройках профиля.</em></p>
+   <p>Перейдем на страницу <em>Administration</em> → <em>Registries</em> → <em>New Endpoint</em>:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/a33/525/a65/a33525a655840ad0bc9dc10bceaa3297.png" width="1516" height="1190" data-src="https://habrastorage.org/getpro/habr/upload_files/a33/525/a65/a33525a655840ad0bc9dc10bceaa3297.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>В открывшемся окне настроим следующие параметры:</p>
+   <ul>
+    <li><p><em>Provider</em>: Docker Registry.</p></li>
+    <li><p><em>Name</em> — имя, может быть любым.</p></li>
+    <li><p><em>Description</em> —&nbsp;краткое описание, можно оставить пустым.</p></li>
+    <li><p><em>Endpoint URL</em>: <code>https://registry.deckhouse.io</code>.</p></li>
+    <li><p><em>Access ID</em> и <em>Access Secret</em> — если используется Deckhouse Enterprise Edition; в нашем случае оставляем пустым.</p></li>
+   </ul>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/dcc/82d/e30/dcc82de30550ad8e89eeda3e2019163a.png" width="1056" height="1156" data-src="https://habrastorage.org/getpro/habr/upload_files/dcc/82d/e30/dcc82de30550ad8e89eeda3e2019163a.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Кнопкой <em>Test Connection</em> можно проверить, что Harbor получил доступ к указанному хранилищу и готов к работе.</p>
+   <p>Теперь вернемся на главную вкладку <em>Projects</em> и создадим новый проект:</p>
+   <ul>
+    <li><p><code>Project Name</code> — станет частью URL. Используйте любой, например, <code>d8s</code>.</p></li>
+    <li><p><code>Access Level</code> — Public.</p></li>
+    <li><p><code>Proxy Cache</code> — включаем и выбираем в списке Registry, созданный на предыдущем шаге.</p></li>
+   </ul>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c38/6ff/183/c386ff1835d893c07efc1be8c840b158.png" width="1098" height="860" data-src="https://habrastorage.org/getpro/habr/upload_files/c38/6ff/183/c386ff1835d893c07efc1be8c840b158.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Теперь все образы Deckhouse будут доступны по адресу <code>https://your-harbor.com/d8s/deckhouse/{d8s-edition}:{d8s-version}</code>.</p>
+   <h3>Настройка будущего кластера</h3>
+   <p>Переходим <a href="https://deckhouse.ru/gs/bm-private/step3.html"><u>на страницу конфигурации</u></a> в Getting Started. Здесь нужно ввести параметры, которые в дальнейшем будут указаны в конфигурационных файлах будущего кластера:</p>
+   <ul>
+    <li><p>Шаблон DNS-имён кластера в формате <code>%s.domain.my</code> —&nbsp;по нему будут доступны веб-интерфейсы, предоставляемые Deckhouse. Например, Grafana — по адресу <code>grafana.domain.my</code>.</p></li>
+    <li><p>Адрес прокси-сервера для HTTP-трафика (если необходимо), через который будет предоставляться доступ в Интернет изнутри кластера.</p></li>
+    <li><p>Адрес прокси-сервера для HTTPS-трафика.</p></li>
+    <li><p>Список IP-адресов, для которых проксирование трафика не будет включено.</p></li>
+   </ul>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/391/4d5/ca2/3914d5ca20cbd6cc33ccefcfacf90519.png" width="1600" height="1008" data-src="https://habrastorage.org/getpro/habr/upload_files/391/4d5/ca2/3914d5ca20cbd6cc33ccefcfacf90519.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>В следующей части страницы настраиваем доступ к созданному ранее container registry:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/186/a9f/5ea/186a9f5eac179a3c65a7af7f148c09db.png" width="1600" height="1189" data-src="https://habrastorage.org/getpro/habr/upload_files/186/a9f/5ea/186a9f5eac179a3c65a7af7f148c09db.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>В поле префикса имени образов указываем созданный ранее endpoint в хранилище: <code>your-harbor.com/d8s/deckhouse/ce</code>.</p>
+   <p>Теперь нужно авторизоваться в container registry. Так как мы используем HTTP-протокол, необходимо указать Docker-server'у, к каким хранилищам допустимо присоединяться без шифрования. Для этого откроем файл <code>/etc/docker/daemon.json</code> (если его нет — создадим) и добавим туда хранилище:</p>
+   <pre><code class="json">{
+  "insecure-registries" : ["http://myregistrydomain.com"]
+}</code></pre>
+   <p>Вместо доменного имени можно использовать IP-адрес хранилища во внутренней сети.&nbsp;</p>
+   <p>Перезапускаем Docker-server, чтобы параметры подхватились, и логинимся в хранилище:</p>
+   <pre><code>$ docker login http://your-harbor.com</code></pre>
+   <p>Теперь закодируем параметры доступа в Base64:</p>
+   <pre><code>$ base64 ~/.docker/config.json</code></pre>
+   <p>Полученную в ответ строку копируем в поле с правами доступа.</p>
+   <p>Так как мы не стали ранее настраивать HTTPS-доступ к хранилищу, последний пунктом нужно включить использование только HTTP-трафика.</p>
+   <p>Нажимаем кнопку «<em>Далее: Установка</em>» внизу страницы.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/6da/f46/6ed/6daf466ed597848a8f5d1ae7fe9ca323.png" width="1336" height="358" data-src="https://habrastorage.org/getpro/habr/upload_files/6da/f46/6ed/6daf466ed597848a8f5d1ae7fe9ca323.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>На следующей странице отобразится содержимое файла <code>config.yml</code>, сгенерированного на основе введенных ранее данных:</p>
+   <pre><code class="yaml"># Секция с общими параметрами кластера.
+# https://deckhouse.ru/documentation/v1/installing/configuration.html#clusterconfiguration
+apiVersion: deckhouse.io/v1
+kind: ClusterConfiguration
+clusterType: Static
+# Адресное пространство Pod'ов кластера.
+podSubnetCIDR: 10.111.0.0/16
+# Адресное пространство для service'ов кластера.
+serviceSubnetCIDR: 10.222.0.0/16
+kubernetesVersion: "1.23"
+clusterDomain: "cluster.local"
+---
+# Секция первичной инициализации кластера Deckhouse.
+# https://deckhouse.ru/documentation/v1/installing/configuration.html#initconfiguration
+apiVersion: deckhouse.io/v1
+kind: InitConfiguration
+deckhouse:
+  releaseChannel: Stable
+  configOverrides:
+    global:
+      modules:
+        # Шаблон, который будет использоваться для составления адресов системных приложений в кластере.
+        # Например, Grafana для %s.example.com будет доступна на домене grafana.example.com.
+        publicDomainTemplate: "%s.example.com"
+    # Включить модуль cni-flannel.
+    # Возможно, захотите изменить.
+    cniFlannelEnabled: true
+    # Настройки модуля cni-flannel.
+    # Возможно, захотите изменить.
+    cniFlannel:
+      # Режим работы flannel, допустимые значения VXLAN (если ваши сервера имеют связность L3) или HostGW (для L2-сетей).
+      podNetworkMode: VXLAN
+  # Адрес Docker registry с образами Deckhouse.
+  imagesRepo: your-harbor.com/d8s/deckhouse/ce
+  # Строка с ключом для доступа к Docker registry.
+  registryDockerCfg: ewoJImF1LjAuMzMiOiB7CgkJCSJhdXRoIjogIllXUnRhVzQ2U0dGeVlt OXlNVEl6TkRVPSIKCQl9Cgl9Cn0=
+  # Протокол доступа к registry (HTTP или HTTPS).
+  registryScheme: HTTP</code></pre>
+   <p>В этом примере мы создаем простой кластер из одного узла с одним адресом, поэтому секцию <code>StaticClusterConfiguration</code> сгенерированного конфигурационного файла можно удалить.</p>
+   <p>Сохраним содержимое в файл и разместим его в отдельном каталоге с произвольным именем.</p>
+   <h3>Развертывание кластера</h3>
+   <p>Установщик Deckhouse запускается в отдельном контейнере командой:</p>
+   <pre><code>docker run --pull=always -it -v "$PWD/config.yml:/config.yml" -v "$HOME/.ssh/:/tmp/.ssh/" your-harbor.com/d8s/deckhouse/ce/install:stable bash</code></pre>
+   <p><em>Обратите внимание, что здесь в качестве источника образа указано локальное хранилище, созданное на предыдущих шагах.</em></p>
+   <p>По окончании загрузки появится приглашение командной строки внутри контейнера:</p>
+   <pre><code>[deckhouse] root@8e5bd71f05b4 / #</code></pre>
+   <p>Для развертывания кластера достаточно выполнить одну команду:</p>
+   <pre><code>dhctl bootstrap --ssh-user=&lt;username&gt; --ssh-host=&lt;master_ip&gt; --ssh-agent-private-keys=/tmp/.ssh/id_rsa \
+  --config=/config.yml \
+  --ask-become-pass</code></pre>
+   <p>Если на сервере для работы с <em>sudo</em> требуется пароль, нужно его ввести в ответ на соответствующий запрос.&nbsp;</p>
+   <p>Процесс установки может занять от 15 до 30 минут, состояние отображается в виде подробного лога.</p>
+   <h2>Получение доступа к кластеру</h2>
+   <p>Установленный кластер состоит из одного узла. Добавить в него статичные узлы можно по инструкции <a href="https://deckhouse.ru/documentation/latest/modules/040-node-manager/faq.html#%D0%BA%D0%B0%D0%BA-%D0%B4%D0%BE%D0%B1%D0%B0%D0%B2%D0%B8%D1%82%D1%8C-%D1%81%D1%82%D0%B0%D1%82%D0%B8%D1%87%D0%BD%D1%8B%D0%B9-%D1%83%D0%B7%D0%B5%D0%BB-%D0%B2-%D0%BA%D0%BB%D0%B0%D1%81%D1%82%D0%B5%D1%80"><u>из официальной документации</u></a>.</p>
+   <p>Если же кластер развернут в ознакомительных целях либо для какой-то специфической задачи, и дополнительные узлы не требуются —&nbsp;нужно разрешить компонентам Deckhouse работать на master-узле. Для этого снимем с master-узла taint, выполнив на нем команду:</p>
+   <pre><code>kubectl patch nodegroup master --type json -p '[{"op": "remove", "path": "/spec/nodeTemplate/taints"}]'</code></pre>
+   <p>Если в ответ выводится ошибка:</p>
+   <pre><code>The connection to the server localhost:8080 was refused - did you specify the right host or port?</code></pre>
+   <p>…нужно настроить kubectl командой:</p>
+   <pre><code>sudo cat /etc/kubernetes/admin.conf &gt;&gt; ~/.kube/config</code></pre>
+   <h3>Установка Ingress-контроллера</h3>
+   <p>Создадим на master-узле файл <code>ingress-nginx-controller.yml</code> со следующим содержимым:</p>
+   <pre><code class="yaml"># Секция, описывающая параметры Nginx Ingress controller.
+# https://deckhouse.ru/documentation/v1/modules/402-ingress-nginx/cr.html
+apiVersion: deckhouse.io/v1
+kind: IngressNginxController
+metadata:
+  name: nginx
+spec:
+  # Имя Ingress-класса для обслуживания Ingress NGINX controller.
+  ingressClass: nginx
+
+  # Способ поступления трафика из внешнего мира.
+  inlet: HostPort
+  hostPort:
+    httpPort: 80
+    httpsPort: 443
+  # Описывает, на каких узлах будет находиться компонент.
+  # Возможно, захотите изменить.
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+  tolerations:
+  - operator: Exists</code></pre>
+   <p>Применим его:</p>
+   <pre><code>kubectl create -f ingress-nginx-controller.yml</code></pre>
+   <h3>Создание пользователя для доступа в веб-интерфейсы</h3>
+   <p>Создадим на master-узле файл <code>user.yml</code> со следующим содержимым:</p>
+   <pre><code class="yaml"># Настройки RBAC и авторизации.
+# https://deckhouse.ru/documentation/v1/modules/140-user-authz/cr.html#clusterauthorizationrule
+apiVersion: deckhouse.io/v1
+kind: ClusterAuthorizationRule
+metadata:
+  name: admin
+spec:
+  # Список учётных записей Kubernetes RBAC.
+  subjects:
+  - kind: User
+    name: admin@deckhouse.io
+  # Предустановленный шаблон уровня доступа.
+  accessLevel: SuperAdmin
+  # Разрешить пользователю делать kubectl port-forward.
+  portForwarding: true
+---
+# Данные статического пользователя.
+# https://deckhouse.ru/documentation/v1/modules/150-user-authn/cr.html#user
+apiVersion: deckhouse.io/v1
+kind: User
+metadata:
+  name: admin
+spec:
+  # E-mail пользователя.
+  email: admin@deckhouse.io
+  # Это хэш пароля tk6776lyo2, сгенерированного сейчас.
+  # Сгенерируйте свой или используйте этот, но только для тестирования:
+  # echo "tk6776lyo2" | htpasswd -BinC 10 "" | cut -d: -f2
+  # Возможно, захотите изменить.
+  password: '$2a$10$/8aOtxwur79/lAUawVQYkOcb5Z55ooIRdJf5PH45oqVcoeD3ebtR.'</code></pre>
+   <p><em>Обратите внимание, что в секции с паролем есть подсказка, как его сгенерировать.</em></p>
+   <p>Применим файл:</p>
+   <pre><code>kubectl create -f user.yml</code></pre>
+   <h3>Настройка DNS-записей</h3>
+   <p>Для доступа к веб-интерфейсам кластера нужно настроить resolve соответствующих адресов. Это можно сделать несколькими способами: настроить полноценный DNS-сервер, прописать их в файл <code>/etc/hosts</code> или воспользоваться сторонними сервисами, предоставляющими такие услуги.</p>
+   <p>Веб-интерфейсы расположены по следующим адресам:</p>
+   <ul>
+    <li><p>api.example.com</p></li>
+    <li><p>argocd.example.com</p></li>
+    <li><p>dashboard.example.com</p></li>
+    <li><p>deckhouse.example.com</p></li>
+    <li><p>dex.example.com</p></li>
+    <li><p>grafana.example.com</p></li>
+    <li><p>hubble.example.com</p></li>
+    <li><p>istio.example.com</p></li>
+    <li><p>istio-api-proxy.example.com</p></li>
+    <li><p>kubeconfig.example.com</p></li>
+    <li><p>openvpn-admin.example.com</p></li>
+    <li><p>prometheus.example.com</p></li>
+    <li><p>status.example.com</p></li>
+    <li><p>upmeter.example.com</p></li>
+   </ul>
+   <p>Для доступа к ним необходимо настроить адресацию на IP-адрес Ingress-контроллера.</p>
+   <p>Кластер развернут и готов к работе.</p>
+   <h2>Удаление кластера</h2>
+   <p>Чтобы удалить кластер, войдем в установочный образ Deckhouse, пробросив к нему SSH-ключ:</p>
+   <pre><code>docker run --pull=always -it -v "$HOME/.ssh/:/root/.ssh/" registry.deckhouse.io/deckhouse/ce/install:stable bash</code></pre>
+   <p>Теперь выполним команду:</p>
+   <pre><code>dhctl destroy --ssh-host &lt;MASTER-IP&gt; --ssh-user &lt;USER&gt;</code></pre>
+   <p>Удаление всех компонентов займет от 5 до 10 минут.</p>
+   <h2>P.S.</h2>
+   <p>Статья основана на материалах раздела сайта <a href="https://deckhouse.ru/gs/bm-private/step2.html"><u>«Getting Started»</u></a>. Подробную информацию о дальнейшей настройке платформы и ее модулей можно найти <a href="https://deckhouse.ru/documentation/v1/deckhouse-overview.html"><u>в официальной документации</u></a>.</p>
+   <p>С любыми вопросами и предложениями ждем вас в комментариях к статье, а также в Telegram-чате <a href="https://t.me/deckhouse_ru"><u>deckhouse_ru</u></a>, где всегда готовы помочь. Будем рады issues (и, конечно, звёздам) <a href="https://github.com/deckhouse/deckhouse"><u>в GitHub-репозитории Deckhouse</u></a>.</p>
+   <p>Читайте также в нашем блоге:</p>
+   <ul>
+    <li><p><a href="https://habr.com/ru/company/flant/blog/707422/">«<u>Разворачиваем Kubernetes-платформу Deckhouse в Yandex Cloud</u>»</a>;</p></li>
+    <li><p><a href="https://q.flant.com/?class=other&amp;query=Deckhouse&amp;sources%5B%5D=loghouse&amp;sources%5B%5D=flantblog#:~:text=%D0%9D%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0%20LDAP%2D%D0%B0%D1%83%D1%82%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%B8%20%D0%B2%20%D0%BA%D0%BB%D0%B0%D1%81%D1%82%D0%B5%D1%80%D0%B5%20Kubernetes%20%D0%BF%D0%BE%D0%B4%20%D1%83%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%D0%BC%20Deckhouse">«<u>Настройка LDAP-аутентификации в кластере Kubernetes под управлением Deckhouse</u>»</a>;</p></li>
+    <li><p><a href="https://habr.com/ru/company/flant/news/t/711730/">«<u>Deckhouse соответствует большинству рекомендаций PCI Security Standards Council</u>»</a>.</p></li>
+   </ul>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

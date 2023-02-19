@@ -1,0 +1,317 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Как только у сотрудника какой-либо компании появляется необходимость выполнять задачи на мобильных устройствах (пусть даже элементарно читать рабочую почту) и, соответственно, получать с них доступ к данным компании, появляются риски. Мобильные устройства (как и все эндпоинты) подвержены ряду уязвимостей — приложения, установленные не через официальные магазины, могут оказаться вредоносными; подключение к незащищенной Wi-Fi-сети может привести к утечке данных; устройство может быть утеряно или украдено… Отсюда возникают самые популярные сценарии управления устройствами — удаленное стирание данных, ограничение на источники установки приложений, требования к используемым сетям, запрет копирования конфиденциальных данных (например, на внешний носитель) и другие.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/968/35e/904/96835e904fc388d2a81da92a217ad37b.png" width="1200" height="675" data-src="https://habrastorage.org/getpro/habr/upload_files/968/35e/904/96835e904fc388d2a81da92a217ad37b.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Тут-то и появляется необходимость в MDM, или Mobile Device Management, — наборе сервисов для защиты мобильных устройств сотрудников компании.</p>
+   <p>Меня зовут Мария Глущенко, я — Android-разработчик. В этой статье расскажу, какие режимы доступны для ОС Android и как реализовывать их функционал, в чем преимущества и недостатки этих решений и как мы их используем <a href="https://kas.pr/glushenko-habr-mdm-android">в мобильной команде «Лаборатории Касперского»</a>.</p>
+   <h3>Какие бывают управляемые режимы</h3>
+   <p>Вообще существует несколько крупных решений, включающих в себя, как правило, эндпоинт-приложения для всех популярных платформ — Windows/Linux/macOS/Android/iOS, а также администраторскую консоль управления. Среди крупных вендоров можно отметить Microsoft с их <a href="https://learn.microsoft.com/en-us/mem/intune/fundamentals/what-is-intune">Intune</a> и VMWare с<a href="https://www.vmware.com/products/workspace-one.html"> Workspace One</a>. Про MDM в iOS можно прочитать в <a href="https://habr.com/ru/company/kaspersky/blog/684160/">этой статье моего коллеги Дениса Кудинова</a>. Я же расскажу, как обстоит дело в Android.<br> <br>ОС Android предоставляет возможности задавать на устройстве разные управляемые режимы в зависимости от потребностей конкретной компании. Общепринятая градация выглядит так:</p>
+   <p>● <strong>BYOD (bring your own device)</strong>&nbsp;— рабочие задачи могут выполняться с&nbsp;личного устройства сотрудника. В&nbsp;таком сценарии админ контролирует только рабочее пространство и не&nbsp;имеет доступа к&nbsp;персональным настройкам и данным. Это реализуется через рабочий профиль.</p>
+   <p>● <strong>COPE (company owned, personally enabled) </strong>— устройства предоставляет компания, но&nbsp;сотрудники могут использовать их также и в&nbsp;личных целях. Такой сценарий может&nbsp;быть реализован через механизм device owner с&nbsp;мягкими политиками или&nbsp;также через рабочий профиль.</p>
+   <p>● <strong>COBO (company owned, business only)</strong>&nbsp;— устройства предоставляет компания, и ими можно пользоваться только в&nbsp;рабочих целях, что&nbsp;достигается&nbsp;жесткими ограничениями на&nbsp;список разрешенных приложений и тому подобное. Для&nbsp;реализации такого сценария нужен механизм device owner.</p>
+   <p>● <strong>COSU (company owned, single use; новое официальное название&nbsp;— dedicated devices)</strong>&nbsp;— так называемый режим киоска, когда на&nbsp;устройстве могут&nbsp;быть заблокированы даже домашний экран, «шторка» и настройки, а&nbsp;для&nbsp;использования доступен минимальный набор приложений (часто&nbsp;— только одно). Для&nbsp;конфигурирования киоска существует отдельный механизм.&nbsp;</p>
+   <p>Рассмотрим механизмы и API, позволяющие реализовать такие режимы, подробнее.</p>
+   <p>1. <strong>Device Administrator</strong> — легаси-решение для энтерпрайза, появившееся еще в Android 2.2 до того, как была придумана концепция отдельного рабочего пространства (об этом далее). Начиная с Android 9, с каждой новой версией <a href="https://developers.google.com/android/work/device-admin-deprecation">все больше возможностей этого API помечаются как deprecated</a>, поэтому использовать это решение напрямую в новых приложениях не рекомендуется. Однако стоит отметить, что и для последовавших более продвинутых решений Device Administrator является основой и должен быть реализован в приложении, поэтому стоит поговорить о деталях его имплементации.</p>
+   <p><strong>How To</strong>:</p>
+   <p>● В&nbsp;манифесте должен&nbsp;быть прописан ресивер, наследующий DeviceAdminReceiver, с&nbsp;разрешением BIND_DEVICE_ADMIN и интент‑фильтром ACTION_DEVICE_ADMIN_ENABLED.</p>
+   <p>● В&nbsp;манифесте также должен&nbsp;быть указан xml‑файл с&nbsp;перечислением политик безопасности, которыми хочет управлять приложение.</p>
+   <p>● Чтобы активировать приложение как&nbsp;администратора устройства, нужно отправить интент с&nbsp;действием ACTION_ADD_DEVICE_ADMIN и получить явное подтверждение от&nbsp;пользователя в&nbsp;диалоговом окне:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/b9e/746/21d/b9e74621dce9eef87b4c5669edd2bac5.jpg" width="720" height="1520" data-src="https://habrastorage.org/getpro/habr/upload_files/b9e/746/21d/b9e74621dce9eef87b4c5669edd2bac5.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Политики, доступные для управления:</p>
+   <p>● обязательная установка пароля для&nbsp;устройства и различные требования к&nbsp;его длине и сложности;</p>
+   <p>● автоматическая блокировка устройства после определенного периода неактивности;</p>
+   <p>● дистанционное удаление данных;</p>
+   <p>● блокировка камеры;</p>
+   <p>● обязательное шифрование файловой системы устройства.</p>
+   <p>Пример device admin-а в манифесте:</p>
+   <p><code>&lt;activity android:name=”.app.DeviceAdminSample”</code></p>
+   <p><code> android:label=”@string/activity_sample_device_admin”&gt;</code></p>
+   <p><code> &lt;intent‑filter&gt;</code></p>
+   <p><code> &lt;action android:name=”android.intent.action.MAIN” /&gt;</code></p>
+   <p><code> &lt;category android:name=”android.intent.category.SAMPLE_CODE” /&gt;</code></p>
+   <p><code> &lt;/intent‑filter&gt;</code></p>
+   <p><code>&lt;/activity&gt;</code></p>
+   <p><code>&lt;receiver android:name=”.app.DeviceAdminSample$DeviceAdminSampleReceiver”</code></p>
+   <p><code> android:label=”@string/sample_device_admin”</code></p>
+   <p><code> android:description=”@string/sample_device_admin_description”</code></p>
+   <p><code> android:permission=”android.permission.BIND_DEVICE_ADMIN”&gt;</code></p>
+   <p><code> &lt;meta‑data android:name=”android.app.device_admin”</code></p>
+   <p><code> android:resource=”@xml/device_admin_sample” /&gt;</code></p>
+   <p><code> &lt;intent‑filter&gt;</code></p>
+   <p><code> &lt;action android:name=”android.app.action.DEVICE_ADMIN_ENABLED” /&gt;</code></p>
+   <p><code> &lt;/intent‑filter&gt;</code></p>
+   <p><code>&lt;/receiver&gt;</code></p>
+   <p>&nbsp;</p>
+   <p>Пример файла с политиками:</p>
+   <p><code>&lt;device-admin xmlns:android="http://schemas.android.com/apk/res/android"&gt;</code></p>
+   <p><code>&nbsp; &lt;uses-policies&gt;</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; &lt;limit-password /&gt;</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; &lt;watch-login /&gt;</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; &lt;reset-password /&gt;</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; &lt;force-lock /&gt;</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; &lt;wipe-data /&gt;</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; &lt;expire-password /&gt;</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; &lt;encrypted-storage /&gt;</code></p>
+   <p><code>&nbsp;&nbsp;&nbsp; &lt;disable-camera /&gt;</code></p>
+   <p><code>&nbsp; &lt;/uses-policies&gt;</code></p>
+   <p><code>&lt;/device-admin&gt;</code></p>
+   <p>&nbsp;Приложению с правами администратора становятся доступны следующие API:</p>
+   <p>● <a href="https://developer.android.com/reference/android/app/admin/DeviceAdminReceiver">DeviceAdminReceiver</a></p>
+   <p>● <a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager">DevicePolicyManager</a>&nbsp;— через него происходит управление политиками и ограничениями (о них речь далее)</p>
+   <p>● <a href="https://developer.android.com/reference/android/app/admin/DeviceAdminInfo">DeviceAdminInfo</a></p>
+   <p>2. <strong>Рабочий профиль</strong> появился в Android 5 и представляет собой отдельное пространство со своими приложениями и файлами, закрытое от взаимодействия с личным (основным) профилем и полностью контролируемое админом.</p>
+   <p>Ключевые особенности этой концепции:</p>
+   <p>● настройки профиля и доступные в&nbsp;нем приложения определяет администратор;</p>
+   <p>● большинство интентов можно обрабатывать только в&nbsp;том&nbsp;же профиле, из&nbsp;которого они&nbsp;были запущены (исключения&nbsp;— некоторые системные и те, для&nbsp;которых специально указан атрибут cross profile);</p>
+   <p>● раздельные пространства для&nbsp;хранения файлов означают, что&nbsp;файловые URI из&nbsp;одного профиля невалидны для&nbsp;другого, передавать файлы можно через content ID.</p>
+   <p>Чтобы создать профиль, нужно запустить интент с действием ACTION_PROVISION_MANAGED_PROFILE и передать в качестве дополнительного параметра полное имя класса, наследующего DeviceAdminReceiver. При этом система:</p>
+   <p>● проверяет, что&nbsp;устройство зашифровано (и шифрует, если это не&nbsp;так);</p>
+   <p>● создает рабочий профиль, копирует туда приложение и делает его владельцем профиля;</p>
+   <p>● включает в&nbsp;профиле другие приложения, если это требуется;</p>
+   <p>● возвращает результат раскатки в&nbsp;методе onActivityResult.</p>
+   <p>С точки зрения конечного пользователя, создание рабочего профиля максимально упрощено и состоит всего из нескольких экранов с предложением создать профиль и объяснением, что он отделен от личного.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/30b/a90/249/30ba902496a88d80fe5e568acd63278f.jpg" width="2171" height="1520" data-src="https://habrastorage.org/getpro/habr/upload_files/30b/a90/249/30ba902496a88d80fe5e568acd63278f.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>После успешного создания профиля он отображается в настройках аккаунтов, а в меню появляется разделение приложений на личные и рабочие.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/774/391/434/7743914348d96a59e5f1d71298b3d732.jpg" width="2167" height="1513" data-src="https://habrastorage.org/getpro/habr/upload_files/774/391/434/7743914348d96a59e5f1d71298b3d732.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Есть несколько способов обработать сигнал от системы о выдаче приложению прав администратора. На всех версиях андроида (где в принципе есть Device Admin API) работает метод</p>
+   <p><code>`DeviceAdminReceiver.onProfileProvisioningComplete()`</code></p>
+   <p>&nbsp;который нужно переопределить. На практике у приложения есть ограниченное время, чтобы обработать этот бродкаст (около 10 секунд), поэтому на Android 8 и выше рекомендуется добавить еще один способ — создать активити с интент-фильтром android.app.action.PROVISIONING_SUCCESSFUL и выполнить необходимые действия, переопределив в ней onCreate.</p>
+   <p>Команда автора при реализации device owner столкнулась с ситуацией, когда ни один из этих двух способов не отрабатывал. Был найден еще один способ (также для Android 8 и выше) — отнаследовать <a href="https://developer.android.com/reference/android/app/admin/DeviceAdminService">DeviceAdminService</a>, прописать ему в манифесте интент-фильтр android.app.action.DEVICE_ADMIN_SERVICE и переопределить у него метод onCreate. В сценарии установки приложения через QR-код (об этом ниже) сработал только этот метод.</p>
+   <p>3. Наше приложение <a href="https://kas.pr/habr-gluschenko-kes-android">Kaspersky Endpoint Security</a> долгое время обходилось возможностями, которые предоставляют механизмы администратора устройства и рабочего профиля, но, поскольку с каждой новой версией Android ужесточает ограничения на доступные API, в итоге пришлось заняться поддержкой «серьезного» MDM.</p>
+   <p>Механизм <strong>device owner</strong> (владелец устройства<strong>)</strong> продолжает идею рабочего профиля, но в этом сценарии администратор получает контроль над всем устройством. Поскольку делать такой функционал легкодоступным рискованно, для предотвращения использования этого механизма злоумышленниками существует ограничение — установить device owner можно только на «чистом» устройстве (ни разу не настроенном или сброшенном к заводским настройкам).</p>
+   <p>В процессе «раскатки» (provision) система выполняет следующие действия:</p>
+   <p>● зашифровывает устройство;</p>
+   <p>● создает управляемый профиль, в&nbsp;котором включены только минимально необходимые или&nbsp;явно указанные приложения;</p>
+   <p>● назначает приложение владельцем устройства.</p>
+   <p>В&nbsp;процессе раскатки необходимо передать системе данные о&nbsp;приложении, которое станет владельцем устройства. Как&nbsp;минимум это:</p>
+   <p>● пакет и имя класса, наследующего DeviceAdminReceiver;</p>
+   <p>● url, по&nbsp;которому можно скачать apk (должна&nbsp;быть именно прямая ссылка на&nbsp;скачивание, а&nbsp;не, например, страница приложения в&nbsp;Google Play);</p>
+   <p>● контрольная сумма apk или&nbsp;подписи apk (можно вычислить, в&nbsp;частности, с&nbsp;помощью утилиты openssl).</p>
+   <p>Также можно передать дополнительные данные — например, информацию о Wi-Fi-сети, к которой устройство подключится, чтобы скачать apk, и произвольные данные, которые могут быть нужны приложению для конфигурации. Полный список доступных параметров перечислен в <a href="https://developers.google.com/android/work/play/emm-api/prov-devices#create_a_qr_code">документации</a>. Раскатку можно осуществить следующими способами:</p>
+   <p>● NFC (Android 5&nbsp;и выше)&nbsp;— необходимые данные передаются в&nbsp;бандле. До&nbsp;Android 10&nbsp;можно использовать технологию device‑to‑device, на 10+ понадобятся специальные NFC‑теги.</p>
+   <p>● QR‑код (Android 7&nbsp;и выше)&nbsp;— представляет собой json, в&nbsp;котором прописаны данные в&nbsp;формате key‑value. Этот способ не&nbsp;работает на&nbsp;устройствах без&nbsp;Google‑сервисов (например, HMS‑only), потому что&nbsp;использует встроенный QR‑сканер от&nbsp;гугла. Также он может не&nbsp;отрабатывать даже на&nbsp;тех устройствах китайских вендоров, где Google‑сервисы присутствуют (точную причину этого определить пока не&nbsp;удалось).</p>
+   <p>● (только для&nbsp;тестирования и отладки) Можно сделать приложение владельцем устройства через утилиту adb (идет в&nbsp;составе Android SDK). Для&nbsp;этого нужно:</p>
+   <p>○ включить на&nbsp;телефоне режим разработчика и разрешить отладку по&nbsp;usb;</p>
+   <p>○ удалить с&nbsp;устройства все учетные записи (в настройках);</p>
+   <p>○ выполнить в&nbsp;терминале команду `adb shell dpm set‑device‑owner [app_package_name]/[device_admin_receiver_class]`.</p>
+   <p>Владельцу устройства доступен широкий набор API для контроля настроек устройства. Основные классы, через которые задаются настройки, — <a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager">DevicePolicyManager</a> и <a href="https://developer.android.com/reference/android/os/UserManager">UserManager</a> (через него, например, можно задавать целый ряд так называемых restrictions — ограничений функциональности устройства). Стоит отметить, что многие методы этих классов доступны и в режиме владельца <em>профиля</em>, а некоторые — даже для любого администратора устройства, поэтому нужно внимательно читать документацию к каждому конкретному.</p>
+   <p>Некоторые настройки также можно задавать через <a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setGlobalSetting(android.content.ComponentName,%20java.lang.String,%20java.lang.String)">Settings.Global</a>, но такой метод является устаревшим и сейчас через него доступно очень малое количество настроек.</p>
+   <p>В таблице ниже приведен неполный список настроек, доступных владельцу профиля/устройства, которые могут быть полезны для реализации MDM-функционала.</p>
+   <div>
+    <div class="table">
+     <table>
+      <tbody>
+       <tr>
+        <td><p align="left"><strong>настройка/действие</strong></p></td>
+        <td><p align="left"><strong>API</strong></p></td>
+        <td><p align="left"><strong>работает для владельца профиля</strong></p></td>
+        <td><p align="left"><strong>работает для владельца устройства</strong></p></td>
+        <td><p align="left"><strong>прочие условия использования</strong></p></td>
+       </tr>
+       <tr>
+        <td><p align="left">включение и выключение рестрикшенов</p></td>
+        <td><p align="left">DevicePolicyManager#<a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#addUserRestriction(android.content.ComponentName,%20java.lang.String)">addUserRestriction</a>/<a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#clearUserRestriction(android.content.ComponentName,%20java.lang.String)">clearUserRestriction</a></p></td>
+        <td colspan="3"><p align="left">&nbsp;</p><p align="left">зависит от конкретного рестрикшена, список <a href="https://developer.android.com/reference/android/os/UserManager#summary">здесь</a></p><p align="left">&nbsp;</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">установка пользовательского сертификата</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#installCaCert(android.content.ComponentName,%20byte%5B%5D)">installCaCert</a></p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">&nbsp;</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">блокировка устройства</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#lockNow()">lockNow</a></p></td>
+        <td><p align="left">&nbsp;</p></td>
+        <td><p align="left">&nbsp;</p></td>
+        <td><p align="left">до Android 11&nbsp;— device admin, 11+ — device admin или пермишен LOCK_DEVICE</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">перезагрузка устройства</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#reboot(android.content.ComponentName)">reboot</a></p></td>
+        <td><p align="left">-</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">кидает исключение, если вызвать во время звонка</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">сделать приложение недоступным для пользователя (но не удалить с устройства)</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setApplicationHidden(android.content.ComponentName,%20java.lang.String,%20boolean)">setApplicationHidden</a></p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">&nbsp;</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">выставить рестрикшен для приложения, которое их поддерживает</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setApplicationRestrictions(android.content.ComponentName,%20java.lang.String,%20android.os.Bundle)">setApplicationRestrictions</a></p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">&nbsp;</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">запрет камеры</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setCameraDisabled(android.content.ComponentName,%20boolean)">setCameraDisabled</a></p></td>
+        <td><p align="left">&nbsp;</p></td>
+        <td><p align="left">&nbsp;</p></td>
+        <td><p align="left">device admin, только до Android 10</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">запрет сброса к заводским настройкам</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setFactoryResetProtectionPolicy(android.content.ComponentName,%20android.app.admin.FactoryResetProtectionPolicy)">setFactoryResetProtectionPolicy</a></p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">&nbsp;</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">сброс после неудачных попыток ввода пароля</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setMaximumFailedPasswordsForWipe(android.content.ComponentName,%20int)">setMaximumFailedPasswordsForWipe</a></p></td>
+        <td><p align="left">+ (удаляется профиль)</p></td>
+        <td><p align="left">+ (сброс к заводским настройкам)</p></td>
+        <td><p align="left">доступно любому девайс-админу</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">изменение настроек</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setGlobalSetting(android.content.ComponentName,%20java.lang.String,%20java.lang.String)">setGlobalSetting</a></p></td>
+        <td><p align="left">-</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">в настоящий момент список доступных настроек сильно ограничен</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">принудительное включение/отключение геолокации</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setLocationEnabled(android.content.ComponentName,%20boolean)">setLocationEnabled</a></p></td>
+        <td><p align="left">-</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">&nbsp;</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">ограничение на доступные для подключения Wi-Fi-сети (по уровню безопасности)</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setMinimumRequiredWifiSecurityLevel(int)">setMinimumRequiredWifiSecurityLevel</a></p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">&nbsp;</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">различные ограничения на сложность пароля</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setPasswordExpirationTimeout(android.content.ComponentName,%20long)">setPasswordExpirationTimeout</a></p><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setPasswordHistoryLength(android.content.ComponentName,%20int)">setPasswordHistoryLength</a></p><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setPasswordMinimumLength(android.content.ComponentName,%20int)">setPasswordMinimumLength</a></p><p align="left">и т.д.</p></td>
+        <td><p align="left">&nbsp;</p></td>
+        <td><p align="left">&nbsp;</p></td>
+        <td><p align="left">доступно любому девайс-админу</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">автоматическая выдача разрешений</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setPermissionGrantState(android.content.ComponentName,%20java.lang.String,%20java.lang.String,%20int)">setPermissionGrantState</a></p></td>
+        <td><p align="left">+ (кроме sensor related permissions)</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">&nbsp;</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">запрет записи экрана и скриншотов</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setScreenCaptureDisabled(android.content.ComponentName,%20boolean)">setScreenCaptureDisabled</a></p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">&nbsp;</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">запрет удалять приложение-администратора</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setUninstallBlocked(android.content.ComponentName,%20java.lang.String,%20boolean)">setUninstallBlocked</a></p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">&nbsp;</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">сброс данных</p></td>
+        <td><p align="left"><a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#wipeData(int)">wipeData</a></p></td>
+        <td><p align="left">+ (удаляется профиль)</p></td>
+        <td><p align="left">+ (сброс к заводским настройкам)</p></td>
+        <td><p align="left">доступно любому девайс-админу, запросившему управление политикой <a href="https://developer.android.com/reference/android/app/admin/DeviceAdminInfo#USES_POLICY_WIPE_DATA">wipe-data</a></p></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+   </div>
+   <p>4. <strong>Режим киоска</strong> предназначен для устройств, которые полностью управляются администратором и служат, как правило, только для одной задачи. С ними могут взаимодействовать как сотрудники (например, приложение для учета на складе), так и клиенты (например, терминал для заказа в кафе). На устройстве, как правило, нельзя открывать другие приложения, изменять настройки или выключать их.</p>
+   <p>Для программной реализации такого режима в андроиде используется <a href="https://developer.android.com/work/dpc/dedicated-devices/lock-task-mode">lock task mode</a> (Android 5 и выше). В таком режиме может быть запущено любое приложение, однако запуск разрешено выполнять только приложению, которое является device policy controller. Таким образом, есть два варианта запускать приложение в режиме киоска — либо оно само должно быть контроллером, либо на устройстве должно быть приложение-контроллер, способное запустить его.</p>
+   <p>Приложение-DPC может накладывать следующие ограничения для режима киоска:</p>
+   <p>● «шторка» с&nbsp;системной информацией скрыта, не&nbsp;показываются уведомления;</p>
+   <p>● недоступны кнопки «домой» и «overview», в&nbsp;отдельных случаях можно блокировать кнопку «назад»;</p>
+   <p>● блокируется лок‑скрин (устройство не&nbsp;засыпает); можно дополнительно выставить ограничение, чтобы при&nbsp;подключенном зарядном устройстве экран не&nbsp;выключался вообще;</p>
+   <p>● блокируются опции выключить/перезагрузить при&nbsp;долгом нажатии кнопки включения;</p>
+   <p>● любые из&nbsp;функций выше можно при&nbsp;желании включить, указав соответствующие флаги при&nbsp;запуске режима киоска (<a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setLockTaskFeatures(android.content.ComponentName,%20int)">DevicePolicyManager.setLockTaskFeatures()</a>);</p>
+   <p>● приложение, являющееся DPC, может устанавливать список приложений, доступных для&nbsp;запуска в&nbsp;режиме киоска (<a href="https://developer.android.com/reference/android/app/admin/DevicePolicyManager#setLockTaskPackages(android.content.ComponentName,%20java.lang.String%5B%5D)">DevicePolicyManager.setLockTaskPackages()</a><u>)</u>;</p>
+   <p>● На&nbsp;Android 9&nbsp;и выше приложение‑DPC может запускать в&nbsp;lock task mode активити любого другого приложения (ранее добавленного через setLockTaskPackages()), на&nbsp;предыдущих версиях&nbsp;— только свои собственные активити.</p>
+   <h3>Вендор-специфичные решения</h3>
+   <p>Многие производители мобильных устройств предоставляют собственные MDM-решения. Их безусловное преимущество заключается в доступе к аппаратной части устройства и, следовательно, более широкому набору доступных настроек. Порядок получения доступа к каждому конкретному решению отличается — Samsung, например, продает Knox API для бизнеса всем желающим, а Huawei требует гораздо более сложную процедуру, включающую закупку устройств и предоставление подробной информации о том, как и для чего будет использоваться API.</p>
+   <p>Среди таких решений можно назвать:</p>
+   <p>● <a href="https://docs.samsungknox.com/admin/fundamentals/welcome.htm">Samsung Knox</a>&nbsp;— работает в&nbsp;режимах владельца профиля или&nbsp;устройства, предъявляет минимальные требования к&nbsp;интеграции (по сути, только покупка&nbsp;лицензии Knox).</p>
+   <p>● <a href="https://developer.huawei.com/consumer/en/doc/development/system-Guides/introduction-0000001053109486">Huawei MDM</a>&nbsp;— набор API, предоставляющих функционал, очень схожий с&nbsp;владельцем устройства, но&nbsp;с&nbsp;правами администратора устройства.&nbsp;Лицензия выдается только после предоставления информации о&nbsp;сценариях использования и ревью внутри компании.</p>
+   <p>● <a href="https://www.lg.com/us/business/enterprise-mobility">LG Gate MDM</a>&nbsp;— решение в&nbsp;первую очередь ориентировано на&nbsp;сценарий BYOD и поэтому использует рабочий профиль. Для&nbsp;доступа требуется вступить в&nbsp;партнерскую программу, но&nbsp;на&nbsp;сайте LG Gate нет информации о&nbsp;том, какие требования предъявляются к&nbsp;партнерам.</p>
+   <p>● <a href="https://global.dev.b.mi.com/document.html">Xiaomi Enterprise Service</a>&nbsp;— набор API, также по&nbsp;функционалу схожий с&nbsp;владельцем устройства. Для&nbsp;получения доступа нужно пройти первичную регистрацию и верификацию, а&nbsp;потом предоставить разработанное приложение на&nbsp;ревью. При&nbsp;этом в&nbsp;документации упоминается что&nbsp;апи позволяет создать не&nbsp;просто администраторское приложение, а&nbsp;кастомизированный ROM на&nbsp;замену системному.</p>
+   <p>● У&nbsp;Motorola есть готовое приложение Moto OEMConfig, позволяющее конфигурировать политики безопасности из&nbsp;EMM‑консоли, и лежащий в&nbsp;его основе<a href="http://www-uat.motorola.com/sites/motodev/library/enterprise_device_management.html"> Enterprise Device Management SDK</a>. Для&nbsp;использования SDK в&nbsp;своем приложении достаточно подключить к&nbsp;проекту библиотеку.</p>
+   <h3>Android Management API</h3>
+   <p><a href="https://developers.google.com/android/management"><strong>Android Management API</strong></a> — это энтерпрайз-решение от Google, разработанное для взаимодействия с EMM-консолью. Оно представляет собой API, которое может вызывать консоль, а также готовое мобильное приложение-компаньон — Android Device Policy. Через API администратор может создать гибко настраиваемые политики, за применение которых на конечных устройствах отвечает уже мобильное приложение. Это решение может работать как для рабочего профиля, так и для владельца устройства (и Google даже предоставляет примеры политик для разных конфигураций).</p>
+   <p>Чтобы получить доступ к API и начать работу с ним, нужно:</p>
+   <p>● создать проект в&nbsp;Google Cloud Console;</p>
+   <p>● создать enterprise&nbsp;— как&nbsp;правило, эта сущность только одна, но&nbsp;никто не&nbsp;запрещает создать несколько;</p>
+   <p>● создать базовую политику;</p>
+   <p>● подключить мобильное устройство&nbsp;— для&nbsp;этого нужно создать enrollment token. Для&nbsp;создания токена в&nbsp;API передается имя энтерпрайза и опционально идентификатор политики. Полученный токен нужно зашить в&nbsp;ссылку или&nbsp;QR‑код, который будет открыт на&nbsp;устройстве. Для&nbsp;режима владельца устройства так&nbsp;же, как&nbsp;и в&nbsp;случае с&nbsp;собственным приложением, нужно предварительно сбросить телефон к&nbsp;заводским настройкам.</p>
+   <p>Сами политики представляют собой (в терминах API) json-объекты, через которые можно задавать перечень настроек для применения на устройстве. Полный список доступных для конфигурирования политик можно посмотреть по ссылке <a href="https://developers.google.com/android/management/reference/rest/v1/enterprises.policies#Policy">https://developers.google.com/android/management/reference/rest/v1/enterprises.policies#Policy</a>. Во многом они повторяют ограничения, доступные владельцу устройства (потому что реализованы именно через этот механизм в Android Device Policy). Среди основных можно выделить следующие:</p>
+   <p>● требования к&nbsp;сложности и надежности пароля;</p>
+   <p>● ограничение доступа к&nbsp;камере;</p>
+   <p>● конфигурация сетей;</p>
+   <p>● запрет сброса к&nbsp;заводским настройкам и загрузки в&nbsp;safe mode;</p>
+   <p>● запрет подключения sd card;</p>
+   <p>● запрет на&nbsp;установку приложений.</p>
+   <p>В случае если устройство не соответствует установленным политикам (например, имеет пароль недостаточной сложности или не зашифровано), Android Device Policy автоматически заблокирует, в зависимости от режима, либо рабочий профиль, либо телефон целиком. Через 10 дней, если проблему не исправить, рабочие данные будут удалены.</p>
+   <p>Помимо этого поведения по умолчанию, админ может добавить свои правила соответствия и интервалы, после которых устройство заблокируется/удалит данные.</p>
+   <p>Стоит отметить, что у Google также есть решение <a href="https://developers.google.com/android/work/play/emm-api">Google Play EMM API</a>, упрощающее разработку EMM-консоли, однако для его использования необходимо быть одобренным партнером, и на данный момент новые заявки не принимаются. Все новые приложения предлагается разрабатывать с использованием Android Management API.</p>
+   <h3>Управляемые конфигурации приложений</h3>
+   <p>Некоторые приложения, не относящиеся к MDM-функционалу напрямую (например, браузер или почтовый клиент), предоставляют возможность конфигурировать свои настройки, что может быть удобно для администратора. Этот механизм называется managed configurations и опирается на концепцию App Config.</p>
+   <p><a href="https://app-config.dev/">App Config</a> включает в себя набор стандартов, а также библиотеку node.js и реализующее ее cli-приложение. App Config можно использовать для создания конфигурируемых приложений на любой платформе. Одним из его главных преимуществ является валидация конфигураций, которая отсутствует, например, при использовании переменных окружения.</p>
+   <p>В Android поддержка App Config есть, начиная с версии 5.0, и реализована через <a href="https://developer.android.com/reference/android/content/RestrictionsManager">RestrictionManager</a> и механизм managed configurations.</p>
+   <p>Чтобы предоставить управляемые конфигурации для своего приложения, нужно создать в ресурсах файл app_restrictions.xml и прописать в нем набор restrictions (название сложилось исторически, конфигурировать можно что угодно, а не только ограничения). У рестрикшена можно задать следующие поля:</p>
+   <p>● ключ;</p>
+   <p>● название (локализуемое);</p>
+   <p>● тип (boolean, int, string…);</p>
+   <p>● описание (локализуемое);</p>
+   <p>● дефолтное значение.</p>
+   <p>Стоит отметить, что нужно подставлять локализуемые значения через @string/, а не создавать несколько файлов с рестрикшенами.</p>
+   <p>Проверять текущие значения конфигураций можно с помощью RestrictionManager (или UserManager — <a href="https://developer.android.com/reference/android/content/RestrictionsManager#getApplicationRestrictions()"><strong>getApplicationRestrictions()</strong></a> работает идентично). Проверку стоит выполнять при запуске и возобновлении работы приложения (в методе onResume()), а также когда система оповещает об изменении конфигураций. Для этого нужно добавить BroadcastReceiver, отслеживающий интент ACTION_APPLICATION_RESTRICTIONS_CHANGED, причем не в манифесте приложения, а динамически в коде.</p>
+   <p>Метод getApplicationRestrictions() возвращает бандл с парами ключ-значение для каждой конфигурации. Стоит отметить, что в бандле будут только явно заданные значения — даже если для какого-то ключа в xml есть дефолтное, такой пары в бандле не будет. После получения конфигураций приложение может применить их соответствующим образом.</p>
+   <p>Управляемые конфигурации доступны и задокументированы в том числе в приложениях самого Google. Например, в Google Chrome для конфигурации доступно:</p>
+   <p>● на&nbsp;каких сайтах разрешать/блокировать куки;</p>
+   <p>● на&nbsp;каких сайтах разрешать/блокировать джаваскрипт;</p>
+   <p>● на&nbsp;каких сайтах разрешать/блокировать всплывающие окна;</p>
+   <p>● настройки прокси;</p>
+   <p>● страница, которая будет автоматически открываться в&nbsp;новой вкладке;</p>
+   <p>● и <a href="https://chromeenterprise.google/policies/">многое другое</a>.</p>
+   <p>А в GMail можно задавать такие параметры, как адрес электронной почты, хост почтового сервера, обязательное включение SSL и подпись по умолчанию. В общем случае доступные управляемые конфигурации приложения, если они есть, перечислены на его странице в Google Play — магазин берет информацию о них напрямую из файла app_restrictions.</p>
+   <p>Конфигурации может поддерживать и само MDM-приложение — например, чтобы автоматически передавать адрес сервера, с которого будет управляться устройство.</p>
+   <p>Также для управления приложениями, которые устанавливаются на устройство, есть полезная концепция <a href="https://support.google.com/googleplay/work/answer/6138458?hl=en">Managed Google Play</a> — по сути, это встроенная прямо в EMM-консоль администрирования страница магазина. Вместо того чтобы вводить вручную имя пакета запрещенного или разрешенного приложения, администратор может найти его прямо на этой странице и выбрать — имя пакета передастся обратно в консоль само. Пример реализации можно посмотреть, например, в консоли Airwatch, где через этот механизм можно выбирать обязательные для установки приложения.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/177/bd2/bb3/177bd2bb33615c1ca33e840d4c87361b.jpg" width="1437" height="829" data-src="https://habrastorage.org/getpro/habr/upload_files/177/bd2/bb3/177bd2bb33615c1ca33e840d4c87361b.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/1c4/20a/7d8/1c420a7d82e379305fa582fcca83087e.jpg" width="1423" height="822" data-src="https://habrastorage.org/getpro/habr/upload_files/1c4/20a/7d8/1c420a7d82e379305fa582fcca83087e.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <h3>Заключение</h3>
+   <p>Мы рассмотрели общие механизмы и возможности MDM в Android, но, конечно, не могли в одной статье полностью охватить такую обширную тему и все технические детали. Надеюсь, статья будет полезна тем, кто только начинает погружаться в мир MDM и хочет разрабатывать собственные решения или интегрировать существующие. Любые дополнительные вопросы смело задавайте в комментариях.</p>
+   <p>Наша команда сейчас активно работает над расширением MDM-функциональности нашего приложения для бизнеса Kaspersky Endpoint Security (как Android, так и iOS). Если вам интересна тема MDM — <a href="https://kas.pr/glushenko-habr-mdm-android">приходите к нам</a>, будем вместе работать над новыми фичами и делать жизнь энтерпрайза удобнее и безопаснее.</p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

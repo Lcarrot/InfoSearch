@@ -1,0 +1,212 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Вдохновившись постом <a href="https://habr.com/ru/users/StuxForce/" rel="noopener noreferrer nofollow">@StuxForce</a> решил написать упрощённый вариант автоматической установки и конфигурирования клиента MicroSIp на&nbsp;компьютеры доменной сети. Получился вполне рабочий вариант, который легко можно настроить под&nbsp;свою компанию.</p>
+   <p>Для&nbsp;реализации данной затеи нам понадобится:</p>
+   <ol>
+    <li><p>Сам клиент MicroSip (качаем с <a href="https://www.microsip.org/downloads" rel="noopener noreferrer nofollow">официального сайта</a>)</p></li>
+    <li><p>В&nbsp;папке MicroSip будут:</p>
+     <ol>
+      <li><p>Distr&nbsp;— в&nbsp;ней хранится неизменяемая часть программы;</p></li>
+      <li><p>Settings&nbsp;— туда мы кладем файлы Contacts.xml и microsip.ini;</p></li>
+      <li><p>Users&nbsp;— в&nbsp;нее мы будем генерировать файл&nbsp;личных настроек пользователя.</p></li>
+     </ol></li>
+    <li><p>Русификация программы выполняется путем добавления в&nbsp;папку Distr файла <a href="https://www.microsip.org/translation" rel="noopener noreferrer nofollow">langpack_russian.txt</a>.</p></li>
+    <li><p>Размещаем папку MicroSip сетевой директории (например:Netlogon).</p></li>
+   </ol>
+   <p>Итак вот сам скрипт, постарался детально прокомментировать. Возможно кому-то будет данный материал полезен.</p>
+   <p>Получаем статус процесса с&nbsp;именем MicroSip и завершаем его если таковой имеется:</p>
+   <pre><code class="powershell"># Получаем статус процесса с именем MicroSip
+$process = Get-Process -Name "MicroSip" -ErrorAction SilentlyContinue 
+# Если процесс Microsip не равен 0,то
+if ($process -ne $null) 
+    {
+    # Принудительно завершаем процесс Microsip
+    Stop-Process -Name "MicroSip" 
+    echo "***********************************"
+    echo "Процесс MicroSip завершен успешно!"
+    echo "Начиначем обновление конфигурации программы..." 
+    echo "***********************************"
+    }
+else {
+    # Если процесс Microsip не найден, уведомляем пользователя
+    echo "***********************************"
+    echo "Запущениый роцесс Microsip не найден!" 
+    echo "Начиначем установку программы MicroSip..."
+    echo "***********************************"
+}</code></pre>
+   <p>Проверяем наличие установленного клиента MicroSip:</p>
+   <pre><code class="powershell"># Путь до директории с программой
+$dir_microsip = "$env:APPDATA\MicroSIP"
+# Проверяем существует ли $dir_microsip       
+if (!(Test-Path -Path $dir_microsip)) 
+    {
+    echo "***********************************"
+    echo "Идет установка программы Microsip..."
+    echo "***********************************"
+    # Создаем папку Microsip  
+    New-Item -Path "$env:APPDATA\MicroSIP" -ItemType Directory
+    # Копируем программу Microsip из сетевой дириктории в AppData пользователя
+    Copy-Item -Path "\\ИМЯ_СЕРВЕРА\NETLOGON\soft\Microsip\Distr\*" -Destination "$env:APPDATA\MicroSIP" -Force 
+    echo "***********************************"
+    echo "Программа Microsip успешно установлена!"
+    echo "***********************************"
+}
+
+else {
+    # Иначе уведомляем пользователя об ранее установленной программе
+    echo "***********************************"
+    echo "Программа Microsip была установлена ранее!" 
+    echo "***********************************"
+}</code></pre>
+   <p>Если есть необходимость можно разместить ярлык на рабочем столе пользователя:</p>
+   <pre><code class="powershell"># Путь до ярлыка
+$link_microsip = "$env:USERPROFILE\Desktop\Microsip.lnk" 
+# Проверяем существует ли ярлык на рабочем столе 
+if (!(Test-Path -Path $link_microsip))
+    {
+    # Создяем ярлык на рабочем столе пользователя если он не существует
+    $target = "$env:APPDATA\MicroSIP\microsip.exe"
+    $file = "$env:USERPROFILE\Desktop\Microsip.lnk"
+    $shell = New-Object -comObject Wscript.Shell
+    $shortcut = $shell.CreateShortcut($file)
+    $shortcut.TargetPath = $target
+    $shortcut.Save()
+    echo "Ярлык Microsip успешно добавлен!"
+    }
+else {
+    # Иначе уведомляем, что он уже есть 
+    echo "***********************************"
+    echo "Ярлык для программы был создан ранее!"
+    echo "***********************************"
+}</code></pre>
+   <p>Принудительно обновляем файл контактов</p>
+   <pre><code class="powershell"># Принудительно обновляем файл контактов 
+$contacts = "\\ИМЯ_СЕРВЕРА\NETLOGON\soft\Microsip\Settings\Contacts.xml"
+Copy-Item -Path $contacts -Destination "$env:APPDATA\MicroSIP" -Force
+echo "***********************************"
+echo "Файл с контактами обновлен успешно!"
+echo "***********************************"</code></pre>
+   <p>Если есть необходимость то можно каждый раз удалять файл конфигурации, но&nbsp;тогда потеряется история вызовов&nbsp;— они хранятся именно в&nbsp;нем (пока не&nbsp;разобрался как&nbsp;вынести в&nbsp;отдельный или&nbsp;если есть другие варианты напишите&nbsp;— добавлю в&nbsp;статью)</p>
+   <pre><code class="powershell">#Чистим старый файл конфигурации
+Remove-Item  -Path "$env:APPDATA\MicroSIP\microsip.ini"</code></pre>
+   <p>Далее собираем файл настроек для&nbsp;пользователя:</p>
+   <pre><code class="powershell"># Путь до конфигурационного файла
+$conf_user = "$env:APPDATA\MicroSIP\microsip.ini" 
+# Проверяем существует ли ярлык на рабочем столе 
+if (Test-Path -Path $conf_user)
+    {
+    echo "***********************************"
+    echo "Файл конфигурации уже присутствует в директории!"
+    echo "Дальнейших действий не требуется..."
+    echo "***********************************"
+    }
+else
+    {
+    # Получаем данные из полей доменной ученой записи пользователя ActiveDirectiry
+    $UserName = $env:username
+    $Filter = "(&amp;(objectCategory=User)(samAccountName=$UserName))"
+    $Searcher = New-Object System.DirectoryServices.DirectorySearcher
+    $Searcher.Filter = $Filter
+    $ADUserPath = $Searcher.FindOne()
+    $ADUser = $ADUserPath.GetDirectoryEntry()
+    $ADDisplayName = $ADUser.DisplayName
+    $ADipPhone = $ADUser.ipPhone
+
+    # Выбираем пароль для отдела
+    # В конфигурационном файле пароль будет зашифрован
+    if (($ADipPhone -ge 100) -eq ($ADipPhone -le 199))
+        {
+         $pass = пароль
+        } 
+    elseif (($ADipPhone -ge 200) -eq ($ADipPhone -le 299))
+        {
+         $pass = пароль
+        }
+    elseif (($ADipPhone -ge 300) -eq ($ADipPhone -le 399))
+        {
+         $pass = пароль
+        }
+    elseif (($ADipPhone -ge 400) -eq ($ADipPhone -le 499))
+        {
+         $pass = пароль
+        }
+    elseif (($ADipPhone -ge 500) -eq ($ADipPhone -le 599))
+        {
+         $pass = пароль
+        }
+    elseif (($ADipPhone -ge 600) -eq ($ADipPhone -le 699))
+        {
+         $pass = пароль
+        }
+    elseif (($ADipPhone -ge 700) -eq ($ADipPhone -le 799))
+        {
+         $pass = пароль
+        }
+
+    # Создаем пустой файл конфигурации пользователя
+    $conf_user = New-Item -Path "\\ИМЯ_СЕРВЕРА\NETLOGON\soft\Microsip\Users\$env:UserName.ini" -ItemType File -Force
+    # Заполняем данными из ActiveDirectory переменную $txt
+    $txt =  "[Account1]
+            label = $ADipPhone
+            AuthID = $ADipPhone
+            Username = $ADipPhone
+            DisplayName = $ADDisplayName
+            Password = $pass
+            Server = ИМЯ_СЕРВЕРА_PBX
+            Domain = ИМЯ_СЕРВЕРА_PBX
+
+            [Settings]
+            accountId = 1"
+    # Перенаправляем вывод $txt в $conf_user
+    echo $txt | out-file $conf_user -encoding UTF8
+
+
+
+    # Пусть до файла с общими настройками программы MicroSip
+    $conf_simple = "\\ИМЯ_СЕРВЕРА\NETLOGON\soft\MicroSip\Settings\microsip.ini"
+    # Копируем из из сетевой директории файл общих настроек в профиль пользователя
+    Copy-Item -Path $contacts -Destination "$env:APPDATA\MicroSIP" -Force
+    echo "***********************************"
+    echo "Базовая конфигурация успешно скопирована в директорию с программой!"
+    echo "***********************************"
+
+    # Добавляем пользовательские настройки в файл общих настроек (объединяем файлы - общий + пользовательский)
+    Add-Content -Path "$env:APPDATA\MicroSIP\microsip.ini" -Value (Get-Content -Path "$conf_user") -Force
+    echo "***********************************"
+    echo "Конфигурация пользователя успешно добавлена к базовой!"
+    echo "***********************************"
+
+    # Запуск MicroSip после внесения изменений
+    Start-Process -FilePath "$env:APPDATA\MicroSIP\microsip.exe"
+    echo "***********************************"
+    echo "Программа Microsip успешно запущена!"
+    echo "Приятного пользоватния!"
+    echo "***********************************"
+    
+    }</code></pre>
+   <p>Запускаем ранее завершенный процесс MicroSip если изменения не&nbsp;понадобились:</p>
+   <pre><code class="powershell"># Запуск MicroSip
+$process = Get-Process -Name "MicroSip" -ErrorAction SilentlyContinue 
+# Если процесс Microsip не равен 0,то
+if ($process -ne $null) 
+    {
+    echo "***********************************"
+    echo "Процесс MicroSip работает!"
+    echo "Приятного пользования..." 
+    echo "***********************************"
+    }
+else {
+    # Если процесс Microsip не найден, запускаем его
+    Start-Process -FilePath "$env:APPDATA\MicroSIP\microsip.exe" 
+    echo "***********************************"
+    echo "Программа microSip успешно запущена!" 
+    echo "Приятного пользования..."
+    echo "***********************************"
+}</code></pre>
+   <p>Теперь можно создать политику в&nbsp;AD и при&nbsp;запуске системы выполнять данный скрипт под&nbsp;пользователем.</p>
+   <p>Прошу строго не&nbsp;судить, если есть чем дополнить (исправить) пишите в&nbsp;комментариях&nbsp;— буду рад и обязательно добавлю в&nbsp;статью.</p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

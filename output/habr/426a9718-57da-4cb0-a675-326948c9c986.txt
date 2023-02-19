@@ -1,0 +1,85 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Просматривая код браузерного расширения от&nbsp;Mullvad VPN на&nbsp;наличие интересных решений в&nbsp;продукте, я заметил, что&nbsp;Mullvad рекомендует использовать поисковики ориентированные на&nbsp;приватность и конфиденциальность, а&nbsp;именно DuckDuckGo и Mullvad Leta. У&nbsp;меня сразу возникла мысль: «Что? Mullvad Leta? Что&nbsp;это такое?», с&nbsp;этой мыслью я отправился изучать данный поисковик.</p>
+   <p>Сегодня я расскажу о&nbsp;том, что&nbsp;смог узнать про&nbsp;него, используя их FAQ, а&nbsp;также другие источники.</p>
+   <h2>Про Mullvad VPN</h2>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/8f7/9e9/f16/8f79e9f1698a49c15aea70b4b1fa993a.png" alt="Главная страница веб-сайта Mullvad VPN" title="Главная страница веб-сайта Mullvad VPN" width="1903" height="744" data-src="https://habrastorage.org/getpro/habr/upload_files/8f7/9e9/f16/8f79e9f1698a49c15aea70b4b1fa993a.png">
+    <figcaption>
+     Главная страница веб-сайта Mullvad VPN
+    </figcaption>
+   </figure>
+   <p><a href="https://mullvad.net" rel="noopener noreferrer nofollow">Mullvad VPN</a>&nbsp;— это VPN‑сервис, который начал свое существование в 2009&nbsp;году и за&nbsp;время своей работы зарекомендовал себя, как&nbsp;один из&nbsp;лучших VPN‑сервисов. Почему так и какие у&nbsp;него есть особенности&nbsp;— мы подробно разбирать не&nbsp;будем, скажу&nbsp;лишь о&nbsp;паре моментов, которые на&nbsp;мой взгляд делают его таким:</p>
+   <ul>
+    <li><p>Отсутствие какой‑либо привязки к&nbsp;личности (при регистрации сервис не&nbsp;требует от&nbsp;вас ничего, ваш логин это 16&nbsp;цифр);</p></li>
+    <li><p>Открытый исходный код (абсолютно все приложения, которые есть у&nbsp;Mullvad, <a href="https://github.com/mullvad" rel="noopener noreferrer nofollow">открыты</a> и вы в&nbsp;любой момент можете изучить их под&nbsp;микроскопом);</p></li>
+    <li><p>Страна регистрации Швеция (тут каждый делает выводы сам&nbsp;— плюс это или&nbsp;минус);</p></li>
+    <li><p>Постоянное совершенствование продукта (регулярные обновления, введения новых функций, разработка новых продуктов).</p></li>
+   </ul>
+   <p>Вот мы разобрались с&nbsp;компанией‑разработчиком (если еще не&nbsp;были знакомы), а&nbsp;теперь приступим к&nbsp;изучению Mullvad Leta.</p>
+   <p><strong><em>Disclaimer</em></strong>: Далее будет приведена информация из&nbsp;раздела FAQ на&nbsp;сайте Mullvad Leta, которую я перевел, а&nbsp;также некоторая другая информация, найденная мной на&nbsp;просторах интернета.</p>
+   <h2>Mullvad Leta</h2>
+   <p>Начнем с&nbsp;того, что&nbsp;разберемся со значением слова «Leta». Что&nbsp;это все таки значит?<br> Согласно FAQ, значение у&nbsp;этого слова такое:</p>
+   <blockquote>
+    <p>Leta&nbsp;— это шведское слово, означающее «искать», «охотиться», «быть в&nbsp;поиске» или «разведчик». Оно произносится как «Lea&nbsp;— tah».</p>
+   </blockquote>
+   <p>Также, для&nbsp;тех, кто не&nbsp;знаком с&nbsp;Mullvad VPN скажу, что&nbsp;Mullvad в&nbsp;переводе со Шведского значит «Крот» (он, как&nbsp;можно заметить и изображен на&nbsp;логотипе сервиса).</p>
+   <h3>Является ли Leta созданной с нуля поисковой системой?</h3>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/eec/417/5ce/eec4175ce77974254f8b40509823ffef.png" alt="Главная страница Mullvad Leta" title="Главная страница Mullvad Leta" width="1920" height="927" data-src="https://habrastorage.org/getpro/habr/upload_files/eec/417/5ce/eec4175ce77974254f8b40509823ffef.png">
+    <figcaption>
+     Главная страница Mullvad Leta
+    </figcaption>
+   </figure>
+   <p>Спешу вас огорчить, но&nbsp;нет, эта система является прокси‑сервером между вами и Google Search API (да‑да, именно он).</p>
+   <p><a href="https://leta.mullvad.net/" rel="noopener noreferrer nofollow">Mullvad Leta</a> представляет собой Frontend для&nbsp;Google Search API. Запрос, который вы делаете сначала идет на&nbsp;сервер Mullvad Leta, который потом делает этот самый запрос в&nbsp;Google Search API, тем самым анонимизируя юзера.</p>
+   <p>Сам поисковик имеет такой стэк:</p>
+   <p><strong>Frontend:</strong></p>
+   <ul>
+    <li><p>HTML</p></li>
+    <li><p>CSS</p></li>
+    <li><p>Svelte</p></li>
+   </ul>
+   <p><strong>Backend:</strong></p>
+   <ul>
+    <li><p>NodeJS</p></li>
+   </ul>
+   <p>А&nbsp;на серверах вот такая ситуация:</p>
+   <blockquote>
+    <p>Сервера Leta запущены на&nbsp;STBooted RAM only servers, таких&nbsp;же, как&nbsp;и VPN‑серверы. Эти серверы работают под&nbsp;управлением последней версии Ubuntu LTS с&nbsp;собственным ядром от&nbsp;Mullvad VPN, которое настраивается для&nbsp;удаления ненужного мусора.</p>
+   </blockquote>
+   <p>Mullvad Leta имеет 2&nbsp;варианта поиска&nbsp;— Обычный и Кэшированный.</p>
+   <p>Кэшированный поиск работает так&nbsp;— каждый поиск хранится в&nbsp;кэш‑хранилище на&nbsp;базе оперативной памяти Redis, которое удаляется по&nbsp;достижение хранения более 30&nbsp;дней.</p>
+   <p>Кэшированные запросы извлекаются из&nbsp;этого хранилища, это значит что, если ни один пользователь не&nbsp;искал того, что&nbsp;ищете вы, то вы получите несвежий результат.</p>
+   <h3>Что нужно, чтобы начать пользоваться?</h3>
+   <p>Вот тут некоторые могут расстроиться, так как&nbsp;для&nbsp;использования данной поисковой системы необходимо иметь оплаченный аккаунт Mullvad VPN. Но&nbsp;почему некоторые могут расстроиться? Все просто, сервис не&nbsp;принимает к&nbsp;оплате банковские карты РФ и в&nbsp;таком случае произвести оплату можно только криптовалютой (кстати при&nbsp;оплате можно будет получит 10% скидку).</p>
+   <p>Если вы просто попытаетесь зайти на&nbsp;сайт, то вас ждет такая картинка:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/148/208/0e1/1482080e1daed710af81c7d4d6e1ce77.png" alt="Вас просят подключиться к Mullvad VPN" title="Вас просят подключиться к Mullvad VPN" width="1920" height="927" data-src="https://habrastorage.org/getpro/habr/upload_files/148/208/0e1/1482080e1daed710af81c7d4d6e1ce77.png">
+    <figcaption>
+     Вас просят подключиться к Mullvad VPN
+    </figcaption>
+   </figure>
+   <p>Также сервис имеет ограничения по&nbsp;количеству запросов. Если вы делает запрос не&nbsp;из&nbsp;кэша, то имеете всего 50&nbsp;запросов в&nbsp;сутки, при&nbsp;этом, когда вы переходите на&nbsp;следующую страницу в&nbsp;поисковой выдаче&nbsp;— вы также теряете 1&nbsp;запрос. А&nbsp;если выбрать опцию «Поиск только в&nbsp;кэше», что&nbsp;является опцией по&nbsp;умолчанию, то количество запросов останется таким&nbsp;же, каким и&nbsp;было.</p>
+   <h3>Почему количество запросов лимитировано?</h3>
+   <p>Mullvad пишет, что&nbsp;каждый поиск требует от&nbsp;них API‑вызова в&nbsp;Google, что&nbsp;стоит денег и они хотят предоставить клиентам ценную услугу без&nbsp;возможности злоупотребления.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/bc5/c53/730/bc5c5373077594e21e5b5d44ebf8406b.png" alt="Результат по запросу &quot;habr&quot; " title="Результат по запросу &quot;habr&quot; " width="1903" height="927" data-src="https://habrastorage.org/getpro/habr/upload_files/bc5/c53/730/bc5c5373077594e21e5b5d44ebf8406b.png">
+    <figcaption>
+     Результат по запросу "habr"
+    </figcaption>
+   </figure>
+   <h3>Все анонимно...почти!</h3>
+   <p>Считаю важным упомянуть то, что&nbsp;Mullvad собирают некоторую информацию, а&nbsp;именно:</p>
+   <blockquote>
+    <p>Мы собираем показатели, относящиеся к&nbsp;количеству кэшированных поисков по&nbsp;сравнению с&nbsp;прямыми поисками, исключительно для&nbsp;того, чтобы понять ценность нашего сервиса. Кроме того, мы собираем информацию об&nbsp;использовании процессора, оперативной памяти и другую подобную информацию для&nbsp;обеспечения бесперебойной работы сервиса.</p>
+   </blockquote>
+   <h2>Итоги</h2>
+   <p>За&nbsp;недолгое время тестирование данного поисковика&nbsp;лично я остался очень доволен.<br> Сервис выполнен в&nbsp;минималистичном дизайне, в&nbsp;нем отсутствует визуальный мусор, а&nbsp;поисковая выдача такая, что&nbsp;получается найти то, что&nbsp;ищешь, с&nbsp;первого раза.</p>
+   <p>К&nbsp;сожалению, исходный код данного продукта пока недоступен (если он вообще будет доступен, на&nbsp;что&nbsp;хочется надеется).</p>
+   <p>На&nbsp;этом все!</p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

@@ -1,0 +1,86 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Большинство компьютерных игр ориентированные на многопользовательскую игру или имеют отдельный режим для многопользовательской игры, многие пользователи ожидают расширенных функций при контакте с игрой. Одними из таких функций является: голосовой чат, список друзей, приглашение в игровую сессию и т.д.</p>
+   <p>В этой стате я постараюсь объяснить простыми словами, как можно реализовать простой голосовой чат, не затрагивая программирование на C++. Проведя лишь небольшую настройку, вы можете добавить полностью работающий голосовой чат, используя только Blueprint <em>(визуальное программирование).</em></p>
+   <h2>Предисловие</h2>
+   <p>Перед началом работы я должен вас предупредить, голосовой чат Unreal Engine работает, только если в многопользовательской игре используется система сессий <em>(сеансов).</em></p>
+   <h2>Настройка голосового чата</h2>
+   <h3>Файлы конфигурации</h3>
+   <p>Чтобы сообщить игровому движку <em>(Unreal Engine)</em>, что мы хотим включить функцию голосового чата, необходимо изменить несколько файлов конфигурации <em>(.ini). </em>Файлы, которые нам нужно изменить,<em> - DefaultGame.ini и DefaultEngine.ini. </em>Для изменения этих файлов не требуется никаких дополнительных программ. Блокнота будит достаточно.</p>
+   <p>Чтобы найти эти файлы, откройте корневую папку проекта и перейдите в папку конфигурации (<em>./Config/).</em></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/427/2f4/dcd/4272f4dcd242dcdbe34a3bacdabb824c.png" width="599" height="145" data-src="https://habrastorage.org/getpro/habr/upload_files/427/2f4/dcd/4272f4dcd242dcdbe34a3bacdabb824c.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Вот два файла, которые нам нужно отредактировать:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/180/caa/158/180caa15893d7a276b8dfb79f80937fc.png" width="591" height="149" data-src="https://habrastorage.org/getpro/habr/upload_files/180/caa/158/180caa15893d7a276b8dfb79f80937fc.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Чтобы отредактировать их, щелкните пкм (<em>правой кнопкой мыши</em>) и выберите открыть с помощью, к примеру блокнот.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c3c/060/047/c3c060047f523a15b191efe553def7bb.png" width="645" height="509" data-src="https://habrastorage.org/getpro/habr/upload_files/c3c/060/047/c3c060047f523a15b191efe553def7bb.png">
+    <figcaption></figcaption>
+   </figure>
+   <h3>DefaultEngine.ini</h3>
+   <p>После открытия прокрутите вниз до конца файла <em>DefaultEngine.ini</em> и скопируйте текст который представлен ниже. Эти настройки позволят дать указание игровому движку (<em>Unreal Engine</em>), что мы хотим использовать систему голосового чата, для данного проекта.</p>
+   <p><code>[Voice] <br>bEnabled=true <br><br>[OnlineSubsystem] <br>bHasVoiceEnabled=true</code></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f85/a58/f33/f85a58f33c5a7fb71980dfa1efac4ec8.png" width="788" height="470" data-src="https://habrastorage.org/getpro/habr/upload_files/f85/a58/f33/f85a58f33c5a7fb71980dfa1efac4ec8.png">
+    <figcaption></figcaption>
+   </figure>
+   <h3>DefaultGame.ini</h3>
+   <p><strong><em>DefaultGame.ini</em></strong> - это последний файл, который необходимо изменить. Откройте этот файл, используя тот же метод, что и <em>DefaultEngine.ini</em>, и вставьте текст, который представлен ниже.</p>
+   <p><code>[/Script/Engine.GameSession] <br>bRequiresPushToTalk=true</code></p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/1d6/0b2/f40/1d60b2f40433472ac7aa1ca6e12ba1b2.png" width="416" height="182" data-src="https://habrastorage.org/getpro/habr/upload_files/1d6/0b2/f40/1d60b2f40433472ac7aa1ca6e12ba1b2.png">
+    <figcaption></figcaption>
+   </figure>
+   <p><strong>Включение</strong> этой настройки <em>(push to talk)</em> дает вашим игрокам возможность отправлять свой голос только при нажатии на кнопку.</p>
+   <p><strong>Отключение</strong> этой настройки <em>(push to talk)</em> позволяет отправлять голосовые дынные <strong><em>постоянно, </em></strong>независимо от того, хочет игрок отправлять свой голос или нет.</p>
+   <p>Рекомендуется включать эту опцию, поскольку большинство игроков предпочитают, чтобы их голосовые дынные отправлялись только тогда, когда они готовы к разговору.</p>
+   <p>Что бы отключить <em>(push to talk)</em> введите вместо <strong><em>True</em></strong> (правда) на <strong><em>False</em></strong>.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/8b0/b0b/f3f/8b0b0bf3f7c900f5498059220e93f7f5.png" width="417" height="181" data-src="https://habrastorage.org/getpro/habr/upload_files/8b0/b0b/f3f/8b0b0bf3f7c900f5498059220e93f7f5.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Сохраните и закройте файл.</p>
+   <p>Откройте свой проект Unreal Engine <em>(.uproject) </em>и дождитесь загрузки движка.</p>
+   <h3>Настройка Blueprint</h3>
+   <p>Если на приведенном выше шаге вы включили функцию <em>(push to talk)</em> в файле <em>DefaultGame.ini</em>, далее вам нужно будит настроить нажатие клавиши ввода для запуска и остановки <em>(push to talk)</em>.</p>
+   <p>Первый шаг - открыть редактор Blueprint, вашего игрового контроллера <em>(PlayerController). </em>Если у вас его нет, и создайте его и назовите, к примеру<em> PlayerControllerVoice. </em>Также не забудьте присвоить его вашему игровому режиму <em>(GameMode).</em></p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/038/400/90d/03840090de44c439d4edf2809c303d88.png" width="417" height="279" data-src="https://habrastorage.org/getpro/habr/upload_files/038/400/90d/03840090de44c439d4edf2809c303d88.png">
+    <figcaption></figcaption>
+   </figure>
+   <h3>Добавление кнопки активации голосового чата</h3>
+   <p>После того, как ваш редактор игрового контроллера <em>(Game Controller) </em>будит открыт, щелкните правой кнопкой мыши по пустому месту и введите название клавиш, на которые вы хотите назначить активацию голосового чата. В моем случае это кнопка <em>V</em>.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/434/bd8/6ff/434bd86ff349ae935b551058774516cd.png" width="410" height="410" data-src="https://habrastorage.org/getpro/habr/upload_files/434/bd8/6ff/434bd86ff349ae935b551058774516cd.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Далее из пункта <strong><em>Pressed</em></strong> вытяните узел и в поисковой строке напишите <em>(Execute Console Command). </em>И тоже самое с пунктом<em> </em><strong><em>Released.</em></strong></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f33/b14/143/f33b1414362b859d680a01ad3d8897e7.png" width="617" height="499" data-src="https://habrastorage.org/getpro/habr/upload_files/f33/b14/143/f33b1414362b859d680a01ad3d8897e7.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>На данном этапе должно выглядеть так:</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/aa1/cb8/f40/aa1cb8f402e68598e4e5d76abea2032b.png" width="419" height="289" data-src="https://habrastorage.org/getpro/habr/upload_files/aa1/cb8/f40/aa1cb8f402e68598e4e5d76abea2032b.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Вводим команду в ноду <em>(Console Command)</em> при нажатой кнопке:</p>
+   <p><code>ToggleSpeaking 1</code></p>
+   <p>Теперь вводим команду во вторую ноду <em>(Console Command) </em>при отжатой кнопки:</p>
+   <p><code>ToggleSpeaking 0</code></p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/fb9/645/80b/fb964580bae662f07afd4d1e4a238faf.png" width="395" height="291" data-src="https://habrastorage.org/getpro/habr/upload_files/fb9/645/80b/fb964580bae662f07afd4d1e4a238faf.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Все готово теперь в вашей игре есть базовый голосовой чат на назначенную кнопку. Спасибо за внимание!</p>
+   <p><a href="https://www.youtube.com/watch?v=E9gepdeQiJk" rel="noopener noreferrer nofollow">Пример работы (видео)</a></p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

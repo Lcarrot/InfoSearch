@@ -1,0 +1,75 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Начну статью с того, чтобы прояснить, что я не разработчик и запустить свой сайт для меня нетривиальная задача. У меня уже был свой <a href="https://www.ivankapcov.ru/" rel="noopener noreferrer nofollow">сайт</a>, который построен на чистом HTML, но запустить свой сайт бесплатно на Эгее у меня не выходило. Недавно я запустил еще один блог на конкретную тематику и мне захотелось сделать под него сайт.</p>
+   <p>Дабы не держать завесу тайны над "почти бесплатно" скажу, что запуск блога обошелся мне в 179 рублей за год и пару часов времени на то, чтобы разобраться с тем, чему посвящена вся остальная статья.</p>
+   <p>Расскажу про то, как весь процесс сделал я, вы можете отклоняться от курса, если понимаете что делаете.</p>
+   <h2>1. Регистрируем домен</h2>
+   <p>На этот шаг ушла вся заначка в 179 рублей, весь остальной процесс стоит только вашего времени.</p>
+   <p>Я зарегистрировал домен на <a href="https://timeweb.com/ru/" rel="noopener noreferrer nofollow">Timeweb</a>. Мой первый сайт зарегистрирован у этих же ребят, поэтому я решил держать свои домены в одном месте для удобства.</p>
+   <p>Не буду прикреплять скрины с инструкцией. Просто переходите в окно регистрации домена, выбираете себе имя и зону. По большей части от выбора зоны будет зависеть стоимость домена. Во время оформления покупки, смотрите, какие еще услуги вам проставили (обычно добавляют платные SSL сертификаты, еще один домен по скидке), можете смело все отменять, нужен только домен.</p>
+   <h2>2. Подключаем бесплатный хостинг</h2>
+   <p>Идем на <a href="https://beget.com/ru/hosting/free" rel="noopener noreferrer nofollow">https://beget.com/ru/hosting/free</a>, вводим свои данные, получаем логин и пароль и входим в сервис.</p>
+   <h2>3. Добавляем собственный домен</h2>
+   <p>Переходим в Панель управления и выбираем вкладку "Сайты".</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/dc6/ca4/5dd/dc6ca45dd66dfce35f25ba1afc7708ea.png" width="1021" height="471" data-src="https://habrastorage.org/getpro/habr/upload_files/dc6/ca4/5dd/dc6ca45dd66dfce35f25ba1afc7708ea.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Добавляем свой сайт, введя домен в поле. После того как сайт добавится, нужно изменить версию PHP, иначе Эгея будет сыпать ошибки на странице. Я поставил версию 7.1.<br></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/120/0ce/c77/1200cec776f58f8ed6814c64f4907531.png" width="1021" height="445" data-src="https://habrastorage.org/getpro/habr/upload_files/120/0ce/c77/1200cec776f58f8ed6814c64f4907531.png">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/de4/2a2/f94/de42a2f94ffd598021d8c4c80a1a1969.png" width="752" height="422" data-src="https://habrastorage.org/getpro/habr/upload_files/de4/2a2/f94/de42a2f94ffd598021d8c4c80a1a1969.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>После возвращаемся в Панель управления и переходим во вкладку "Домены и поддомены". Здесь нужно ввести свой домен и выбрать действие. Действие для меня недоступно, но вам нужно выбрать пункт "Создать новый сайт".</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/b91/78d/6bb/b9178d6bb2ffd125fb1c1a8be6c2ffb0.png" width="1046" height="499" data-src="https://habrastorage.org/getpro/habr/upload_files/b91/78d/6bb/b9178d6bb2ffd125fb1c1a8be6c2ffb0.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Последний шаг подключения к хостингу. В Панели управления выбираем пункт "DNS". Сверху в выпадающем списке выбираем свой сайт. Ниже будет список DNS-записей.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/ffa/ead/99b/ffaead99b2138cc22db6188662458f3f.png" width="1010" height="453" data-src="https://habrastorage.org/getpro/habr/upload_files/ffa/ead/99b/ffaead99b2138cc22db6188662458f3f.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Если вы, как и я решили зарегистрировать свой домен не там, же где оформляли хостинг, нужно подключить эти DNS-записи к своему хостингу. В случае оформления на Timeweb, нужно открыть свой список доменов и перейти в настройки DNS. Удаляем существующие записи и добавляем новые (копируя с хостинга) через кнопку "Добавить DNS запись".</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/6b7/9f9/3cb/6b79f93cb3a7be00bb5275231644dda2.png" width="884" height="512" data-src="https://habrastorage.org/getpro/habr/upload_files/6b7/9f9/3cb/6b79f93cb3a7be00bb5275231644dda2.png">
+    <figcaption></figcaption>
+   </figure>
+   <h2>4. Создаем базу MySQL</h2>
+   <p>В Панели управления переходим во вкладку "MySQL". Здесь просто вводим имя своей базы, которое будет состоять из вашего аккаунта на хостинге + введенная информация и придумываем пароль. Эти данные будут нужны для регистрации в Эгее, поэтому не потеряйте их.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/45e/ca0/6c4/45eca06c432636e366a2c4d43378cb40.png" width="1041" height="491" data-src="https://habrastorage.org/getpro/habr/upload_files/45e/ca0/6c4/45eca06c432636e366a2c4d43378cb40.png">
+    <figcaption></figcaption>
+   </figure>
+   <h2>5. Устанавливаем Эгею</h2>
+   <p>Для начала на <a href="https://blogengine.ru/get/" rel="noopener noreferrer nofollow">сайте движка</a> скачиваем Эгею. Скачается zip архив, пока его не распаковывайте.</p>
+   <p>На сайте хостинга из Панели управления переходим в "Файловый менеджер". Это файлы, которые находятся у вас на хостинге. Слева и справа вы можете открывать файлы независимо и это нам поможет.</p>
+   <p>Слева открываем папку с названием вашего сайта, внутри открываем папку "public_html". Нужно удалить оттуда все кроме папки "cgi-bin".</p>
+   <p>После этого с правой стороны кликаем на пустое пространство, чтобы сторона стала активной. Через кнопку "Загрузить файлы" загружаете архив с Эгеей. Нажимаете распаковать архив, он распакуется туда же, где лежит архив. Затем через клавишу ctrl выделяете файлы из архива, нажимаете правой кнопки мыши и выбираете "Копировать" (не "Создать копию"). У вас выберется путь папки, которая открыта в окне слева, убедитесь, что это папка из предыдущего абзаца.</p>
+   <p>После вы увидите, что в левой части добавились файлы и теперь можно удалить выделенные в правой части файлы вместе с архивом Эгеи.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/26c/b70/e12/26cb70e12d54429638d8e9b27cddca87.png" width="1919" height="828" data-src="https://habrastorage.org/getpro/habr/upload_files/26c/b70/e12/26cb70e12d54429638d8e9b27cddca87.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Дальше открываем наш сайт. Если все было сделано правильно, вас встретит страница установки. Здесь понадобятся данные из 4-го раздела.</p>
+   <p>В строке сервера оставляем localhost, в имя пользователя и название базы вводим название базы MySQL, которое вы сделали. Пароль вашей MySQL базы вводим под именем пользователя.</p>
+   <p>В последней строке введите пароль, с помощью которого вы будете входить в админку сайта.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/b40/4f7/76b/b404f776bcab5072f48b5b2564e583cd.png" width="1057" height="784" data-src="https://habrastorage.org/getpro/habr/upload_files/b40/4f7/76b/b404f776bcab5072f48b5b2564e583cd.png">
+    <figcaption></figcaption>
+   </figure>
+   <h2>6. Устанавливаем SLL-сертификат</h2>
+   <p>К этому шагу у вас есть http сайт, который помечается браузерами как "ненадежный". Это будет влиять на поисковую выдачу и новых пользователей, которые не понимают, что это значит. Вы можете бесплатно выпустить SSL-сертфикат и тогда, ваш сайт будет запускаться как https.</p>
+   <p>Здесь я не буду расписывать огромную инструкцию, а дам материал, который пошагово использовал сам. На <a href="https://seopulses.ru/kak-poluchit-besplatniy-ssl-sertifikat/#part1" rel="noopener noreferrer nofollow">сайте</a> я использовал первую инструкцию, в которой объясняется, как установить сертификат через Cloudflare.</p>
+   <h2>Итог</h2>
+   <p>Если вы все сделали правильно, у вас теперь есть собственный блог на Эгее, в который вы можете добавлять записи и хвастаться им перед своими друзьями.</p>
+   <p>Таким образом я почти бесплатно сделал для своего блога сайт на Эгее. Но для более мелких записей я использую <a href="https://t.me/wantmakegames" rel="noopener noreferrer nofollow">Телеграм канал</a> и также у меня есть основной блог в <a href="https://t.me/ivankapcov_live" rel="noopener noreferrer nofollow">Телеграме</a>, в котором я пишу обо всех своих проектах, буду рад видеть вас там.</p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

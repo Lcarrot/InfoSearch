@@ -1,0 +1,342 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/e89/c42/48b/e89c4248b7099274a3e4c94f0c565824.jpg" width="780" height="440" data-src="https://habrastorage.org/getpro/habr/upload_files/e89/c42/48b/e89c4248b7099274a3e4c94f0c565824.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Компании с большими монолитными приложениями разбивают свои приложения на более мелкие микросервисы, поскольку последние обеспечивают гибкость и быстродействие. Однако во время процесса возникает множество препятствий и вопросов, с которыми сталкиваются разработчики, такие как:</p>
+   <p>• Как маршрутизируются запросы между службами?</p>
+   <p>• Как обеспечить безопасность связи?</p>
+   <p>• Как обнаружить сбои и время простоя?</p>
+   <p>• Как обновить и протестировать новые версии сервиса?</p>
+   <p>• Приложения не запускаются в среде green field.</p>
+   <p>• Проблемы возникают в сети между службами.</p>
+   <p>• Layer N/w сложно поддается управлению.</p>
+   <p>Для решения всех этих проблем применяется Service Mesh.</p>
+   <h2>Проблемы, решаемые с помощью Service Mesh:</h2>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/05b/c08/1c0/05bc081c053f02b75e408b491023cb4b.PNG" width="832" height="523">
+    <figcaption></figcaption>
+   </figure>
+   <p>Service Mesh — это выделенный инфраструктурный уровень, который вы можете добавить в свои приложения. Он позволяет вам прозрачно добавлять такие возможности, как наблюдаемость, управление трафиком и безопасность, не добавляя их в свой собственный код. Термин “service mesh” описывается как тип программного обеспечения, которое вы используете для реализации этого шаблона, так и безопасность или сетевой домен, который создается при использовании этого программного обеспечения.</p>
+   <p>Ранее бизнес-логика и сеть были объединены в одно целое. Таким образом, разработчикам пришлось писать код для mTLS или circut breaker и многих других функциональных возможностей, что отнимало так много времени, что они не могли сосредоточиться на бизнес-логике. Но использование Service Mesh прокси sidecar отделяет бизнес-логику от сети и позволяет разработчикам собственно сосредоточиться на бизнес-логике, а Istio управляет прокси-сервером envoy.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/048/35a/cb1/04835acb1c1e968c0c2051956afa61e9.PNG" width="908" height="613">
+    <figcaption></figcaption>
+   </figure>
+   <p>На рынке существует множество Service mesh, но мы привыкли к Istio, поскольку он пользуется популярностью. Он логически разделен на control plane и data plane.</p>
+   <p>Data plane — это связь между службами. Без Service mesh сеть не понимает передаваемый трафик и не может принимать никаких решений, основанных на том, какой это тип трафика или от кого он поступает.</p>
+   <p>Service mesh использует прокси-сервер для перехвата всего вашего сетевого трафика, предоставляя широкий набор функций, зависящих от приложения, в зависимости от заданной вами конфигурации.</p>
+   <p>Прокси-сервер Envoy развертывается вместе с каждой службой, которую вы запускаете в своем кластере, или запускается вместе со службами, запущенными на виртуальных машинах.</p>
+   <p>Control plane принимает желаемую конфигурацию и свое представление о службах и динамически конфигурирует прокси-серверы, обновляя их по мере изменения правил или среды.</p>
+   <h2>Приложение для книжного магазина, использующее Istio</h2>
+   <h2>Описание:</h2>
+   <p>Приложение отображает информацию о записи книги в книжном интернет-магазине. На странице товара отображается описание книги, сведения о книге (ISBN, количество страниц и так далее) и несколько рецензий на книги.</p>
+   <p>Приложение Bookinfo разбито на четыре отдельных микросервиса:</p>
+   <p><strong>1.productpage.</strong> Микросервис страницы продукта вызывает микросервисы сведений и обзоров для заполнения страницы.</p>
+   <p><strong>2. details.</strong> Микросервис details содержит информацию о книге.</p>
+   <p><strong>3. reviews.</strong> Микросервис reviews содержит обзоры книг. Он также вызывает микросервис ratings.</p>
+   <p><strong>4. ratings.</strong> Микросервис ratings содержит информацию о ранжировании книг, которая сопровождает рецензию на книгу.</p>
+   <p>Существует 3 версии микросервиса отзывов:</p>
+   <p><strong>a.Version v1</strong> ==&gt; не вызывает сервис рейтингов.</p>
+   <p><strong>b.Version v2</strong> ==&gt; вызывает сервис рейтингов и отображает каждый рейтинг в виде от 1 до 5 черных звезд.</p>
+   <p><strong>c.Version v3</strong> ⇒ вызывает сервис рейтингов и отображает каждый рейтинг в виде от 1 до 5 красных звезд.</p>
+   <h3>Architecture of the BookStore Application :</h3>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/d61/27c/fef/d6127cfefebc0e6f7ab9d9b1e96e94a1.PNG" alt="Пример приложения без Istio" title="Пример приложения без Istio" width="866" height="589">
+    <figcaption>
+     Пример приложения без Istio
+    </figcaption>
+   </figure>
+   <p>Чтобы запустить приложение с помощью istio, нам просто нужно настроить и запустить службы в среде с поддержкой Istio, при этом сайдкар-прокси Envoy будут встроены в каждый микросервис.</p>
+   <p>Установка Istio по умолчанию использует <code>automatic sidecar injection</code><strong>. </strong>Установите метку на пространство имен default, в котором будет размещаться приложение, вида <code>istio-injection=enabled</code><strong>:</strong></p>
+   <p><code>kubectl label namespace default istio-injection=enabled</code></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/0d4/956/0c9/0d49560c97f725c816d542ddd513f60d.PNG" width="781" height="473">
+    <figcaption></figcaption>
+   </figure>
+   <p>Все микросервисы будут дополнены Envoy sidecar, который перехватывает входящие и исходящие вызовы для сервисов, предоставляя hooks, необходимые для внешнего управления, через control plane Istio, роутинг, сбор телеметрии и применения политики для приложения в целом.</p>
+   <h2>Развертывание служб приложений (установка на GKE)</h2>
+   <p>1. Перейдите на страницу Istio, чтобы загрузить установочный файл для вашей ОС и перейдите в каталог пакетов Istio. Добавьте клиент <code>istioctl</code> в свой path (Linux или macOS):</p>
+   <p>a. Включите Google Kubernetes Engine API.</p>
+   <p>b. Создайте кластер GKE: <code>gcloud container clusters create istio-gke-capability — region us-central1 — node-locations us-central1-a — num-nodes 2 — machine-type=n1-standard-2</code>&nbsp;</p>
+   <p>Получите учетные данные для вашего нового кластера : <code>gcloud container clusters get-credentials istio-gke-capability — region=us-central1 — project=sincere-bongo-349311</code></p>
+   <p>d. curl -L https://istio.io/downloadIstio | sh -</p>
+   <p>e. cd istio-1.14.1</p>
+   <p>f. <strong>&nbsp;</strong>export PATH=$PWD/bin:$PATH</p>
+   <p>istioctl install --set profile=default -y</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/93a/70c/275/93a70c27583fc6b90d3cc5dad64e12eb.PNG" width="884" height="467">
+    <figcaption></figcaption>
+   </figure>
+   <p>2. Проверьте, что поды прокси-сервера envoy запущены в пространстве имен istio-system. (по умолчанию установлены компоненты istiod и istio-ingressgateway)</p>
+   <p>kubectl get ns</p>
+   <p>kubectl get pods -n istio-system</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/7ee/dc4/dc9/7eedc4dc97cee05501a3c8f7c483b3c3.PNG" width="920" height="455">
+    <figcaption></figcaption>
+   </figure>
+   <p>3. Добавьте метку на пространства имен, чтобы проинструктировать Istio автоматически добавлять прокси-серверы Envoy sidecar при последующем развертывании вашего приложения:</p>
+   <p><code>kubectl label namespace default istio-injection=enabled</code></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/cf2/4dd/001/cf24dd0014db5d69e04d885b0254dc87.PNG" width="917" height="229">
+    <figcaption></figcaption>
+   </figure>
+   <p>4. Разверните приложение BookStore (содержит страницу продукта, подробную информацию, микросервис обзора и оценки)</p>
+   <p>Этот микросервис уже присутствует по этому пути</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/810/3ac/f74/8103acf741cc62e21dc08a671b5da255.PNG" width="900" height="702">
+    <figcaption></figcaption>
+   </figure>
+   <p>kubectl apply -f bookinfo.yaml</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/dc1/416/22a/dc141622a01c988d163b0c40311acbd8.PNG" width="930" height="625">
+    <figcaption></figcaption>
+   </figure>
+   <p>Вы можете проверить, что в каждом поде запущено по 2 контейнера. Один из них — прокси-сервер envoy sidecar, а другой — микросервис. Вы можете проверить это, используя команду describe</p>
+   <p><code>kubectl describe pod [pod-name]</code></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/23e/975/417/23e9754170e4bcaa1aa202cbd5c32ccd.PNG" width="888" height="445">
+    <figcaption></figcaption>
+   </figure>
+   <p>kubectl получает услуги</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/f85/1e7/9cb/f851e79cb2356157cc5b53e3093c050e.PNG" width="856" height="224">
+    <figcaption></figcaption>
+   </figure>
+   <p>5. Убедитесь, что до этого момента все работало правильно. Запустите эту команду, чтобы проверить, запущено ли приложение внутри кластера и обслуживает ли HTML-страницы, проверив заголовок страницы в ответе:</p>
+   <p>Возвращает заголовок HTML-страницы продукта</p>
+   <p>kubectl exec “$(kubectl get pod -l app=ratings -o jsonpath=’{.items[0].metadata.name}’)” -c ratings — curl -sS productpage:9080/productpage | grep -o “&lt;title&gt;.*&lt;/title&gt;”</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/9a5/708/b9e/9a5708b9e2cd4500634d125bae170e6b.PNG" width="877" height="108">
+    <figcaption></figcaption>
+   </figure>
+   <p>6. Нам нужно изменить тип сервиса istio-ingressgateway с ‘LoadBalancer’ на ‘ClusterIP’</p>
+   <figure class="">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/860/c0a/add/860c0aadd5581c25b72529960baa1e97.PNG" width="499" height="597">
+    <figcaption></figcaption>
+   </figure>
+   <p>Проверим, что тип сервиса изменился с LoadBalancer на ClusterIP</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/755/583/032/7555830321cf6f595c501e69d7b45934.PNG" width="885" height="207">
+    <figcaption></figcaption>
+   </figure>
+   <p><strong>Схема архитектуры приложения Book Info, доступного с помощью TCP Load balancer</strong></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/a38/f37/ad6/a38f37ad6da36c4dd7391c915e4b895b.PNG" width="855" height="368">
+    <figcaption></figcaption>
+   </figure>
+   <p>Чтобы управлять внешним трафиком, вам нужен load balancer, который является внешним по отношению к mesh</p>
+   <p>По умолчанию Google Cloud развертывает общедоступный load balancer TCP/UDP. Load balancer прослушивает порт 80 и перенаправляет трафик на IstioIngressGateway.&nbsp;</p>
+   <p>Gateway настраивает порт, протоколы и выполняет маршрутизацию виртуального хоста, который с помощью виртуального сервиса направляет трафик к фактическому микросервису.</p>
+   <p>Хотя, как мы видим, используется load balancer TCP/UPD по умолчанию с Istio ServiceMesh, у него нет дополнительных функций, которыми обладает Global Http Load Balancer.</p>
+   <h2>Преимущества внешнего HTTP load balancer</h2>
+   <p>• Это глобальный load balancer, который реализован как управляемый сервис на Google Front Ends. Он работает на Layer 7.</p>
+   <p>• TCP Load Balancer является региональным и работает на Layer L4, в то время как HTTP load balancer является глобальным и работает на уровне L7 (Application Layer).</p>
+   <p>• Защита от DDoS-атак и фильтрация трафика на стыке с помощью Google Cloud Armor.</p>
+   <p>• Функциональность шлюза API с IAP.</p>
+   <p>• Он поддерживает расширенные возможности управления трафиком, такие как:</p>
+   <p>• зеркальное отображение трафика, разделение трафика на основе веса, преобразования заголовков на основе запроса/ответа;</p>
+   <p>• Может получать доступ к бэкендам в нескольких регионах;</p>
+   <p>Автоматическое создание и ротация общедоступных сертификатов с помощью сертификатов, управляемых Google.</p>
+   <h2>Предоставление доступа к приложениям servicemesh через Ingress (глобальный load balancer HTTPS L7)</h2>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/c13/dcb/660/c13dcb660037cbcbb8accd5b1b868e3a.PNG" width="864" height="328">
+    <figcaption></figcaption>
+   </figure>
+   <p>a. Добавьте аннотации в Istio-Ingress Gateway svc</p>
+   <p>Этот сервис имеет следующие аннотации, которые задают параметры для балансировщика нагрузки Ingress при его развертывании:</p>
+   <p><strong><em>cloud.google.com/backend-config</em></strong> ссылается на имя пользовательского ресурса, называемого <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#configuring_ingress_features">Backend Config</a>. Ingress Controller использует Backend Config для установки параметров на ресурсе backend сервиса Google Cloud. Вы используете этот ресурс на следующем шаге для определения пользовательских параметров проверки работоспособности Google Cloud.</p>
+   <p><strong><em>cloud.google.com/neg : ‘{“ingress”: true}’</em></strong> включает серверные части Ingress (в данном случае прокси-серверы mesh ingress) для load balancer внутри контейнера. Для более эффективной и стабильной балансировки нагрузки эти backend части используют группы <a href="https://cloud.google.com/load-balancing/docs/negs">конечных точек сети </a>(NEGS) вместо групп экземпляров.</p>
+   <p><strong><em>cloud.google.com/app-protocols : ‘{“https”:”HTTP2"}’</em></strong> направляет GFE для подключения к входному шлюзу service mesh, используя HTTP2 с TLS, как описано в <a href="https://cloud.google.com/kubernetes-engine/docs/concepts/ingress-xlb#https_tls_between_load_balancer_and_your_application">Ingress для внешних HTTP. Load balancer</a>, и <a href="https://cloud.google.com/load-balancing/docs/https#protocol_to_the_backends">внешние HTTP(ы) load balancer</a> анализируют дополнительный уровень шифрования.</p>
+   <p>b. Примените настройки backend сервиса</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/118/6b2/603/1186b26033e415a50277eead664363ac.PNG" width="839" height="503">
+    <figcaption></figcaption>
+   </figure>
+   <p>Backend Config — это Custom Resource Definition (CRD), которое определяет параметры бэкэнда для балансировки нагрузки Ingress. Необходимы особенные настройки проверок работоспосбоности (хелсчеков), так как ингресс прокси сервис меша использует порт 443, отличный от стандартного порта для проверок 15021. GKE Ingress использует следующие параметры проверки работоспособности в BackendConfig для настройки проверок работоспособности Google Cloud load balancer.</p>
+   <p><code>healthCheck.port</code> определяет порт, который используется с IP-адреса каждого пода для проверки работоспособности балансировщиком Google Cloud.</p>
+   <p><code>healthCheck.requestPath</code><strong> </strong>определяет HTTP-путь, по которому выполняется проверка работоспособности указанного порта.</p>
+   <p><code>type</code><strong> </strong>определяет протокол проверки работоспособности (в данном случае HTTP).</p>
+   <p>Аннотации сервисов не применяются к Google Cloud load balancer до тех пор, пока не будет развернут ресурс Ingress. Применение Ingress связывает все эти ресурсы воедино.</p>
+   <p><strong>c. Установка TLS managed сертификата</strong></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/906/13a/db7/90613adb70681e0efa1d9db0d4b1c928.PNG" width="818" height="402">
+    <figcaption></figcaption>
+   </figure>
+   <p>Этот файл YAML указывает, что созданное DNS-имя используется для предоставления общедоступного сертификата. Поскольку Google полностью управляет жизненным циклом этих общедоступных сертификатов, они автоматически генерируются и регулярно меняются без прямого вмешательства пользователя.</p>
+   <p>Проверьте ресурс <code>ManagedCertificate</code>, чтобы проверить ход выпуска сертификата:</p>
+   <pre><code>kubectl describe managedcertificate gke-ingress-cert -n istio-system</code></pre>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/fa4/3de/d15/fa43ded156936af286fce2ee939c0272.PNG" width="865" height="617">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/d1a/41e/bd3/d1a41ebd3242f0c544d2659d0fe1435c.PNG" width="869" height="493">
+    <figcaption></figcaption>
+   </figure>
+   <p>d. Разверните ресурс Ingress</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/cd8/b2a/922/cd8b2a92273171df64dc624746849827.PNG" width="878" height="759">
+    <figcaption></figcaption>
+   </figure>
+   <p>Этот манифест определяет ресурс типа Ingress, который связывает все предыдущие ресурсы вместе. В манифесте указаны следующие поля:</p>
+   <p><strong>kubernetes.io/ingress.allow-http :</strong> <strong>“false”</strong> отключает HTTP-трафик на порту 80 балансировщика нагрузки Google Cloud. Это эффективно предотвращает подключение любых клиентов с незашифрованным трафиком, поскольку порт 443 прослушивает только HTTPS, а порт 80 отключен.</p>
+   <p><strong>kubernetes.io/ingress.global-static-ip-name : “istio-lb”</strong> связывает ранее созданный IP-адрес с балансировщиком нагрузки. Эта ссылка позволяет создавать IP-адрес отдельно от Load Balancer, чтобы его можно было повторно использовать отдельно от жизненного цикла Load Balancer.</p>
+   <p><strong>networking.gke.io/managed-certificates : “gke-ingress-cert”</strong> связывает этот балансировщик нагрузки с ранее созданным ресурсом SSL-сертификата, управляемым Google.</p>
+   <p>Мы подключили эластичный ip-адрес к HTTP Load Balancer.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/03a/129/80b/03a12980b01cb90abc341845e5ca27ce.PNG" width="875" height="519">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/07d/0f7/e97/07d0f7e97193171d6531bd8e7a03edba.PNG" width="843" height="122">
+    <figcaption></figcaption>
+   </figure>
+   <p><strong>e. Настройте ingress gateway</strong></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/8d2/093/db9/8d2093db904bcc04dde03565559671d1.PNG" width="860" height="645">
+    <figcaption></figcaption>
+   </figure>
+   <p><code>Gateway</code> описывает балансировщик нагрузки, работающий на границе service mesh, принимающий входящие или исходящие HTTP/TCP соединения. Спецификация описывает набор портов, которые должны быть открыты, тип используемого протокола, конфигурацию SNI для балансировщика нагрузки и т.д.</p>
+   <p>Следующая конфигурация Gateway настраивает прокси-сервер для выполнения функций балансировщика нагрузки, <strong>предоставляя доступ к порту 80 (http) для входа</strong>. Gateway будет применен к прокси, работающему на поде с <strong>лейблом (меткой)</strong> <code>istio: ingress gateway.</code> В то время как Istio настроит прокси для прослушивания этих портов, пользователь несет ответственность за обеспечение того, чтобы внешний трафик к этим портам был разрешен в mesh.</p>
+   <p>f. Настройте Virtual Service для отправки маршрутов трафика микросервисам</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/270/a7c/0cf/270a7c0cfff065f766e719aae3962a97.PNG" width="781" height="853">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/55e/66a/989/55e66a989db2bbcf8eff4840d46e564b.PNG" width="802" height="202">
+    <figcaption></figcaption>
+   </figure>
+   <p>Затем <code>VirtualService</code> может быть привязан к gateway для управления пересылкой трафика, поступающего на определенный хост или порт gateway. Он определяет набор правил маршрутизации трафика, которые применяются при обращении к хосту. Каждое правило маршрутизации определяет критерии соответствия для трафика определенного протокола. Если трафик подходит, то он отправляется в конкретный сервис-назначение (или его какое-то подмножество или конкретную версию), определенный в реестре сервисов.</p>
+   <p>Следующая виртуальная служба перенаправляет все HTTP-запросы с путей, начинающихся с <strong>‘/productpage’ , ‘/static’ , ‘/login’ , ‘/api/v1/products’ , ‘/logout’ на сервис productpage.</strong></p>
+   <p>Наконец, приложение <strong>BookInfo доступно.</strong></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/1da/747/571/1da7475713eab9776751d08a2b7a8ed9.PNG" width="904" height="365">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/7f9/459/794/7f9459794e652f4a756f8fa86acf95c4.PNG" width="887" height="348">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/f22/e4b/e98/f22e4be989e290fbe2937d63856dec8c.PNG" width="881" height="360">
+    <figcaption></figcaption>
+   </figure>
+   <h2>Теперь вы можете увидеть 3 версии микросервиса рейтинга</h2>
+   <p>Когда пользователи отправляют запросы на HTTP Load Balancer, к которому привязан статический IP. Управляемый сертификат GCP прикреплен к HTTP Load Balancer, который обеспечивает конфиденциальность и безопасность при пересылке трафика пользователями. В GKE объект Ingress определяет правила маршрутизации HTTP-трафика. Таким образом, когда вы создаете объект Ingress, контроллер входа GKE создает глобальный балансировщик нагрузки HTTP.</p>
+   <p>Балансировщик нагрузки HTTP(S) прослушивает порт 443 и пересылает запрос одному из рабочих узлов.</p>
+   <p>Объект Ingress имеет правила, определенные для маршрутизации http-трафика в службу istio-ingressgateway.</p>
+   <p>Служба istio-ingressgateway делает HTTP Load Balancer исправен путем настройки BackendConfig на порту 15021. Он перенаправляет запрос на развертывание Istio-IngressGateway.</p>
+   <p>Деплоймент Istio-IngressGateway настраивается при помощи объектов типа Gateway и VirtualService.</p>
+   <p>Gateway настраивает порты, протоколы и сертификаты. VirtualService настраивает информацию о маршруте для поиска правильной службы.</p>
+   <p>Деплоймент Istio-IngressGateway направляет запрос на прокси-сервер Envoy, который перенаправляет запрос в сервис productpage.</p>
+   <h2>Установка функции дополнений Istio (Kiali, Jaeger, Prometheus....)</h2>
+   <p>Istio интегрируется с несколькими различными приложениями телеметрии. Они могут помочь вам получить представление о структуре вашего service mesh, отобразить топологию mesh и проанализировать работоспособность mesh.</p>
+   <p>kubectl apply -f samples/addons</p>
+   <p>kubectl get pods -n istio-system</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/833/5f1/a9c/8335f1a9c6a5686bfc7f99dbb022247b.PNG" width="842" height="649">
+    <figcaption></figcaption>
+   </figure>
+   <p>Prometheus и Grafana: с Istio для записи показателей, отслеживающих работоспособность Istio и приложений в service mesh, и Grafana для визуализации</p>
+   <p>Kiali: для понимания структуры и работоспособности service mesh через отслеживание потока трафика для определения топологии mesh и сообщений об ошибках</p>
+   <p>Jaeger: позволяет пользователям отслеживать транзакции в сложных распределенных системах и устранять неполадки в них.</p>
+   <p>Доступ к Kiali с помощью переадресации портов: kubectl port-forward svc/kiali 20001:20001 -n istio-system</p>
+   <p>Чтобы увидеть трассировку, вы должны отправить запрос в свой сервис :</p>
+   <p><code>for i in $(seq 1 1000); do curl -s -o /dev/null “https://test.istio.online/productpage"; done</code></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/716/91a/380/71691a380739de17d6ab1a0c76834064.PNG" width="894" height="481">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/f06/371/dd1/f06371dd15b261f20594dea1b74acf45.PNG" width="859" height="480">
+    <figcaption></figcaption>
+   </figure>
+   <p>Доступ к Jaeger: kubectl port-forward -n istio-system $(kubectl get pod -n istio-system -l app=jaeger -o jsonpath=’{.items[0].metadata.name}’) 16686:16686 &amp;</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/b10/772/afd/b10772afd58905db9bc3e56d4f0ff1b3.PNG" width="870" height="319">
+    <figcaption></figcaption>
+   </figure>
+   <p>Доступ к Grafana: kubectl port-forward svc/grafana 3000:3000 -n istio-system</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/f9c/dd5/401/f9cdd5401c273dd9ce6de1dcb1afd5fd.PNG" width="869" height="408">
+    <figcaption></figcaption>
+   </figure>
+   <p><strong>Разделение трафика, при котором 100% запроса трафика будет отправляться на под review v1 (микросервис) и 0% трафика на другие поды v2 и v3.</strong></p>
+   <p>Шаги:&nbsp;</p>
+   <p>a. Перейдите на страницу сведений о микросервисе reviews</p>
+   <p>b. Нажмите на Actions + Traffic Shifting, добавьте 100% трафика в v1 и 0% в v2 и v3 и нажмите Create</p>
+   <p>c. Из консоли Kiali автоматически будут созданы соответствующие VirtualService и DestinationRule</p>
+   <p>VirtualService: определяет набор правил маршрутизации трафика для применения к сервису kubernetes или подмножеству сервисов на основе какого-либо перечня критериев.</p>
+   <p>DestinationRule: оно определяет политики, которые применяются к трафику, предназначенному конкретному сервису, после выполнения маршрутизации.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/813/99e/029/81399e0290fae9e516140ef58f5406e3.PNG" width="878" height="366">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/060/b56/59f/060b5659f245e85314e3147c522e8461.PNG" width="889" height="465">
+    <figcaption></figcaption>
+   </figure>
+   <p>Пример разделения трафика, отправка 100% трафика на микросервис reviews v1</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/f73/8db/d0a/f738dbd0a27754f0330a8e73b9150e82.PNG" width="886" height="520">
+    <figcaption></figcaption>
+   </figure>
+   <p>Теперь вы можете увидеть примененные VirtualService и DestinationRule!</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/990/3af/206/9903af206382e9b6e15240f4564bd3e7.PNG" width="866" height="469">
+    <figcaption></figcaption>
+   </figure>
+   <p>С панели мониторинга мы можем четко видеть весь трафик, отправляемый в службу отзывов v1.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/ed8/436/9ce/ed84369ced9df278a0d585be0f18de0b.jpg" width="780" height="100" data-src="https://habrastorage.org/getpro/habr/upload_files/ed8/436/9ce/ed84369ced9df278a0d585be0f18de0b.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Старт практического <a href="https://slurm.io/intensive-service-mesh?utm_source=habr&amp;utm_medium=article&amp;utm_campaign=intensive-service-mesh&amp;utm_content=article_16-02-2023&amp;utm_term=annavanna"><u>интенсива по service mesh</u></a> 24 марта.</p>
+   <p>Создание смещения трафика, при котором 70% запросов трафика будет направляться на под сервиса Review v1 (микросервис) и 30% трафика на другие поды v2 и 0% трафика на поды v3.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/783/994/5d3/7839945d3f70ea228c08326749462884.PNG" width="936" height="720">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/a2c/0e4/379/a2c0e4379d5cb330769e10e3bec7593f.PNG" width="826" height="569">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/e8d/f67/3df/e8df673dfea2f097148a36ceaaa8585a.PNG" width="868" height="548">
+    <figcaption></figcaption>
+   </figure>
+   <p>Из панели мониторинга Kiali (версионный график) вы можете видеть, что 70% трафика поступает на микросервис Reviews v1 и 30% <strong>—</strong> на микросервис Reviews v2.</p>
+   <p>Теперь вы знаете, как маршрутизировать запросы между службами, обеспечить безопасность связи, обнаружить сбои и время простоя, а также обновить и протестировать новые версии сервиса, и как именно Service Mesh помогает решить эти проблемы.</p>
+   <details class="spoiler">
+    <summary> Узнать о best practices в работе с service mesh</summary>
+    <div class="spoiler__content">
+     <p>Service mesh <strong>—</strong> палочка-выручалочка для работы с микросервисами. Этот инструмент обеспечивает прозрачное&nbsp;<strong>управление входящим и исходящим трафиком</strong>&nbsp;в едином месте. Сегодня о знании service mesh спрашивают при трудоустройстве в таких крупных компаниях как&nbsp;Linkerd, Ozon, Сбер, ЮMoney, МТС, Спортмастер, Газпром и др.</p>
+     <p>На интенсиве по Service mesh вы изучите инструмент на практике и научитесь решать целый ряд проблем, возникающих при работе с микросервисами.</p>
+     <p><strong>Бизнес-кейсы, которые будем решать</strong>:</p>
+     <ul>
+      <li><p><strong>Проблема #1.&nbsp;</strong>Отсутствие или слабое развитие мониторинга. Периодическое торможение системы, но непонятно, где именно.</p></li>
+     </ul>
+     <ul>
+      <li><p><strong>Проблема #2. </strong>Выдача ошибок сервисами, со слов клиентов. Частые падения, хотя и кратковременные.</p></li>
+     </ul>
+     <ul>
+      <li><p><strong>Проблема #3. </strong>Нужно выкатить новую фичу, но нет уверенности, что все пойдет как надо.</p></li>
+     </ul>
+     <ul>
+      <li><p><strong>Проблема #4.&nbsp;</strong>В системе появляется новый компонент который отвечает за процессинг кредитных карт. Появляются требования к безопасности системы всей системы.</p></li>
+     </ul>
+     <ul>
+      <li><p><strong>Проблема #5.&nbsp;</strong>Приложение разрослось. Клиенты жалуются на долгое время ответа. На серверной стороне все ок. Похоже проблема с удаленными геолокациями.</p></li>
+     </ul>
+     <p><strong>Интенсив пройдет с 24 по 26 марта.</strong> Вы узнаете о best practices от эксперта, который уже давно работает с технологией. Помимо голой теории и практики, вы получите рекомендации, как делать, а как – нет.</p>
+     <p>Посмотреть программу и записаться : <a href="https://slurm.club/3ItpvWY">https://slurm.club/3ItpvWY</a></p>
+    </div>
+   </details>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

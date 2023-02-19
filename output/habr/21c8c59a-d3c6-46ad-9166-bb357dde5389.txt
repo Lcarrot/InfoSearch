@@ -1,0 +1,148 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Когда изменения, касающиеся одной задачи, превышают 7+-2 файлов, становится сложно контролировать качество кода. Тогда на помощь приходят статические анализаторы кода. В сообществе dart-разработчиков популярен статический анализатор <a href="https://dartcodemetrics.dev/" rel="noopener noreferrer nofollow"><u>dart_code_metrics</u></a>. В рамках этого мануала вы узнаете, что он из себя представляет и как его настроить в проекте и внедрить в gitlab-ci для автоматического запуска проверок, например, перед code review или просто перед применением изменений в основные ветки.</p>
+   <h3>Краткий обзор анализатора</h3>
+   <p>Анализатор dart_code_metrics позволяет снимать такие метрики кода как: цикломатическая сложность, метрики холстеда, количество строк кода, индекс поддерживаемости и другое. В целом, эти метрики позволят вам достаточно точно сказать, в каком состоянии находится ваш проект и помогут скорректировать сроки реализации какой-либо фичи.</p>
+   <p>Помимо метрик кода dart_code_metrics умеет создавать правила для написания кода. Например, dart_code_metrics позволяет предотвратить утечки памяти:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/96b/64d/87c/96b64d87ca91f99347c575e88deb2646.jpg" width="538" height="241" data-src="https://habrastorage.org/getpro/habr/upload_files/96b/64d/87c/96b64d87ca91f99347c575e88deb2646.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Помимо этого, правила помогут сделать проект более безопасным в отношении null safety и предотвратить непредвиденные ошибки:</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/5fd/5ae/c77/5fd5aec77056e47be43752cc74b272a0.jpg" width="340" height="251" data-src="https://habrastorage.org/getpro/habr/upload_files/5fd/5ae/c77/5fd5aec77056e47be43752cc74b272a0.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>В dart_code_metrics великое множество разных правил, с которыми вы можете ознакомиться в их документации.</p>
+   <p>Настройка метрик кода и правил осуществляется в файле analysis_options.yaml. Пример файла конфигурации для dart_code_metrics:</p>
+   <p><strong>Листинг 1</strong></p>
+   <pre><code class="yaml">analyzer:
+  plugins:
+    - dart_code_metrics
+
+dart_code_metrics:
+  metrics-exclude:
+    - test/**
+  metrics:
+    cyclomatic-complexity: 20
+    number-of-parameters: 4
+    maximum-nesting-level: 5
+  rules-exclude:
+    - ./**/*.g.dart
+  rules:
+    - avoid-double-slash-imports
+    - avoid-duplicate-exports
+    - avoid-dynamic
+    - avoid-nested-conditional-expressions
+</code></pre>
+   <p>Таким образом вы можете добавлять/изменять правила и метрики.</p>
+   <h3>Настройка dart_code_metrics в проекте</h3>
+   <p>Для начала необходимо добавить зависимость dart_code_metrics в проект:</p>
+   <p><strong>Листинг 2</strong></p>
+   <pre><code class="bash">flutter pub add --dev dart_code_metrics
+flutter pub get</code></pre>
+   <p>Затем необходимо настроить анализатор в файле analysis_options.yaml, находящемся в корне проекта. Сейчас я использую следующую конфигурацию:</p>
+   <p><strong>Листинг 3</strong></p>
+   <pre><code class="yaml">include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+
+analyzer:
+  plugins:
+    - dart_code_metrics
+
+dart_code_metrics:
+  rules-exclude:
+    - ./**/*.g.dart
+  rules:
+    - avoid-double-slash-imports
+    - avoid-duplicate-exports
+    - avoid-dynamic
+    - avoid-nested-conditional-expressions
+    - avoid-non-null-assertion
+    - avoid-redundant-async
+    - avoid-unnecessary-conditionals
+    - avoid-unnecessary-type-assertions
+    - avoid-unnecessary-type-casts
+    - avoid-unrelated-type-assertions
+    - list-all-equatable-fields
+    - no-boolean-literal-compare
+    - prefer-enums-by-name
+    - prefer-first
+    - prefer-last
+    - prefer-immediate-return
+    - prefer-match-file-name
+    - prefer-moving-to-variable
+    - avoid-cascade-after-if-null
+    - binary-expression-operand-order
+    - double-literal-format
+    - no-boolean-literal-compare
+    - no-empty-block
+    - no-equal-then-else
+    - no-object-declaration
+    - prefer-conditional-expressions
+    - prefer-trailing-comma
+    - always-remove-listener
+    - avoid-returning-widgets
+    - avoid-shrink-wrap-in-lists
+    - prefer-correct-edge-insets-constructor</code></pre>
+   <p>После того, как вы настроили анализатор, перезагрузите IDE и сможете наблюдать новые подсказки, замечания. Если у вас ничего не появилось, возможно вы совершили ошибку при изменении файла analysis_options.yaml. Также убедитесь, что вы не забыли включить в список плагинов анализатора dart_code_metrics. Возможно проблема может быть связана с самой IDE, например, для Android Studio помогает изменить какой-нибудь файл и подождать или перезагрузить.</p>
+   <h3>Настройка gitlab-ci для анализа в репозитории</h3>
+   <p>Вы можете запускать анализатор кода в gitlab. Это сильно экономит время аудитора кода, ведь программист перед тем, как отправить код на code review будет сразу видеть свои ошибки, даже если изменения содержат большое количество кода.</p>
+   <p>Замечания по коду вы сможете увидеть в запросе на слияние, выглядит это так:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/605/5ee/c6d/6055eec6dc4927dde5289df482b5c18b.jpg" width="542" height="366" data-src="https://habrastorage.org/getpro/habr/upload_files/605/5ee/c6d/6055eec6dc4927dde5289df482b5c18b.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Для того, чтобы запускать анализатор, нужен runner. Для этого необходим компьютер с доступом в сеть, на котором и будет выполняться анализ. Gitlab посылает задачу для runner’а и он выполняется на компьютере.</p>
+   <p>Вы можете посмотреть список runner’ов для вашего проекта на странице репозиторий &gt; настройки &gt; CI/CD.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/b6e/730/30b/b6e73030b3e7098790cc0c3c05b0a77e.jpg" width="561" height="234" data-src="https://habrastorage.org/getpro/habr/upload_files/b6e/730/30b/b6e73030b3e7098790cc0c3c05b0a77e.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>На странице <a href="https://docs.gitlab.com/runner/install/" rel="noopener noreferrer nofollow"><u>https://docs.gitlab.com/runner/install/</u></a> вы можете посмотреть, как установить runner на компьютер. На странице с runner’ами вы также можете скачать необходимые файлы для установки и ключи.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/387/6c3/0b3/3876c30b32d150cd5d08b7be092f6e88.jpg" width="480" height="367" data-src="https://habrastorage.org/getpro/habr/upload_files/387/6c3/0b3/3876c30b32d150cd5d08b7be092f6e88.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/e0f/dc4/d5b/e0fdc4d5b6ab52310f87d222615adde8.jpg" width="514" height="490" data-src="https://habrastorage.org/getpro/habr/upload_files/e0f/dc4/d5b/e0fdc4d5b6ab52310f87d222615adde8.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>После настройки runner’а вы можете перейти к настройке pipeline’ов. Pipeline представляет собой набор этапов и описание действий, которые необходимо произвести в автоматическом режиме. Эти же действия будут выполнены в runner’е.</p>
+   <p>Для настройки pipeline’а в корне проекта необходимо создать файл .gitlab-ci.yml. Пример файла конфигурации, вы можете использовать его у себя в проекте:</p>
+   <p><strong>Листинг 4</strong></p>
+   <pre><code class="bash">stages:
+  - code_quality
+  …
+code_quality:
+  stage: code_quality
+  image: "cirrusci/flutter:3.3.0"
+  before_script:
+    - flutter pub get
+    - flutter pub global activate dart_code_metrics
+    - export PATH="$PATH:$HOME/.pub-cache/bin"
+  tags:
+    - flutter
+  script:
+    - flutter pub run dart_code_metrics:metrics analyze lib -r gitlab --no-verbose --no-congratulate &gt; gl-code-quality-report.json || exit_code=$?
+  artifacts:
+    reports:
+      codequality: gl-code-quality-report.json
+...</code></pre>
+   <p>Обратите внимание, что этапу я назначил тег flutter. Такой же тег должен быть и у runner’а, который вы установили. Если у вас не запускается pipeline, возможно дело как раз в этом.</p>
+   <p>Если вы все сделали правильно, в запросе на слиянии у вас появится pipeline:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/083/5d7/d09/0835d7d090dbd6845f63f9bb8ce4e003.jpg" width="590" height="336" data-src="https://habrastorage.org/getpro/habr/upload_files/083/5d7/d09/0835d7d090dbd6845f63f9bb8ce4e003.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Соответственно, после выполнения у вас появятся результаты анализа. Перед этим страницу следует перезагрузить.</p>
+   <p>Обратите внимание, что результаты анализа сравниваются с основной веткой. Если вы впервые настроили анализатор в своей ветке, вам будут показаны все замечания, которые есть в проекте. После того, как анализатор выполнится в основной ветке, результаты проверки побочных веток будут сравниваться с основной и показываться только изменения.</p>
+   <p>На этом все! Have a good day!</p>
+   <p>Специально для <a href="https://habr.com" rel="noopener noreferrer nofollow">habr.com</a> - <a href="https://habr.com/ru/users/webmadness/" rel="noopener noreferrer nofollow">Алексей Губин</a> | <a href="https://AppFox.ru" rel="noopener noreferrer nofollow">AppFox.ru</a></p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

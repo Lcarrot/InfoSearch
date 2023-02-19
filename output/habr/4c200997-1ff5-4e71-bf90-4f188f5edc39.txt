@@ -1,0 +1,93 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Вышел новый релиз PVS‑Studio&nbsp;— 7.23. В&nbsp;нём мы улучшили поддержку Qt Creator, увеличили стабильность работы PVS‑Studio Java, решили проблемы при&nbsp;анализе проектов, использующих NMake, добавили ряд новых диагностик и многое другое. Подробности в&nbsp;этой заметке.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c33/f77/96c/c33f7796cd78e1d1d1c62d9c751cfbba.png" width="780" height="440" data-src="https://habrastorage.org/getpro/habr/upload_files/c33/f77/96c/c33f7796cd78e1d1d1c62d9c751cfbba.png">
+    <figcaption></figcaption>
+   </figure>
+   <h3>Улучшения плагина для Qt Creator</h3>
+   <p>В&nbsp;прошлом релизе мы выпустили плагин PVS‑Studio для&nbsp;Qt Creator. Выглядит он следующим образом (скриншот кликабельный):</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/7d6/3fa/fd1/7d63fafd19dcea1e43d5f65f942f7064.png" width="1213" height="795" data-src="https://habrastorage.org/getpro/habr/upload_files/7d6/3fa/fd1/7d63fafd19dcea1e43d5f65f942f7064.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Примерно в&nbsp;тот&nbsp;же момент вышел Qt Creator 9. Конечно, поддержать новую версию уже тогда мы&nbsp;бы не&nbsp;успели. Однако теперь плагин работает и с&nbsp;Qt Creator версий 9.0.*.</p>
+   <p>Более того, в&nbsp;релизе 7.23&nbsp;стало возможно использовать плагин для&nbsp;Qt Creator не&nbsp;только под&nbsp;Windows и Linux, но&nbsp;и под&nbsp;macOS на&nbsp;архитектуре x86–64.</p>
+   <p>На&nbsp;данный момент плагин даёт возможность открывать отчёт, смотреть и фильтровать предупреждения, и&nbsp;т.&nbsp;п. В&nbsp;будущих релизах мы также планируем добавить в&nbsp;него возможность запуска анализа.</p>
+   <p>Документация к&nbsp;плагину доступна по <a href="https://pvs-studio.com/ru/docs/manual/6648/">ссылке</a>.</p>
+   <h3>Стабилизация Java-анализатора</h3>
+   <p>Некоторое время назад мы обнаружили проблемы в&nbsp;работе нашего Java‑анализатора под&nbsp;системами семейства Unix. В&nbsp;ряде случаев анализатор сразу после запуска аварийно завершал работу и выдавал ошибку подобного вида:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/392/854/7fc/3928547fc143a42dd565433c02da2c21.png" width="1387" height="421" data-src="https://habrastorage.org/getpro/habr/upload_files/392/854/7fc/3928547fc143a42dd565433c02da2c21.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Ошибка&nbsp;была связана с&nbsp;проблемами загрузки динамических библиотек. В&nbsp;релизе 7.23&nbsp;она&nbsp;была устранена, и теперь Java разработчики могут спокойно использовать PVS‑Studio для&nbsp;анализа своих проектов под&nbsp;Unix системами:). Если&nbsp;же у&nbsp;вас всё ещё появляется эта или&nbsp;какая‑то другая ошибка, <a href="https://pvs-studio.com/ru/about-feedback/">напишите нам</a>, постараемся помочь.</p>
+   <h3>Решение проблемы при анализе проектов, использующих NMake</h3>
+   <p>При&nbsp;анализе CMake‑проекта, использующего NMake, в&nbsp;некоторых случаях появлялась ошибка следующего вида:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/696/665/c5a/696665c5a0ab357c8c93a46b0c2c4115.png" width="780" height="105" data-src="https://habrastorage.org/getpro/habr/upload_files/696/665/c5a/696665c5a0ab357c8c93a46b0c2c4115.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Данная проблема связана с&nbsp;ограничениями NMake на&nbsp;длину команды, однако, нам удалось её решить. Теперь анализатор успешно генерирует отчёт для&nbsp;всего проекта.</p>
+   <p>Если ранее вы пробовали PVS‑Studio и сталкивались с&nbsp;описанной ошибкой, то предлагаю вам <a href="https://pvs-studio.com/ru/pvs-studio/try-free/?utm_source=website&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=1034&amp;utm_term=link_try-free">скачать новую версию</a>, в&nbsp;которой проблема решена.</p>
+   <h3>Новые диагностики</h3>
+   <p>C, C++</p>
+   <ul>
+    <li><p><a href="https://pvs-studio.com/ru/docs/warnings/v1093/">V1093</a>. The result of the right shift operation will always be 0. The right operand is greater than or equal to the number of bits in the left operand.</p></li>
+    <li><p><a href="https://pvs-studio.com/ru/docs/warnings/v1094/">V1094</a>. Conditional escape sequence in literal. Its representation is implementation-defined.</p></li>
+   </ul>
+   <p>C#</p>
+   <ul>
+    <li><p><a href="https://pvs-studio.com/ru/docs/warnings/v3184/">V3184</a>. The argument's value is greater than the size of the collection. Passing the value into the 'Foo' method will result in an exception.</p></li>
+    <li><p><a href="https://pvs-studio.com/ru/docs/warnings/v3185/">V3185</a>. An argument containing a file path could be mixed up with another argument. The other function parameter expects a file path instead.</p></li>
+    <li><p><a href="https://pvs-studio.com/ru/docs/warnings/v3186/">V3186</a>. The arguments violate the bounds of collection. Passing these values into the method will result in an exception.</p></li>
+   </ul>
+   <h3>Интерактив</h3>
+   <p>В&nbsp;этот раз наша команда сделала весьма залипательную игру «Рабочий день программиста»:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/0db/d2c/d54/0dbd2cd54c19f3d8ba4b36ec11e04cd9.png" width="685" height="385" data-src="https://habrastorage.org/getpro/habr/upload_files/0db/d2c/d54/0dbd2cd54c19f3d8ba4b36ec11e04cd9.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Сыграть в&nbsp;неё можно <a href="https://pvs-studio.com/ru/blog/quest/endless/">здесь</a>. Осторожно&nbsp;— игра очень жизненная.</p>
+   <p>Также мы сделали рождественский квиз «Спаси Рождество от&nbsp;багов», который можно пройти <a href="https://pvs-studio.com/ru/blog/quest/save_the_holidays/">здесь</a>. В&nbsp;нём вам предстоит ответить на&nbsp;вопросы о&nbsp;рождественских историях багов в&nbsp;разных известных компаниях.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/3de/e65/d80/3dee65d80bc542ce5e4f043e1ff7fc0b.png" width="701" height="517" data-src="https://habrastorage.org/getpro/habr/upload_files/3de/e65/d80/3dee65d80bc542ce5e4f043e1ff7fc0b.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Отличная возможность вновь ощутить атмосферу праздника:).</p>
+   <p>Также предлагаю вам пройти наш небольшой <a href="https://pvs-studio.com/ru/quiz/static_analyzer/">опрос</a>, в&nbsp;конце которого вы получите небольшой подарок.</p>
+   <h3>Статьи</h3>
+   <p>Для тех, кто пишет на C++:</p>
+   <ul>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/cpp/1024/">Ложные представления программистов о неопределённом поведении</a></p></li>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/cpp/1021/">Топ-10 ошибок в C++ проектах за 2022 год</a></p></li>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/cpp/1014/">PVS-Studio и RPCS3: лучшие предупреждения в один клик</a></p></li>
+   </ul>
+   <p>Для тех, кто пишет на C#:</p>
+   <ul>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/csharp/1023/">PVS-Studio научился анализировать Blazor компоненты</a></p></li>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/csharp/1020/">Топ-10 ошибок, найденных в C#-проектах за 2022 год</a></p></li>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/csharp/1019/">PVS-Studio и protobuf-net: лучшие предупреждения в один клик</a></p></li>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/csharp/1017/">Помоги компилятору, и он поможет тебе. Тонкости работы с nullable reference типами в C#</a></p></li>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/csharp/1015/">.NET 7: разбираем ошибки и подозрительные места в исходниках</a></p></li>
+   </ul>
+   <p>Разное:</p>
+   <ul>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/1030/">Обзор плагина PVS-Studio для Visual Studio Code</a></p></li>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/1029/">Изменения в PVS-Studio, о которых полезно знать</a></p></li>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/cpp/1028/">Под капотом SAST: как инструменты анализа кода ищут дефекты безопасности</a></p></li>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/csharp/1027/">Wave Function Collapse для процедурной генерации в Unity</a></p></li>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/1026/">C++ — язык 2022 года. Почему так, и что с другими языками?</a></p></li>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/1025/">PVS-Studio в 2022 году</a></p></li>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/1018/">Новогодние праздники вместе с PVS–Studio</a></p></li>
+    <li><p><a href="https://pvs-studio.com/ru/blog/posts/1013/">PVS-Studio: 2 фишки для быстрого старта</a></p></li>
+   </ul>
+   <p>**</p>
+   <p>Загрузить последнюю версию PVS‑Studio можно <a href="https://pvs-studio.com/ru/pvs-studio/try-free/?utm_source=website&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=1034&amp;utm_term=link_try-free">здесь</a>.</p>
+   <p>Если хотите получать пресс‑релизы по&nbsp;почте, <a href="https://pvs-studio.com/ru/subscribe/">подписывайтесь на&nbsp;рассылку</a>.</p>
+   <p>Если хотите поделиться этой статьей с&nbsp;англоязычной аудиторией, то прошу использовать ссылку на&nbsp;перевод: Nikita Lipilin. <a href="https://pvs-studio.com/en/blog/posts/1034/">PVS‑Studio 7.23: Qt Creator 9&nbsp;plugin, and more</a>.</p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

@@ -1,0 +1,159 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <h2>Введение</h2>
+   <p>cURL — библиотека с открытым исходным кодом, используемая для отправки HTTP-запросов с различных языков программирования, включая C, PHP и другие.</p>
+   <p>cURL также является программой командной строки, позволяющая взаимодействовать с множеством различных серверов.<br> Libcurl — это библиотека API для передачи, которую разработчики могут встроить в свои программы; cURL действует как автономная обёртка для библиотеки libcurl. Для libcurl имеются модули интеграции для работы с более чем 30 языками программирования.</p>
+   <p>cURL работает по множеству различных протоколов с синтаксисом URL. В данной статье рассмотрена работа библиотеки по протоколу HTTP/HTTPS.</p>
+   <p>Содержание:</p>
+   <ul>
+    <li><p><a href="#set_opt" rel="noopener noreferrer nofollow">Настройка параметров сеанса</a></p></li>
+    <li><p><a href="#get" rel="noopener noreferrer nofollow">Простой GET-запрос</a></p></li>
+    <li><p><a href="#post" rel="noopener noreferrer nofollow">Простой POST-запрос</a></p></li>
+    <li><p><a href="#exception_handle" rel="noopener noreferrer nofollow">Обработка исключений/ошибок</a></p></li>
+    <li><p><a href="#example" rel="noopener noreferrer nofollow">Пример POST-запроса с телом формате JSON, обработкой исключений, и обработкой ответа от сервера</a></p></li>
+    <li><p><a href="#ssl" rel="noopener noreferrer nofollow">Проверка SSL-сертификата</a></p></li>
+    <li><p><a href="#auth" rel="noopener noreferrer nofollow">Аутентификация на сервере</a></p></li>
+   </ul>
+   <p>Модуль PHP cURL обычно включён по умолчанию. Если это не так, то в файле php.ini уберите точку с запятой (;) у строки extension=php_curl.dll.</p><a class="anchor" name="set_opt" id="set_opt"></a>
+   <h2>Настройка параметров сеанса</h2>
+   <p>Для установки параметра сеанса cURL используется функция <a href="https://www.php.net/manual/ru/function.curl-setopt.php" rel="noopener noreferrer nofollow">curl_setopt</a>.</p>
+   <pre><code class="php">&lt;?php
+  curl_setopt(CurlHandle $handle, int $option, mixed $value): bool</code></pre>
+   <ul>
+    <li><p>handle — дескриптор&nbsp; cURL, полученный из curl_init().</p></li>
+    <li><p>option — параметр сеанса в виде CURLOPT_XXX.</p></li>
+    <li><p>value — значение параметра option.</p></li>
+   </ul>
+   <p>Функция возвращает true в случае успешного выполнения или false в случае возникновения ошибки.</p>
+   <p>Сразу несколько параметров сеанса можно установить с помощью функции <a href="https://www.php.net/manual/ru/function.curl-setopt-array.php" rel="noopener noreferrer nofollow">curl_setopt_array</a>.</p>
+   <pre><code class="php">&lt;?php
+  curl_setopt_array(CurlHandle $handle, array $options): bool</code></pre>
+   <p>options — ассоциативный массив, определяющий устанавливаемые параметры и их значения. Ключи должны быть корректными константами для функции curl_setopt() или их целочисленными эквивалентами.<br>Функция возвращает true, если все параметры были успешно установлены. Если не удалось успешно установить какой-либо параметр, немедленно возвращается значение false, все последующие параметры игнорируются.</p>
+   <p>Роль параметров сеанса играют предопределённые константы. Рассмотрим основные из них.</p>
+   <p><strong>CURLOPT_URL</strong> — параметр, который задает адрес ресурса, с которым вы хотите взаимодействовать или с которого хотите получить данные. Параметр является обязательным и должен быть установлен перед вызовом curl_exec().</p>
+   <p><strong>CURLOPT_RETURNTRANSFER</strong> — константа, устанавливающая значение дескриптора cURL так, чтобы ответ от сервера возвращался в виде строкового значения вместо отправки непосредственно в поток вывода.<br>При установке CURLOPT_RETURNTRANSFER в значение true или 1, константа сообщает cURL вернуть ответ из HTTP-запроса в виде строки, которую затем можно сохранить в переменной или обработать по мере необходимости. Если этот параметр не задан или имеет значение false, ответ на HTTP-запрос будет отправлен непосредственно в поток вывода (например, в окно браузера или файл, установленный параметром CURLOPT_FILE).</p>
+   <p><strong>CURLOPT_HEADER</strong> — параметр, который указывает, следует ли включать заголовок в ответ (true — для включения).Заголовок содержит информацию об ответе, такую как код состояния HTTP, тип содержимого и др.<br>Для получения информации об ответе также можно использовать функцию <a href="https://www.php.net/manual/ru/function.curl-getinfo.php" rel="noopener noreferrer nofollow">curl_getinfo()</a>(будет рассмотрена позже в статье).</p>
+   <p><strong>CURLOPT_HTTPHEADER</strong> — параметр cURL, который задает HTTP-заголовки, отправляемые вместе с запросом. Параметр принимает массив строк. Каждая строка должна содержать имя заголовка и его значение, разделенные двоеточием.</p>
+   <p><a href="https://curl.se/libcurl/c/CURLOPT_FOLLOWLOCATION.html" rel="noopener noreferrer nofollow"><strong>CURLOPT_FOLLOWLOCATION </strong></a>— константа, которая используется для настройки поведения cURL в случае, если сервер возвращает заголовок "Location" как часть ответа, код состояния которого находится в диапазоне 300 – 399 (сообщения о перенаправлении). Заголовок "Location" содержит в себе URL для редиректа.<br>Когда CURLOPT_FOLLOWLOCATION установлена в значение 1, cURL будет автоматически следовать любым редиректам, делая дополнительные запросы к новому URL до тех пор, пока в ответе не будет содержаться заголовок "Location". Значение по умолчанию - 0.<br><br><strong>CURLOPT_POST</strong> — константа, указывающая, следует ли отправлять запрос методом POST. По умолчанию cURL отправляет GET-запросы. Если CURLOPT_POST установлен в значении 1 или true, то будет отправлен POST-запрос.<br><br><strong>CURLOPT_POSTFIELDS</strong> — это параметр cURL, используемый для установки тела POST-запроса. Формат данных зависит от типа, указанного в заголовке Content-Type.</p><a class="anchor" name="get" id="get"></a>
+   <h2>Простой GET-запрос</h2>
+   <pre><code class="php">&lt;?php
+    // Инициализация сеанса cURL
+    $ch = curl_init();
+    // Установка URL
+    curl_setopt($ch, CURLOPT_URL, "example.com");
+    // Установка CURLOPT_RETURNTRANSFER (вернуть ответ в виде строки)
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    // Выполнение запроса cURL
+	//$output содержит полученную строку
+    $output = curl_exec($ch);
+    // закрытие сеанса curl для освобождения системных ресурсов
+    curl_close($ch);      
+?&gt;</code></pre><a class="anchor" name="post" id="post"></a>
+   <h2>Простой POST-запрос</h2>
+   <p>Чтобы сделать POST-запрос, нужно установить параметры CURLOPT_POST и CURLOPT_POSTFIELDS.</p>
+   <pre><code class="php">&lt;?php
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, "http://www.example.com/api/resource");
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "name=value");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $output = curl_exec($ch);
+    curl_close($ch);
+    echo $output;
+?&gt;</code></pre>
+   <p>Существует несколько форматов тела запроса:</p>
+   <p>1) Формат JSON</p>
+   <pre><code class="php">&lt;?php
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json');
+    curl_setopt($ch, CURLOPT_POSTFIELDS,"{key1:value1,key2:value2}");
+?&gt;</code></pre>
+   <p>2) Строка запроса HTTP</p>
+   <pre><code class="php">&lt;?php
+    curl_setopt($ch, CURLOPT_POSTFIELDS,"key1=value1&amp;key2=value2");
+?&gt;</code></pre>
+   <p>Для построения строки запроса используется функция<a href="https://www.php.net/manual/ru/function.http-build-query.php" rel="noopener noreferrer nofollow"> http_build_query</a>.</p>
+   <p>3) Формат массива POST</p>
+   <pre><code class="php">&lt;?php 
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: multipart/form-data');
+    curl_setopt($ch, CURLOPT_POSTFIELDS, array("key1"=&gt;"value1", "key2"=&gt;"value2");
+?&gt;</code></pre>
+   <p>Для отправки файлов в тело запроса применяется класс <a href="https://www.php.net/manual/ru/class.curlfile.php" rel="noopener noreferrer nofollow">CURLFile</a>. Чтобы создать экземпляр класса можно воспользоваться конструктором или функцией <a href="https://www.php.net/manual/ru/curlfile.construct.php" rel="noopener noreferrer nofollow">curl_file_create</a>. Экземпляр класса передаётся константе CURLOPT_POSTFIELDS как элемент массива.</p><a class="anchor" name="exception_handle" id="exception_handle"></a>
+   <h2>Обработка исключений/ошибок</h2>
+   <p>Обработка ошибок в ходе сеанса cURL осуществляется с помощью функций curl_errno и curl_error, которые фиксируют любые ошибки, возникающие во время сеанса.</p>
+   <p><strong>curl_errno</strong> — принимает дескриптор cURL, полученный из curl_init() и возвращает номер ошибки последней операции cURL.</p>
+   <p><strong>curl_error</strong> также принимает дескриптор, но возвращает строку с описанием последней ошибки текущего сеанса. Строка содержит информацию о том, что пошло не так во время операции cURL, что может пригодиться во время отладки.</p>
+   <p>Важно проверять значение curl_errno после операции cURL, чтобы убедиться, что операция завершена успешно, а также выявить и устранить любые ошибки, которые могли возникнуть.</p><a class="anchor" name="example" id="example"></a>
+   <h2>Пример POST-запроса с телом формате JSON, обработкой исключений, и обработкой ответа от сервера</h2>
+   <pre><code class="php">&lt;?php
+    // Определение параметров сеанса
+    $CurlOptions = array(
+        CURLOPT_URL 		   =&gt; 'http://domain-name/endpoint-path',
+        CURLOPT_POST           =&gt; 1,
+        CURLOPT_RETURNTRANSFER =&gt; 1,
+        CURLOPT_FOLLOWLOCATION =&gt; 1,
+        CURLOPT_HTTPHEADER     =&gt; array( 'Content-Type' =&gt; 'application/json' )
+    );
+        
+    // Сериализация тела запроса
+    $data = array('field1' =&gt; 'value1', 'field2' =&gt; 'value2');
+    $json_req = json_encode($data);
+    // Установка тела запроса
+    $CurlOptions[CURLOPT_POSTFIELDS] = $json_req;
+        
+    // Инициализация сеанса
+    $ch = curl_init();    
+    // установка параметров сеанса
+    curl_setopt_array( $ch, $CurlOptions );
+    // Выполнение запроса, в переменной хранится ответ от сервера
+    $data = curl_exec( $ch );
+        
+    //получение информацию о сеансе
+    $info = curl_getinfo($ch);
+        
+    // если в ходе сеанса произошла ошибка  
+    // или если код HTTP-ответа не в диапазоне 200 – 299 (успешные запросы)
+    if (curl_errno($ch) || substr($info['http_code'],0,1) !== '2') {
+        // вызов пользовательского исключения
+        throw new CustomException(curl_error($ch), $data, $info);
+    }
+    
+    // закрытие сеанса
+    curl_close( $ch );
+?&gt;</code></pre>
+   <p>В данном примере информация о последнем сеансе была получена с помощью функции <a href="https://www.php.net/manual/ru/function.curl-getinfo.php" rel="noopener noreferrer nofollow">curl_getinfo()</a>. Функция возвращает массив информации о различных характеристиках сеанса, таких как код ответа HTTP, тип содержимого, общее время и т.д.</p><a class="anchor" name="ssl" id="ssl"></a>
+   <h2>Проверка SSL-сертификата</h2>
+   <p>Для проверки SSL-сертификата необходимо использовать константу CURLOPT_SSL_VERIFYPEER.</p>
+   <p><strong>CURLOPT_SSL_VERIFYPEER</strong> — это константа, которая определяет, должен ли curl проверять подлинность SSL-сертификата. Если установлено значение true, curl проверяет SSL-сертификат, представленный удаленным сервером, и выдаёт ошибку, если это сертификат недействительный Если установлено значение false, curl не проверяет SSL-сертификат и разрешает подключение, даже если SSL-сертификат недействителен. Однако это может привести к уязвимостям в системе безопасности. По умолчанию установлено значение true.</p>
+   <p>CURLOPT_SSL_VERIFYPEER работает только для SSL-соединений, при подключении к http-серверам константа будет проигнорирована.</p><a class="anchor" name="auth" id="auth"></a>
+   <h2>Аутентификация на сервере</h2>
+   <p><a href="https://curl.se/libcurl/c/CURLOPT_HTTPAUTH.html" rel="noopener noreferrer nofollow"><strong>CURLOPT_HTTPAUTH </strong></a>— это константа, которая используется для установки типа HTTP-аутентификации, используемой для запроса.</p>
+   <pre><code class="php">&lt;?php
+    $CurlOptions = array(
+      CURLOPT_HTTPAUTH =&gt; CURLAUTH_BASIC,
+      CURLOPT_USERPWD =&gt; "login:password");
+?&gt;</code></pre>
+   <p>Константа принимает следующие значения:</p>
+   <ul>
+    <li><p><strong>CURLAUTH_BASIC</strong>: Базовая аутентификация HTTP, которая отправляет имя пользователя и пароль по сети в виде обычного текста, легко перехватываемого другими.</p></li>
+    <li><p><strong>CURLAUTH_DIGEST</strong>: Аутентификация HTTP Digest, которая использует хэш-функцию для шифрования пароля перед отправкой его на сервер.</p></li>
+    <li><p><strong>CURLAUTH_GSSNEGOTIATE</strong>: HTTP GSS-Negotiate аутентификация, которая является способом обеспечения безопасной аутентификации с использованием Kerberos.</p></li>
+    <li><p><strong>CURLAUTH_NTLM</strong>: Аутентификация NTLM, которая представляет собой механизм запроса-ответа, используемый Windows. В данном случае используется концепция хэширования, аналогичная Digest, чтобы предотвратить перехват пароля.</p></li>
+    <li><p><strong>CURLAUTH_ANY</strong>: Сообщает cURL попробовать все поддерживаемые методы аутентификации. cURL автоматически выберет тот, который он сочтет наиболее безопасным.</p></li>
+    <li><p><strong>CURLAUTH_ANYSAFE</strong>: Работает аналогично CURLAUTH_ANY, но в этом случае cURL будет пробовать только безопасные методы (все методы кроме CURLAUTH_BASIC).</p></li>
+   </ul>
+   <p>Значение по умолчанию: CURLAUTH_BASIC.</p>
+   <p>Значения могут быть объединены с помощью побитового ИЛИ. Например, CURLAUTH_BASIC | CURLAUTH_DIGEST. cURL выберет наиболее подходящий метод из представленных.<br><br>При использовании HTTPS все данные передаются в зашифрованном виде. При такой передаче CURLOPT_HTTPAUTH предоставляет дополнительные меры безопасности для обеспечения подлинности клиента и сервера и предотвращения несанкционированного доступа.</p>
+   <h2>ИТОГ</h2>
+   <p>cURL — удобная библиотека для передачи данных между клиентом и сервером. cURL позволяет взаимодействовать с множеством различных серверов по различным протоколам: http, https, ftp, gopher, telnet, dict, file и ldap.<br><br>Библиотека легка в использовании. cURL предоставляет инструменты для простых GET-запросов, но также имеет дополнительный функционал:</p>
+   <ul>
+    <li><p>работа с сертификатами HTTPS;</p></li>
+    <li><p>загрузка файлов по протоколам HTTP и FTP (последнее можно сделать с помощью модуля FTP);</p></li>
+    <li><p>использование прокси-серверы;</p></li>
+    <li><p>cookies;</p></li>
+    <li><p>аутентификация пользователей.</p></li>
+   </ul>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

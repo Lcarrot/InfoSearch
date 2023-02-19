@@ -1,0 +1,253 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Привет, Хабр.</p>
+   <p>Данная статья про&nbsp;то, как&nbsp;может&nbsp;быть, но&nbsp;не&nbsp;про&nbsp;то, как&nbsp;сделать. Она показывает редкие и сложные интерфейсные и функциональные решения в&nbsp;Notion, связанные с&nbsp;системой управления целями. Если Notion и управление целями вам близки, Вы получите большое вдохновение.</p>
+   <hr>
+   <p>В&nbsp;начале года, я решил сделать крутую систему управления целями, которая станет мощным инструментом управления процессами моего профессионального и&nbsp;личностного прогресса.</p>
+   <p>Надо сказать, что&nbsp;и до&nbsp;этого я использовал системы в&nbsp;Notion для&nbsp;управления рабочими процессами: задачи, проекты, цели, финансы и&nbsp;т.&nbsp;п. Но&nbsp;ни одна из&nbsp;них не&nbsp;была заточена на&nbsp;управление целями и соответственно не&nbsp;обладала нужными инструментами.</p>
+   <p>А&nbsp;хочется иметь:</p>
+   <ul>
+    <li><p>цели, разбитые по&nbsp;типам и времени</p></li>
+    <li><p>отчетность всех процессов по&nbsp;временам: сегодня, неделя, месяц, квартал, пол года, год</p></li>
+    <li><p>удобные шаблоны рабочих процессов: задачи, цели, проекты, клиенты, встречи и&nbsp;т.&nbsp;п.</p></li>
+    <li><p><u>инструменты декомпозиции больших целей и задач на&nbsp;более мелкие во&nbsp;времени и по&nbsp;приоритету</u></p></li>
+   </ul>
+   <p>В&nbsp;результате появилась система, которую я хочу описать в&nbsp;данной статье.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/714/168/ecc/714168eccc0ac4100e816dc7b1d91e89.png" alt="Главная страница GTD системы. Выполняет навигационную функцию, а также трекера результативности" title="Главная страница GTD системы. Выполняет навигационную функцию, а также трекера результативности" width="1753" height="1516" data-src="https://habrastorage.org/getpro/habr/upload_files/714/168/ecc/714168eccc0ac4100e816dc7b1d91e89.png">
+    <figcaption>
+     Главная страница GTD системы. Выполняет навигационную функцию, а также трекера результативности
+    </figcaption>
+   </figure>
+   <h2>Архитектура системы</h2>
+   <p><u>Базы данных</u>:</p>
+   <ul>
+    <li><p>Время — определяет дни, недели, месяцы и прочие временные интервалы процессов.</p></li>
+    <li><p>Проекты — управляет проектом как группой процессов во времени.</p></li>
+    <li><p>Цели — вмещает цели разных типов и длительности.</p></li>
+    <li><p>Задачи — формируют массив дел в рамках цели, проекта и определенного периода времени.</p></li>
+    <li><p>Скоринг — система оценки процесса (цели или проекта) по расширенной системе SMART.</p></li>
+    <li><p>База знаний — хранилище связанных друг с другом записей в формате Zettelkasten с динамическим статусом от входящий до архива.</p></li>
+    <li><p>Доходы — контроль поступления денежных средств в рамках бизнес процессов и периодов времени.</p></li>
+   </ul>
+   <p><u>Рабочие пространства</u>:</p>
+   <ul>
+    <li><p>Шаблоны дня, недели, месяца, года — являются основным рабочим пространством, в рамках которых реализуется вся деятельность в GTD системе. <br>Включают в себя контроль таких процессов как:</p>
+     <ul>
+      <li><p>цели</p></li>
+      <li><p>задачи</p></li>
+      <li><p>данные (входящая информация)</p></li>
+      <li><p>платежи</p></li>
+      <li><p>клиенты</p></li>
+      <li><p>проекты</p></li>
+      <li><p>события</p></li>
+     </ul></li>
+    <li><p>Шаблоны целей и задач</p>
+     <ul>
+      <li><p>по типу</p></li>
+      <li><p>по времени</p></li>
+     </ul></li>
+    <li><p>Шаблон проектов</p>
+     <ul>
+      <li><p>клиенты</p></li>
+      <li><p>платежи</p></li>
+      <li><p>задачи</p></li>
+      <li><p>цели</p></li>
+      <li><p>скоринг</p></li>
+     </ul></li>
+    <li><p>Главная страница</p></li>
+    <li><p>Страницы</p>
+     <ul>
+      <li><p>сегодня</p></li>
+      <li><p>вчера</p></li>
+      <li><p>завтра</p></li>
+      <li><p>неделя</p></li>
+      <li><p>месяц</p></li>
+      <li><p>год</p></li>
+      <li><p>данные (Цеттелькастен)</p></li>
+     </ul></li>
+    <li><p>Страница "сегодня" для телефона</p><p><u>Инструменты</u></p></li>
+    <li><p>Инструмент декомпозиции цели на подцели</p>
+     <ul>
+      <li><p>по кварталам и месяцам</p></li>
+      <li><p>по приоритету</p></li>
+     </ul></li>
+    <li><p>Инструмент декомпозиции задачи на подзадачи</p>
+     <ul>
+      <li><p>по приоритету (матрица Эйзенхауэра)</p></li>
+      <li><p>по часом</p></li>
+     </ul></li>
+    <li><p>Скоринг</p>
+     <ul>
+      <li><p>оценка проекта</p></li>
+      <li><p>оценка цели</p></li>
+     </ul></li>
+   </ul>
+   <p><u>Автоматизация</u></p>
+   <ul>
+    <li><p>учет времени выполнения процесса</p>
+     <ul>
+      <li><p>план</p></li>
+      <li><p>факт</p></li>
+      <li><p>результирующий показатель</p></li>
+     </ul></li>
+    <li><p>учет баллов</p>
+     <ul>
+      <li><p>за выполнение процесса</p></li>
+      <li><p>за нужный период</p></li>
+     </ul></li>
+    <li><p>трекер результативности</p>
+     <ul>
+      <li><p>план / факт за период времени</p></li>
+     </ul></li>
+    <li><p>шаблоны повторяющихся процессов</p>
+     <ul>
+      <li><p>ежедневные</p></li>
+      <li><p>еженедельные</p></li>
+     </ul></li>
+   </ul>
+   <h2>Структура рабочих пространств в шаблоне времен (день, неделя и т.д.)</h2>
+   <figure class="bordered full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/293/73e/9fe/29373e9fe83c24cf35887dd127696a4c.png" width="1739" height="1702" data-src="https://habrastorage.org/getpro/habr/upload_files/293/73e/9fe/29373e9fe83c24cf35887dd127696a4c.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Страница, создаваемая автоматически по шаблону включает такие группы данных как:</p>
+   <ul>
+    <li><p>цели, соответствующие периоду времени</p></li>
+    <li><p>данные, создаваемые в период времени или относящиеся к нему</p>
+     <ul>
+      <li><p>инбокс</p></li>
+      <li><p>клиенты</p></li>
+      <li><p>статьи и т.п.</p></li>
+     </ul></li>
+    <li><p>бизнес процессы</p>
+     <ul>
+      <li><p>новые проекты</p></li>
+      <li><p>новые клиенты</p></li>
+      <li><p>новые платежи</p></li>
+     </ul></li>
+    <li><p>задачи на период</p></li>
+    <li><p>инструмент декомпозиции задач</p>
+     <ul>
+      <li><p>по часам</p></li>
+      <li><p>по приоритету</p></li>
+     </ul></li>
+    <li><p>папку с незавершенными задачами из прошлого</p></li>
+    <li><p>папку ретроспективы задач (незавершенные / завершенные)</p></li>
+    <li><p>папку отложенных задач</p></li>
+   </ul>
+   <p>Инструмент декомпозиции по времени включает 4 группы:</p>
+   <ul>
+    <li><p>утро</p></li>
+    <li><p>день</p></li>
+    <li><p>вечер</p></li>
+    <li><p>будущие дни</p></li>
+   </ul>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/3aa/fca/737/3aafca73721dc3f29d623e14c0b7c219.png" width="1650" height="1917" data-src="https://habrastorage.org/getpro/habr/upload_files/3aa/fca/737/3aafca73721dc3f29d623e14c0b7c219.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Задачи расставляются по нужным ячейкам времени путем перетаскивания из папки всех задач на день:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/5b1/e61/f56/5b1e61f56cabe16fd267b14d6ab88f75.png" width="1621" height="1250" data-src="https://habrastorage.org/getpro/habr/upload_files/5b1/e61/f56/5b1e61f56cabe16fd267b14d6ab88f75.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>После указания времени процесса формируется монитор процессов по времени:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/4bd/f2e/124/4bdf2e124793876e03366098dd3f5aaa.png" width="1097" height="1384" data-src="https://habrastorage.org/getpro/habr/upload_files/4bd/f2e/124/4bdf2e124793876e03366098dd3f5aaa.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Декомпозиция задач по приоритету основана на матрице Эйзенхауэра:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/a3f/9ef/ec2/a3f9efec251e9dc8de78fec3df3cb502.png" width="1652" height="1032" data-src="https://habrastorage.org/getpro/habr/upload_files/a3f/9ef/ec2/a3f9efec251e9dc8de78fec3df3cb502.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Данный инструмент удобно применять, когда важность процессов определяется приоритетом, а&nbsp;не&nbsp;конкретным временем.</p>
+   <p>Демонстрируемые инструменты наряду с&nbsp;прочими инструментами декомпозиции, являются самой сложной частью системы с&nbsp;точки зрения ее создания. Так как&nbsp;все раскладываемые по&nbsp;типам и времени процессы после манипуляций с&nbsp;ними должны оставаться на&nbsp;тех&nbsp;же местах и связях, как&nbsp;они&nbsp;были созданы в&nbsp;шаблоне времени или&nbsp;типе процесса.</p>
+   <p>Вместе с&nbsp;тем они не&nbsp;должны «вылезать» в&nbsp;местах, к&nbsp;которым они не&nbsp;имеют отношения. К&nbsp;примеру, подзадачи не&nbsp;должны после манипулирования вдруг встать рядом с&nbsp;эпиком (основной задачей или&nbsp;целью).</p>
+   <p>Папка с&nbsp;незавершенными задачами помогает в&nbsp;формировании планов на&nbsp;период из&nbsp;числа ранее созданных задач.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/95c/8b6/dec/95c8b6decb8a14996f55b8a882364192.gif" width="1430" height="815" data-src="https://habrastorage.org/getpro/habr/upload_files/95c/8b6/dec/95c8b6decb8a14996f55b8a882364192.gif">
+    <figcaption></figcaption>
+   </figure>
+   <p>Шаблон дня также включает в&nbsp;себя процессы, которые создаются автоматически как&nbsp;новые каждый день. Теперь повторяющиеся записи в&nbsp;базах Notion не&nbsp;нужно создавать снова, а&nbsp;лишь требуется связать их с&nbsp;нужной календарной датой и отчетным периодом для&nbsp;начисления за&nbsp;них баллов результативности.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/df6/728/fb7/df6728fb7d3b93afc83a42f06076dddf.png" alt="Место хранения повторяющихся процессов" title="Место хранения повторяющихся процессов" width="1465" height="463" data-src="https://habrastorage.org/getpro/habr/upload_files/df6/728/fb7/df6728fb7d3b93afc83a42f06076dddf.png">
+    <figcaption>
+     Место хранения повторяющихся процессов
+    </figcaption>
+   </figure>
+   <p>В&nbsp;данной системе, каждая завершенная задача несет в&nbsp;себе N баллов, которые зависят от&nbsp;приоритета задачи, а&nbsp;также времени ее выполнения. Предполагается, что&nbsp;чем выше приоритет процесса и его длительность тем больше баллов набирает процесс.</p>
+   <p>Все баллы и затраченное за&nbsp;период время суммируются и отражаются в&nbsp;трекере результативности на&nbsp;главной странице, а&nbsp;также рядом с&nbsp;отчетным периодом.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f1b/337/c2e/f1b337c2e93a1eaec43ca1055c302146.png" alt="План / факт по времени и баллам за день" title="План / факт по времени и баллам за день" width="1439" height="665" data-src="https://habrastorage.org/getpro/habr/upload_files/f1b/337/c2e/f1b337c2e93a1eaec43ca1055c302146.png">
+    <figcaption>
+     План / факт по времени и баллам за день
+    </figcaption>
+   </figure>
+   <p><strong>Управление целями&nbsp;— одна из&nbsp;самых важных частей GTD системы</strong>.</p>
+   <p>В&nbsp;связи с&nbsp;этим, должна&nbsp;быть удобной постановка целей, учитывающей такие параметры как:</p>
+   <ul>
+    <li><p>тип цели: бизнес, финансы, персональные и&nbsp;т.&nbsp;п.</p></li>
+    <li><p>период достижения цели (неделя, месяц, квартал...)</p></li>
+    <li><p>приоритет цели</p></li>
+   </ul>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/deb/1cb/a49/deb1cba49b0a3636b24550329223b861.png" alt="Специальные страницы для постановки и управления целями" title="Специальные страницы для постановки и управления целями" width="1726" height="682" data-src="https://habrastorage.org/getpro/habr/upload_files/deb/1cb/a49/deb1cba49b0a3636b24550329223b861.png">
+    <figcaption>
+     Специальные страницы для постановки и управления целями
+    </figcaption>
+   </figure>
+   <p>Цели по&nbsp;типам группируются по&nbsp;времени. Цели по&nbsp;времени группируются по&nbsp;типам.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/dce/3ac/252/dce3ac25258fd24400d763b6a14d6379.png" alt="Цели на неделю" title="Цели на неделю" width="1865" height="1814" data-src="https://habrastorage.org/getpro/habr/upload_files/dce/3ac/252/dce3ac25258fd24400d763b6a14d6379.png">
+    <figcaption>
+     Цели на неделю
+    </figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/08f/19f/5a1/08f19f5a109f77010331ab1f52d83c43.png" alt="Финансовые цели" title="Финансовые цели" width="1743" height="1041" data-src="https://habrastorage.org/getpro/habr/upload_files/08f/19f/5a1/08f19f5a109f77010331ab1f52d83c43.png">
+    <figcaption>
+     Финансовые цели
+    </figcaption>
+   </figure>
+   <p>В&nbsp;шаблоне целей, как&nbsp;и в&nbsp;шаблонах времени содержится инструмент декомпозиции цели на&nbsp;промежуточные, каждая из&nbsp;которых декомпозируется на&nbsp;задачи и подзадачи.</p>
+   <p>На&nbsp;видео ниже показан процесс декомпозиции годовой цели на 4&nbsp;уровня вниз. Годовая цель разбивается на&nbsp;промежуточные цели. Промежуточные разбиваются на&nbsp;задачи. Задачи разбиваются на&nbsp;подзадачи. Пожалуй, это самый мощный инструмент системы и несомненно является ее достоинством.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/f00/dc8/306/f00dc83060bc00dcc4577c20b0e412b9.gif" width="1430" height="815" data-src="https://habrastorage.org/getpro/habr/upload_files/f00/dc8/306/f00dc83060bc00dcc4577c20b0e412b9.gif">
+    <figcaption></figcaption>
+   </figure>
+   <p>На&nbsp;дешборде второго уровня видны цели и задачи трех уровней начиная с&nbsp;первого.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/0ae/b60/353/0aeb60353e8ebd6c7c5c10af8d43271a.png" width="1865" height="2343" data-src="https://habrastorage.org/getpro/habr/upload_files/0ae/b60/353/0aeb60353e8ebd6c7c5c10af8d43271a.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Таким образом, вся система связана воедино целеполаганием и выстраиванием процесса достижения целей, который контролируется процессами разных периодов времени.</p>
+   <p>Структура шаблонов времен идентична друг другу за&nbsp;исключением содержания. К&nbsp;примеру, если шаблон дня включает в&nbsp;себя в&nbsp;основном работу с&nbsp;задачами, реализуемыми в&nbsp;рамках целей и подцелей, то в&nbsp;шаблоне неделя и более продолжительных периодах в&nbsp;качестве основных процессов уже выступают не&nbsp;задачи, а&nbsp;сами цели.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/b62/8df/4d1/b628df4d181488f0a5d5729e115ee5c6.png" width="1865" height="2456" data-src="https://habrastorage.org/getpro/habr/upload_files/b62/8df/4d1/b628df4d181488f0a5d5729e115ee5c6.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Еще одним достоинством системы являются диаграммы результативности, показывающие ежедневные, еженедельные и ежемесячные результаты заработанных баллов и потраченного времен.</p>
+   <p>Для&nbsp;облегчения страниц на&nbsp;динамических страницах они размещаются в&nbsp;специальной папке, а&nbsp;на&nbsp;статичных их можно увидеть на&nbsp;видном месте.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/762/08e/002/76208e0021fe4ddafbb13c9ad99a75d8.png" width="1692" height="597" data-src="https://habrastorage.org/getpro/habr/upload_files/762/08e/002/76208e0021fe4ddafbb13c9ad99a75d8.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>В&nbsp;заключение хочется сказать, что&nbsp;данная система разрабатывалась как&nbsp;инструмент для&nbsp;работы на&nbsp;компьютере. Для&nbsp;контроля процессов с&nbsp;мобильного телефона существует специальная страница. Но&nbsp;ее назначение заключается в&nbsp;контроле текущих процессов,&nbsp;быстрого изменения их статуса и создания новых. Все более сложное конечно лучше делать на&nbsp;PC.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/ef3/015/f79/ef3015f793a60d09d82fb88b5c00c6ae.png" width="788" height="1959" data-src="https://habrastorage.org/getpro/habr/upload_files/ef3/015/f79/ef3015f793a60d09d82fb88b5c00c6ae.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>В&nbsp;целом система отлично решает свои задачи и главное помогает в&nbsp;достижении намеченных целей, так как&nbsp;весь массив данных и процессов позволяет отображать в&nbsp;совокупности и ничего не&nbsp;упускать.</p>
+   <p>Для&nbsp;большей наглядности можно посмотреть несколько видео роликов, на&nbsp;которых я показываю работу системы с&nbsp;разных сторон. К&nbsp;примеру:</p>
+   <ul>
+    <li><p>как <a href="https://youtu.be/9reUxyIzGxs" rel="noopener noreferrer nofollow">настраивается план дня</a>;</p></li>
+    <li><p>как <a href="https://youtu.be/-0ztxl2mYdw" rel="noopener noreferrer nofollow">декомпозируются процессы</a>.</p></li>
+   </ul>
+   <p>Задать вопросы автору&nbsp;лично можно <a href="https://t.me/Sasha_Geo" rel="noopener noreferrer nofollow">в&nbsp;телеграм</a></p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

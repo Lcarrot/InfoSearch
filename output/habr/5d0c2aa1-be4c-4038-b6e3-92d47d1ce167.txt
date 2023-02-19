@@ -1,0 +1,631 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Сегодня открою вам Америку на&nbsp;основе данных OpenStreetMap в&nbsp;PostgreSQL15/PostGIS и моего проекта <a href="https://github.com/igor-suhorukov/openstreetmap_h3" rel="noopener noreferrer nofollow">openstreetmap_h3</a>. Запустим запрос и сравним время его выполнения на&nbsp;колоночном хранилище Citus в&nbsp;PostgreSQL и на&nbsp;стандартном в&nbsp;секционированной по&nbsp;H3&nbsp;геоиндексу базе данных объемом 100GB.</p>
+   <p>Найдем top15&nbsp;мест по&nbsp;застройке а&nbsp;Северной Америке и общую протяженность дорог, а&nbsp;также их тип и покрытие. Не&nbsp;буду перегружать публикацию логами программ, сфокусируемся на&nbsp;данных! Вы можете легко повторить все запросы самостоятельно на&nbsp;своем компьютере или&nbsp;ноутбуке.</p>
+   <h2>Статистика</h2>
+   <p>Мы живем в&nbsp;удивительном мире, когда современный ноутбук работает производительнее многих суперкомпьютеров 20&nbsp;летней давности и доступные накопители позволяют хранить терабайты данных с&nbsp;малым временем доступа. К&nbsp;тому&nbsp;же с&nbsp;каждым годом становится доступно все больше открытых данных&nbsp;— географических, экономических. Появляются новые специализированные базы данных и движки для&nbsp;работы с&nbsp;большими данными. Новые средства которые дают возможность легко получать ответы на&nbsp;вопросы.</p>
+   <p>Как&nbsp;говорил Марк Твен «существуют три вида лжи: ложь, наглая ложь и статистика». Не&nbsp;будем верить доступным данным статистики, а&nbsp;пересчитаем все самостоятельно на&nbsp;основе открытых данных.</p>
+   <h2>Загрузка Северной Америки в PostgreSQL15</h2>
+   <p>Собираем openstreetmap‑h3, для&nbsp;этого нужны maven, git, JDK11+</p>
+   <pre><code class="bash">git clone https://github.com/igor-suhorukov/openstreetmap_h3.git
+cd openstreetmap_h3
+git checkout dev/postgresql15
+mvn install</code></pre>
+   <p>Собираем docker образ с&nbsp;PostgreSQL 15.1, PostGIS 3.3.2, H3 4.1.1:</p>
+   <pre><code class="bash">cd postgis_docker-master
+docker build -t postgres15_postgis .</code></pre>
+   <p>Скачиваем Америку с&nbsp;сайта Geofabrik:</p>
+   <pre><code class="bash">wget https://download.geofabrik.de/north-america.html</code></pre>
+   <p>Объем исходных данных OpenStreetMap 13,0&nbsp;GB, которые мы превращаем из&nbsp;north‑america‑latest.osm.pbf в&nbsp;tsv данные и набор скриптов для&nbsp;загрузки в&nbsp;PostgreSQL:</p>
+   <pre><code class="bash">java -jar target/osm-to-pgsnapshot-schema-ng-1.0-SNAPSHOT.jar -columnar_storage -source_pbf ~/dev/map/north-america/north-america-latest.osm.pbf</code></pre>
+   <p>Создаем новый контейнер и загружаем в него данные:</p>
+   <pre><code class="bash">docker run --name postgis15-north-america-citus --memory=12g --memory-swap=12g --memory-swappiness 0 --shm-size=1g -v /home/acc/dev/map/database/north-america:/var/lib/postgresql/data -v /home/acc/dev/map/north-america/north-america-latest_loc_ways:/input -e POSTGRES_PASSWORD=osmworld -d -p 5432:5432 postgres15_postgis:latest -c checkpoint_timeout='15 min' -c checkpoint_completion_target=0.9 -c shared_buffers='4096 MB' -c wal_buffers=-1 -c bgwriter_delay=200ms -c bgwriter_lru_maxpages=100 -c bgwriter_lru_multiplier=2.0 -c bgwriter_flush_after=0 -c max_wal_size='32768 MB' -c min_wal_size='16384 MB'</code></pre>
+   <h2>База данных с географией Северной Америки</h2>
+   <p>Подключаемся к базе данных и проверим версии компонент:</p>
+   <pre><code class="sql">psql -h 172.17.0.1 -p 5432 -U postgres -d osmworld
+osmworld=# select version();
+                                                           version                                                           
+-----------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 15.1 (Debian 15.1-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit
+(1 row)
+
+osmworld=# \dx
+                                    List of installed extensions
+      Name      | Version |   Schema   |                        Description                         
+----------------+---------+------------+------------------------------------------------------------
+ citus          | 11.1-1  | pg_catalog | Citus distributed database
+ citus_columnar | 11.1-1  | pg_catalog | Citus Columnar extension
+ h3             | 4.1.1   | public     | H3 bindings for PostgreSQL
+ hstore         | 1.8     | public     | data type for storing sets of (key, value) pairs
+ plpgsql        | 1.0     | pg_catalog | PL/pgSQL procedural language
+ postgis        | 3.3.2   | public     | PostGIS geometry and geography spatial types and functions
+(6 rows)
+
+osmworld=# :dba
+Time: 1,738 ms
+Time: 0,212 ms
+Time: 0,122 ms
+Time: 0,247 ms
+Menu:
+   0 – Node &amp; current DB information: master/replica, lag, DB size, tmp files, etc.
+   1 – Databases: size, stats
+   q – Quit
+
+Type your choice and press &lt;Enter&gt;:
+0
+Time: 0,872 ms
+              metric               |                                                            value                                                            
+-----------------------------------+-----------------------------------------------------------------------------------------------------------------------------
+ Postgres Version                  | PostgreSQL 15.1 (Debian 15.1-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit
+ Config file                       | /var/lib/postgresql/data/postgresql.conf
+ Role                              | Master
+ Replicas                          | 
+ Started At                        | 2023-02-15 09:37:17+00
+ Uptime                            | 00:01:06
+ Checkpoints                       | 9
+ Forced Checkpoints                | 88.9%
+ Checkpoint MB/sec                 | 0.020285
+ --------------------------------- | ----------------------------------------------------------------------------------------
+ Database Name                     | osmworld
+ Database Size                     | 100 GB
+ Stats Since                       | 
+ Stats Age                         | 
+ Installed Extensions              | citus 11.1-1, citus_columnar 11.1-1, h3 4.1.1, hstore 1.8, plpgsql 1.0                                                     +
+                                   | postgis 3.3.2
+ Cache Effectiveness               | 41.82%
+ Successful Commits                | 100.00%
+ Conflicts                         | 0
+ Temp Files: total size            | 3771 MB
+ Temp Files: total number of files | 98
+ Temp Files: avg file size         | 38 MB
+ Deadlocks                         | 0
+(22 rows)
+
+Time: 21,103 ms</code></pre>
+   <p>Таблицы по которым мы будем запускать запросы в колоночном хранилище citus_columnar хранятся в PostgreSQL базе, которая занимает 100 GB.</p>
+   <h2>Плотность застройки</h2>
+   <p>Теперь мы можем посчитать сколько зданий в&nbsp;таблице ways в&nbsp;каждом из&nbsp;шестигранников сетки разбиения H3&nbsp;на&nbsp;уровне 3&nbsp;и выбрать из&nbsp;них только 15&nbsp;в&nbsp;порядке уменьшения числа строений:</p>
+   <pre><code class="sql">osmworld=# select h3_3, count(*) from ways where building group by 1 order by 2 desc limit 15;
+ h3_3  |  count  
+-------+---------
+ 10768 | 2608290
+ 10657 | 2031406
+ 10920 | 1620451
+ 10660 | 1396225
+ 10772 | 1224476
+ 17601 | 1197694
+ 11163 | 1168809
+ 10803 | 1108671
+  9928 | 1091346
+ 10800 | 1089511
+ 10288 | 1039033
+ 10656 |  980499
+ 10661 |  973984
+ 10480 |  928448
+  9828 |  909524
+(15 rows)
+
+Time: 3974,699 ms (00:03,975)
+</code></pre>
+   <p>Визуализируем эти регионы с помощью запроса в QGIS:</p>
+   <pre><code class="sql">select buildings.*,h3b.bounds,row_number() OVER ( order by count desc) as rownum 
+   from h3_3_bounds_complex h3b 
+   inner join 
+	(select h3_3, count(*) from ways where building group by 1 order by 2 desc limit 15) buildings
+   on h3b.id=buildings.h3_3</code></pre>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/49e/9be/71a/49e9be71a47c7f10f0ca6634d313aa33.jpg" width="1192" height="940" data-src="https://habrastorage.org/getpro/habr/upload_files/49e/9be/71a/49e9be71a47c7f10f0ca6634d313aa33.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/c65/485/ed9/c65485ed9478ed2d4641381bec2fa827.jpg" width="1452" height="1024" data-src="https://habrastorage.org/getpro/habr/upload_files/c65/485/ed9/c65485ed9478ed2d4641381bec2fa827.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/291/7db/6a4/2917db6a40d5bdb14a78cb0936fbe704.jpg" width="729" height="1014" data-src="https://habrastorage.org/getpro/habr/upload_files/291/7db/6a4/2917db6a40d5bdb14a78cb0936fbe704.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/45f/586/562/45f586562143fdf203ea9309eb228f7d.jpg" width="873" height="823" data-src="https://habrastorage.org/getpro/habr/upload_files/45f/586/562/45f586562143fdf203ea9309eb228f7d.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Для сравнения тот же самый запрос на классическом (heap) хранилище PostgreSQL:</p>
+   <pre><code class="sql">docker start postgis15-north-america
+
+osmworld=# select h3_3, count(*) from ways where building group by 1 order by 2 desc limit 15;
+ h3_3  |  count  
+-------+---------
+ 10768 | 2608290
+ 10657 | 2031406
+ 10920 | 1620451
+ 10660 | 1396225
+ 10772 | 1224476
+ 17601 | 1197694
+ 11163 | 1168809
+ 10803 | 1108671
+  9928 | 1091346
+ 10800 | 1089511
+ 10288 | 1039033
+ 10656 |  980499
+ 10661 |  973984
+ 10480 |  928448
+  9828 |  909524
+(15 rows)
+
+Time: 42153,407 ms (00:42,153)</code></pre>
+   <p>Этот запрос выполнился в 10.6 раз дольше чем на Citus column (42,153с heap VS 3,975с column).</p>
+   <h2>Дороги Северной Америки</h2>
+   <p>Общая длина дорог и троп:</p>
+   <pre><code class="sql">osmworld=# select sum(ST_Length(linestring::geography)) 
+osmworld-#             from ways 
+osmworld-#             where tags-&gt;'highway' is not null 
+osmworld-#               and tags-&gt;'highway' not in ('platform','bus_stop','corridor','rest_area');
+
+        sum         
+--------------------
+ 17333069670.373722
+(1 row)
+
+Time: 236019,990 ms (03:56,020)</code></pre>
+   <p>Длина только тех, для которых указан тип покрытия:</p>
+   <pre><code class="sql">osmworld=# select sum(ST_Length(linestring::geography)) 
+osmworld-#             from ways 
+osmworld-#             where tags-&gt;'highway' is not null 
+osmworld-#               and tags-&gt;'highway' not in ('platform','bus_stop','corridor','rest_area') 
+osmworld-#               and tags-&gt;'surface' is not null;
+        sum        
+-------------------
+ 4683910752.668413
+(1 row)
+
+Time: 84941,031 ms (01:24,941)</code></pre>
+   <p>Оценим полноту данных по покрытию:</p>
+   <pre><code class="sql">osmworld=# select count(tags-&gt;'surface')*100.0/count(*) form from ways 
+            where tags-&gt;'highway' is not null 
+              and tags-&gt;'highway' not in ('platform','bus_stop','corridor','rest_area');
+        form         
+---------------------
+ 17.8903148327659968
+(1 row)
+
+Time: 15601,571 ms (00:15,602)
+</code></pre>
+   <p>Теперь просуммируем по <a href="https://wiki.openstreetmap.org/wiki/RU:Key:surface" rel="noopener noreferrer nofollow">типу покрытия</a>:</p>
+   <pre><code class="sql">osmworld=# select 
+               tags-&gt;'surface' "surface_type", 
+               sum(ST_Length(linestring::geography)) 
+             from ways 
+             where tags-&gt;'highway' is not null 
+               and tags-&gt;'highway' not in ('platform','bus_stop','corridor','rest_area') 
+               and tags-&gt;'surface' is not null 
+             group by 1 
+             having count(*) &gt;=100 
+             order by 2 desc;
+     surface_type      |        sum         
+-----------------------+--------------------
+ unpaved               | 1652815720.1065524
+ asphalt               | 1364860501.5095317
+ gravel                | 508458110.63075835
+ paved                 | 417214264.78016436
+ dirt                  |  298434798.3305051
+ ground                | 186407920.22584632
+ concrete              | 163305537.72818062
+ compacted             | 29695112.501213416
+ sand                  |   10358279.6686242
+ grass                 | 8177577.5513973655
+ concrete:plates       | 7839326.0808026455
+ fine_gravel           |  7070308.215675858
+ paving_stones         | 4528857.6939902995
+ earth                 |  4047844.559239158
+ ice                   | 3251766.8227435704
+ pebblestone           |  3044145.111581855
+ wood                  | 1548257.2810464564
+ cobblestone           |   1537007.58652311
+ limerock              | 1154768.9652535582
+ dirt/sand             | 1122131.6047778637
+ trail                 |  957280.1821749548
+ crushed_limestone     |  693230.4216405117
+ concrete:lanes        |  550729.2561993373
+ soil                  |  486167.0521078333
+ mud                   | 481869.20646625035
+ brick                 | 405033.45128156105
+ bricks                |  375971.1124591282
+ chipseal              | 363933.36915447767
+ sett                  | 248202.94349638248
+ natural               |  235102.6922085221
+ woodchips             | 160545.90482571782
+ rock                  | 146208.27722591715
+ unhewn_cobblestone    | 125749.92425415723
+ metal                 |  88785.57955673145
+ spur                  |  54000.13141806118
+ cobblestone:flattened | 51647.857174154095
+ bark                  | 32652.962135521146
+ mulch                 | 27545.921618327953
+ boardwalk             |  27291.09042737315
+ cement                |  26397.24288501879
+ stone                 | 25544.130645372174
+ grass_paver           | 22737.854763573207
+ block                 | 13035.364332975803
+ metal_grid            |    8508.7689744505
+ 2                     |  8200.875450534988
+ stepping_stones       | 1905.2749432306568
+(46 rows)
+</code></pre>
+   <p>Теперь посмотрим протяженность по <a href="https://wiki.openstreetmap.org/wiki/RU:Key:highway" rel="noopener noreferrer nofollow">типу дорог</a>:</p>
+   <pre><code class="sql">osmworld=# select tags-&gt;'highway',sum(ST_Length(linestring::geography)) 
+           from ways where tags-&gt;'highway' is not null 
+            and tags-&gt;'highway' not in ('platform','bus_stop','corridor','rest_area')
+           group by 1 having count(*)&gt;=100 order by 2 desc;
+    ?column?    |        sum         
+----------------+--------------------
+ residential    |  5645591764.076551
+ service        |  2971654450.570504
+ track          |  2457547483.583801
+ unclassified   | 1993885988.1285813
+ tertiary       | 1214043395.8814895
+ secondary      |  723958953.0845761
+ footway        |  632639912.4949341
+ path           |  480816819.3575947
+ primary        |  469162054.7166547
+ motorway       | 245362469.24192086
+ trunk          |  239323368.6696571
+ cycleway       | 100250842.26426062
+ motorway_link  |  70930030.73010331
+ proposed       |  13177426.45433327
+ construction   | 12253141.298817866
+ trunk_link     | 10567863.175455065
+ bridleway      |  9684141.014057217
+ living_street  |  8846280.895166134
+ primary_link   |  7444718.182813775
+ pedestrian     |  6924058.676602626
+ secondary_link |  5057131.034404312
+ road           |  4315063.417226655
+ raceway        | 3479146.9071076848
+ tertiary_link  |  2315092.220026257
+ steps          | 1590123.0661222872
+ services       |   803185.248279694
+ abandoned      |  679751.4909001294
+ busway         | 234694.90633171005
+ bus_guideway   | 130270.53462602737
+ planned        | 129935.32424801859
+ razed          | 101886.62926516314
+ escape         |  75061.51276658909
+ disused        |  29283.81533118899
+ elevator       |  8043.809559098002
+(34 rows)
+
+Time: 252662,933 ms (04:12,663)
+</code></pre>
+   <p>И добавим к типу дорог тип покрытия:</p>
+   <pre><code class="sql">osmworld=# select tags-&gt;'highway' "road_type",
+                  tags-&gt;'surface' "surface_type",
+                  sum(ST_Length(linestring::geography)) 
+            from ways 
+            where tags-&gt;'highway' is not null 
+              and tags-&gt;'highway' not in ('platform','bus_stop','corridor','rest_area')
+            group by 1,2 
+            having count(*)&gt;=100 
+            order by 3 desc;
+   road_type    |    surface_type    |        sum         
+----------------+--------------------+--------------------
+ residential    |                    |  4763401026.858094
+ service        |                    | 2646528071.9827824
+ track          |                    | 1884625080.1819654
+ unclassified   |                    |  803621442.5929096
+ tertiary       |                    |  710555856.4372112
+ unclassified   | unpaved            |  705905327.6811218
+ footway        |                    |   471736761.945697
+ secondary      |                    | 421890532.64897823
+ track          | unpaved            |   343763333.596261
+ residential    | asphalt            |  333411585.3559667
+ residential    | unpaved            | 299735764.42184454
+ path           |                    |  289098741.5865223
+ primary        |                    | 244156319.24732155
+ unclassified   | gravel             | 243598138.31110144
+ tertiary       | asphalt            | 240733173.70222318
+ secondary      | asphalt            | 215401222.95500344
+ primary        | asphalt            | 170428859.68408427
+ service        | unpaved            | 146554062.94818687
+ motorway       |                    | 137914050.71618488
+ trunk          |                    | 129236710.00592434
+ track          | dirt               | 125562066.74714226
+ residential    | gravel             | 110258472.83744836
+ tertiary       | unpaved            | 100908889.53088643
+ service        | asphalt            |  93346831.40959103
+ trunk          | asphalt            |  89758448.38001442
+ residential    | paved              |  87999243.86922555
+ tertiary       | paved              |  87994213.52129921
+ path           | ground             |  82002271.23108393
+ motorway       | asphalt            |  81019470.89036791
+ footway        | concrete           |  79210367.51960273
+ unclassified   | dirt               |  67817273.36151944
+ unclassified   | asphalt            |  61762007.44361189
+ unclassified   | paved              |  57112015.35820832
+ tertiary       | gravel             |  51756606.24016952
+ secondary      | paved              | 49833719.879313916
+ motorway_link  |                    |  46416693.82958645
+ path           | dirt               |  45621263.32209663
+ track          | ground             |  42852401.54191421
+ primary        | paved              |  42449956.38505393
+ track          | gravel             |  38496421.88388152
+ unclassified   | ground             |   36441972.3942225
+ cycleway       |                    |  34811115.38976194
+ service        | gravel             | 32493147.550596934
+ cycleway       | asphalt            | 27113351.132957958
+ path           | unpaved            | 24397178.109620415
+ service        | paved              | 22499920.406084005
+ footway        | paved              |  21128165.24793853
+ residential    | dirt               |  18140805.01287318
+ motorway_link  | asphalt            |   17697463.3352245
+ residential    | concrete           | 17180996.330276847
+ motorway       | concrete           | 15797143.405233588
+ secondary      | unpaved            | 14951004.396679036
+ trunk          | paved              | 14544248.496826058
+ footway        | asphalt            | 14139380.466019733
+ service        | dirt               | 13533635.975871304
+ footway        | dirt               | 12475554.942645315
+ proposed       |                    | 12412404.479500988
+ secondary      | gravel             | 12359859.326103551
+ footway        | ground             |  12179598.43185987
+ cycleway       | paved              | 11692894.243439678
+ construction   |                    | 10434301.517878689
+ unclassified   | compacted          | 10083340.114492217
+ motorway       | paved              |  9739514.320030514
+ path           | asphalt            |  9414713.962064302
+ tertiary       | dirt               |  9052189.009797093
+ service        | concrete           |  8954778.624278365
+ secondary      | concrete           |  7238263.248977672
+ path           | gravel             |  7127529.505746644
+ footway        | unpaved            |   7121128.04537417
+ trunk_link     |                    |  7100005.578315217
+ living_street  |                    |  6957202.813900431
+ cycleway       | concrete           |  6418397.632759386
+ path           | paved              |  6364598.297245062
+ residential    | compacted          |  5912938.710068744
+ track          | sand               |  5608795.294502438
+ trunk          | concrete           |  5273502.003184203
+ tertiary       | concrete           |  5029174.945935459
+ primary_link   |                    |  4850982.357941081
+ path           | concrete           |  4845785.159585622
+ primary        | concrete           |  4769072.452942328
+ pedestrian     |                    |  4727580.457758072
+ bridleway      |                    |  4683993.889887575
+ cycleway       | unpaved            |  4592254.488169263
+ cycleway       | gravel             |   4531796.28164687
+ motorway_link  | concrete           |  4446552.844258176
+ track          | compacted          | 3882946.5630481234
+ tertiary       | compacted          |  3768274.047507852
+ primary        | gravel             |  3699044.781700628
+ track          | grass              | 3593391.0202003038
+ footway        | concrete:plates    |  3591011.286780505
+ cycleway       | dirt               | 3545659.5238580364
+ service        | ground             | 3437765.4926561713
+ secondary_link |                    |  3414984.794106794
+ footway        | gravel             | 3383808.3633199693
+ road           |                    | 3356383.4854103657
+ residential    | ground             | 2956457.0084883217
+ primary        | unpaved            |   2847185.76046211
+ trunk_link     | asphalt            |  2775679.113175762
+ cycleway       | fine_gravel        |  2446477.540956408
+ raceway        |                    | 2411263.7490123133
+ track          | pebblestone        | 2301870.9579834472
+ tertiary       | ground             |  2260195.753934444
+ motorway_link  | paved              | 2144888.2806652286
+ primary_link   | asphalt            | 2134589.9168418245
+ path           | earth              | 2040922.4883732798
+ cycleway       | ground             | 1970167.8353412757
+ bridleway      | ground             | 1967466.2354609983
+ path           | grass              | 1888070.7409965922
+ path           | compacted          |  1857097.471348198
+ residential    | paving_stones      | 1814454.1311404312
+ footway        | grass              | 1731987.8252963582
+ unclassified   | sand               | 1691170.1008224054
+ track          | paved              | 1632302.4668008054
+ cycleway       | compacted          | 1616176.9569416267
+ tertiary_link  |                    | 1612537.7967704032
+ bridleway      | dirt               |  1609471.513948336
+ service        | compacted          | 1607442.4257461077
+ footway        | paving_stones      | 1415560.3667816524
+ path           | sand               | 1350888.8938942542
+ secondary_link | asphalt            | 1329023.0169268274
+ path           | fine_gravel        | 1281473.8216985897
+ unclassified   | concrete           | 1221896.2071398764
+ steps          |                    |  1184717.256174309
+ track          | limerock           |  1129378.424354146
+ track          | asphalt            |  1075047.282542879
+ residential    | cobblestone        | 1059485.2912852596
+ pedestrian     | concrete           | 1032715.6747134975
+ track          | earth              |  887940.2426770492
+ motorway       | concrete:plates    |   887772.985242092
+ path           | trail              |   883190.683327884
+ unclassified   | fine_gravel        |  861872.3240972031
+ living_street  | asphalt            |  861745.8339908258
+ services       |                    |  798963.5122002938
+ residential    | concrete:plates    |  781482.2986809855
+ secondary      | concrete:plates    |  750952.7214043038
+ construction   | asphalt            |  726776.6693312767
+ cycleway       | crushed_limestone  |  685798.6089688728
+ residential    | fine_gravel        |  679792.8561554619
+ footway        | fine_gravel        |  673063.1444234059
+ abandoned      |                    |  660868.6176068272
+ footway        | wood               |  613236.7794218957
+ footway        | sand               |  576903.3580167836
+ construction   | paved              |  570144.5593899674
+ path           | wood               |  566661.8641079792
+ bridleway      | unpaved            |  545455.7255129513
+ footway        | compacted          |   533918.300248029
+ service        | fine_gravel        |  524744.6615275827
+ secondary      | ice                |  522710.2378628283
+ tertiary_link  | asphalt            |  520411.8219238426
+ service        | concrete:plates    | 478497.79336747277
+ residential    | sand               | 449229.43782958493
+ living_street  | unpaved            | 419139.16090518294
+ primary        | concrete:plates    |  412410.0601491582
+ proposed       | asphalt            |  409837.9017696265
+ track          | dirt/sand          | 408159.62457694276
+ footway        | earth              |  398114.2568012427
+ track          | fine_gravel        |  396033.7962820694
+ raceway        | dirt               | 384412.85082210996
+ footway        | concrete:lanes     | 384388.78014350444
+ road           | dirt               | 375608.21000385896
+ bridleway      | gravel             |  351706.6890854066
+ raceway        | asphalt            |  338814.6551858863
+ pedestrian     | paving_stones      | 330745.75517430564
+ service        | grass              |   330241.696258488
+ road           | unpaved            |  326967.0915144114
+ trunk_link     | paved              | 326698.20477597584
+ service        | sand               |  325567.8481155458
+ trunk_link     | concrete           | 321293.93015355075
+ pedestrian     | asphalt            |  306435.4369459363
+ tertiary       | concrete:plates    |  304447.7109953402
+ pedestrian     | paved              |  291670.5994772637
+ track          | concrete           | 288702.54363131255
+ unclassified   | dirt/sand          |  282958.4598390193
+ track          | soil               |  280367.2842426119
+ service        | paving_stones      | 253113.35890887617
+ construction   | concrete           | 250489.66635970082
+ residential    | earth              | 243368.67611399104
+ residential    | bricks             | 241547.18157778349
+ primary_link   | paved              | 233362.83494628928
+ track          | mud                |   222623.162350262
+ path           | natural            | 222525.11418556486
+ tertiary       | paving_stones      |  221661.8326535929
+ motorway_link  | concrete:plates    | 220084.27158910522
+ living_street  | concrete           |   211784.926229045
+ unclassified   | grass              |  207202.7872336678
+ steps          | concrete           | 204075.57897368207
+ primary_link   | concrete           |  192420.4034805249
+ unclassified   | pebblestone        |   185529.188543652
+ unclassified   | earth              |  185284.6129128161
+ path           | dirt/sand          | 178323.15887339736
+ cycleway       | wood               |  177585.0612189861
+ living_street  | paved              | 176779.42574736488
+ residential    | brick              | 175813.97652501083
+ secondary_link | concrete           | 170566.33634487086
+ unclassified   | cobblestone        |  168035.4812049392
+ bridleway      | grass              | 166927.06816627685
+ residential    | grass              | 145007.91263839617
+ tertiary       | cobblestone        | 144531.42837198608
+ busway         |                    | 141668.00141975118
+ proposed       | concrete           | 135256.43971835688
+ bridleway      | compacted          |  134367.6730410877
+ residential    | sett               | 134159.89625658424
+ raceway        | paved              | 123668.95187402441
+ planned        |                    | 121862.77791955674
+ secondary_link | paved              | 121253.34000382005
+ service        | pebblestone        | 114028.31557654691
+ service        | earth              | 112700.86070646881
+ path           | mud                | 110942.38114480482
+ footway        | brick              | 110034.66372621732
+ construction   | unpaved            | 105318.89300274091
+ residential    | chipseal           | 104757.43908833718
+ unclassified   | paving_stones      | 104080.85461469444
+ razed          |                    |  98493.19564664886
+ footway        | woodchips          |  97849.09078415699
+ raceway        | unpaved            |  95637.53003178755
+ bridleway      | sand               |  91964.97424098915
+ trunk          | concrete:plates    |  89707.81293471971
+ unclassified   | chipseal           |  87646.31337049662
+ living_street  | paving_stones      |  86956.00904801363
+ path           | pebblestone        |  86065.84995453423
+ proposed       | paved              |  84174.64638228346
+ footway        | pebblestone        |   84094.7337710366
+ cycleway       | grass              |  80871.43961649334
+ bus_guideway   |                    |   80059.3065879965
+ residential    | pebblestone        |  78676.32827696331
+ cycleway       | concrete:plates    |  78626.97730968334
+ path           | paving_stones      |  77547.23236472643
+ secondary      | paving_stones      |  76915.90335693996
+ residential    | soil               |  74775.50249977992
+ cycleway       | paving_stones      |  74162.84040374875
+ path           | concrete:plates    |  73522.71543854626
+ path           | rock               |  72564.14805588275
+ service        | concrete:lanes     |  71742.76509436533
+ footway        | bricks             |  70658.46439321125
+ bridleway      | earth              |   68365.0746144508
+ busway         | asphalt            |  67189.06572572011
+ tertiary_link  | paved              |  65320.49597644599
+ unclassified   | concrete:plates    |  65246.51136772131
+ residential    | unhewn_cobblestone | 62209.080716995595
+ service        | soil               |  57900.53748149729
+ service        | brick              |  57445.63695545244
+ service        | dirt/sand          |  55324.03395016277
+ footway        | dirt/sand          | 54507.746362286554
+ pedestrian     | wood               |  54095.63523217174
+ path           | woodchips          | 53331.943702748395
+ path           | spur               | 52892.086996842205
+ steps          | paved              |  52506.80292003064
+ steps          | wood               |    46461.755843003
+ residential    | dirt/sand          |  44724.94194470337
+ tertiary_link  | concrete           |  43962.57398137904
+ living_street  | gravel             | 40862.191687342194
+ tertiary_link  | unpaved            | 40323.036217485154
+ footway        | cobblestone        |  39606.18577173825
+ primary        | paving_stones      | 39191.029812534376
+ pedestrian     | unpaved            |  38294.86108637042
+ escape         |                    |  38059.76110339022
+ trunk_link     | concrete:plates    |  37474.92274911355
+ bus_guideway   | asphalt            | 34199.652828803846
+ service        | cobblestone        |  33720.36809304341
+ pedestrian     | gravel             | 30344.666352008073
+ footway        | metal              |  26149.36463939565
+ footway        | unhewn_cobblestone | 26105.202815754776
+ residential    | concrete:lanes     |  25981.44764468979
+ primary_link   | concrete:plates    | 25205.712215486255
+ track          | wood               | 25177.403482617865
+ tertiary       | bricks             | 24087.396407763354
+ path           | bark               | 23419.850321512553
+ footway        | sett               | 20372.797974850975
+ service        | sett               | 19287.991708956688
+ footway        | boardwalk          | 18912.766098181168
+ service        | wood               | 18522.987330308424
+ busway         | concrete           |    18334.605504341
+ tertiary_link  | gravel             | 16821.764628381225
+ steps          | paving_stones      | 16168.314285169055
+ secondary_link | concrete:plates    | 14340.732436440501
+ steps          | dirt               | 13881.373525668309
+ steps          | ground             | 13678.596643850293
+ residential    | wood               | 13554.642019149022
+ unclassified   | wood               | 13290.616084666595
+ pedestrian     | sett               | 12923.641279906136
+ pedestrian     | cobblestone        | 12706.879040066673
+ pedestrian     | concrete:plates    | 12697.754248647872
+ tertiary       | wood               | 11502.550585919225
+ pedestrian     | brick              | 11333.743133012355
+ living_street  | cobblestone        | 10926.338677026815
+ steps          | unpaved            | 10707.201476784405
+ path           | metal              |  10678.05085322325
+ steps          | asphalt            |     9955.642433659
+ steps          | metal              |  9485.310731598558
+ footway        | stone              |  8536.746047905674
+ service        | bricks             |  8414.061977404393
+ elevator       |                    |  8043.809559098003
+ steps          | gravel             |  7077.323945817867
+ pedestrian     | metal              |  5018.339976670147
+ cycleway       | metal              |  4132.195446674829
+ steps          | stone              |  3131.918694257478
+ steps          | rock               |  2040.101130895399
+ steps          | concrete:plates    | 1700.1674751379323
+(298 rows)</code></pre>
+   <h2>Openstreetmap H3 и почему именно PostgreSQL</h2>
+   <p>В&nbsp;этой публикации я постарался сфокусировать внимание на&nbsp;обработке данных. Если&nbsp;же вас заинтересовала тема подготовки данных, их загрузки в&nbsp;PostgreSQL и вы хотите узнать больше о&nbsp;моем проекте <a href="https://github.com/igor-suhorukov/openstreetmap_h3" rel="noopener noreferrer nofollow">openstreetmap_h3</a>, секционировании геоданных&nbsp;— рекомендую почитать «<a href="https://habr.com/ru/post/714326/" rel="noopener noreferrer nofollow">Как&nbsp;поместить весь мир в&nbsp;обычный ноутбук: PostgreSQL и OpenStreetMap</a>» и статьи по&nbsp;ссылкам из&nbsp;секции «Продолжение истории».</p>
+   <p>PostgreSQL/PostGIS по&nbsp;стабильности, функционалу работы с&nbsp;геоданными превосходит другие доступные решения с&nbsp;открытым исходным кодом. Я загружал данные из&nbsp;OSM в&nbsp;HeavyDB, Spark. И вопрос не&nbsp;только в&nbsp;производительности баз данных, но&nbsp;и в&nbsp;поддерживаемых функциях и зрелости экосистемы, в&nbsp;доступных программах для&nbsp;визуализации, IDE, модулях расширения, драйверах для&nbsp;вашего языка программирования. Как&nbsp;пример, расширение Citus для&nbsp;PostgreSQL позволило ускорить запрос подсчета зданий в 10&nbsp;раз без&nbsp;каких‑либо изменений схемы данных и запроса.</p>
+   <p>Кто‑то предпочитает использовать Clickhouse, Elasticsearch и вы можете выбрать любой удобный вам инструмент для&nbsp;обработки ваших данных. Утилита Openstreetmap H3&nbsp;умеет сохранять данные в&nbsp;формате Apache Arrow&nbsp;— универсальном для&nbsp;средств обработки Больших Данных. Режим активируется параметром <code>-result_in_arrow</code> благодаря чему есть свобода выбора чем именно обрабатывать данные OSM.</p>
+   <h2>Выводы</h2>
+   <p>Максимальная плотность застройки в&nbsp;Северной Америке по&nbsp;данным OpenStreetMap в <strong>1-Нью‑Йорк</strong>, <strong>2-Лос‑Анджелес</strong> и <strong>3-Вашингтон</strong>, получается что&nbsp;большинство локации из&nbsp;top15&nbsp;у&nbsp;побережья океана.</p>
+   <p>Общая протяженность дорог <strong>17&nbsp;333&nbsp;069</strong> <strong>км</strong> при&nbsp;этом только 17.89% от&nbsp;общего числа дорог Америки в&nbsp;OSM имеют информацию о&nbsp;типе покрытия. На&nbsp;первом месте по&nbsp;суммарной протяженности <a href="https://wiki.openstreetmap.org/wiki/RU:Tag:highway%3Dresidential" rel="noopener noreferrer nofollow">«улицы и переулки, которые проходят вокруг и между жилых зон»</a> <strong>5&nbsp;645&nbsp;591&nbsp;км</strong> (32.57% от&nbsp;общей протяженности), на&nbsp;втором месте дороги для <a href="https://wiki.openstreetmap.org/wiki/RU:Tag:highway%3Dservice" rel="noopener noreferrer nofollow">«проезда по&nbsp;прилегающей территории»</a> <strong>2&nbsp;971&nbsp;654&nbsp;км</strong>, на&nbsp;третьем месте «<a href="https://wiki.openstreetmap.org/wiki/RU:Tag:highway%3Dtrack" rel="noopener noreferrer nofollow">Дороги сельскохозяйственного назначения, лесотехнические и лесозаготовительные дороги, не&nbsp;ведущие к&nbsp;жилым или&nbsp;промышленным объектам, стихийно возникшие проезды.» </a> <strong>2&nbsp;457&nbsp;547&nbsp;км</strong></p>
+   <details class="spoiler">
+    <summary>Эти же расчеты доступны для РФ.</summary>
+    <div class="spoiler__content">
+     <ul>
+      <li><p><a href="https://habr.com/ru/post/716492/" rel="noopener noreferrer nofollow">Колоночная база данных в PostgreSQL 15 и факты о территории России по данным OpenStreetMap</a></p></li>
+      <li><p><a href="https://habr.com/ru/post/716092/" rel="noopener noreferrer nofollow">Две беды: дороги и полнота данных. Считаем протяженность дорог родины по данным OpenStreetMap</a></p></li>
+     </ul>
+     <p></p>
+    </div>
+   </details>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

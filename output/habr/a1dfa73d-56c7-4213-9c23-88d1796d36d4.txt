@@ -1,0 +1,590 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/e15/887/9f1/e158879f1ac385501e00dc55b8674e2b.png" width="1200" height="628" data-src="https://habrastorage.org/getpro/habr/upload_files/e15/887/9f1/e158879f1ac385501e00dc55b8674e2b.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Всем привет!</p>
+   <p>Мы&nbsp;— команда исследователей‑аналитиков киберугроз в&nbsp;компании R‑Vision. Одной из&nbsp;наших задач является исследование возможных альтернативных и дополнительных источников событий для&nbsp;более точного детектирования атак.</p>
+   <p>И сегодня мы рассмотрим тему мониторинга <strong>RPC</strong> (Remote Procedure Call, удаленный вызов процедур)<em>,</em> а&nbsp;также разберем возможные варианты логирования <strong>Microsoft Remote Procedure Call</strong> (<a href="https://learn.microsoft.com/en-us/windows/win32/com/microsoft-rpc">MS‑RPC</a>), связанного с&nbsp;актуальными и популярными на&nbsp;сегодняшний день атаками.</p>
+   <p>Но&nbsp;преждем чем приступить, предлагаем ознакомиться с&nbsp;базовой работой RPC и с&nbsp;тем, на&nbsp;каких механизмах она основывается. В&nbsp;дальнейшем это поможет нам понять, какую информацию необходимо собирать и отслеживать при&nbsp;детектировании атак с&nbsp;использованием удаленного вызова процедур.</p>
+   <h2>Что такое RPC?</h2>
+   <p><strong>Remote Procedure Call или «удаленный вызов процедур»</strong> представляет собой технологию межпроцессного взаимодействия <a href="https://learn.microsoft.com/en-us/windows/win32/ipc/interprocess-communications#using-rpc-for-ipc">IPC</a>. Она позволяет программам вызывать функции и процедуры удаленно таким образом, как‑будто они представлены локально. В&nbsp;среде Windows используется проприетарный протокол от&nbsp;Microsoft&nbsp;— <a href="https://learn.microsoft.com/en-us/windows/win32/com/microsoft-rpc">MS‑RPC</a>, который является производным от&nbsp;технологии <strong>DCE/RPC</strong> (Distributed Computing Environment/ Remote Procedure Calls). Для&nbsp;упрощения понимания мы будем называть <strong>MS‑RPC</strong> просто <strong>RPC.</strong></p>
+   <p>Службы RPC используются во&nbsp;множестве процессов в&nbsp;операционных системах Windows. Например, с&nbsp;их помощью можно удалённо изменять значения в&nbsp;реестре, создавать новые задачи и сервисы. На&nbsp;вызовах RPC построена значимая часть работы Active Directory: функции аутентификации в&nbsp;домене, репликация данных и многие другие вещи&nbsp;— список грандиозно большой.</p>
+   <p>В&nbsp;виду того, что&nbsp;RPC используется в&nbsp;Windows практически во&nbsp;всех процессах, по&nbsp;понятным причинам она является предметом особого интереса для&nbsp;атакующих. В&nbsp;тоже время RPC фигурирует в&nbsp;большом количестве популярных и опасных атак. К&nbsp;ним относится <a href="https://support.microsoft.com/en-gb/topic/kb5005413-mitigating-ntlm-relay-attacks-on-active-directory-certificate-services-ad-cs-3612b773-4043-4aa9-b23d-b87910cd3429">PetitPotam</a>, с&nbsp;чьей помощью можно произвести атаку типа Relay на&nbsp;машинный аккаунт контроллера домена. Еще одна атака&nbsp;— DCSync, позволяющая скомпрометировать всех пользователей в&nbsp;домене при&nbsp;наличии учетной записи с&nbsp;высокими привилегиями. Кроме того, в&nbsp;арсенале атакующих есть еще и фреймворк <a href="https://github.com/SecureAuthCorp/impacket">Impacket</a>, который может задействовать RPC для&nbsp;отправки вредоносных команд на&nbsp;удаленный сервер.</p>
+   <p>Все это говорит нам о&nbsp;важности понимания механизмов работы RPC, а&nbsp;также о&nbsp;необходимости её мониторинга.</p>
+   <h2>Механизмы работы RPC</h2>
+   <p>Изучение механизмов работы RPC мы начнем с&nbsp;краткого разбора сетевого трафика, поскольку протокол RPC в&nbsp;первую очередь является сетевым. На&nbsp;рисунке 1&nbsp;мы видим подключение к&nbsp;удалённой машине: оно начинается с <strong>Bind</strong> запроса (выделен красным), после которого фигурирует второй <strong>Bind</strong> запрос (выделен синим). Первый используется для&nbsp;подключения к&nbsp;службе Endpoint Mapper (EPM), про&nbsp;него мы поговорим дальше. Второй инициирует подключение к&nbsp;самому RPC интерфейсу. После прохождения аутентификации устанавливается сессия, а&nbsp;уже дальше осуществляется вызов нужной функции и возвращение результата.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f73/1cf/dd7/f731cfdd7fd4498a26576ab06a3a61bc.png" alt="Рисунок 1. Вызов функции на удалённой машине с помощью RPC" title="Рисунок 1. Вызов функции на удалённой машине с помощью RPC" width="1316" height="262" data-src="https://habrastorage.org/getpro/habr/upload_files/f73/1cf/dd7/f731cfdd7fd4498a26576ab06a3a61bc.png">
+    <figcaption>
+     Рисунок 1. Вызов функции на удалённой машине с помощью RPC
+    </figcaption>
+   </figure>
+   <p>Эволюция, конечно, могла&nbsp;бы остановиться здесь, если&nbsp;бы для&nbsp;RPC применялись только протоколы TCP и UDP, но&nbsp;в&nbsp;Microsoft пошли немного дальше и применяют так называемую <a href="https://learn.microsoft.com/en-us/windows/win32/rpc/protocol-sequence-constants">последовательность из&nbsp;протоколов</a>. К&nbsp;ней мы вернемся позднее, а&nbsp;сейчас рассмотрим, что&nbsp;такое <strong>EPM</strong>.</p>
+   <h2>Endpoint Mapper</h2>
+   <p>Одним из&nbsp;важных механизмов взаимодействия с&nbsp;RPC сервисами является служба <strong>Endpoint Mapper (EPM),</strong> расположенная на&nbsp;стороне сервера. Её главная задача помочь определить параметры дальнейшего подключения к&nbsp;нужному сервису для&nbsp;клиента. Сам EPM, как&nbsp;это ни странно, является таким&nbsp;же RPC сервисом, использующим для&nbsp;транспорта порты TCP/135&nbsp;или&nbsp;TCP/593&nbsp;(<a href="https://learn.microsoft.com/en-us/windows/win32/rpc/remote-procedure-calls-using-rpc-over-http">RPC over HTTP</a>).</p>
+   <figure class="bordered full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/aff/148/994/aff148994e0318352d8c9536d03d9ac8.png" alt="Рисунок 2. Служба *RPC Endpoint Mapper на устройстве" title="Рисунок 2. Служба *RPC Endpoint Mapper на устройстве" width="814" height="420" data-src="https://habrastorage.org/getpro/habr/upload_files/aff/148/994/aff148994e0318352d8c9536d03d9ac8.png">
+    <figcaption>
+     Рисунок 2. Служба *RPC Endpoint Mapper на устройстве
+    </figcaption>
+   </figure>
+   <p>EPM‑cервис расположен на&nbsp;каждой Windows машине и содержит базу зарегистрированных RPC интерфейсов. За&nbsp;каждый из&nbsp;интерфейсов чаще всего отвечает свой исполняемый файл или&nbsp;динамически подгружаемая библиотека (<a href="https://learn.microsoft.com/ru-ru/troubleshoot/windows-client/deployment/dynamic-link-library">DLL</a>). Посмотреть список всех доступных интерфейсов можно с&nbsp;помощью утилиты <a href="http://rcpdump.py"><em>rcpdump.py</em></a> из&nbsp;упомянутого нами ранее фреймворка <strong>Impacket.</strong></p>
+   <p>На&nbsp;рисунке 3&nbsp;приведен пример вывода по&nbsp;одному из&nbsp;доступных интерфейсов.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/a7d/45b/55d/a7d45b55d317cf8222d30b4faa415091.png" alt="Рисунок 3. Пример интерфейса, выводимый командой rpcdump.py" title="Рисунок 3. Пример интерфейса, выводимый командой rpcdump.py" width="474" height="434" data-src="https://habrastorage.org/getpro/habr/upload_files/a7d/45b/55d/a7d45b55d317cf8222d30b4faa415091.png">
+    <figcaption>
+     Рисунок 3. Пример интерфейса, выводимый командой rpcdump.py
+    </figcaption>
+   </figure>
+   <p>Здесь мы можем увидеть:</p>
+   <ul>
+    <li><p>Название интерфейса: <em>Netlogon Remote Protocol</em>;</p></li>
+    <li><p>Библиотеку провайдера, отвечающего за&nbsp;нужные нам функции: <em>netlogon.dll</em>;</p></li>
+    <li><p>Уникальный идентификатор интерфейса: <em>UUID</em>;</p></li>
+    <li><p>Список точек подключения к&nbsp;данному интерфейсу, которые записываются в&nbsp;формате:</p></li>
+   </ul>
+   <pre><code class="powershell">"значение, отражающее последовательность протоколов":хост[порт]</code></pre>
+   <p>Отметим в&nbsp;приведенном выше интерфейсе два протокола:</p>
+   <ul>
+    <li><p><em>ncalrpc </em>— отражает <a href="https://learn.microsoft.com/en-us/windows/win32/rpc/selecting-a-protocol-sequence">локальное использование</a> по&nbsp;протоколу <em>LRPC</em>;</p></li>
+    <li><p><em>ncacn_np </em>— отражает подключение по&nbsp;именованному каналу <a href="https://learn.microsoft.com/en-us/windows/win32/ipc/named-pipes">Named Pipes</a> (NPs). В&nbsp;связи с&nbsp;этим у&nbsp;него вместо порта указан путь.</p></li>
+   </ul>
+   <p>Может возникнуть вполне резонный вопрос: всегда&nbsp;ли нужно обращаться к&nbsp;EPM? Нет, не&nbsp;всегда, так как&nbsp;существуют статические точки подключения, остающиеся неизменными. К&nbsp;ним, например, относится NPs <code>\pipe\lsass</code>.</p>
+   <p>Можно также посмотреть на&nbsp;RPC интерфейсы процессов не&nbsp;только снаружи, но&nbsp;и «изнутри». Они выглядят примерно <a href="https://gist.github.com/enigma0x3/2e549345e7f0ac88fad130e2444bb702">так</a>.</p>
+   <h4>Что дальше?</h4>
+   <p>После того как&nbsp;клиент определил куда он будет дальше подключаться, в&nbsp;процесс вступает сериализация данных. Если клиентом является Windows система, то эту работу будет выполнять компонент NDR (<a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-rpce/1644e4e6-1340-4d9a-9258-c62ff87e9e55#gt_9ebf9540-2c31-43bc-bc56-4a932faabf2d">Network Data Representation</a>). Он также отвечает за&nbsp;десериализацию данных со стороны RPC сервера. После чего данные попадают в&nbsp;качестве аргументов функции и другой информации для&nbsp;вызова этой самой функции в&nbsp;DLL библиотеку, ответственную за&nbsp;определённый RPC функционал. На&nbsp;финальном этапе функция выполняется, а&nbsp;её вывод передаётся обратно в&nbsp;RPC для&nbsp;отправки клиенту.</p>
+   <h2>Протоколы в RPC</h2>
+   <p>Разобравшись как&nbsp;работает RPC, подробнее изучим протоколы, которые активно эксплуатируются в&nbsp;интерфейсах RPC и, следовательно, доступны атакующему. И первым мы рассмотрим протокол <strong>Named Pipes (NPs).</strong></p>
+   <h4>Named Pipes</h4>
+   <p>Данный протокол следует принципам передачи данных через чтение и запись: используя NPs можно записывать, а&nbsp;также сразу читать наименование и аргументы функций. Более того, это даже можно делать одновременно. NPs проще всего представлять в&nbsp;виде файлов: в&nbsp;Windows взаимодействие с&nbsp;ними происходит с&nbsp;помощью функций <a href="https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea"><strong>CreateFile</strong></a>, <a href="https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile"><strong>ReadFile</strong></a>, <a href="https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile"><strong>WriteFile</strong></a>, что&nbsp;в&nbsp;некоторой степени намекает нам на&nbsp;схожесть этих технологий. NPs выполняет роль интеграционного слоя между RPC и другими служебными компонентами.</p>
+   <p>Со стороны клиента NPs можно представить как&nbsp;точки подключения для&nbsp;выполнения какого‑то конкретного функционала. Например, точка подключения <code>\pipe\svcctl</code> направлена на&nbsp;управление службами на&nbsp;конечном устройстве. Однако Microsoft не&nbsp;всегда следует такому разделению. Так, при&nbsp;подключении к <code>\pipe\lsass</code> можно вызвать функции EFS сервиса, если передать корректный UUID при&nbsp;выполнении <code>bind</code> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-efsr/403c7ae0-1a3a-4e96-8efc-54e79a2cc451">запроса</a>.<br>На&nbsp;стороне сервера, на&nbsp;который происходит обращение, выполняется импорт библиотеки, отвечающий за&nbsp;EFS (<code>C:\Windows\System32\efslsaext.dll</code>) в&nbsp;процесс <code>lsass</code>. Стоит отметить, что&nbsp;у&nbsp;EFS существует свой собственный интерфейс <code>\pipe\efsr</code>.<br>Также EFS функционал может&nbsp;быть вызван с&nbsp;помощью других точек, например через <code>samr</code> или <code>lsarpc</code>, за&nbsp;каждым из&nbsp;которых стоит процесс <code>lsass</code>. Это в&nbsp;свою очередь наталкивает на&nbsp;мысль о&nbsp;некоторой «универсальности» процессов&nbsp;— интерфейсов, так как&nbsp;каждый процесс может импортировать нужную библиотеку и существует возможность вызывать функции любых других сервисов.</p>
+   <p>Перейдем к&nbsp;следующему протоколу&nbsp;— SMB.</p>
+   <h2>SMB</h2>
+   <p>Если отойти немного от&nbsp;протокола RPC и посмотреть на&nbsp;NPs отдельно, мы обнаружим, что&nbsp;NPs может вполне заменить RPC, так как&nbsp;первый исполняет функции удаленно даже без&nbsp;второго. Для&nbsp;этих целей он использует протокол <strong>SMB (Server Message Block)</strong>. При&nbsp;этом фактически SMB нужен только для&nbsp;доступа к&nbsp;служебной директории <code>IPC$</code>, аббревиатура которой расшифровывается как&nbsp;Interprocess Communication<strong>.</strong> Через эту «папку» можно читать, записывать, но&nbsp;только NPs, что&nbsp;вполне в&nbsp;духе SMB, и вызывать таким образом удаленные функции.</p>
+   <h2>LRPC</h2>
+   <p>До&nbsp;этого мы говорили про&nbsp;протоколы, которые используются в&nbsp;удаленным вызове, но&nbsp;есть и локальный вариант RPC&nbsp;— <strong>протокол LRPC</strong>, у&nbsp;которого существует две трактовки: <strong>Local RPC или&nbsp;Lightweight RPC</strong>. Этот протокол предназначен только для&nbsp;локальных вызовов. Конечно, при&nbsp;использовании подключений по&nbsp;NPs или&nbsp;RPC на&nbsp;адрес <code>localhost</code> эффект будет тот&nbsp;же. Более того, некоторые программы так и делают, но&nbsp;для&nbsp;локальных вызовов LRPC работает куда&nbsp;быстрее и он удобнее в&nbsp;использовании. В&nbsp;выводе <a href="http://rpcdump.py"><em>rpcdump.py</em></a> мы его видели «зашифрованным» под <code>ncalrpc</code>. При&nbsp;этом LRPC работает поверх ALPC&nbsp;— еще одного протокола, о&nbsp;котором будет сказано чуть позже.<br>Но&nbsp;сначала про&nbsp;LPC.</p>
+   <h2>LPC</h2>
+   <p><strong>LPC (Local Procedure Call)</strong>&nbsp;— также отвечает за&nbsp;механизм общения процессов в&nbsp;одной и той&nbsp;же системе. Данный протокол является недокументированным и используется (использовался) только внутри самой Microsoft. БОльшую часть информации об&nbsp;этом протоколе мы можем узнать исходя из&nbsp;работ реверс специалистов. Сторонний софт использует его не&nbsp;напрямую, а&nbsp;взаимодействует через документированный LRPC.</p>
+   <p>А&nbsp;теперь вернемся к&nbsp;ALPC.</p>
+   <h2>ALPC</h2>
+   <p>LPC&nbsp;— это все&nbsp;же устаревшая технология и в&nbsp;явном виде уже не&nbsp;используется. На&nbsp;смену ей пришел <strong>ALPC (Advanced Local Procedure Call)</strong>, являющийся асинхронным и также недокументированным протоколом. Работает он по&nbsp;принципу клиент‑серверной модели. В&nbsp;качестве сервера выступает процесс, принимающий соединения на&nbsp;определённый порт. Порт для&nbsp;подключения открывается с&nbsp;помощью функции <code>NtAlpcCreatePort</code>. Любой процесс имеет возможность подключиться к&nbsp;этому порту в&nbsp;качестве клиента, используя функцию <code>NtAlpcConnectPort</code>. Один «процесс‑сервер» может взаимодействовать сразу с&nbsp;несколькими клиентами одновременно.</p>
+   <h2>DCOM</h2>
+   <p>Рассмотрим последний протокол, который фигурирует в&nbsp;RPC&nbsp;— <strong>DCOM</strong>, чья аббревиатура расшифровывается как <strong>Distributed COM</strong>. Фактически эта технология вызова COM‑интерфейсов удалённо. Тут нет больших отличий со стороны трафика, но&nbsp;есть различия в&nbsp;механизме вызова удаленных функций. DCOM не&nbsp;вызывает функции напрямую, а&nbsp;сначала инициализирует COM‑объект, функционал которого будет использовать. Концептуально это похоже на&nbsp;NPs с&nbsp;их разделением функционала на&nbsp;отдельные именованные каналы. Если рассматривать алгоритм общения клиента и сервера, то здесь не&nbsp;так много отличий от «чистого» RPC, но&nbsp;есть два исключения&nbsp;— вызов функций <strong><em>ISystemActivator</em></strong> и <a href="https://learn.microsoft.com/en-us/windows/win32/api/oaidl/nn-oaidl-idispatch"><strong><em>IDispatch</em></strong></a><strong>.</strong></p>
+   <p>Для&nbsp;вызова функции определённого COM объекта, такой объект сначала нужно вызвать, чтобы затем он «запустился»: загрузился в&nbsp;оперативную память и&nbsp;был доступен для&nbsp;работы. В&nbsp;локальном мире этим занимается COM интерфейс <a href="https://learn.microsoft.com/en-us/windows/win32/api/unknwn/nn-unknwn-iunknown"><strong><em>IUnknown</em></strong></a>. Он позволяет также узнать функции неизвестных COM интерфейсов для&nbsp;работы с&nbsp;ними.</p>
+   <p>При&nbsp;работе с&nbsp;DCOM ту&nbsp;же функцию выполняет <em>ISystemActivator</em>, позволяя обратиться к&nbsp;неизвестным DCOM интерфейсам, являющимися по&nbsp;сути теми&nbsp;же COM объектам, и работать с&nbsp;ними. <em>ISystemActivator</em> вызывается каждый раз при&nbsp;новом DCOM подключении.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/535/64b/664/53564b66488fdcf3addaaea303667cef.png" alt="Рисунок 4. Пример, как выглядит DCOM в Wireshark" title="Рисунок 4. Пример, как выглядит DCOM в Wireshark" width="1249" height="374" data-src="https://habrastorage.org/getpro/habr/upload_files/535/64b/664/53564b66488fdcf3addaaea303667cef.png">
+    <figcaption>
+     Рисунок 4. Пример, как выглядит DCOM в Wireshark
+    </figcaption>
+   </figure>
+   <p>Также <em>IUnknown</em> интерфейс дает возможность вызывать и другие функции COM объекта напрямую, фактически сводя всю работу с&nbsp;COM объектами до&nbsp;одной&nbsp;лишь функции <em>IUnknown</em> интерфейса. Тоже самое выполняет и интерфейс <em>IDispatch</em> для&nbsp;DCOM, позволяя выполнять любую функцию в&nbsp;мире DCOM через него. Поэтому, если мы взглянем на&nbsp;трафик, то увидим сначала вызов <em>ISystemActivator</em>, а&nbsp;потом только&nbsp;лишь обращения к <em>IDispatch</em>, вне зависимости от&nbsp;того какую DCOM функцию использует клиент.</p>
+   <p>Рассказывая про&nbsp;ALPC, мы упомянули, что&nbsp;эта технология используется только локально. Но&nbsp;это, конечно, не&nbsp;совсем правда, так как&nbsp;ALPC задействован чуть&nbsp;ли не&nbsp;во&nbsp;всех компонентах Windows. Поэтому, так или&nbsp;иначе, любое действие, в&nbsp;том числе и удалённое, будет прямо или&nbsp;косвенно применять ALPC. Это особенно интересно в&nbsp;контексте DCOM, потому что&nbsp;он напрямую использует ALPC на&nbsp;локальной машине, при&nbsp;этом будучи вызванным удалённым пользователем.</p>
+   <h2>Схема вариантов RPC-подключений</h2>
+   <p>Подведем итог вышесказаного в&nbsp;виде схемы вариантов подключения к&nbsp;удалённой машине, отражающей возможные пути со стороны клиента, которые в&nbsp;том числе доступны и для&nbsp;атакующего. Как&nbsp;видим из&nbsp;рисунка 5, все не&nbsp;так просто.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/fe6/f45/6a0/fe6f456a07bad23d0fbbdf645a9f3a32.png" alt="Рисунок 5. Возможные способы подключения к RPC серверу" title="Рисунок 5. Возможные способы подключения к RPC серверу" width="1634" height="303" data-src="https://habrastorage.org/getpro/habr/upload_files/fe6/f45/6a0/fe6f456a07bad23d0fbbdf645a9f3a32.png">
+    <figcaption>
+     Рисунок 5. Возможные способы подключения к RPC серверу
+    </figcaption>
+   </figure>
+   <h2>Способы мониторинга</h2>
+   <p>Разобравшись с&nbsp;вариантами RPC‑подключений, и, как&nbsp;следствие, с&nbsp;потенциально возможными действиями со стороны атакующего, рассмотрим, варианты мониторинга, которые нам может предоставить сама операционная система: <strong>ETW, журналы безопасности, SACL, RPC Filtering, RPC Firewall и сетевой трафик.</strong></p>
+   <p>И начнем с&nbsp;технологии, на&nbsp;базе которой строится функционал для&nbsp;логирования событий в&nbsp;операционной системе Windows&nbsp;— <strong>Event Tracing for Windows (ETW).</strong></p>
+   <h2>Event Tracing for Windows</h2>
+   <p><strong>Event Tracing for Windows</strong> или&nbsp;сокращено <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/devtest/event-tracing-for-windows--etw-">ETW</a> имеет множество, так называемых, провайдеров, которых в&nbsp;ОС более нескольких тысяч. Они позволяют отслеживать через события как&nbsp;отдельные технологии, так и конкретные процессы. Часть провайдеров формируют вполне понятные для&nbsp;обыденного пользователя события, другая&nbsp;же, бОльшая часть, используется исключительно только самой Microsoft для&nbsp;отладки.</p>
+   <p>ETW предоставляет возможность смотреть события вызовов RPC функций через стандартную оснастку Event Viewer. ETW провайдеры, связанные с&nbsp;RPC, представлены в&nbsp;таблице ниже.</p>
+   <details class="spoiler">
+    <summary>Провайдеры, связанные с RPC</summary>
+    <div class="spoiler__content">
+     <div>
+      <div class="table">
+       <table>
+        <tbody>
+         <tr>
+          <td data-colwidth="234" width="234"><p align="left"><strong>Название</strong> <strong>провайдера</strong></p></td>
+          <td><p align="left"><strong>GUID</strong></p></td>
+         </tr>
+         <tr>
+          <td data-colwidth="234" width="234"><p align="left">Microsoft-Windows-RPC</p></td>
+          <td><p align="left">{6AD52B32-D609-4BE9-AE07-CE8DAE937E39}</p></td>
+         </tr>
+         <tr>
+          <td data-colwidth="234" width="234"><p align="left">Microsoft-Windows-RPC-Events</p></td>
+          <td><p align="left">{F4AED7C7-A898-4627-B053-44A7CAA12FCD}</p></td>
+         </tr>
+         <tr>
+          <td data-colwidth="234" width="234"><p align="left">Microsoft-Windows-RPC-FirewallManager</p></td>
+          <td><p align="left">{F997CD11-0FC9-4AB4-ACBA-BC742A4C0DD3}</p></td>
+         </tr>
+         <tr>
+          <td data-colwidth="234" width="234"><p align="left">Microsoft-Windows-RPC-Proxy-LBS</p></td>
+          <td><p align="left">{272A979B-34B5-48EC-94F5-7225A59C85A0}</p></td>
+         </tr>
+         <tr>
+          <td data-colwidth="234" width="234"><p align="left">Microsoft-Windows-RPCSS</p></td>
+          <td><p align="left">{D8975F88-7DDB-4ED0-91BF-3ADF48C48E0C}</p></td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+     <p></p>
+    </div>
+   </details>
+   <p>Саму настройку событий можно посмотреть здесь.</p>
+   <details class="spoiler">
+    <summary>Настройка просмотра событий</summary>
+    <div class="spoiler__content">
+     <p>Как ранее говорилось, мы можем увидеть события в оснастке Event Viewer. Для этого нам необходимо включить отображение события отладки (View Show → Analytic and Debug Log ), после чего появятся доступные к просмотру журналы событий, в том числе и RPC.</p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/951/c57/ce7/951c57ce7011ba28fb72d8a28982d3ac.png" alt="Рисунок 6 Призыв RPC логов в Event Viewer" title="Рисунок 6 Призыв RPC логов в Event Viewer" width="346" height="194" data-src="https://habrastorage.org/getpro/habr/upload_files/951/c57/ce7/951c57ce7011ba28fb72d8a28982d3ac.png">
+      <figcaption>
+       Рисунок 6 Призыв RPC логов в Event Viewer
+      </figcaption>
+     </figure>
+     <p>События, связанные с RPC будут доступны по пути <em>Application and Services Logs → Microsoft → Windows → RPC</em>, в журнале <em>Debug</em>.</p>
+    </div>
+   </details>
+   <h2>Разбор событий</h2>
+   <p>Теперь проведем разбор события на&nbsp;одном из&nbsp;примеров, показанных на&nbsp;рисунке 7.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/bcd/535/b03/bcd535b03a258305f50908fcbc2d8223.png" alt="Рисунок 7. Пример лога из ETW" title="Рисунок 7. Пример лога из ETW" width="537" height="398" data-src="https://habrastorage.org/getpro/habr/upload_files/bcd/535/b03/bcd535b03a258305f50908fcbc2d8223.png">
+    <figcaption>
+     Рисунок 7. Пример лога из ETW
+    </figcaption>
+   </figure>
+   <p>В&nbsp;данном событии мы видим информацию об&nbsp;RPC запросе к&nbsp;именованному каналу <code>\pipe\lsass</code> по&nbsp;интерфейсу UUID <strong><em>12&nbsp;345&nbsp;778–1234-abcd‑ef00–0&nbsp;123&nbsp;456&nbsp;789ac</em></strong> и с&nbsp;номером процедуры <strong>(ProcNum / OpCode)&nbsp;— 34</strong>.</p>
+   <p>Переведем это событие с «машинного» языка: здесь мы фиксируем обращение к&nbsp;интерфейсу <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-samr/0aee1c31-ec40-4633-bb56-0cf8429093c0">SAMR</a> (Security Account Manager Remote). Атрибут Endpoint имеет значение <code>\pipe\lsass</code>, потому что&nbsp;SAMR интерфейс содержит в&nbsp;поле Named Pipe значение <code>\pipe\lsass</code> и конечное подключение производится к&nbsp;нему. Также виден протокол номер 2, что&nbsp;трактуется как&nbsp;NPs.</p>
+   <div>
+    <div class="table">
+     <table>
+      <tbody>
+       <tr>
+        <th data-colwidth="234" width="234"><p>Поле</p></th>
+        <th><p>«Сырое» значение</p></th>
+        <th><p>Расшифровка</p></th>
+       </tr>
+       <tr>
+        <td data-colwidth="234" width="234"><p align="left">InterfaceUuid</p></td>
+        <td><p align="left">2345778-1234-abcd-ef00-0123456789ac</p></td>
+        <td><p align="left">SAMR</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="234" width="234"><p align="left">ProcNum</p></td>
+        <td><p align="left">34</p></td>
+        <td><p align="left">SamrOpenUser</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="234" width="234"><p align="left">Protocol</p></td>
+        <td><p align="left">2</p></td>
+        <td><p align="left">Named Pipe</p></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+   </div>
+   <p>Стоит отметить, что&nbsp;некоторые NPs, такие как <strong>srvsvc</strong> и <strong>wkssvc</strong> динамически меняют свои GUID номера и, как&nbsp;следствие, их нельзя идентифицировать по&nbsp;одному общеизвестному GUID, но&nbsp;это можно сделать через поле Endpoint, которое четко указывает на&nbsp;соответствующий интерфейс.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c1e/75b/9be/c1e75b9be19bde90d864f4dcca345c00.png" alt="Рисунок 8. Событие подключения к srvsvc" title="Рисунок 8. Событие подключения к srvsvc" width="532" height="394" data-src="https://habrastorage.org/getpro/habr/upload_files/c1e/75b/9be/c1e75b9be19bde90d864f4dcca345c00.png">
+    <figcaption>
+     Рисунок 8. Событие подключения к srvsvc
+    </figcaption>
+   </figure>
+   <p>Рассмотрим другой пример: при&nbsp;выполнении атаки <strong>DCShadow,</strong> мы можем увидеть следующее событие в&nbsp;журнале (рисунок 9).</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/6f2/5f8/1ff/6f25f81ff08cdcd572b5a3aa4a2e0eb4.png" alt="Рисунок 9. RPC через TCP протокол в деталях" title="Рисунок 9. RPC через TCP протокол в деталях" width="523" height="385" data-src="https://habrastorage.org/getpro/habr/upload_files/6f2/5f8/1ff/6f25f81ff08cdcd572b5a3aa4a2e0eb4.png">
+    <figcaption>
+     Рисунок 9. RPC через TCP протокол в деталях
+    </figcaption>
+   </figure>
+   <p>На&nbsp;этом рисунке можно увидеть подключение к&nbsp;интерфейсу DRSUAPI, который имеет GUID <strong><em>e3&nbsp;514&nbsp;235–4b06–11d1-ab04–00c04fc2dcd2</em>,</strong> протокол (Protocol) 1&nbsp;или&nbsp;его человеко‑читаемое имя ‑TCP, а&nbsp;также IP‑адрес, с&nbsp;которого&nbsp;было совершено подключение. Как&nbsp;и в&nbsp;предыдущем примере здесь отображен номер процедуры (ProcNum)&nbsp;— 3, который <a href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-drsr/58f33216-d9f1-43bf-a183-87e3c899c410">трактуется</a> как&nbsp;репликация обновления из&nbsp;NC реплики.</p>
+   <h2>Журнал безопасности</h2>
+   <p>Политики аудита позволяют нам настроить сбор событий, которые относятся в&nbsp;Windows к&nbsp;событиям безопасности. Они фиксируют обращения к&nbsp;NPs через SMB и «папку» <code>IPC$</code>. Сразу отметим минус такого подхода: если, к&nbsp;примеру, клиент будет обращаться к&nbsp;NPs через <em>RPC</em>, а&nbsp;не <code>IPC$</code>, то в&nbsp;событиях мы этого не&nbsp;увидим.</p>
+   <p><code>IPC$</code>&nbsp;— это системная папка общего доступа, с&nbsp;ее помощью мы можем логировать события подключения через политику Detailed File Share. Пример возможного события указан на&nbsp;рисунке 10&nbsp;ниже.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f47/9f4/7d8/f479f47d8df139d43a98518f03d63b97.png" alt="Рисунок 10. Detailed File Share показывает кто подключается" title="Рисунок 10. Detailed File Share показывает кто подключается" width="556" height="606" data-src="https://habrastorage.org/getpro/habr/upload_files/f47/9f4/7d8/f479f47d8df139d43a98518f03d63b97.png">
+    <figcaption>
+     Рисунок 10. Detailed File Share показывает кто подключается
+    </figcaption>
+   </figure>
+   <p>События безопасности будут сформированы, если подключиться к&nbsp;NPs с&nbsp;именем <code>srvsvc</code>, как&nbsp;нам и показывает второй лог в&nbsp;разделе <strong><em>Сведение об&nbsp;общем ресурсе (Share Information)</em> → <em>Относительное имя конечного объекта (Relative Target Name)</em>.</strong> Как&nbsp;вы могли заметить, в&nbsp;данном событии не&nbsp;фиксируется номер процедуры (ProcNum), по&nbsp;которому можно&nbsp;было&nbsp;бы отследить что&nbsp;происходит.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f18/8cf/2af/f188cf2aff7d41deafd55e5bc2816d32.png" alt="Рисунок 11. Detailed File Share показывает не только &quot;кто&quot; подключается, но и &quot;куда&quot;!" title="Рисунок 11. Detailed File Share показывает не только &quot;кто&quot; подключается, но и &quot;куда&quot;!" width="679" height="743" data-src="https://habrastorage.org/getpro/habr/upload_files/f18/8cf/2af/f188cf2aff7d41deafd55e5bc2816d32.png">
+    <figcaption>
+     Рисунок 11. Detailed File Share показывает не только "кто" подключается, но и "куда"!
+    </figcaption>
+   </figure>
+   <h2>System Access Control List</h2>
+   <p>Для&nbsp;NPs также можно включить <strong>SACL</strong> (<a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/sacl-access-right">System Access Control List</a>), чтобы фиксировать любые действия с&nbsp;ними. Пример события указан на&nbsp;рисунке 12.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/dcb/14a/724/dcb14a72401eadb72bb017ea21884303.png" alt="Рисунок 12. Событие 4656 - что даёт нам SACL" title="Рисунок 12. Событие 4656 - что даёт нам SACL" width="667" height="835" data-src="https://habrastorage.org/getpro/habr/upload_files/dcb/14a/724/dcb14a72401eadb72bb017ea21884303.png">
+    <figcaption>
+     Рисунок 12. Событие 4656 - что даёт нам SACL
+    </figcaption>
+   </figure>
+   <p>Эти события практически идентичны тем, что&nbsp;мы получаем от&nbsp;политики аудита Detailed File<em> </em>Share. Поэтому гораздо проще включить политику, чем выставлять SACL<em> </em>повсеместно. Но&nbsp;включение SACL может помочь отслеживать подключение там, где оно происходит напрямую по&nbsp;RPC, при&nbsp;этом совершенно минуя SMB.</p>
+   <p>Выставлять SACL на&nbsp;NPs&nbsp;— не&nbsp;самая тривиальная задача, так как&nbsp;она не&nbsp;переживает перезагрузку машины и требует написания собственного кода, тем не&nbsp;менее является одним из&nbsp;вариантов проведения мониторинга.</p>
+   <p>Мы подготовили небольшой код, который может менять SACL на&nbsp;NPs.</p>
+   <details class="spoiler">
+    <summary>Код C++ для выставления SACL</summary>
+    <div class="spoiler__content">
+     <pre><code class="cpp">#include &lt;aclapi.h&gt;
+#include &lt;iostream&gt;
+
+BOOL SetPrivilege(
+    HANDLE hToken,          // access token handle
+    LPCTSTR lpszPrivilege,  // name of privilege to enable/disable
+    BOOL bEnablePrivilege   // to enable or disable privilege
+)
+{
+    TOKEN_PRIVILEGES tp;
+    LUID luid;
+
+    if (!LookupPrivilegeValue(
+        NULL,            // lookup privilege on local system
+        lpszPrivilege,   // privilege to lookup 
+        &amp;luid))        // receives LUID of privilege
+    {
+        printf("LookupPrivilegeValue error: %u\n", GetLastError());
+        return FALSE;
+    }
+
+    tp.PrivilegeCount = 1;
+    tp.Privileges[0].Luid = luid;
+    if (bEnablePrivilege)
+        tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+    else
+        tp.Privileges[0].Attributes = 0;
+
+    // Enable the privilege or disable all privileges.
+
+    if (!AdjustTokenPrivileges(
+        hToken,
+        FALSE,
+        &amp;tp,
+        sizeof(TOKEN_PRIVILEGES),
+        (PTOKEN_PRIVILEGES)NULL,
+        (PDWORD)NULL))
+    {
+        printf("AdjustTokenPrivileges error: %u\n", GetLastError());
+        return FALSE;
+    }
+
+    if (GetLastError() == ERROR_NOT_ALL_ASSIGNED)
+
+    {
+        printf("The token does not have the specified privilege. \n");
+        return FALSE;
+    }
+
+    return TRUE;
+};
+
+BOOL SetSecurityPrivilage(BOOL bEnablePrivilege) {
+    LPCTSTR lpszPrivilege = L"SeSecurityPrivilege";
+    HANDLE hToken;
+    // Open a handle to the access token for the calling process. That is this running program
+    if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &amp;hToken)) {
+        printf("OpenProcessToken() error %u\n", GetLastError());
+        return FALSE;
+    }
+    // Call the user defined SetPrivilege() function to enable and set the needed privilege
+    if (!SetPrivilege(hToken, lpszPrivilege, bEnablePrivilege)) {
+        printf("Failed to adjust Privilege\n");
+        return FALSE;
+    }
+    return TRUE;
+};
+
+wchar_t *convertCharArrayToLPCWSTR(const char* charArray)
+{
+    wchar_t* wString=new wchar_t[4096];
+    MultiByteToWideChar(CP_ACP, 0, charArray, -1, wString, 4096);
+    return wString;
+}
+
+int main(int argc, char* argv[])
+{
+
+    LPCWSTR pipeName = NULL;
+    LPWCH groupName = NULL;
+    BOOL clrSACL = FALSE;
+
+    if (argc &lt;= 1)
+    {
+        printf("%s\n", "Help page, do it like this:\nprog.exe -path \\\\.\\pipe\\lsass -name Everyone\nOr to clear the SACL use -clr\nIt sets both success and failure audit, by now it works only with pipes");
+        return 0;
+    }
+
+    // Argument parsing
+    for (int i = 0; i &lt; argc; ++i)
+    {
+        if (strcmp(argv[i], "-path") == 0)
+        {
+            pipeName = convertCharArrayToLPCWSTR(argv[i + 1]);
+        }
+        if (strcmp(argv[i], "-name") == 0)
+        {
+            groupName = convertCharArrayToLPCWSTR(argv[i + 1]);
+        }
+        if (strcmp(argv[i], "-clr") == 0)
+        {
+            clrSACL = TRUE;
+        }
+    }
+
+    // Get Priv
+    if (!SetSecurityPrivilage(TRUE)) {
+        printf("Try to launch with Admin rights\n");
+        return 1;
+    }
+
+    // Open the pipe with ACCESS_SYSTEM_SECURITY, the only right which allows to edit SACL
+    HANDLE hPipe = CreateFile(pipeName, ACCESS_SYSTEM_SECURITY, 0, NULL, OPEN_EXISTING, NULL, NULL);
+
+    if (hPipe == INVALID_HANDLE_VALUE)
+    {
+        printf("%s\n%d\n", "Incorrect handle", GetLastError());
+        return 1;
+    }
+
+    // Just clear SACL and get out
+    if (clrSACL)
+    {
+        if (SetSecurityInfo(hPipe, SE_KERNEL_OBJECT, SACL_SECURITY_INFORMATION, NULL, NULL, NULL, NULL) != ERROR_SUCCESS)
+        {
+            printf("%s\n%d\n", "SetSecurityInfo", GetLastError());
+            return 1;
+        }
+        printf("%s\n", "[+] Successufully cleared SACL");
+        return 0;
+    }
+
+    PACL pOldSACL = NULL;
+    PSECURITY_DESCRIPTOR pPipeSD = NULL;
+	
+	// Just need an already existing SACL to be able to edit it
+    if (GetSecurityInfo(hPipe, SE_KERNEL_OBJECT, SACL_SECURITY_INFORMATION, NULL, NULL, NULL, &amp;pOldSACL, &amp;pPipeSD) != ERROR_SUCCESS)
+    {
+        printf("%s\n%d\n", "GetSecurityInfo", GetLastError());
+        return 1;
+    }
+
+    // Init TRUSTEE, which is basically SACL stucture
+    TRUSTEE trusteeSACL[1];
+    trusteeSACL[0].TrusteeForm = TRUSTEE_IS_NAME;
+    trusteeSACL[0].TrusteeType = TRUSTEE_IS_GROUP;
+    trusteeSACL[0].ptstrName = groupName;
+    trusteeSACL[0].MultipleTrusteeOperation = NO_MULTIPLE_TRUSTEE;
+    trusteeSACL[0].pMultipleTrustee = NULL;
+
+    EXPLICIT_ACCESS explicit_access_listSACL[1];
+    ZeroMemory(&amp;explicit_access_listSACL[0], sizeof(EXPLICIT_ACCESS));
+
+    // Here I buit SACL
+    explicit_access_listSACL[0].grfAccessMode = SET_AUDIT_SUCCESS;
+	// I wasn't able to made two right at the same time.
+    //explicit_access_listSACL[0].grfAccessMode = SET_AUDIT_FAILURE;
+
+	// If your change GENERIC_ALL, to something else, like ACCESS_SECURITY, then SACL will audit only handles with ACCESS_SECURITY rights.
+    explicit_access_listSACL[0].grfAccessPermissions = GENERIC_ALL;
+    
+    explicit_access_listSACL[0].grfInheritance = NO_INHERITANCE;
+    explicit_access_listSACL[0].Trustee = trusteeSACL[0];
+
+    PACL pNewSACL = NULL;
+    PACL pNewSACLFal = NULL;
+
+    // This is not ideal, but I dont know how to unite SET_AUDIT_SUCCESS and SET_AUDIT_FAILURE and I dont want to waste much time on it.
+
+    if (SetEntriesInAcl(1, explicit_access_listSACL, pOldSACL, &amp;pNewSACL) != ERROR_SUCCESS)
+    {
+        printf("%s\n%d\n", "SetEntriesInAcl", GetLastError());
+		return 1;
+    }
+    
+    explicit_access_listSACL[0].grfAccessMode = SET_AUDIT_FAILURE;
+
+    if (SetEntriesInAcl(1, explicit_access_listSACL, pNewSACL, &amp;pNewSACLFal) != ERROR_SUCCESS)
+    {
+        printf("%s\n%d\n", "SetEntriesInAcl", GetLastError());
+        return 1;
+    }
+
+    if (SetSecurityInfo(hPipe, SE_KERNEL_OBJECT, SACL_SECURITY_INFORMATION, NULL, NULL, NULL, pNewSACLFal) != ERROR_SUCCESS)
+    {
+        printf("%s\n%d\n", "SetSecurityInfo", GetLastError());
+        return 1;
+    }
+
+    printf("%s\n", "[+] Successufully set SACL");
+
+    LocalFree(pNewSACL);
+    LocalFree(pNewSACLFal);
+    LocalFree(pOldSACL);
+    CloseHandle(hPipe);
+}</code></pre>
+     <p></p>
+    </div>
+   </details>
+   <p>Также для работы SACL должны быть включены следующие политики аудита:</p>
+   <pre><code class="powershell">Доступ к объектам | Object Access
+--&gt; Объект-задание (Успех и сбой)  | Kernel Object Success and Failure (Success and Failure)
+--&gt; Работа с дескриптором (Успех и сбой) | Handle Manipulation Success and Failure () (Success and Failure)
+
+// Дополнительная информация, не работает без Объект-задание</code></pre>
+   <h2>RPC Filtering</h2>
+   <p>Интересной альтернативой событиям, поставляемым через ETW провайдеры, может&nbsp;быть <a href="https://Networks%5D(https://github.com/zeronetworks/)"><strong>RPC Filtering</strong></a>. Решение устанавливается на&nbsp;конечное устройство и основано на&nbsp;возможностях межсетевого экрана самой ОС. Из&nbsp;плюсов&nbsp;— мы имеем возможность просмотра события в&nbsp;привычном нам Event Viewer. Но&nbsp;как&nbsp;и в&nbsp;случае с&nbsp;SACL, требуется предварительное выполнение настройки. Можно воспользоваться двумя способами:</p>
+   <ul>
+    <li><p>Утилитой <strong>netsh.exe;</strong></p></li>
+    <li><p>Использовать <strong>WinAPI.</strong></p></li>
+   </ul>
+   <p>В&nbsp;качестве примера возьмем RPC‑интерфейс, который связан с&nbsp;ранее упомянутой атакой PetitPotam&nbsp;— EFS.</p>
+   <pre><code class="powershell">rpc filter
+add rule layer=um actiontype=permit audit=enable
+add condition field=if_uuid matchtype=equal data=c681d488-d850-11d0-8c52-00c04fd90f7e
+add filter
+</code></pre>
+   <p>Установить правило можно с помощью утилиты <code>netsh</code>:</p>
+   <pre><code>netsh -f rpcauditrule.txt</code></pre>
+   <p>При выполнении обращения был получен следующий лог:</p>
+   <pre><code class="json">&lt;REDACTED&gt;
+LogName=Security
+EventCode=5712
+EventType=0
+ComputerName=&lt;REDACTED&gt;
+SourceName=Microsoft Windows security auditing.
+Type=Information
+RecordNumber=39145598
+Keywords=Audit Success
+TaskCategory=RPC Events
+OpCode=Info
+Message=A Remote Procedure Call (RPC) was attempted.
+
+Subject:
+	SID:			S-1-5-7
+	Name:			ANONYMOUS LOGON
+	Account Domain:		NT AUTHORITY
+	LogonId:		0x95FDD924
+
+Process Information:
+	PID:			716
+	Name:			lsass.exe
+
+Network Information:
+	Remote IP Address:	0.0.0.0
+	Remote Port:		0
+
+RPC Attributes:
+	Interface UUID:		{c681d488-d850-11d0-8c52-00c04fd90f7e}
+	Protocol Sequence:	ncacn_np
+	Authentication Service:	0
+	Authentication Level:	0</code></pre>
+   <p>Этот метод является прекрасной альтернативой ETW. Он не&nbsp;только генерирует удобный лог, но&nbsp;и имеет бОльшую информативность (например, наличие поля <em>Subject</em>). Также у&nbsp;такого метода нет каких‑либо технических ограничений по&nbsp;сбору событий, это все тот&nbsp;же <em>EventLog</em>.</p>
+   <h2>RPC Firewall</h2>
+   <p>Коллеги из <a href="https://github.com/zeronetworks/">Zero Networks</a> предлагают идти дальше. С&nbsp;помощью решения <a href="https://github.com/zeronetworks/rpcfirewall">RPC‑firewall</a>, которое устанавливается на&nbsp;конечное устройство, они рассматривают возможность не&nbsp;только мониторинга, но&nbsp;блокировки конкретных RPC методов, чего нельзя сделать через стандартный Windows Firewall. Дополнительным бонусом предлагается заметно улучшенный журнал событий, так как&nbsp;в&nbsp;нем будет присутствовать информация о&nbsp;номере процедуры (ProcNum/ OpNum).</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f96/186/502/f96186502b8442c1f92ae6352d1ad1fe.png" alt="Рисунок 13 - событие из журнала мониторинга, созданное RPC-firewall, при попытке выполнения атаки DCSync" title="Рисунок 13 - событие из журнала мониторинга, созданное RPC-firewall, при попытке выполнения атаки DCSync" width="500" height="529" data-src="https://habrastorage.org/getpro/habr/upload_files/f96/186/502/f96186502b8442c1f92ae6352d1ad1fe.png">
+    <figcaption>
+     Рисунок 13 - событие из журнала мониторинга, созданное RPC-firewall, при попытке выполнения атаки DCSync
+    </figcaption>
+   </figure>
+   <p>Закончив с уровнем операционной системы, перейдем к сетевому.</p>
+   <h2>Сетевой уровень</h2>
+   <p>Сетевой трафик весьма информативен. При&nbsp;его мониторинге мы можем увидеть не&nbsp;только подключение к <code>IPC$</code> ресурсу, но&nbsp;и сразу номер процедуры (ProcNum/ OpNum). Это очень полезно, так как&nbsp;у&nbsp;нас появляется вся нужная информация о&nbsp;клиенте, а&nbsp;именно:</p>
+   <ol>
+    <li><p>Кто именно клиент (так как&nbsp;мы видим <em>Bind</em> подключение);</p></li>
+    <li><p>Куда клиент подключается;</p></li>
+    <li><p>Какие именно функции выполняет клиент;</p></li>
+    <li><p>Как&nbsp;на них реагирует сервер (Ошибка или&nbsp;Успех).</p></li>
+   </ol>
+   <p>Интереснее всего это получать информацию о&nbsp;выполняемых клиентом функциях, поскольку такие данные могут предоставить только ETW, RPC Firewall и трафик.</p>
+   <p>На&nbsp;рисунке 14&nbsp;приведен пример NPs ориентированного подключения, где виден номер операции, в&nbsp;нашем случае это 64, в&nbsp;атрибуте <strong><em>SAMR → Operation</em></strong>.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/e2a/714/94a/e2a71494a13674962f95c6916ef2f8b2.png" alt="Рисунок 14. Как подключение Named Pipe выглядит в трафике" title="Рисунок 14. Как подключение Named Pipe выглядит в трафике" width="1085" height="230" data-src="https://habrastorage.org/getpro/habr/upload_files/e2a/714/94a/e2a71494a13674962f95c6916ef2f8b2.png">
+    <figcaption>
+     Рисунок 14. Как подключение Named Pipe выглядит в трафике
+    </figcaption>
+   </figure>
+   <p>Таким&nbsp;же образом можно просматривать и поведение TCP‑ориентированных подключений. В&nbsp;примере&nbsp;была запущена репликация домен‑контроллера, где мы можем увидеть RPC запрос вместе с&nbsp;номером процедуры (в примере на&nbsp;рисунке 15&nbsp;он равен <em>5</em>) и интерфейсом подключения (в примере это DRSUAPI).</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/319/a51/2fc/319a512fc9ac9fc9bc15a700633fe8f3.png" alt="Рисунок 15. Operation == DRSUAPI_REPLICA_ADD" title="Рисунок 15. Operation == DRSUAPI_REPLICA_ADD" width="774" height="355" data-src="https://habrastorage.org/getpro/habr/upload_files/319/a51/2fc/319a512fc9ac9fc9bc15a700633fe8f3.png">
+    <figcaption>
+     Рисунок 15. Operation == DRSUAPI_REPLICA_ADD
+    </figcaption>
+   </figure>
+   <h2>Шифрование</h2>
+   <p>Тема шифрования RPC‑трафика до&nbsp;этого в статье не&nbsp;затрагивалась, тем не&nbsp;менее оно есть. Шифрование может добавить проблем при&nbsp;мониторинге трафика в&nbsp;сети, так как&nbsp;расшифровывать его сложно, да&nbsp;и никто не&nbsp;любит это делать.</p>
+   <p>Трафик можно разделить на 2&nbsp;вида:</p>
+   <ul>
+    <li><p>на&nbsp;инкапсулированный в&nbsp;TCP/ UDP/ HTTP и не&nbsp;предполагающий никакого шифрования кроме того, что&nbsp;реализовано в&nbsp;самом RPC протоколе;</p></li>
+    <li><p>на&nbsp;использование NPs через SMB протокол.</p></li>
+   </ul>
+   <p>Посмотрим как&nbsp;это выглядит в&nbsp;Wireshark (рисунок 16). В&nbsp;RPC трафике видно NPs, к&nbsp;которому обращается клиент, а&nbsp;также вызываемую функцию, поскольку эти данные не&nbsp;зашифрованы, а&nbsp;зашифрованы только аргументы к&nbsp;функции. Напомним, что&nbsp;любая функция RPC имеет свой OpNum, статически закреплённый за&nbsp;каждой из&nbsp;них. Так функции можно точно идентифицировать.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/80d/ebd/b72/80debdb72ba810b0233dc9de4580c93a.png" alt="*Рисунок 16. Использование Named Pipes через RPC напрямую.*" title="*Рисунок 16. Использование Named Pipes через RPC напрямую.*" width="1056" height="294" data-src="https://habrastorage.org/getpro/habr/upload_files/80d/ebd/b72/80debdb72ba810b0233dc9de4580c93a.png">
+    <figcaption>
+     *Рисунок 16. Использование Named Pipes через RPC напрямую.*
+    </figcaption>
+   </figure>
+   <p>С SMB так не получится. Если используется SMB версии 3, то весь трафик целиком будет зашифрован и ничего нельзя будет увидеть. SMB3 поддерживается всеми современными версиями Windows и злоумышленник без проблем может использовать его, чтобы скрыть свои действия.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/ad8/dda/abb/ad8ddaabb706642930834454f56d4297.png" alt="Рисунок 17. Использование Named Pipes через SMB протокол." title="Рисунок 17. Использование Named Pipes через SMB протокол." width="1067" height="281" data-src="https://habrastorage.org/getpro/habr/upload_files/ad8/dda/abb/ad8ddaabb706642930834454f56d4297.png">
+    <figcaption>
+     Рисунок 17. Использование Named Pipes через SMB протокол.
+    </figcaption>
+   </figure>
+   <p>Поэтому если есть необходимость мониторить RPC взаимодействие, то можно это сделать через протокол SMB,&nbsp;либо если нужно выбрать один источник для&nbsp;мониторинга всего и сразу, то трафик лучше не&nbsp;использовать.</p>
+   <h2>Заключение</h2>
+   <p>В&nbsp;этой статье мы разобрали механизмы работы RPC, протоколы его интерфейсов и основные способы мониторинга удаленного вызова функций. Определенно, при&nbsp;сравнении всех трёх подходов логирования для&nbsp;мониторинга фаворитом будет являться ETW. Но&nbsp;в&nbsp;частных случаях, когда, например, точно известно об&nbsp;ограниченных возможностях злоумышленника и его неспособности использовать TCP‑ориентированное подключение, существует вариант применения политик аудита. В&nbsp;случае, если можно провести мониторинг трафика, такой способ имеет шанс стать альтернативой ETW и другим средствам логирования. Но&nbsp;здесь важно помнить о&nbsp;возможности его шифрования, если атакующий использует SMB.</p>
+   <div>
+    <div class="table">
+     <table>
+      <tbody>
+       <tr>
+        <th><p>Метод логирования</p></th>
+        <th><p>Информативность</p></th>
+        <th><p>Простота настройки</p></th>
+       </tr>
+       <tr>
+        <td><p align="left">ETW</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">+</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">Журналы безопасности</p></td>
+        <td><p align="left">+/-</p></td>
+        <td><p align="left">+</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">SACL</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">-</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">Сетевой трафик</p></td>
+        <td><p align="left">+</p></td>
+        <td><p align="left">-</p></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+   </div>
+   <h2>Схема источников логов</h2>
+   <p>Ниже представлена схема, показывающая возможности атакующего при&nbsp;подключении к&nbsp;сервису RPC и каким образом можно cобирать события по&nbsp;каждому из&nbsp;вариантов подключения.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/dcf/ca0/860/dcfca0860e2d7fc18a5964dfa58833e3.png" alt="Рисунок 18. Схема возможностей подключения по RPC и какими логами их можно мониторить" title="Рисунок 18. Схема возможностей подключения по RPC и какими логами их можно мониторить" width="1467" height="375" data-src="https://habrastorage.org/getpro/habr/upload_files/dcf/ca0/860/dcfca0860e2d7fc18a5964dfa58833e3.png">
+    <figcaption>
+     Рисунок 18. Схема возможностей подключения по RPC и какими логами их можно мониторить
+    </figcaption>
+   </figure>
+   <p>Если у вас остались вопросы, пишите в комментариях. Надеемся, статья оказалась вам полезной!</p>
+   <p>Авторы:<br> <em>- Черных Кирилл (<a class="mention" href="/users/Ruucker">@Ruucker</a>), аналитик-исследователь киберугроз;</em><br> <em>- Мавлютова Валерия (</em><a href="https://habr.com/ru/users/iceflipper/"><em>@Iceflipper</em></a><em>), младший аналитик-исследователь киберугроз.</em></p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

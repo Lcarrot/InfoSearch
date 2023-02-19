@@ -1,0 +1,55 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Эта статья — перевод оригинальной статьи "<a href="https://developer.chrome.com/blog/lighthouse-10-0/" rel="noopener noreferrer nofollow">What's new in Lighthouse 10</a>"</p>
+   <p>Также я веду телеграм канал “<a href="https://t.me/frontend_pasta" rel="noopener noreferrer nofollow"><u>Frontend по-флотски</u></a>”, где рассказываю про интересные вещи из мира разработки интерфейсов.</p>
+   <h2>Вступление</h2>
+   <p><a href="https://developer.chrome.com/docs/lighthouse/overview/" rel="noopener noreferrer nofollow">Lighthouse - это инструмент для аудита веб-сайтов</a>, который помогает разработчикам с помощью возможностей и диагностики улучшить пользовательский опыт их сайтов.</p>
+   <p>Lighthouse 10 доступен в <a href="https://www.npmjs.com/package/lighthouse" rel="noopener noreferrer nofollow">командной строке через npm</a> и в <a href="https://www.google.com/chrome/canary/" rel="noopener noreferrer nofollow">Chrome Canary</a>. В ближайшие недели он появится в стабильном Chrome в Chrome 112 и в <a href="https://pagespeed.web.dev/" rel="noopener noreferrer nofollow">PageSpeed Insights</a>.</p>
+   <h2>Изменения в подсчете очков</h2>
+   <p>Почтенный показатель <a href="https://web.dev/tti/" rel="noopener noreferrer nofollow">Time To Interactive (TTI)</a> будет удален в Lighthouse 10, завершая <a href="https://github.com/GoogleChrome/lighthouse/blob/main/docs/v8-perf-faq.md#whats-the-story-with-tti" rel="noopener noreferrer nofollow">процесс устаревания, начатый в Lighthouse 8</a>. 10%-ный вес TTI переходит к показателю <a href="https://web.dev/cls/" rel="noopener noreferrer nofollow">Cumulative Layout Shift (CLS)</a>, который теперь будет составлять 25% от о<a href="https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/#lighthouse-10" rel="noopener noreferrer nofollow">бщей оценки производительности</a>.</p>
+   <p>TTI отмечает момент времени, но способ его определения делает его слишком чувствительным к необычным сетевым запросам и длительным задачам. Показатели <a href="https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/" rel="noopener noreferrer nofollow">Largest Contentful Paint (LCP)</a> и <a href="https://developer.chrome.com/docs/lighthouse/performance/speed-index/" rel="noopener noreferrer nofollow">Speed Index</a> обычно являются лучшими индикаторами загруженности содержимого страницы, чем количество активных сетевых запросов. <a href="https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/" rel="noopener noreferrer nofollow">Total Blocking Time</a> (TBT) более надежно обрабатывает длительные задачи и доступность основного потока и, лучше коррелирует с <a href="https://web.dev/vitals/#core-web-vitals" rel="noopener noreferrer nofollow">Core Web Vitals</a>, измеренными в полевых условиях.</p>
+   <p>Увеличение веса CLS связано с удалением TTI, но лучше отражает его важность в качестве основного показателя веб-жизни и, в идеале, повысит внимание к сайтам, которые все еще делают ненужные перестановки элементов макета.</p>
+   <p>Мы ожидаем, что это улучшит показатели производительности большинства страниц, поскольку большинство страниц, как правило, лучше оценивают CLS, чем TTI. При анализе 13 миллионов загрузок страниц в последнем HTTP-архиве 90% этих страниц улучшили свои показатели Lighthouse, причем 50% из них улучшили показатели более чем на 5 пунктов.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/2dd/7de/97c/2dd7de97cea00acb5820d0cb4964c976.png" width="420" height="380" data-src="https://habrastorage.org/getpro/habr/upload_files/2dd/7de/97c/2dd7de97cea00acb5820d0cb4964c976.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Если по какой-то причине вам все еще нужно значение Lighthouse TTI (например, в CI assertion), оно по-прежнему доступно в неизменном виде в выходе Lighthouse JSON, только с весом оценки 0 и скрыто в HTML-отчете. Любой скриптовый доступ к значению JSON должен по-прежнему работать без изменений.</p>
+   <h2>Новые аудиты</h2>
+   <p>Lighthouse 10 приносит совершенно новый аудит производительности и другие значительные изменения.</p>
+   <h2>Back/forward кэш</h2>
+   <p>Back/forward кэш (bfcache) - это один из самых мощных инструментов для повышения производительности страницы для реальных пользователей. Помимо обычного кэша браузера, страница, загруженная из bfcache, практически мгновенно восстанавливает макет страницы и состояние выполнения, в значительной степени пропуская все действия по загрузке страницы, и ваша страница оказывается перед пользователями сразу же, пока они перемещаются назад и вперед по своей истории.</p>
+   <p>Однако есть несколько способов, с помощью которых страница может помешать браузеру восстановить страницу из bfcache. Новая проверка Lighthouse фактически переходит от тестовой страницы и возвращается обратно, чтобы проверить, может ли она быть восстановлена из bfcache, и перечисляет причины неудачи.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/08b/cfc/46c/08bcfc46c363bb4c8b1fa3440958e422.png" width="1552" height="780" data-src="https://habrastorage.org/getpro/habr/upload_files/08b/cfc/46c/08bcfc46c363bb4c8b1fa3440958e422.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Посмотрите <a href="https://developer.chrome.com/docs/lighthouse/performance/bf-cache/" rel="noopener noreferrer nofollow">документацию по аудиту bfcache</a> для получения дополнительной информации.</p>
+   <h2>Инпуты недопускающие вставку</h2>
+   <p>Старая проверка "Лучших практик" "Позволяет пользователям вставлять в поля пароли" была расширена и теперь проверяет, что вставка в любое (нечитаемое) поле ввода будет работать. Для большинства сайтов запрет на вставку - это отрицательный пользовательский опыт и препятствие законным рабочим процессам безопасности и доступности.</p>
+   <p>Новый аудит&nbsp;<a href="https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/" rel="noopener noreferrer nofollow">"Allows users to paste into input fields" (</a><code>paste-preventing-inputs</code>).</p>
+   <h2>Пользователи Node</h2>
+   <p>Если вы используете Lighthouse в качестве библиотеки Node, в этом релизе есть несколько изменений, которые необходимо учесть. Подробную информацию смотрите в <a href="https://github.com/GoogleChrome/lighthouse/releases/tag/v10.0.0" rel="noopener noreferrer nofollow">журнале изменений 10.0</a>.</p>
+   <p>Lighthouse 10 также поставляется с полным объявлением типов TypeScript! Все, что импортируется из lighthouse, теперь должно быть типизировано, что будет особенно полезно, если вы пишете <a href="https://web.dev/lighthouse-user-flows/" rel="noopener noreferrer nofollow">сценарии пользовательских потоков Lighthouse</a>.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/2d1/a7a/534/2d1a7a5349712c00dd68376aaad5cb77.png" width="1124" height="398" data-src="https://habrastorage.org/getpro/habr/upload_files/2d1/a7a/534/2d1a7a5349712c00dd68376aaad5cb77.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Попробуйте эти типы и сообщите нам, если у вас возникнут какие-либо проблемы при их использовании.</p>
+   <h2>Запуск Lighthouse</h2>
+   <p>Lighthouse доступен в <a href="https://developer.chrome.com/docs/devtools/overview/" rel="noopener noreferrer nofollow">Chrome DevTools</a>, <a href="https://www.npmjs.com/package/lighthouse" rel="noopener noreferrer nofollow">npm </a>(как модуль Node и инструмент CLI) и как расширение для браузера (в <a href="https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk" rel="noopener noreferrer nofollow">Chrome </a>и <a href="https://addons.mozilla.org/en-US/firefox/addon/google-lighthouse/" rel="noopener noreferrer nofollow">Firefox</a>). Он также используется в нескольких сервисах Google, включая <a href="https://pagespeed.web.dev/" rel="noopener noreferrer nofollow">PageSpeed Insights</a>.</p>
+   <p>Чтобы попробовать Lighthouse Node CLI, выполните следующие команды:</p>
+   <pre><code class="bash">npm install -g lighthouse
+lighthouse https://www.example.com --view</code></pre>
+   <h2>Свяжитесь с командой Lighthouse</h2>
+   <p>Для обсуждения новых возможностей, изменений в релизе Lighthouse 10 или всего, что связано с Lighthouse:</p>
+   <ul>
+    <li><p>Сообщите о проблеме или отправьте отзыв в<a href="https://github.com/GoogleChrome/lighthouse/issues" rel="noopener noreferrer nofollow"> трекере проблем Lighthouse на GitHub</a>.</p></li>
+    <li><p>Задавайте вопросы на дискуссионных <a href="https://github.com/GoogleChrome/lighthouse/discussions" rel="noopener noreferrer nofollow">форумах Lighthouse GitHub</a>.</p></li>
+    <li><p>Свяжитесь с <a href="https://twitter.com/intent/tweet?text=@____lighthouse" rel="noopener noreferrer nofollow">командой Lighthouse в Twitter</a>.</p></li>
+   </ul>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

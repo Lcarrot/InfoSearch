@@ -1,0 +1,86 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>При&nbsp;создании различных типов прокручиваемых пользовательских интерфейсов очень часто требуется наблюдать за&nbsp;текущей позицией прокрутки (или <em>смещением содержимого</em>, как&nbsp;это называет <strong><em>UIScrollView</em></strong>), чтобы инициировать изменения макета, загружать дополнительные данные при&nbsp;необходимости или&nbsp;выполнять другие виды действий в&nbsp;зависимости от&nbsp;того, какой контент просматривает пользователь в&nbsp;данный момент.</p>
+   <p>Однако, когда дело доходит до <strong><em>ScrollView </em></strong>SwiftUI, в&nbsp;настоящее время (на момент написания) не&nbsp;существует встроенного способа выполнения таких наблюдений за&nbsp;прокруткой. Хотя встраивание <strong><em>ScrollViewReader </em></strong>во&nbsp;view (представление, вью, вьюшка) прокрутки позволяет нам изменять положение прокрутки в&nbsp;коде, оно, как&nbsp;ни странно (особенно учитывая его имя), не&nbsp;позволяет нам каким‑либо образом считывать текущее смещение содержимого.</p>
+   <p>Один из&nbsp;способов решить эту проблему&nbsp;— использовать богатые возможности UIKit <strong><em>UIScrollView</em></strong>, который благодаря протоколу делегата и методу <strong><em>scrollViewDidScroll </em></strong>обеспечивает простой способ получать уведомления всякий раз, когда происходит прокрутка. Однако, несмотря на&nbsp;то, что&nbsp;я обычно большой поклонник использования <strong><em>UIViewRepresentable </em></strong>и других <a href="https://www.swiftbysundell.com/articles/swiftui-and-uikit-interoperability-part-1/" rel="noopener noreferrer nofollow">механизмов взаимодействия SwiftUI/UIKit</a>, в&nbsp;этом случае нам пришлось&nbsp;бы написать довольно много дополнительного кода, чтобы преодолеть разрыв между двумя фреймворками.</p>
+   <p>Это в&nbsp;основном потому, что, по&nbsp;крайней мере, на&nbsp;iOS мы можем встраивать контент SwiftUI только в <strong><em>UIHostingController</em></strong>, а&nbsp;не&nbsp;в&nbsp;самоуправляемый UIView. Итак, если&nbsp;бы мы хотели создать пользовательскую, наблюдаемую версию ScrollView с&nbsp;использованием <strong><em>UIScrollView</em></strong>, нам пришлось&nbsp;бы обернуть эту реализацию во&nbsp;view контроллер, а&nbsp;затем управлять взаимосвязью между нашим <strong><em>UIHostingController </em></strong>и такими компонентами, как&nbsp;клавиатура, размер содержимого view прокрутки, вставки безопасных зон и так далее. Это возможно, но, тем не&nbsp;менее, добавляется изрядное количество дополнительной работы и сложности.</p>
+   <p>Итак, давайте вместо этого посмотрим, сможем&nbsp;ли мы найти полностью нативный для&nbsp;SwiftUI способ выполнения таких наблюдений за&nbsp;смещением контента.</p>
+   <h3>Разрешение фреймов с помощью GeometryReader</h3>
+   <p>Одна вещь, которую важно понять, прежде чем мы начнём, заключается в&nbsp;том, что&nbsp;и <strong><em>UIScrollView</em></strong>, и SwiftUI <strong><em>ScrollView </em></strong>выполняют свою прокрутку, смещая контейнер, в&nbsp;котором размещён наш реальный прокручиваемый контент. Затем они прикрепляют этот контейнер к&nbsp;своим границам, чтобы создать иллюзию движения области просмотра. Так что, если мы сможем найти способ наблюдать за&nbsp;фреймом этого контейнера, то, по&nbsp;сути, мы найдём способ наблюдать за&nbsp;смещением содержимого прокрутки.</p>
+   <p>Вот тут‑то и появляется наш старый добрый друг <strong><em>GeometryReader </em></strong>(без него не&nbsp;было&nbsp;бы подходящего обходного пути для&nbsp;макета SwiftUI, верно?). Хотя GeometryReader в&nbsp;основном используется для&nbsp;доступа к&nbsp;размеру view, в&nbsp;котором оно размещено (или, точнее, к&nbsp;предлагаемому размеру этого view), у&nbsp;него также есть еще один хитрый трюк в&nbsp;рукаве&nbsp;— его можно попросить прочитать кадр view, текущий вид относительно заданной системы координат.</p>
+   <p>Чтобы использовать эту возможность, давайте начнём с&nbsp;создания <strong><em>PositionObservingView</em></strong>, который позволит нам привязать значение CGPoint к&nbsp;текущей позиции этого view относительно <strong><em>CoordinateSpace</em></strong>, которое мы также передадим в&nbsp;качестве аргумента. Затем наше новое view встроит <strong><em>GeometryReader </em></strong>в&nbsp;качестве фона (что заставит это средство чтения геометрии иметь тот&nbsp;же размер, что&nbsp;и само view) и назначит исходную точку разрешённого кадра в&nbsp;качестве нашего смещения с&nbsp;помощью ключа настройки, например, так:</p>
+   <pre><code class="swift">struct PositionObservingView: View {
+    var coordinateSpace: CoordinateSpace
+@Binding var position: CGPoint
+    @ViewBuilder var content: () -&gt; Content
+
+    var body: some View {
+        content()
+            .background(GeometryReader { geometry in
+                Color.clear.preference(
+    key: PreferenceKey.self,
+    value: geometry.frame(in: coordinateSpace).origin
+)
+            })
+            .onPreferenceChange(PreferenceKey.self) { position in
+                self.position = position
+            }
+    }
+}</code></pre>
+   <p><strong>Чтобы узнать больше о том, как атрибут&nbsp;<em>@ViewBuilder&nbsp;</em>можно использовать при создании пользовательских view контейнера SwiftUI,&nbsp;</strong><a href="https://www.swiftbysundell.com/tips/annotating-properties-with-result-builder-attributes/" rel="noopener noreferrer nofollow">ознакомьтесь с этой статьей.</a></p>
+   <p>Причина, по&nbsp;которой мы используем описанную выше систему предпочтений SwiftUI, заключается в&nbsp;том, что&nbsp;наш <strong><em>GeometryReader </em></strong>будет вызываться как&nbsp;часть процесса обновления view, и нам не&nbsp;разрешено напрямую изменять состояние нашего view во&nbsp;время этого процесса. Таким образом, используя предпочтение вместо этого, мы можем доставлять наши значения <strong><em>CGPoint </em></strong>в&nbsp;наше view асинхронным образом, что&nbsp;затем позволяет нам назначать эти значения для&nbsp;нашей привязки позиции.</p>
+   <p>Теперь всё, что&nbsp;нам необходимо сделать, это реализовать тип <strong><em>PreferenceKey</em></strong>, который использовался выше, и всё готово:</p>
+   <pre><code class="swift">private extension PositionObservingView {
+    struct PreferenceKey: SwiftUI.PreferenceKey {
+        static var defaultValue: CGPoint { .zero }
+
+        static func reduce(value: inout CGPoint, nextValue: () -&gt; CGPoint) {
+            value = nextValue()
+        }
+    }
+}</code></pre>
+   <p><strong>Нам не&nbsp;требуется реализовывать какой‑либо сложный алгоритм <em>сокращения</em>, описанный выше, поскольку у&nbsp;нас будет только одно view, доставляющее значения с&nbsp;использованием этого ключа предпочтения в&nbsp;любой заданной иерархии (поскольку наша реализация полностью содержится в&nbsp;нашем view <em>PositionObservingView</em>).</strong></p>
+   <p>Итак, теперь у&nbsp;нас есть view, способное считывать и отслеживать своё собственное положение в&nbsp;заданной системе координат. Давайте теперь используем это view для&nbsp;создания оболочки <strong><em>ScrollView</em></strong>, которая позволит нам достичь нашей первоначальной цели&nbsp;— иметь возможность считывать текущее смещение содержимого в&nbsp;таком view прокрутки.</p>
+   <h3>От позиции до смещения контента</h3>
+   <p>Наша новая оболочка <strong><em>ScrollView</em></strong>, по&nbsp;сути, будет иметь две обязанности: во‑первых, ей необходимо преобразовать позицию нашего внутреннего объекта <strong><em>PositionObservingView </em></strong>в&nbsp;текущую позицию прокрутки (или смещение содержимого), а&nbsp;во‑вторых, ей также потребуется определить <strong><em>CoordinateSpace</em></strong>, которая внутреннее view может использовать для&nbsp;разрешения своей позиции. Кроме того, она просто перенаправит свои параметры конфигурации в&nbsp;базовый <strong><em>ScrollView</em></strong>, чтобы мы могли решить, с&nbsp;какими осями мы работаем, чтобы работало каждое view прокрутки, и чтобы мы могли решить, отображать&nbsp;ли какие‑либо индикаторы прокрутки.</p>
+   <p>Хорошей новостью является то, что&nbsp;преобразовать положение нашего внутреннего view в&nbsp;смещение содержимого так&nbsp;же просто, как&nbsp;инвертировать оба компонента <strong>x </strong>и <strong>y </strong>этих значений <strong><em>CGPoint</em></strong>. Это связано с&nbsp;тем, что, как&nbsp;обсуждалось ранее, смещение содержимого view прокрутки&nbsp;— это, по&nbsp;сути, просто расстояние, на&nbsp;которое контейнер&nbsp;был перемещён относительно границ view прокрутки.</p>
+   <p>Итак, давайте продолжим и реализуем наше пользовательское view прокрутки, которое мы назовем <strong><em>OffsetObservingScrollView </em></strong>(в данном случае указание ContentOffset кажется слишком подробным):</p>
+   <pre><code class="swift">struct OffsetObservingScrollView: View {
+    var axes: Axis.Set = [.vertical]
+    var showsIndicators = true
+    @Binding var offset: CGPoint
+    @ViewBuilder var content: () -&gt; Content
+
+    // The name of our coordinate space doesn't have to be
+    // stable between view updates (it just needs to be
+    // consistent within this view), so we'll simply use a
+    // plain UUID for it:
+    private let coordinateSpaceName = UUID()
+
+    var body: some View {
+        ScrollView(axes, showsIndicators: showsIndicators) {
+            PositionObservingView(
+                coordinateSpace: .named(coordinateSpaceName),
+                position: Binding(
+                    get: { offset },
+                    set: { newOffset in
+                        offset = CGPoint(
+    x: -newOffset.x,
+    y: -newOffset.y
+)
+                    }
+                ),
+                content: content
+            )
+        }
+        .coordinateSpace(name: coordinateSpaceName)
+    }
+}</code></pre>
+   <p>Обратите внимание, как&nbsp;мы можем создать полностью пользовательскую <strong><em>Binding </em></strong>(привязку) для&nbsp;параметра позиции нашего внутреннего view, определив геттер и сеттер с&nbsp;помощью замыканий. Это отличный вариант в&nbsp;ситуациях, подобных приведённой выше, когда нам необходимо преобразовать значение перед его назначением другой <strong><em>Binding</em></strong>.</p>
+   <p>Вот и всё! Теперь у&nbsp;нас есть встроенная замена встроенному SwiftUI <strong><em>ScrollView</em></strong>. Эта замена позволяет нам наблюдать за&nbsp;текущим смещением содержимого, которое мы затем можем привязать к&nbsp;любому свойству состояния, которое нам необходимо. Например, чтобы изменить макет заголовка, просматривать, сообщать о&nbsp;событиях аналитики на&nbsp;наш сервер или&nbsp;выполнять любую другую операцию прокрутки на&nbsp;основании положения. Вы можете найти полный пример, который использует вышеприведенный <strong><em>OffsetObservingScrollView </em></strong>для&nbsp;реализации сворачиваемого view заголовка <a href="https://gist.github.com/JohnSundell/341f5855f4ede71a7741e99881c74daf" rel="noopener noreferrer nofollow">прямо здесь</a>.</p>
+   <p>Я надеюсь, что&nbsp;вы нашли эту статью полезной. Если у&nbsp;вас есть какие‑либо вопросы, комментарии или&nbsp;отзывы, не&nbsp;стесняйтесь обращаться ко мне на&nbsp;Mastodon или&nbsp;отправьте мне электронное письмо. Спасибо за&nbsp;прочтение!</p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->
