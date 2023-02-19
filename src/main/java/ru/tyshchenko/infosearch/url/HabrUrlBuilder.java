@@ -1,6 +1,7 @@
 package ru.tyshchenko.infosearch.url;
 
 import lombok.SneakyThrows;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import ru.tyshchenko.infosearch.utils.ParserUtils;
 
@@ -15,12 +16,14 @@ public class HabrUrlBuilder implements UrlBuilder {
 
     @Override
     @SneakyThrows
+    @Retryable
     public List<String> getPageUrls(int pageNumber) {
         return ParserUtils.getDocumentPage(DOMAIN + MAIN_PAGE + pageNumber + "/")
                 .body()
                 .getElementsByClass("tm-article-snippet__title-link").eachAttr("href");
     }
 
+    @Retryable
     public String getPageContent(String page) {
         return Objects.requireNonNull(ParserUtils.getDocumentPage(DOMAIN + page)
                 .body()
