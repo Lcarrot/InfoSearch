@@ -1,0 +1,61 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/228/6ac/4f1/2286ac4f1918152afce8f36ca069af47.png" width="1294" height="785" data-src="https://habrastorage.org/getpro/habr/upload_files/228/6ac/4f1/2286ac4f1918152afce8f36ca069af47.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Привет, Хабр!</p>
+   <p>Меня удивили результаты поиска по&nbsp;хабру по&nbsp;слову PostmarketOS )</p>
+   <p>Хотя операционка живет и развивается, но&nbsp;учитывая, что&nbsp;это не&nbsp;коммерческий продукт, это объясняет количество статей.<br><br>Если коротко&nbsp;— У&nbsp;меня есть Самсунг А5&nbsp;(2015) и я могу на&nbsp;него установить MongoDB на&nbsp;Docker, накатить nodeJS и использовать как&nbsp;сервер разработки.</p>
+   <p>Под&nbsp;капотом Alpine Linux и в&nbsp;отличии от&nbsp;UbPorts&nbsp;— установка приложений из&nbsp;консоли это нативный путь.</p>
+   <p>Целью поста является обзор альтернативного направления развития мобильных устройств под&nbsp;свободными осями (И не&nbsp;является обзором PostmarketOS, но&nbsp;в&nbsp;целом для&nbsp;хабра не&nbsp;мешало&nbsp;бы).</p>
+   <p>На&nbsp;данный момент в&nbsp;мире пользовательских мобильных устройств царит парадигма&nbsp;— моно девайсов. Не&nbsp;последним вкладом в&nbsp;стоимость которых они обязаны дисплею.<br></p>
+   <h2>Жизнь без дисплея</h2>
+   <p>А&nbsp;что происходит если дисплей вышел из&nbsp;строя?<br>Замена? Замена аппарата?</p>
+   <p>А&nbsp;реально&nbsp;ли, использовать девайс без&nbsp;экрана?<br>WiFi остался?&nbsp;— Вполне.<br>Процессор работает?&nbsp;— Определенно.<br>ОЗУ и флешка функционируют?&nbsp;— Да!</p>
+   <p>Возможным решением может стать установка Postmarket OS.</p>
+   <p>Нюансы есть&nbsp;— список поддерживаемых устройств есть на&nbsp;официальном сайте.</p>
+   <p>Установка не&nbsp;сложная. Есть и предварительно скомпилированные образы.</p>
+   <h2>Концепт</h2>
+   <p>По&nbsp;моему скромному мнению, путь повторения моно девайса, за&nbsp;гигантами конечно имеет место&nbsp;быть. UbPorts и различные графические оболочки под&nbsp;PMOS вполне юзабельны.</p>
+   <p>Но, что&nbsp;если разделить носимое устройство на 2&nbsp;части?</p>
+   <ol>
+    <li><p>Часть&nbsp;— это «Мобильный сервер» без&nbsp;экрана</p></li>
+    <li><p>Часть&nbsp;— это более низко производительный девайс с&nbsp;экраном, через который идет работа на&nbsp;мобильном сервере. Либо любой смартфон (либо ПК или&nbsp;Ноутбук )</p></li>
+   </ol>
+   <p>Это дает возможность смены обзорного устройства, без&nbsp;замены основного&nbsp;— которое&nbsp;лишено такой хрупкой части как&nbsp;дисплей.</p>
+   <p>Уже сегодня на&nbsp;устройство с&nbsp;PMOS можно поставить облачную IDE в&nbsp;докере<br>и в&nbsp;рюкзаке будет свой сервер разработки или&nbsp;различные офисные решения.</p>
+   <p>И в&nbsp;сложившихся условиях, внимательное отношение к&nbsp;имеющимся мощностям&nbsp;— более чем оправдано.<br><br>Рабочее название такой операционки, решил выбрать как&nbsp;— Polu OS.</p>
+   <h2>Не все так просто</h2>
+   <p>Да, тут есть вопросы.</p>
+   <p>Хоть и устройство выглядит как&nbsp;мобильный&nbsp;— оно таковым больше не&nbsp;является, в&nbsp;плане энергоэффективности предположительно хватит на 4–5&nbsp;часов.</p>
+   <p>Alpine Linux не&nbsp;настолько оптимизирован как&nbsp;например Android, по&nbsp;потреблению.</p>
+   <p>Но, пути открыты и возможности оптимизации не&nbsp;ограничены.</p>
+   <p>И да, такой мобильный сервер это гиковский проект, но&nbsp;может&nbsp;быть довольно удачным решением.<br><br>Например, есть все предпосылки для&nbsp;того, что&nbsp;бы «дать позвонить» можно&nbsp;было&nbsp;бы сказав пароль от&nbsp;точки доступа на&nbsp;сервере и домен.</p>
+   <p>На&nbsp;котором по&nbsp;веб интерфейсу можно набрать номер и совершить голосовой вызов.<br>(Ну, или&nbsp;быть хакнутым)</p>
+   <h2>Что по железу ?</h2>
+   <p>7z benchmark (7z b)</p>
+   <p>i7-4770k - 20243<br> Asus A53C на i7 - 13566<br> X96Air - 5256 ( на SoC Amlogic S905X3)<u><br></u> Raspberry Pi 4 - 4606<br> Pine64 ROCK64 - 3256<br>---&gt; Samsung A5 - 3157 &lt;---<br> Raspberry Pi 3B - 3149<br> Orange Pi PC - 3069<br> Orange Pi+ 2 - 2144<br> Orange Pi 3 LTS - 1382<br> Asus EEEPC901 - 1245</p>
+   <p>(Если у&nbsp;кого есть Orange \ Rasberry поделитесь результатами этого бенчмарка)</p>
+   <p>Кто то справедливо спросит а, как&nbsp;же GPIO?</p>
+   <p>До&nbsp;данного момента мне хватало NodeMCU на&nbsp;ESP8266)</p>
+   <p>Но, если серьезно&nbsp;— то, прям полноценный одноплатник это уже другая категория.</p>
+   <details class="spoiler">
+    <summary>Как выглядит этот сервер в живую</summary>
+    <div class="spoiler__content">
+     <figure class="full-width ">
+      <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/382/2c3/fd0/3822c3fd0867d268d492bc435334aafc.jpg" width="960" height="1280" data-src="https://habrastorage.org/getpro/habr/upload_files/382/2c3/fd0/3822c3fd0867d268d492bc435334aafc.jpg" data-blurred="true">
+      <figcaption></figcaption>
+     </figure>
+     <p></p>
+    </div>
+   </details>
+   <h2>В завершении</h2>
+   <p>Хотелось&nbsp;бы выразить огромную благодарность всем кто пилил и пилит PMOS,<br>благодаря вам, у&nbsp;меня есть возможность использовать такой бюджетный одноплатник.</p>
+   <h2>Ссылки</h2>
+   <p>Офф. сайт: <a href="https://postmarketos.org/" rel="noopener noreferrer nofollow">https://postmarketos.org/</a><br>Русскоговорящий телеграм канал PMOS с&nbsp;майнтейнерами проекта: <a href="https://t.me/postmarketosinrussian" rel="noopener noreferrer nofollow">https://t.me/postmarketosinrussian</a><br><br>За дополнение результатов тестов - спасибо хабражителям и<br>Каналу "Электроника в объективе" (<a href="https://www.youtube.com/watch?v=zpGA2stVpxo" rel="noopener noreferrer nofollow">https://www.youtube.com/watch?v=zpGA2stVpxo</a>)</p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

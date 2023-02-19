@@ -1,0 +1,148 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/089/957/4d3/0899574d3b46eac5c489a5a855a1bfcb.png" width="780" height="439" data-src="https://habrastorage.org/getpro/habr/upload_files/089/957/4d3/0899574d3b46eac5c489a5a855a1bfcb.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Это первая статья цикла, который будет описывать методы исследования структур системы Windows и Active Directory. В&nbsp;статье попробуем изучить мини инфраструктуру AD и попытаемся понять как&nbsp;обнаруживаются логические уязвимости.</p>
+   <p>В&nbsp;сети достаточно много статей о&nbsp;том, что&nbsp;была найдена логическая уязвимость, которая позволяет выполнять повышение привилегий. Как&nbsp;происходит поиск и работа с&nbsp;такими уязвимостями?</p>
+   <h4>Что такое AD и эскалация привелегий через ACL</h4>
+   <p>Операционная система Windows с&nbsp;точки зрения разганичения привилегий использует списки доступа или&nbsp;так называемые ACL&nbsp;листы. Каждый такой&nbsp;лист содержит информацию о&nbsp;том какие привилегии есть у&nbsp;пользователя или&nbsp;какие привилегии требует объект в&nbsp;операционной системе, чтобы можно&nbsp;было с&nbsp;ним взаимодействовать (читать, изменять и&nbsp;т.&nbsp;д.). Если привилегии для&nbsp;одной операционной системы могут&nbsp;быть сохранены в&nbsp;структурах самой операционной системы, то в&nbsp;случае если используется целая инфраструктура на&nbsp;базе ОС Windows, то для&nbsp;сохранения данных о&nbsp;доступе к&nbsp;объектам приходится вести базу данных.</p>
+   <p>Своеобразная «база» данных используется набором сервисов, который называется Active Directory. Как&nbsp;эти данные хранятся и как&nbsp;их читать? Нужно установить на&nbsp;любой Windows Server роль AD Services и заглянуть в&nbsp;оснастку ADSI&nbsp;— специальный инструмент для&nbsp;просмотра данных об&nbsp;объектах в&nbsp;хранилище active Directory. Его интерфейс выглядит вот так:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/2fc/605/aed/2fc605aed886ad36861551dfa496ebdd.png" width="2880" height="960" data-src="https://habrastorage.org/getpro/habr/upload_files/2fc/605/aed/2fc605aed886ad36861551dfa496ebdd.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Инструмент поставляется вместе с&nbsp;сервисами AD, поэтому ничего дополнительного устанавливать не&nbsp;нужно. Все данные, которые располагаются в&nbsp;базе типизированны и представляются в&nbsp;виде дерева, вложенные элементы являются элементарными объектами их характеристики и наименования задаются шаблонами, которые называются scheme, а&nbsp;объекты, которые находятся выше в&nbsp;дереве являются контейнерами. ADSI хоть и показывает объекты, с&nbsp;которыми чаще всего работает администратор и пользователь AD, но&nbsp;это не&nbsp;все данные базы. Остальные данные расположены по&nbsp;отдельным контейнерам лоступ к&nbsp;которым можно обнаружить в&nbsp;других приложениях и структурах ОС. Мы&nbsp;же, чтобы максимально собрать данные в&nbsp;одном месте будем использовать ADExplorer.</p>
+   <p>Вообще академическое описание того из&nbsp;чего состоит AD есть на&nbsp;официальном <a href="https://learn.microsoft.com/ru-ru/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">сайте</a>. Чтобы не&nbsp;цитировать официальную документацию и искать в&nbsp;чем смысл всех обобщенных схем, попробуем визуализировать то, что&nbsp;представляет собой на&nbsp;самом деле Windows Active Directory. Чтобы Active Directory работало, нужно, чтобы&nbsp;был как&nbsp;минимум один сервер Windows, так как&nbsp;на&nbsp;него и будут устанавливаться AD сервисы. В&nbsp;операционной системе это возможно за&nbsp;счет настройки ролей. Набор сервисов для&nbsp;работы Active Directory это просто набор системных приложений главной задачей которых стоит удобное использование ресурсов организации. Возьмем самый простой вариант AD, где пока что&nbsp;нет никаких пользователей и групп и визуализируем в&nbsp;приложении <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/adexplorer">AdExplorer</a>.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/210/70a/07d/21070a07d62ffddbb5795eed95bd5995.png" width="2880" height="1332" data-src="https://habrastorage.org/getpro/habr/upload_files/210/70a/07d/21070a07d62ffddbb5795eed95bd5995.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Как&nbsp;видно из&nbsp;рисунка, база содержит в&nbsp;самом начале фиксированное количество записей. Эти записи хранят необходимые для&nbsp;работы алгоритмов сервисов данные, а&nbsp;так&nbsp;же данные, которые могут вносить сами пользователи или&nbsp;система сервисов с&nbsp;течением своего существования.</p>
+   <p>В&nbsp;Active Directory одна из&nbsp;самых полезных возможностей это создание набора привелегий, которые могут позволять достаточно тонко контроллировать доступ ко всем объектам, которые описаны в&nbsp;базе AD. Да, именно в&nbsp;базе, потому что&nbsp;здесь все данные о&nbsp;пользователях,сетях, машинах, группах и&nbsp;т.&nbsp;д. сохраняются в&nbsp;специальные схемы и контейнеры. Визуально можно представить эти данные вот так:</p>
+   <p>Пользователи и информация о&nbsp;стандартных группах, машинах:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/070/83c/c1d/07083cc1d10ec872f98813f1873f9ec6.png" width="2880" height="1224" data-src="https://habrastorage.org/getpro/habr/upload_files/070/83c/c1d/07083cc1d10ec872f98813f1873f9ec6.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Информация о конфигурации системы:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/31a/32f/e3f/31a32fe3f6fff52fb07035d655711826.png" width="2880" height="1224" data-src="https://habrastorage.org/getpro/habr/upload_files/31a/32f/e3f/31a32fe3f6fff52fb07035d655711826.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Информация по схемам - основной единице описания данных в AD:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/446/b61/2b3/446b612b3aaca296b137fff34c1425c7.png" width="2880" height="1288" data-src="https://habrastorage.org/getpro/habr/upload_files/446/b61/2b3/446b612b3aaca296b137fff34c1425c7.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Наличие привилегий или&nbsp;их отсутствие над контейнером или&nbsp;схемой в&nbsp;базе AD может приводить к&nbsp;проведению атак. Результатом таких атак может&nbsp;быть изменение характеристик объектов, которые располагаются в&nbsp;базе,&nbsp;либо нарушение разграничения доступа.</p>
+   <p>Кстати, помимо рассмотрения объектов, из&nbsp;картинок выше можно прочитать какие параметры есть у&nbsp;объектов и через них собирать фильтры для&nbsp;ldap запросов.</p>
+   <h4>Нарушения доступа или изменение характеристик внутри AD</h4>
+   <p>Общий термин для&nbsp;этой разновидности атак&nbsp;— «ACL Abuse». Самый, пожалуй, полный справочник по&nbsp;тому какие «Abuse» действия можно выполнять находится в&nbsp;readthedocs проекта <a href="https://bloodhound.readthedocs.io/en/latest/data-analysis/edges.html">bloodhound</a>.</p>
+   <p>Как&nbsp;видно из&nbsp;методик, наличие «лишнего» ACL может сильно влиять на&nbsp;то, что&nbsp;может сделать пользователь в&nbsp;рамках Active Directory. Кстати, можно просматривать доступы к&nbsp;объектам, схемам и контейнерам прямо из&nbsp;AdExplorer:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/621/d72/998/621d729980e68078f390cd5e7e9644d1.png" width="2880" height="1314" data-src="https://habrastorage.org/getpro/habr/upload_files/621/d72/998/621d729980e68078f390cd5e7e9644d1.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Доступ к схеме выбранной группы:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/04d/8b7/4a4/04d8b74a413bd39e0900a328e27e797d.png" width="2880" height="1308" data-src="https://habrastorage.org/getpro/habr/upload_files/04d/8b7/4a4/04d8b74a413bd39e0900a328e27e797d.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Картинки показывают свойстав объектов, которые представляют собой группу в&nbsp;AD. Тоесть чтобы создать группу в&nbsp;AD нужно чтобы&nbsp;была выбрана соответствующая scheme, у&nbsp;scheme в&nbsp;рамках AD будет свой автор и владелец так как&nbsp;он будет определять набор полей и первоначальные права доступа к&nbsp;объекту, который будет создаваться на&nbsp;основе scheme. Когда объект уже создается ему могут&nbsp;быть присвоены дополнительные права, которые могут принадлежать кому угодно в&nbsp;AD. Отсюда как&nbsp;раз и создается возможность найти такой набор scheme→объект, в&nbsp;которых будут разниться привелегии допустимые для&nbsp;всех пользователей AD или&nbsp;только пользователей, у&nbsp;которых прописано в&nbsp;наборе привилегий какие‑то определенные параметры.</p>
+   <p>Вся описанная выше процедура практически никогда не&nbsp;делается вручную и для&nbsp;этого&nbsp;либо существуют уже готовые scheme и пользователь через инструменты AD создает новые обхекты,&nbsp;либо, если требуется новая scheme, то она поставляется вместе с&nbsp;программным обеспечением, которое и выполнит все необходимые преобразования. На&nbsp;этом месте уже можно себе представить, что&nbsp;система, которая будет существовать достаточно долгое время, будет периодически заполняться софтом, который требует особых параметров в&nbsp;scheme, и обновления, патчи, откаты самой ОС будут вносить идеальный хаос в&nbsp;наборы привилегий. Отсюда вопрос поиска уявзимости ставится с&nbsp;точки зрения того что&nbsp;хочет злоумышленник. И начинается поиск контейнера или&nbsp;scheme, которые удовлетворяют поставленной задаче.</p>
+   <p>Сбор данных о&nbsp;характеристиках объектов в&nbsp;AD конечно&nbsp;же не&nbsp;обязательно делать только с&nbsp;использованием ADExplorer, это можно делать так&nbsp;же посредством обращения, например в&nbsp;LDAP. Единственная сложность такого обращения будет заключаться в&nbsp;том, что&nbsp;нужно забрать из&nbsp;базы достаточное количество информации, чтобы ее можно&nbsp;было анализировать на&nbsp;наличие уязвимостей. Кстати, сбор большего числа данных для&nbsp;таких поисков проихводится сегодня через инструмент <a href="https://bloodhound.readthedocs.io/en/latest/">Bloodhound</a>. Но&nbsp;стоит иметь в&nbsp;виду, что&nbsp;инструмент в&nbsp;стандартном виде позволяет смотреть только типичные и общеизвестные проблемы среди объектов AD.</p>
+   <p>Кстати об&nbsp;уязвимостях и объектах, на&nbsp;волне популярной сейчас атаки на&nbsp;использование сертификатов для&nbsp;аутентификации в&nbsp;AD. Можно заглянуть в&nbsp;раздел «Public Key Services» и посмотреть какие права доступа у&nbsp;пользователей к&nbsp;шаблонам:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/5e5/9d2/29b/5e59d229bd8342cbace4be93f5f57bab.png" width="2880" height="1308" data-src="https://habrastorage.org/getpro/habr/upload_files/5e5/9d2/29b/5e59d229bd8342cbace4be93f5f57bab.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Как видно из набора привелегий, даже являясь просто пользователем AD можно читать данные о самих шаблонах и их специальных параметрах. Среди которых находятся и данные, которые позволяют выпускать сертификаты для доступа к сервисам. Здесь, конечно придется немного полистать документацию и создать пару скриптов на Powershell. В итоге можно собирать данные по характеристикам шаблонов для этого можно использовать функции, которые приведены ниже:</p>
+   <pre><code class="powershell">
+$Object = [ADSI]"LDAP://CN=Administrator,CN=Certificate Templates,CN=Public Key Services,CN=Services,CN=Configuration,DC=LAB,DC=COM"
+#$Object = [ADSI]"LDAP://CN=ClientAuth,CN=Certificate Templates,CN=Public Key Services,CN=Services,CN=Configuration,DC=LAB,DC=COM"
+
+function Get-PKIDescription {
+
+    param([int]$flags)
+
+    $msPKICertificateNameFlag = @{
+        0x00000001= "ENROLLEE_SUPPLIES_SUBJECT"
+        0x00000002 = "ADD_EMAIL"
+        0x00000004 = "ADD_OBJ_GUID"
+        0x00000008 = "OLD_CERT_SUPPLIES_SUBJECT_AND_ALT_NAME"
+        0x00000100 = "ADD_DIRECTORY_PATH"
+        0x00010000 = "ENROLLEE_SUPPLIES_SUBJECT_ALT_NAME"
+        0x00400000 = "SUBJECT_ALT_REQUIRE_DOMAIN_DNS"
+        0x00800000 = "SUBJECT_ALT_REQUIRE_SPN"
+        0x01000000 = "SUBJECT_ALT_REQUIRE_DIRECTORY_GUID"
+        0x02000000 = "SUBJECT_ALT_REQUIRE_UPN"
+        0x04000000 = "SUBJECT_ALT_REQUIRE_EMAIL"
+        0x08000000 = "SUBJECT_ALT_REQUIRE_DNS"
+        0x10000000 = "SUBJECT_REQUIRE_DNS_AS_CN"
+        0x20000000 = "SUBJECT_REQUIRE_EMAIL"
+        0x40000000 = "SUBJECT_REQUIRE_COMMON_NAME"
+        0x80000000 = "SUBJECT_REQUIRE_DIRECTORY_PATH"
+    }
+
+    foreach($bits in $msPKICertificateNameFlag.Keys | Sort-Object){
+        if($flags -band $bits){
+            $msPKICertificateNameFlag[$bits]
+        }
+    }
+}
+
+function GetPKIEnrollFlagsDesc
+{ param($flags)
+
+ $msPKIEnrollmentFlag = @{
+        0x00000000 = "NONE"
+        0x00000001 = "INCLUDE_SYMMETRIC_ALGORITHMS"
+        0x00000002 = "PEND_ALL_REQUESTS"
+        0x00000004 = "PUBLISH_TO_KRA_CONTAINER"
+        0x00000008 = "PUBLISH_TO_DS"
+        0x00000010 = "AUTO_ENROLLMENT_CHECK_USER_DS_CERTIFICATE"
+        0x00000020 = "AUTO_ENROLLMENT"
+        0x80 = "CT_FLAG_DOMAIN_AUTHENTICATION_NOT_REQUIRED"
+        0x00000040 = "PREVIOUS_APPROVAL_VALIDATE_REENROLLMENT"
+        0x00000100 = "USER_INTERACTION_REQUIRED"
+        0x200 = "ADD_TEMPLATE_NAME"
+        0x00000400 = "REMOVE_INVALID_CERTIFICATE_FROM_PERSONAL_STORE"
+        0x00000800 = "ALLOW_ENROLL_ON_BEHALF_OF"
+        0x00001000 = "ADD_OCSP_NOCHECK"
+        0x00002000 = "ENABLE_KEY_REUSE_ON_NT_TOKEN_KEYSET_STORAGE_FULL"
+        0x00004000 = "NOREVOCATIONINFOINISSUEDCERTS"
+        0x00008000 = "INCLUDE_BASIC_CONSTRAINTS_FOR_EE_CERTS"
+        0x00010000 = "ALLOW_PREVIOUS_APPROVAL_KEYBASEDRENEWAL_VALIDATE_REENROLLMENT"
+        0x00020000 = "ISSUANCE_POLICIES_FROM_REQUEST"
+        0x00040000 = "SKIP_AUTO_RENEWAL"
+        0x00080000 = "NO_SECURITY_EXTENSION"
+    }
+
+    foreach($bits in $msPKIEnrollmentFlag.Keys | Sort-Object){
+        if($flags -band $bits){
+            $msPKIEnrollmentFlag[$bits]
+        }
+    }
+}
+
+
+Get-PKIDescription([int]$Object.'msPKI-Certificate-Name-Flag'.Value)
+GetPKIEnrollFlagsDesc([int]$Object.'msPKI-Enrollment-Flag'.Value)
+
+</code></pre>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/dc3/02b/d7f/dc302bd7f7ce00303a91140dc63102a4.png" width="1132" height="366" data-src="https://habrastorage.org/getpro/habr/upload_files/dc3/02b/d7f/dc302bd7f7ce00303a91140dc63102a4.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Таким образом можно самостоятельно изучать структуры AD и подходы к&nbsp;атакам на&nbsp;инфраструктуру.</p>
+   <p>На&nbsp;этом все. В&nbsp;конце статьи хочу пригласить вас на&nbsp;свой <a href="https://otus.pw/b48I/">бесплатный урок</a>, где рассмотрим принципы работы привилегий в&nbsp;операционной системе и инструменты для&nbsp;их исследования.</p>
+   <ul>
+    <li><p><a href="https://otus.pw/b48I/">Зарегистрироваться на бесплатный урок</a></p></li>
+   </ul>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

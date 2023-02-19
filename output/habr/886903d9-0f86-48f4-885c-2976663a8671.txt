@@ -1,0 +1,197 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <figure class="bordered full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/04c/003/953/04c003953028b5912df5d5ab6dc33f37.jpg" width="2048" height="1492" data-src="https://habrastorage.org/getpro/habr/upload_files/04c/003/953/04c003953028b5912df5d5ab6dc33f37.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>О теме повторной передачи сообщений в Kafka&nbsp;было написано достаточно много статей, например, на Habr&nbsp;[<a href="https://habr.com/ru/company/tinkoff/blog/487094/"><u>1</u></a>], в том числе в англоязычных источниках [<a href="https://medium.com/trendyol-tech/how-to-implement-retry-logic-with-spring-kafka-710b51501ce2"><u>2</u></a>].</p>
+   <p>В данной статье хотелось бы дополнительно прояснить возможности использования фреймворка SPRING&nbsp;в части интеграции с Apache&nbsp;Kafka, а также заострить внимание на обработке повторов.<br>Разработчики Kafka, судя по релизной политике, стали внедрять функционал, который предусматривает приоритизацию настроек Kafka&nbsp;в части надёжности иногда даже в ущерб доступности (prioritizes durability over availability).<br>К сожалению, систему с надёжной и гарантированной доставкой сложно представить без повторов. Kafka&nbsp;имеет множество настроек, которые позволяют настраивать её в ту или иную сторону в зависимости от ТЗ. Для новичков перед прочтением рекомендуется ознакомится с основными понятиями, присущими этой платформе, например здесь [<a href="https://habr.com/ru/company/southbridge/blog/550934/">3</a>]</p>
+   <p>В Kafka&nbsp;данные обрабатываются вполне надёжно, и сама по себе Kafka&nbsp;обладает высокой степенью доступности, предполагая обработку миллионов сообщений в секунду.</p>
+   <p>В Kafka&nbsp;есть два уровня, которые непосредственно влияют на доступность:</p>
+   <ol>
+    <li><p>Управляющий уровень (control&nbsp;plane), который в свою очередь ответственен за:<br>- управление метаданными;<br>- обработку ситуаций, когда один из серверов Kafka&nbsp;недоступен;<br>- обеспечение информацией о том, сколько серверов Kafka&nbsp;сейчас доступно;</p></li>
+    <li><p>Уровень данных (data plane), который отвечает за:<br>- обработку и передачу данных;<br>- обработку синхронизации метаданных с управляющего уровня.</p></li>
+   </ol>
+   <p>Исторически так сложилось, что&nbsp;Kafka использует Apache Zookeeper кластер для&nbsp;обмена с&nbsp;целью обеспечения функциональности на&nbsp;управляющем уровне. Zookeeper нужен для&nbsp;обеспечения согласованности состояния кластера Kafka, его конфигурации. Начиная с&nbsp;версии 2.8, в&nbsp;Kafka появился ранний доступ к&nbsp;протоколу KRaft, в&nbsp;котором заявлен новый протокол согласования метаданных. На&nbsp;Хабре довольно подробно уже описывались детали настройки и использования Kafka без&nbsp;Zookeeper [<a href="https://habr.com/ru/company/otus/blog/670440/"><u>4</u></a>].<br>Можно отметить, что&nbsp;в&nbsp;KRaft режиме синхронизации метаданных выполняется без&nbsp;привлечения стороннего сервиса, поэтому восстановление после отказа происходит гораздо&nbsp;быстрее, что&nbsp;положительно влияет на&nbsp;общую доступность кластера Kafka. На&nbsp;данный момент в&nbsp;версии Kafka 3.3.1&nbsp;KRaft режим заявлен как&nbsp;production ready.</p>
+   <p>Рассмотрим параметры, которые влияют на доступность на уровне данных. Существует огромное количество других настроек в Kafka, которые могут повлиять на надежность и доступность. Важнейшими из них являются <strong>min.insync.replicas</strong> и настройка <strong>acks</strong>.<br><br>В Kafka&nbsp;данные хранятся в топиках, и каждый топик состоит обычно из нескольких партиций &nbsp;(partitions) или по-русски, разделов, распределённых между брокерами внутри одного кластера. Разделы могут быть реплицированы среди брокеров, обеспечивая копию каждой записи, которая сохранена физически как лог, сохранённый на множестве брокеров.<br><br></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/848/48f/dde/84848fddeaaa3153ef35c368fb929474.png" width="762" height="250" data-src="https://habrastorage.org/getpro/habr/upload_files/848/48f/dde/84848fddeaaa3153ef35c368fb929474.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Количество копий патриции называют фактор репликации. Фактор репликации одинаковый среди всех разделов в топике. Именно за счёт репликации данных обеспечивается устойчивость к потере данных при выводе из строя одного или нескольких брокеров Kafka. Например, вывод из строя брокера означает потерю данных, если лог не реплицированный, в случае если фактор репликации равен 1.</p>
+   <p>У&nbsp;каждого раздела есть «лидер», то есть брокер, который работает с клиентами. Именно лидер работает с продюсерами (Producer) и в общем случае отдаёт сообщения консьюмерам (Consumer). К лидеру осуществляют запросы фолловеры (Follower) - брокеры, которые хранят реплику всех данных партиций. Kafka&nbsp;различает фолловеров, которые поддерживают добавление новых записей и тех которые, которые этого не делают. <br>ISR — это набор реплик раздела, который считается «синхронизированным» (в состоянии in-sync). Ну и, соответственно, конфигурация на стороне брокера min.insync.replicas задаёт число реплик, которые должны быть синхронизированы, чтобы можно было продолжить запись. Эту конфигурацию (min.insync.replicas) можно задать и на уровне раздела.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/7ed/f2e/367/7edf2e3671c50a953994852a2cd7aa81.png" width="808" height="372" data-src="https://habrastorage.org/getpro/habr/upload_files/7ed/f2e/367/7edf2e3671c50a953994852a2cd7aa81.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Когда передатчик пытается послать некоторые записи лидеру, он должен ждать от брокера подтверждения (ack&nbsp;сокращённо от acknowledgement), что записи была добавлены.</p>
+   <p>Существует настройка для продюсеров, которая позволяет выбирать, когда брокер отправляет подтверждение:</p>
+   <div>
+    <div class="table">
+     <table>
+      <tbody>
+       <tr>
+        <td data-colwidth="194" width="194"><p align="left"><strong>Значение &nbsp;acks</strong></p></td>
+        <td data-colwidth="454" width="454"><p align="center"><strong>Описание</strong></p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="194" width="194"><p align="center">acks=0</p></td>
+        <td data-colwidth="454" width="454"><p align="left">Передатчик не ждёт подтверждения от брокера. Передатчик не повторяет отправку сообщений. Сообщения могут теряться. Низкая надежность.</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="194" width="194"><p align="center">acks=1</p></td>
+        <td data-colwidth="454" width="454"><p align="left">Передатчик ждёт подтверждения от брокера лидера раздела. Как только сообщение записано, отправляется подтверждение. Компромиссная настройка между задержкой, пропускной способностью и надёжностью.</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="194" width="194"><p align="center">acks=all</p></td>
+        <td data-colwidth="454" width="454"><p align="left">Передатчик ждёт подтверждения от всех брокеров ISR, которые записали сообщения в лог. Эта настройка влияет на задержу записи.</p></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+   </div>
+   <p>Комбинация настроек min.insync.replicas&nbsp;и acks&nbsp;позволяет гибко выбирать режим работы кластера в соответствии с поставленными задачами:<br></p>
+   <div>
+    <div class="table">
+     <table>
+      <tbody>
+       <tr>
+        <td data-colwidth="74" width="74"><p align="center"><strong>Acks</strong></p></td>
+        <td data-colwidth="160" width="160"><p align="center"><strong>min.insync.replicas</strong></p></td>
+        <td><p align="center"><strong>Надежность</strong></p></td>
+        <td data-colwidth="117" width="117"><p align="center"><strong>Доступность</strong></p></td>
+        <td data-colwidth="123" width="123"><p align="center"><strong>Латентность</strong></p></td>
+        <td><p align="center"><strong>Пропускная способность</strong></p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="74" width="74"><p align="center">1</p></td>
+        <td data-colwidth="160" width="160"><p align="center">любое</p></td>
+        <td><p align="center">Худшая</p></td>
+        <td data-colwidth="117" width="117"><p align="center">Лучшая</p></td>
+        <td data-colwidth="123" width="123"><p align="center">Лучшая</p></td>
+        <td><p align="center">Хорошая</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="74" width="74"><p align="center">all</p></td>
+        <td data-colwidth="160" width="160"><p align="center">1</p></td>
+        <td><p align="center">Хорошая</p></td>
+        <td data-colwidth="117" width="117"><p align="center">Лучшая</p></td>
+        <td data-colwidth="123" width="123"><p align="center">Худшая</p></td>
+        <td><p align="center">Хорошая*</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="74" width="74"><p align="center">all</p></td>
+        <td data-colwidth="160" width="160"><p align="center">2</p></td>
+        <td><p align="center">Хорошая</p></td>
+        <td data-colwidth="117" width="117"><p align="center">Хорошая</p></td>
+        <td data-colwidth="123" width="123"><p align="center">Худшая</p></td>
+        <td><p align="center">Хорошая*</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="74" width="74"><p align="center">all</p></td>
+        <td data-colwidth="160" width="160"><p align="center">3</p></td>
+        <td><p align="center">Лучшая</p></td>
+        <td data-colwidth="117" width="117"><p align="center">Худшая</p></td>
+        <td data-colwidth="123" width="123"><p align="center">Худшая</p></td>
+        <td><p align="center">Хорошая*</p></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+   </div>
+   <p>Хорошая* - сравнимая с хорошей, или лучше<br><br>Согласно результатам из <a href="https://%5B4%5Dhttps://www.instaclustr.com/blog/the-power-of-kafka-partitions-how-to-get-the-most-out-of-your-kafka-cluster/">[5]</a> для большинства проектов комбинация параметров min.insync.replicas=3 с acks=all&nbsp;является разумным выбором.</p>
+   <p>Обработка ошибок в Kafka&nbsp;на стороне приёмника отдаётся на откуп разработчику. По умолчанию, если не конфигурировать специальным образом обработку ошибок, то ошибочные сообщения, которые могут возникнуть в обработчике приёмника, могут приводить к многократным повторам и обработку исключительной ситуации до тех пор, пока соответствующий приёмник не установит указатель в актуальное значение, послав брокеру ответ – ack.</p>
+   <h2>1. Блокирующие повторы (Blocking Retries)</h2>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/799/fe8/c90/799fe8c903c93a038d5e5fe12b219ad0.png" width="730" height="230" data-src="https://habrastorage.org/getpro/habr/upload_files/799/fe8/c90/799fe8c903c93a038d5e5fe12b219ad0.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Обработка повторов в таком случае, на приёмной стороне блокирует обработчик приёмника (Consumer-а), так как ошибочные сообщения блокируют основной поток сообщений для обработки. Такая стратегия обработки сообщений из Kafka называется «блокирующие повторы». Если количество попыток для повторов кончилось, то ошибочная запись попадает в DLT&nbsp;топик. В случае, если обработчик успешно обработает запись, приёмник уведомляет брокера, что готов к приёму нового сообщения, посылая ack.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/a71/11b/800/a7111b800e3a89cfa2bd5f685b9e93be.png" width="723" height="179" data-src="https://habrastorage.org/getpro/habr/upload_files/a71/11b/800/a7111b800e3a89cfa2bd5f685b9e93be.png">
+    <figcaption></figcaption>
+   </figure>
+   <h2>2. Неблокирующие повторы (Non-Blocking Retries)</h2>
+   <p>В последних версиях Spring&nbsp;Kafka, начиная с 2.7.0, существует возможность повторно отправлять сообщения, обработанные с исключениями в специальный топик для повторов. Цель этого (этих) топиков - организовать отдельную обработку сообщений, которые по той или иной причине не смогли быть обработаны прежде. Такая стратегия обработки сообщений из Kafka называется «неблокирующие повторы».</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/5f3/216/e4b/5f3216e4bd843337d73d02aa10cdf71b.png" width="670" height="459" data-src="https://habrastorage.org/getpro/habr/upload_files/5f3/216/e4b/5f3216e4bd843337d73d02aa10cdf71b.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Если обработка сообщения происходит с ошибкой в обработчике (handler1), то сообщение перенаправляется в retry&nbsp;топик, который работает по back&nbsp;Off&nbsp;стратегии, настроенной в конфигурации. При сбое отправке сообщения, консьюмер пытается выполнить повторную доставку в retry&nbsp;топик согласно той же back&nbsp;Off&nbsp;стратегии, заданной в конфигурации повторов. Если количество заданных попыток вышло, то такие сообщения попадают в ремонтную очередь DLT&nbsp;(на иллюстрации топик base-topic-dlt), так называемый топик недоставленных сообщений.</p>
+   <p>Выгода от использования «неблокирующих повторов» очевидна, ведь благодаря повторной обработке в отдельных топиках не прерывается обработка реального потока данных.<br><br>Для того чтобы сконфигурировать неблокирующие повторы в Spring&nbsp;Kafka, начиная с версии 2.7.0, в самом простом случае можно добавить аннотацию <a class="mention" href="/users/RetryableTopic">@RetryableTopic</a>&nbsp;к методу приёмника, аннотированного <a class="mention" href="/users/KafkaListener">@KafkaListener</a><br></p>
+   <pre><code>@RetryableTopic(attempts = 5, autoCreateTopics = "false",
+topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE,
+
+exclude = {MyExcludeException.class, NullPointerException.class}, traversingCauses = true,
+
+dltProcessingFailureStrategy = DltStrategy.NO_DLT,
+
+backoff = @Backoff(delay = 1000, multiplier = 2, maxDelay = 5000))
+@KafkaListener(topics = "my-annotated-topic")
+
+public void processMessage(MyPojo message) {
+   // ... message processing
+}</code></pre>
+   <p>С такой конфигурацией, если первая попытка обработки сообщения заканчивается ошибкой, то сообщение с 1 секундной задержкой посылается в топик my-annotated-topic-retry-0.&nbsp;</p>
+   <p>Когда вторая попытка обработки сообщения заканчивается с ошибкой, то сообщение с 2 секундной задержкой будет послано в топик my-annotated-topic-retry-1. Следующая попытка получить сообщение произойдёт в топике my-annotated-topic-retry-2, my-annotated-topic-retry-3 и т.д., это произойдёт с задержкой 4, 8 и т.д. секунд соответственно. Обработка сообщения заканчивается на попытке 5, где обработка сообщения просто заканчивается, так как указана стратегия DltStrategy.NO_DLT.&nbsp;Но обычно для ремонтной очереди указывается отдельный обработчик, добавляя к методу аннотацию <a class="mention" href="/users/DltHandler">@DltHandler</a></p>
+   <pre><code>@DltHandlerpublic void processDltMessage(MyPojo message) {
+   // ... message processing, persistence, etc
+}</code></pre>
+   <p>Стратегии отсрочек настраиваются через реализации интерфейса BackOffPolicy.</p>
+   <p>Существуют следующие стратегии отсрочки вызовов:<br></p>
+   <ul>
+    <li><p>Fixed Back Off</p></li>
+    <li><p>No Back Off</p></li>
+    <li><p>Exponential Back Off</p></li>
+    <li><p>Random Exponential Back Off</p></li>
+    <li><p>Uniform Random Back Off</p></li>
+    <li><p>Custom Back Off</p></li>
+   </ul>
+   <p>Важно заметить, что только со стратегией FixedBackOffPolicy&nbsp;и No&nbsp;BackOff&nbsp;возможна конфигурация не блокирующих повторов с помощью одного топика для повторов. В других случаях придётся создавать топики вручную (если указан параметр autoCreateTopics&nbsp;= "false")</p>
+   <p>При разработке стратегии повторов можно указать, на какие исключения мы будем пытаться делать повторы, а на какие ошибки не будет повторной обработки.</p>
+   <p>Например, довольно логично что NPE&nbsp;и другие неисправимые ошибки, которые мы можем встретить при обработке в приёмнике, например, из-за невалидных записей, не должны попадать в цепочку повторов, так как запись будет обработана аналогичным образом. Напротив, ошибки, связанные с интеграциями с внешними компонентами, сетевые ошибки и прочие контролируемые исключения могут успешно быть отправлены в цепочку retry&nbsp;топиков для повторной обработки. С помощью опционального параметра include / exclude&nbsp;можно задавать списки исключений, которые используются для явного различения тех исключений, на обработку которых по неблокрующей стратегии можно тратить время, а некоторые исключения, описанные в поле exсlude, лучше сразу передать в топик DLT.</p>
+   <p>Имеется также возможность программно конфигурировать неблокирующие повторы через определение бина RetryTopicConfiguration в своем конфигурационном классе</p>
+   <pre><code>@Bean
+public RetryTopicConfiguration myRetryTopic(KafkaTemplate&lt;String, MyOtherPojo&gt; template) {
+    return RetryTopicConfigurationBuilder
+            .newInstance()
+            .excludeTopic("excluded-topic")
+            .notRetryOn(MyDontRetryException.class)
+            .create(template);
+}
+</code></pre>
+   <p>В этом примере задаётся конфигурация, в которой мы не обрабатываем записи, при обработке которых генерируется исключение MyDontRetryException.&nbsp;Эта конфигурация будет действовать на все топики, за исключением топика «excluded-topic».<br><br>У неблокирующих повторов тем не менее есть и недостаток. Невозможно достоверно гарантировать порядок сообщений при неблокирующих повторах.</p>
+   <h2>3. Блокирующие и неблокирующие повторы</h2>
+   <p>Начиная с версии 2.8.4, в Spring&nbsp;Kafka&nbsp;есть возможность конфигурирования как блокирующих, так и не блокирующих повторов. Например, есть возможность задавать исключения, которые возможно будут приводить к повторным ошибкам и в других записях, например, DatabaseAccessException, поэтому есть возможность делать обработку таких записей повторно без вызова неблокирующих повторов и перенаправления записей в retry&nbsp;топик. Это позволяет гибко настраивать стратегии повторов в зависимости от требований системы. Для того, чтобы сконфигурировать и блокирующие, и неблокирующие повторы, необходимо переопределить методы класса RetryTopicConfigurationSupport&nbsp;в вашем конфигурационном классе, помеченном аннотацией<a class="mention" href="/users/configuration.">@Configuration.</a></p>
+   <pre><code>@EnableKafka
+@Configuration
+public class MyRetryTopicConfiguration extends RetryTopicConfigurationSupport {
+
+//
+
+   @Override protected void configureBlockingRetries(BlockingRetriesConfigurer blockingRetries) 
+   { 
+      blockingRetries.retryOn(MyBlockingRetriesException.class, MyOtherBlockingRetriesException.class).backOff(new FixedBackOff(3000, 3)); 
+   } 
+
+   @Override protected void manageNonBlockingFatalExceptions(List&lt;Class&lt;? extends Throwable&gt;&gt; nonBlockingFatalExceptions) { 
+      nonBlockingFatalExceptions.add(MyNonBlockingException.class); 
+   }
+
+//
+
+}</code></pre>
+   <p>Kafka&nbsp;является достаточно сложной системой, которая обладает довольно внушительным набором параметров для конфигурирования. Использование Spring&nbsp;Kafka&nbsp;значительно уменьшает&nbsp;количество boilerplate кода, который необходим в противном случае, при конфигурировании при помощи нативной библиотеки Kafka. Отмечено также удобство и гибкость в конфигурировании обработки ошибок и различных типов повторов.<br><br>Источники:</p>
+   <ol>
+    <li><p><a href="https://habr.com/ru/company/tinkoff/blog/487094/">https://habr.com/ru/company/tinkoff/blog/487094/</a></p></li>
+    <li><p><a href="https://medium.com/trendyol-tech/how-to-implement-retry-logic-with-spring-kafka-710b51501ce2">https://medium.com/trendyol-tech/how-to-implement-retry-logic-with-spring-kafka-710b51501ce2</a></p></li>
+    <li><p><a href="https://habr.com/ru/company/southbridge/blog/550934/">https://habr.com/ru/company/southbridge/blog/550934/</a></p></li>
+    <li><p><a href="https://habr.com/ru/company/otus/blog/670440/">https://habr.com/ru/company/otus/blog/670440/</a></p></li>
+    <li><p><a href="https://www.instaclustr.com/blog/the-power-of-kafka-partitions-how-to-get-the-most-out-of-your-kafka-cluster/">https://www.instaclustr.com/blog/the-power-of-kafka-partitions-how-to-get-the-most-out-of-your-kafka-cluster/</a></p></li>
+    <li><p><a href="https://docs.spring.io/spring-kafka/docs/current/reference/html/#retry-topic">https://docs.spring.io/spring-kafka/docs/current/reference/html/#retry-topic</a></p></li>
+   </ol>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

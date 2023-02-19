@@ -1,0 +1,316 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <h2>Вступление</h2>
+   <p>Являясь постоянным читателем Habr-а, я подметил одну замечательную закономерность: многие сегодня уже обыденные технологии когда-то были предметом острого внимания на ресурсе в период их появления.</p>
+   <p>Еще совсем недавно 3D-печать будоражила умы читателей, завораживала своей перспективностью, открывала широкие возможности для творчества, но была недоступна для простого обывателя. Сейчас 3D-принтер можно легко приобрести на китайском рынке по приемлемой цене. Технология 3D-печати не прекратила своего развития: меняются способы печати, появляются более скоростные модели принтеров, но сама технология стала привычным для нас явлением.</p>
+   <p>Немного позднее грянула эпоха IoT и ресурс запестрел статьями про интернет вещей. Автоматизация быта привела к появлению множества умных устройств, а их интеграция в единую систему приблизила нас к будущему еще на один шаг, породив концепцию умного дома. Своевременное появление линейки микроконтроллеров фирмы <a href="https://ru.wikipedia.org/w/index.php?title=Espressif_Systems&amp;action=edit&amp;redlink=1" rel="noopener noreferrer nofollow">Espressif Systems</a> с поддержкой Wi-Fi также способствовало бурному развитию IoT. Сегодня любой желающий может купить умное устройство в магазине или собрать его самостоятельно, ознакомившись с инструкциями из интернета.</p>
+   <p>В последнее время стала очень популярна тема машинного обучения. Темпы её развития стремительны, масштабны и непредсказуемы. Ещё вчера мы удивлялись общению с голосовым помощником, а сегодня нейронные сети по нашему запросу создают изображений высокого качества, пишут программный код на основе краткого технического задания или являются соавтором чей-то дипломной работы . Мы уже привыкли к тому, что бытовая техника понимает голосовые команды, камеры и телефоны автоматически распознают лица и накладывают нужные нам фильтры, социальные сети или информационные порталы выдают точные и нужные нам рекомендации. И за все этим стоит работа армии незаменимых помощников - моделей машинного обучения, на создание которых было потрачено и ещё будет потрачено огромное количество человеко-часов, аппаратных ресурсов и терабайт данных. И все эти технологические достижения в совокупности дают нам отличную возможность не только быть их потребителями, а созидать и творить, реализовывать свои самые смелые идеи.</p>
+   <p>В этой статье я хочу поделиться опытом создания еще одного "умного" устройства, умеющего при помощи компьютерного зрения идентифицировать людей по принципу свой-чужой и, исходя из этого управлять доступом в помещение.</p>
+   <p>Сразу отмечу, что представленное устройства является проектной работой моего сына, с которой он участвовал в городской научно-практической конференции. Так что формально я не являюсь автором данного проекта, но будучи глубоко вовлеченный в разработку в качестве технического консультанта, с согласия автора идеи я решился на написание данного эпоса.</p>
+   <h3>Предыстория проекта</h3>
+   <p>При выборе темы проекта основной упор делался на его актуальность и востребованность. В доме уже давно образовался небольшой "зоопарк" из различных самоделок на связке "ESP + Relay" для включения/отключения лампочек и других устройств. В довесок к этому в доме нашлось место для пары умных ламп сторонних производителей, а так же мини-станции с голосовым помощником Алиса. Весь этот зоопарк худо-бедно управляется с помощью HomeAssistant, на выбор которого существенно повлияла <a href="https://habr.com/ru/post/508106/" rel="noopener noreferrer nofollow">статья</a> <a href="https://habr.com/ru/users/AlexxIT/" rel="noopener noreferrer nofollow">@AlexxIT</a>, где он представил компонент для управления Яндекс-колонкой. Но желание попробовать на практике одно из достижений машинного обучения, а именно технологию компьютерного зрения, сподвигло на создание более интеллектуального устройства, способного к распознаванию и идентификации лиц.</p>
+   <p>После непродолжительных изысканий методом проб и ошибок была выбрана библиотека <a href="https://github.com/ageitgey/face_recognition" rel="noopener noreferrer nofollow">face_recognition</a>, показавшая довольно высокие результаты, а рабочей лошадкой послужил пылившийся в столе микрокомпьютер <a href="http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-Zero-2.html" rel="noopener noreferrer nofollow">orangepi zero2</a> с установленной на борту Ubunty Server. К контроллеру подключили обычную USB веб-камеру и дополнительную периферию, состоящую из нескольких светодиодов, кнопки и реле, которое в свою очередь управляет питанием электромагнита. В реальном времени с веб-камеры считывается картинка, на которой при помощи алгоритмов компьютерного зрения выполняется поиск и идентификация лиц. При нажатии на кнопку формируется запрос на доступ (например открытие запорного механизма). Еcли никто из идентифицированных лиц не находится в списке людей, для которых доступ категорически запрещен, и в кадре есть ходя бы одно лицо человека, доступ которому разрешен, доступ будет предоставлен. Весь процесс обработки запроса сопровождается светодиодной индикацией:</p>
+   <ul>
+    <li><p>желтый - запрос на открытие двери получен;</p></li>
+    <li><p>красный - в доступе отказано;</p></li>
+    <li><p>зеленый - доступ разрешен;</p></li>
+   </ul>
+   <p>Устройство по веб интерфейсу транслирует картинку, на котором в реальном времени можно наблюдать процесс распознавания. Дополнительно по протоколу mqtt возможна его интеграция в HomeAssistant, где также можно наблюдать видеоряд и инициировать принудительное открытие замка.</p>
+   <h2>Предварительная настройка Orange Pi Zero 2</h2>
+   <p>Для работы устройства необходимо, чтобы на нем была установлена операционная система Linux, интерпретатор языка python версии 3.x и набор библиотек, которые будут использованы в программной части проекта. Установка некоторых библиотек требует особого подхода, поэтому весь процесс настройки я постарался подробно изложить ниже.</p>
+   <details class="spoiler">
+    <summary>Установка операционной системы</summary>
+    <div class="spoiler__content">
+     <p>Для установки операционной системы потребуется карта microSD объёмом не меньше 8 Гб и не ниже 10 класса скорости. Образ дистрибутива доступен на <a href="http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-Zero-2.html" rel="noopener noreferrer nofollow">официальном сайте</a> по <a href="https://drive.google.com/drive/folders/1ohxfoxWJ0sv8yEHbrXL1Bu2RkBhuCMup" rel="noopener noreferrer nofollow">этой ссылке</a>. С помощью программы <a href="https://balena-etcher.com" rel="noopener noreferrer nofollow">Ether </a>образ заливается на карту памяти. В нашем случае был использован дистрибутив ubuntu server.</p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w780q1/webt/q2/b5/g_/q2b5g_z5wsksunwaj1mopvertmg.jpeg" width="auto" height="auto" data-src="https://habrastorage.org/webt/q2/b5/g_/q2b5g_z5wsksunwaj1mopvertmg.jpeg" data-blurred="true">
+      <figcaption></figcaption>
+     </figure>
+     <p>После того как образ будет залит на карту, вставляем её в устройство и включаем его. Для настройки системы необходимо предварительно подключить монитор через mini-hdmi и usb-клавиатуру, либо подсоединить микрокомпьютер к роутеру ethernet-кабелем и подключиться к нему по <em>ssh</em> с помощью <a href="https://www.putty.org" rel="noopener noreferrer nofollow">putty</a>. Вход в систему по умолчанию выполняется под пользователем <strong><em>root</em></strong> и паролем <strong><em>orangepi</em></strong>.</p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/webt/3d/cc/aa/3dccaaixffnkctxbuiupn6ktc8q.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/3d/cc/aa/3dccaaixffnkctxbuiupn6ktc8q.png">
+      <figcaption></figcaption>
+     </figure>
+     <p></p>
+    </div>
+   </details>
+   <details class="spoiler">
+    <summary>Добавление файла подкачки</summary>
+    <div class="spoiler__content">
+     <p>Хотя на борту устройства присутствует достаточный объём оперативной памяти, в некоторых ситуациях её может оказаться недостаточно, поэтому сразу необходимо добавить файл подкачки.</p>
+     <pre><code>fallocate -l 3G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab</code></pre>
+     <p></p>
+    </div>
+   </details>
+   <details class="spoiler">
+    <summary>Настройка WiFi</summary>
+    <div class="spoiler__content">
+     <p>Для настройки беспроводной сети в системе предустановлена утилита <strong><em>nmtui</em></strong>. С помощью неё очень легко прописать параметры точки доступа на устройстве.</p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/webt/fj/5_/al/fj5_aliikoxupkrikpggo4qc0am.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/fj/5_/al/fj5_aliikoxupkrikpggo4qc0am.png">
+      <figcaption></figcaption>
+     </figure>
+     <p>После этого к устройству можно будет подключаться "по воздуху" и его можно расположить там, где это будет необходимо.</p>
+    </div>
+   </details>
+   <details class="spoiler">
+    <summary>Установка дополнительных пакетов</summary>
+    <div class="spoiler__content">
+     <p>Установленный дистрибутив операционной системы уже содержит интерпретатор языка python нужной версии.</p>
+     <pre><code>python3 --version
+&gt;&gt; Python 3.10.4</code></pre>
+     <p>Остается только дополнить его, выполнив последовательность команд:</p>
+     <pre><code>apt-get update
+apt-get upgrade
+apt-get install python3-setuptools
+apt-get install python3-dev
+apt-get install python3-pip
+apt-get install cmake
+apt-get install ffmpeg</code></pre>
+     <p>При помощи менеджера pip скачиваем и устанавливаем библиотеку <a href="https://opencv.org" rel="noopener noreferrer nofollow">opencv</a>, которая будет использоваться для работы с камерой.</p>
+     <pre><code>pip3 install opencv-contrib-python</code></pre>
+     <p>Это достаточно мощная библиотека компьютерного зрения, содержит алгоритмы для обработки изображений и алгоритмы общего назначения, но мы её будем использовать по минимуму, отдав предпочтение библиотеке <a href="https://pypi.org/project/face-recognition/" rel="noopener noreferrer nofollow">face recogniton</a>, которая по своей сути является оберткой над библиотекой <a href="http://dlib.net" rel="noopener noreferrer nofollow">dlib</a>, предоставляя простой и удобный интерфейс. Устанавливаем <a href="http://dlib.net" rel="noopener noreferrer nofollow">dlib</a> из исходников с обязательным параметром DLIB_PNG_SUPPORT:</p>
+     <pre><code>cd /
+git clone https://github.com/davisking/dlib.git
+cd dlib
+python3 setup.py install --set DLIB_PNG_SUPPORT=1</code></pre>
+     <p>Процесс компиляции занимает продолжительное время примерно около 2-3 часов и поглощает приличный объем оперативной памяти. Если вы не позаботились о создании файла подкачки, ждите гарантированного зависания на данном этапе.</p>
+     <p>После окончания установки dlib устанавливаем остальные библиотеки.</p>
+     <pre><code>pip3 install face_recognition
+pip3 install flask
+pip3 install paho-mqtt
+pip3 install imutils</code></pre>
+     <p>Управление периферией реализовано через цифровые порты ввода-вывода. Для работы с ними нам понадобится библиотека OPi.GPIO.</p>
+     <pre><code>cd /
+git clone https://github.com/NadavK/OPI.GPIO
+cd OPI.GPIO
+python3 setup.py install</code></pre>
+     <p></p>
+    </div>
+   </details>
+   <h2>Подключаем периферию</h2>
+   <p>Принципиальная схема обвязки показана на рисунке. Порты с номерами пинов 11, 13, 19 работают в режиме вывода и управляют светодиодной индикацией. Порт с пином 7 находится в режиме ввода и на него вешается программный обработчик нажатия кнопки.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/webt/fs/cu/-f/fscu-fterdhvrstjv11czjx9fva.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/fs/cu/-f/fscu-fterdhvrstjv11czjx9fva.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>На макетной плате это выглядело немного страшновато, но все функциональные испытания были пройдены успешно. На фото также присутствует DC-DC стабилизатор: через него от 12 вольтового блока питания на "апельсинку" подается 5 вольт.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/webt/04/co/z7/04coz7u4jbvwahcmh8wrfwtftwa.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/04/co/z7/04coz7u4jbvwahcmh8wrfwtftwa.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>В окончательном варианте получилось так как на фото ниже. Про высокую защищенность от влаги и пыли речи пока не идет, но внутри помещения она и не требуется.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/webt/rf/t9/2u/rft92u58qqqfes7cohez-twnmgc.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/rf/t9/2u/rft92u58qqqfes7cohez-twnmgc.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>При использовании в схеме 5-ти вольтового реле следует учитывать тот факт, что логическая единица на выходе порта Orange Pi составляет чуть более 3 вольт и некоторые дешевые реле могут работать некорректно или вообще не заработать. Как например такая модель</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w780q1/webt/tc/a8/pk/tca8pkgsxrdul-1ny5ca8r77lou.jpeg" width="auto" height="auto" data-src="https://habrastorage.org/webt/tc/a8/pk/tca8pkgsxrdul-1ny5ca8r77lou.jpeg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Пришлось "задавить жабу" и использовать двухканальную реле с опторазвязкой, подключив ее на 21 пин. По ходу дела выяснилось ещё одна особенность её работы: реле замыкается при низком значении управляющего сигнала и отключается при высоком.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/webt/-i/pq/tj/-ipqtj6mcf4hg2ie5rb0pvmvy0w.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/-i/pq/tj/-ipqtj6mcf4hg2ie5rb0pvmvy0w.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Через реле 12 вольт подаются на запорное устройство. В нашем случае был припасен электромеханический замок, который планируется летом установить на дачную калитку.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w780q1/webt/cz/0h/7c/cz0h7ctlwvlzj0aagdezwrbucio.jpeg" width="auto" height="auto" data-src="https://habrastorage.org/webt/cz/0h/7c/cz0h7ctlwvlzj0aagdezwrbucio.jpeg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <h3>Изготовление корпуса и монтаж</h3>
+   <p>Помимо самого контроллера в конструкции присутствуют довольно объемные компоненты в виде реле и стабилизатора напряжения, а для удобства использованы разъемы для подключения питания, запорного механизма и интерфейсного блока с кнопкой и светодиодами. Всё это мы попытались учесть при проектировании корпуса устройства, не забыв про встроенный в микро-ПК USB-разъем и карт-ридер. Также для охлаждения пришлось установить небольшой кулер, потому что без него контроллер греется как паровоз.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w780q1/webt/gp/e7/zo/gpe7zodzaqzpzd3ehd_gekmssty.jpeg" width="auto" height="auto" data-src="https://habrastorage.org/webt/gp/e7/zo/gpe7zodzaqzpzd3ehd_gekmssty.jpeg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w780q1/webt/8h/0k/au/8h0kaufk2f3ugqofrbxjtxtwohc.jpeg" width="auto" height="auto" data-src="https://habrastorage.org/webt/8h/0k/au/8h0kaufk2f3ugqofrbxjtxtwohc.jpeg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Файлы 3D-моделей можно скачать <a href="https://drive.google.com/file/d/1q3LS9Fot4iaVxe3NpX7bGJoq3KfV5jjG/view?usp=sharing" rel="noopener noreferrer nofollow">здесь</a>.</p>
+   <h2>Программная часть</h2>
+   <p>После того как сборка устройства завершена и к ней подключена вся необходимая периферия, необходимо установить и настроить программную часть, реализующую логику работы устройства.</p>
+   <details class="spoiler">
+    <summary>Установка программы</summary>
+    <div class="spoiler__content">
+     <p>Для установки программы достаточно скачать её из репозитария:</p>
+     <pre><code>cd /
+git clone https://github.com/kylikovskix/noruas.git</code></pre>
+     <p></p>
+    </div>
+   </details>
+   <details class="spoiler">
+    <summary>Краткое описание программы</summary>
+    <div class="spoiler__content">
+     <p>Программа, отвечающая за логику работы устройства написана на языке python. Её модульную структуру можно представить в виде следующей диаграммы.</p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/webt/ui/j7/wj/uij7wjhpnfjjm27msw46gmvnntg.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/ui/j7/wj/uij7wjhpnfjjm27msw46gmvnntg.png">
+      <figcaption></figcaption>
+     </figure>
+     <p>Верхний блок диаграммы содержит имена библиотек, от которых зависит работа программы. Нижний блок перечисляет ресурсы, которые используются в процессе её работы:</p>
+     <ul>
+      <li><p><strong><em>Index.html</em></strong> содержит шаблон HTML-страницы для транслирования картинки с камеры по web-интерфейсу</p></li>
+      <li><p>Каталог <strong><em>faces</em></strong> содержит именованные подкаталоги опорных изображений лиц, по которым будет выполняться идентификация.</p></li>
+      <li><p>Файл <strong><em>face_enc</em></strong> содержит информацию, полученную после обработки каталога <strong><em>faces</em></strong>, в виде множества именованных эмбедингов (числовых векторов опорных точек для каждого лица)</p></li>
+     </ul>
+     <p>Расположение и наименование каталога <strong><em>faces</em></strong> и файла <strong><em>face_enc </em></strong>может быть изменено через аргументы командной строки при запуске программы, список которых можно получить с помощью параметра <em>--help</em></p>
+     <p>Сам запуск программы может быть выполнен двумя способами: с помощью исполняемого модуля <strong><em>main.py</em></strong> или его сокращенной версии <strong><em>train.py</em></strong>. Модуль <strong><em>main.py </em></strong>реализует всю логику работы от предварительного расчета эмбедингов до управления периферией. Это накладывает определенные ограничения: скрипт может работать только на устройствах, которые поддерживает библиотека <strong><em>Opi.GPIO</em></strong><em>. </em>Как правило это сама Orange Pi и её аналоги. В тех случаях, когда потребуется обработать достаточно большое количество изображений для расчета эмбедингов, на микро-ПК это может занять продолжительное время, и данные процесс лучше выполнить на полноценном компьютере. В этом случае следует использовать исполняемый модуль <strong><em>train.py</em></strong>, который специализирован только для этого и не зависит от аппаратный части.</p>
+     <p>Вспомогательные модули абстрагируют логику работы с аппаратной частью, инкапсулируют весь процесс распознавания в отдельном классе, группируют настройки в одном конфигурационном модуле для удобства внесения изменений. Это облегчает первоначальную настройку оборудования, портирование кода на другое оборудование, так же использовать другие алгоритмы распознавания.</p>
+     <p></p>
+    </div>
+   </details>
+   <details class="spoiler">
+    <summary>Настройка конфигурации</summary>
+    <div class="spoiler__content">
+     <p>Перед запуском программы необходимо прописать корректные настройки в конфигурационный модуль. По умолчанию, скаченный из репозитария, файл <strong><em>config.py</em></strong> имеет следующее содержание.</p>
+     <pre><code>broker = '127.0.0.1'
+port = 1883 
+client_id = ''
+username = ''
+password = ''
+
+topic_frame_pub = 'noruas/face_recognition'
+topic_unlock_sub = 'noruas/door/unlock'
+
+access_list = ['brus', 'arnold']
+black_list = ['filip']
+
+model = "large"
+scale = 0.25
+tolerance = 0.6
+cam_id = 0
+show_landmarks = False</code></pre>
+     <p>Первый блок параметров содержит параметры для подключения к <a href="https://habr.com/ru/company/advantech/blog/452904/" rel="noopener noreferrer nofollow"><em>mqtt</em></a>-брокеру для последующей интеграции устройства в инфраструктуру умного дома. Значения данных параметров можно оставить по умолчанию, если интеграция не требуется.</p>
+     <p>Параметры <em>topic_frame_pub </em>и <em>topic_unlock_sub </em>содержат идентификаторы подписок в рамках протокола mqtt для взаимодействия с устройством.</p>
+     <p>Наконец параметр <em>access_list </em>содержит список имён, которым разрешён доступ. Соответственно в списке <em>black_list</em> перечислены имена людей, не имеющих доступа.</p>
+     <p>Последний блок параметров отвечает качество и скорость распознавания, а также задает номер камеры, под которым она зарегистрирована в системе:</p>
+     <ul>
+      <li><p><em>model</em> - модель для нахождения опорных точек. Значение "large" указывает на использование 64 точек, "small" - только 5 точек лица.</p></li>
+      <li><p><em>scale</em> - коэффициент уменьшения кадра в процессе распознавания для увеличения скорости обработки кадра.</p></li>
+      <li><p><em>tlerance</em> - точность распознавания лиц.</p></li>
+      <li><p><em>cam_id</em> - номер устройства в системе, которое используется в качестве камеры. Как правило это ноль, но иногда требуется указать другое значение.</p></li>
+      <li><p><em>show_landmarks</em> - показывать или нет опорные точки лица в кадре</p></li>
+     </ul>
+     <p></p>
+    </div>
+   </details>
+   <details class="spoiler">
+    <summary>Предварительный расчет эмбедингов</summary>
+    <div class="spoiler__content">
+     <p>По умолчанию каталог <strong><em>faces</em></strong> из репозитария содержит демонстрационную подборку изображений, взятых с просторов интернета. Вы можете заменить содержимое каталога этого другой информацией, сохранив структуру. При этом не забудьте внести изменения в <strong><em>config.py</em></strong><em>,</em><strong><em> </em></strong>указав новые списки имён в параметрах <em>access_list и black_list.</em></p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/webt/mc/0h/wi/mc0hwilq-xkg3am6fl6yedpi0b8.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/mc/0h/wi/mc0hwilq-xkg3am6fl6yedpi0b8.png">
+      <figcaption></figcaption>
+     </figure>
+     <p>При первом запуске программы, если файл <strong><em>face_enc </em></strong>будет не найден, произойдет запуск процедуры расчета эмбедингов для всех изображений, которые содержаться содержаться в подкаталогах каталога <strong><em>faces</em></strong><em>. </em>Названия подкаталогов будут ассоциированы с именами людей, изображения которых они содержат. После окончания расчетов готовые эмбединги и соответствующие имена буду записаны в файл <strong><em>face_enc</em></strong><em>. </em>Процесс расчета можно принудительно выполнить, указав при запуске <strong><em>main.py</em></strong> аргумент <em>--force-train. </em></p>
+     <p>Подготовку эмбедингов можно выполнить и на обычном компьютере с помощью скрипта <strong><em>train.py</em></strong>, а на устройство потом скопировать только готовый файл <strong><em>face_enc</em></strong>. В дальнейшем при наличие этого файла повторный расчёт эмбедингов выполняться не будет.</p>
+     <p>Так как демонстрационный набор достаточно мал, просто запустим программу на <em>Orange Pi</em></p>
+     <pre><code>cd /noruas
+python3 main.py</code></pre>
+     <p>Будет выведено сообщение о запуске предварительного расчета, а через некоторое время устройство будет готово к работе.</p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/webt/aq/zf/t6/aqzft6-ca3yvgun-pofkgf0zkw0.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/aq/zf/t6/aqzft6-ca3yvgun-pofkgf0zkw0.png">
+      <figcaption></figcaption>
+     </figure>
+     <p></p>
+    </div>
+   </details>
+   <details class="spoiler">
+    <summary>Тестирование работы программы</summary>
+    <div class="spoiler__content">
+     <p>После запуска программы, если все периферия и камера подключены к контроллеру, можно приступить к проверке её работоспособности. Для этого достаточно зайти на веб-интерфейс устройства по его IP-адресу, указав номер предопределенный порт подключения:</p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/webt/od/mm/9p/odmm9par13apd5ksn5pbebfsl80.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/od/mm/9p/odmm9par13apd5ksn5pbebfsl80.png">
+      <figcaption></figcaption>
+     </figure>
+     <p>Так устройство настроено на распознавание более известных лиц, чем моя скромная персона, на картинке моё лицо отмечено как неизвестное, и попытка разблокировать замок была оказалась безуспешной.</p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/webt/ga/rr/3e/garr3egrlffr0fknzp3z9ake7oe.png" alt="
+" title="
+" width="auto" height="auto" data-src="https://habrastorage.org/webt/ga/rr/3e/garr3egrlffr0fknzp3z9ake7oe.png">
+      <figcaption>
+      </figcaption>
+     </figure>
+     <p>Что ж, обманем систему, поместив перед камерой изображение человека с "крепкими орешками".</p>
+     <p></p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/webt/gc/ew/u5/gcewu5qdcfppcffaytdghdvb0mu.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/gc/ew/u5/gcewu5qdcfppcffaytdghdvb0mu.png">
+      <figcaption></figcaption>
+     </figure>
+     <p>Как видим, его лицо было опознано и в доступе нам отказано не было. Попробуем повторить трюк с остальными персонажами, которые содержаться в демонстрационной базе опорных изображений:</p>
+     <p></p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/webt/hs/r-/8j/hsr-8je_n4wt7oem-44c-ecztg8.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/hs/r-/8j/hsr-8je_n4wt7oem-44c-ecztg8.png">
+      <figcaption></figcaption>
+     </figure>
+     <p></p>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/webt/zy/t5/np/zyt5npwvlftjkt4saq_i7trao-w.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/zy/t5/np/zyt5npwvlftjkt4saq_i7trao-w.png">
+      <figcaption></figcaption>
+     </figure>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/webt/u3/cn/_b/u3cn_bh0wifnaofvbwdupwvprbm.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/u3/cn/_b/u3cn_bh0wifnaofvbwdupwvprbm.png">
+      <figcaption></figcaption>
+     </figure>
+     <p>Как видим все изображения распознаны, но в последнем случае персонажу не повезло: по какой то причине ему оказались не очень рады и он был занесён в чёрный список.</p>
+     <p></p>
+    </div>
+   </details>
+   <details class="spoiler">
+    <summary>Настройка автозапуска</summary>
+    <div class="spoiler__content">
+     <p>Как показало тестирование устройство прекрасно работает, но после перезагрузки устройства или повторного включения, программу управления придется запускать каждый раз вручную. Чтобы программа стартовала автоматически при запуске системы, необходимо внести некоторые настройки, сделаем её сервисом.</p>
+     <pre><code>nano /etc/systemd/system/noruas.service</code></pre>
+     <p>В запущенном редакторе <a href="https://habr.com/ru/post/106471/" rel="noopener noreferrer nofollow"><em>nano</em></a> вставим следующий текст.</p>
+     <pre><code>[Unit]
+After=network.service
+Description=Noruas
+
+[Service]
+Type=simple
+WorkingDirectory=/noruas
+ExecStart=/noruas/start.sh
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+     <p>Сохраним и закроем отредактированный файл. Создадим файл <em>start.sh</em></p>
+     <pre><code>nano /noruas/start.sh</code></pre>
+     <p>содержащий команду запуска и перенаправление вывода в текстовый журнал.</p>
+     <pre><code>#!/bin/bash
+cd /noruas
+python3 /noruas/main.py &gt;&gt; /noruas/logs/log.txt 2&gt;&amp;1</code></pre>
+     <p>После завершения редактирования не забудем создать каталог журнала:</p>
+     <pre><code>mkdir /noruas/logs</code></pre>
+     <p>Установим корректные атрибуты доступа к созданным нами файлам:</p>
+     <pre><code>chmod 744 /noruas/start.sh
+chmod 664 /etc/systemd/system/noruas.service</code></pre>
+     <p>Разрешим автозапуск нашего сервиса:</p>
+     <pre><code>systemctl daemon-reload
+systemctl enable noruas.service</code></pre>
+     <p>Проверим его работу:</p>
+     <pre><code>systemctl start noruas.service
+systemctl status noruas.service</code></pre>
+     <figure class="">
+      <img src="https://habrastorage.org/r/w1560/webt/xk/ps/z4/xkpsz4dg0ovoztbprpcjurrflny.png" width="auto" height="auto" data-src="https://habrastorage.org/webt/xk/ps/z4/xkpsz4dg0ovoztbprpcjurrflny.png">
+      <figcaption></figcaption>
+     </figure>
+     <p>Выполним перезагрузку для окончательной проверки работы автозапуска.</p>
+     <pre><code>reboot</code></pre>
+     <p></p>
+    </div>
+   </details>
+   <h2>Заключение</h2>
+   <p>Как показала практика, наше устройство не обеспечивает 100% безопасность доступа, так как её легко обойти при помощи статического изображения другого человека. Но начало положено и при использовании более разборчивых алгоритмов машинного обучения поведение системы можно улучшить.</p>
+   <p>На этом моё повествование подходит к завершению. Очень надеюсь, что данная статья для кого-то будет полезной. Любые конструктивные замечания или советы приветствуются.</p>
+   <p>Всем спасибо за внимание!</p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

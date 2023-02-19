@@ -1,0 +1,217 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>В России бытует мнение, что программистам микроконтроллеров не нужна никакая схемотехника. Особенно в таких организациях, которые изначально долго занимались Web(ом), а потом вдруг решили прикинуться электрониками.</p>
+   <p>Попробуем разобраться в справедливости этого наивного утверждения и понять, что вообще нужно для старта разработки firmware.</p>
+   <p><strong>0--Фотография печатной платы с двух сторон (PCB Pix)</strong></p>
+   <p>В России часто бывает, что в новостях анонсируют о создании микропроцессора или устройства и при этом нигде нет никакой документации и даже фото на хвалёное изделие. Поэтому фото это прежде всего доказательство, что плата для которой пишется софт в самом деле существует.</p>
+   <p>Фото это доказательство, что плату вообще собрали (или собрали частично), или купили. Эту фотографию можно также посылать в компанейском мессенджере в качестве приложения для тех кто ещё не в курсе соответствия между названием платы и её внешним видом. По качественному фото платы в высоком разрешении можно понять какая pdf(ка) со схемотехникой конкретно нужна для этой платы, если есть несколько похожих вариантов на жестком диске. В общем просто двусторонее фото платы это уже хорошая такая себе документация.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/713/bb1/4e2/713bb14e23075bf0d40b456d2d3ac270.jpg" width="676" height="494" data-src="https://habrastorage.org/getpro/habr/upload_files/713/bb1/4e2/713bb14e23075bf0d40b456d2d3ac270.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Как говорил один знаковый: "дайте мне фото платы и я напишу для неё загрузчик".</p>
+   <p><strong>1--Цветная блок-схема печатной платы (Block Diagram)</strong></p>
+   <p>Блок-схема нужна чтобы ввести в курс дела новых людей. Прежде всего программистов. Блок-схема также позволит вам быстро вернуться к давно законсервированной разработке. На блок схеме следует отразить основные моменты, которые нужны например для написания прошивки. Это номера UART, SPI, I2C, количество RAM, FLASH, максимальная частота, битовые скорости интерфейсов, количество регистров в умных чипах, I2c адреса и прочее. <br><br>Проблема в том что большинство схемотехников в РФ не составляет блок схемы банально потому, что не знают как это делать. Их этому не учили в институте. А если и пытаются, то получается так, что лучше бы они этого не делали. Про то как составлять блок-схемы PCB есть добротная методичка тут <a href="https://habr.com/ru/post/667030/" rel="noopener noreferrer nofollow">https://habr.com/ru/post/667030/</a></p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c88/8c5/bce/c888c5bceb27bc083efc82fd3fa33213.png" alt="пример образцовой блок-схемы PCB" title="пример образцовой блок-схемы PCB" width="1293" height="822" data-src="https://habrastorage.org/getpro/habr/upload_files/c88/8c5/bce/c888c5bceb27bc083efc82fd3fa33213.png">
+    <figcaption>
+     пример образцовой блок-схемы PCB
+    </figcaption>
+   </figure>
+   <p><strong>*2--Схемотехника в *.pdf (Circuit diagram/Schematics diagram)</strong></p>
+   <p>Это самое главное. Это основной документ на любое электронное устройство. Уже глядя на схемотехнику становится очевидно, что это и на что способно. Бывает достаточно просмотреть схемотехнику и уже понятно какой для нее нужно писать Firmware. Причем схемотехника должна быть именно в *.pdf так как при анализе схемотехники нужно многократно пользоваться поиском (Ctrl+F). Если нет схемотехники, то говорить про какую бы то ни было разработку firmware не приходится.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/2ef/3f4/4c1/2ef3f44c1897037817991f2f351e1d5a.png" alt="вот так выглядит схемотехника " title="вот так выглядит схемотехника " width="960" height="677" data-src="https://habrastorage.org/getpro/habr/upload_files/2ef/3f4/4c1/2ef3f44c1897037817991f2f351e1d5a.png">
+    <figcaption>
+     вот так выглядит схемотехника
+    </figcaption>
+   </figure>
+   <p><strong>*3--Папка с datasheet(ами) на каждую микросхему в PCB.</strong></p>
+   <p>Часто найти datasheet это весьма нетривиальное занятие. Особенно если на маркировке корпуса это явно не написано. Дело еще в том, что некоторые чипы продаются под NDA (например PM6766, FDA801) и просто (за)Google(лив) вы не нейдете ничего кроме флаера. Поэтому схемотехники <strong>обязаны</strong> предоставить программистам все datasheet(ты) на этапе сдачи КД.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/be6/281/9a3/be62819a3696e0638453b891e245858a.png" width="671" height="489" data-src="https://habrastorage.org/getpro/habr/upload_files/be6/281/9a3/be62819a3696e0638453b891e245858a.png">
+    <figcaption></figcaption>
+   </figure>
+   <p><strong>4-- Перечень элементов в виде электронное таблицы. (Bill Of Materials)</strong></p>
+   <p>Перечень очень полезный документ. Особенно в формате электронной таблицы. На основе полноценного BOM можно, например, делать всяческую аналитику. Например, можно вычислить оценку минимально возможной площади необходимой для печатной платы. Посчитать минимальную стоимость изделия. Вычистить теоретическое энергопотребление. Найти самое слабое звено при климатических испытаниях и прочее. Оценить потенциально санкционно нестойкие микросхемы.</p>
+   <p>При этом важно делать BOM в виде (рас)share(ной) электронной таблицы в облаке. Так её смогут просматривать и редактировать множество разработчиков. Старые советские BOM(ы) в виде таблицы в *.pdf давно потеряли свою актуальность и смысл.<br>Вот пример образцового BOM. <a href="https://docs.google.com/spreadsheets/d/1OjjYhNh0zToOJ0MFgpm2HVs3wwSPBhPpXjJwW4TlKwg/edit#gid=1423611896" rel="noopener noreferrer nofollow">https://docs.google.com/spreadsheets/d/1OjjYhNh0zToOJ0MFgpm2HVs3wwSPBhPpXjJwW4TlKwg/edit#gid=1423611896</a></p>
+   <p><strong>5--Таблица проводов (Wire Table)</strong></p>
+   <p>При написании кода firmware для PCB приходится первым делом конфигурировать GPIO пины. В современных платах это 200...400 пинов. Для этого приходится выписывать где-то отдельно конкретные пины и определять по схемотехнике их свойства. Вход/выход. Какая именно нужна подтяжка. Какая нужна периферия, какой устанавливать ток, какую устанавливать частоту тактирования и прочее. В случае когда есть таблица проводов в Google SpreadSheet, то это можно эффективно понять и сделать благодаря стабильной сортировке по категориям и раскраске нужных проводов для акцентирования внимания на конкретной сути.</p>
+   <p>Также таблица проводов нужна для верификации самой схемотехники. Тут идея проста. Если по существующей якобы схемотехнике невозможно понять, где начинается, а где заканчивается каждый провод, то эту горе-схемотехнику нельзя использовать и следует отправить на доработку обратно создателю.<br>Вот пример образцовой WireTable<br><a href="https://docs.google.com/spreadsheets/d/1OORWLG3IgiS_SvEASOm0HJW1asHwws-V46CHfTqbaBE/edit#gid=0" rel="noopener noreferrer nofollow">https://docs.google.com/spreadsheets/d/1OORWLG3IgiS_SvEASOm0HJW1asHwws-V46CHfTqbaBE/edit#gid=0</a></p>
+   <p><strong>*6--Топология печатной платы (PCB Layout)</strong></p>
+   <p>Как только надо будет измерить сигнал на реальной плате так сразу понадобится топология. Это просто необходимо, чтобы понять куда подключать электроды осциллографа. Если вы будете тыкаться в плату не зная топологии, то 95% вероятность, что при первом же касании электродом осциллографа дорожки на PCB вы плату <strong>сожжете</strong>.</p>
+   <p><strong>7--Монтажная схема (Assembly Diagram)</strong></p>
+   <p>На плате может быть 40...100+ микросхем. Большинство из них будут выглядеть абсолютно одинаково. Чтобы найти на плате, где находится одна конкретная микросхема (например U13), то вам обязательно необходима монтажная схема. Это по сути упрощенная топология верхнего и нижнего слоя, на которой показаны только номера микросхем, их габариты и их взаимное расположение относительно друг друга. К счастью в промежуточных слоях микросхемы еще не впаивают. Поэтому у этой схемы всего 1 или максимум 2 листа.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/433/584/cd5/433584cd5017d698d3ab213480f9d4ba.png" alt="пример монтажной схемы" title="пример монтажной схемы" width="832" height="331" data-src="https://habrastorage.org/getpro/habr/upload_files/433/584/cd5/433584cd5017d698d3ab213480f9d4ba.png">
+    <figcaption>
+     пример монтажной схемы
+    </figcaption>
+   </figure>
+   <p>У монтажной схемы обычно 2 листа</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/56f/dc4/ff1/56fdc4ff1bd61e6183f8a7458a33e68b.png" width="1063" height="883" data-src="https://habrastorage.org/getpro/habr/upload_files/56f/dc4/ff1/56fdc4ff1bd61e6183f8a7458a33e68b.png">
+    <figcaption></figcaption>
+   </figure>
+   <p><strong>*8--Чертёж механики (PCB Mechanical)</strong></p>
+   <p>Это нужно для того чтобы понять как расположены отверстия для крепления платы на вертикальном HIL стенде для авто тестов. В принципе эту схему можно составить опосля, если присутствует сам экземпляр изделия (печатная плата) и штангенциркуль.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/239/559/faf/239559faf304822b898350c576eb8431.JPG" width="574" height="615">
+    <figcaption></figcaption>
+   </figure>
+   <p><strong>9--Описание платы на языке dot (optional) (Block Diagram Auto Trace)</strong></p>
+   <p>Бывает что схемотехника настолько запутана и сложна, что глядя на неё просто нереально сразу понять, что там, как, да зачем. Посмотрите например схемотехнику платы NRF5340-ADK. Там схемотехника построена из супер кластеров на 20 листах, аж *.pdf подвисает при поиске. Зато если чисто формально написать граф на языке dot и отрендерить граф утилитой graphviz в разных цветах, то картина заметно проясняется. Подробнее про это тут <a href="https://habr.com/ru/post/682346/" rel="noopener noreferrer nofollow">https://habr.com/ru/post/682346/</a><br></p>
+   <p>Иерархия схем получается такая</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/getpro/habr/upload_files/763/aac/7c4/763aac7c42a97173919c93214359bcb5.JPG" width="1110" height="446">
+    <figcaption></figcaption>
+   </figure>
+   <p>В общем перечень необходимой схемотехники получился такой</p>
+   <div>
+    <div class="table">
+     <table>
+      <tbody>
+       <tr>
+        <td data-colwidth="50" width="50"><p align="left"><strong>№</strong></p></td>
+        <td data-colwidth="211" width="211"><p align="left"><strong>Название документа</strong></p></td>
+        <td><p align="left"><strong>Расширение </strong></p></td>
+        <td><p align="left"><strong>обязательность</strong></p></td>
+        <td data-colwidth="101" width="101"><p align="left"><strong>приоритет</strong></p></td>
+        <td><p align="left"><strong>производная</strong></p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="50" width="50"><p align="left">0</p></td>
+        <td data-colwidth="211" width="211"><p align="left">Фото платы с 2х сторон</p></td>
+        <td><p align="left">*.jpg</p></td>
+        <td><p align="left">main</p></td>
+        <td data-colwidth="101" width="101"><p align="left">высокий</p></td>
+        <td><p align="left">уникальная</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="50" width="50"><p align="left">1</p></td>
+        <td data-colwidth="211" width="211"><p align="left">Блок-схема PCB</p></td>
+        <td><p align="left">*.svg</p></td>
+        <td><p align="left">derivative</p></td>
+        <td data-colwidth="101" width="101"><p align="left">высокий</p></td>
+        <td><p align="left">2</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="50" width="50"><p align="left">10</p></td>
+        <td data-colwidth="211" width="211"><p align="left">DataSheet(ы) на каждый компонент</p></td>
+        <td><p align="left">*.pdf</p></td>
+        <td><p align="left">main</p></td>
+        <td data-colwidth="101" width="101"><p align="left">высокий</p></td>
+        <td><p align="left">уникальная</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="50" width="50"><p align="left">2</p></td>
+        <td data-colwidth="211" width="211"><p align="left"><strong>Схемотехника</strong></p></td>
+        <td><p align="left">*.pdf</p></td>
+        <td><p align="left">main</p></td>
+        <td data-colwidth="101" width="101"><p align="left">высокий</p></td>
+        <td><p align="left">уникальная</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="50" width="50"><p align="left">3</p></td>
+        <td data-colwidth="211" width="211"><p align="left"><strong>Топология</strong> <strong>всех слоёв PCB</strong></p></td>
+        <td><p align="left">*.pdf или Altium Designer</p></td>
+        <td><p align="left">main</p></td>
+        <td data-colwidth="101" width="101"><p align="left">высокий</p></td>
+        <td><p align="left">уникальная</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="50" width="50"><p align="left">4</p></td>
+        <td data-colwidth="211" width="211"><p align="left">монтажная схема</p></td>
+        <td><p align="left">*.pdf</p></td>
+        <td><p align="left">derivative</p></td>
+        <td data-colwidth="101" width="101"><p align="left">средний</p></td>
+        <td><p align="left">3</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="50" width="50"><p align="left">5</p></td>
+        <td data-colwidth="211" width="211"><p align="left">таблица проводов</p></td>
+        <td><p align="left">Google spread Sheet</p></td>
+        <td><p align="left">derivative</p></td>
+        <td data-colwidth="101" width="101"><p align="left">средний</p></td>
+        <td><p align="left">2</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="50" width="50"><p align="left">6</p></td>
+        <td data-colwidth="211" width="211"><p align="left">PCB Mechanical</p></td>
+        <td><p align="left">*.svg или autocad</p></td>
+        <td><p align="left">derivative</p></td>
+        <td data-colwidth="101" width="101"><p align="left">средний</p></td>
+        <td><p align="left">3</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="50" width="50"><p align="left">7</p></td>
+        <td data-colwidth="211" width="211"><p align="left">Bill Off Material</p></td>
+        <td><p align="left">Google spread Sheet</p></td>
+        <td><p align="left">derivative</p></td>
+        <td data-colwidth="101" width="101"><p align="left">средний</p></td>
+        <td><p align="left">2</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="50" width="50"><p align="left">8</p></td>
+        <td data-colwidth="211" width="211"><p align="left">Описание графа схемотехники</p></td>
+        <td><p align="left">*.gv</p></td>
+        <td><p align="left">derivative</p></td>
+        <td data-colwidth="101" width="101"><p align="left">низкий</p></td>
+        <td><p align="left">2</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="50" width="50"><p align="left">9</p></td>
+        <td data-colwidth="211" width="211"><p align="left">чертеж корпуса</p></td>
+        <td><p align="left">AutoCAD</p></td>
+        <td><p align="left">main</p></td>
+        <td data-colwidth="101" width="101"><p align="left">высокий</p></td>
+        <td><p align="left">уникальная</p></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+   </div>
+   <p>Если же у вас в распоряжении есть только PCB, то максимум, что вы сможете - это сделать фото с двух сторон, потом восстановить габаритный чертеж при наличии штангенциркуля. Если есть микроскоп, то может быть, если повезёт вы сможете примерно составить BOM и найти в интернете datasheet(ы). Но даже это при плате в 40+ чипов может занять многие недели реверс-инжиниринга.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/5ef/831/36f/5ef83136f814e0d5451ee6a330f30cff.png" width="771" height="357" data-src="https://habrastorage.org/getpro/habr/upload_files/5ef/831/36f/5ef83136f814e0d5451ee6a330f30cff.png">
+    <figcaption></figcaption>
+   </figure>
+   <p><strong><br><br>Вывод</strong></p>
+   <p>Как видите для разработки электроники и системного софта надо целая куча всяческих разных схем и таблиц (10 штук!). Что-то является первоисточником(электрическая схема и топология), а что-то производным. Но абсолютным минимумом является электрическая принципиальная схема (Э3) и топология разводки. Всё остальное можно так или иначе синтезировать на основе схемотехники и топологии. Однако без электрической принципиальной схемы и топологии говорить о разработке и отладке системного софта говорить не приходится.</p>
+   <p>Делайте качественные комплекты схем. Это точно пригодится.</p>
+   <p>Если есть, что добавить, то пишите в комментариях</p>
+   <div>
+    <div class="table">
+     <table>
+      <tbody>
+       <tr>
+        <td data-colwidth="121" width="121"><p align="left"><strong>Акроним</strong></p></td>
+        <td><p align="left"><strong>Расшифровка</strong></p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="121" width="121"><p align="left">PCB</p></td>
+        <td><p align="left">Printed circuit board</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="121" width="121"><p align="left">BOM</p></td>
+        <td><p align="left">Bill of materials</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="121" width="121"><p align="left">CAD</p></td>
+        <td><p align="left">Computer-aided design</p></td>
+       </tr>
+       <tr>
+        <td data-colwidth="121" width="121"><p align="left">КД</p></td>
+        <td><p align="left">Конструкторская документация</p></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+   </div>
+   <p><strong>Links</strong></p>
+   <p><a href="https://habr.com/ru/post/451158/" rel="noopener noreferrer nofollow">https://habr.com/ru/post/451158/</a></p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

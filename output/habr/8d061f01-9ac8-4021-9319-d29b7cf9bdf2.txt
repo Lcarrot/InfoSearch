@@ -1,0 +1,369 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <h2>Введение</h2>
+   <p>Для домашней автоматизации я использую HomeAssistant. Уже некоторое время для управления насосом отопления использовал отдельный датчик температуры и умную розетку от Xiaomi. На замену этой связке на просторах китайского магазина нашел устройство от Konlen, которое лучше подходило для решения этой задачи.</p>
+   <h2>Описание устройства</h2>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/aee/bb2/4b6/aeebb24b65d78e66ec7558a2eb05be1a.png" width="640" height="336" data-src="https://habrastorage.org/getpro/habr/upload_files/aee/bb2/4b6/aeebb24b65d78e66ec7558a2eb05be1a.png">
+    <figcaption></figcaption>
+   </figure>
+   <ul>
+    <li><p>2 канала для датчиков температуры с диапазоном температур от -35℃ до +140℃ (что подходит для измерения температуры на подаче и обратке)</p></li>
+    <li><p>2 канала управления 10A</p></li>
+    <li><p>Wi-Fi 2.4G</p></li>
+    <li><p>дисплей с одновременным отображением 2-х показателей</p></li>
+    <li><p>экосистема Tuya</p></li>
+   </ul>
+   <h2>Техническое задание</h2>
+   <ul>
+    <li><p>передавать показания в HomeAssistent</p></li>
+    <li><p>управлять устройством из HomeAssistent</p></li>
+    <li><p>ограничить передаваемые данные на сторонние сервера</p></li>
+   </ul>
+   <h2>Выбор варианта интеграции</h2>
+   <ul>
+    <li><p>использовать одну из интеграций Tuya</p></li>
+    <li><p>использовать Tasmota</p></li>
+    <li><p>использовать интеграцию ESPHome</p></li>
+   </ul>
+   <p>Создав учетную запись Tuya dev и подробнее изучив данные, которые передает устройство на внешние сервера, я решил отказаться от облачной интеграции Tuya. Пример данных.</p>
+   <pre><code class="json">{
+    "result": {
+        "active_time": 1667647112,
+        "biz_type": 18,
+        "category": "rs",
+        "create_time": 1667415209,
+        "icon": "smart/icon/123456/123456.jpg",
+        "id": "01234567890123456789",
+        "ip": "X.X.X.X",
+        "lat": "X.X",
+        "local_key": "0123456789012345",
+        "lon": "X.X",
+        "model": "WF72TT/WF96TT",
+        "name": "WF72TT/WF96TT",
+        "online": true,
+        "owner_id": "12345678",
+        "product_id": "1234567890123456",
+        "product_name": "WF72TT/WF96TT",
+        "status": [
+            {
+                "code": "switch",
+                "value": true
+            },
+            {
+                "code": "temp_set",
+                "value": 380
+            },
+            {
+                "code": "temp_current",
+                "value": 817
+            }
+        ],
+        "sub": false,
+        "time_zone": "+00:00",
+        "uid": "01234567890123456789",
+        "update_time": 1667647118,
+        "uuid": "0123456789012345"
+    },
+    "success": true,
+    "t": 1667676862175,
+    "tid": "123456789012345678901234567890123456"
+}</code></pre>
+   <p>Добавив устройство с использованием интеграции Localtuya пришлось добавлять каждый сенсор по одному элементу при этом держать в голове или записывать уже добавленные элементы. Кроме того после сохранения уже не смог добавлять или изменять элементы.</p>
+   <p>Таким образом решил попытаться перепрошить устройство на одну из систем Tasmota или ESPHome.</p>
+   <h2>Модификация</h2>
+   <p>Подключение к сети Wi-Fi реализовано на базе модуля TYWE1S построенного на базе беспроводного радиочипа ESP8266.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/7cb/051/748/7cb0517488b14cf7b0ab89db13c34a3d.png" width="300" height="300" data-src="https://habrastorage.org/getpro/habr/upload_files/7cb/051/748/7cb0517488b14cf7b0ab89db13c34a3d.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Для данного модуля имеется подробная документация в том числе и на сайте Tuya dev, но я решил пойти по другому пути и заменить данный модуль на менее компактную плату WeMos D1 Мини. Для замены модуля накидал как это должно выглядеть. И заменил старый модуль на новый.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/d6e/39c/0b6/d6e39c0b60cf704b1ce6531f32a42ed4.png" width="502" height="335" data-src="https://habrastorage.org/getpro/habr/upload_files/d6e/39c/0b6/d6e39c0b60cf704b1ce6531f32a42ed4.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Далее стало необходимо подготовить прошивку для модуля и залить ее. Так как небольшой опыт использования ESPHome у меня уже был, для начала было решено попробовать Tasmota. В Web интерфейсе сенсоры легко добавлялись, но оказалось, что нельзя добавить 2 датчика температуры для режима Tuya. В результате от Tasmota также отказался.</p>
+   <h2>Прошивка модуля</h2>
+   <p>Прошить WeMos D1 можно через USB. Я для заливки прошивки использовал утилиту Nodemcu flasher. Интерфейс программы предельно простой, главное правильно выбрать параметры для прошивки (com port, путь до файла прошивки, baudrate, flash size).</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/54d/4bc/b9a/54d4bcb9a81ea01e6dc0b3458fa6b3a4.png" width="578" height="345" data-src="https://habrastorage.org/getpro/habr/upload_files/54d/4bc/b9a/54d4bcb9a81ea01e6dc0b3458fa6b3a4.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Для начала в интерфейсе ESPHome создал базовую конфигурация прошивки для устройств Tuya, собрал прошивку и залил на устройство через USB. Далее для заливки прошивки использовал интерфейс ESPHome.</p>
+   <pre><code class="yaml">esphome:
+  name: term
+  platform: ESP8266 
+  board: d1_mini
+
+logger:
+  baud_rate: 0
+
+ota:
+  password: "12345678901234567890"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  manual_ip:
+    static_ip: 192.168.1.100
+    gateway: 192.168.1.1
+    subnet: 255.255.255.0
+
+  ap:
+    ssid: "Termostat Fallback Hotspot"
+    password: "MMMMMMMMMMM"
+
+web_server: 
+    port: 88
+
+uart:
+  rx_pin: GPIO3
+  tx_pin: GPIO1
+  baud_rate: 9600
+
+time:
+  - platform: homeassistant
+    id: ha_time
+
+tuya:
+  time_id: ha_time</code></pre>
+   <p>Для платформы Tuya каждый отдельный сенсор это так называемый DataPoint. Для взаимодействия с сенсорами необходимо их описать. В качестве опоры я использовал сохраненный ранее снимок экрана с оригинального приложения SmartLife и логи модуля в ESPHome.</p>
+   <figure class="">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/00e/bbd/631/00ebbd63195b870008f1463debbf1f0f.png" width="200" height="380" data-src="https://habrastorage.org/getpro/habr/upload_files/00e/bbd/631/00ebbd63195b870008f1463debbf1f0f.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Таким способом были выявлены следующие сопоставления.</p>
+   <pre><code>[19:25:55][C][tuya:048]:   Datapoint 1: switch (value: OFF)       1 Rele
+[19:25:55][C][tuya:050]:   Datapoint 2: int value (value: 295)    1 Temperature stop
+[19:25:55][C][tuya:050]:   Datapoint 3: int value (value: 239)    1 Temperature
+[19:25:55][C][tuya:050]:   Datapoint 101: int value (value: 300)  1 Temperature start
+[19:25:55][C][tuya:050]:   Datapoint 102: int value (value: 263)  2 Temperature
+[19:25:55][C][tuya:050]:   Datapoint 103: int value (value: 330)  2 Temperature start
+[19:25:55][C][tuya:050]:   Datapoint 104: int value (value: 300)  2 Temperature stop
+[19:25:55][C][tuya:048]:   Datapoint 105: switch (value: OFF)     2 Rele
+[19:25:55][C][tuya:050]:   Datapoint 106: int value (value: 300)
+[19:25:55][C][tuya:050]:   Datapoint 107: int value (value: 250)
+[19:25:55][C][tuya:048]:   Datapoint 108: switch (value: OFF)
+[19:25:55][C][tuya:054]:   Datapoint 109: enum (value: 0)         1 Status sensor
+[19:25:55][C][tuya:054]:   Datapoint 110: enum (value: 0)         2 Status sensor
+[19:25:55][C][tuya:054]:   Datapoint 111: enum (value: 1)         2 Regim rele
+[19:25:55][C][tuya:054]:   Datapoint 112: enum (value: 1)         Alarm
+[19:25:55][C][tuya:050]:   Datapoint 113: int value (value: -20)  1 Temperature callibrate
+[19:25:55][C][tuya:050]:   Datapoint 114: int value (value: 5)    2 Temperature callibrate
+[19:25:55][C][tuya:050]:   Datapoint 115: int value (value: 24)   Diff Temperature
+[19:25:55][C][tuya:050]:   Datapoint 116: int value (value: 239)  1 Temperature double
+[19:25:55][C][tuya:050]:   Datapoint 117: int value (value: 263)  2 Temperature double</code></pre>
+   <p>Далее я сформировал итоговый конфигурационный файл.</p>
+   <pre><code class="yaml">esphome:
+  name: term
+  platform: ESP8266 
+  board: d1_mini
+
+logger:
+  baud_rate: 0
+
+ota:
+  password: "12345678901234567890"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  manual_ip:
+    static_ip: 192.168.1.100
+    gateway: 192.168.1.1
+    subnet: 255.255.255.0
+
+  ap:
+    ssid: "Termostat Fallback Hotspot"
+    password: "MMMMMMMMMMM"
+
+web_server: 
+    port: 88
+
+uart:
+  rx_pin: GPIO3
+  tx_pin: GPIO1
+  baud_rate: 9600
+
+time:
+  - platform: homeassistant
+    id: ha_time
+
+tuya:
+  time_id: ha_time
+# Create a sensor
+sensor:
+  - platform: "tuya"
+    name: "1 Temperature"
+    id: temperature_1
+    sensor_datapoint: 3
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+  - platform: "tuya"
+    name: "2 Temperature"
+    id: temperature_2
+    sensor_datapoint: 102
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+  - platform: "tuya"
+    name: "Diff Temperature"
+    id: diff_t2_t1
+    sensor_datapoint: 115
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+  - platform: "tuya"
+    name: "1 Temperature a"
+    id: temperature_1_1
+    sensor_datapoint: 116
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+  - platform: "tuya"
+    name: "2 Temperature a"
+    id: temperature_2_2
+    sensor_datapoint: 117
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+
+switch:
+  - platform: "tuya"
+    name: "1 Rele"
+    id: rele_1
+    switch_datapoint: 1
+  - platform: "tuya"
+    name: "2 Rele"
+    id: rele_2
+    switch_datapoint: 105
+
+
+number:
+  - platform: "tuya"
+    name: "1 Temperature start"
+    id: ch_start_temp1
+    number_datapoint: 101
+    min_value: -400.0
+    max_value: 1400.0
+    step: 1
+    unit_of_measurement: "°C"
+  - platform: "tuya"
+    name: "1 Temperature stop"
+    id: ch_stop_temp1
+    number_datapoint: 2
+    min_value: -400.0
+    max_value: 1400.0
+    step: 1
+    unit_of_measurement: "°C"    
+  - platform: "tuya"
+    name: "2 Temperature start"
+    id: ch_start_temp2
+    number_datapoint: 103
+    min_value: -400.0
+    max_value: 1400.0
+    step: 1
+    unit_of_measurement: "°C"
+  - platform: "tuya"
+    name: "2 Temperature stop"
+    id: ch_stop_temp2
+    number_datapoint: 104
+    min_value: -400.0
+    max_value: 1400.0
+    step: 1
+    unit_of_measurement: "°C"
+  - platform: "tuya"
+    name: "1 Temperature callibrate"
+    id: ch_test_calibrate1
+    number_datapoint: 113
+    min_value: -150.0
+    max_value: 150.0
+    step: 1
+    unit_of_measurement: "°C"
+  - platform: "tuya"
+    name: "2 Temperature callibrate"
+    id: ch_test_calibrate2
+    number_datapoint: 114
+    min_value: -150.0
+    max_value: 150.0
+    step: 1
+    unit_of_measurement: "°C"
+  - platform: "tuya"
+    name: "test 106"
+    id: test_106
+    number_datapoint: 106
+    min_value: -400.0
+    max_value: 1400.0
+    step: 1
+    unit_of_measurement: "°C"
+  - platform: "tuya"
+    name: "test 107"
+    id: test_107
+    number_datapoint: 107
+    min_value: -400.0
+    max_value: 1400.0
+    step: 1
+    unit_of_measurement: "°C"
+
+
+select:
+  - platform: "tuya"
+    id: ch_sensor_1
+    name: "1 Status sensor"
+    enum_datapoint: 109
+    optimistic: true
+    options:
+      0: "Нормально"
+      1: "Неисправно"
+  - platform: "tuya"
+    id: ch_sensor_2
+    name: "2 Status sensor"
+    enum_datapoint: 110
+    optimistic: true
+    options:
+      0: "Нормально"
+      1: "Неисправно"
+  - platform: "tuya"
+    id: ch_mode2
+    name: "2 Regim rele"
+    enum_datapoint: 111
+    optimistic: true
+    options:
+      0: Нагрев
+      1: Охлаждение
+      2: Сигнализация
+      3: Разница температур
+  - platform: "tuya"
+    id: alarm
+    name: "Alarm"
+    enum_datapoint: 112
+    optimistic: true
+    options:
+      0: "Выключено"
+      1: "Включено"
+      2: "f"
+      3: "d"</code></pre>
+   <h2>Заключение</h2>
+   <p>В планах:</p>
+   <ol>
+    <li><p>Изменить элемент number на представление в виде числа с плавающей точкой.</p></li>
+    <li><p>Заменить модуль WeMos D1 на ESP8266.</p></li>
+   </ol>
+   <p>Надеюсь пройденный мной путь поможет другим участникам сообщества с модификацией устройств и интеграцией в HomeAssistent.</p>
+  </div>
+ </div>
+</div> <!----> <!---->

@@ -1,0 +1,200 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c4a/eb0/9a8/c4aeb09a8d46dbfa1ef15fa006844e87.png" width="780" height="439" data-src="https://habrastorage.org/getpro/habr/upload_files/c4a/eb0/9a8/c4aeb09a8d46dbfa1ef15fa006844e87.png">
+    <figcaption></figcaption>
+   </figure>
+   <div class="persona" persona="true">
+    <img persona="true" class="image persona__image" src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/172/238/58c/17223858c3f53787c786a56ef55ec691.jpg" data-src="https://habrastorage.org/getpro/habr/upload_files/172/238/58c/17223858c3f53787c786a56ef55ec691.jpg" data-blurred="true">
+    <h5 class="persona__heading" persona="true">Автор статьи: Виктория Ляликова</h5>
+    <p></p>
+   </div>
+   <p>Все глубже погружаясь в&nbsp;машинное и глубокое обучение меня очень заинтересовала тема автоэнкодеров, особенно с&nbsp;точки зрения удаления шумов. Поиски различной интересующей меня информации дали свои результаты, но, к&nbsp;сожалению, почти везде работа автоэнкодеров рассматривается на&nbsp;примере очень популярного набора данныx MNIST. Коллекция изображений данного набора имеет размер 28×28, данные разделены на&nbsp;наборы для&nbsp;обучения и тестирования. Однако, хотелось&nbsp;бы увидеть как&nbsp;работают автоэнкодеры на&nbsp;практике на&nbsp;более реальных изображениях. И прежде, чем приступать к&nbsp;практике, давайте сначала немного вспомним, что&nbsp;из&nbsp;себя представляют автоэнкодеры.</p>
+   <p>Автоэнкодеры&nbsp;— специальная архитектура искусственных нейронных сетей, которая обучена, чтобы копировать свои входные данные в&nbsp;выходные. Предположим, что&nbsp;мы имеем изображение, автоэнкодер сначала кодирует это изображение в&nbsp;представление более низкой размерности, а&nbsp;затем декодирует представление обратно в&nbsp;изображение.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/cd8/eb8/6d8/cd8eb86d8738a297246eec3d11440044.png" width="969" height="551" data-src="https://habrastorage.org/getpro/habr/upload_files/cd8/eb8/6d8/cd8eb86d8738a297246eec3d11440044.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Как&nbsp;можно увидеть из&nbsp;рисунка, автоэнкодер имеет 3&nbsp;основных компонента:</p>
+   <ol>
+    <li><p>Энкодер или&nbsp;кодировщик&nbsp;— сжимает данные в&nbsp;представление более низкой размерности.</p></li>
+    <li><p>Код&nbsp;— внутренний скрытый слой, часть архитектуры, которая представляет сжатые данные, которые затем отправляются в&nbsp;декодер.</p></li>
+    <li><p>Декодер&nbsp;— распаковывает или&nbsp;восстанавливает данные из&nbsp;низкого и представления до&nbsp;их исходного размера.</p></li>
+   </ol>
+   <p>Для&nbsp;того, чтобы создать модель автоэнкодера необходимы две разные функции: кодировщик и декодер. Обычно эти две функции реализуются с&nbsp;помощью нейронных сетей, причем часто при&nbsp;работе с&nbsp;изображениями обычно используют сверточные нейронные сети, а&nbsp;при&nbsp;работе, например, с&nbsp;текстом можно использовать сети долгой краткосрочной памяти LSTM</p>
+   <p>Теперь обратимся к&nbsp;математике. Энкодер переводит входной сигнал в&nbsp;его представление (код) вида <code>h=g(x)</code>, где <code>x</code>&nbsp;— наш входной вектор, <code>g</code>&nbsp;— энкодер. Далее декодер восстанавливает сигнал по&nbsp;его коду <code>x=f(h)</code>, <code>f</code>&nbsp;— декодер. Задача автоэнкодера&nbsp;— минимизировать функционал ошибки <code>L(x, f(g(x))</code>. При&nbsp;этом семейства функций <code>g</code> и <code>f</code> ограничены, чтобы автоэнкодер&nbsp;был вынужден отбирать наиболее важные свойства сигнала.</p>
+   <p>Для&nbsp;того, чтобы приступать к&nbsp;обучению автоэнкодера сначала необходимо определить следующие параметры:</p>
+   <ol>
+    <li><p>Размер кода. Чем меньше размер кода, тем больше сжатие.</p></li>
+    <li><p>Количество слоев в&nbsp;энкодере и декодере. Глубины слоев могут достигать любого уровня.</p></li>
+    <li><p>Количество узлов на&nbsp;уровне. Обычно количество узлов на&nbsp;уровне уменьшается с&nbsp;каждым последующим уровнем энкодера, а&nbsp;затем снова начинает увеличиваться с&nbsp;каждым последующим уровнем декодера. т.&nbsp;е. декодер симметричен структуре кодировщика, но&nbsp;это не&nbsp;является обязательным требованием.</p></li>
+    <li><p>Функция потерь. Самыми популярными вариантами являются среднеквадратическая ошибка (MSE) или&nbsp;двоичная кросс‑энтропия.</p></li>
+   </ol>
+   <p>Для&nbsp;моделирования нейронных сетей в&nbsp;python очень удобно использовать высокоуровневую библиотеку Keras, которая является оболочкой над Tensorflow.</p>
+   <p>В&nbsp;Keras для&nbsp;построения моделей нейронных сетей (models) мы собираем слои (layers). Для&nbsp;описания стандартных архитектур нейронных сетей в&nbsp;Keras уже существуют предопределенные классы для&nbsp;слоев:</p>
+   <ul>
+    <li><p><code>Dense()</code>&nbsp;— полносвязный слой;</p></li>
+    <li><p><code>Conv1D</code>, <code>Conv2D</code>, <code>Conv3D</code>&nbsp;— сверточные слои;</p></li>
+    <li><p><code>Conv2DTranspose</code>, <code>Conv3DTranspose</code>&nbsp;— транспонированные (обратные) сверточные слои;</p></li>
+    <li><p><code>SimpleRNN</code>, <code>LSTM</code>, <code>GRU</code>&nbsp;— рекуррентные слои;</p></li>
+    <li><p><code>MaxPooling2D</code>, <code>UpSampling2D</code>, <code>Dropout</code>, <code>BatchNormalization</code>&nbsp;— вспомогательные слои</p></li>
+   </ul>
+   <p>Теперь можно приступать к&nbsp;построению автоэнкодера для&nbsp;шумоподавления изображений..</p>
+   <p>Для&nbsp;реализации этой задачи воспользуемся набором данных, содержащим изображения МРТ головного мозга. Сначала загрузим необходимые библиотеки:</p>
+   <pre><code>import imutils
+import cv2
+import os
+from imutils import paths
+import numpy as np
+from PIL import Image
+import matplotlib.pyplot as plt
+from keras.layers import Input, Conv2D, MaxPool2D, UpSampling2D
+from keras.models import Model
+from sklearn.model_selection import train_test_split</code></pre>
+   <p>Данные разбиты на 2&nbsp;папки, в&nbsp;одной папке содержатся изображения, не&nbsp;имеющие аномалий, а&nbsp;во&nbsp;второй имеющие опухоли головного мозга. Всего 253&nbsp;изображения. Пока загрузим по 1&nbsp;изображению из&nbsp;каждой папки и посмотрим на&nbsp;них..</p>
+   <pre><code>image=cv2.imread('D:/*****/brain_tumor_dataset/no/23 no.jpg')
+image=cv2.imread('D:/*****/brain_tumor_dataset/no/10 no.jpg')
+plt.imshow(image)</code></pre>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/123/0f5/234/1230f52348abc5394f06cc3a1492f421.png" width="808" height="434" data-src="https://habrastorage.org/getpro/habr/upload_files/123/0f5/234/1230f52348abc5394f06cc3a1492f421.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Видим, что&nbsp;высота первого изображения 338, ширина&nbsp;— 276, а&nbsp;высота второго изображении&nbsp;— 201, ширина&nbsp;— 173, цветовых канала&nbsp;— 3.</p>
+   <p>Теперь наша задача состоит в&nbsp;том, чтобы добавить шум в&nbsp;изображения, а&nbsp;далее на&nbsp;вход автоэнкодера подавать зашумленные изображения и на&nbsp;выходе сравнивать с&nbsp;данными без&nbsp;шума.</p>
+   <p>Теперь можно приступать к&nbsp;работе с&nbsp;данными. Сначала получим список содержимого из&nbsp;каталогов «no» и «yes» с&nbsp;помощью команды os.listdir(). Далее с&nbsp;помощью библиотеки OpenCV и команды cv2.imread() прочитаем наше изображение в&nbsp;трехмерный массив.</p>
+   <p>Во&nbsp;первых все изображения разного размера, а&nbsp;значит размер надо как‑то унифицировать, а&nbsp;во&nbsp;вторых необходимо матричные представления изображения перевести в&nbsp;вектор [0,1]. Приведем все изображения к&nbsp;размеру 256×256, а&nbsp;затем каждое значение пикселя разделим на 255.</p>
+   <pre><code class="python">img_r =256
+folder_path = "D:/*******/brain_tumor_dataset"
+no_images = os.listdir(folder_path + '/no/')
+yes_images = os.listdir(folder_path + '/yes/')
+dataset=[]
+for image_name in no_images:
+	image=cv2.imread(folder_path + '/no/' + image_name)
+	image=Image.fromarray(image)
+	image=image.resize((img_r ,img_r ))
+	image2arr = np.array(image)/255
+	dataset.append(image2arr)
+    
+for image_name in yes_images:
+	image=cv2.imread(folder_path + '/yes/' + image_name)
+	#image = image+noise2
+	image=Image.fromarray(image)
+	image=image.resize((img_r ,img_r ))    
+	image2arr = np.array(image)/255
+	dataset.append(image2arr) </code></pre>
+   <p>Теперь разделим весь набор данных на&nbsp;обучающую и тестовую выборку, а&nbsp;потом будем к&nbsp;этим данным добавлять шум.</p>
+   <pre><code class="python">X_train, X_test = train_test_split(dataset, test_size= 0.25, random_state = 42)</code></pre>
+   <p>Сначала с помощью библиотеки <code>numpy</code> смоделируем гауссов шум с нулевым математическим ожиданием и среднеквадратическим отклонением, равным единице, а затем добавим его к обучающему и тестовому набору с коэффициентом 0,4.</p>
+   <pre><code class="python">noise =  np.random.normal(loc=0, scale=1, size=(img_r,img_r,1))
+x_train_noise = np.clip((np.array(X_train)+noise*0.4),0,1)
+x_test_noise = np.clip((np.array(X_test)+noise*0.4),0,1)</code></pre>
+   <p>Теперь можно приступать к&nbsp;архитектуре нейронной сети. Размер входного слоя равен размеру изображения (256, 256,3). В&nbsp;связи стем, что&nbsp;наши данные представляют собой изображения, тогда будем создавать автоэнкодер, состоящий из&nbsp;сверточных слоев. Как&nbsp;было сказано выше, нам необходимо создать две функции: энкодер и декодер. Энкодер будет состоять из&nbsp;двух сверточных слоев 256×3х3&nbsp;и 128×3х3&nbsp;соответственно и двух слоев с&nbsp;максимальным объединением 2×2.</p>
+   <pre><code class="python"># input layer
+input_layer = Input(shape=(img_r,img_r,3))
+#encoder
+encoded_layer1 = Conv2D(256, (3, 3), activation='relu', padding='same')(input_layer)
+encoded_layer1 = MaxPool2D( (2, 2), padding='same')(encoded_layer1)
+encoded_layer2 = Conv2D(128, (3, 3), activation='relu', padding='same')(encoded_layer1)
+encoded_layer2 = MaxPool2D( (2, 2), padding='same')(encoded_layer2)
+encoded = Conv2D(64, (3, 3), activation='relu', padding='same')(encoded_layer2)</code></pre>
+   <p>Декодер по сути является полной противоположностью энкодера, так как мы восстанавливаем 2D представление наших изображений. Он будет состоять из двух сверточных слоев 128х3х3 и 256х3х3 соответственно и двух слоев с повышающей дискретизацией 2х2.</p>
+   <pre><code class="python">decoded_layer1 = Conv2D(128, (3, 3), activation='relu', padding='same')(encoded)
+decoded_layer1 = UpSampling2D((2, 2))(decoded_layer1)
+decoded_layer2 = Conv2D(256, (3, 3), activation='relu', padding='same')(decoded_layer1)
+decoded_layer2 = UpSampling2D((2, 2))(decoded_layer2)
+output_layer   = Conv2D(3, (3, 3), padding='same', activation='sigmoid')(decoded_layer2)</code></pre>
+   <p>Во&nbsp;всех сверточных слоях, кроме последнего используется&nbsp;линейная активационная функция Relu, так как&nbsp;мы имеем дело со значениями пикселей. В&nbsp;последнем слое декодера используется сигмоидальная активационная функция.</p>
+   <p>Соединяем вход и выход, чтобы сформировать и скомпилировать автоэнкодер. В&nbsp;качестве функции потерь будем использовать среднеквадратическую ошибку. Визуализируем нашу сеть с&nbsp;помощью функции model.summary().</p>
+   <pre><code class="python"># compile the model
+model = Model(input_layer, output_layer)
+model.compile(optimizer='adam', loss='mse')
+model.summary()</code></pre>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/b16/36b/cdd/b1636bcdd58eb311a543432b476844e8.png" width="943" height="1088" data-src="https://habrastorage.org/getpro/habr/upload_files/b16/36b/cdd/b1636bcdd58eb311a543432b476844e8.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Теперь можно приступать к обучению нашей модели.</p>
+   <pre><code class="python">history = model.fit(x_train_noise, x_train, epochs=50, validation_data=(x_test_noise, x_test)).</code></pre>
+   <p>Как&nbsp;мы видим, энкодер получает на&nbsp;вход зашумленные изображения x_train_noise и учиться их сжимать, а&nbsp;затем декодер учиться распаковывать их в&nbsp;чистые изображения без&nbsp;шума.</p>
+   <p>Посмотрим на&nbsp;графики потерь на&nbsp;этапах обучения и проверки.</p>
+   <pre><code>plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Потери на этапах проверки и обучения')
+plt.ylabel('Потери')
+plt.xlabel('Эпохи')
+plt.legend(['Потери на этапе обучения', 'Потери на этапе проверки'], loc='upper left')
+plt.show()</code></pre>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/973/da1/182/973da1182a2ca52db4450c45bc045eb1.png" width="721" height="505" data-src="https://habrastorage.org/getpro/habr/upload_files/973/da1/182/973da1182a2ca52db4450c45bc045eb1.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Видим, что даже после 50 эпох сеть медленно, но все еще обучается, потери на этапах проверки также падают, как и на этапах обучения. После обучения нейронной сети можно сохранить веса автоэнкодера для дальнейшего их использования.</p>
+   <pre><code class="python">json_string = model.to_json()
+model.save_weights('autoencoder.h5')
+open('autoencoder_N_04_50.h5','w').write(json_string)</code></pre>
+   <p>Теперь можно визуализировать полученные данные. Посмотрим на&nbsp;первые 5&nbsp;исходных изображений, зашумленных изображений и восстановленных изображений автоэнкодером при&nbsp;различном числе эпох обучения.</p>
+   <pre><code class="python">n = 5
+plt.figure(figsize=(20, 20))
+
+for i in range(n):
+	# оригинальные изображения
+	ax = plt.subplot(3, n, i + 1)
+	plt.imshow((x_test[i]))
+	plt.gray()
+	ax.get_xaxis().set_visible(False)
+	ax.get_yaxis().set_visible(False)
+    
+            # зашумленные изображения
+	ax = plt.subplot(3, n, i + 1 + n)
+	plt.imshow(x_test_noise[i])
+	plt.gray()
+	ax.get_xaxis().set_visible(False)
+	ax.get_yaxis().set_visible(False)    
+
+	# восстановленные изображения автоэнкодером
+	ax = plt.subplot(3, n, i + 1 + 2*n)
+	plt.imshow(np.array(decoded_imgs[i]))
+	plt.gray()
+	ax.get_xaxis().set_visible(False)
+	ax.get_yaxis().set_visible(False)
+plt.show()</code></pre>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/6f2/ce0/c01/6f2ce0c01958f729ef2314c6a78de37a.png" width="1330" height="1600" data-src="https://habrastorage.org/getpro/habr/upload_files/6f2/ce0/c01/6f2ce0c01958f729ef2314c6a78de37a.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Видно, что с увеличением числа эпох обучений автоэнкодер учится более качественно восстанавливать изображения. Далее, оценим количественно точность сети с помощью среднеквадратической ошибки RMSE - корень среднего квадрата ошибок по формуле</p><img class="formula" source="RMSE = \sqrt{\frac{\sum(y_i-\overline y_i)^2}{n}}" alt="RMSE = \sqrt{\frac{\sum(y_i-\overline y_i)^2}{n}}" src="https://habrastorage.org/getpro/habr/upload_files/c87/0cf/412/c870cf4124626a770c287807c6af1f1d.svg" width="215" height="62">
+   <p>где <img class="formula inline" source="y_i" alt="y_i" src="https://habrastorage.org/getpro/habr/upload_files/791/a11/255/791a112552f4a83b8be05c1f2a206a03.svg" width="16" height="15"> - настоящие значения, <img class="formula inline" source="\overline y_i" alt="\overline y_i" src="https://habrastorage.org/getpro/habr/upload_files/99f/182/b25/99f182b25ed32c60b58f3ec6999fbb43.svg" width="17" height="22"> - предсказанные значения</p>
+   <pre><code class="python">lab_err = []
+for i in range(5):
+	pred = np.array(decoded_imgs[i])
+	target = x_test[i]
+	err = np.sqrt(np.mean((target-pred)**2))
+	lab_err.append(err)
+print("Image error:",lab_err,'\n')</code></pre>
+   <p><em>RMSE для 10 эпох обучения</em></p>
+   <p><code>Image error: [0.11112235583367339, 0.09649739151342915, 0.07507075125156328, 0.09451597002239683, 0.11461512072947239]</code>&nbsp;</p>
+   <p><em>RMSE для 50 эпох обучения</em></p>
+   <p><code>Image error: [0.077847916992295, 0.06904349103850838, 0.052240344819613975, 0.04785264086429222, 0.0692672959161245]</code>&nbsp;</p>
+   <p>И, в принципе, заметно, что с увеличением числа эпох обучения, ошибка уменьшается. Думаю, что для наглядности эксперимента можно пока остановиться на 50 эпохах обучения. Можно только еще попробовать к оригинальным изображениям добавить шум с меньшим коэффициентом равным 0,2 и также обучить автоэнкодер на 50 эпохах, а затем вычислить RMSE.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f46/7bc/e89/f467bce897f21deb8b3eacde2d0ccb47.png" width="1600" height="1123" data-src="https://habrastorage.org/getpro/habr/upload_files/f46/7bc/e89/f467bce897f21deb8b3eacde2d0ccb47.png">
+    <figcaption></figcaption>
+   </figure>
+   <p><em>RMSE после 50 эпох обучения</em></p>
+   <p><code>Image error: [0.0650505273762427, 0.05470585227284887, 0.04235355301246957, 0.03651446513302648, 0.05535199588180513]</code>&nbsp;</p>
+   <p>Как&nbsp;и следовало ожидать, значение RMSE меньше для&nbsp;изображений с&nbsp;коэффициентом шума 0,2, чем для&nbsp;изображений с&nbsp;коэффициентом 0,4. Автоэнкодеру легче восстанавливать менее зашумленные изображения.</p>
+   <p>И напоследок, захотелось провести эксперимент по&nbsp;восстановлению зашумленных цветных изображений. Для&nbsp;этого&nbsp;был выбран набор данных, содержащий изображения лесов и морских побережий. Архитектура нейронной сети осталась такая&nbsp;же, поэтому приведу здесь только полученные результаты.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/eeb/90d/84c/eeb90d84ccc801b9d32a5c45ae4bdbc4.png" width="1600" height="1472" data-src="https://habrastorage.org/getpro/habr/upload_files/eeb/90d/84c/eeb90d84ccc801b9d32a5c45ae4bdbc4.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>В&nbsp;целом,можно сказать, что&nbsp;автоэнкодер справляется со своей задачей. Введенный искусственным образом шум удаляется с&nbsp;изображения. Для&nbsp;более качественного восстановления изображений можно увеличить число эпох обучения, использовать большее количество обучающих образцов, поэкспериментировать с&nbsp;параметрами автоэнкодера.</p>
+   <p>В&nbsp;завершение хочу порекомендовать <a href="https://otus.pw/rrOO/">бесплатный урок</a> от&nbsp;OTUS в&nbsp;рамках которого освоите популярный ML‑алгоритм «дерево решений». Узнаете, для&nbsp;каких задач его используют в&nbsp;машинном обучении и как&nbsp;правильно его применять на&nbsp;практике.</p>
+   <ul>
+    <li><p><a href="https://otus.pw/rrOO/">Зарегистрироваться на бесплатный урок</a></p></li>
+   </ul>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

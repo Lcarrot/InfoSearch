@@ -1,0 +1,160 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-1">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p><img src="https://habrastorage.org/r/w1560/webt/m9/lb/9j/m9lb9jk2p7himkn7grlocxg4xc0.png" data-src="https://habrastorage.org/webt/m9/lb/9j/m9lb9jk2p7himkn7grlocxg4xc0.png"></p><br>
+   <p>С <a href="https://www.ruby-lang.org/en/downloads/">выпуском версии 3.2</a> Ruby пополнил список языков программирования, поддерживающих WebAssembly. Небольшое на первый взгляд обновление может стать самым значительным изменением языка со времён Rails, так как теперь разработчики смогут работать не только с бэкендом. После портирования кода на WebAssembly его можно будет запускать где и как угодно — на фронтенде, встроенных устройствах, как бессерверные функции, вместо контейнеров или в граничных вычислениях. WebAssembly может превратить Ruby в универсальный язык программирования. Подробности под катом, а практика в вебе — на <u><a href="https://skillfactory.ru/python-fullstack-web-developer?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_fpw_150223&amp;utm_term=lead">нашем курсе по Fullstack-разработке на Python</a></u>.</p><a name="habracut"></a><br>
+   <p>WebAssembly — это бинарный низкоуровневый формат инструкций, запускаемый на виртуальной машине. Этот язык задумывался как альтернатива JavaScript для запуска приложений в любом браузере с максимальной скоростью работы. Целью компиляции могут быть такие языки, как C, Go, Rust, а теперь и Ruby.</p><br>
+   <p>В 2019 году Wasm <a href="https://www.w3.org/2019/12/pressrelease-wasm-rec.html.en">вошёл в стандарт W3C</a>, что позволило разработчикам писать высокопроизводительные приложения для веба. Сам стандарт ещё развивается, а его экосистема растёт. Сейчас на WebAssembly обратил пристальное внимание фонд Сloud Native Computing Foundation (CNCF). Под эгидой СNCF <a href="https://www.cncf.io/blog/2021/08/05/cloud-native-webassembly/">разрабатывается ряд проектов</a>.</p><br>
+   <p>Дизайн Wasm основан на двух принципах: <em>портируемости</em> и <em>безопасности</em>. Бинарный код Wasm запускается в любом современном браузере, в том числе на мобильных устройствах. С целью обеспечения безопасности программы на Wasm запускаются в изолированной безопасной для памяти виртуальной машине. Следовательно, такие программы не могут получить доступ к ресурсам системы: они не могут менять файловую систему или получить доступ к сети или памяти.</p><br>
+   <h2 id="webassembly-vyvodit-portiruemost-na-sleduyuschiy-uroven">WebAssembly выводит портируемость на следующий уровень</h2><br>
+   <p>Предположим, что вы хотите создать кросс-платформенное приложение для Linux, Windows и macOS. Как это можно сделать?</p><br>
+   <p>Можно использовать компилируемый язык программирования, к примеру С, и создавать бинарный код для каждой ОС.</p><br>
+   <p><img src="https://habrastorage.org/r/w780q1/getpro/habr/post_images/a75/52b/fb2/a7552bfb2d33c9c168c98c32ce2c0167.jpg" alt="Код скомпилирован в трёх форматах: ELF для Linux, PE для Windows и Mach для macOS. У нас один исходный код и три варианта двоичного кода." data-src="https://habrastorage.org/getpro/habr/post_images/a75/52b/fb2/a7552bfb2d33c9c168c98c32ce2c0167.jpg" data-blurred="true"></p><br>
+   <p>Компилятор создаёт несколько исполняемых файлов.</p><br>
+   <p>Можно работать с подходящей средой выполнения кода и выбрать интерпретируемый язык, к примеру, JavaScript, или язык, компилирующий в байт-код, вроде Java.</p><br>
+   <p><img src="https://habrastorage.org/r/w780q1/getpro/habr/post_images/ab3/e62/d3b/ab3e62d3ba42e1f52ae1104972b85cb9.jpg" data-src="https://habrastorage.org/getpro/habr/post_images/ab3/e62/d3b/ab3e62d3ba42e1f52ae1104972b85cb9.jpg" data-blurred="true"><br> Код компилируется в один универсальный байт-код формат, исполняемый на платформе через среду выполнения. На схеме показан процесс компиляции для Java и JRE на различных платформах</p><br>
+   <p>Код компилируется в промежуточное представление — байт-код. Для такой системы необходима среда выполнения или виртуальная машина на устройстве клиента.</p><br>
+   <p>А что, если на устройстве клиента есть контейнерная среда выполнения? Тогда можно создать образ Docker для каждой платформы.</p><br>
+   <p><img src="https://habrastorage.org/r/w780q1/getpro/habr/post_images/63f/f72/1ee/63ff721ee75db4b3cd2ada10a5d257f8.jpg" data-src="https://habrastorage.org/getpro/habr/post_images/63f/f72/1ee/63ff721ee75db4b3cd2ada10a5d257f8.jpg" data-blurred="true"><br> Схема рабочего процесса контейнера. Код собирается в Docker. Формируется три образа: для Linux, для Windows и для ARM. Среда выполнения на устройстве клиента выбирает нужный образ и запускает его</p><br>
+   <p>Код компилируется в образы, зависящие от платформы. На устройстве клиента должна находиться среда выполнения контейнера, которая автоматически выбирает нужный образ.</p><br>
+   <p>Ранее Ruby-разработчикам приходилось отправлять пользователям код. Для запуска приложения клиентам нужно было устанавливать интерпретатор Ruby или получить его от разработчика.</p><br>
+   <p><img src="https://habrastorage.org/r/w780q1/getpro/habr/post_images/84e/9ad/eee/84e9adeee94ad739cde4cc92a821bf67.jpg" data-src="https://habrastorage.org/getpro/habr/post_images/84e/9ad/eee/84e9adeee94ad739cde4cc92a821bf67.jpg" data-blurred="true"><br> Разработчики отправляют код. Клиентам нужно установить соответствующий интерпретатор, чтобы запустить приложение</p><br>
+   <p>Пользователи получают сам код, а для его запуска необходимо установить интерпретатор.</p><br>
+   <p>Такие подходы дают портируемость, но за неё приходится расплачиваться — разработчику нужно собирать, тестировать и отправлять клиентам различные образы. Иногда приходится включать в релиз соответствующую среду выполнения или указывать на необходимость установить её отдельно.</p><br>
+   <p>WebAssembly (сокращённо Wasm) выводит портируемость на новый уровень: с помощью Wasm можно создать <em>единственный</em> бинарник и запустить его на <a href="https://caniuse.com/wasm">любом современном браузере</a>.</p><br>
+   <p><img src="https://habrastorage.org/r/w780q1/getpro/habr/post_images/354/dad/7c3/354dad7c3eb7bc35679c0f61bc42bcb0.jpg" data-src="https://habrastorage.org/getpro/habr/post_images/354/dad/7c3/354dad7c3eb7bc35679c0f61bc42bcb0.jpg" data-blurred="true"><br> Демонстрация работы WebAssembly. Код компилируется в единственный бинарный файл Wasm. Его можно запустить из любого браузера. Единый бинарный файл работает в Linux, macOS и Windows. Таким же образом работает и Ruby WebAssembly.</p><br>
+   <p>WebAssembly компилирует код в низкоуровневый ассемблер для веба; один и тот же бинарный файл Wasm можно без изменений запускать на любой, даже мобильной платформе.</p><br>
+   <p>Возможность запускать код на скорости нативного позволила разработчикам создать Figma и Google Earth, даже <a href="https://www.vimonlineeditor.com/">запустить</a> в браузере Vim.</p><br>
+   <h2 id="v-ruby-poyavilas-podderzhka-webassembly">В Ruby появилась поддержка WebAssembly</h2><br>
+   <p>Последний релиз Ruby содержит портированный на Wasm интерпретатор: можно запускать код на Ruby в браузере без бэкенда, напрямую.</p><br>
+   <p>Для начала работы портированного на Wasm Ruby нужна лишь пара строк кода. Скрипт скачивает <code>ruby.wasm</code> и создаёт экземпляр интерпретатора в браузере. После этого текст с типом <code>text/ruby</code> отправляется в программу WebAssembly.</p><br>
+   <pre><code class="xml">&lt;html&gt;
+  &lt;script src="https://cdn.jsdelivr.net/npm/ruby-head-wasm-wasi@0.5.0/dist/browser.script.iife.js"&gt;&lt;/script&gt;
+  &lt;script type="text/ruby"&gt;
+    puts "Hello, world!"
+  &lt;/script&gt;
+&lt;/html&gt;</code></pre><br>
+   <p>Откройте инструменты разработчика, чтобы увидеть, что Ruby запущен из браузера без бэкенда. После скачивания <code>ruby.wasm</code> никаких соединений нет.</p><br>
+   <p><img src="https://habrastorage.org/r/w780q1/getpro/habr/post_images/cbe/c4f/af3/cbec4faf30a8889316f427aca80f4e39.jpg" data-src="https://habrastorage.org/getpro/habr/post_images/cbe/c4f/af3/cbec4faf30a8889316f427aca80f4e39.jpg" data-blurred="true"><br> В открытой консоли браузера написано «Hello, world!» Этот код запущен в Ruby WebAssembly</p><br>
+   <p>JavaScript считается лучшим для изучения языком, ведь он есть везде. Но с WebAssembly люди могут изучать Ruby и экспериментировать с ним в браузере. Результат выводится в консоль.</p><br>
+   <p>На вкладке «Sources» можно увидеть даже содержимое <code>ruby.wasm</code>, дизассемблированное в текстовый формат:</p><br>
+   <p><img src="https://habrastorage.org/r/w780q1/getpro/habr/post_images/fb8/f93/30d/fb8f9330d6b9468a97baab5cbc128f87.jpg" data-src="https://habrastorage.org/getpro/habr/post_images/fb8/f93/30d/fb8f9330d6b9468a97baab5cbc128f87.jpg" data-blurred="true"><br> Инструменты разработчика в браузере открыты на вкладке «Sources». В список источников входит папка Wasm с загруженным интерпретатором Ruby. Отображаемый текст — порт интерпретатора Ruby WebAssembly</p><br>
+   <p>Файл Wasm видно в инструментах разработчика.</p><br>
+   <p>Порт Wasm доступен в <a href="https://try.ruby-lang.org/playground/">песочнице Ruby</a>.</p><br>
+   <h2 id="korol-pesochnicy">Король песочницы</h2><br>
+   <p>Как уже говорилось, программы на Wasm запускаются в режиме песочницы в виртуальной машине, у которой нет доступа к другим частям системы. А значит, приложение на Wasm <em>не имеет</em> доступа к браузеру, файловой системе, памяти или сети. Для получения или отправки данных из песочницы понадобится JavaScript-код.</p><br>
+   <p>В этом примере показано, как читать вывод программы на Ruby и изменять страницу при помощи npm-пакета <a href="https://www.npmjs.com/package/ruby-head-wasm-wasi">ruby-head-wasm-wasi</a>:</p><br>
+   <pre><code class="xml">&lt;html&gt;
+  &lt;script src="https://cdn.jsdelivr.net/npm/ruby-head-wasm-wasi@latest/dist/browser.umd.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+    const { DefaultRubyVM } = window["ruby-wasm-wasi"];
+    const main = async () =&gt; {
+      const response = await fetch(
+        "https://cdn.jsdelivr.net/npm/ruby-head-wasm-wasi@latest/dist/ruby.wasm"
+      );
+      const buffer = await response.arrayBuffer();
+      const module = await WebAssembly.compile(buffer);
+      const { vm } = await DefaultRubyVM(module);
+
+      vm.printVersion();
+      vm.eval(`
+        require "js"
+        luckiness = ["Lucky", "Unlucky"].sample
+        JS::eval("document.body.innerText = '#{luckiness}'")
+      `);
+    };
+
+    main();
+  &lt;/script&gt;
+  &lt;body&gt;&lt;/body&gt;
+&lt;/html&gt;</code></pre><br>
+   <p>Этот же пакет используется для запуска кода на Ruby в проекте на Node, что позволяет смешивать Ruby и JavaScript на бэкенде. Для работы этого примера потребуется установка npm-пакета <code>ruby-head-wasm-wasi</code>:</p><br>
+   <pre><code class="javascript">import fs from "fs/promises";
+import { DefaultRubyVM } from "ruby-head-wasm-wasi/dist/node.cjs.js";
+
+const main = async () =&gt; {
+  const binary = await fs.readFile(
+    //  Подсказка: при необходимости замените бинарный файл на информацию об отладке, если вам требуется символизированная трассировка стека
+    //  (пока что только в ночной версии)
+    //  "./node_modules/ruby-head-wasm-wasi/dist/ruby.debug+stdlib.wasm"
+    "./node_modules/ruby-head-wasm-wasi/dist/ruby.wasm"
+  );
+  const module = await WebAssembly.compile(binary);
+  const { vm } = await DefaultRubyVM(module);
+
+  vm.eval(`
+    luckiness = ["Lucky", "Unlucky"].sample
+    puts "You are #{luckiness}"
+  `);
+};
+
+main();</code></pre><br>
+   <h2 id="vypolnenie-ruby-webassembly-za-predelami-brauzera">Выполнение Ruby WebAssembly за пределами браузера</h2><br>
+   <p>Основная задача Wasm — выполнение двоичного кода в браузере, но разработчики быстро осознали потенциал быстрого, безопасного и портируемого на любые устройства двоичного формата доставки программного обеспечения. Wasm может стать таким же значимым, как Docker. С его помощью можно сильно упростить развёртывание приложений на встроенных системах, в <a href="https://www.cncf.io/blog/2021/08/25/webassembly-serverless-functions-in-aws-lambda/">бессерверных функциях</a>, вычислениях на периферии (edge computing, также граничные вычисления). Можно использовать Wasm в качестве <a href="https://nigelpoulton.com/what-is-runwasi/">замены контейнеров Kubernetes</a>.</p><br>
+   <p>Для запуска приложения на Wasm вне браузера требуется соответствующая среда исполнения с виртуальной машиной WebAssembly и интерфейсами для базовой системы. Здесь существует несколько решений, самые популярные из которых — это <a href="https://wasmtime.dev/">wasmtime</a>, <a href="https://wasmer.io/">wasmer</a> и <a href="https://github.com/bytecodealliance/wasm-micro-runtime/blob/main/README.md">WAMR</a>.</p><br>
+   <p>В репозитории Ruby располагается <a href="https://github.com/ruby/ruby.wasm#quick-example-how-to-package-your-ruby-application-as-a-wasi-application">полный пример</a> упаковки кода приложения в пользовательский образ Ruby.</p><br>
+   <h2 id="ogranicheniya-ruby-webassembly">Ограничения Ruby WebAssembly</h2><br>
+   <p>Не забывайте, что Ruby WebAssembly разработан совсем недавно. Экосистема Wasm развивается очень быстро. А сегодня у Ruby Wasm есть ряд недостатков, которые значительно ограничивают возможности его применения в больших проектах:</p><br>
+   <ul>
+    <li>Нет поддержки потоков.</li>
+    <li>Не работает порождение дочерних процессов.</li>
+    <li>Не поддерживается сеть.</li>
+    <li>Сборщик мусора может создавать утечки памяти.</li>
+    <li>Гемы и модули доступны только при создании кастомного образа Wasm.</li>
+   </ul><br>
+   <h2 id="buduschee-prekrasno">Будущее прекрасно</h2><br>
+   <p>WebAssembly открывает захватывающий мир. С помощью Wasm Ruby разработчики могут отойти от бэкенда. По мере развития WebAssembly достигнет новых рубежей и Ruby, откроются возможности применения языка в граничных вычислениях и serverless-приложениях.</p><br>
+   <p>После выпуска последней версии Ruby разработчики могут начать экспериментировать с WebAssembly. Конечно, это лишь первый шаг; чтобы сложные приложения на Ruby можно было запускать с помощью Wasm, нужно ещё немало поработать.</p><br>
+   <p>Спасибо за внимание и приятного ассемблирования! А на наших курсах вас ждёт полезная теория и интересная практика:</p><br>
+   <p><a href="https://skillfactory.ru/catalogue?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=sf_allcourses_150223&amp;utm_term=conc"><img src="https://habrastorage.org/r/w1560/webt/za/ca/4a/zaca4aigmtz4jh8dte-xyw4crwu.png" data-src="https://habrastorage.org/webt/za/ca/4a/zaca4aigmtz4jh8dte-xyw4crwu.png"></a></p><br>
+   <ul>
+    <li><u><a href="https://skillfactory.ru/data-scientist-pro?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_dspr_150223&amp;utm_term=conc">Профессия Data Scientist (24 месяца)</a></u></li>
+    <li><u><a href="https://skillfactory.ru/python-fullstack-web-developer?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_fpw_150223&amp;utm_term=conc">Профессия Fullstack-разработчик на&nbsp;Python (16 месяцев)</a></u></li>
+   </ul><br>
+   <div class="spoiler" role="button" tabindex="0"><b class="spoiler_title">Краткий каталог курсов</b>
+    <div class="spoiler_text">
+     <p><strong>Data Science и&nbsp;Machine Learning</strong></p><br>
+     <ul>
+      <li><a href="https://skillfactory.ru/data-scientist-pro?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_dspr_150223&amp;utm_term=cat">Профессия Data Scientist</a></li>
+      <li><a href="https://skillfactory.ru/data-analyst-pro?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=analytics_dapr_150223&amp;utm_term=cat">Профессия Data Analyst</a></li>
+      <li><a href="https://skillfactory.ru/matematika-dlya-data-science#syllabus?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_mat_150223&amp;utm_term=cat">Курс «Математика для Data Science»</a></li>
+      <li><a href="https://skillfactory.ru/matematika-i-machine-learning-dlya-data-science?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_matml_150223&amp;utm_term=cat">Курс «Математика и&nbsp;Machine Learning для Data Science»</a></li>
+      <li><a href="https://skillfactory.ru/data-engineer?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_dea_150223&amp;utm_term=cat">Курс по&nbsp;Data Engineering</a></li>
+      <li><a href="https://skillfactory.ru/machine-learning-i-deep-learning?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_mldl_150223&amp;utm_term=cat">Курс «Machine Learning и&nbsp;Deep Learning»</a></li>
+      <li><a href="https://skillfactory.ru/machine-learning?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_ml_150223&amp;utm_term=cat">Курс по&nbsp;Machine Learning</a></li>
+     </ul><br>
+     <p><strong>Python, веб-разработка</strong></p><br>
+     <ul>
+      <li><a href="https://skillfactory.ru/python-fullstack-web-developer?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_fpw_150223&amp;utm_term=cat">Профессия Fullstack-разработчик на&nbsp;Python</a></li>
+      <li><a href="https://skillfactory.ru/python-for-web-developers?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_pws_150223&amp;utm_term=cat">Курс «Python для веб-разработки»</a></li>
+      <li><a href="https://skillfactory.ru/frontend-razrabotchik?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_fr_150223&amp;utm_term=cat">Профессия Frontend-разработчик</a></li>
+      <li><a href="https://skillfactory.ru/webdev?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_webdev_150223&amp;utm_term=cat">Профессия Веб-разработчик</a></li>
+     </ul><br>
+     <p><strong>Мобильная разработка</strong></p><br>
+     <ul>
+      <li><a href="https://skillfactory.ru/ios-razrabotchik-s-nulya?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_ios_150223&amp;utm_term=cat">Профессия iOS-разработчик</a></li>
+      <li><a href="https://skillfactory.ru/android-razrabotchik?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_andr_150223&amp;utm_term=cat">Профессия Android-разработчик</a></li>
+     </ul><br>
+     <p><strong>Java и&nbsp;C#</strong></p><br>
+     <ul>
+      <li><a href="https://skillfactory.ru/java-razrabotchik?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_java_150223&amp;utm_term=cat">Профессия Java-разработчик</a></li>
+      <li><a href="https://skillfactory.ru/java-qa-engineer-testirovshik-po?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_qaja_150223&amp;utm_term=cat">Профессия QA-инженер на&nbsp;JAVA</a></li>
+      <li><a href="https://skillfactory.ru/c-sharp-razrabotchik?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_cdev_150223&amp;utm_term=cat">Профессия C#-разработчик</a></li>
+      <li><a href="https://skillfactory.ru/game-razrabotchik-na-unity-i-c-sharp?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_gamedev_150223&amp;utm_term=cat">Профессия Разработчик игр на&nbsp;Unity</a></li>
+     </ul><br>
+     <p><strong>От&nbsp;основ&nbsp;— в&nbsp;глубину</strong></p><br>
+     <ul>
+      <li><a href="https://skillfactory.ru/algoritmy-i-struktury-dannyh?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_algo_150223&amp;utm_term=cat">Курс «Алгоритмы и&nbsp;структуры данных»</a></li>
+      <li><a href="https://skillfactory.ru/c-plus-plus-razrabotchik?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_cplus_150223&amp;utm_term=cat">Профессия C++ разработчик</a></li>
+      <li><a href="https://skillfactory.ru/cyber-security-etichnij-haker?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_hacker_150223&amp;utm_term=cat">Профессия «Белый хакер»</a></li>
+     </ul><br>
+     <p><strong>А&nbsp;также</strong></p><br>
+     <ul>
+      <li><a href="https://skillfactory.ru/devops-engineer?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_devops_150223&amp;utm_term=cat">Курс по&nbsp;DevOps</a></li>
+      <li><a href="https://skillfactory.ru/catalogue?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=sf_allcourses_150223&amp;utm_term=cat">Все курсы</a></li>
+     </ul>
+    </div>
+   </div>
+  </div>
+ </div>
+</div> <!----> <!---->

@@ -1,0 +1,142 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-1">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p><img src="https://habrastorage.org/r/w1560/webt/xz/d_/la/xzd_lahculvta_nidloxvsqulaw.png" data-src="https://habrastorage.org/webt/xz/d_/la/xzd_lahculvta_nidloxvsqulaw.png"></p><br>
+   <p>Уже несколько десятилетий существуют такие алгоритмы машинного обучения с подкреплением, как Q-learning и REINFORCE. До сих пор часто применяется их классическая реализация. К сожалению, эти алгоритмы не лишены фундаментальных недостатков, значительно усложняющих обучение хорошей политике. Рассмотрим три основных недостатка классических алгоритмов обучения с подкреплением, а также решения, направленные на их преодоление.</p><a name="habracut"></a><br>
+   <h2 id="i-vybor-pereocenennyh-deystviy">I. Выбор переоцененных действий</h2><br>
+   <h2 id="problema">Проблема</h2><br>
+   <p>В большинстве RL-алгоритмов используется некоторая функция полезности, которая определяет последующие вознаграждения. Часто вычисление функции полезности основано на известном алгоритме Q-learning. Суть алгоритма Q-learning заключается в в выборе действия с <strong>наибольшим ожидаемым вознаграждением</strong>. При некоторых начальных условиях этот алгоритм может зациклиться уже на первом шаге, поэтому с вероятностью ϵ, обычно равной 0,05 или около того, выбирается случайное действие.</p><br>
+   <p>В предельном случае каждое действие выполнялось бы бесконечно часто, и тогда значения функции полезности Q сходились бы к истинным значениям. Однако на практике мы работаем с ограниченными выборками и смещёнными значениями функции Q, а потому <strong>алгоритм Q-learning всегда выбирает действия с завышенными значениями функции полезности</strong>!</p><br>
+   <p>Представьте ситуацию: мы играем в два одинаковых <a href="https://medium.com/towards-data-science/a-minimal-working-example-for-deep-q-learning-in-tensorflow-2-0-e0ca8a944d5e">игровых автомата</a>. Автомат A уже на первых итерациях выдаёт вознаграждения выше среднего, поэтому для него значение функции Q больше и мы продолжаем играть в автомат A. Поскольку автомат B выбирается редко, чтобы понять, что значения функции Q для обоих автоматов на самом деле одинаковы, нужно много времени.</p><br>
+   <p>В целом функции полезности всегда будут несовершенными, поэтому RL имеет склонность выполнять переоценённые действия. В некотором смысле RL имеет нежелательное свойство — «вознаграждать» плохой выбор действий.</p><br>
+   <p><img src="https://habrastorage.org/r/w1560/webt/lp/wu/vw/lpwuvwitkjuc9eezulimsk3g3kg.png" data-src="https://habrastorage.org/webt/lp/wu/vw/lpwuvwitkjuc9eezulimsk3g3kg.png"></p><br>
+   <h2 id="resheniya">Решения</h2><br>
+   <p>Причину проблем Q-learning можно отследить; она состоит в выборе действий и обновлении полезности на основе одних и тех же наблюдений. Выбор действий и обновление можно разделить, выполняя выбор действий с помощью одной политики, а обновление полезности — с помощью другой. Именно это делает <strong>Double Q-learning</strong> (Van Hasselt, 2010).</p><br>
+   <p><img src="https://habrastorage.org/r/w1560/webt/zp/rx/su/zprxsucbgpnvz2erxknsltyyxqu.png" data-src="https://habrastorage.org/webt/zp/rx/su/zprxsucbgpnvz2erxknsltyyxqu.png"><br> <em>Double Q-learning выбирает действия с помощью одной сети, а значение функции Q обновляет на основе выходных данных другой сети. Эта процедура отделяет выбор действий от обучения и таким образом борется с переоценкой [источник: Van Hasselt (2010)]</em>.</p><br>
+   <p>Вообще говоря, хорошей практикой является работа с <a href="https://towardsdatascience.com/how-to-model-experience-replay-batch-learning-and-target-networks-c1350db93172"><strong>целевыми сетями</strong></a>. Целевая сеть — это периодическая копия политики, которая используется при генерации целевых значений для обучения (вместо того, чтобы применять одинаковую политику для генерации наблюдения и цели). Такой подход снижает корреляцию между целью и наблюдением.</p><br>
+   <p>Другой вариант решения заключается в том, чтобы принять во внимание неопределённость оценок функции Q. Мы можем сохранять не только ожидаемые значения действий, но и отслеживать расхождения в наблюдениях. Это покажет, насколько возможно отклоняться от истинного значения. При работе с <a href="https://towardsdatascience.com/seven-exploration-strategies-in-reinforcement-learning-you-should-know-8eca7dec503b"><strong>границами неопределённости и градиентами знаний</strong></a> есть два способа достижения этой цели. Вместо того чтобы просто выбирать действие с наибольшим ожидаемым значением функции полезности Q, мы также учитываем, насколько новое наблюдение полезно для обучения. Такой подход мотивирует пробовать действия с высокой неопределённостью, при этом выбор остаётся интеллектуальным.</p><br>
+   <h2 id="ii-neudovletvoritelnye-obnovleniya-gradienta-politiki">II. Неудовлетворительные обновления градиента политики</h2><br>
+   <h2 id="problema-1">Проблема</h2><br>
+   <p>Алгоритмы градиента политики разрабатываются десятилетиями. Они лежат в основе всех современных моделей «актор-критик». Алгоритмы градиента ванильной политики, например REINFORCE, для определения направления обновления веса опираются на градиенты. Сочетание высоких вознаграждений и больших градиентов даёт сильный сигнал обновления.</p><br>
+   <p><img src="https://habrastorage.org/r/w1560/webt/bx/fp/lg/bxfplgfghc50cxfirgutdbfk8cg.png" data-src="https://habrastorage.org/webt/bx/fp/lg/bxfplgfghc50cxfirgutdbfk8cg.png"><br> <em>Традиционная функция обновления градиента политики, которая обновляет веса политики θ на основе градиента целевой функции ∇\_θj(θ) и размера шага α</em></p><br>
+   <p>Такая идея кажется естественной. Если наклон функции вознаграждения крутой, в этом направлении делается большой шаг. Если наклон маленький, нет смысла делать большие обновления. Несмотря на всю убедительность, и эта логика также в корне ошибочна.</p><br>
+   <p><img src="https://habrastorage.org/r/w1560/webt/mq/fp/uj/mqfpujevaujsvy8t7hlw0826l-k.png" data-src="https://habrastorage.org/webt/mq/fp/uj/mqfpujevaujsvy8t7hlw0826l-k.png"><br> <em>Слева: политика сильно обновляется и упускает (проскакивает) максимум вознаграждения. Справа: пример зависания в локальном оптимуме с градиентами, близкими к 0 [изображение предоставлено автором]</em></p><br>
+   <p>Градиент даёт только локальную информацию. Он показывает величину наклона, но не даёт информацию о том, насколько сильно нужно продвигаться в данном направлении; поэтому можно <strong>проскочить</strong>. Кроме того, политики градиентов не учитывают, что малый сигнал градиента может привести к <strong>зависанию на неоптимальном плато</strong>.</p><br>
+   <p>Еще хуже то, что мы не можем управлять этим поведением, сохраняя обновления веса в пределах ограниченной области параметров. Например, на рисунке ниже обновления веса одинаковой величины оказывают на политику очень разное влияние.</p><br>
+   <p><img src="https://habrastorage.org/r/w1560/webt/cs/hj/0w/cshj0wb77ygzrc2rq77syxm5530.png" data-src="https://habrastorage.org/webt/cs/hj/0w/cshj0wb77ygzrc2rq77syxm5530.png"><br> <em>Пример двух обновлений гауссовской политики. Несмотря на то что оба обновления имеют одинаковый размер с точки зрения пространства параметров, слева на политику явно оказывается влияние сильнее, чем справа [изображение предоставлено автором]</em></p><br>
+   <p>Для начала можно поэкспериментировать с различными алгоритмами обучения. Традиционный алгоритм стохастического градиентного спуска (SGD) учитывает только первые моменты. Современные алгоритмы обучения (например, <strong>ADAM</strong>) учитывают вторые моменты, тем самым часто существенно повышают эффективность. Несмотря на то, что это не решает проблему полностью, увеличение эффективности может быть значительным.</p><br>
+   <p><strong>Регуляризация энтропии</strong> является распространённым способом предотвращения преждевременной сходимости алгоритмов градиента ванильной политики. Грубо говоря, энтропия в RL — это показатель непредсказуемости выбора действия. Регуляризация энтропии добавляет бонус за осуществление неизвестных действий. Этот бонус выше в случае, если мы меньше узнали о системе:</p><br>
+   <p><img src="https://habrastorage.org/r/w1560/webt/1g/rb/1n/1grb1nhuylkomc6dhjtiyqnnnmy.png" data-src="https://habrastorage.org/webt/1g/rb/1n/1grb1nhuylkomc6dhjtiyqnnnmy.png"><br> <em>Мера энтропии при обучении с подкреплением</em></p><br>
+   <p>Более сложные варианты алгоритмов политики градиента также учитывают производные второго порядка, которые предоставляют информацию о локальной чувствительности функции. На плато можно безопасно, без последствий делать большие шаги. При крутом наклоне и извилистостях лучше отдать предпочтение малым шагам. Такие алгоритмы, как <a href="https://medium.com/towards-data-science/natural-policy-gradients-in-reinforcement-learning-explained-2265864cf43c"><strong>градиент естественной политики</strong></a><strong>,</strong> <a href="https://towardsdatascience.com/trust-region-policy-optimization-trpo-explained-4b56bd206fc2"><strong>TRPO</strong></a> <strong>и</strong> <a href="https://towardsdatascience.com/proximal-policy-optimization-ppo-explained-abed1952457b"><strong>PPO</strong></a> учитывают чувствительность к обновлениям, явно или неявно принимая в расчёт производные второго порядка. На данный момент PPO — это алгоритм перехода к градиенту политики, он даёт хороший баланс между простотой внедрения, скоростью и производительностью.</p><br>
+   <p><img src="https://habrastorage.org/r/w1560/webt/gy/r3/0h/gyr30ho-gjaflxdtzncpgk-jjbi.png" data-src="https://habrastorage.org/webt/gy/r3/0h/gyr30ho-gjaflxdtzncpgk-jjbi.png"><br> <em>Схема обновления веса для градиентов естественной политики. Матрица Фишера F(θ) содержит информацию о локальной чувствительности; она генерирует динамические обновления веса</em></p><br>
+   <h2 id="iii-nedostatochnaya-effektivnost-obucheniya-vne-politiki-off-policy">III. Недостаточная эффективность обучения вне политики (off-policy)</h2><br>
+   <h2 id="problema-2">Проблема</h2><br>
+   <p>Некоторые алгоритмы (например, на базе Q-learning) обучаются <em>вне политики</em>. Это означает, что <strong>обновления могут выполняться с действием, которое отличается от фактически наблюдаемого</strong>. В то время как для обучения с политикой (on-policy) требуется кортеж <em>(s,a, r,s’,a’)</em> — на самом деле, так же, как и в одноименном алгоритме SARSA, — для обучения вне политики используется наиболее известное действие <em>a*</em> вместо <em>a’.</em> Следовательно, мы храним <em>(s,a,r,s’)</em> только для обновления веса и обучаем политике независимо от действий агента.</p><br>
+   <p>Благодаря настройке при обучении вне политики могут повторно использоваться предыдущие наблюдения, которые извлекаются из <strong>буфера воспроизведения опыта</strong>. Это особенно удобно, когда <strong>наблюдения вычислительно дороги</strong>. Мы просто передаём состояние <em>s’</em> в нашу политику и получаем действие <em>a*</em>, А для обновления значений функции Q используем результирующее значение. Динамику перехода от <em>s</em> к <em>s’</em> пересчитывать не нужно.</p><br>
+   <p>К сожалению, даже после тщательного обучения вне политики алгоритма обучения с подкреплением на большом наборе данных на практике он часто работает далеко не так хорошо. Почему же?</p><br>
+   <p>Проблема сводится к распространённой статистической оговорке. Предполагается, что <strong>обучающий набор репрезентативен для истинного набора данных</strong>. Если это не так (а это часто бывает не так, поскольку обновлённые политики генерируют разные пары «состояние — действие»), политика подходит для набора данных, не отражающего среду, в которой в конечном счёте работает агент.</p><br>
+   <h2 id="resheniya-1">Решения</h2><br>
+   <p>Истинное обучение вне политики, например изучение хороших политик исключительно на основе статического набора данных, при обучении с подкреплением может быть принципиально неосуществимым, поскольку обновление политик неизбежно изменяет вероятность наблюдения пар «состояние — действие». Поскольку исследовать пространство поиска полностью нельзя, мы неизбежно <strong>значения неизбежно экстраполируются на невидимые пары «состояние — действие»</strong>.</p><br>
+   <p>Наиболее распространенное решение — не обучаться на полностью статическом наборе данных, а <strong>постоянно обогащать данные</strong> наблюдениями в соответствии с новой политикой. Это также помогает <strong>удалять старые выборки</strong>, которые больше не представляют данные, сгенерированные в соответствии с последними политиками.</p><br>
+   <p>Другое решение — <strong>выборка по значимости</strong>, которая, по сути, повторно взвешивает наблюдения на основе вероятности их генерации в соответствии с нынешней политикой. Для каждого наблюдения мы можем вычислить величину его вероятности, генерируемой в соответствии с первоначальной и нынешней политикой, что повышает вероятность проведения наблюдений, вытекающих из аналогичных политик.</p><br>
+   <p><img src="https://habrastorage.org/r/w1560/webt/lo/9i/j0/lo9ij0up4dp3eh2ci11kbeevjn4.png" data-src="https://habrastorage.org/webt/lo/9i/j0/lo9ij0up4dp3eh2ci11kbeevjn4.png"><br> <em>Выборка по значимости учитывает сходство между исходной и целевой политикой, отбирая с более высокой вероятностью наблюдения, которые генерируются в соответствии с политикой, аналогичной текущей</em></p><br>
+   <p>Если вы хотите, чтобы алгоритм вне политики хорошо работал вне выборки, следует рассмотреть возможность перехода на <strong>алгоритм с политикой</strong>. Особенно в тех случаях, когда новые наблюдения обходятся дёшево, потери в эффективности выборок могут компенсироваться повышением качества политики.</p><br>
+   <h2 id="kratkoe-soderzhanie">Краткое содержание</h2><br>
+   <p>Выше рассматриваются три распространённых недостатка классических RL-алгоритмов, а также стратегии их устранения.</p><br>
+   <h2 id="i-pereocenennye-deystviya">I. Переоцененные действия</h2><br>
+   <p>Проблема:</p><br>
+   <ul>
+    <li>Алгоритмы, основанные на аппроксимации функции полезности, систематически выбирают действия с завышенной полезностью.</li>
+   </ul><br>
+   <p>Решения:</p><br>
+   <ul>
+    <li>Используйте целевые сети для снижения корреляции между целью и наблюдением (например, как в алгоритме Double Q-learning).</li>
+    <li>Учитывайте неопределённость расчёта полезности при выборе действий (например, границы неопределённости, градиенты знаний).</li>
+   </ul><br>
+   <h2 id="ii-neudovletvoritelnye-obnovleniya-gradienta-politiki-1"><strong>II. Неудовлетворительные обновления градиента политики</strong></h2><br>
+   <p>Проблема:</p><br>
+   <ul>
+    <li>Алгоритмы градиента политики часто делают неудовлетворительные шаги обновления. Например, очень малые шаги, когда зависают в локальном оптимуме, или большие шаги, из-за которых упускают наибольшее вознаграждение.</li>
+   </ul><br>
+   <p>Решения:</p><br>
+   <ul>
+    <li>Используйте вместо стандартного стохастического градиентного спуска такой алгоритм обучения, например ADAM, который в дополнение к градиентам первого порядка учитывает значения моментов.</li>
+    <li>Добавьте к сигналу вознаграждения бонус энтропии, который в дальнейшем будет мотивировать исследование неизученных областей.</li>
+    <li>Применяйте алгоритмы, которые включают (явно или неявно) производные второго порядка, например градиенты естественной политики, TRPO или PPO.</li>
+   </ul><br>
+   <h2 id="iii-nedostatochnaya-effektivnost-obucheniya-vne-politiki-off-policy-1">III. Недостаточная эффективность обучения вне политики (off-policy)</h2><br>
+   <p>Проблема:</p><br>
+   <ul>
+    <li>События в буфере воспроизведения могут быть нерепрезентативными для событий вне выборки, поэтому значения экстраполируются неправильно и эффективность снижается.</li>
+   </ul><br>
+   <p>Решения:</p><br>
+   <ul>
+    <li>Обновляйте буфер воспроизведения, добавляя новые события и удаляя старые.</li>
+    <li>Выполняйте выборку по значимости, чтобы повысить вероятность выбора события, вытекающего из политики, более близкой к целевой.</li>
+    <li>Переключитесь на обучение с политикой (если наблюдения для выборки обходятся дешево).</li>
+   </ul><br>
+   <div class="spoiler" role="button" tabindex="0"><b class="spoiler_title">Ссылки</b>
+    <div class="spoiler_text">
+     <h2 id="problema-i-pereocenennye-deystviya">Проблема I: Переоцененные действия</h2><br>
+     <p>Hasselt, H. (2010). Double Q-learning. _Advances in neural information processing systems_, _23_.</p><br>
+     <p>Matiisen, Tambet (2015). Demystifying deep reinforcement learning. _Computational Neuroscience Lab._ Retrieved from neuro.cs.ut.ee/demystifying-deep-reinforcement-learning/</p><br>
+     <h2 id="problema-ii-neudovletvoritelnye-obnovleniya-gradienta-politiki">Проблема II: Неудовлетворительные обновления градиента политики</h2><br>
+     <p>Mahmood, A. R., Van Hasselt, H. P., &amp; Sutton, R. S. (2014). Weighted importance sampling for off-policy learning with linear function approximation. _Advances in Neural Information Processing Systems_, _27_.</p><br>
+     <p>Cornell University Computational Optimization Open Textbook. (2021). ADAM. URL: <a href="https://optimization.cbe.cornell.edu/index.php?title=Adam">https://optimization.cbe.cornell.edu/index.php?title=Adam</a></p><br>
+     <h2 id="problema-iii-nedostatochnaya-effektivnost-obucheniya-vne-politiki">Проблема III: Недостаточная эффективность обучения вне политики</h2><br>
+     <p>Fujimoto, S., Meger, D., &amp; Precup, D. (2019, May). Off-policy deep reinforcement learning without exploration. In _International conference on machine learning_ (pp. 2052–2062). PMLR.</p>
+    </div>
+   </div><br>
+   <p>Полезная теория и много практики — на наших курсах:</p><br>
+   <p><a href="https://skillfactory.ru/catalogue?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=sf_allcourses_160223&amp;utm_term=conc"><img src="https://habrastorage.org/r/w1560/webt/rz/4h/ne/rz4hnexx9lidivxbzuaheff5usq.png" data-src="https://habrastorage.org/webt/rz/4h/ne/rz4hnexx9lidivxbzuaheff5usq.png"></a></p><br>
+   <ul>
+    <li><u><a href="https://skillfactory.ru/data-scientist-pro?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_dspr_160223&amp;utm_term=conc">Профессия Data Scientist (24 месяца)</a></u></li>
+    <li><u><a href="https://skillfactory.ru/python-fullstack-web-developer?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_fpw_160223&amp;utm_term=conc">Профессия Fullstack-разработчик на&nbsp;Python (16 месяцев)</a></u></li>
+   </ul><br>
+   <div class="spoiler" role="button" tabindex="0"><b class="spoiler_title">Краткий каталог курсов</b>
+    <div class="spoiler_text">
+     <p><strong>Data Science и&nbsp;Machine Learning</strong></p><br>
+     <ul>
+      <li><a href="https://skillfactory.ru/data-scientist-pro?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_dspr_160223&amp;utm_term=cat">Профессия Data Scientist</a></li>
+      <li><a href="https://skillfactory.ru/data-analyst-pro?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=analytics_dapr_160223&amp;utm_term=cat">Профессия Data Analyst</a></li>
+      <li><a href="https://skillfactory.ru/matematika-dlya-data-science#syllabus?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_mat_160223&amp;utm_term=cat">Курс «Математика для Data Science»</a></li>
+      <li><a href="https://skillfactory.ru/matematika-i-machine-learning-dlya-data-science?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_matml_160223&amp;utm_term=cat">Курс «Математика и&nbsp;Machine Learning для Data Science»</a></li>
+      <li><a href="https://skillfactory.ru/data-engineer?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_dea_160223&amp;utm_term=cat">Курс по&nbsp;Data Engineering</a></li>
+      <li><a href="https://skillfactory.ru/machine-learning-i-deep-learning?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_mldl_160223&amp;utm_term=cat">Курс «Machine Learning и&nbsp;Deep Learning»</a></li>
+      <li><a href="https://skillfactory.ru/machine-learning?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=data-science_ml_160223&amp;utm_term=cat">Курс по&nbsp;Machine Learning</a></li>
+     </ul><br>
+     <p><strong>Python, веб-разработка</strong></p><br>
+     <ul>
+      <li><a href="https://skillfactory.ru/python-fullstack-web-developer?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_fpw_160223&amp;utm_term=cat">Профессия Fullstack-разработчик на&nbsp;Python</a></li>
+      <li><a href="https://skillfactory.ru/python-for-web-developers?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_pws_160223&amp;utm_term=cat">Курс «Python для веб-разработки»</a></li>
+      <li><a href="https://skillfactory.ru/frontend-razrabotchik?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_fr_160223&amp;utm_term=cat">Профессия Frontend-разработчик</a></li>
+      <li><a href="https://skillfactory.ru/webdev?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_webdev_160223&amp;utm_term=cat">Профессия Веб-разработчик</a></li>
+     </ul><br>
+     <p><strong>Мобильная разработка</strong></p><br>
+     <ul>
+      <li><a href="https://skillfactory.ru/ios-razrabotchik-s-nulya?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_ios_160223&amp;utm_term=cat">Профессия iOS-разработчик</a></li>
+      <li><a href="https://skillfactory.ru/android-razrabotchik?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_andr_160223&amp;utm_term=cat">Профессия Android-разработчик</a></li>
+     </ul><br>
+     <p><strong>Java и&nbsp;C#</strong></p><br>
+     <ul>
+      <li><a href="https://skillfactory.ru/java-razrabotchik?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_java_160223&amp;utm_term=cat">Профессия Java-разработчик</a></li>
+      <li><a href="https://skillfactory.ru/java-qa-engineer-testirovshik-po?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_qaja_160223&amp;utm_term=cat">Профессия QA-инженер на&nbsp;JAVA</a></li>
+      <li><a href="https://skillfactory.ru/c-sharp-razrabotchik?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_cdev_160223&amp;utm_term=cat">Профессия C#-разработчик</a></li>
+      <li><a href="https://skillfactory.ru/game-razrabotchik-na-unity-i-c-sharp?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_gamedev_160223&amp;utm_term=cat">Профессия Разработчик игр на&nbsp;Unity</a></li>
+     </ul><br>
+     <p><strong>От&nbsp;основ&nbsp;— в&nbsp;глубину</strong></p><br>
+     <ul>
+      <li><a href="https://skillfactory.ru/algoritmy-i-struktury-dannyh?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_algo_160223&amp;utm_term=cat">Курс «Алгоритмы и&nbsp;структуры данных»</a></li>
+      <li><a href="https://skillfactory.ru/c-plus-plus-razrabotchik?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_cplus_160223&amp;utm_term=cat">Профессия C++ разработчик</a></li>
+      <li><a href="https://skillfactory.ru/cyber-security-etichnij-haker?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_hacker_160223&amp;utm_term=cat">Профессия «Белый хакер»</a></li>
+     </ul><br>
+     <p><strong>А&nbsp;также</strong></p><br>
+     <ul>
+      <li><a href="https://skillfactory.ru/devops-engineer?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=coding_devops_160223&amp;utm_term=cat">Курс по&nbsp;DevOps</a></li>
+      <li><a href="https://skillfactory.ru/catalogue?utm_source=habr&amp;utm_medium=habr&amp;utm_campaign=article&amp;utm_content=sf_allcourses_160223&amp;utm_term=cat">Все курсы</a></li>
+     </ul>
+    </div>
+   </div>
+  </div>
+ </div>
+</div> <!----> <!---->

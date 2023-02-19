@@ -1,0 +1,230 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>В этой статье мы кратко рассмотрим технологию, которая лежит в основе ChatGPT — эмбеддинги, и напишем простой интеллектуальный поиск по кодовой базе проекта.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/99e/3a7/9be/99e3a79beeefaa1ce68a2f74d9c02971.png" width="1024" height="591" data-src="https://habrastorage.org/getpro/habr/upload_files/99e/3a7/9be/99e3a79beeefaa1ce68a2f74d9c02971.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Эмбеддинг (от англ. embedding) — это процесс преобразования слов или текста в набор чисел – числовой вектор. Векторы можно сравнивать между собой, чтобы определить насколько два текста или слова похожи по смыслу.</p>
+   <p>К примеру, возьмем два числовых вектора (эмбеддинга) слов «отдать» и «подарить». Слова разные, но смысл схож, т.е. они взаимосвязаны, и результатом обоих будет передача чего-то кому-то.&nbsp;</p>
+   <p>В контексте кодовой базы проекта эмбеддинги можно использовать для поиска по коду или документации. Например, можно векторизовать функции, классы, методы и документацию, а затем сравнивать их векторы с вектором запроса поиска, чтобы находить релевантные функции или классы.</p>
+   <p>Нам понадобится аккаунт Open AI и токен. Если у вас еще нет аккаунта, то можете зарегистрироваться на официальном сайте <a href="https://openai.com/api/" rel="noopener noreferrer nofollow">Open AI</a>. После регистрации и подтверждения аккаунта пройдите в разделе профиля <a href="https://platform.openai.com/account/api-keys" rel="noopener noreferrer nofollow">API Keys</a> и сгенерируйте API токен.</p>
+   <p>На старте дают $18 — мне этого хватило, чтобы сделать пример для этой статьи (ниже) и провести дальнейшее тестирование сервиса.</p>
+   <p>Выберите какой-нибудь проект на TypeScript в качестве кодовой базы. Рекомендую взять небольшой, чтобы не томить себя в ожиданиях генерации векторов. Или можете воспользоваться уже <a href="https://github.com/Hokid/simple-code-search-engine-using-open-ai-api" rel="noopener noreferrer nofollow">готовым</a>. Еще нам нужен Python 3+ версии и библиотека от Open AI. Не пугайтесь, если не знаете какой-то язык — примеры будут простыми и не требуют глубокого понимания TypeScript и Python.</p>
+   <p>Приступим. Для начала напишем код для извлечения различных фрагментов кода из проекта, например, функции. TypeScript предоставляет удобный API компилятор для работы с AST деревом, что упрощает задачу. Установим <code>csv-stringify</code> библиотеку для генерации CSV:</p>
+   <pre><code class="bash">$ npm install csv-stringify</code></pre>
+   <p>Пишем извлечение информации из кода:</p>
+   <pre><code class="javascript">const path = require('path');
+const ts = require('typescript');
+const csv = require('csv-stringify/sync');
+ 
+const cwd = process.cwd();
+const configJSON = require(path.join(cwd, 'tsconfig.json'));
+const config = ts.parseJsonConfigFileContent(configJSON, ts.sys, cwd);
+const program = ts.createProgram(
+    config.fileNames, 
+    config.options, 
+    ts.createCompilerHost(config.options)
+);
+const checker = program.getTypeChecker();
+
+const rows = [];
+
+const addRow = (fileName, name, code, docs = '') =&gt; rows.push({
+    file_name: path.relative(cwd, fileName),
+    name,
+    code,
+    docs
+});
+
+function addFunction(fileName, node) {
+    const symbol = checker.getSymbolAtLocation(node.name);
+    if (symbol) {
+        const name = symbol.getName();
+        const docs = getDocs(symbol);
+        const code = node.getText();
+        addRow(fileName, name, code, docs);
+    }
+}
+
+function addClass(fileName, node) {
+    const symbol = checker.getSymbolAtLocation(node.name);
+    if (symbol) {
+        const name = symbol.getName();
+        const docs = getDocs(symbol);
+        const code = `class ${name} {}`;
+        addRow(fileName, name, code, docs);
+        node.members.forEach(m =&gt; addClassMember(fileName, name, m));
+    }
+}
+
+function addClassMember(fileName, className, node) {
+    const symbol = checker.getSymbolAtLocation(node.name);
+    if (symbol) {
+        const name = className + ':' + symbol.getName();
+        const docs = getDocs(symbol);
+        const code = node.getText();
+        addRow(fileName, name, code, docs);
+    }
+}
+
+function addInterface(fileName, node) {
+    const symbol = checker.getSymbolAtLocation(node.name);
+    if (symbol) {
+        const name = symbol.getName();
+        const docs = getDocs(symbol);
+        const code = `interface ${name} {}`;
+        addRow(fileName, name, code, docs);
+        node.members.forEach(m =&gt; addInterfaceMember(fileName, name, m));
+    }
+}
+
+function addInterfaceMember(fileName, interfaceName, node) {
+    if (!ts.isPropertySignature(node) || !ts.isMethodSignature(node)) {
+        return;
+    }
+    const symbol = checker.getSymbolAtLocation(node.name);
+    if (symbol) {
+        const name = interfaceName + ':' + symbol.getName();
+        const docs = getDocs(symbol);
+        const code = node.getText();
+        addRow(fileName, name, code, docs);
+    }
+}
+
+function getDocs(symbol) {
+    return ts.displayPartsToString(symbol.getDocumentationComment(checker));
+}
+
+for (const fileName of config.fileNames) {
+    const sourceFile = program.getSourceFile(fileName);
+    const visitNode = node =&gt; {
+        if (ts.isFunctionDeclaration(node)) {
+            addFunction(fileName, node);
+        } else if (ts.isClassDeclaration(node)) {
+            addClass(fileName, node);
+        } else if (ts.isInterfaceDeclaration(node)) {
+            addInterface(fileName, node);
+        }
+        ts.forEachChild(node, visitNode);
+    };
+    ts.forEachChild(sourceFile, visitNode);
+}
+
+for (const row of rows) {
+    row.combined = '';
+    if (row.docs) {
+        row.combined += `Code documentation: ${row.docs}; `;
+    }
+    row.combined += `Code: ${row.code}; Name: ${row.name};`;
+}
+
+const output = csv.stringify(rows, {
+    header: true
+});
+
+console.log(output);</code></pre>
+   <p>Скрипт собирает все нужные нам фрагменты и выдает CSV таблицу в консоль. CSV файл состоит из колонок <strong>file_name</strong>, <strong>name</strong>, <strong>code</strong>, <strong>docs</strong>, <strong>combined</strong>.</p>
+   <ul>
+    <li><p><strong>file_name</strong> - здесь будет содержаться путь до файла в проекте,</p></li>
+    <li><p><strong>name</strong> - название фрагмента, к примеру, «имя функции»,</p></li>
+    <li><p><strong>code</strong> - код сущности,</p></li>
+    <li><p><strong>docs</strong> - описание из комментариев к фрагменту,</p></li>
+    <li><p><strong>combined</strong> - это сложение контента <strong>code</strong> и <strong>docs</strong> колонок — мы будем использовать эту колонку для генерации векторов.</p></li>
+   </ul>
+   <p>Запускать его не нужно.</p>
+   <p>Переходим к Python.</p>
+   <p>Установим библиотеку от Open AI и утилиты для работы с эмбеддингами:</p>
+   <pre><code class="bash">$ pip install openai[embeddings]</code></pre>
+   <p>Создаем файл <code>create_search_db.py</code> со следующим кодом:</p>
+   <pre><code class="python">from io import StringIO
+from subprocess import PIPE, run
+from pandas import read_csv
+from openai.embeddings_utils import get_embedding as _get_embedding
+from tenacity import wait_random_exponential, stop_after_attempt
+
+get_embedding = _get_embedding.retry_with(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(10))
+
+if __name__ == '__main__':
+	# 1
+	result = run(['node', 'code-to-csv.js'], stdout=PIPE, stderr=PIPE, universal_newlines=True)
+	if result.returncode != 0:
+	    raise RuntimeError(result.stderr)
+	# 2
+	db = read_csv(StringIO(result.stdout))
+	# 3
+	db['embedding'] = db['combined'].apply(lambda x: get_embedding(x, engine='text-embedding-ada-002'))
+	# 4
+	db.to_csv("search_db.csv", index=False)</code></pre>
+   <p>Скрипт запускается <code>code-to-csv.js</code>(1), загружается результат в датафрейм(2) и генерирует векторы для контента в колонке <strong>combined</strong>(3). Векторы записываются в <strong>embedding</strong> колонку. Итоговая таблица со всем нужным для поиска сохраняется в файл <code>search_db.csv</code>(4).</p>
+   <p>Для работы скрипта понадобится API токен. Библиотека <code>openai</code> автоматически может брать токен из переменных окружения, поэтому мы напишем удобный скрипт, чтобы не записывать токен в окружение вручную:</p>
+   <pre><code class="bash">export OPENAI_API_KEY=ВашТокен</code></pre>
+   <p>Сохранить его куда-нибудь, к примеру в <code>env.sh</code>, и запустим:</p>
+   <pre><code class="bash">$ source env.sh</code></pre>
+   <p>Все готово для генерации базы поиска.</p>
+   <p>Запускаем скрипт <code>create_search_db.py</code> и ждем пока появится CSV файл с базой. Это может занять пару минут. После можно приступать к написанию поисковика.</p>
+   <p>Создаем новый файл <code>search.py</code> и пишем следующее:</p>
+   <pre><code class="python">import sys
+import numpy as np
+from pandas import read_csv
+from openai.embeddings_utils import cosine_similarity, get_embedding as _get_embedding
+from tenacity import  stop_after_attempt, wait_random_exponential
+
+get_embedding = _get_embedding.retry_with(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(10))
+
+def search(db, query):
+	# 4
+    query_embedding = get_embedding(query, engine='text-embedding-ada-002')
+	# 5
+    db['similarities'] = db.embedding.apply(lambda x: cosine_similarity(x, query_embedding))
+    # 6
+	db.sort_values('similarities', ascending=False, inplace=True)
+    result = db.head(3)
+    text = ""
+    for row in result.itertuples(index=False):
+        score=round(row.similarities, 3)
+        if type(row.docs) == str:
+            text += '/**\n * {docs}\n */\n'.format(docs='\n * '.join(row.docs.split('\n')))
+        text += '{code}\n\n'.format(code='\n'.join(row.code.split('\n')[:7]))
+        text += '[score={score}] {file_name}:{name}\n'.format(score=score, file_name=row.file_name, name=row.name)
+        text += '-' * 70 + '\n\n'
+    return text
+
+if __name__ == '__main__':
+	# 1
+    db = read_csv('search_db.csv')
+	# 2
+    db['embedding'] = db.embedding.apply(eval).apply(np.array)
+    query = sys.argv[1]
+    print('')
+	# 3
+    print(search(db, query))</code></pre>
+   <p>Разберем работу скрипта. Данные из <code>search_db.csv</code> загружаются в датафрейм(1), в объектно-ориентированное представление таблицы. Потом строки с векторами из таблицы конвертируются в массивы с числами(2), чтобы с ними можно было работать. В конце запускается функция поиска по базе со строкой запроса(3).</p>
+   <p>Функция поиска генерирует вектор для запроса(4), сравнивает этот вектор с каждым вектором из базы и сохраняет степень схожести в <strong>similarities</strong> колонку(5).</p>
+   <p>Степень схожести определяется числом от 0 до 1, где 1 означает максимальная подходящий вариант. Данные в таблице сортируются по <strong>similarities</strong>(6).</p>
+   <p>В заключении извлекаются первые три строки из базы и выводятся в консоль.</p>
+   <p>Поисковик готов, можно протестировать.</p>
+   <p>Для теста запускаем команду с запросом:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/ac5/26f/2f1/ac526f2f12ba0735a2097065ea45d217.png" width="1840" height="1748" data-src="https://habrastorage.org/getpro/habr/upload_files/ac5/26f/2f1/ac526f2f12ba0735a2097065ea45d217.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Пробуем ввести запрос на другом языке:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/204/035/fc8/204035fc840b514132ed9d8f58d14606.png" width="1840" height="1748" data-src="https://habrastorage.org/getpro/habr/upload_files/204/035/fc8/204035fc840b514132ed9d8f58d14606.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Как вы видите, поиск осуществляется с учетом значения слов в запросе, а не просто по ключевым словам.</p>
+   <p>Инструмент не ограничен только этим случаем и одним проектом. Можно организовать более масштабный поиск по всем проектам сразу. Это полезно, если вы каждый год разрабатываете по нескольку схожих в функционале приложений и хотели бы быстро находить готовые решения. Или у вас много документации, а поиск по ключевым словам не всегда эффективен. Все зависит от задач и сферы применения.</p>
+   <p>Благодарю за внимание!</p>
+   <p>Полезные ссылки:</p>
+   <ul>
+    <li><p><a href="https://openai.com/api/" rel="noopener noreferrer nofollow">Open AI API</a></p></li>
+    <li><p><a href="https://platform.openai.com/docs/guides/embeddings" rel="noopener noreferrer nofollow">Open AI Embeddings API</a></p></li>
+    <li><p><a href="https://github.com/Hokid/simple-code-search-engine-using-open-ai-api" rel="noopener noreferrer nofollow">Пример кода</a></p></li>
+   </ul>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

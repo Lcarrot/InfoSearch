@@ -1,0 +1,92 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Привет, Хабр! Меня зовут Илья, я&nbsp;— разработчик систем восприятия окружения в&nbsp;компании <a href="https://www.zyfra.com/ru/industries/robotics/"><strong>Zyfra Robotics.</strong></a> Проще говоря, я учу самосвалы и буровые станки «видеть» окружающий их мир. Наши роботы бурят скважины на&nbsp;просторах Перу, а&nbsp;самосвалы без&nbsp;водителей трудятся на&nbsp;карьерах Хакасии. Чтобы они могли делать это&nbsp;быстро и, главное, безопасно, мы наделяем машины «глазами» и учим ими пользоваться. Для&nbsp;этого мы применяем камеры, радары и, конечно,&nbsp;лидары. В&nbsp;этом посте я хочу рассказать, что&nbsp;это вообще такое и с&nbsp;какими проблемами мы сталкиваемся.</p>
+   <h3>Чайник с глазами</h3>
+   <p>Лидар&nbsp;— это оптический сенсор, использующийся для&nbsp;обнаружения объекта и измерения расстояния до&nbsp;него. По&nbsp;сути,&nbsp;лидар выпускает оптический импульс, который отражается от&nbsp;ближайшего объекта и возвращается. Потом система рассчитывает расстояние до&nbsp;этого объекта. А&nbsp;мы учим ее понимать, от&nbsp;чего именно оттолкнулся этот импульс, и передавать эту информацию машине.</p>
+   <p>Внешне&nbsp;лидар&nbsp;— это небольшой цилиндр высотой около 15&nbsp;см. Похоже на&nbsp;мини‑чайник с&nbsp;окошками. Корпус&nbsp;— из&nbsp;металла и светопроводящих материалов защищает&nbsp;лидар от&nbsp;пыли и влаги. Чаще всего их размещают так, чтобы обеспечить необходимое покрытие: на&nbsp;корпусе транспорта или&nbsp;различных его элементах&nbsp;— крыше, бампере, крыльях и&nbsp;т.&nbsp;д.</p>
+   <p>Лидары как&nbsp;технология известны достаточно давно, но&nbsp;из‑за высокой цены применяли их&nbsp;либо ученые,&nbsp;либо военные. Но&nbsp;примерно десять лет назад в&nbsp;мире начался настоящий бум интереса к&nbsp;городским беспилотникам, который и сделал&nbsp;лидары доступными для&nbsp;массовых разработчиков. Теперь они активно применяются в&nbsp;транспорте и промышленности&nbsp;— эти сенсоры нужны практически всем роботам.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/9ba/622/597/9ba6225978affc7c1655293fecf22fb8.png" width="1201" height="631" data-src="https://habrastorage.org/getpro/habr/upload_files/9ba/622/597/9ba6225978affc7c1655293fecf22fb8.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Чтобы наш самосвал не&nbsp;свалился в&nbsp;карьер, ему нужно понимать, что&nbsp;находится вокруг него. Для&nbsp;этого&nbsp;лидар должен изменить направление лазерного луча и измерить расстояние до&nbsp;всех объектов вокруг себя. Проще всего это сделать, поместив лазерный дальномер на&nbsp;платформу. Вращая ее, можно получить картинку в&nbsp;двумерном пространстве. А&nbsp;если использовать несколько дальномеров под&nbsp;разными вертикальными углами и проводить измерения параллельно&nbsp;— в&nbsp;трёхмерном.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/fcf/5c2/720/fcf5c2720a23451adfe7ec11ead6e4d1.jpg" width="7023" height="4500" data-src="https://habrastorage.org/getpro/habr/upload_files/fcf/5c2/720/fcf5c2720a23451adfe7ec11ead6e4d1.jpg" data-blurred="true">
+    <figcaption></figcaption>
+   </figure>
+   <p>Таким образом мы получили серию измерений дальности под&nbsp;разными углами:</p><img class="formula" source="P = [(R_i, Azm_i, El_i)  | i \in N ]" alt="P = [(R_i, Azm_i, El_i)  | i \in N ]" src="https://habrastorage.org/getpro/habr/upload_files/fec/e2c/336/fece2c33625e8baaccd0987c17f2297d.svg" width="236" height="22">
+   <p>Набор точек, переведённых в&nbsp;декартову систему координат, является выходом&nbsp;лидара, поступающим в&nbsp;систему робота. Чаще всего его называют сканом.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/a09/ab0/b63/a09ab0b63e02d87e338842b58e01b18e.png" width="1201" height="631" data-src="https://habrastorage.org/getpro/habr/upload_files/a09/ab0/b63/a09ab0b63e02d87e338842b58e01b18e.png">
+    <figcaption></figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/882/5bd/1cd/8825bd1cd22233c9167230831fa2a6ec.png" width="1200" height="630" data-src="https://habrastorage.org/getpro/habr/upload_files/882/5bd/1cd/8825bd1cd22233c9167230831fa2a6ec.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Также&nbsp;лидар умеет измерять амплитуду принятого сигнала. Значение амплитуды зависит от&nbsp;многих факторов: дальности объекта и его материала, угла визирования объекта и даже состояния атмосферы.</p>
+   <p>Моделей&nbsp;лидаров много, и каждая из&nbsp;них может применять свой метод изменения направления луча. Однако в&nbsp;целом принцип формирования&nbsp;лирадного скана не&nbsp;меняется.</p>
+   <p>Более подробно об&nbsp;устройстве современных&nbsp;лидаров можно почитать <a href="https://spie.org/Publications/Book/2518252?SSO=1">здесь</a>.</p>
+   <p>Главное отличительное свойство облака точек как&nbsp;набора данных&nbsp;— это инвариантность к&nbsp;перестановкам точек внутри массива.</p><img class="formula" source="P_0 = [(x_0, y_0, z_0), (x_1, y_1, z_1),(x_2, y_2, z_2)] " alt="P_0 = [(x_0, y_0, z_0), (x_1, y_1, z_1),(x_2, y_2, z_2)] " src="https://habrastorage.org/getpro/habr/upload_files/586/ecf/44b/586ecf44be950c513560e3ad501d0b4d.svg" width="345" height="22"><img class="formula" source="P_1 = [(x_2, y_2, z_2), (x_1, y_1, z_1),(x_0, y_0, z_0)]" alt="P_1 = [(x_2, y_2, z_2), (x_1, y_1, z_1),(x_0, y_0, z_0)]" src="https://habrastorage.org/getpro/habr/upload_files/b75/885/512/b75885512df89d3b0fc8283c243992ce.svg" width="345" height="22"><img class="formula" source="P_0 = P_1" alt="P_0 = P_1" src="https://habrastorage.org/getpro/habr/upload_files/beb/ce4/aba/bebce4aba0d4f43a6d00910c775825ec.svg" width="69" height="20">
+   <p>То есть массивы точек P_1&nbsp;и P_0&nbsp;являются одним и тем&nbsp;же объектом.</p>
+   <h3>Обработка лидарных данных</h3>
+   <p>Сами по&nbsp;себе «сырые» данные с&nbsp;лидара бесполезны для&nbsp;роботизированной системы. Роботу сначала нужно обработать эти данные и&nbsp;лишь затем применять их.</p>
+   <p>Вот несколько примеров задач, которые решаются и используются в&nbsp;наших системах с&nbsp;использованием&nbsp;лидарных данных:</p>
+   <p>1. <em>Регистрация облака точек.</em> Суть задачи заключается в «подборе» пространственного преобразования между двумя массивами точек, снятыми в&nbsp;разных положениях&nbsp;лидара. Формально для&nbsp;лидарного облака точек задача формулируется следующим образом:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/fac/e43/391/face43391f00e04acaedf86c4fac230c.png" width="573" height="113" data-src="https://habrastorage.org/getpro/habr/upload_files/fac/e43/391/face43391f00e04acaedf86c4fac230c.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Матрица <img class="formula inline" source="R" alt="R" src="https://habrastorage.org/getpro/habr/upload_files/f9e/ec0/7a3/f9eec07a3f6d312aada9543cfffd2c26.svg" width="15" height="17">— это матрица вращения, а <img class="formula inline" source="t" alt="t" src="https://habrastorage.org/getpro/habr/upload_files/dbb/08d/4f3/dbb08d4f3666bc0e584807c45e3619b6.svg" width="7" height="16">&nbsp;— вектор смещения. Точки <img class="formula inline" source="x_k" alt="x_k" src="https://habrastorage.org/getpro/habr/upload_files/c2f/143/316/c2f14331666c9f27373167006b62339c.svg" width="20" height="15"> и <img class="formula inline" source="y_k" alt="y_k" src="https://habrastorage.org/getpro/habr/upload_files/26c/96b/a8a/26c96ba8a8b8736cd56f877ebf3a694f.svg" width="19" height="16">взяты из&nbsp;массивов (облаков точек) <img class="formula inline" source="X" alt="X" src="https://habrastorage.org/getpro/habr/upload_files/419/9dd/6b2/4199dd6b28b1c6e5aa9a2b8a9013a9bb.svg" width="17" height="17">и <img class="formula inline" source="Y" alt="Y" src="https://habrastorage.org/getpro/habr/upload_files/89a/26d/208/89a26d208f6064f2f5b041dacb440e45.svg" width="15" height="16">Эта задача усложняется тем, что&nbsp;для&nbsp;поиска параметров преобразования сначала нужно найти соответствие между точками из <img class="formula inline" source="X" alt="X" src="https://habrastorage.org/getpro/habr/upload_files/dae/0db/bfc/dae0dbbfc0eb84d3eece2faa851e1d1c.svg" width="17" height="17">и <img class="formula inline" source="Y" alt="Y" src="https://habrastorage.org/getpro/habr/upload_files/50b/5e3/19f/50b5e319f72ee0d608945e3158e7712d.svg" width="15" height="16">и&nbsp;лишь после этого проводить оптимизацию уравнения 1. Найдя матрицу <img class="formula inline" source="R" alt="R" src="https://habrastorage.org/getpro/habr/upload_files/49a/29e/1b0/49a29e1b0e1f63a9084ee3496a447513.svg" width="15" height="17">и вектор <img class="formula inline" source="t" alt="t" src="https://habrastorage.org/getpro/habr/upload_files/010/6a8/4a9/0106a84a9cf7cfc5d14f8ba5b98e53c8.svg" width="7" height="16"> мы получаем смещение&nbsp;лидара между <img class="formula inline" source="X" alt="X" src="https://habrastorage.org/getpro/habr/upload_files/138/42e/424/13842e424d04c27b13c87e710dc7b3c2.svg" width="17" height="17">и <img class="formula inline" source="Y" alt="Y" src="https://habrastorage.org/getpro/habr/upload_files/dde/130/6b3/dde1306b3b231e45225be958bcc45d5d.svg" width="15" height="16">.</p>
+   <p>Подробнее про&nbsp;методы решения этой задачи можно почитать <a href="https://arxiv.org/abs/2103.02690">здесь</a>.</p>
+   <div class="tm-iframe_temp" data-src="https://embedd.srv.habr.com/iframe/63ecaaee61f0ac6fb26263dd" data-style="" id="63ecaaee61f0ac6fb26263dd" width=""></div>
+   <p>На&nbsp;представленном видео робот строит трехмерную карту пространства, используя&nbsp;лидарную одометрию и данные с&nbsp;IMU.</p>
+   <p>Полученная карта может использоваться для&nbsp;различных целей. Например, мы можем увидеть на&nbsp;ней дефекты дороги, которые повлияют на&nbsp;работу всего карьера. Также карта необходима и для&nbsp;безопасной навигации робота, поскольку она позволяет машине видеть и запоминать стационарные объекты и избегать их при&nbsp;выборе маршрута.</p>
+   <p>2. <em>Классификация</em>. По&nbsp;облаку точек необходимо определить класс объекта.</p>
+   <p>Формально эта задача ставится следующим образом: По заданному облаку точек P необходимо определить класс c из заранее заданного набора классов <img class="formula inline" source="C= [c_0, c_1, c_2]" alt="C= [c_0, c_1, c_2]" src="https://habrastorage.org/getpro/habr/upload_files/eda/e65/a21/edae65a217647836df637536516abf2b.svg" width="122" height="22">.</p><img class="formula" source="[(x_0, y_0, z_0), (x_1, y_1, z_1) ... (x_n, y_n, z_n)] \rightarrow  c_i" alt="[(x_0, y_0, z_0), (x_1, y_1, z_1) ... (x_n, y_n, z_n)] \rightarrow  c_i" src="https://habrastorage.org/getpro/habr/upload_files/b22/6a7/402/b226a740281d6ea8e29f98dfc265bf4d.svg" width="364" height="22">
+   <p>Облаком точек для&nbsp;классификации может выступать как&nbsp;весь&nbsp;лидарный скан (например, если мы хотим определить погодные условия вокруг робота), так и часть этого скана (если нужно определить класс заранее выделенного объекта).</p>
+   <p>Если говорить про&nbsp;методы решения, то в&nbsp;последнее десятилетие лучше всего работают алгоритмы на&nbsp;основе машинного обучения. Почитать про&nbsp;них можно <a href="https://arxiv.org/abs/1912.12033">здесь</a>.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/d43/ba0/042/d43ba0042c70c550a596517547dfe24b.png" width="1201" height="631" data-src="https://habrastorage.org/getpro/habr/upload_files/d43/ba0/042/d43ba0042c70c550a596517547dfe24b.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>3. <em>Сегментация данных.</em> Здесь класс необходимо присвоить каждой отдельной точке скана.</p><img class="formula" source="С = f(P)" alt="С = f(P)" src="https://habrastorage.org/getpro/habr/upload_files/3db/6a4/6c6/3db6a46c646390dc58fd84133e802cbc.svg" width="79" height="23"><img class="formula" source="P = [(x_i, y_i, z_i) | i \in N] - облако\ точек\ размером\ N" alt="P = [(x_i, y_i, z_i) | i \in N] - облако\ точек\ размером\ N" src="https://habrastorage.org/getpro/habr/upload_files/eb7/e8e/a94/eb7e8ea947d763e722401603109cf7dc.svg" width="435" height="23"><img class="formula" source="С = [c_i | i \in N] - массив\ классов\ для\ каждой\ точки\ из\ P" alt="С = [c_i | i \in N] - массив\ классов\ для\ каждой\ точки\ из\ P" src="https://habrastorage.org/getpro/habr/upload_files/6cb/34a/cdd/6cb34acdd616f3c8590cac06bebfa18d.svg" width="476" height="23">
+   <p>Методы решения задачи сегментации в&nbsp;целом схожи с&nbsp;методами обычной классификации. Про&nbsp;подходы можно также прочитать <a href="https://arxiv.org/abs/1912.12033">здесь</a>.</p>
+   <p>Для&nbsp;определения класса каждой отдельной точки скана, крайне важно понимать, что&nbsp;окружает эту точку (контекст). Правильное представление контекста&nbsp;— ключевой фактор при&nbsp;решении задачи сегментации. Однако так как&nbsp;точки в&nbsp;пространстве распределяются неравномерно, определить качественный контекст для&nbsp;каждой точки скана проблематично.</p>
+   <p>При&nbsp;решении этой задачи нужно оценить зону проходимости для&nbsp;робота или&nbsp;фильтровать данные от&nbsp;так называемых «мусорных» точек (пыль, снег и&nbsp;т.&nbsp;д.) В&nbsp;наших роботах мы используем сегментацию для&nbsp;оценки той зоны, куда робот может проехать безопасно.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/4ba/70c/760/4ba70c760b7b1fbcb5c7a5191a501611.png" width="1200" height="630" data-src="https://habrastorage.org/getpro/habr/upload_files/4ba/70c/760/4ba70c760b7b1fbcb5c7a5191a501611.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>4. <em>Обнаружение объектов.</em> Необходимо по&nbsp;полному скану окружающего пространства определить положение всех объектов определённых классов.</p>
+   <p>Например, нам нужно увидеть, где находится другая горная техника, люди или&nbsp;животные. Но&nbsp;здесь недостаточно просто обнаружить эти объекты (указать их геометрическое положение), надо оценить их размеры и класс.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/875/e2d/8b3/875e2d8b3b3697f9a4330d1bbe3ab567.png" width="1200" height="630" data-src="https://habrastorage.org/getpro/habr/upload_files/875/e2d/8b3/875e2d8b3b3697f9a4330d1bbe3ab567.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Решение этой задачи помогает роботу безопасно передвигаться и не&nbsp;представлять угрозы для&nbsp;других участников движения. Да&nbsp;и в&nbsp;целом без&nbsp;понимания, объект какого класса мы обнаружили, невозможно правильно организовать полноценный цикл работы самосвала: на&nbsp;человека и машину робот должен реагировать по‑разному.</p>
+   <p><a href="http://arxiv.org/abs/2106.10823">Прочитать</a> про&nbsp;современные методы решения задачи обнаружения.</p>
+   <h3>Минусы лидара</h3>
+   <h4>1. Зависимость от погоды</h4>
+   <p>Лидар использует электромагнитное излучение в&nbsp;нм диапазоне, близком к&nbsp;световым волнам, что&nbsp;делает его чувствительным к&nbsp;погодным условиям. Проще говоря, такие волны отражаются от&nbsp;всего, что&nbsp;больше них. То есть&nbsp;лидар будет видеть не&nbsp;только трактор, но&nbsp;и микроскопическую снежинку или&nbsp;лужу, а&nbsp;его луч будет отражаться как&nbsp;от&nbsp;объектов, находящихся за&nbsp;стеклом, так и от&nbsp;самого стекла. Снег, пыль, туман, пар сильно ухудшают качество данных и могут привести к&nbsp;некорректному поведению алгоритмов: помимо реальных, мы увидим еще и так называемые «теневые объекты».</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/980/e94/099/980e940999a7f48caa4f112e3561321d.png" width="1200" height="630" data-src="https://habrastorage.org/getpro/habr/upload_files/980/e94/099/980e940999a7f48caa4f112e3561321d.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>При&nbsp;этом если точки от&nbsp;снега и пыли можно фильтровать, то туман сильно усложняет работу с&nbsp;лидарными данными.</p>
+   <p>Мы решаем проблему так: ищем закономерности данных, которые позволяют роботу отличить эту пыль от&nbsp;условного самосвала. Такую&nbsp;линейку закономерностей мы можем придумывать сами: например, «объяснить» системе, что&nbsp;поверхность пыли более неоднородная, чем самосвала. Но&nbsp;если объяснить роботу, как&nbsp;отличить трактор от&nbsp;снежинки, довольно просто, то придумать универсальные признаки не&nbsp;всегда возможно. Сейчас мы начали применять методы машинного обучения и пытаемся подобрать эти признаки на&nbsp;основании большого объёма наблюдаемых данных.</p>
+   <h4>2. Низкое разрешение по углу возвышения</h4>
+   <p>Разрешение по&nbsp;углу возвышения чаще всего достигается за&nbsp;счет использования сразу нескольких каналов под&nbsp;разными углами. Обычно их не&nbsp;очень много (16, 32, 64, 128), часто каналы расположены неравномерно.</p>
+   <p>В&nbsp;такой конфигурации при&nbsp;увеличении расстояния до&nbsp;объекта его&nbsp;лидарный «портрет» начинает деградировать.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c60/225/328/c60225328ddc4834fe2cbeac1799e905.png" width="1201" height="631" data-src="https://habrastorage.org/getpro/habr/upload_files/c60/225/328/c60225328ddc4834fe2cbeac1799e905.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Такое поведение сильно ухудшает качество работы практически всех алгоритмов, особенно классификации и обнаружения. При&nbsp;этом методов борьбы с&nbsp;этим недостатком мало. Единственное, что&nbsp;по‑настоящему работает&nbsp;— увеличить плотность точек через увеличение количества вертикальных каналов.</p>
+   <h3>Не лидаром единым</h3>
+   <p>Лидар&nbsp;— один из&nbsp;ключевых сенсоров для&nbsp;наших роботов, который позволяет получить информацию как&nbsp;об&nbsp;окружающем пространстве, так и о&nbsp;движении самой машины. Конечно, у&nbsp;него есть как&nbsp;сильные, так и слабые стороны. Поэтому, создавая действительно безопасного и эффективного робота, одним&nbsp;лидаром не&nbsp;обойтись. Его слабые стороны можно компенсировать, применяя другие сенсоры. В&nbsp;общем, комбинируйте и все получится!</p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

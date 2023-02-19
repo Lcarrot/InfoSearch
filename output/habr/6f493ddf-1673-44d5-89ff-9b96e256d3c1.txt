@@ -1,0 +1,453 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/6c1/82c/190/6c182c190b7e3376475a76859c4e3c7a.png" alt="github.com/w1kend/gophers" title="github.com/w1kend/gophers" width="2160" height="1620" data-src="https://habrastorage.org/getpro/habr/upload_files/6c1/82c/190/6c182c190b7e3376475a76859c4e3c7a.png">
+    <figcaption>
+     github.com/w1kend/gophers
+    </figcaption>
+   </figure>
+   <p>Всем привет. Продолжаем реализовывать hashmap из исходников Go 1.19. Во второй части рассмотрим generic ключи и рост мапы. Узнаем что такое нерефлексивные ключи, как происходит итерация во время роста и немного про коробочное хеширование.</p>
+   <p><a href="https://habr.com/ru/post/704796" rel="noopener noreferrer nofollow">Часть 1</a></p>
+   <h3>Некоторые определения из прошлой части:</h3>
+   <ul>
+    <li><p>бакет - структура данных в которой хранятся ключи, значения и топхеш;</p></li>
+    <li><p>рост - при достижении определенного порога значений в бакете (в среднем) начинается рост чтобы поддерживать константную скорость операций с мапой. Выделяется память под х2 бакетов;</p></li>
+    <li><p>эвакуация - в процессе роста старые бакеты "эвакуируются" в новое место.</p></li>
+   </ul>
+   <h2>Generic ключи</h2>
+   <p>Хэшируем все что <s>движется</s> comparable:</p>
+   <p>Из коробки Go не предоставляет доступ к функциям хеширования, которые используются в map. Однако есть продвижения в этом направлении - в go 1.19 в пакете maphash были&nbsp;<a href="https://pkg.go.dev/hash/maphash#Bytes" rel="noopener noreferrer nofollow">добавлены</a>&nbsp;функции&nbsp;<code>Bytes</code>&nbsp;и&nbsp;<code>String</code>&nbsp;для хеширования массива байт и строки соответственно. Но для использования generic ключей в нашей map'е этого недостаточно. Будем пользоваться магией, про которую можно почитать&nbsp;<a href="https://www.dolthub.com/blog/2022-12-19-maphash" rel="noopener noreferrer nofollow">здесь</a>.</p>
+   <h3>dolthub/maphash или как добраться до функции хеширования из runtime</h3>
+   <p>Компилятор Go генерирует функцию хеширования для каждого типа ключа, который мы используем в нашем коде. Найти ее можно в следующей структуре&nbsp;<code>maptype</code>:</p>
+   <p><a href="https://github.com/golang/go/blob/ba913774543d7388b7bb1843fc7c1b935aebedda/src/runtime/type.go#L356" rel="noopener noreferrer nofollow"><em>runtime/type.go</em></a></p>
+   <pre><code class="go">type maptype struct {
+    /* ... */
+	// function for hashing keys (ptr to key, seed) -&gt; hash
+	hasher     func(unsafe.Pointer, uintptr) uintptr
+    /* ... */
+}</code></pre>
+   <p>Добраться до нее можно с помощью приведения типов и пакета&nbsp;<code>unsafe</code>:</p>
+   <p><a href="https://github.com/dolthub/maphash/blob/74e1e1ea1577958fc17c2c43d2b6baba8f2243a5/runtime.go#L31" rel="noopener noreferrer nofollow"><em>dolthub/maphash/runtime.go</em></a></p>
+   <pre><code class="go">func getRuntimeHasher[K comparable]() (h hashfn, seed uintptr) {
+	a := any(make(map[K]struct{})) // создаем мапу с нужным типом ключа
+	i := (*mapiface)(unsafe.Pointer(&amp;a)) // приводим к нашей структуре, которая идентична тому что под капотом
+	h, seed = i.typ.hasher, uintptr(i.val.hash0) // забираем работу компилятора
+	return
+}
+
+type mapiface struct {
+	typ *maptype
+	val *hmap
+}
+
+// go/src/runtime/type.go
+type maptype struct {
+    /* ... */
+	hasher func(unsafe.Pointer, uintptr) uintptr // заветная функция хеширования
+    /* ... */
+}
+
+// go/src/runtime/map.go
+type hmap struct {
+    /* ... */
+}</code></pre>
+   <p>Получаем следующую функцию для хеширования&nbsp; для <code>comparable</code>&nbsp;типов:</p>
+   <pre><code class="go">func (h Hasher[K]) Hash(key K) uint64 // K - comparable</code></pre>
+   <h4>Зачем использовать магию?</h4>
+   <p>Хеширование под капотом по возможности использует&nbsp;<a href="https://en.wikipedia.org/wiki/AES_instruction_set" rel="noopener noreferrer nofollow">AES</a>&nbsp;инструкции процессора. Это будет работать быстрее (в теории) в отличии от кода на чистом Go.</p>
+   <p>Добавляем себе. Теперь создание мапы выглядит так:</p>
+   <pre><code class="go">type hmap[K comparable, V any] struct {
+    /* ... */
+	hasher  maphash.Hasher[K]
+    /* ... */
+}
+
+func New[K comparable, V any](size int) Hashmap[K, V] {
+	h := new(hmap[K, V])
+
+	B := uint8(0)
+	for overLoadFactor(size, B) {
+		B++
+	}
+	h.B = B
+
+	h.buckets = make([]bucket[K, V], bucketsNum(h.B))
+
+    /* новый код */
+	h.hasher = maphash.NewHasher[K]() // новый хэшер для comparable типов
+
+	return h
+}
+
+// использование 
+func (h *hmap[K, V]) locateBucket(key K) (tophash uint8, targetBucket uint64) {
+	hash := h.hasher.Hash(key)
+    /* ... */
+}</code></pre>
+   <h4>Про нерефлексивные ключи</h4>
+   <p>Такими называются ключи которые неравны сами себе -&nbsp;<code>x != x</code>. Их в Go есть.</p>
+   <p>Мы можем использовать&nbsp;<code>NaN</code>&nbsp;как ключ в мапе с некоторыи оговорками:</p>
+   <ul>
+    <li><p>каждый раз при добавлении элемента с таким ключом будет создаваться новый элемент;</p></li>
+    <li><p>добраться до значения по такому ключу можно только при итерации;</p></li>
+    <li><p>нельзя удалить;</p></li>
+    <li><p>хэш от такого ключа всегда разный, по-этому элементы будут разбросаны по разным бакетам.</p></li>
+   </ul>
+   <pre><code class="go">  m := make(map[float64]int)
+  for i := 0; i &lt; 4; i++ {
+      m[math.NaN()] = i
+  }
+  fmt.Println(m)             // map[NaN:1 NaN:0 NaN:3 NaN:2]
+  fmt.Println(m[math.NaN()]) // 0</code></pre>
+   <h3>Эвакуация</h3>
+   <p>Рост мапы начинается в двух случаях:</p>
+   <ul>
+    <li><p>бакеты в среднем заполнены на больше чем ~80%. В таком случае количество бакетов увеличивается вдвое;</p></li>
+    <li><p>и частный случай (не закодирован) - количество overflow бакетов примерно равно количеству самих бакетов.</p></li>
+   </ul>
+   <details class="spoiler">
+    <summary>Каким образом получить частный случай</summary>
+    <div class="spoiler__content">
+     <p>В процессе использования мапы у нас есть N бакетов и каждый из них (по отдельности, иначе сработал бы тригер на обычный рост) переполнялся и несколько элементов приходилось сохранять в overflow бакетах. Далее удалялись те элементы, которые находились в основных бакетах. Заполнив так несколько бакетов получим ситуацию когда сами бакеты полупустые, а большинство данных лежит в overflow.</p>
+     <p>Проблема в таком случае в том что каждый раз при поиске/вставке/удалении нужно итерироваться сначала по основному бакету, а потом по overflow.</p>
+    </div>
+   </details>
+   <p>В отличии, например, от&nbsp;<a href="https://github.com/python/cpython/blob/7b20a0f55a16b3e2d274cc478e4d04bd8a836a9f/Python/hashtable.c#L295" rel="noopener noreferrer nofollow">Python</a>&nbsp;и&nbsp;<a href="https://github.com/openjdk/jdk/blob/dcf1523bf2dba234371190a70a41cfcb77907196/src/java.base/share/classes/java/util/HashMap.java#L713" rel="noopener noreferrer nofollow">Java</a>&nbsp;в Go рост мапы происходит постепенно. Каждый раз перед добавлением или удалением элемента переносятся данные из 1-2 бакетов.</p>
+   <p>Для роста нам потребуется несколько новых полей:</p>
+   <pre><code class="go">type hmap[K comparable, V any] struct {
+	len int // количество реальных значений в мапе
+	B   uint8 // log_2 от количества бакетов
+	buckets []bucket[K, V] // слайс бакетов
+	hasher  maphash.Hasher[K] // функция хэширования из рантайма
+
+    /* новые поля */
+	oldbuckets   *[]bucket[K, V] // слайс старых бакетов
+	numEvacuated uint64 // счетчик прогресса роста. все бакеты меньше этого значения эвакуированы
+}</code></pre>
+   <p>Подготовка в росту:</p>
+   <pre><code class="go">// выделяем память под новые бакеты, увеличиваем счетчик количества бакетов
+func (m *hmap[K, V]) startGrowth() {
+	oldBuckets := m.buckets
+	m.B++ // растем только на увеличение
+	m.buckets = make([]bucket[K, V], bucketsNum(m.B))
+	m.oldbuckets = &amp;oldBuckets
+	m.numEvacuated = 0
+}</code></pre>
+   <p>Так выглядит эвакуация и триггер роста в методе&nbsp;<code>Put</code>:</p>
+   <pre><code class="go">func (h *hmap[K, V]) Put(key K, value V) {
+	tophash, targetBucket := h.locateBucket(key)
+
+    // проверяем "триггер" роста если кол-во элементов в бакете увеличится
+	if !h.isGrowing() &amp;&amp; overLoadFactor(h.len+1, h.B) {
+		h.startGrowth()
+	}
+
+	// сначала эвакуируем нужный бакет
+	if h.isGrowing() {
+		h.growWork(targetBucket)
+	}
+
+	if h.buckets[targetBucket].Put(key, tophash, value) {
+		h.len++
+	}
+}</code></pre>
+   <p>Также во время роста проверяем эвакуировался ли бакет перед поиском значения оттуда:</p>
+   <pre><code class="go">func (h *hmap[K, V]) Get2(key K) (V, bool) {
+	tophash, targetBucket := h.locateBucket(key)
+
+	b := &amp;h.buckets[targetBucket]
+
+	if h.isGrowing() {
+		oldB := &amp;(*h.oldbuckets)[targetBucket&amp;h.oldBucketMask()] // берем старый бакет
+		if !oldB.isEvacuated() { // если он еще не эвакуировался, то ищем значение в нем
+			b = oldB
+		}
+	}
+
+	return b.Get(key, tophash)
+}</code></pre>
+   <h3>Собственно эвакуация</h3>
+   <p>Сам алгоритм несложный (практически) - проходим по все элементам в бакете, выбираем новый бакет и переносим ключ, значение и топхеш.</p>
+   <h4>Куда переезжать</h4>
+   <p>При росте мапы количество бакетов увеличивается вдвое. Если разделить слайс новых бакетов на две половины, то для каждого элемента внутри старого бакета есть два пути <s>this is the way</s> - либо в первую половину либо во вторую. А если считать каждую половину новых бакетов <em>отдельным</em> слайсом, то можно сказать что в пределах такой половины индекс бакета для элемента не поменяется.</p>
+   <details class="spoiler">
+    <summary>Пример</summary>
+    <div class="spoiler__content">
+     <p>Было 8 бакетов, мы начали рост, количество бакетов удвоилось и стало 16. В таком случае каждый элемент бакета по индексу 3(четвертый бакет) перенесется либо в бакет в первой половине по индексу 3, либо во второй по индексу 11 (3+8). Соответственно последний бакет с индексом 7 переносится либо в 7ой либо в 15й(7+8).</p>
+    </div>
+   </details>
+   <p>Бакеты из разных половин храним во вспомогательной структуре. Там же держим индекс следующего свободного места.</p>
+   <pre><code class="go">// evacDst вспомогательная структура для эвакуации бакета
+type evacDst[K comparable, V any] struct {
+	b *bucket[K, V] // ссылка но новый бакет
+	i uint          // индекс следующего свободного места в бакете
+}
+
+// храним ссылки на два новых бакета, в которые будут переноситься данные из текущего
+halfs := [2]evacDst[K, V]{
+    {b: &amp;m.buckets[oldbucket]}, // oldBucket равен номеру старого бакета, который хотим эвакуировать
+    {b: &amp;m.buckets[oldbucket+newBit]}, // newBit равен кол-ву старых бакетов
+}</code></pre>
+   <p>Выбирается половина с помощью хеша от ключа и нового бита маски. При росте к новой маске добавляется бит, который и решает изменится ли результат операции <code>hash&amp;mask</code> или нет.</p>
+   <pre><code class="go">newBit := m.numOldBuckets()
+hash := m.hasher.Hash(*key)
+var useSecond uint8
+if hash&amp;newBit != 0 {
+    useSecond = 1
+}</code></pre>
+   <details class="spoiler">
+    <summary>Почему newBit</summary>
+    <div class="spoiler__content">
+     <p>newBit - старое количество бакетов. В двоичном представлении это один не нулевой бит, которым новая маска отличается от старой.<br>При росте с 8 до 16 бакетов <br>newBit == 8 (1000)<br>mask == 15 (1111)<br>oldMask == 7 (0111)<br>От сюда и название переменной.</p>
+    </div>
+   </details>
+   <p>Полный цикл эвакуации:</p>
+   <pre><code class="go">newBit := m.numOldBuckets()
+/* ... */
+for ; b != nil; b = b.overflow {
+    // итерируемся по старому бакету
+    for i := 0; i &lt; bucketSize; i++ {
+        top := b.tophash[i]
+
+        // используем флаги tophash для проверки пустых ячеек
+        if isCellEmpty(top) {
+            b.tophash[i] = evacuatedEmpty
+            continue
+        }
+
+        key := &amp;b.keys[i]
+        value := &amp;b.values[i]
+
+        // опять берем хэш от ключа
+        hash := m.hasher.Hash(*key)
+
+        // флаг использования второй половины новых бакетов
+        var useSecond uint8
+
+        // проверяем зависит ли местоположение элемента от нового бита
+        if hash&amp;newBit != 0 {
+            useSecond = 1
+        }
+
+        // evacuatedFirst, evacuatedSecond - константные флаги для массива tophash показывающие в какую половину переехал элемент
+        // evacuatedFirst + useSecond == evaluatedSecond
+        b.tophash[i] = evacuatedFirst + useSecond
+
+        //выбираем нужный бакет
+        dst := &amp;halfs[useSecond]
+        // проверяем кол-во элементов
+        if dst.i == bucketSize {
+            dst.b = newOverflow(dst.b) // если нужно создаем overflow
+            dst.i = 0
+        }
+        // добавляем элемент по конкретному индексу
+        dst.b.putAt(*key, top, *value, dst.i)
+        dst.i++
+    }
+}</code></pre>
+   <p>В оригинальном алгоритме есть такая проверка:</p>
+   <pre><code class="go">if evacuatedX+1 != evacuatedY || evacuatedX^1 != evacuatedY {
+    throw("bad evacuatedN")
+}</code></pre>
+   <p>Она случается при переносе каждого элемента. На мой взгляд это странно, так как константы нельзя переопределять, и хватило бы одной проверки во время компиляции. Я заменил это на такую проверку:</p>
+   <pre><code class="go">func _() {
+	var x [1]struct{}
+	_ = x[evacuatedFirst-2]
+	_ = x[evacuatedSecond-3]
+}</code></pre>
+   <h3>Итерация</h3>
+   <p>Плюсы такого алгоритма роста - нет просадок производительности при вакуации большого количества данных, как если бы мы это делали одним подходом. Из минусов - нужно это учитывать при вставке/удалении/поиске значений, а особенно при итерации.</p>
+   <p>Для этого существует отдельная структура, которая хранит ссылки на ключ и значение, и состояние итерации:</p>
+   <pre><code class="go">type hiter[K comparable, V any] struct {
+	key           *K 			  // ключ
+	elem          *V 			  // значение
+	m             *hmap[K, V]	  // сама мапа
+	buckets       *[]bucket[K, V] // массив бакетов по которым итерируемся
+	currBktPtr    *bucket[K, V]   // текущий бакет
+	startBucket   uint64          // рандомно выбранный начальный бакет
+	offset        uint8           // рандомный оффсет, с которого начинается итерация внутри бакета
+	wrapped       bool            // сделали круг по массиву бакетов
+	B             uint8			  // log_2 от кол-ва бакетов на момент старта итерации
+	i             uint8			  // позиция следующего элемента в текущем бакете
+	currBucketNum uint64		  // номер текущего бакета
+	checkBucket   uint64		  // номер бакета для дополнительной проверки. todo из-за эвакуации иногда приходится смотреть данные сразу в двух бакетах
+}
+</code></pre>
+   <p>Инициализируем. Здесь же происходит магия "рандомной" последовательности элементов при каждой новой итерации: выбирается случайный бакет, с которого начнется итерация, и отступ, с которого будут возвращаться элементы внутри каждого бакета.</p>
+   <pre><code class="go">func iterInit[K comparable, V any](m *hmap[K, V]) *hiter[K, V] {
+	h := hiter[K, V]{}
+
+	if m == nil || m.len == 0 {
+		return &amp;h
+	}
+
+	h.m = m
+	h.B = m.B
+	h.buckets = &amp;m.buckets
+	// выбираем рандомный бакет
+	h.startBucket = rand.Uint64() &amp; bucketMask(m.B)
+	// выбираем позицию, с которой начинается итерация внутри бакета
+	h.offset = uint8(uint8(h.startBucket) &gt;&gt; h.B &amp; (bucketSize - 1))
+	h.currBucketNum = h.startBucket
+
+	// сразу выполняем одну итерацию
+	h.next()
+
+	return &amp;h
+}</code></pre>
+   <p>Алгоритм итерации можно разделить на две части:</p>
+   <ul>
+    <li><p>простой случай - когда мапа не в процессе роста;</p></li>
+    <li><p>сложный - в процессе роста. Для этого потребуются дополнительные проверки.</p></li>
+   </ul>
+   <p>В первом случае можно просто итерироваться по бакетам. Заносим в локальные переменные состояние итерации и выбираем бакет:</p>
+   <pre><code class="go">b := it.currBktPtr
+bucketNum := it.currBucketNum
+i := it.i
+checkBucket := it.checkBucket
+next:
+// выбираем следующий бакет
+if b == nil {
+	if bucketNum == it.startBucket &amp;&amp; it.wrapped {
+		// конец итерации
+		it.key = nil
+		it.elem = nil
+		return
+	}
+	checkBucket = noCheck //
+	b = &amp;it.m.buckets[bucketNum] // бакет внутри которого будет искать данные
+
+	bucketNum++ // номер след. бакета
+	if bucketNum == bucketsNum(it.B) {
+		// если "замкнули круг" то проставляем соответствующий флаг
+		bucketNum = 0
+		it.wrapped = true
+	}
+	i = 0
+}</code></pre>
+   <p>Итерируемся:</p>
+   <pre><code class="go">// bucketSize - константа количества элементов внутри бакета
+for ; i &lt; bucketSize; i++ {
+	// определяем элемент, который будем переносить, в соответствии с оффсетом
+	offI := (i + it.offset) &amp; (bucketSize - 1)
+	top := b.tophash[offI]
+	// если ячейка пустая
+	if isCellEmpty(top) || top == evacuatedEmpty {
+		continue
+	}
+	key := &amp;b.keys[offI]
+	elem := &amp;b.values[offI]
+
+	// проставляем значения в структуру итерации
+	it.key = key
+	it.elem = elem
+	// обновляем текущий стейт
+	it.currBucketNum = bucketNum
+	if it.currBktPtr != b {
+		it.currBktPtr = b
+	}
+	it.i = i + 1
+	return
+}
+// идем в overflow
+b = b.overflow
+i = 0
+goto next // к выбору следующего бакета</code></pre>
+   <p>Для того чтобы итерироваться в процессе роста мапы добавим некоторые изменения в алгоритм. При выборе следующего бакета <code>x</code> будем учитывать что данные из старого бакета <code>oldX</code> возможно еще не эвакуировались, и нужно начать итерацию по <code>oldX</code>.</p>
+   <p>Так как вариантов переноса элементов из бакета только два, то при проходе по старону (не эвакуированному) <code>oldX</code> бакету, будем возвращать только те элементы, которые перейдут в бакет <code>x</code>.</p>
+   <p>Изменения в месте выбора следующего бакета:</p>
+   <pre><code class="go">// если рост еще не завершен, то старые бакеты тоже нужно учитывать
+if it.m.isGrowing() &amp;&amp; it.B == it.m.B {
+	// runtime/map.go:890
+	// итерацию начали во время роста. проверяем старый бакет
+	// если он еще не эвакуировался, то проходим по нему, и возвращаем только те элементы
+	// которые мигрируются в текущий бакет
+	oldBucketNum := bucketNum &amp; it.m.oldBucketMask()
+	b = &amp;(*it.m.oldbuckets)[oldBucketNum]
+	if !b.isEvacuated() {
+		checkBucket = bucketNum
+	} else {
+		// иначе просто итерируемся по bucketNum
+		checkBucket = noCheck
+		b = &amp;it.m.buckets[bucketNum]
+	}
+} else {
+	checkBucket = noCheck
+	b = &amp;it.m.buckets[bucketNum]
+}
+bucketNum++
+if bucketNum == bucketsNum(it.B) {
+  // если "замкнули круг" то проставляем соответствующий флаг
+  bucketNum = 0
+  it.wrapped = true
+}
+i = 0
+</code></pre>
+   <p>Учитываем, что если мы в старом бакете, то проверяем нужно ли вернуть элемент.</p>
+   <p>Здесь же учитывается случай, когда&nbsp;<code>key</code>&nbsp;!=&nbsp;<code>key</code>&nbsp;(NaN). Так как хеш от NaN будет каждый раз новый, то нам нужен способ "рандомного" переноса. К тому же нужно уметь воспроизводить такой выбор. По-этому для таких значений вместо хеша ключа используется tophash, а именно его последний бит, определяющий в какую половину перенесется значение.</p>
+   <pre><code class="go">if checkBucket != noCheck &amp;&amp; !it.m.sameSizeGrow() {
+	// runtime/map.go:925
+	// случай когда мы начали итерацию во время роста и он еще не закончился
+	// oldbucket слайс еще не эвакуировался. или, как минимум, он не был эвакуирован
+	// когда мы начали итерацию.
+	// по-этому пропускаем ключи которые попадут в навый бакет на другой позиции
+	// (при эвакуации каждый элемент бакета либо остается в бакете по старому индексу либо по новому)
+	if key == key {
+		hash := it.m.hasher.Hash(*key)
+		if hash&amp;bucketMask(it.B) != checkBucket {
+			continue
+		}
+	} else {
+		// runtime/map.go:941
+		// если ключ не равен себе(NaN) мы выбираем "рандомное" место переноса
+		if checkBucket&gt;&gt;(it.B-1) != uint64(b.tophash[offI]&amp;1) {
+			continue
+		}
+	}
+}</code></pre>
+   <p>И в последнее отличие в алгоритме - нам нужно проверить что элемент итерации не переехал в другой бакет, то есть его tophash не равен одной из констант. В случае если элемент все таки эвакуировался, то придется воспользоваться обычным поиском через функцию&nbsp;<code>Get()</code>.</p>
+   <pre><code class="go">if (top != evacuatedFirst &amp;&amp; top != evacuatedSecond) || key != key {
+	// нашли элементы на текущем шаге итерации
+	it.key = key
+	it.elem = elem
+} else {
+	// мапа выросла с момента итерации
+	// нужные данные для текущего ключа где-то в другом месте
+	// этот кейс для случай когда ключ был удален/обновлен или удален и добавлен еще раз.
+
+	re, ok := it.m.Get2(*key)
+	if !ok {
+		continue // ключ был удален
+	}
+	it.key = key
+	it.elem = &amp;re
+}</code></pre>
+   <p>Консистентность данных во время итерации нам гарантирует следущая проверка в функции&nbsp;<code>next()</code>. Она спасает от конкурентного обращения к мапе во время итерации, что привело бы к дополнительной эвакуации нескольких бакетов.</p>
+   <pre><code class="go">if it.m.flags&amp;hashWriting != 0 {
+	panic("concurrent map iteration and map write")
+}</code></pre>
+   <p>Запустим бенчмарк из прошлой части, который просто добавляет N элементов в мапу с начальным размером 1000. Стал похож на то, что есть под капотом:</p>
+   <pre><code class="bash">go test . -run=^$ -bench ^BenchmarkPutWithOverflow$ -benchmem
+goos: darwin
+goarch: arm64
+pkg: github.com/w1kend/go-map
+BenchmarkPutWithOverflow/gen-map__(string_key)10000-8           37374638                29.77 ns/op            0 B/op          0 allocs/op
+BenchmarkPutWithOverflow/STD______(string_key)10000-8           41619038                27.21 ns/op            0 B/op          0 allocs/op
+BenchmarkPutWithOverflow/gen-map__(string_key)100000-8          29636793                34.50 ns/op            0 B/op          0 allocs/op
+BenchmarkPutWithOverflow/STD______(string_key)100000-8          30507568                34.89 ns/op            0 B/op          0 allocs/op
+BenchmarkPutWithOverflow/gen-map__(string_key)1000000-8         14918946                79.41 ns/op            0 B/op          0 allocs/op
+BenchmarkPutWithOverflow/STD______(string_key)1000000-8         19115414                63.17 ns/op            0 B/op          0 allocs/op
+BenchmarkPutWithOverflow/gen-map__(string_key)10000000-8         6472369               267.0 ns/op           212 B/op          0 allocs/op
+BenchmarkPutWithOverflow/STD______(string_key)10000000-8         6640574               248.4 ns/op           211 B/op          0 allocs/op
+</code></pre>
+   <p>Исходники для поиграться&nbsp;<a href="https://github.com/w1kend/go-map" rel="noopener noreferrer nofollow">здесь</a>. Зачем? Например, при использовании арены из Go 1.20 для хранения бакетов производительность по бенчмарку практически не изменилась (стало лучше при 10кк+ элементов).</p>
+   <p>На этом все, спасибо за внимание (:</p>
+   <h2>Ссылки</h2>
+   <p><a href="https://github.com/w1kend/go-map" rel="noopener noreferrer nofollow">Source code</a></p>
+   <p><a href="https://github.com/w1kend/gophers" rel="noopener noreferrer nofollow">Картинки гоферов</a></p>
+   <p><a href="https://www.dolthub.com/blog/2022-12-19-maphash" rel="noopener noreferrer nofollow">Hacking Go's Runtime with Generics</a></p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

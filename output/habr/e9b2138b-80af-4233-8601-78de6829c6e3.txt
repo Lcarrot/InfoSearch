@@ -1,0 +1,90 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <p>Она&nbsp;же проблема <strong>3n+1&nbsp;(</strong><a href="https://en.wikipedia.org/wiki/Collatz_conjecture" rel="noopener noreferrer nofollow"><u>Collatz conjecture</u></a><strong>)</strong>. Это, наверное, самая сложная проблема с&nbsp;самой простой формулировкой&nbsp;— условие может понять и ребенок. А&nbsp;вот сложность самой проблемы такова, что&nbsp;великий математик Эрдош сказал, что «математика еще не&nbsp;готова к&nbsp;решению проблем такой сложности». Ее также сравнивают с&nbsp;сиреной&nbsp;— она манит своей простотой, и некоторые математики увязают в&nbsp;ней надолго без&nbsp;какого&nbsp;либо практического результата.</p>
+   <p>В&nbsp;этой статье я <s>приведу доказательство</s> хотя нет, <s>доказательство простое, но&nbsp;слишком длинно, чтобы поместиться на&nbsp;полях...</s> Ладно, ладно, нет у&nbsp;меня доказательства. Но&nbsp;мы рассмотрим более общую проблему, и как&nbsp;всегда, в&nbsp;конце будет видео с&nbsp;движущимися фракталами!</p>
+   <p>Итак, <strong>3n+1</strong>. А&nbsp;почему, собственно, +1? А&nbsp;не +2? +3? С +2&nbsp;не&nbsp;получится&nbsp;— 3n+2&nbsp;при&nbsp;нечетных n будет снова нечетным, и мы получим runaway. А&nbsp;вот все нечетные числа можно попробовать. Но&nbsp;пробовать не&nbsp;просто так, а&nbsp;написав код, который тестирует вся начальные числа до&nbsp;миллиона и ищет получившиеcя циклы. Циклы мы обозначаем как&nbsp;кортежи (количество элементов (период), минимальный элемент, максимальный элемент). Для 3n+1&nbsp;мы получим единственный цикл: (3, 1, 4) <em>(хотя для&nbsp;однозначной идентификации цикла достаточно его знать его минимальный элемент)</em></p>
+   <p>Теперь мы готовы отправиться в&nbsp;путешествие, перебирая все нечетные a (adder) в&nbsp;формуле <strong>3n+a</strong>.</p>
+   <h2>Степени тройки</h2>
+   <p>Для <strong>a=3</strong> мы получим единственный цикл (3, 3, 12). А&nbsp;вот для <strong>a=5</strong> мы получим аж шесть циклов: (4, 1, 8), (8, 19, 152), (3, 5, 20), (8, 23, 116), (44, 187, 8324), (44, 347, 10&nbsp;196). Для <strong>a=7</strong> два цикла: (6, 5, 40), (3, 7, 28), для <strong>a=9</strong> один: (3, 9, 36)</p>
+   <p><em>Далее я использую свою гипотезу </em><strong><em>H1</em></strong><em>, что&nbsp;для&nbsp;любого нечетного a количество циклов конечно, то есть нет 'runaways'.</em></p>
+   <p>Лишь изредка цикл только один, и имеет период 3. Числа <strong>a</strong>, для&nbsp;которых это так:</p>
+   <ul>
+    <li><p>a=1 (3, 1, 4)</p></li>
+    <li><p>a=3 (3, 3, 12)</p></li>
+    <li><p>a=9 (3, 9, 36)</p></li>
+    <li><p>a=27 (3, 27, 108)</p></li>
+    <li><p>a=81 (3, 81, 324)</p></li>
+    <li><p>a=243 (3, 243, 972)</p></li>
+    <li><p>a=729 (3, 729, 2916)</p></li>
+    <li><p>a=2187 (3, 2187, 8748)</p></li>
+    <li><p>a=6561 (3, 6561, 26244)</p></li>
+    <li><p>a=19683 (3, 19683, 78732)</p></li>
+   </ul>
+   <p>Здесь напрашиваются сразу две гипотезы:</p>
+   <p>H2: <em>все степени тройки &lt;</em><strong><em>a&gt;</em></strong><em> создают только один цикл вида (3,a,*). </em>Возможно это не&nbsp;так и при&nbsp;больших значениях a возникают и другие циклы. Мы этого на&nbsp;знаем даже для <strong>a=1</strong></p>
+   <p>H3: <em>никакие другие значения </em><strong><em>a</em></strong><em> не&nbsp;дают циклов вида (3,*,*).</em></p>
+   <h2>Рекорды</h2>
+   <p>Если цикл (3, *, *) это пример компактности, то рассмотрим противоположные случаи.</p>
+   <p>Рекордсмены по&nbsp;периоду цикла из&nbsp;проверенных мной:</p>
+   <ul>
+    <li><p>a=24917 len=8882 <strong>(8882, 13, 98850680)</strong>, (52, 144043, 21257540), (104, 168379, 89205632), (104, 88267, 106267040), (52, 181931, 35733860), (52, 213163, 20599568)</p></li>
+    <li><p>a=22097 len=7784 <strong>(7784, 25, 169564136</strong>), (778, 247, 2749604), (16, 5815, 144212)</p></li>
+    <li><p>впрочем, для больших <strong>a</strong> это не очень интересно, интереснее, когда <strong>len&gt;&gt;a</strong>, что встречается только для небольших значений <strong>a</strong>:</p></li>
+    <li><p>a=5 len=44 (4, 1, 8), (8, 19, 152), (3, 5, 20), (8, 23, 116), <strong>(44, 187, 8324)</strong>, (44, 347, 10196)</p></li>
+    <li><p>a=17 len=49 (9, 1, 32), <strong>(49, 23, 560)</strong>, (3, 17, 68)</p></li>
+    <li><p>a=23 len=69 <strong>(69, 41, 4976)</strong>, (7, 5, 80), (7, 7, 56), (3, 23, 92)</p></li>
+    <li><p>a=29 len=106 (6, 1, 32), (26, 11, 392), (3, 29, 116), <strong>(106, 3811, 6831320)</strong>, (106, 7055, 3154208)</p></li>
+    <li><p>a=61 len=107 (7, 1, 64), (3, 61, 244), <strong>(107, 235, 99832)</strong></p></li>
+    <li><p>n=85 len=156 <strong>(156, 7, 11332)</strong>, (9, 5, 160), (4, 17, 136), (49, 115, 2800), (8, 323, 2584), (3, 85, 340), (8, 391, 1972), (44, 3179, 141508), (44, 5899, 173332)</p></li>
+    <li><p>n=107 len=159 <strong>(159, 1, 36416)</strong>, (3, 107, 428)</p></li>
+   </ul>
+   <p>Теперь поищем неудачные значения <strong>a</strong> с&nbsp;наибольшим числом циклов (все циклы перечислять не&nbsp;буду):</p>
+   <ul>
+    <li><p>a=26207 loops=562</p></li>
+    <li><p>a=14197 len=294 loops=330</p></li>
+    <li><p>для небольших a</p></li>
+    <li><p>a=55 loops=11</p></li>
+    <li><p>a=499 loops=53</p></li>
+   </ul>
+   <h2>Фракталы</h2>
+   <p>Я пытался на&nbsp;основе полученных данных построить графики, но&nbsp;ничего красивого не&nbsp;выходило. А&nbsp;вот фрактал получился потрясающий!</p>
+   <p>Строится он по&nbsp;следующей формуле:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/aba/f31/842/abaf31842c7118c61de7abd485b7394a.png" width="684" height="128" data-src="https://habrastorage.org/getpro/habr/upload_files/aba/f31/842/abaf31842c7118c61de7abd485b7394a.png">
+    <figcaption></figcaption>
+   </figure>
+   <p>Обратите внимание, как&nbsp;хитро она составлена&nbsp;— при&nbsp;целых значениях z функция f(z) делает итерацию по&nbsp;известной формуле для&nbsp;простых чисел. Зато мы можем в&nbsp;качестве z использовать комплексное число, а <strong>adder</strong> (обведен красным) мы можем менять плавно и даже придавать ему некорректные значения (2, например).</p>
+   <p>Обычно фрактал «прижимается» к&nbsp;оси y=0&nbsp;(вещественная ось, мнимые значения малы по&nbsp;модулю). Это происходит из‑за того, что&nbsp;для&nbsp;мнимых аргументов косинус превращается в&nbsp;гиперболический косинус (цепную&nbsp;линию), а&nbsp;тот убегает в&nbsp;бесконечность как&nbsp;экспонента.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/807/7b8/44c/8077b844cfcb095af98bfd5688c97bd2.png" alt="x [0, 20], y [-1.5. 1.5]" title="x [0, 20], y [-1.5. 1.5]" width="1080" height="720" data-src="https://habrastorage.org/getpro/habr/upload_files/807/7b8/44c/8077b844cfcb095af98bfd5688c97bd2.png">
+    <figcaption>
+     x [0, 20], y [-1.5. 1.5]
+    </figcaption>
+   </figure>
+   <p>Хочется увеличить нетривиальные зоны:</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/bcc/e7a/324/bcce7a3243ff991acc4cb219f7d5610e.png" alt="x [0,2.5], y [-0.4, 0.4]" title="x [0,2.5], y [-0.4, 0.4]" width="1080" height="720" data-src="https://habrastorage.org/getpro/habr/upload_files/bcc/e7a/324/bcce7a3243ff991acc4cb219f7d5610e.png">
+    <figcaption>
+     x [0,2.5], y [-0.4, 0.4]
+    </figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/499/05c/96c/49905c96c33268f45ccad78926b32a5a.png" alt="x [1.8,2.09], y [0,0.2]" title="x [1.8,2.09], y [0,0.2]" width="1080" height="720" data-src="https://habrastorage.org/getpro/habr/upload_files/499/05c/96c/49905c96c33268f45ccad78926b32a5a.png">
+    <figcaption>
+     x [1.8,2.09], y [0,0.2]
+    </figcaption>
+   </figure>
+   <p>Самое интересное происходит в&nbsp;этой области, когда adder начинает меняться и фрактал начинает 'течь':</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/79e/6b8/59c/79e6b859c4c99a24710fefde19e84bf6.png" alt="x [1.92,2.0], y [0.05,0.13] adder=1.01" title="x [1.92,2.0], y [0.05,0.13] adder=1.01" width="1080" height="720" data-src="https://habrastorage.org/getpro/habr/upload_files/79e/6b8/59c/79e6b859c4c99a24710fefde19e84bf6.png">
+    <figcaption>
+     x [1.92,2.0], y [0.05,0.13] adder=1.01
+    </figcaption>
+   </figure>
+   <p>Эту красоту в&nbsp;движении вы можете увидеть на&nbsp;видео. Напоследок замечу, что&nbsp;самое интересное происходит около adder=1, так что&nbsp;выбор единицы неслучаен.</p>
+   <div class="tm-iframe_temp" data-src="https://embedd.srv.habr.com/iframe/63ede9083afabae06666bb5e" data-style="" id="63ede9083afabae06666bb5e" width=""></div>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

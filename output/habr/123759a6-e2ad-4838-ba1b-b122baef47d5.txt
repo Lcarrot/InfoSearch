@@ -1,0 +1,862 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/a86/ae9/62b/a86ae962b86fefa39033af6ee4881037.png" width="780" height="440" data-src="https://habrastorage.org/getpro/habr/upload_files/a86/ae9/62b/a86ae962b86fefa39033af6ee4881037.png">
+    <figcaption></figcaption>
+   </figure>
+   <h2>Что будем делать</h2>
+   <p>Давно хотел посмотреть в&nbsp;работе популярный у&nbsp;самодельщиков сенсор качества воздуха <a href="https://www.sciosense.com/wp-content/uploads/documents/SC-001232-DS-3-CCS811B-Datasheet-Revision-2.pdf" rel="noopener noreferrer nofollow">CCS811</a> и сравнить его показания с&nbsp;SGP30&nbsp;или&nbsp;SGPC3. Важно понимать, что&nbsp;это сенсор TVOC и номинальное присутствие eCO2&nbsp;не&nbsp;делает его сенсором углекислого газа.</p>
+   <p>Тестовый стенд у&nbsp;меня построен на&nbsp;контроллере Wiren Board с&nbsp;родным протоколом Modbus RTU, поэтому и моё устройство будет работать по&nbsp;этому протоколу.</p>
+   <p>Сперва мы с&nbsp;вами сделаем простое Modbus RTU устройство с&nbsp;изменяемыми настройками подключения, которое потом может послужить основой для&nbsp;других разработок.</p>
+   <p>Потом мы подключим сенсор CCS811&nbsp;и научимся сохранять BaseLine.</p>
+   <p>И в&nbsp;самом конце подключим устройство к&nbsp;контроллеру Wiren Board: составим шаблон для&nbsp;драйвера wb‑mqtt‑serial и напишем простой сценарий автоматизации.</p>
+   <p>Нетерпеливые могут взять готовые скетчи в&nbsp;конце статьи, а&nbsp;любознательных приглашаю пройти со мной весь путь от&nbsp;идеи до&nbsp;прототипа.</p>
+   <p>Важно! Я программист-самозванец, поэтому весь код и советы стоит рассматривать через призму критического мышления.</p>
+   <h2>Что за зверь Modbus RTU</h2>
+   <p>Modbus RTU&nbsp;— это промышленный протокол связи между устройствами, работающий поверх шины RS-485.</p>
+   <p>Контроллер автоматизации обычно является клиентом, а&nbsp;периферия&nbsp;— серверами. Ещё года два назад клиент&nbsp;был мастером (master), а&nbsp;сервер слейвом (slave), но&nbsp;разработчик протокола <a href="https://www.modbus.org/docs/Client-ServerPR-07-2020-final.docx.pdf" rel="noopener noreferrer nofollow">изменил названия</a>.</p>
+   <p>Серверы имеют свой уникальный адрес в&nbsp;рамках одного сегмента шины и много modbus‑регистров, то есть ячеек памяти со своими адресами и типами данных, доступных снаружи.</p>
+   <p>Клиент по&nbsp;очереди подключается к&nbsp;каждому серверу и считывает значение регистров или&nbsp;записывает в&nbsp;них свои, которые заставляют сервер что‑то сделать, например, переключить реле.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/e88/6a8/918/e886a8918e62d1e3182524f1b23e83b3.png" alt="Архитектура Клиент-Сервер, которая лежит в основе протокола Modbus" title="Архитектура Клиент-Сервер, которая лежит в основе протокола Modbus" width="1550" height="500" data-src="https://habrastorage.org/getpro/habr/upload_files/e88/6a8/918/e886a8918e62d1e3182524f1b23e83b3.png">
+    <figcaption>
+     Архитектура Клиент-Сервер, которая лежит в основе протокола Modbus
+    </figcaption>
+   </figure>
+   <p>Доступные нам типы регистров:</p>
+   <ul>
+    <li><p>Coils (1&nbsp;бит, чтение‑запись, 1&nbsp;или 0)&nbsp;— дискретный выход, не&nbsp;используем.</p></li>
+    <li><p>Discrete Input (1&nbsp;бит, только чтение, 1&nbsp;или 0)&nbsp;— дискретный вход, используем для&nbsp;ошибок инициализации.</p></li>
+    <li><p>Input Register (16&nbsp;бит, только чтение, 0...65&nbsp;535)&nbsp;— регистр ввода, используем для&nbsp;данных с&nbsp;датчика.</p></li>
+    <li><p>Holding (16&nbsp;бит, чтение‑запись, 0...65&nbsp;535)&nbsp;— будем хранить настройки связи.</p></li>
+   </ul>
+   <p>Для&nbsp;каждого типа регистра есть своя функция работы с&nbsp;ним, я расскажу только про&nbsp;те, которые будем использовать:</p>
+   <ul>
+    <li><p>0×02&nbsp;— чтение Discrete Input.</p></li>
+    <li><p>0×03&nbsp;— чтение Holding.</p></li>
+    <li><p>0×04&nbsp;— чтение Input Register</p></li>
+    <li><p>0×06&nbsp;— запись Holding.</p></li>
+   </ul>
+   <p>Этой информации нам достаточно, чтобы начать работу, подробную информацию о&nbsp;протоколе можно найти в <a href="https://mcs.mail.ru/blog/modbus-dlya-m2m-vzaimodejstviya" rel="noopener noreferrer nofollow">этой статье</a>.</p>
+   <h2>Железки</h2>
+   <p>Теперь, когда нам понятна задача, выбираем&nbsp;железки.</p>
+   <p>Нам понадобится сенсор качества воздуха (TVOC)&nbsp;— я возьму CCS811.</p>
+   <p>В&nbsp;качестве микроконтроллера для&nbsp;устройства я возьму ESP8266&nbsp;— он довольно недорогой, имеет много периферии, вполне производительный и он у&nbsp;меня есть. Чтобы&nbsp;было удобно собирать прототип, я возьму платку NodeMCU с&nbsp;модулем ESP12F (ESP8266), но&nbsp;вы можете использовать почти любой доступный вариант с&nbsp;нужным количеством выведенных наружу GPIO.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/e26/83c/8af/e2683c8af570779927b1096b05e05fbb.png" alt="Распиновка NodeMCU, взято с lastminuteengineers.com" title="Распиновка NodeMCU, взято с lastminuteengineers.com" width="595" height="528" data-src="https://habrastorage.org/getpro/habr/upload_files/e26/83c/8af/e2683c8af570779927b1096b05e05fbb.png">
+    <figcaption>
+     Распиновка NodeMCU, взято с lastminuteengineers.com
+    </figcaption>
+   </figure>
+   <p>Чтобы подключить ESP8266&nbsp;к&nbsp;шине RS-485, нам понадобится преобразователь уровней UART → RS-485, например, собранный на&nbsp;микросхеме MAX485&nbsp;HW-97&nbsp;и его многочисленные китайские братья.</p>
+   <p>Ещё нам понадобится преобразователь USB‑RS485, чтобы опрашивать наше устройство и проверять его работу. Можно использовать абсолютно любой с&nbsp;Aliexpress, я возьму WB‑USB485. Во&nbsp;время разработки плату я буду питать от&nbsp;USB‑порта напряжением 5&nbsp;В.</p>
+   <p>Для&nbsp;реализации сервисного режима нам понадобится любая тактовая кнопка, на&nbsp;схеме она подключена к D5 и GND.</p>
+   <p>Железки собрали, подключаем по&nbsp;схеме ниже и переходим к&nbsp;самому интересному&nbsp;— созданию прошивки устройства. Сенсор CCS811&nbsp;пока лежит в&nbsp;сторонке.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/0ee/aaf/9a0/0eeaaf9a00b091725738ff3db3c6b6bb.png" alt="Схема подключения" title="Схема подключения" width="1700" height="940" data-src="https://habrastorage.org/getpro/habr/upload_files/0ee/aaf/9a0/0eeaaf9a00b091725738ff3db3c6b6bb.png">
+    <figcaption>
+     Схема подключения
+    </figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/71a/ef0/447/71aef0447774f874d28f7782cf2e47fd.jpg" alt="Макетная плата на столе" title="Макетная плата на столе" width="1588" height="1080" data-src="https://habrastorage.org/getpro/habr/upload_files/71a/ef0/447/71aef0447774f874d28f7782cf2e47fd.jpg" data-blurred="true">
+    <figcaption>
+     Макетная плата на столе
+    </figcaption>
+   </figure>
+   <h2>Прошивка</h2>
+   <p>Я программист-самозванец, поэтому писать прошивку устройства буду в среде Arduino, которая позволяет писать программы (скетчи) для Embedded на языке C++.</p>
+   <h3>Подготовка среды разработки</h3>
+   <p>Писать мы будем под&nbsp;ESP8266, которой нет в&nbsp;стандартной поставке среды, поэтому перед началом надо сделать пару шагов:</p>
+   <ol>
+    <li><p>Скачиваем и устанавливаем Arduino.</p></li>
+    <li><p>Добавляем в&nbsp;менеджер плат ESP8266, <a href="https://wiki.iarduino.ru/page/wemos_start/" rel="noopener noreferrer nofollow">инструкция</a>.</p></li>
+    <li><p>Выбираем плату в&nbsp;меню Инструменты → Плата → Generic ESP8266&nbsp;Module или&nbsp;плату, которая у&nbsp;вас на&nbsp;руках.</p></li>
+    <li><p>И устанавливаем нужную нам библиотеку: меню Инструменты → Управлять библиотеками. В&nbsp;менеджере библиотек ищем и устанавливаем <a href="https://github.com/emelianov/modbus-esp8266" rel="noopener noreferrer nofollow">modbus‑esp8266</a>.</p></li>
+   </ol>
+   <p>Всё, мы готовы творить. В&nbsp;коде я указывал номера GPIO, а&nbsp;не&nbsp;специфичные для&nbsp;моей платы имена выводов&nbsp;— по&nbsp;задумке, это должно облегчить использование других плат.</p>
+   <h3>Простой Modbus-сервер</h3>
+   <p>Сделаем modbus‑сервер с&nbsp;адресом 1, параметрами подключения 9600 8N2, в&nbsp;котором будет один тестовый holding‑регистр с&nbsp;числом 3.</p>
+   <p>Открываем окно скетча, проверяЗапрограммируемем, что&nbsp;выбрана наша плата в&nbsp;меню и удаляем весть код в&nbsp;окне.</p>
+   <p>Теперь вставляем скетч из&nbsp;статьи, который в&nbsp;дополнительных комментариях не&nbsp;нуждается.</p>
+   <pre><code class="cpp">// Подключаем библиотеку modbus-esp8266
+#include &lt;ModbusRTU.h&gt;
+
+// Настройка Modbus
+#define SLAVE_ID 1 // адрес нашего сервера
+#define PIN_FLOW 4 // пин контроля направления приёма/передачи,
+// если в вашем преобразователе UART-RS485 такого нет —
+// закоменнтируйте строку
+
+// Номера Modbus регистров
+#define REG_TEST 0       // тестовый регистр с номером 0
+
+ModbusRTU mb;
+
+void setup() {
+  modbus_setup();
+}
+
+void loop() {
+  mb.task();
+}
+
+void modbus_setup() {
+  Serial.begin(9600, SERIAL_8N2); // задаём парамеры связи
+  mb.begin(&amp;Serial);
+  mb.begin(&amp;Serial, PIN_FLOW); // включаем контроль направления приёма/передачи
+  mb.slave(SLAVE_ID); // указываем адрес нашего сервера
+
+  mb.addHreg(REG_TEST); // описываем регистр REG_TEST типа Holding
+  mb.Hreg(REG_TEST, 3); // записываем в наш регистр REG_TEST число 3 —
+  // его мы должны будем увидеть при опросе устройства
+}</code></pre>
+   <p>Ссылка на&nbsp;файл <a href="https://github.com/aadegtyarev/esp-modbusrtu-demo/tree/main/habr-article/ver1" rel="noopener noreferrer nofollow">ver1.ino</a>.</p>
+   <p>Подключаем свою плату к&nbsp;компьютеру и нажимаем Ctrl+U&nbsp;— это скомпилировать скетч и залить его в&nbsp;контроллер.</p>
+   <p>Вот они, заветные слова:</p>
+   <pre><code class="bash">Leaving...
+Hard resetting via RTS pin...</code></pre>
+   <p>А&nbsp;что дальше? Светодиод никакой мы не&nbsp;подключали, экрана нет&nbsp;— как&nbsp;понять, что&nbsp;всё работает? Да&nbsp;просто&nbsp;— подключиться по&nbsp;Modbus и посмотреть.</p>
+   <p>Для&nbsp;этого нам понадобится программа для&nbsp;работы с&nbsp;Modbus RTU. В&nbsp;зависимости от&nbsp;типа операционной системы могу порекомендовать:</p>
+   <ul>
+    <li><p>Windows: Rilheva Modbus Poll.</p></li>
+    <li><p>Linux: консольный modbus_client или&nbsp;графический QMaster.</p></li>
+    <li><p>MacOS давно не&nbsp;работал, но&nbsp;говорят, что&nbsp;там есть утилита <code>cu</code>.</p></li>
+   </ul>
+   <p>Принцип работы всех программ один: подключаете к&nbsp;компьютеру устройство через переходник USB‑RS485, запускаете программу, указываете параметры подключения, адрес устройства, номер нужного регистра и функцию, с&nbsp;помощью которой надо читать или&nbsp;записывать байтики.</p>
+   <p>У&nbsp;нас это:</p>
+   <ul>
+    <li><p>Параметры подключения&nbsp;— 9600 8N2</p></li>
+    <li><p>Адрес&nbsp;— 1</p></li>
+    <li><p>Регистр Holding с&nbsp;адресом 0.</p></li>
+   </ul>
+   <p>Обычно в&nbsp;программах надо выбрать функцию чтения/записи регистра. Для&nbsp;holding‑регистров это 0×03&nbsp;— чтение и 0×06&nbsp;запись.</p>
+   <p>Я использую Linux, поэтому буду работать с&nbsp;устройством через modbus_client, оно и нагляднее. Подключённое устройство определилось на&nbsp;порту <code>dev/ttyACM0</code>&nbsp;— у&nbsp;вас он может&nbsp;быть другой.</p>
+   <p>Считаем наш регистр:</p>
+   <pre><code class="bash">$ modbus_client -mrtu -b9600 -d8 -pnone -s2 /dev/ttyACM0 -a1 -t0x03 -r0
+
+SUCCESS: read 1 of elements:
+        Data: 0x0003 </code></pre>
+   <p>А теперь запишем туда что-нибудь своё, например, число 1 и не забудем сменить функцию с 0x03 (чтение holding) на 0x06 (запись holding):</p>
+   <pre><code class="bash">$ modbus_client -mrtu -b9600 -d8 -pnone -s2 /dev/ttyACM0 -a1 -t0x06 -r0 1                         
+
+SUCCESS: written 1 elements!</code></pre>
+   <p>И снова считаем:</p>
+   <pre><code class="bash">modbus_client -mrtu -b9600 -d8 -pnone -s2 /dev/ttyACM0 -a1 -t0x03 -r0                                       
+
+SUCCESS: read 1 of elements:
+        Data: 0x0001</code></pre>
+   <p>Ура! Теперь в регистре у нас единичка. Таким примитивным способом контроллер может общаться с парой сотен устройств на шине.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/e5f/332/887/e5f3328874a7835903a018f22a6a27af.png" alt="Проверка скетча ver1.ino" title="Проверка скетча ver1.ino" width="2104" height="1263" data-src="https://habrastorage.org/getpro/habr/upload_files/e5f/332/887/e5f3328874a7835903a018f22a6a27af.png">
+    <figcaption>
+     Проверка скетча ver1.ino
+    </figcaption>
+   </figure>
+   <h3>Изменяемые настройки связи</h3>
+   <p>Казалось&nbsp;бы, добавляй сенсор и всё готово! Но&nbsp;нет, есть один важный момент: у&nbsp;нашего устройства фиксированные настройки связи, а&nbsp;значит для&nbsp;изменения настроек нам придётся каждый раз собирать прошивку и это неудобно.</p>
+   <p>Чтобы пользователь нашего устройства не&nbsp;мучился, дадим ему возможность менять настройки связи через Modbus‑регистры. Так он без&nbsp;проблем сможет использовать наше устройство на&nbsp;одной шине с&nbsp;другими.</p>
+   <p>Чаще всего нужно менять скорость подключения, количество стоповых битов и адрес, поэтому нам понадобиться сделать три holding‑регистра, дадим им номера подальше от&nbsp;нашего тестового, чтобы случайно их не&nbsp;изменить:</p>
+   <pre><code class="cpp">// Адреса Modbus-регистров с настройками связи
+#define REG_MB_ADDRESS    100 // адрес устройства на шине
+#define REG_MB_STOP_BITS  101 // количество стоповых битов
+#define REG_MB_BAUDRATE   102 // скорость подключения</code></pre>
+   <p>Так как&nbsp;при&nbsp;отключении питания значения регистров сбрасываются, то нам понадобится место, где мы будем хранить настройки&nbsp;— EEPROM:</p>
+   <pre><code class="cpp">#define EEPROM_SIZE           6 // мы займём 6 ячеек памяти: 3*2=6
+#define EEPROM_MB_ADDRESS     0 // номер ячейки с адресом устройства
+#define EEPROM_MB_STOP_BITS   2 // номер ячейки со стоп-битами
+#define EEPROM_MB_BAUDRATE    4 // номер ячейки со скоростью</code></pre>
+   <p>На ESP8266/ESP32 тип данных uint16_t занимает 4 байта, то есть является аналогом unsigned long (<a href="https://alexgyver.ru/lessons/variables-types/" rel="noopener noreferrer nofollow">источник</a>). Поэтому каждое число займёт две ячейки EEPROM, а значит нам нужно будет 6 ячеек.</p>
+   <p>Ещё не&nbsp;забудем в&nbsp;самом начале программы описать значение настроек по&nbsp;умолчанию, у&nbsp;меня будет 9600 8N2:</p>
+   <pre><code class="cpp">#define DEFAULT_MB_ADDRESS    1  // адрес нашего сервера
+#define DEFAULT_MB_STOP_BITS  2  // количество стоповых битов
+#define DEFAULT_MB_BAUDRATE   96 // скорость подключения/100</code></pre>
+   <p>Максимальное значение скорости 115&nbsp;200&nbsp;— это больше максимального значения, которое помещается в&nbsp;один регистр: 65&nbsp;535. Чтобы не&nbsp;разбивать значение на&nbsp;два регистра, мы будем хранить и использовать при&nbsp;настройке значение скорости, поделённое на 100, например, при&nbsp;скорости 9600&nbsp;у&nbsp;нас будет храниться 9600/100&nbsp;= 96.</p>
+   <p>Теперь объявим переменные, куда мы будем читать настройки связи из&nbsp;EEPROM и откуда их будем записывать в&nbsp;modbus‑регистры, а&nbsp;также использовать при&nbsp;настройке подключения:</p>
+   <pre><code class="cpp">uint16_t mbAddress = DEFAULT_MB_ADDRESS; // modbus адрес устройства
+uint16_t mbStopBits = DEFAULT_MB_STOP_BITS; // количество стоповых битов
+uint16_t mbBaudrate = DEFAULT_MB_BAUDRATE; // скорость подключения modbus</code></pre>
+   <p>Осталось три шага: чтение настроек из EEPROM, создание holding-регистров и запись настроек в EEPROM при изменении значений в регистрах.</p>
+   <p>Перед использованием EEPROM нужно инициализировать:</p>
+   <pre><code class="cpp">void eeprom_setup() {
+  EEPROM.begin(EEPROM_SIZE);
+}</code></pre>
+   <p>Для&nbsp;чтения из&nbsp;EEPROM напишем функцию <code>read_modbus_settings()</code>, если в&nbsp;ячейках EEPROM пусто, то записываем в&nbsp;переменные значения по&nbsp;умолчанию:</p>
+   <pre><code class="cpp">void read_modbus_settings() {
+  EEPROM.get(EEPROM_MB_ADDRESS, mbAddress);
+  if (mbAddress == 0xffff) {
+    mbAddress = DEFAULT_MB_ADDRESS;
+  }
+
+  EEPROM.get(EEPROM_MB_STOP_BITS, mbStopBits);
+  if (mbStopBits == 0xffff) {
+    mbStopBits = DEFAULT_MB_STOP_BITS;
+  }
+
+  EEPROM.get(EEPROM_MB_BAUDRATE, mbBaudrate);
+  if (mbBaudrate == 0xffff) {
+    mbBaudrate = DEFAULT_MB_BAUDRATE;
+  };
+}</code></pre>
+   <p>Обратите внимание, я использую функцию get, а&nbsp;не&nbsp;read&nbsp;— это, чтобы не&nbsp;считать ячейки. Она сразу посмотрит размер переменных и считывает столько ячеек, сколько нужно.</p>
+   <p>Далее описываем функцию настройки modbus <code>modbus_setup()</code>:</p>
+   <pre><code class="cpp">void modbus_setup() {
+  Serial.begin(convert_baudrate(mbBaudrate), convert_stop_bits_to_config(mbStopBits)); // задаём парамеры связи
+  mb.begin(&amp;Serial);
+  mb.begin(&amp;Serial, PIN_FLOW); // включаем контроль направления приёма/передачи
+  mb.slave(mbAddress); // указываем адрес нашего сервера
+
+  // описываем три holding регистра
+  mb.addHreg(REG_MB_ADDRESS);   // адрес устройства на шине
+  mb.addHreg(REG_MB_STOP_BITS); // стоповые биты
+  mb.addHreg(REG_MB_BAUDRATE);  // скорость подключения
+
+  // записываем в регистры значения адреса, стоповых битов и скорости
+  mb.Hreg(REG_MB_ADDRESS, mbAddress);
+  mb.Hreg(REG_MB_STOP_BITS, mbStopBits);
+  mb.Hreg(REG_MB_BAUDRATE, mbBaudrate);
+
+  // описываем колбек функцию, которая будет вызвана при записи регистров
+  // параметров подключения
+  mb.onSetHreg(REG_MB_ADDRESS, callback_set_mb_reg);
+  mb.onSetHreg(REG_MB_STOP_BITS, callback_set_mb_reg);
+  mb.onSetHreg(REG_MB_BAUDRATE, callback_set_mb_reg);
+}</code></pre>
+   <p>Здесь мы описали инициализацию соединения, добавили holding‑регистры, отправили в&nbsp;них значения переменных, которые мы записали в&nbsp;функции <code>read_modbus_settings()</code>.</p>
+   <p><code>convert_stop_bits_to_config</code>&nbsp;— это функция, которая прикрывает мою лень полностью описывать настройки подключения. Суть в&nbsp;том, что&nbsp;реализация Serial в&nbsp;Adruino не&nbsp;даёт удобной настройки каждого параметра подключения отдельно (или я не&nbsp;нашёл), а&nbsp;заставляет всё, кроме адреса и скорость упаковывать в&nbsp;конструкцию типа SerialConfig. А&nbsp;так, как&nbsp;настройки чётности и количества битов данных всё равно почти не&nbsp;меняют, я решил сделать просто:</p>
+   <pre><code class="cpp">SerialConfig convert_stop_bits_to_config(uint16_t stopBits) {
+  return (stopBits == 2) ? SERIAL_8N2 : SERIAL_8N1;
+}</code></pre>
+   <p>Ещё выше мы добавили свою реакцию на запись значений в три регистра: адрес, стоповые биты и скорость. Вызываемая при этих событиях колбек функция будет выглядеть так:</p>
+   <pre><code class="cpp">uint16_t callback_set_mb_reg(TRegister* reg, uint16_t val) {
+  switch (reg-&gt;address.address) {
+    case REG_MB_ADDRESS: // если записываем регистр с адресом
+      if (val &gt; 0 &amp;&amp; val &lt; 247) { // проверяем, что записываемое число корректно
+        write_eeprom(EEPROM_MB_ADDRESS, val); // записываем значение в EEPROM
+      } else {
+        val = reg-&gt;value; // этот трюк сгенерирует ошибку записи, что нам и нужно, так как значение неверное
+      }
+      break;
+    case REG_MB_STOP_BITS: // если регистр со стоповыми битами
+      if (val == 1 || val == 2) {
+        write_eeprom(EEPROM_MB_STOP_BITS, val);
+      } else {
+        val = reg-&gt;value;
+      }
+      break;
+    case REG_MB_BAUDRATE: // если регистр со скоростью
+      uint16_t correctBaudRates[] = {12, 24, 48, 96, 192, 384, 576, 1152};
+      if (contains(val, correctBaudRates, 8)) {
+        write_eeprom(EEPROM_MB_BAUDRATE, val);
+      } else {
+        val = reg-&gt;value;
+      }
+      break;
+  }
+  return val;
+}</code></pre>
+   <p>Здесь перед записью настроек мы проверяем корректность значений и возвращаем ошибку, если число неверное. Это обезопасит нас от&nbsp;записи заведомо неверных значений, которые не&nbsp;позволят потом подключиться к&nbsp;устройству.</p>
+   <p>Ну и в&nbsp;коде настроек modbus ещё засветилась пара вспомогательных функций: запись значения в&nbsp;EEPROM и проверка вхождения числа в&nbsp;массив.</p>
+   <pre><code class="cpp">// Запись значения в EEPROM
+void write_eeprom(uint8_t eepromm_address, uint16_t val) {
+  EEPROM.put(eepromm_address, val);
+  EEPROM.commit();
+}
+
+// Функция, которая находит вхождение числа в массив
+bool contains(uint16_t a, uint16_t arr[], uint8_t arr_size) {
+  for (uint8_t i = 0; i &lt; arr_size; i++) if (a == arr[i]) return true;
+  return false;
+}</code></pre>
+   <p>Так как мы инициализацию всего и вся разложили по функциям, то функция инициализации у нас выглядит просто и лаконично:</p>
+   <pre><code class="cpp">void setup() {
+  eeprom_setup(); // настраиваем EEPROM
+  modbus_setup();  // настраиваем Modbus
+}</code></pre>
+   <p>Фух, вроде всё, проверяем: читаем регистры с 100&nbsp;по 102, потом записываем в&nbsp;регистр 102&nbsp;число 1152&nbsp;(мы делим скорость на 100&nbsp;для&nbsp;записи в&nbsp;регистры в&nbsp;EEPROM) и снова читаем регистры. В&nbsp;регистре 102&nbsp;число изменилось, теперь там 0×0480&nbsp;— это 1152&nbsp;в&nbsp;шестнадцатеричной системе счисления. Новые настройки будут работать после перезапуска устройства.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/bc5/f9a/afe/bc5f9aafe4abf59ed2b1a7d23bbc6ee5.png" alt="Проверка скетча ver2.ino" title="Проверка скетча ver2.ino" width="2100" height="1305" data-src="https://habrastorage.org/getpro/habr/upload_files/bc5/f9a/afe/bc5f9aafe4abf59ed2b1a7d23bbc6ee5.png">
+    <figcaption>
+     Проверка скетча ver2.ino
+    </figcaption>
+   </figure>
+   <p>Ссылку на&nbsp;полный код ищите ниже, а&nbsp;я пока расскажу, как&nbsp;всё это работает.</p>
+   <p>При&nbsp;старте мы читаем настройки из&nbsp;EEPROM и, если там ничего нет, то для&nbsp;соединения используем настройки связи по&nbsp;умолчанию. Далее создаём holding‑регистры, куда записываем текущие настройки. Кроме этого мы назначаем колбек функцию на&nbsp;запись значений в&nbsp;регистры, чтобы записанные пользователем настройки отправить в&nbsp;ячейки EEPROM.</p>
+   <p>Обещанный код смотрите в&nbsp;файле <a href="https://github.com/aadegtyarev/esp-modbusrtu-demo/tree/main/habr-article/ver2" rel="noopener noreferrer nofollow">ver2.ino</a>.</p>
+   <h3>Черный ход или загрузка в сервисном режиме</h3>
+   <p>Но&nbsp;есть одна проблема&nbsp;— если мы изменили настройки по&nbsp;умолчанию и забыли их, то для&nbsp;доступа к&nbsp;устройству его надо перепрошить. Это жутко неудобно, поэтому оставим лазейку, чтобы всё исправить.</p>
+   <p>Основная идея такая: зажимаем кнопку на&nbsp;устройстве, подаём питание и устройство загружается в&nbsp;режиме с&nbsp;известными нам настройками по&nbsp;умолчанию. Далее мы сможем записать в&nbsp;регистры новые значения и после перезапуска устройства подключиться уже по&nbsp;ним. Просто и элегантно.</p>
+   <p>В&nbsp;самом начале статьи мы подключили кнопку на&nbsp;GPIO14&nbsp;— её и будем использовать. Проверять состояние кнопки я буду при&nbsp;старте устройства.</p>
+   <p>Объявляем нашу кнопку в&nbsp;начале файла, рядом со всеми define:</p>
+   <pre><code class="cpp">#define BTN_SAFE_MODE 14 // D5 на NodeMCU. Кнопка сброса настроек подключения</code></pre>
+   <p>Настраиваем кнопку на вход:</p>
+   <pre><code class="cpp">void io_setup() {
+  pinMode(BTN_SAFE_MODE, INPUT_PULLUP);
+}</code></pre>
+   <p>Пишем функцию, которая будет опрашивать кнопку и, если она не нажата, то загружать настройки из EEPROM:</p>
+   <pre><code class="cpp">void check_safe_mode() {
+  if (digitalRead(BTN_SAFE_MODE)) { // если кнопка не нажата, то читаем настройки из EEPROM, иначе будут использованы настройки по умолчанию
+    read_modbus_settings(); // чтение настроек
+  }
+}</code></pre>
+   <p>Так как&nbsp;кнопка у&nbsp;нас замыкает GPIO на&nbsp;землю, то сигнал ненажатой кнопки будет равен 1, что&nbsp;мы и учли в&nbsp;нашем блоке if.</p>
+   <p>Всё, осталось подправить функцию настроек при&nbsp;старте и можно спокойно забывать заданные настройки связи:</p>
+   <pre><code class="cpp">void setup() {
+  io_setup();  // настраиваем входы/выходы
+  eeprom_setup(); // настраиваем EEPROM
+  check_safe_mode(); // проверяем, не надо ли нам в безопасный режим с дефолтными настройками
+  modbus_setup();  // настраиваем Modbus
+}</code></pre>
+   <p>Как&nbsp;вы уже привыкли&nbsp;— полный файл скетча <a href="https://github.com/aadegtyarev/esp-modbusrtu-demo/tree/main/habr-article/ver3" rel="noopener noreferrer nofollow">ver3.ino</a>.</p>
+   <p>На&nbsp;этом этапе у&nbsp;нас есть рабочий прототип modbus‑сервера, который мы можем использовать для&nbsp;разработки любых устройств. Всё, что&nbsp;ниже&nbsp;— это продолжение работы над датчиком.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/b04/d6d/4b3/b04d6d4b305e5ae0ba9826f5d267fe9b.png" alt="Проверка скетча ver3.ino" title="Проверка скетча ver3.ino" width="1800" height="800" data-src="https://habrastorage.org/getpro/habr/upload_files/b04/d6d/4b3/b04d6d4b305e5ae0ba9826f5d267fe9b.png">
+    <figcaption>
+     Проверка скетча ver3.ino
+    </figcaption>
+   </figure>
+   <h2>Делаем датчик качества воздуха</h2>
+   <p>У&nbsp;нас есть рабочий modbus‑сервер, который ничего не&nbsp;умеет, кроме как&nbsp;хранить настройки связи в&nbsp;регистрах и записывать пользовательские настройки в&nbsp;EEPROM. Штука интересная, но&nbsp;пока довольно бесполезная.</p>
+   <p>Давайте это исправим и добавим в&nbsp;прошивку работу с&nbsp;сенсором CCS811. Сам сенсор очень мал, поэтому я буду использовать готовую платку с&nbsp;этим сенсором.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/7fa/dab/04f/7fadab04fe7038a0768bde18c8b7cf1f.png" alt="CJMCU-811 — плата с сенсором CCS811" title="CJMCU-811 — плата с сенсором CCS811" width="1247" height="819" data-src="https://habrastorage.org/getpro/habr/upload_files/7fa/dab/04f/7fadab04fe7038a0768bde18c8b7cf1f.png">
+    <figcaption>
+     CJMCU-811 — плата с сенсором CCS811
+    </figcaption>
+   </figure>
+   <h3>Подключаем сенсор к ESP8266</h3>
+   <p>По умолчанию I2C у нас назначен на пины GPIO5 (D1) и GPIO4 (D2), поэтому сюда и подключим наш датчик. GPIO4 у нас занят выходом Flow Control, поэтому мы освободим его. Теперь Flow Control подключён у нас на GPIO12 (D6).</p>
+   <p>Новая схема со всеми изменениями ниже.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/8dc/df5/6d2/8dcdf56d2259f6bebe442de30dff2bc2.png" alt="Схема подключения датчика CCS811 и преобразователя UART-RS485" title="Схема подключения датчика CCS811 и преобразователя UART-RS485" width="1700" height="940" data-src="https://habrastorage.org/getpro/habr/upload_files/8dc/df5/6d2/8dcdf56d2259f6bebe442de30dff2bc2.png">
+    <figcaption>
+     Схема подключения датчика CCS811 и преобразователя UART-RS485
+    </figcaption>
+   </figure>
+   <h3>Добавляем в прошивку поддержку сенсора CCS811</h3>
+   <p>Для начала учтём изменение в схеме: Flow Control теперь подключён у нас к другому выходу, меняем в константах GPIO4 на GPIO12.</p>
+   <pre><code class="cpp">#define PIN_FLOW 12 // GPIO12(D6)</code></pre>
+   <p>Для работы с датчиком мы будем использовать библиотеку «SparkFun CCS811 Arduino library», которую надо установить в менеджере библиотек. После этого подключите библиотеку в коде вместе с библиотекой Wire:</p>
+   <pre><code class="cpp">#include &lt;Wire.h&gt;            // Wire
+#include &lt;SparkFunCCS811.h&gt;  // SparkFun CCS811 Arduino library</code></pre>
+   <p>Далее описываем номера Modbus‑регистров:</p>
+   <pre><code class="cpp">#define REG_SENSOR_ERROR  0 // ошибка инициализации сенсора CCS811
+#define REG_SENSOR_ECO2   1 // eCO2
+#define REG_SENSOR_TVOC   2 // TVOC
+#define REG_SENSOR_BL     3 // Baseline</code></pre>
+   <p>Здесь мы задали адреса двух регистров с&nbsp;измерениями: eCO2&nbsp;и TVOC, а&nbsp;также два служебных: Baseline и ошибка инициализации сенсора. Baseline&nbsp;— это калибровочное значение, которое рассчитывается во&nbsp;время автокалибровки сенсора и используется при&nbsp;подготовке итоговых значений для&nbsp;пользователя.</p>
+   <p>Описываем в&nbsp;функции <code>modbus_setup()</code> создание и инициализацию регистров:</p>
+   <pre><code class="cpp">  mb.addIsts(REG_SENSOR_ERROR); // ошибка инициализации сенсора
+  mb.addIreg(REG_SENSOR_ECO2);  // eCO2
+  mb.addIreg(REG_SENSOR_TVOC);  // TVOC
+  mb.addIreg(REG_SENSOR_BL);    // Baseline
+  
+  mb.Ists(REG_SENSOR_ERROR, 0); // ошибка
+  mb.Ireg(REG_SENSOR_ECO2, 0);  // eCO2
+  mb.Ireg(REG_SENSOR_TVOC, 0);  // TVOC
+  mb.Ireg(REG_SENSOR_BL, 0);    // Baseline</code></pre>
+   <p>Далее надо указать адрес сенсора на шине и создать объект для работы с сенсором:</p>
+   <pre><code class="cpp">#define CCS811_ADDR 0x5A // Указываем адрес устройства I2C, по умолчанию 0x5A, второй адрес устройства 0x5B
+
+CCS811 ccs811(CCS811_ADDR);  // создаем объект для работы с сенсором CCS811</code></pre>
+   <p>Сам сенсор устроен таким образом, что&nbsp;при&nbsp;настройках по&nbsp;умолчанию производит изменение качества воздуха каждую секунду.</p>
+   <p>Работа с&nbsp;сенсором происходит так: при&nbsp;настройках по&nbsp;умолчанию, сенсор измеряет качество воздуха и по&nbsp;мере готовности отдаёт измеренные значения по&nbsp;шине I2C. Нам остаётся только периодически проверять, есть&nbsp;ли новые значения и, если есть, читать их. Да, на&nbsp;сенсоре есть выход INT, который можно повесить на&nbsp;прерывание и по&nbsp;нему читать сенсор, но&nbsp;я решил пойти другим путём и сэкономить одну ногу.</p>
+   <p>Раз нам надо что‑то делать периодически, то нам понадобится простой таймер, возьмём для&nbsp;этого библиотеку SimpleTimer (второе слово с&nbsp;большой буквы) и установим её через менеджер библиотек. Теперь подключим библиотеку в&nbsp;скетче и создадим объект таймера с&nbsp;интервалом 10&nbsp;мс:</p>
+   <pre><code class="cpp">#include &lt;SimpleTimer.h&gt;  // простой таймер
+
+SimpleTimer sysTimer(200); // запускаем таймер с интервалом 2c (200мс)</code></pre>
+   <p>Теперь нам надо инициализировать шину i2c, а заодно обеспечим обратную связь об ошибках:</p>
+   <pre><code class="cpp">void i2c_setup() {
+  Wire.begin();  // инициализация i2c
+
+  if (!ccs811.begin()) {  // инициализация CCS811
+    mb.Ists(REG_SENSOR_ERROR, 1); // если не получилось — ошибка, пишем в регистр ошибок
+  } else {
+    mb.Ists(REG_SENSOR_ERROR, 0);
+  };
+}</code></pre>
+   <p>Не забудьте добавить вызов инициализации сенсора в функцию <code>setup()</code>:</p>
+   <pre><code class="cpp">void setup() {
+  .....
+  i2c_setup();          // инициализация i2c
+}</code></pre>
+   <p>Таймер мы описали, регистры создали, шину настроили, теперь напишем функции чтения данных из сенсора и проверки таймера.</p>
+   <p>Чтение данных:</p>
+   <pre><code class="cpp">// Опрос сенсора
+void read_sensor() {
+  unsigned int baseLine;
+  
+  if (ccs811.dataAvailable()) {                 // проверяем, есть ли нвоые данные
+    ccs811.readAlgorithmResults();              // считываем
+    mb.Ireg(REG_SENSOR_ECO2, ccs811.getCO2());  // записываем в регистр eCO2
+    mb.Ireg(REG_SENSOR_TVOC, ccs811.getTVOC()); // записываем в регистр TVOC
+
+    baseLine = ccs811.getBaseline();
+    mb.Ireg(REG_SENSOR_BL, baseLine);    // Baseline
+  }
+}</code></pre>
+   <p>Проверять таймер мы будем в функции <code>check_timer()</code>, которую вызовем в главном цикле <code>loop()</code>:</p>
+   <pre><code class="cpp">void check_timer() {
+  if (sysTimer.isReady()) { // выполняется раз в 2 c
+    read_sensor(); // опрашиваем сенсор
+    sysTimer.reset(); // сбрасываем таймер
+  }
+}
+
+void loop() {
+  mb.task();
+  check_timer(); 
+}</code></pre>
+   <p>По традиции, полный скетч по ссылке <a href="https://github.com/aadegtyarev/esp-modbusrtu-demo/tree/main/habr-article/ver4" rel="noopener noreferrer nofollow">ver4.ino</a>.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/6c3/60e/075/6c360e075377751ba8094a97744bd1fc.png" alt="Проверка скетча ver4.ino. Видно, что значение Baseline сбрасывается при перезапуске устройства" title="Проверка скетча ver4.ino. Видно, что значение Baseline сбрасывается при перезапуске устройства" width="1696" height="735" data-src="https://habrastorage.org/getpro/habr/upload_files/6c3/60e/075/6c360e075377751ba8094a97744bd1fc.png">
+    <figcaption>
+     Проверка скетча ver4.ino. Видно, что значение Baseline сбрасывается при перезапуске устройства
+    </figcaption>
+   </figure>
+   <h2>Сохранение Baseline</h2>
+   <p>Baseline&nbsp;— это внутреннее калибровочное значение, которое меняется сенсором во&nbsp;время его автокалибровки. Но&nbsp;есть нюанс&nbsp;— оно сбрасывается при&nbsp;отключении питания, а&nbsp;значит сенсор теряет калибровку и начинает цикл заново.</p>
+   <p>Поэтому мы будем сохранять значение Baseline во&nbsp;время работы сенсора, а&nbsp;при&nbsp;старте восстанавливать. Здесь обязательно надо помнить, что&nbsp;в&nbsp;процессе калибровки значение Baseline может меняться довольно часто, а&nbsp;сама автокалибровка происходит раз в&nbsp;сутки.</p>
+   <p>Сохранять мы это значение будем в&nbsp;EEPROM по&nbsp;аналогии с&nbsp;настройками Modbus.</p>
+   <p>Добавляем к выделенному нами размеру EEPROM ещё две ячейки и указываем номер ячейки для хранения Baseline:</p>
+   <pre><code class="cpp">#define EEPROM_SIZE           8 // теперь мы займём 8 ячеек памяти
+#define EEPROM_BASELINE       6 // номер ячейки с Baseline</code></pre>
+   <p>Объявляем переменную для хранения Baseline:</p>
+   <pre><code class="cpp">uint16_t sensorBaseLine = 0; // переменная со значение BaseLine</code></pre>
+   <p>Функция чтения Baseline из EEPROM:</p>
+   <pre><code class="cpp">// Чтение Baseline из EEPROM
+void read_baseline() {
+  EEPROM.get(EEPROM_BASELINE, sensorBaseLine);
+  if (sensorBaseLine != 0xffff) {
+    mb.Ireg(REG_SENSOR_BL, sensorBaseLine);
+
+    if (write_baseline(sensorBaseLine)) {
+      mb.Ists(REG_SENSOR_ERROR, 0);
+    } else {
+      mb.Ists(REG_SENSOR_ERROR, 1);
+    }
+  }
+}</code></pre>
+   <p>Функция записи Baseline в сенсор:</p>
+   <pre><code class="cpp">// Запись baseline в сенсор
+bool write_baseline(uint16_t baseline) {
+  CCS811Core::CCS811_Status_e errorStatus;
+
+  errorStatus = ccs811.setBaseline(baseline);
+  if (errorStatus != CCS811Core::CCS811_Stat_SUCCESS)
+  {
+    return false;
+  };
+  return true;
+}</code></pre>
+   <p>Функция сохранения Baseline в EEPROM:</p>
+   <pre><code class="cpp">// Запись Baseline в EEPROM
+void save_baseline(){
+  write_eeprom(EEPROM_BASELINE, sensorBaseLine);
+}</code></pre>
+   <p>И добавляем в функцию setup() чтение Baseline из EEPROM:</p>
+   <pre><code class="cpp">void setup() {
+  ...
+  read_baseline();    // чтение Baseline из EEPROM
+}</code></pre>
+   <p>Полный скетч <a href="https://github.com/aadegtyarev/esp-modbusrtu-demo/tree/main/habr-article/ver5" rel="noopener noreferrer nofollow">ver5.ino</a>.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/e57/50b/440/e5750b4407436956362d72136c626002.png" alt="Проверка работы скетча ver5.ino — значение Baseline восстанавливается при старте" title="Проверка работы скетча ver5.ino — значение Baseline восстанавливается при старте" width="1696" height="707" data-src="https://habrastorage.org/getpro/habr/upload_files/e57/50b/440/e5750b4407436956362d72136c626002.png">
+    <figcaption>
+     Проверка работы скетча ver5.ino — значение Baseline восстанавливается при старте
+    </figcaption>
+   </figure>
+   <details class="spoiler">
+    <summary>Сохранение Baseline в файловую систему (работа над ошибками)</summary>
+    <div class="spoiler__content">
+     <p><strong>Это было в изначальном варианте статьи, потом заменено на EEPROM.</strong></p>
+     <p>Меня внизу в комментариях поругали (@av0000), что <strong>я неправильно рассказываю: в ESP EEPROM эмулируется через флеш</strong>, поэтому нет никакой надобности городить историю про файловую систему. Поэтому Baseline можно просто хранить в ячейке EEPROM. Раздел я оставлю, так как пример работы с файловой системы может быть полезен для других задач.</p>
+     <p>Baseline&nbsp;— это внутреннее калибровочное значение, которое меняется сенсором во&nbsp;время его автокалибровки. Но&nbsp;есть нюанс&nbsp;— оно сбрасывается при&nbsp;отключении питания, а&nbsp;значит сенсор теряет калибровку и начинает цикл заново.</p>
+     <p>Поэтому мы будем сохранять значение Baseline во&nbsp;время работы сенсора, а&nbsp;при&nbsp;старте восстанавливать. Здесь обязательно надо помнить, что&nbsp;в&nbsp;процессе калибровки значение Baseline может меняться довольно часто, а&nbsp;сама автокалибровка происходит раз в&nbsp;сутки.</p>
+     <p>Конечно, можно сохранять это значение в&nbsp;EEPROM по&nbsp;аналогии с&nbsp;настройками Modbus, но&nbsp;её срок службы ограничен, а&nbsp;значит надо хранить значение где‑то в&nbsp;другом месте.</p>
+     <p>В&nbsp;микроконтроллере ESP8266&nbsp;есть встроенная файловая система, в&nbsp;которую можно сохранять файлы и срок её службы довольно большой. Туда то мы и будем сохранять значение Baseline в&nbsp;файле JSON.</p>
+     <p>Чтобы работать с&nbsp;файловой системой, нам надо сказать среде Arduino об&nbsp;этом, выберите в&nbsp;меню <em>Инструменты</em> → <em>Flash Size</em> значение, отличное от <code>FS:None</code>, например, <code>FS:1MB</code>;. Подробную информацию по&nbsp;файловой системе найдёте <a href="https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html" rel="noopener noreferrer nofollow">ссылке</a>.</p>
+     <p>Для&nbsp;работы с&nbsp;JSON нам понадобится библиотека ArduinoJson, поэтому установите её в&nbsp;менеджере библиотек и подключите вместе с&nbsp;библиотекой работы с&nbsp;файловой системы:</p>
+     <pre><code class="cpp">#include &lt;FS.h&gt; // SPIFFS будем использовать
+#include &lt;ArduinoJson.h&gt;        //Установить из менеджера библиотек</code></pre>
+     <p>Говорят, что&nbsp;SPIFFS устарела, но&nbsp;также говорят, что&nbsp;с&nbsp;ней меньше накладных расходов. В&nbsp;документации есть оба примера, поэтому я использовал её. Вы можете выбрать другую, тем более, что&nbsp;там пару вывозов поменять.</p>
+     <p>Добавляем константу с&nbsp;адресом регистра, где мы будем хранить ошибку инициализации файловой системы:</p>
+     <pre><code class="cpp">#define REG_FS_ERROR      4 // ошибка файловой системы</code></pre>
+     <p>Теперь опишем нужные нам флаги:</p>
+     <pre><code class="cpp">uint16_t sensorBaseLine = 0; // переменная со значение BaseLine
+String configFile = "/config.json"; // имя файла конфигурации</code></pre>
+     <p>Несмотря на&nbsp;то, что&nbsp;файловая система имеет огромный ресурс на&nbsp;запись, накладные расходы на&nbsp;запись в&nbsp;файл довольно большие. Поэтому мы будем писать данные периодически. Заведём для&nbsp;этой цели ещё один таймер, который будет срабатывать раз в 10&nbsp;секунд (1000&nbsp;мс):</p>
+     <pre><code class="cpp">SimpleTimer blTimer(1000);   // запускаем таймер с интервалом 10 с</code></pre>
+     <p>Инициализируем файловую систему и кладём в регистр флаг ошибки, если не удалось:</p>
+     <pre><code class="cpp">// Инициализация файловой системы
+void fs_setup() {
+  if (SPIFFS.begin()) {
+    mb.Ists(REG_FS_ERROR, 0);
+  } else {
+    mb.Ists(REG_FS_ERROR, 1);
+  }
+}</code></pre>
+     <p>Теперь немного изменим функцию <code>check_timer()</code>:</p>
+     <pre><code class="cpp">void check_timer() {
+  if (sysTimer.isReady()) {
+    read_sensor(); // опрашиваем сенсор
+    sysTimer.reset(); // сбрасываем таймер
+  }
+if (blTimer.isReady()) {
+write_config(); // записываем значение Baseline в файл
+blTimer.reset();
+}
+}</code></pre>
+     <p>И опишем функции чтения-записи конфига:</p>
+     <pre><code class="cpp">// Чтение конфига из файла
+void read_config() {
+DynamicJsonDocument doc(200);
+String jsonConfig = "";
+File cfgFile = SPIFFS.open(configFile, "r");
+if (cfgFile) {
+while (cfgFile.available()) {
+jsonConfig += (char)cfgFile.read();
+}
+}
+cfgFile.close();
+deserializeJson(doc, jsonConfig);
+sensorBaseLine = doc["baseLine"];
+mb.Ireg(REG_SENSOR_BL, sensorBaseLine);
+if (write_baseline(sensorBaseLine)) {
+mb.Ists(REG_SENSOR_ERROR, 0);
+} else {
+mb.Ists(REG_SENSOR_ERROR, 1);
+}
+}
+// Запись baseline в сенсор
+bool write_baseline(uint16_t baseline) {
+CCS811Core::CCS811_Status_e errorStatus;
+errorStatus = ccs811.setBaseline(baseline);
+if (errorStatus != CCS811Core::CCS811_Stat_SUCCESS)
+{
+return false;
+};
+return true;
+}
+// Запись конфига в файл
+void write_config() {
+DynamicJsonDocument doc(200);
+String jsonConfig;
+doc["baseLine"] = sensorBaseLine;
+serializeJson(doc, jsonConfig);
+File cfgFile = SPIFFS.open(configFile, "w");
+if (cfgFile) {
+cfgFile.print(jsonConfig);
+cfgFile.close();
+mb.Ists(REG_FS_ERROR, 0);
+} else {
+mb.Ists(REG_FS_ERROR, 1);
+}
+}</code></pre>
+     <p>Компилируем, зашиваем, проверяем.</p>
+     <p>Полный скетч примера <a href="https://github.com/aadegtyarev/esp-modbusrtu-demo/tree/main/habr-article/ver5-filesystem" rel="noopener noreferrer nofollow">ver5-filesystem.ino</a>.</p>
+     <figure class="full-width ">
+      <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/622/4ef/5ee/6224ef5ee3d260d187132f6c7468d5ad.png" alt="Проверка скетча ver5.ino" title="Проверка скетча ver5.ino" width="1696" height="707" data-src="https://habrastorage.org/getpro/habr/upload_files/622/4ef/5ee/6224ef5ee3d260d187132f6c7468d5ad.png">
+      <figcaption>
+       Проверка скетча ver5.ino
+      </figcaption>
+     </figure>
+     <p></p>
+    </div>
+   </details>
+   <h2>Интеграция в систему автоматизации на Wiren Board</h2>
+   <h3>План интеграции</h3>
+   <p>Прототип готов, пора подключить его к&nbsp;контроллеру&nbsp;— выведем значения в&nbsp;веб‑интерфейс.</p>
+   <p>У&nbsp;Wiren Board есть собственный драйвер работы с&nbsp;Modbus‑устройствами wb‑mqtt‑serial, для&nbsp;которого можно написать свой шаблон и он будет работать с&nbsp;нашим устройством, как&nbsp;с&nbsp;родным.</p>
+   <p>Заодно мы напишем простой сценарий, который будет включать зуммер контроллера, если значение сенсора TVOC превысит определённое значение.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w780q1/getpro/habr/upload_files/09a/3f5/a0e/09a3f5a0e8359a23a7730e7e2b257256.jpg" alt="Устройство подключено к порту RS485 контроллера Wiren Board" title="Устройство подключено к порту RS485 контроллера Wiren Board" width="1618" height="1080" data-src="https://habrastorage.org/getpro/habr/upload_files/09a/3f5/a0e/09a3f5a0e8359a23a7730e7e2b257256.jpg" data-blurred="true">
+    <figcaption>
+     Устройство подключено к порту RS485 контроллера Wiren Board
+    </figcaption>
+   </figure>
+   <h3>Шаблон устройства</h3>
+   <p>Шаблон драйвера wb‑mqtt‑serial&nbsp;— это json‑файл с&nbsp;описанием регистров Modbus‑устройства, подробное описание структуры шаблона можно найти в&nbsp;репозитории <a href="https://github.com/wirenboard/wb-mqtt-serial" rel="noopener noreferrer nofollow">wb‑mqtt‑serial</a>.</p>
+   <p>Перед тем, как&nbsp;делать шаблон, давайте вспомним карту регистров нашего устройства.</p>
+   <div>
+    <div class="table">
+     <table>
+      <tbody>
+       <tr>
+        <th><p>Адрес</p></th>
+        <th><p>Тип</p></th>
+        <th><p>Описание</p></th>
+       </tr>
+       <tr>
+        <td><p align="left">0</p></td>
+        <td><p align="left">Discrete Input</p></td>
+        <td><p align="left">Ошибка инициализации сенсора CCS811</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">1</p></td>
+        <td><p align="left">Input Register</p></td>
+        <td><p align="left">Значение eCO2</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">2</p></td>
+        <td><p align="left">Input Register</p></td>
+        <td><p align="left">Значение TVOC</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">3</p></td>
+        <td><p align="left">Input Register</p></td>
+        <td><p align="left">Значение Baseline</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">100</p></td>
+        <td><p align="left">Holding</p></td>
+        <td><p align="left">Modbus-адрес устройства</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">101</p></td>
+        <td><p align="left">Holding</p></td>
+        <td><p align="left">Стоп биты</p></td>
+       </tr>
+       <tr>
+        <td><p align="left">102</p></td>
+        <td><p align="left">Holding</p></td>
+        <td><p align="left">Скорость обмена, делённая на 100</p></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+   </div>
+   <p>Упрощённо шаблон устройства выглядит так:</p>
+   <pre><code class="json">{
+    "device_type": "ad-sv",     // тип устройства — уникальный идентификатор
+    "title": "AD-SV",               // отображаемое название
+    "group": "g-climate-sensor",    // группа, в которой будет отображаться шаблон. Список групп смотрите в документации
+    "device": {                     
+        "name": "AD-SV",    // имя устройства, используется в MQTT
+        "id": "ad-sv",
+        "groups": [ ],              // группы параметров и каналов        
+        "channels": [ ],            // каналы, доступно в скриптах и на вкладке Устройства
+        "parameters": [ ],          // параметры, можно менять в настройках устройства
+        "translations": { }         // переводы 
+    }
+}</code></pre>
+   <p>AD‑SV&nbsp;— сокращённое имя устройства.</p>
+   <p>Из&nbsp;карты регистров нашего устройства видно:</p>
+   <ul>
+    <li><p>регистры 0...3&nbsp;— это каналы (channels) устройства: их мы выведем веб‑интерфейс и сможем использовать в&nbsp;скрипте автоматизации;</p></li>
+    <li><p>регистры 100...102&nbsp;— это параметры (parameters) устройства, их мы добавим на&nbsp;страницу настроек.</p></li>
+   </ul>
+   <p>Группы у&nbsp;нас будет две:</p>
+   <ul>
+    <li><p>Inputs&nbsp;— сюда войдут каналы;</p></li>
+    <li><p>Settings&nbsp;— параметры.</p></li>
+   </ul>
+   <p>Также мы сделаем наш шаблон двуязычным: en/ru.</p>
+   <p>Определившись со структурой шаблона, читаем документацию, описываем каналы и параметры и в&nbsp;итоге у&nbsp;нас должно получиться примерно так:</p>
+   <pre><code class="json">{
+    "device_type": "ad-sv",
+    "title": "AD-SV",
+    "group": "g-climate-sensor",
+    "device": {
+        "name": "AD-SV",
+        "id": "ad-sv",
+        "groups": [
+            {
+                "title": "Inputs",
+                "id": "inputs",
+                "order": 0
+            },
+            {
+                "title": "Settings",
+                "id": "settings",
+                "order": 1
+            }
+        ],
+        "channels": [            
+            {
+                "name": "eCO2",
+                "reg_type": "input",
+                "address": 1,
+                "type": "value",
+                "group": "inputs"
+            },
+            {
+                "name": "TVOC",
+                "reg_type": "input",
+                "address": 2,
+                "type": "value",
+                "group": "inputs"
+            },
+            {
+                "name": "Baseline",
+                "reg_type": "input",
+                "address": 3,
+                "type": "value",
+                "group": "inputs"
+            },
+            {
+                "name": "CCS811 Error",
+                "reg_type": "discrete",
+                "address": 0,
+                "type": "switch",
+                "group": "inputs"
+            }
+        ],
+        "parameters": [
+            {
+                "id": "address",
+                "title": "Address",
+                "reg_type": "holding",                
+                "address": 100,
+                "default": 1,
+                "min": 1,
+                "max": 247,
+                "group": "settings"
+            },
+            {
+                "id": "stop-bits",
+                "title": "Stop Bits",
+                "reg_type": "holding",                
+                "address": 101,
+                "default": 2,
+                "enum": [1, 2],
+                "enum_titles": ["1", "2"],
+                "group": "settings"
+            },
+            {
+                "id": "baudrate",
+                "title": "Baudrate",
+                "reg_type": "holding",                
+                "address": 102,
+                "default": 96,
+                "enum": [12, 24, 48, 96, 192, 384, 576, 1152],
+                "enum_titles": ["1200", "2400", "4800", "9600", "19200", "38400", "57600", "115200"],
+                "group": "settings"
+            }
+        ],
+        "translations": {
+            "ru": {
+                "Inputs": "Входы",
+                "Settings": "Настройки",
+                "eCO2": "eCO2",
+                "TVOC": "TVOC",
+                "Baseline": "Baseline",
+                "CCS811 Error": "Ошибка CCS811",
+                "File System Error": "Ошибка файловой системы",
+                "Address": "Адрес устройства",
+                "Stop Bits": "Стоп биты",
+                "Baudrate": "Скорость обмена",
+            }
+        }
+    }
+}</code></pre>
+   <p>Теперь подключаем устройство к&nbsp;контроллеру и настраиваем:</p>
+   <ol>
+    <li><p>Копируем файл шаблона на&nbsp;контроллер в&nbsp;папку пользовательских шаблонов <code>/etc/wb-mqtt-serial.conf.d/templates</code>,</p></li>
+    <li><p>Идём в&nbsp;веб‑интерфейсе Настройки → Конфигурационные файлы → Настройка драйвера serial‑устройств.</p></li>
+    <li><p>Параметры порта оставляем по&nbsp;умолчанию.</p></li>
+    <li><p>Добавляем новое устройство и в&nbsp;списке шаблонов выбираем наше устройство. Если его нет в&nbsp;списке, нажимаем Ctrl+F5, чтобы сбросить кеш браузера.</p></li>
+    <li><p>В&nbsp;поле сразу под&nbsp;выбором шаблона указываем адрес устройства&nbsp;— 1.</p></li>
+    <li><p>Сохраняем настройки.</p></li>
+   </ol>
+   <p>Теперь на&nbsp;вкладке Устройства мы должны увидеть карточку с&nbsp;нашим сенсором.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/b37/30b/b91/b3730bb91cdf4dc52858021933a33149.png" alt="Файл шаблона на контроллере" title="Файл шаблона на контроллере" width="1001" height="712" data-src="https://habrastorage.org/getpro/habr/upload_files/b37/30b/b91/b3730bb91cdf4dc52858021933a33149.png">
+    <figcaption>
+     Файл шаблона на контроллере
+    </figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f05/b15/f2b/f05b15f2b1650102d18c094dd4e00c1f.png" alt="Настройки устройства и выбранный шаблон AD-SV" title="Настройки устройства и выбранный шаблон AD-SV" width="1067" height="630" data-src="https://habrastorage.org/getpro/habr/upload_files/f05/b15/f2b/f05b15f2b1650102d18c094dd4e00c1f.png">
+    <figcaption>
+     Настройки устройства и выбранный шаблон AD-SV
+    </figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/a8b/25e/48b/a8b25e48bd4a5ea14941f569fbb4182b.png" alt="Представление устройства в веб-интерфейсе контроллера Wiren Board" title="Представление устройства в веб-интерфейсе контроллера Wiren Board" width="525" height="230" data-src="https://habrastorage.org/getpro/habr/upload_files/a8b/25e/48b/a8b25e48bd4a5ea14941f569fbb4182b.png">
+    <figcaption>
+     Представление устройства в веб-интерфейсе контроллера Wiren Board
+    </figcaption>
+   </figure>
+   <h3>Сценарии автоматизации</h3>
+   <p>В&nbsp;контроллере Wiren Board из&nbsp;коробки есть движок правил <a href="https://github.com/wirenboard/wb-rules" rel="noopener noreferrer nofollow">wb‑rules</a>, на&nbsp;нём мы и будем писать нашу автоматизацию.</p>
+   <p>Алгоритм: если значение TVOC превысит 2000&nbsp;единиц, то включить зуммер контроллера и выключить его после того, как&nbsp;значение снизится. Подобный алгоритм можно использовать для&nbsp;управления вентиляцией или&nbsp;для&nbsp;оповещения персонала об&nbsp;опасности, например, на&nbsp;вино‑водочном заводе. Вроде ничего сложного.</p>
+   <p>Добавляем файл нашего скрипта:</p>
+   <ol>
+    <li><p>Переходим на&nbsp;вкладку «Правила».</p></li>
+    <li><p>Создаём новый скрипт и называем его <em>tvoc‑control.js</em>.</p></li>
+   </ol>
+   <p>В&nbsp;правилах используются контролы устройств, которые выглядят как <code>устройство_адрес/контрол</code>. Узнать нужный контрол можно кликнув на&nbsp;имени канала в&nbsp;карточке устройства на&nbsp;вкладке «Устройства».</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/5ac/beb/cee/5acbebceebb50953cd0449dd342d6eb9.png" alt="Копирование адреса топика для скрипта" title="Копирование адреса топика для скрипта" width="526" height="226" data-src="https://habrastorage.org/getpro/habr/upload_files/5ac/beb/cee/5acbebceebb50953cd0449dd342d6eb9.png">
+    <figcaption>
+     Копирование адреса топика для скрипта
+    </figcaption>
+   </figure>
+   <p>Например, у меня значения TVOC <code>ad-sv_1/TVOC</code>, а зуммер контроллера в топике <code>buzzer/enabled</code>.</p>
+   <p>Пишем правило:</p>
+   <pre><code class="javascript">defineRule({
+    whenChanged: "ad-sv_1/TVOC", // если значение сенсора изменилось
+    then: function(newValue, devName, cellName) {
+    if (newValue &gt;2000) {
+        dev["buzzer/enabled"] = true;       
+    } else {
+        dev["buzzer/enabled"] = false;
+    }
+    }
+});</code></pre>
+   <p>Всё, записываем наше правило в скрипт <em>tvoc-control.js</em> и нажимаем в веб-интерфейсе контроллера кнопку «Сохранить».</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/49d/b32/b92/49db32b9238a9859b992cf64acc9dd58.png" alt="Скрипт автоматизации в редакторе" title="Скрипт автоматизации в редакторе" width="1166" height="758" data-src="https://habrastorage.org/getpro/habr/upload_files/49d/b32/b92/49db32b9238a9859b992cf64acc9dd58.png">
+    <figcaption>
+     Скрипт автоматизации в редакторе
+    </figcaption>
+   </figure>
+   <p>Итак, сохранили, ничего не&nbsp;ругнулось&nbsp;— давайте проверять!</p>
+   <p>Берём что‑то органическое с&nbsp;сильным запахом, например, спирт и подносим эту жидкость к&nbsp;датчику. Я взял обезжириватель универсальный, открутил крышку и поднёс её в&nbsp;зону, где находится датчик&nbsp;— мгновенно запищал зуммер. Стоило убрать крышку с&nbsp;обезжиривателем&nbsp;— значение стало стремительно падать&nbsp;— в&nbsp;комнате, где я проводил эксперимент, открыто окно и из&nbsp;него неплохо дует. Как&nbsp;только концентрация паров упала ниже 2000&nbsp;ppb, выключился зуммер.</p>
+   <p>Кстати, обратите внимание, как&nbsp;подскочило расчётное значение eCO2&nbsp;в&nbsp;момент сработки зуммера.</p>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f85/542/bcc/f85542bccaf4749e3f982b699912163a.png" alt="Значение TVOC около нуля — зуммер выключен" title="Значение TVOC около нуля — зуммер выключен" width="1059" height="313" data-src="https://habrastorage.org/getpro/habr/upload_files/f85/542/bcc/f85542bccaf4749e3f982b699912163a.png">
+    <figcaption>
+     Значение TVOC около нуля — зуммер выключен
+    </figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/02c/aff/31a/02caff31a70dd57c50a2e418dee33e16.png" alt="Значение TVOC выше пороговых 2000 ppb — зуммер включен" title="Значение TVOC выше пороговых 2000 ppb — зуммер включен" width="1051" height="315" data-src="https://habrastorage.org/getpro/habr/upload_files/02c/aff/31a/02caff31a70dd57c50a2e418dee33e16.png">
+    <figcaption>
+     Значение TVOC выше пороговых 2000 ppb — зуммер включен
+    </figcaption>
+   </figure>
+   <figure class="full-width ">
+    <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/7b5/089/bea/7b5089bea5c97fcda87f8ad385a05354.png" alt="Значение TVOC меньше пороговых 2000 ppb — зуммер выключен" title="Значение TVOC меньше пороговых 2000 ppb — зуммер выключен" width="1052" height="319" data-src="https://habrastorage.org/getpro/habr/upload_files/7b5/089/bea/7b5089bea5c97fcda87f8ad385a05354.png">
+    <figcaption>
+     Значение TVOC меньше пороговых 2000 ppb — зуммер выключен
+    </figcaption>
+   </figure>
+   <h2>Что дальше</h2>
+   <p>Сейчас у&nbsp;нас есть прототип устройства, которое:</p>
+   <ul>
+    <li><p>отправляет и принимает данные по&nbsp;протоколу Modbus RTU;</p></li>
+    <li><p>измеряет уровень летучих органических веществ в&nbsp;воздухе;</p></li>
+    <li><p>хранит в&nbsp;энергонезевисимой памяти настройки подключения и калибровочное значение сенсора;</p></li>
+    <li><p>позволяет изменять основные настройки связи и имеет сервисный режим, на&nbsp;случай, если настройки забыли;</p></li>
+    <li><p>интегрировано в&nbsp;систему автоматизации на&nbsp;базе контроллера Wiren Board.</p></li>
+   </ul>
+   <p>Вроде неплохо, но&nbsp;впереди ещё много работы:</p>
+   <ol>
+    <li><p>Сенсор CCS811&nbsp;в&nbsp;процессе работы нагревается и его показания начинают «плыть», поэтому&nbsp;желательно поставить сенсор температуры, например, BMP280&nbsp;и настроить термокомпенсацию.</p></li>
+    <li><p>Можно собирать устройство и на&nbsp;макетке, но&nbsp;гораздо удобнее будет развести и изготовить печатную плату. Не&nbsp;забудьте по&nbsp;преобразователь питания, обычно в&nbsp;шине RS-485&nbsp;от 12&nbsp;до 24&nbsp;В.</p></li>
+    <li><p>Нужно предусмотреть процедуру обновления прошивки, например, это можно сделать по&nbsp;Modbus&nbsp;— в&nbsp;примерах используемой нами библиотеки есть готовая реализация. Ещё можно включать в&nbsp;нужное время встроенный Wi‑Fi и обновлять прошивку по&nbsp;OTA.</p></li>
+   </ol>
+   <p>На&nbsp;этом позвольте откланяться, до&nbsp;встречи в&nbsp;новых статьях!</p>
+   <p>Обновление: читайте комментарии, там пишут много интересного, особенно в <a href="https://habr.com/ru/post/716966/#comment_25236384" rel="noopener noreferrer nofollow">этой ветке</a>.</p>
+   <p>Ссылки:</p>
+   <ul>
+    <li><p><a href="https://github.com/aadegtyarev/esp-modbusrtu-demo/tree/main/habr-article" rel="noopener noreferrer nofollow">Материалы к статье</a></p></li>
+    <li><p><a href="https://github.com/aadegtyarev/esp-modbusrtu-demo/tree/main/arduino-esp8266-modbus-rtu-server" rel="noopener noreferrer nofollow">Пример простого Modbus RTU сервера</a></p></li>
+   </ul>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->

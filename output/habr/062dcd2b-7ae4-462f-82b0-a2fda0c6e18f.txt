@@ -1,0 +1,194 @@
+<div>
+ <div class="article-formatted-body article-formatted-body article-formatted-body_version-2">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+   <h2>Program</h2>
+   <p>Начнем с определения того, что такое "Solana program" - именно так в блокчейне обозначаются смарт-контракты. Это исполняемый код интерпретирующий проходящие через него инструкции, которые в свою очередь являются частью любой транзакции в сети Solana.</p>
+   <h2>Instruction</h2>
+   <p>Инструкция содержит в себе:</p>
+   <ol>
+    <li><p><strong>Program id</strong> - адрес программы, с которой будет взаимодействовать транзакция</p></li>
+    <li><p><strong>Accounts</strong> - аккаунты, которые программа сможет обрабатывать</p></li>
+    <li><p><strong>Data</strong> - произвольный набор байтов</p></li>
+   </ol>
+   <h2>System program</h2>
+   <p>Это нативная программа через которую происходит перевод <u>sol</u>, создание аккаунтов и т.д. Подробнее про нативные программы в <a href="https://docs.solana.com/ru/developing/runtime-facilities/programs" rel="noopener noreferrer nofollow">официальной доке</a></p>
+   <h2>Переводим sol</h2>
+   <h4>Инициализируем проект</h4>
+   <pre><code class="bash">cargo init sol-transfer --lib</code></pre>
+   <h4>Добавляем крейт</h4>
+   <pre><code class="bash">cargo add solana-program</code></pre>
+   <h4>Импортируем модули в lib.rs</h4>
+   <ul>
+    <li><p><strong>account_info::AccountInfo</strong> - структура данных описывающая аккаунт</p></li>
+    <li><p><strong>account_info::next_account_info</strong> - функция позволяющая получить следующий элемент в итераторе с <u>AccountInfo</u></p></li>
+    <li><p><strong>entrypoint</strong> - указывает на функцию-обработчик инструкции</p></li>
+    <li><p><strong>entrypoint::ProgramResult</strong> - тип который возвращает функция-обработчик инструкции</p></li>
+    <li><p><strong>program::invoke</strong> - функция для вызова межпрограммных инструкций</p></li>
+    <li><p><strong>program_error::ProgramError</strong> - <u>enum</u> с ошибками программы</p></li>
+    <li><p><strong>pubkey::Pubkey</strong> - структура данных описывающая публичный адрес аккаунта</p></li>
+    <li><p><strong>system_instruction</strong> - модуль для взаимодействия с <u>System program.</u> В нашем случае получаем структуру для перевода <u>lamports</u> (Дробная часть Соланы)</p></li>
+   </ul>
+   <pre><code class="rust">use solana_program::{
+    account_info::{next_account_info, AccountInfo},
+    entrypoint,
+    entrypoint::ProgramResult,
+    program::invoke,
+    program_error::ProgramError,
+    pubkey::Pubkey,
+    system_instruction,
+};</code></pre>
+   <h4>Указываем entrypoint</h4>
+   <pre><code class="rust">entrypoint!(process_instruction);</code></pre>
+   <h3>Создаем функцию-обработчик инструкций</h3>
+   <h4>Аргументы</h4>
+   <ul>
+    <li><p><strong>program_id</strong> - публичный адрес программы</p></li>
+    <li><p><strong>accounts</strong> - массив аккаунтов, который был передан в инструкции</p></li>
+    <li><p><strong>instruction_data</strong> - произвольный набор байтов</p></li>
+   </ul>
+   <pre><code class="rust">pub fn process_instruction(
+    _program_id: &amp;Pubkey,
+    accounts: &amp;[AccountInfo],
+    instruction_data: &amp;[u8],
+) -&gt; ProgramResult {</code></pre>
+   <h4>Аккаунты</h4>
+   <p>Создаем итератор и объявляем переменные с аккаунтами <u>отправителя</u> и <u>получателя</u></p>
+   <pre><code class="rust">let accounts_iter = &amp;mut accounts.iter();
+
+let sender = next_account_info(accounts_iter)?;
+let destination = next_account_info(accounts_iter)?;</code></pre>
+   <h4>Instruction data</h4>
+   <p>Обычно для передачи данных между клиентом и программой используются сериализация структур данных через библиотеку <a href="https://docs.rs/borsh/latest/borsh/" rel="noopener noreferrer nofollow">borsh</a>. Подробнее про это <a href="https://docs.solana.com/ru/developing/clients/javascript-reference#struct" rel="noopener noreferrer nofollow">в документации</a>. Но так как нам в дате нужно передавать только число переводимых <u>lamports</u>, то можно обойтись и без этого</p>
+   <p>Десериализируем набор байтов и получаем кол-во переводимых монет</p>
+   <pre><code class="rust">let amount = instruction_data
+    .get(..8)
+    .and_then(|slice| slice.try_into().ok())
+    .map(u64::from_le_bytes)
+    .ok_or(ProgramError::InvalidInstructionData)?;</code></pre>
+   <h3>System program и Transfer</h3>
+   <h4>Получаем инструкцию для перевода lamports</h4>
+   <ul>
+    <li><p><strong>sender.key</strong> - публичный адрес <u>отправителя</u></p></li>
+    <li><p><strong>destination.key</strong> - публичный адрес <u>получателя</u></p></li>
+    <li><p><strong>amount</strong> - кол-во переводимых <u>lamports</u></p></li>
+   </ul>
+   <pre><code class="rust">let transfer_instruction = system_instruction::transfer(
+    sender.key, 
+    destination.key, 
+    amount
+);</code></pre>
+   <p>Вызываем межпрограммную инструкцию на перевод <u>sol</u> через <u>System program</u>. Не забываем передать аккаунты, которые участвуют в трансфере</p>
+   <pre><code class="rust">invoke(
+    &amp;transfer_instruction,
+    &amp;[sender.clone(), destination.clone()],
+)?;</code></pre>
+   <h3>Готовый контракт</h3>
+   <p>Соединяем все воедино и возвращаем <strong>Ok(())</strong></p>
+   <pre><code class="rust">pub fn process_instruction(
+    _program_id: &amp;Pubkey,
+    accounts: &amp;[AccountInfo],
+    instruction_data: &amp;[u8],
+) -&gt; ProgramResult {
+
+    let accounts_iter = &amp;mut accounts.iter();
+
+    let sender = next_account_info(accounts_iter)?;
+    let destination = next_account_info(accounts_iter)?;
+
+    let amount = instruction_data
+        .get(..8)
+        .and_then(|slice| slice.try_into().ok())
+        .map(u64::from_le_bytes)
+        .ok_or(ProgramError::InvalidInstructionData)?;
+
+    let transfer_instruction = system_instruction::transfer(
+        sender.key, 
+        destination.key, 
+        amount
+    );
+
+    invoke(
+        &amp;transfer_instruction,
+        &amp;[sender.clone(), destination.clone()],
+    )?;
+
+    Ok(())
+}</code></pre>
+   <h3>Деплоим программу в localnet</h3>
+   <h4>Компилируем в .so</h4>
+   <pre><code class="bash">cargo-build-bpf</code></pre>
+   <h4>Запускаем локальную сеть</h4>
+   <p>Команда запускает локальный валидатор и <u>JSON RPC(HTTP API)</u></p>
+   <pre><code>solana-test-validator</code></pre>
+   <h4>Деплоим .so файл</h4>
+   <p>Загружаем смарт-контракт в сеть и получаем адрес его аккаунта<u>(Program Id)</u></p>
+   <pre><code class="bash">solana program deploy target/deploy/transfer_program.so</code></pre>
+   <h2>Тестируем с браузера</h2>
+   <h4>Импортируем Solana web3.js</h4>
+   <p>Это веб библиотека для взаимодействия с блокчейном <u>Solana</u> через <u>RPC API</u> и встроенные функции. Подробнее <a href="https://solana-labs.github.io/solana-web3.js/" rel="noopener noreferrer nofollow">в доке</a></p>
+   <pre><code class="javascript">script = document.createElement('script');
+script.src = 'https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js';
+document.body.append(script);</code></pre>
+   <h4>Создаем объект соединения</h4>
+   <p><strong>rpcUrl</strong> - наш локальный <u>JSON RPC</u> эндпоинт</p>
+   <pre><code class="javascript">let rpcUrl = 'http://127.0.0.1:8899';
+let connection = new solanaWeb3.Connection(rpcUrl);</code></pre>
+   <h4>Инициализируем кошельки отправителя и получателя</h4>
+   <pre><code class="javascript">let sender = solanaWeb3.Keypair();
+let destination = solanaWeb3.Keypair();</code></pre>
+   <h4>Запрашиваем airdrop 1 SOL на аккаунт отправителя</h4>
+   <p><strong>solanaWeb3.LAMPORTS_PER_SO</strong>L - кол-во <u>lamports</u> в одном <u>sol </u></p>
+   <pre><code class="javascript">await connection.requestAirdrop(sender.publicKey, solanaWeb3.LAMPORTS_PER_SOL);</code></pre>
+   <h4>Объявляем переменную с публичным адресом программы</h4>
+   <p>Этот адрес мы получали, когда деплоили контракт в сеть</p>
+   <pre><code class="javascript">let programId = new solanaWeb3.PublicKey('YOUR_PROGRAM_ADDRESS')</code></pre>
+   <h3>Транзакция</h3>
+   <h4>Создаем объект транзакции</h4>
+   <pre><code class="javascript">let transaction = new solanaWeb3.Transaction();</code></pre>
+   <h4>Transaction data</h4>
+   <p>Как я уже говорил, обычно данные сериализуют через определенные библиотеки, но перегнать число в массив байтов можно и чистым <u>JavaScript</u>. Вот например функция, которую я написал. Углубляться в то как она работает я не буду</p>
+   <pre><code class="javascript">function BytesFromInt(n) {let a=[];let fir=n%2**8;n-=fir;a.push(fir);let s=~~(n%2**16/2**8);n-=s;a.push(s);let t=~~(n%2**24/2**16);n-=t;a.push(t);let fo=~~(n%2**32/2**24);n-=fo;a.push(fo);let fif=~~(n%2**40/2**32);n-=fif;a.push(fif);return a.concat([0,0,0]);}</code></pre>
+   <h4>Добавляем инструкцию</h4>
+   <ul>
+    <li><p><strong>isSigner: true</strong> - этот аккаунт подписывает транзакцию своим приватным ключом, а так же платит комиссию</p></li>
+    <li><p><strong>isWritable: true</strong> - состояние этого аккаунта может изменяться программой</p></li>
+   </ul>
+   <pre><code class="javascript">transaction.add(new solanaWeb3.TransactionInstruction({
+    keys: [{
+        // Отправитель
+        pubkey: sender.publicKey,
+        isWritable: true,
+        isSigner: true
+    }, {
+        // Получатель
+        pubkey: destination.publicKey,
+        isWritable: true,
+        isSigner: false
+    }, {
+        // System program
+        pubkey: solanaWeb3.SystemProgram.programId,
+        isWritable: false,
+        isSigner: false
+    }],
+    // Адрес нашей программы 
+    programId: programId,
+    // Кол-во sol, которое мы переводим - 0.1 sol
+    data: BytesFromInt(0.1*solanaWeb3.LAMPORTS_PER_SOL)
+}));</code></pre>
+   <h4>Отправляем!</h4>
+   <p>Последний аргумент тут - это массив пар ключей, которые подписывают транзакцию</p>
+   <pre><code class="javascript">await solanaWeb3.sendAndConfirmTransaction(connection, transaction, [sender]);</code></pre>
+   <h4>Проверяем баланс</h4>
+   <p>Проверяем баланс аккаунта <u>получателя</u>. Если все прошло успешно, вызов вернет <u>100000000(lamports)</u></p>
+   <pre><code class="javascript">await connection.getBalance(destination.publicKey);</code></pre>
+   <h2>Заключение</h2>
+   <p>В этой статье я попытался максимально просто и понятно донести теорию работы блокчейна Solana и на практике показал, как с нуля написать программу перевода sol между двумя кошельками. На самом деле блокчейн разработка - это огромный и безумно интересный пласт знаний, и многие важные темы я не затронул: PDA аккаунты, SPL токены, сериализация структур данных, безопасность(и это только Solana). Если я увижу положительную обратную связь, то вторая часть не заставит себя долго ждать</p>
+   <h4>Ссылки</h4>
+   <p><a href="https://t.me/sssilencer" rel="noopener noreferrer nofollow">Мой тг</a></p>
+   <p><a href="https://docs.solana.com/ru/" rel="noopener noreferrer nofollow">Документация Solana</a></p>
+   <p><a href="https://docs.rs/solana-program/latest/solana_program/" rel="noopener noreferrer nofollow">Документация solana_program</a></p>
+   <p><a href="https://solana-labs.github.io/solana-web3.js/" rel="noopener noreferrer nofollow">Документация Solana web3.js</a></p>
+   <p></p>
+  </div>
+ </div>
+</div> <!----> <!---->
