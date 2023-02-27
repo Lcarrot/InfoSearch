@@ -6,6 +6,9 @@ import org.jsoup.nodes.Document;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Stream;
 
 
 public class ParserUtils {
@@ -20,5 +23,14 @@ public class ParserUtils {
     @SneakyThrows
     public static String getSourceText(Path filePath) {
         return Jsoup.parse(Files.readString(filePath)).text();
+    }
+
+    @SneakyThrows
+    public static String getSourceTextFromFiles(Path dirPath) {
+        try(Stream<Path> walk = Files.walk(dirPath)) {
+            return walk.filter(Files::isRegularFile)
+                    .map(ParserUtils::getSourceText)
+                    .reduce("", (a, b) -> a + b);
+        }
     }
 }
