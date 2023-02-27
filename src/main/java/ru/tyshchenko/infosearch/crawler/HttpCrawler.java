@@ -25,7 +25,6 @@ public class HttpCrawler {
     }
 
     public void download(UrlBuilder builder, int pageCount) {
-
         List<Pair<String, String>> pairs = IntStream.range(1, pageCount)
                 .parallel()
                 .mapToObj(builder::getPageUrls)

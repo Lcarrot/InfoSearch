@@ -23,7 +23,7 @@ public class Task1Test {
     }
 
     @Test
-    void downloadSpringerPages() {
+    void downloadTandfonlinePages() {
         httpCrawler.download(tandfonlineUrlBuilder, 10);
     }
 }
