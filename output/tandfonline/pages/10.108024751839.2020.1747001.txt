@@ -1,0 +1,3203 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">1. Introduction</h2>
+ <p>There have been various research projects demonstrating the need for an automated system to recognize Social Engineering (SE) attacks. Many of these projects show proof of concept models using a variety of different techniques, most commonly Natural Language Processing (NLP) and Machine Learning (ML) methods like Artificial Neural Networks (ANN). Whilst these exist, there is a lack of evidence that the theory has been implemented and proved working, with very little evidence of the rate of success (Mouton et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2018</a></span>; Peng et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2018</a></span>; Sawa et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2016</a></span>; Tsinganos et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+ <p>Human Psychology plays a large part in the creation of NLP software as it is important to understand how people socialize and behave with others. A common and well-regarded psychologist, Dr. Robert Cialdini proposed the 6 principles of persuasion (Resnik, <span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>1986</a></span>): Authority, Scarcity, Liking/Similarity, Reciprocation, Social Proof and Commitment/Consistency. Further studies by psychologists also follow a similar consensus that these are the key factors in defining a persuasive person. Using these key features as a base, Computer Scientists theorized and attempted to build systems that recognized these traits. The research projects on this area can be loosely broken down into three stages, Data Pre-Processing, Feature Extraction and Aggregation of Results as shown in <a href="#F0001">Figure 1</a>.</p>
+ <div class="figure figureViewer" id="F0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>10 April 2020
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> The data processing pipeline.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/medium/tjit_a_1747001_f0001_oc.jpg" loading="lazy" height="234" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> The data processing pipeline.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0001">
+  <div class="figureFootNote-F0001"></div>
+ </div>
+ <p></p>
+ <p>Most research approaches into this problem domain have some relevant data and these data are usually pre-processed. The method of pre-processing differs per system, but generally involves the same goal; preparing the data for classification. The contextual, or meta data, such as time, date and IP addresses are captured in a relationship with the original data. This can be used for correlating different dialogues with one another, one by matching the IP as an internal or external agent and secondly by highlighting potential reoccurring adversaries that may persist under different aliases. The dialogues are sanitized to remove any erroneous content such as HTML tags or corrupt texts. The data can then be parsed using a Natural Language Processing (NLP) parser such as the Stanford CoreNLP (Manning et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2014</a></span>). NLP parsers provide a vast array of tools that are able to dissect the human language into dependency trees, define grammatical relations and their Parts of Speech (POS) to name a few common uses. Using these libraries, it allows programmers to create algorithms which are able to classify conversations based on the linguistic features the parser extracts.</p>
+ <p>This paper extends our previous conference version found in Lansley et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2019</a></span>) and is based on the concept that a dialogue is taking place in an online chat environment. To determine if a dialog between two interlocutors is a Social Engineering attack, certain criteria, or else known as features, need to be chosen, a process known as feature selection. The features are selected before the three stages and are commonly based on the principles of persuasion, common phishing tactics like malicious links and the history of the attacker. We can then classify the data based on these features and produce a ‘score’ of how strongly the selected dialog matches the criteria. Each implementation designed to detect each feature will use a variety of classification techniques, such as: Fuzzy Logic, Topic Blacklists, Decision Trees, Random Forest and Neural Networks depending on what needs to be extracted. Furthermore, an automated system requires the output of a clear decision, albeit a probabilistic decision, this can be done by aggregating the outputs from the Feature Extraction process. The results of each feature are weighted by importance, and at basic level can be averaged to give a Fuzzy logic prediction. By using more advanced techniques such as decision trees or neural networks, the weight of each feature can be calculated programmatically to determine which features carry the most importance regarding whether or not a social engineering attack is taking place.</p>
+ <p>The following contributions are delivered:</p>
+ <ol class="NLM_list NLM_list-list_type-order">
+  <li><p class="inline">A method for detecting social engineering attacks in online chat environments is proposed.</p></li>
+  <li><p class="inline">The proposed method has been evaluated using a real and a semi-synthetic dataset with the results validating our approach.</p></li>
+ </ol>
+ <p></p>
+ <p>The rest of the paper is organized as follows: Section <a href="#S002">2</a> presents the related work, Section <a href="#S003">3</a> delivers the proposed method, Section <a href="#S004">4</a> contains the experimental evaluation and Section <a href="#S006">6</a> is the conclusions part.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">2. Related work</h2>
+ <p>An early implementation of SE detection in real-time telephone systems is SEDA (Social Engineering Defense Architecture) (Hoeschele &amp; Rogers, <span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2005</a></span>). The researchers mainly focused on identifying repeat callers using their voice signatures. Later a proof of concept model of SEDA (Hoeschele &amp; Rogers, <span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2005</a></span>) was produced being able to correctly identify all attacks in their dataset. A method of detection used by Sawa et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2016</a></span>) is to identify the questions requesting private information and commands requesting that the user perform tasks they are not authorized to perform. This technique uses a manually derived topic blacklist of verb-noun pairs for which they state should be built around security policies associated with a system. This work is taken further in Peng et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2018</a></span>) by identifying 4 main attack vectors; the urgency of the dialog, negative commands and questions, whether the message is likely automated identified by a generic greeting. Finally, they use a reputable cyber security service, Netcraft, to check the safety of a URL. Instead of manual blacklist creation, they use a large corpus of phishing emails to generate a topic blacklist using a Naive Bayes classier. Some approaches like SEADMv2 (Mouton et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2018</a></span>) and MPMPA (Jamil et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2018</a></span>) use complex state machines in order to map out the pathways that can be followed as a checklist-type system to mitigate an attack. This proposal is suited where there are multiple authorization layers that might prevent a request from being carried out. These two separate machines provide some overlap, but the explicit state definition required could be limiting to where these can be applied. The nature of SE attacks is unpredictable meaning that new methods of attacks are always being introduced. The SEADM versions state machines still rely on the user input for changing state, which means the chance for user error and naivety is still present. The works of Tsinganos et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2018</a></span>) covers an extensive overview of the existing systems and provide a comprehensive recognition of subsystems for their detection architecture; in influence, deception, personality, speech act and past experiences. The work of Bhakta and Harris (<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2015</a></span>) provides a semantic-based approach of dialogues to detect social engineering attacks. In Heartfield and Loukas (<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2018</a></span>) the authors show that the human factor is the weakest link in social engineering attacks and based on a human study the prove that. In Bezuidenhout et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2010</a></span>) and Mouton et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2015</a></span>) the authors provide a theoretical foundation that potentially could be used in real systems to detect attacks. In the works of Nicholson et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2017</a></span>) it is explained how social engineering attacks can potentially be detected, whereas in Krombholz et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2015</a></span>) and Mouton et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2016</a></span>) different examples of attacks with scenarios are presented. In addition to the works mentioned, there are numerous other articles from relevant domains that can be useful such as the one in Nguyen and Nguyen (<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2016</a></span>) where the authors performed an influence analysis of the number of members on the quality of knowledge in a collective, the work in Saadat Javad and Koofigar (<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2017</a></span>) where a neural network is used along with harmony for searching, the one in Precup and David (<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2019</a></span>) where nature inspired optimization algorithms for fuzzy control servo systems are discussed and the one found in Abed-alguni (<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2019</a></span>) where an Island-based cuckoo search algorithm with highly disruptive polynomial mutation is proposed.</p>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i6" class="section-heading-2">3. Proposed method</h2>
+ <p>The proposed method consists of several steps to preprocess the dialogs into a dataset for classification. The last steps are applying the classifier. All the steps explained below, have been written in the Python programming language. The SymSpellpy library (a Python port of SymSpell) was used for spelling, the Web of Trust (WOT) Application Programming Interface (API) was used to check any links. In Section <a href="#S003-S2001">3.1</a> the dataset pre-processing steps are described, which are necessary to create a new dataset with numerical values that can be used for classification purposes. In Section <a href="#S003-S2002">3.2</a> an artificial neural network multi-layer perceptron (MLP) classifier is applied to the dataset, whereas in Section <a href="#S003-S2003">3.3</a> an ensemble learning machine learning method has been developed.</p>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">3.1. Data pre-processing and preparation</h3>
+  <p>Steps 1 to 5 check for malicious links, steps 6 and 7 determine the spelling quality, and steps 8 to 11 determine the intent of the text, using a pre-defined blacklist. The score of each feature can be given by: Link score, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       S
+      </mi>
+      <mi>
+       L
+      </mi>
+     </msub>
+    </math></span>, Spelling score, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       S
+      </mi>
+      <mrow>
+       <mi>
+        S
+       </mi>
+       <mi>
+        P
+       </mi>
+      </mrow>
+     </msub>
+    </math></span>, and Intent score, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       S
+      </mi>
+      <mi>
+       I
+      </mi>
+     </msub>
+    </math></span>. Each score is then scaled down to between 0 and 1. After the pre-processing of the dialogues (steps 1–11), the classification dataset has the following 4 labels: (1) Intent, (2) Spelling, (3) Link and (4) attack or no attack.</p>
+  <p>The steps are as follows:</p>
+  <ol class="NLM_list NLM_list-list_type-order">
+   <li><p class="inline">Extract all URLs from the dialog text using a regex pattern matcher.</p></li>
+   <li><p class="inline">If the text contains URLs, send the link/s to the WOT API to evaluate if the web link is malicious.</p></li>
+   <li><p class="inline">The WOT API returns the reputation of the site (value between 0 and 100), the confidence of the given reputation (value between 0 and 100) and the identifying categories (17 in total) that identify the nature of the website. The broad categories and example subcategories are as follows:</p>
+    <ul class="NLM_list NLM_list-list_type-bullet">
+     <li><p class="inline">1XX Negative (101 Malware, 103 Phishing, 104 Scam, 105 Potentially illegal etc.)</p></li>
+     <li><p class="inline">2XX Questionable (201 Misleading claims or unethical, 205 spam, 207 ads / popups etc.)</p></li>
+     <li><p class="inline">3XX Neutral (301 Online tracking, 302 controversial, 303 political etc.)</p></li>
+     <li><p class="inline">5XX Positive (501 A good site)</p></li>
+    </ul><p></p></li>
+   <li><p class="inline">If the returned category is of group 1XX or 2XX, then <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0004.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         S
+        </mi>
+        <mi>
+         L
+        </mi>
+       </msub><mo>
+        =
+       </mo><mn>
+        1
+       </mn>
+      </math></span>.</p></li>
+   <li><p class="inline">Otherwise, divide the reputation by 100 and take it away from 1 as shown in Equation (<a href="#M0001">1</a>).<span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0001.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         S
+        </mi>
+        <mi>
+         L
+        </mi>
+       </msub><mo>
+        =
+       </mo><mn>
+        1
+       </mn><mo>
+        −
+       </mo><mrow>
+        <mrow>
+         <mfrac>
+          <mrow>
+           <mi mathvariant="normal">
+            r
+           </mi>
+           <mi mathvariant="normal">
+            e
+           </mi>
+           <mi mathvariant="normal">
+            p
+           </mi>
+           <mi mathvariant="normal">
+            u
+           </mi>
+           <mi mathvariant="normal">
+            t
+           </mi>
+           <mi mathvariant="normal">
+            a
+           </mi>
+           <mi mathvariant="normal">
+            t
+           </mi>
+           <mi mathvariant="normal">
+            i
+           </mi>
+           <mi mathvariant="normal">
+            o
+           </mi>
+           <mi mathvariant="normal">
+            n
+           </mi>
+           <mtext>
+            &nbsp;
+           </mtext>
+           <mi mathvariant="normal">
+            v
+           </mi>
+           <mi mathvariant="normal">
+            a
+           </mi>
+           <mi mathvariant="normal">
+            l
+           </mi>
+           <mi mathvariant="normal">
+            u
+           </mi>
+           <mi mathvariant="normal">
+            e
+           </mi>
+          </mrow>
+          <mn>
+           100
+          </mn>
+         </mfrac>
+        </mrow>
+       </mrow>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span></p></li>
+   <li><p class="inline">Check for spelling using the SymSpellpy library.</p></li>
+   <li><p class="inline">the best suggested spelling correction, determine the number of misspelled words, given by <i>x</i>. This number is then scaled between 0 and 1 by applying Equation (<a href="#M0002">2</a>). The value of represents the spelling quality, where higher values represents poorer spelling. Rather than a linear function, an exponential function is used to rate a higher number of spelling mistakes more severely. To adjust the rate at which the score tends towards 1, the constant <i>α</i> can be varied to affect how harsh you want to be on spelling errors. After extensive testing it was identified that 0.5 allowed the text to contain a small number of mistakes without creating a high score. For example, if <i>α</i> is set to 0.5 and <i>x</i>=1 then <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0005.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         S
+        </mi>
+        <mrow>
+         <mi>
+          S
+         </mi>
+         <mi>
+          P
+         </mi>
+        </mrow>
+       </msub><mo>
+        =
+       </mo><mn>
+        0.39
+       </mn>
+      </math></span>, if <i>x</i>=5 then <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0006.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         S
+        </mi>
+        <mrow>
+         <mi>
+          S
+         </mi>
+         <mi>
+          P
+         </mi>
+        </mrow>
+       </msub>
+      </math></span> = 0.92.<span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0002.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         S
+        </mi>
+        <mrow>
+         <mi>
+          S
+         </mi>
+         <mi>
+          P
+         </mi>
+        </mrow>
+       </msub><mo>
+        =
+       </mo><mn>
+        1
+       </mn><mo>
+        −
+       </mo><msup>
+        <mi>
+         e
+        </mi>
+        <mrow>
+         <mo>
+          −
+         </mo>
+         <mi>
+          α
+         </mi>
+         <mi>
+          x
+         </mi>
+        </mrow>
+       </msup>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span></p></li>
+   <li><p class="inline">The next step uses the corrected spelling of the dialog, and checks it against a blacklist, derived from 48 security policy style words. This can be easily populated with company or environment-related words such as: credentials, passwords, database etc. The number of blacklist matched words is given by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0007.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         M
+        </mi>
+        <mi>
+         B
+        </mi>
+       </msub>
+      </math></span>.</p></li>
+   <li><p class="inline">The algorithm at this step checks for intent verbs and adjectives such as need, must, urgent etc. This value is given by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0008.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         M
+        </mi>
+        <mi>
+         I
+        </mi>
+       </msub>
+      </math></span></p></li>
+   <li><p class="inline">To tune the results, values <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0009.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         M
+        </mi>
+        <mi>
+         B
+        </mi>
+       </msub>
+      </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0010.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         M
+        </mi>
+        <mi>
+         I
+        </mi>
+       </msub>
+      </math></span> are multiplied by the weights <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0011.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         W
+        </mi>
+        <mi>
+         B
+        </mi>
+       </msub>
+      </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0012.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         W
+        </mi>
+        <mi>
+         I
+        </mi>
+       </msub>
+      </math></span>, weighted at values of 2 and 1 retrospectively. This step has been added as an equation in case someone wants to change the weight of this step, if it is considered more important. The value <i>x</i> can hence be given by Equation (<a href="#M0003">3</a>).<span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0003.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        x
+       </mi><mo>
+        =
+       </mo><mo>
+        (
+       </mo><msub>
+        <mi>
+         M
+        </mi>
+        <mi>
+         B
+        </mi>
+       </msub><mo>
+        ×
+       </mo><msub>
+        <mi>
+         W
+        </mi>
+        <mi>
+         B
+        </mi>
+       </msub><mo>
+        )
+       </mo><mo>
+        +
+       </mo><mo>
+        (
+       </mo><msub>
+        <mi>
+         M
+        </mi>
+        <mi>
+         I
+        </mi>
+       </msub><mo>
+        ×
+       </mo><msub>
+        <mi>
+         W
+        </mi>
+        <mi>
+         I
+        </mi>
+       </msub><mo>
+        )
+       </mo>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span></p></li>
+   <li><p class="inline">Then, the value of <i>x</i> is normalized in Equation (<a href="#M0004">4</a>), using the same exponential function as Equation (<a href="#M0002">2</a>). Where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0013.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        α
+       </mi><mo>
+        =
+       </mo><mn>
+        0.4
+       </mn>
+      </math></span> to give the best output. A higher value of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0014.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         S
+        </mi>
+        <mi>
+         I
+        </mi>
+       </msub>
+      </math></span> indicates a higher concentration of blacklisted words in the text.<span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0004.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         S
+        </mi>
+        <mi>
+         I
+        </mi>
+       </msub><mo>
+        =
+       </mo><mn>
+        1
+       </mn><mo>
+        −
+       </mo><msup>
+        <mi>
+         e
+        </mi>
+        <mrow>
+         <mo>
+          −
+         </mo>
+         <mi>
+          α
+         </mi>
+         <mi>
+          x
+         </mi>
+        </mrow>
+       </msup>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span></p></li>
+   <li><p class="inline">At this step the original dialogue dataset is being checked to identify which dialogue was indeed an attack and assign the true (1) or false (0) value to the new dataset used for classification.</p></li>
+  </ol>
+  <p></p>
+  <p>In summary, the above steps are used to read natural language and convert it into numerical values with the labels (1) Intent, (2) Spelling, (3) Link and (4) attack or no attack. Then the new dataset with these values is used with a machine learning classification algorithm to identify attacks. Sections <a href="#S003-S2002">3.2</a> and <a href="#S003-S2003">3.3</a> describe an MLP and an ensemble learning classifier, respectively.</p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">3.2. Classification of attacks using an artificial neural network</h3>
+  <p>After the dataset is populated and the MLP classifier is applied. If the output is high, then it is considered an attack otherwise it is not considered an attack. Initially, we define an activation function as: <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      g
+     </mi><mo>
+      (
+     </mo><mi>
+      z
+     </mi><mo>
+      )
+     </mo>
+    </math></span> with <i>x</i> input values and <i>w</i> weights as input. The activation function is shown in Equation (<a href="#M0005">5</a>).<span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      z
+     </mi><mo>
+      =
+     </mo><msub>
+      <mi>
+       w
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub><msub>
+      <mi>
+       x
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub><mo>
+      +
+     </mo><msub>
+      <mi>
+       w
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub><msub>
+      <mi>
+       x
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub><mo>
+      +
+     </mo><mo>
+      ⋯
+     </mo><mo>
+      +
+     </mo><msub>
+      <mi>
+       w
+      </mi>
+      <mi>
+       m
+      </mi>
+     </msub><msub>
+      <mi>
+       x
+      </mi>
+      <mi>
+       m
+      </mi>
+     </msub>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span> If <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0016.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mi>
+       g
+      </mi>
+      <mo>
+       (
+      </mo>
+      <mi>
+       z
+      </mi>
+      <mo>
+       )
+      </mo>
+     </mrow>
+    </math></span> is greater than a given threshold <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0017.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mi>
+       θ
+      </mi>
+     </mrow>
+    </math></span>, the output is 1 or −1 otherwise, as shown in (<a href="#M0006">6</a>). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left" rowspacing=".5em" columnspacing="thickmathspace">
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <mi>
+         g
+        </mi>
+        <mo>
+         (
+        </mo>
+        <mi>
+         z
+        </mi>
+        <mo>
+         )
+        </mo>
+        <mo>
+         =
+        </mo>
+        <mfenced open="{" close="">
+         <mrow>
+          <mtable rowspacing="4pt" columnspacing="1em">
+           <mtr>
+            <mtd>
+             <mrow>
+              <mn>
+               1
+              </mn>
+              <mo>
+               ,
+              </mo>
+             </mrow>
+            </mtd>
+            <mtd>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                i
+               </mi>
+               <mi mathvariant="normal">
+                f
+               </mi>
+              </mrow>
+              <mspace width="thinmathspace"></mspace>
+              <mspace width="thinmathspace"></mspace>
+              <mi>
+               z
+              </mi>
+              <mo>
+               &gt;
+              </mo>
+              <mi>
+               θ
+              </mi>
+             </mrow>
+            </mtd>
+           </mtr>
+           <mtr>
+            <mtd>
+             <mrow>
+              <mo>
+               −
+              </mo>
+              <mn>
+               1
+              </mn>
+              <mo>
+               ,
+              </mo>
+             </mrow>
+            </mtd>
+            <mtd>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                e
+               </mi>
+               <mi mathvariant="normal">
+                l
+               </mi>
+               <mi mathvariant="normal">
+                s
+               </mi>
+               <mi mathvariant="normal">
+                e
+               </mi>
+              </mrow>
+             </mrow>
+            </mtd>
+           </mtr>
+          </mtable>
+         </mrow>
+        </mfenced>
+       </mtd>
+      </mtr>
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <mrow>
+         <mi mathvariant="normal">
+          w
+         </mi>
+         <mi mathvariant="normal">
+          h
+         </mi>
+         <mi mathvariant="normal">
+          e
+         </mi>
+         <mi mathvariant="normal">
+          r
+         </mi>
+         <mi mathvariant="normal">
+          e
+         </mi>
+        </mrow>
+        <mspace width="1em"></mspace>
+        <mi>
+         z
+        </mi>
+        <mo>
+         =
+        </mo>
+        <msub>
+         <mi>
+          w
+         </mi>
+         <mn>
+          1
+         </mn>
+        </msub>
+        <msub>
+         <mi>
+          x
+         </mi>
+         <mn>
+          1
+         </mn>
+        </msub>
+        <mo>
+         +
+        </mo>
+        <msub>
+         <mi>
+          w
+         </mi>
+         <mn>
+          2
+         </mn>
+        </msub>
+        <msub>
+         <mi>
+          x
+         </mi>
+         <mn>
+          2
+         </mn>
+        </msub>
+        <mo>
+         +
+        </mo>
+        <mo>
+         ⋯
+        </mo>
+        <mo>
+         +
+        </mo>
+        <msub>
+         <mi>
+          w
+         </mi>
+         <mi>
+          m
+         </mi>
+        </msub>
+        <msub>
+         <mi>
+          x
+         </mi>
+         <mi>
+          m
+         </mi>
+        </msub>
+        <mo>
+         =
+        </mo>
+        <msubsup>
+         <mo movablelimits="false">
+          ∑
+         </mo>
+         <mrow>
+          <mspace width="thinmathspace"></mspace>
+          <mi>
+           j
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mi>
+          m
+         </mi>
+        </msubsup>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mi>
+           j
+          </mi>
+         </msub>
+         <msub>
+          <mi>
+           w
+          </mi>
+          <mi>
+           j
+          </mi>
+         </msub>
+         <mo>
+          =
+         </mo>
+         <msup>
+          <mi>
+           w
+          </mi>
+          <mi>
+           T
+          </mi>
+         </msup>
+         <mi>
+          x
+         </mi>
+        </mrow>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6) </span></span></span></span></p>
+  <p>For the next step, we use Rosenblatt's perceptron rule to update the weights as follows: (a) Each weight was initialized with small random numbers and (b) for each iterative training step for each input x the output value was calculated, and the weights were updated.</p>
+  <p>The output update is defined in Equation (<a href="#M0007">7</a>), with <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0018.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mi mathvariant="normal">
+       Δ
+      </mi>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+      <mo>
+       =
+      </mo>
+      <mi>
+       e
+      </mi>
+      <mo>
+       (
+      </mo>
+      <mi>
+       t
+      </mi>
+      <mi>
+       a
+      </mi>
+      <mi>
+       r
+      </mi>
+      <mi>
+       g
+      </mi>
+      <mi>
+       e
+      </mi>
+      <mi>
+       t
+      </mi>
+      <mo>
+       (
+      </mo>
+      <mi>
+       i
+      </mi>
+      <mo>
+       )
+      </mo>
+      <mo>
+       −
+      </mo>
+      <mi>
+       o
+      </mi>
+      <mi>
+       u
+      </mi>
+      <mi>
+       t
+      </mi>
+      <mi>
+       p
+      </mi>
+      <mi>
+       u
+      </mi>
+      <mi>
+       t
+      </mi>
+      <mo>
+       (
+      </mo>
+      <mi>
+       i
+      </mi>
+      <mo>
+       )
+      </mo>
+      <mo>
+       )
+      </mo>
+      <msubsup>
+       <mi>
+        x
+       </mi>
+       <mi>
+        j
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msubsup>
+     </mrow>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0019.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mi>
+       e
+      </mi>
+     </mrow>
+    </math></span> is the learning rate, <i>target</i> the actual (true) class label and <i>output</i> the predicted label. Weight updates were iterative, and updates were performed simultaneously.<span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(7) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mi>
+       w
+      </mi>
+      <mi>
+       j
+      </mi>
+      <mo>
+       +
+      </mo>
+     </msubsup><mo>
+      =
+     </mo><msub>
+      <mi>
+       w
+      </mi>
+      <mi>
+       j
+      </mi>
+     </msub><mo>
+      +
+     </mo><mi mathvariant="normal">
+      Δ
+     </mi><msub>
+      <mi>
+       w
+      </mi>
+      <mi>
+       j
+      </mi>
+     </msub>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(7) </span></span></span></span></p>
+ </div>
+ <div id="S003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i16">3.3. Classification of attacks using ensemble learning</h3>
+  <p>For the ensemble learning approach a Gaussian Naïve Bayes classifier has been used along with a Decision Tree classifier and a Random Forest classifier based on a soft voting approach. Initially the three algorithms are explained and then a pseudocode of the ensemble algorithm is shown. The Gaussian Naïve Bayes defined in Equation (<a href="#M0009">9</a>) implements the Naïve Bayes algorithm and is defined in Equation (<a href="#M0008">8</a>), while it assumes that the likelihood of features is Gaussian. Naïve Bayes gives a probability P for a class y, belonging or not to X as shown in Equation (<a href="#M0008">8</a>). In Equation (<a href="#M0009">9</a>) where the Gaussian Naïve Bayes is defined, and the parameters <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0020.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       σ
+      </mi>
+      <mi>
+       y
+      </mi>
+     </msub>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0021.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       μ
+      </mi>
+      <mi>
+       y
+      </mi>
+     </msub>
+    </math></span> are estimated using the maximum likelihood. <i>μ</i> is the mean and <i>σ</i> is the standard deviation. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0008.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0008" class="disp-formula-label">(8) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      P
+     </mi><mo>
+      (
+     </mo><mi>
+      y
+     </mi><mo fence="false">
+      |
+     </mo><mi>
+      X
+     </mi><mo>
+      )
+     </mo><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mi>
+         P
+        </mi>
+        <mo>
+         (
+        </mo>
+        <mi>
+         X
+        </mi>
+        <mo fence="false">
+         |
+        </mo>
+        <mi>
+         y
+        </mi>
+        <mo>
+         )
+        </mo>
+        <mi>
+         P
+        </mi>
+        <mo>
+         (
+        </mo>
+        <mi>
+         y
+        </mi>
+        <mo>
+         )
+        </mo>
+       </mrow>
+       <mrow>
+        <mi>
+         P
+        </mi>
+        <mo>
+         (
+        </mo>
+        <mi>
+         X
+        </mi>
+        <mo>
+         )
+        </mo>
+       </mrow>
+      </mfrac>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0008" class="disp-formula-label">(8) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0009.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0009" class="disp-formula-label">(9) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      P
+     </mi><mo>
+      (
+     </mo><msub>
+      <mi>
+       x
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo fence="false">
+      |
+     </mo><mi>
+      y
+     </mi><mo>
+      )
+     </mo><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mn>
+        1
+       </mn>
+       <msqrt>
+        <mn>
+         2
+        </mn>
+        <mi>
+         π
+        </mi>
+        <msubsup>
+         <mi>
+          σ
+         </mi>
+         <mi>
+          y
+         </mi>
+         <mn>
+          2
+         </mn>
+        </msubsup>
+       </msqrt>
+      </mfrac>
+     </mrow><mrow>
+      <mi>
+       exp
+      </mi>
+      <mrow>
+       <mfenced open="(" close=")">
+        <mrow>
+         <mo>
+          −
+         </mo>
+         <mrow>
+          <mfrac>
+           <mrow>
+            <mo>
+             (
+            </mo>
+            <msub>
+             <mi>
+              x
+             </mi>
+             <mi>
+              i
+             </mi>
+            </msub>
+            <mo>
+             −
+            </mo>
+            <msub>
+             <mi>
+              μ
+             </mi>
+             <mi>
+              y
+             </mi>
+            </msub>
+            <msup>
+             <mo>
+              )
+             </mo>
+             <mn>
+              2
+             </mn>
+            </msup>
+           </mrow>
+           <mrow>
+            <mn>
+             2
+            </mn>
+            <msubsup>
+             <mi>
+              σ
+             </mi>
+             <mi>
+              y
+             </mi>
+             <mn>
+              2
+             </mn>
+            </msubsup>
+           </mrow>
+          </mfrac>
+         </mrow>
+        </mrow>
+       </mfenced>
+      </mrow>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0009" class="disp-formula-label">(9) </span></span></span></span>Then a Decision Tree classifier is defined with unlimited leaf nodes. A Decision Tree is a classifier where a tree is drawn upside down with its root at the top which is being a social engineering attack or not. Then the attributes or else known as features found in the dataset are used to make decision by setting values and using <i>IF</i>/<i>TH<i>E</i>N</i>/<i>ELSE</i> statements. For example, in the dataset the first attribute is the intent. After the root is set as attack at the final leaf a <i>YES</i>/<i>NO</i> decision needs to be made. Subsequently, the numerical values found in this attribute are used to decide which number should be the cut-off point for a yes or no decision. The same continues for all attributes until a final decision is made.</p>
+  <p>Following that a Random Forest classifier is defined, comprised of 10 Decision Tree classifiers with different cut-off points. The Random Forest returns a yes or no decision based on majority of answers received by the decision trees.</p><statement content-type="algorithm">
+   Algorithm 2. 
+   <h3 class="section-heading-3" id="_i19">Ensemble learning pseudocode</h3>
+   <p>   <b>Input: Social engineering classication dataset</b></p>
+   <p><b>Output: Classification as an attack or not</b></p>
+   <p>1: <b>LOAD</b> data</p>
+   <p>2: <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0022.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       p
+      </mi><mi>
+       o
+      </mi><mi>
+       s
+      </mi><mi>
+       i
+      </mi><mi>
+       t
+      </mi><mi>
+       i
+      </mi><mi>
+       v
+      </mi><mi>
+       e
+      </mi><mi>
+       s
+      </mi><mo>
+       ←
+      </mo><mn>
+       0
+      </mn>
+     </math></span></p>
+   <p>3: <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0023.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       n
+      </mi><mi>
+       e
+      </mi><mi>
+       g
+      </mi><mi>
+       a
+      </mi><mi>
+       t
+      </mi><mi>
+       i
+      </mi><mi>
+       v
+      </mi><mi>
+       e
+      </mi><mi>
+       s
+      </mi><mo>
+       ←
+      </mo><mn>
+       0
+      </mn>
+     </math></span></p>
+   <p>4: <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0024.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       a
+      </mi><mi>
+       t
+      </mi><mi>
+       t
+      </mi><mi>
+       a
+      </mi><mi>
+       c
+      </mi><mi>
+       k
+      </mi><mo>
+       ←
+      </mo><mn>
+       0
+      </mn>
+     </math></span></p>
+   <p>5: <b>for</b> entry of the dataset <b>do</b></p>
+   <p>6:  <b>LOAD</b> Gaussian NB classifier</p>
+   <p>7:  <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0025.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       r
+      </mi><mi>
+       e
+      </mi><mi>
+       s
+      </mi><mi>
+       u
+      </mi><mi>
+       l
+      </mi><mi>
+       t
+      </mi><mo>
+       ←
+      </mo><mrow>
+       <mi mathvariant="normal">
+        G
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        u
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        n
+       </mi>
+       <mi mathvariant="normal">
+        N
+       </mi>
+       <mi mathvariant="normal">
+        B
+       </mi>
+       <mi mathvariant="normal">
+        c
+       </mi>
+       <mi mathvariant="normal">
+        l
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        f
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        c
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        n
+       </mi>
+      </mrow>
+     </math></span></p>
+   <p>8:  <b>if</b> result is positive <b>then</b></p>
+   <p>9:    <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0026.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mi mathvariant="normal">
+        p
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow><mo>
+       ←
+      </mo><mrow>
+       <mi mathvariant="normal">
+        p
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow><mo>
+       +
+      </mo><mn>
+       1
+      </mn>
+     </math></span></p>
+   <p>10:  <b>else</b></p>
+   <p>11:    <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0027.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mi mathvariant="normal">
+        n
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        g
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow><mo>
+       ←
+      </mo><mrow>
+       <mi mathvariant="normal">
+        n
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        g
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow><mo>
+       +
+      </mo><mn>
+       1
+      </mn>
+     </math></span></p>
+   <p>12:  <b>end if</b></p>
+   <p>13:  <b>LOAD</b> Decision Tree classifier</p>
+   <p>14:  <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0028.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       r
+      </mi><mi>
+       e
+      </mi><mi>
+       s
+      </mi><mi>
+       u
+      </mi><mi>
+       l
+      </mi><mi>
+       t
+      </mi><mo>
+       ←
+      </mo><mrow>
+       <mi mathvariant="normal">
+        D
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        c
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        n
+       </mi>
+       <mspace width="thinmathspace"></mspace>
+       <mi mathvariant="normal">
+        T
+       </mi>
+       <mi mathvariant="normal">
+        r
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mspace width="thinmathspace"></mspace>
+       <mi mathvariant="normal">
+        C
+       </mi>
+       <mi mathvariant="normal">
+        l
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        f
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        r
+       </mi>
+      </mrow>
+     </math></span></p>
+   <p>15:  <b>if</b> result is positive <b>then</b></p>
+   <p>16:    <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0029.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0029.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mi mathvariant="normal">
+        p
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow><mo>
+       ←
+      </mo><mrow>
+       <mi mathvariant="normal">
+        p
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow><mo>
+       +
+      </mo><mn>
+       1
+      </mn>
+     </math></span></p>
+   <p>17:  <b>else</b></p>
+   <p>18:    <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0030.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0030.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mi mathvariant="normal">
+        n
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        g
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow><mo>
+       ←
+      </mo><mrow>
+       <mi mathvariant="normal">
+        n
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        g
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow><mo>
+       +
+      </mo><mn>
+       1
+      </mn>
+     </math></span></p>
+   <p>19:  <b>end if</b></p>
+   <p>20:  <b>LOAD</b> Random Forest classifier</p>
+   <p>21:  <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0031.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0031.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       r
+      </mi><mi>
+       e
+      </mi><mi>
+       s
+      </mi><mi>
+       u
+      </mi><mi>
+       l
+      </mi><mi>
+       t
+      </mi><mo>
+       ←
+      </mo><mrow>
+       <mi mathvariant="normal">
+        R
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        n
+       </mi>
+       <mi mathvariant="normal">
+        d
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        m
+       </mi>
+       <mtext>
+        &nbsp;
+       </mtext>
+       <mi mathvariant="normal">
+        F
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        r
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mtext>
+        &nbsp;
+       </mtext>
+       <mi mathvariant="normal">
+        C
+       </mi>
+       <mi mathvariant="normal">
+        l
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        f
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        r
+       </mi>
+      </mrow>
+     </math></span></p>
+   <p>22:  <b>if</b> result is positive <b>then</b></p>
+   <p>23:    <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0032.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0032.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mi mathvariant="normal">
+        p
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow><mo>
+       ←
+      </mo><mrow>
+       <mi mathvariant="normal">
+        p
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow><mo>
+       +
+      </mo><mn>
+       1
+      </mn>
+     </math></span></p>
+   <p>24:  <b>else</b></p>
+   <p>25:    <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0033.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0033.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mi mathvariant="normal">
+        n
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        g
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow><mo>
+       ←
+      </mo><mrow>
+       <mi mathvariant="normal">
+        n
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        g
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow><mo>
+       +
+      </mo><mn>
+       1
+      </mn>
+     </math></span></p>
+   <p>26:  <b>end if</b></p>
+   <p>27: <b>end for</b></p>
+   <p>28: <b>if</b> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0034.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0034.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mi mathvariant="normal">
+        p
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow><mo>
+       &gt;
+      </mo><mrow>
+       <mi mathvariant="normal">
+        n
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        g
+       </mi>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        t
+       </mi>
+       <mi mathvariant="normal">
+        i
+       </mi>
+       <mi mathvariant="normal">
+        v
+       </mi>
+       <mi mathvariant="normal">
+        e
+       </mi>
+       <mi mathvariant="normal">
+        s
+       </mi>
+      </mrow>
+     </math></span> <b>then</b></p>
+   <p>29:  <b>return</b> attack = 1</p>
+   <p>30: <b>else</b></p>
+   <p>31:  <b>return</b> attack = 0</p>
+   <p>32: <b>end if</b></p>
+  </statement>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i20" class="section-heading-2">4. Experimental evaluation</h2>
+ <p>The experimental evaluation took place in an offline environment using a real dataset and a semi-synthetic dataset, which we call the standard dataset and the compound dataset. Following from Section <a href="#S003">3</a>, we have built both datasets using a social engineering attack dataset with 147 entries classified as an attack or not. After the preprocessing steps followed in section three, we derived the following four classification labels: (a) intent (b) spelling (c) link (d) is attack.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>1</sup></a></span> Furthermore, the standard dataset contains 147 entries obtained from Bezuidenhout et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i46 _i48" href="#"><span class="off-screen">Citation</span>2010</a></span>), while the compound dataset is based on the 147 entries plus 600 entries from customer support-based tweets from Twitter, none of which are classified as attacks. Both dataset text entries have been converted to numerical-based classification datasets with four entries each. Three labels for the respective data and one with a yes or no (1 or 0) value of a conversation being a social engineering attack or not. To both datasets a small number of links to websites have been added, with some being malicious. Furthermore, it should be noted that the dataset is imbalanced with most entries not being an attack.</p>
+ <p>The accuracy metric has been used for the evaluating the classification models. The metric calculates the fraction of the prediction that each model got right. Equation (<a href="#M0010">10</a>) represents the accuracy where TP stands for true positives, TN for true negatives, FP for false positives and FN for false negatives.<span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0010.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0010.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0010" class="disp-formula-label">(10) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <mrow>
+      <mi mathvariant="normal">
+       A
+      </mi>
+      <mi mathvariant="normal">
+       c
+      </mi>
+      <mi mathvariant="normal">
+       c
+      </mi>
+      <mi mathvariant="normal">
+       u
+      </mi>
+      <mi mathvariant="normal">
+       r
+      </mi>
+      <mi mathvariant="normal">
+       a
+      </mi>
+      <mi mathvariant="normal">
+       c
+      </mi>
+      <mi mathvariant="normal">
+       y
+      </mi>
+     </mrow>
+    </mrow><mo>
+     =
+    </mo><mrow>
+     <mrow>
+      <mfrac>
+       <mrow>
+        <mi mathvariant="normal">
+         T
+        </mi>
+        <mi mathvariant="normal">
+         P
+        </mi>
+        <mo>
+         +
+        </mo>
+        <mi mathvariant="normal">
+         T
+        </mi>
+        <mi mathvariant="normal">
+         N
+        </mi>
+       </mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         T
+        </mi>
+        <mi mathvariant="normal">
+         P
+        </mi>
+        <mo>
+         +
+        </mo>
+        <mi mathvariant="normal">
+         T
+        </mi>
+        <mi mathvariant="normal">
+         N
+        </mi>
+        <mo>
+         +
+        </mo>
+        <mi mathvariant="normal">
+         F
+        </mi>
+        <mi mathvariant="normal">
+         P
+        </mi>
+        <mo>
+         +
+        </mo>
+        <mi mathvariant="normal">
+         F
+        </mi>
+        <mi mathvariant="normal">
+         N
+        </mi>
+       </mrow>
+      </mfrac>
+     </mrow>
+    </mrow>
+   </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0010" class="disp-formula-label">(10) </span></span></span></span>The MLP classification model described in Section <a href="#S003-S2002">3.2</a> is evaluated initially using the accuracy metric and compared to the Decision Tree and Random Forest classifiers. The results of the evaluation as shown in <button class="ref showTableEventRef" data-id="T0001">Tables 1</button>–<button class="ref showTableEventRef" data-id="T0007">7</button> are based on the standard and compound datasets, respectively, and a 5-fold cross-validation approach has been used. In <button class="ref showTableEventRef" data-id="T0001">Tables 1</button>–<button class="ref showTableEventRef" data-id="T0006">6</button> the MAX and MIN values represent the maximum and minimum values of the 5-fold returned after each time the algorithm ran and the MEAN is the average value. Each algorithm was executed 10 times. <button class="ref showTableEventRef" data-id="T0007">Table 7</button> presents the average mean results for the standard and compound datasets, respectively.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 1. Decision Tree results for the standard dataset.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 2. Random forest results for the standard dataset.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 3. Multi-layer perceptron results for the standard dataset.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0003-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0003&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 4. Decision tree results for the compound dataset.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0004-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0004&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 5. Random forest results for the compound dataset.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0005-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0005&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 6. Multi-layer perceptron results for the compound dataset.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0006-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0006&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0006" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 7. Comparison of algorithms for the standard and the compound datasets.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0007-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0007&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0007" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <p>Three algorithms from the SciKit machine learning library have been used for comparison purposes: Decision Tree, Random Forest and Neural Network multi-layer perceptron. The settings used for the algorithms were the following:</p>
+ <ul class="NLM_list NLM_list-list_type-simple">
+  <li><p class="inline">Decision Tree: SciKit learn settings with default settings which included unlimited leaf nodes.</p></li>
+  <li><p class="inline">Random Forest: SciKit Random Forest classifier with 50 Estimators.</p></li>
+  <li><p class="inline">Neural Network: SciKit MLP classifier with lbfgs solver,<span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0035.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_ilm0035.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       α
+      </mi><mo>
+       =
+      </mo><mn>
+       1
+      </mn><mi>
+       e
+      </mi><mo>
+       −
+      </mo><mn>
+       5
+      </mn>
+     </math></span> and hidden layer size = (15,15,15).</p></li>
+ </ul>
+ <p></p>
+ <p>The above results show that the MLP classifier is more accurate compared to the others. However, this doesn't mean that it is the best solution for the social engineering attack detection problem due to the imbalanced dataset. Solutions which assume that most entries are negative can produce high accuracy. Therefore, alternative metrics have been used to show that despite of the high accuracy of the MLP classifier an ensemble method is more appropriate when it comes to classification of attacks.</p>
+ <p>Moreover, an 80%/20% training/testing approach has been used for splitting the dataset for this part of the evaluation since the size of the dataset is considered small for 5 or 10 cross fold validation. To maximize the validation of the results each test has been executed ten times with the results of each execution and the mean presented. The metrics used are the accuracy as defined in Equation (<a href="#M0010">10</a>), the F1 measure defined in Equation (<a href="#M0013">13</a>) which is based on the precision and recall defined in Equations (<a href="#M0011">11</a>) and (<a href="#M0012">12</a>), respectively. F1 is the weighted average of precision and recall and takes into consideration both false positives and false negative into account. It is a useful metrics for imbalanced datasets. Finally, the Area Under the Curve (AUC) has been used. This is a metric based on the True Positive rate (Sensitivity or recall) defined in Equation (<a href="#M0014">14</a>) and on the False Positive Rate (Specificity) defined in Equation (<a href="#M0015">15</a>). It can be used for binary classification problems and it returns the probability of when selecting a random entry, this will be classified correctly. The AUC represents the area under the curve of a graph plotted with the False Positive rate against the True Positive rate in a 0 to 1 scale in different points between as shown in <a href="#F0002">Figure 2</a>, which however shows the plot only and not any random or sample curve. Last but not least it should be mentioned that in all metrics higher values are better. Especially in AUC it should be also noted that a value of 0.5 in 1 means that half of the instances are classified correctly, therefore any value ranging from 0.5 and below means that the classifier doesn't work as expected.</p>
+ <div class="figure figureViewer" id="F0002">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>10 April 2020
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 2. </span> Area under the curve (AUC).</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/medium/tjit_a_1747001_f0002_oc.jpg" loading="lazy" height="453" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0002">
+  <p class="captionText"><span class="captionLabel">Figure 2. </span> Area under the curve (AUC).</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0002">
+  <div class="figureFootNote-F0002"></div>
+ </div>
+ <p></p>
+ <p>Lastly, all the results that follow in <button class="ref showTableEventRef" data-id="T0008">Tables 8</button>–<button class="ref showTableEventRef" data-id="T0010">10</button> represent the accuracy, F1 and AUC based on the compound dataset for the MLP and Ensemble classifiers.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 8. Accuracy results for the MLP and ensemble learning classifiers.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0008-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0008&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0008" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 9. F1 results for the MLP and Ensemble learning classifiers.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0009-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0009&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0009" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 10. AUC results for the MLP and ensemble learning classifiers.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0010-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0010&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0010" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+  <noscript>
+   <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0011.gif" alt="">
+  </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0011.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0011" class="disp-formula-label">(11) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+  <math>
+   <mrow>
+    <mrow>
+     <mspace width="thinmathspace"></mspace>
+     <mi mathvariant="normal">
+      p
+     </mi>
+     <mi mathvariant="normal">
+      r
+     </mi>
+     <mi mathvariant="normal">
+      e
+     </mi>
+     <mi mathvariant="normal">
+      c
+     </mi>
+     <mi mathvariant="normal">
+      i
+     </mi>
+     <mi mathvariant="normal">
+      s
+     </mi>
+     <mi mathvariant="normal">
+      i
+     </mi>
+     <mi mathvariant="normal">
+      o
+     </mi>
+     <mi mathvariant="normal">
+      n
+     </mi>
+    </mrow>
+   </mrow><mo>
+    =
+   </mo><mrow>
+    <mrow>
+     <mfrac>
+      <mrow>
+       <mi mathvariant="normal">
+        T
+       </mi>
+       <mi mathvariant="normal">
+        P
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        T
+       </mi>
+       <mi mathvariant="normal">
+        P
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi mathvariant="normal">
+        F
+       </mi>
+       <mi mathvariant="normal">
+        P
+       </mi>
+      </mrow>
+     </mfrac>
+    </mrow>
+   </mrow>
+  </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0011" class="disp-formula-label">(11) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+  <noscript>
+   <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0012.gif" alt="">
+  </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0012.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0012" class="disp-formula-label">(12) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+  <math>
+   <mrow>
+    <mrow>
+     <mi mathvariant="normal">
+      r
+     </mi>
+     <mi mathvariant="normal">
+      e
+     </mi>
+     <mi mathvariant="normal">
+      c
+     </mi>
+     <mi mathvariant="normal">
+      a
+     </mi>
+     <mi mathvariant="normal">
+      l
+     </mi>
+     <mi mathvariant="normal">
+      l
+     </mi>
+    </mrow>
+   </mrow><mo>
+    =
+   </mo><mrow>
+    <mrow>
+     <mfrac>
+      <mrow>
+       <mi mathvariant="normal">
+        T
+       </mi>
+       <mi mathvariant="normal">
+        P
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        T
+       </mi>
+       <mi mathvariant="normal">
+        P
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi mathvariant="normal">
+        F
+       </mi>
+       <mi mathvariant="normal">
+        N
+       </mi>
+      </mrow>
+     </mfrac>
+    </mrow>
+   </mrow>
+  </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0012" class="disp-formula-label">(12) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+  <noscript>
+   <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0013.gif" alt="">
+  </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0013.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0013" class="disp-formula-label">(13) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+  <math>
+   <mrow>
+    <mrow>
+     <mfrac>
+      <mrow>
+       <mrow>
+        <mn>
+         2
+        </mn>
+       </mrow>
+       <mo>
+        ⋅
+       </mo>
+       <mrow>
+        <mi mathvariant="normal">
+         p
+        </mi>
+        <mi mathvariant="normal">
+         r
+        </mi>
+        <mi mathvariant="normal">
+         e
+        </mi>
+        <mi mathvariant="normal">
+         c
+        </mi>
+        <mi mathvariant="normal">
+         i
+        </mi>
+        <mi mathvariant="normal">
+         s
+        </mi>
+        <mi mathvariant="normal">
+         i
+        </mi>
+        <mi mathvariant="normal">
+         o
+        </mi>
+        <mi mathvariant="normal">
+         n
+        </mi>
+       </mrow>
+       <mo>
+        ⋅
+       </mo>
+       <mrow>
+        <mi mathvariant="normal">
+         r
+        </mi>
+        <mi mathvariant="normal">
+         e
+        </mi>
+        <mi mathvariant="normal">
+         c
+        </mi>
+        <mi mathvariant="normal">
+         a
+        </mi>
+        <mi mathvariant="normal">
+         l
+        </mi>
+        <mi mathvariant="normal">
+         l
+        </mi>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         p
+        </mi>
+        <mi mathvariant="normal">
+         r
+        </mi>
+        <mi mathvariant="normal">
+         e
+        </mi>
+        <mi mathvariant="normal">
+         c
+        </mi>
+        <mi mathvariant="normal">
+         i
+        </mi>
+        <mi mathvariant="normal">
+         s
+        </mi>
+        <mi mathvariant="normal">
+         i
+        </mi>
+        <mi mathvariant="normal">
+         o
+        </mi>
+        <mi mathvariant="normal">
+         n
+        </mi>
+       </mrow>
+       <mo>
+        +
+       </mo>
+       <mrow>
+        <mi mathvariant="normal">
+         r
+        </mi>
+        <mi mathvariant="normal">
+         e
+        </mi>
+        <mi mathvariant="normal">
+         c
+        </mi>
+        <mi mathvariant="normal">
+         a
+        </mi>
+        <mi mathvariant="normal">
+         l
+        </mi>
+        <mi mathvariant="normal">
+         l
+        </mi>
+       </mrow>
+      </mrow>
+     </mfrac>
+    </mrow>
+   </mrow>
+  </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0013" class="disp-formula-label">(13) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+  <noscript>
+   <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0014.gif" alt="">
+  </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0014.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0014" class="disp-formula-label">(14) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+  <math>
+   <mrow>
+    <mi mathvariant="normal">
+     T
+    </mi>
+    <mi mathvariant="normal">
+     r
+    </mi>
+    <mi mathvariant="normal">
+     u
+    </mi>
+    <mi mathvariant="normal">
+     e
+    </mi>
+    <mspace width="thinmathspace"></mspace>
+    <mi mathvariant="normal">
+     P
+    </mi>
+    <mi mathvariant="normal">
+     o
+    </mi>
+    <mi mathvariant="normal">
+     s
+    </mi>
+    <mi mathvariant="normal">
+     i
+    </mi>
+    <mi mathvariant="normal">
+     t
+    </mi>
+    <mi mathvariant="normal">
+     i
+    </mi>
+    <mi mathvariant="normal">
+     v
+    </mi>
+    <mi mathvariant="normal">
+     e
+    </mi>
+    <mspace width="thinmathspace"></mspace>
+    <mi mathvariant="normal">
+     R
+    </mi>
+    <mi mathvariant="normal">
+     a
+    </mi>
+    <mi mathvariant="normal">
+     t
+    </mi>
+    <mi mathvariant="normal">
+     e
+    </mi>
+    <mspace width="thinmathspace"></mspace>
+    <mo>
+     (
+    </mo>
+    <mi mathvariant="normal">
+     S
+    </mi>
+    <mi mathvariant="normal">
+     e
+    </mi>
+    <mi mathvariant="normal">
+     n
+    </mi>
+    <mi mathvariant="normal">
+     s
+    </mi>
+    <mi mathvariant="normal">
+     i
+    </mi>
+    <mi mathvariant="normal">
+     t
+    </mi>
+    <mi mathvariant="normal">
+     i
+    </mi>
+    <mi mathvariant="normal">
+     v
+    </mi>
+    <mi mathvariant="normal">
+     i
+    </mi>
+    <mi mathvariant="normal">
+     t
+    </mi>
+    <mi mathvariant="normal">
+     y
+    </mi>
+    <mo>
+     )
+    </mo>
+   </mrow><mo>
+    =
+   </mo><mrow>
+    <mrow>
+     <mfrac>
+      <mrow>
+       <mi mathvariant="normal">
+        T
+       </mi>
+       <mi mathvariant="normal">
+        P
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        F
+       </mi>
+       <mi mathvariant="normal">
+        N
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi mathvariant="normal">
+        T
+       </mi>
+       <mi mathvariant="normal">
+        P
+       </mi>
+      </mrow>
+     </mfrac>
+    </mrow>
+   </mrow>
+  </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0014" class="disp-formula-label">(14) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+  <noscript>
+   <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0015.gif" alt="">
+  </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1747001/20210528/images/tjit_a_1747001_m0015.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0015" class="disp-formula-label">(15) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+  <math>
+   <mrow>
+    <mi mathvariant="normal">
+     F
+    </mi>
+    <mi mathvariant="normal">
+     a
+    </mi>
+    <mi mathvariant="normal">
+     l
+    </mi>
+    <mi mathvariant="normal">
+     s
+    </mi>
+    <mi mathvariant="normal">
+     e
+    </mi>
+    <mspace width="thinmathspace"></mspace>
+    <mi mathvariant="normal">
+     P
+    </mi>
+    <mi mathvariant="normal">
+     o
+    </mi>
+    <mi mathvariant="normal">
+     s
+    </mi>
+    <mi mathvariant="normal">
+     i
+    </mi>
+    <mi mathvariant="normal">
+     t
+    </mi>
+    <mi mathvariant="normal">
+     i
+    </mi>
+    <mi mathvariant="normal">
+     v
+    </mi>
+    <mi mathvariant="normal">
+     e
+    </mi>
+    <mspace width="thinmathspace"></mspace>
+    <mi mathvariant="normal">
+     R
+    </mi>
+    <mi mathvariant="normal">
+     a
+    </mi>
+    <mi mathvariant="normal">
+     t
+    </mi>
+    <mi mathvariant="normal">
+     e
+    </mi>
+    <mspace width="thinmathspace"></mspace>
+    <mo>
+     (
+    </mo>
+    <mi mathvariant="normal">
+     S
+    </mi>
+    <mi mathvariant="normal">
+     p
+    </mi>
+    <mi mathvariant="normal">
+     e
+    </mi>
+    <mi mathvariant="normal">
+     c
+    </mi>
+    <mi mathvariant="normal">
+     i
+    </mi>
+    <mi mathvariant="normal">
+     f
+    </mi>
+    <mi mathvariant="normal">
+     i
+    </mi>
+    <mi mathvariant="normal">
+     c
+    </mi>
+    <mi mathvariant="normal">
+     i
+    </mi>
+    <mi mathvariant="normal">
+     t
+    </mi>
+    <mi mathvariant="normal">
+     y
+    </mi>
+    <mo>
+     )
+    </mo>
+   </mrow><mo>
+    =
+   </mo><mrow>
+    <mrow>
+     <mfrac>
+      <mrow>
+       <mi mathvariant="normal">
+        T
+       </mi>
+       <mi mathvariant="normal">
+        P
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        F
+       </mi>
+       <mi mathvariant="normal">
+        P
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi mathvariant="normal">
+        T
+       </mi>
+       <mi mathvariant="normal">
+        N
+       </mi>
+      </mrow>
+     </mfrac>
+    </mrow>
+   </mrow>
+  </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0015" class="disp-formula-label">(15) </span></span></span></span>
+ <p></p>
+ <p><button class="ref showTableEventRef" data-id="T0011">Table 11</button> provides a comparison between the mean values of the MLP and Ensemble classifiers for the Accuracy, F1 and AUC metrics respectively.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 11. Comparisons between the MLP and ensemble classifiers.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0011-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0011&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0011" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <p><button class="ref showTableEventRef" data-id="T0012">Tables 12</button>–<button class="ref showTableEventRef" data-id="T0014">14</button> that follow provide a comparison for the Accuracy, F1 and AUC metrics, respectively, between the soft voting ensemble method used and a hard-voting method based on the same approach. The difference between soft voting and hard voting is that in the first 2 out of 3 need to be classified as attack or not but in hard voting all 3 need to be classified as attack or not.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 12. Accuracy results for the soft and hard voting ensemble learning classifiers.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0012-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0012&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0012" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 13. F1 results for the soft and hard voting Ensemble learning classifiers.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0013-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0013&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0013" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 14. AUC results for the soft and hard voting ensemble learning classifiers.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0014-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0014&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0014" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <p><button class="ref showTableEventRef" data-id="T0015">Table 15</button> provides a comparison between the mean values of the Soft and Hard Ensemble classifiers for the Accuracy, F1 and AUC metrics, respectively.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">SEADer++: social engineering attack detection in online environments using machine learning</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Lansley%2C+Merton"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lansley%2C+Merton"><span class="NLM_given-names">Merton</span> Lansley</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Mouton%2C+Francois"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mouton%2C+Francois"><span class="NLM_given-names">Francois</span> Mouton</a> <a href="https://orcid.org/0000-0001-8804-7601"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kapetanakis%2C+Stelios"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kapetanakis%2C+Stelios"><span class="NLM_given-names">Stelios</span> Kapetanakis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Polatidis%2C+Nikolaos"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Polatidis%2C+Nikolaos"><span class="NLM_given-names">Nikolaos</span> Polatidis</a> <a href="https://orcid.org/0000-0003-4249-4953"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/24751839.2020.1747001">https://doi.org/10.1080/24751839.2020.1747001</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 April 2020
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 15. Comparisons comparison between the soft and hard ensemble classifiers.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0015-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0015&amp;doi=10.1080%2F24751839.2020.1747001&amp;downloadType=CSV"> Download CSV</a><a data-id="T0015" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i43" class="section-heading-2">5. Discussion</h2>
+ <p>Initially, it is shown that a straightforward solution such as an MLP classifier provides high accuracy. Following that, a slightly more complicated method that involves the use of three classifiers, but not an MLP classifier within, using soft voting can provide similar accuracy. However, accuracy is not always the best method to evaluate classifier especially in cases where there is no balance between a yes or no classification label. Subsequently, this can lead to very accurate classifiers because most of the labels are either yes or no, despite of their complexity.</p>
+ <p>In terms of comparison of the results it is shown that both the MLP and the Ensemble Learning classifier provide similar accuracy, which can lead to a conclusion that any of the two can be used. Following that the F1 and AUC metrics have been used to further evaluate the classifiers which take into account the true positive and false positive rates. Moreover, we consider the AUC being slightly more important in this scenario because it is the possibility of correctly classifying correctly a randomly chosen entry. Thus, due to the result of the AUC being higher the soft voting approach has been selected against the hard voting approach, although one can argue that any of the two can be used due to the very similar results but both of these approaches are more accurate compared to the MLP classifier.</p>
+ <p>In terms of F1 and AUC however there are differences when the MLP is compared with the proposed Ensemble Learning classifier. In term of F1 there is a 3.7% difference and in terms of AUC there is a 5.3% difference. Moreover, the soft-voting method performs slightly better when compared to the hard-voting method in terms of AUC with 0.722 and 0.720, respectively, which is a 0.4% difference and the reason that it was selected against the hard voting.</p>
+ <p>Taking into consideration that the AUC is an important metric for classifying a dialogue as a potential social engineering attack or not we conclude to the fact the in online chat environments where a chat takes place between a random individual and a company employee it is vital to be as accurate as possible when it comes to social engineering. Companies nowadays provide education about such matters to employees, but it never harms to be extra cautious with a supporting online tool which can help identifying social engineering attacks.</p>
+ <p>The AUC of the proposed soft-voting Ensemble Learning method is better from both the MLP classifier and the alternative hard-voting method. Thus, making it the best solution for real environments where social engineering attack identification is essential.</p>
+ <p>Additionally, this research can also contribute to the currently existing models for social engineering attack detection, which were discussed in the related work section. Both the SEADM and MPMPA utilize state machine logic, that relies on human intervention for detection. This research can plug into these models by supplementing the human reasoning component with additional information that can be utilized as additional inputs. This allows the already existing models to improve, by incorporating this research, and ultimately this leads to improved social engineering attack detection models within the domain. This research can also be used as a baseline to determine whether the existing models can be even further automated utilizing natural language processing and artificial neural networks. Adding this research onto the existing models will aid to eliminate user error or naivety which can be introduced due to the user input into the models.</p>
+</div>
+<div id="S006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i44" class="section-heading-2">6. Conclusions</h2>
+ <p>In this paper we presented a novel method for social engineering attack detection based on natural language processing and artificial neural networks. The method initially processes a dialogue and then creates a dataset that can be used for classification purposes. The proposed method has been evaluated using a real and a semi-synthetic dataset and can detect social engineering attacks with very high accuracy. Furthermore, alternative classification methods have been used for comparison in order to show the effectiveness of our method. In the future we plan to collect more data and both in terms of entries and by expanding the number of attributes necessary. Furthermore, we aim to develop a more balanced dataset and execute the algorithm in a real environment. The results will indicate if any new algorithms might be necessary to improve detection.</p>
+</div>

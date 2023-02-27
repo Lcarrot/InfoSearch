@@ -1,0 +1,525 @@
+<div id="S001" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">1. Introduction</h2>
+ <p>The shortest path problems (SPPs) have received considerable attention in engineering especially in robot industrial and recently in surgery planning. For instance, Latombe&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>1991</a></span>) has gathered novel methods for path planning in the presence of obstacles and some extensions of them. Moreover, the problem of optimal path planning in Wang, Lane, and Falconer&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2000</a></span>) is considered as a semi-infinite constrained optimization problem. An important application of SPPs is in the Military industry for rocket range optimization. The task of planning trajectories for a rocket is one of the most applicable research subjects in the military research literature. Most of research works assume that the rocket has just boundary barriers in the model of its environment (see, for instance, Zamirian, Farahi, &amp; Nazemi,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2007</a></span>). However, less attention has been paid to the problem of interior together with boundary barriers in a known environment.</p>
+ <p>The optimal algorithms should be employed to find the lowest cost path from the robot (or rocket) start state to the goal state. Cost can be defined to be distance travelled, energy expended, time exposed to danger, etc. However, in this paper cost is defined to be distance travelled. Existing approaches such as Borzabadi, Kamyad, Farahi, and Mehne&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2005</a></span>) and Zamirian et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2007</a></span>) planed traditional and classical methods such as measure theoretical approaches. These techniques usually need to transform the basic problem to an optimal control problem (OCP). These schemes have two disadvantages such as an increase in the dimension of associated algebraic problem and also the weakness of the approximate solution. For instance, in Borzabadi et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2005</a></span>) the authors solve a collection of SPPs using a method based on measure theory. They considered the SPPs as optimization problems and then they convert these problems into OCPs by defining some artificial control functions. Using properties of some kind of measures, they obtained a linear programming problem (LPP) that their solutions give rise to constructing approximate optimal trajectory of the original problem. Defining the artificial control functions usually gives rise to the increase in the associated algebraic problem dimension. Moreover, the methods by Borzabadi et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2005</a></span>) and Zamirian et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2007</a></span>) deal with the local approximations (such as finite-difference methods), meanwhile global approximations have more accuracy with respect to the local approximations.</p>
+ <p>Because of the aforementioned reasons, we propose a global approximate method in which the dimension of the algebraic problem is very low. These are our motivations for presenting our basic idea. Therefore, in this paper by using Legendre polynomials as a basis for approximating the solutions we convert the SPPs into the associated nonlinear programming problems (NLPs). In other words, the infinite-dimensional SPPs will be transformed into the associated finite-dimensional NLPs in which the cost functionals are approximated by the Legendre–Gauss quadrature rule and the constraints of SPPs are collocated at the Chebyshev–Gauss–Lobatto (CGL) points. For clarity of presentation, we assume the computational interval to be <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0001.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0001.gif&quot;}"><span class="no-mml-formula"></span></span>. Other computational intervals can be transformed into <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0002.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0002.gif&quot;}"><span class="no-mml-formula"></span></span> by simple change of variables.</p>
+ <p>A general class of SPPs with boundary barriers <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0003.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0003.gif&quot;}"><span class="no-mml-formula"></span></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0004.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0004.gif&quot;}"><span class="no-mml-formula"></span></span> and interior barriers in the shape of circles with the centers <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0005.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0005.gif&quot;}"><span class="no-mml-formula"></span></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0006.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0006.gif&quot;}"><span class="no-mml-formula"></span></span> can be modelled by the following variational problem (VP): <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0001.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0001.gif&quot;}"><span class="no-mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span> where the start state and the final state are <i>α</i> and <i>β</i>, respectively.</p>
+ <p>The rest of this paper is organized as follows. In the next section, some preliminaries about the spectral approximations especially Legendre polynomials will be provided. The basic idea of this paper, in which the VP&nbsp;(<a href="#M0001">1</a>) is changed into a NLP, is stated in Section&nbsp;<a href="#S003">3</a>. Three numerical examples are given in Section&nbsp;<a href="#S004">4</a> for illustrating the efficiency and applicability of the proposed method. In Section&nbsp;<a href="#S005">5</a>, conclusions of the proposed method are provided. Finally, the MAPLE codes of the first example are given in the appendix.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">2. Preliminaries</h2>
+ <p>Spectral methods have proven to be powerful tools that are frequently employed in many fields of numerical analysis. They have a higher order of accuracy with respect to the finite-difference methods (FDMs) and finite element methods (FEMs) in the case of smooth solutions of any considered problem. For instance in Samadi and Tohidi&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2012</a></span>), spectral methods have shown their robustness with regard to the Bessel collocation scheme (Sahin, Yuzbasi, &amp; Gulsu,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2011</a></span>), homotopy perturbation method (Biazar &amp; Ghazvini,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2009</a></span>) and Block-by-Block technique (Katani &amp; Shahmorad,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2010</a></span>) for solving the system of Volterra integral equations. Also, in Bhrawy, Assas, Tohidi, and Alghamdi&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2013</a></span>) and Toutounian, Tohidi, and Kilicman&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2013</a></span>), Legendre and Fourier methods depict their spectral accuracy with regard to the reproducing kernel methods and other methods for solving Pantograph delay differential equations. In addition, spectral methods show their higher order accuracy in Doha and Bhrawy&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2008</a></span>,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2012</a></span>), Doha, Bhrawy, and Abd-Elhameed&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2009</a></span>) and Doha, Bhrawy, and Ezz-Eldien&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2011</a></span>). Moreover, the efficiency of spectral methods has been proved for OCPs governed by Volterra integral equations in Tohidi and Samadi&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2012</a></span>). Among the spectral approximations, the Gegenbauer polynomials are used in many research works (Abd-Elhameed &amp; Youssri,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2014</a></span>). The simple type of the Gegenbauer polynomials is the Legendre polynomials which are orthogonal in the interval <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0007.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0007.gif&quot;}"><span class="no-mml-formula"></span></span> and satisfy the following recurrence relation (Tohidi &amp; Samadi,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2012</a></span>): <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0001.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0001.gif&quot;}"><span class="no-mml-formula"></span></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0008.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0008.gif&quot;}"><span class="no-mml-formula"></span></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0009.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0009.gif&quot;}"><span class="no-mml-formula"></span></span>.</p>
+ <p>The orthogonal property of Legendre polynomials is given by <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0002.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0002.gif&quot;}"><span class="no-mml-formula"></span></span></p>
+ <p>A function <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0010.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0010.gif&quot;}"><span class="no-mml-formula"></span></span>, which is absolutely integrable within <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0011.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0011.gif&quot;}"><span class="no-mml-formula"></span></span>, may be expressed in terms of a Legendre series as <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0002.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0002.gif&quot;}"><span class="no-mml-formula"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span> where <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0003.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0003.gif&quot;}"><span class="no-mml-formula"></span></span></p>Proposition 1. 
+ <p><i>If we assume that the derivative of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0012.gif&quot;}"><span class="no-mml-formula"></span></span> in Equation (<a href="#M0002">2</a>) is described by</i> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0003.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0003.gif&quot;}"><span class="no-mml-formula"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span> <i>the relationship between the coefficients <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0013.gif&quot;}"><span class="no-mml-formula"></span></span> in Equation (<a href="#M0002">2</a>) and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0014.gif&quot;}"><span class="no-mml-formula"></span></span> in Equation (<a href="#M0003">3</a>) can be obtained as follows</i>: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0004.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0004.gif&quot;}"><span class="no-mml-formula"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span></p>Proof. 
+ <p>The proof has been provided in Canuto, Hussaini, Quarteroni, and Zang&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>1987</a></span>).  </p>
+ <p>The Chebyshev–Gauss (CG), Chebyshev–Gauss–Radau (CGR), and CGL collocation points lie on the open interval <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0015.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0015.gif&quot;}"><span class="no-mml-formula"></span></span>, the half open interval <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0016.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0016.gif&quot;}"><span class="no-mml-formula"></span></span> or <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0017.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0017.gif&quot;}"><span class="no-mml-formula"></span></span>, and the closed interval <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0018.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0018.gif&quot;}"><span class="no-mml-formula"></span></span>, respectively. A depiction of these three sets of collocation points is shown in Figure&nbsp;<a href="#F0001">1</a> where it is seen that the CG points contain neither <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0019.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0019.gif&quot;}"><span class="no-mml-formula"></span></span> nor 1, the CGR points contain only one of the points <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0020.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0020.gif&quot;}"><span class="no-mml-formula"></span></span> or 1 (in this case, the point <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0021.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0021.gif&quot;}"><span class="no-mml-formula"></span></span>), and the CGL points contain both <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0022.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0022.gif&quot;}"><span class="no-mml-formula"></span></span> and 1. In the procedure of collocating the constraints of VP&nbsp;(<a href="#M0001">1</a>), we use the CGL points for clarity of presentation and also for this reason that they cover the hole parts of the computational interval [<span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0023.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0023.gif&quot;}"><span class="no-mml-formula"></span></span>,1]. CGL points can be demonstrated in the following form: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0005.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0005.gif&quot;}"><span class="no-mml-formula"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span></p>
+ <div class="figure figureViewer" id="F0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Legendre spectral collocation method for approximating the solution of shortest path problems</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tohidi%2C+Emran"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tohidi%2C+Emran"><span class="NLM_given-names">Emran</span> Tohidi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Navid+Samadi%2C+Omid+Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Navid+Samadi%2C+Omid+Reza"><span class="NLM_given-names">Omid Reza</span> Navid Samadi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/21642583.2014.986305">https://doi.org/10.1080/21642583.2014.986305</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>13 December 2014
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> Schematic showing the differences between CGL, CGR, and CG collocation points.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/medium/tssc_a_986305_f0001_c.jpg" loading="lazy" height="372" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> Schematic showing the differences between CGL, CGR, and CG collocation points.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0001">
+  <div class="figureFootNote-F0001"></div>
+ </div>
+ <p></p>
+ <p>The Legendre–Gauss quadrature rule can be defined as follows (Krylov,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>1962</a></span>): <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0006.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0006.gif&quot;}"><span class="no-mml-formula"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6) </span></span></span></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0024.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0024.gif&quot;}"><span class="no-mml-formula"></span></span> for <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0025.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0025.gif&quot;}"><span class="no-mml-formula"></span></span> are the distinct roots of the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0026.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0026.gif&quot;}"><span class="no-mml-formula"></span></span>th Legendre polynomial <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0027.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0027.gif&quot;}"><span class="no-mml-formula"></span></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0028.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0028.gif&quot;}"><span class="no-mml-formula"></span></span>.</p>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i14" class="section-heading-2">3. Basic idea</h2>
+ <p>We again consider the VP&nbsp;(<a href="#M0001">1</a>). Our aim is to discretize Equation&nbsp;(<a href="#M0001">1</a>) and then optimize itself. For this purpose, a discretization of the interval <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0029.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0029.gif&quot;}"><span class="no-mml-formula"></span></span> is considered, where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0030.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0030.gif&quot;}"><span class="no-mml-formula"></span></span>'s are defined in Equation&nbsp;(<a href="#M0005">5</a>). The following expansions for approximating both <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0031.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0031.gif&quot;}"><span class="no-mml-formula"></span></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0032.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0032.gif&quot;}"><span class="no-mml-formula"></span></span> are assumed: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0007.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0007.gif&quot;}"><span class="no-mml-formula"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(7) </span></span></span></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0033.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0033.gif&quot;}"><span class="no-mml-formula"></span></span> is the <i>i</i>th Legendre polynomial. The relationship between <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0034.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0034.gif&quot;}"><span class="no-mml-formula"></span></span>'s and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0035.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0035.gif&quot;}"><span class="no-mml-formula"></span></span>'s is stated in Proposition&nbsp;1. Now, we approximate the cost functional of VP&nbsp;(<a href="#M0001">1</a>) by the Legendre–Gauss quadrature rule&nbsp;(<a href="#M0006">6</a>). Therefore, <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0008.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0008.gif&quot;}"><span class="no-mml-formula"><span class="disp_formula_label_div"><span id="M0008" class="disp-formula-label">(8) </span></span></span></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0036.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0036.gif&quot;}"><span class="no-mml-formula"></span></span> is a nonlinear function in terms of its variables <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0037.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0037.gif&quot;}"><span class="no-mml-formula"></span></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0038.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0038.gif&quot;}"><span class="no-mml-formula"></span></span> and <i>s</i> and all of the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0039.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0039.gif&quot;}"><span class="no-mml-formula"></span></span>'s and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0040.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0040.gif&quot;}"><span class="no-mml-formula"></span></span>'s are defined in Equation&nbsp;(<a href="#M0006">6</a>). For the sake of clarity, we assume that <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0004.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0004.gif&quot;}"><span class="no-mml-formula"></span></span></p>
+ <p>After approximating the cost functional, we use the CGL collocation points for discretizing the inequality state constraints, the VP&nbsp;(<a href="#M0001">1</a>) is changed into the following NLP: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0009.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_m0009.gif&quot;}"><span class="no-mml-formula"><span class="disp_formula_label_div"><span id="M0009" class="disp-formula-label">(9) </span></span></span></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0041.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0041.gif&quot;}"><span class="no-mml-formula"></span></span> is a nonlinear objective function, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0042.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0042.gif&quot;}"><span class="no-mml-formula"></span></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0043.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0043.gif&quot;}"><span class="no-mml-formula"></span></span>.</p>
+ <p>Note that the last constraints of Equation&nbsp;(<a href="#M0009">9</a>) arise from the following relations: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0005.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0005.gif&quot;}"><span class="no-mml-formula"></span></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0044.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0044.gif&quot;}"><span class="no-mml-formula"></span></span>.</p>
+ <p>Before presenting numerical examples, it should be noted that the convergence analysis of the proposed scheme can be done using some similar ideas provided in Doha, Abd-Elhameed, and Youssri&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2014</a></span>) and Tohidi and Samadi&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2012</a></span>). Since this subject needs some theoretical sections, we just provide the mentioned references.</p>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i20" class="section-heading-2">4. Numerical examples</h2>
+ <p>In this section, we conduct two numerical examples to illustrate the effectiveness of the proposed method. We use the method stated in the previous section to transform the main problem&nbsp;(<a href="#M0001">1</a>) into the equivalent NLP&nbsp;(<a href="#M0009">9</a>). All the problems are programmed in MAPLE 13 and run on a Laptop PC with 1.8 GHz and 2 GB RAM. It should be noted that, for solving the NLPs in MAPLE (i.e. the <i>NLPSolve</i> command), there are some options in which the NLPs are solved. If the NLP is univariate and unconstrained except for finite bounds, the quadratic interpolation method may be used. If the problem is unconstrained and the gradient of the objective function is available, the preconditioned conjugate gradient (PCG) method may be used. Otherwise, the sequential quadratic programming (SQP) method can be used. According to the structure of our NLP in Equation&nbsp;(<a href="#M0009">9</a>), the SQP method is used.</p>Example 1. 
+ <p>As the first example, we consider the following SPP with one lower boundary barrier (Hestenes,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>1996</a></span>): <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0006.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0006.gif&quot;}"><span class="no-mml-formula"></span></span></p>
+ <p>The optimal value of the objective functional is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0045.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0045.gif&quot;}"><span class="no-mml-formula"></span></span> and the exact solution of this SPP is as follows: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0007.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0007.gif&quot;}"><span class="no-mml-formula"></span></span></p>
+ <p>Since the computational interval of this problem is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0046.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0046.gif&quot;}"><span class="no-mml-formula"></span></span>, we should transform this interval into <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0047.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0047.gif&quot;}"><span class="no-mml-formula"></span></span> by changing variable <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0048.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0048.gif&quot;}"><span class="no-mml-formula"></span></span>. The readers can see this subject in the appendix using MAPLE codes. By assuming different values of <i>N</i> such as 4, 8, 18 and 32, we solve this problem by the proposed idea. In Table&nbsp;<button class="ref showTableEventRef" data-id="T0001">1</button>, the approximated objective functionals <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0049.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0049.gif&quot;}"><span class="no-mml-formula"></span></span> are given for these values of <i>N</i>. It is seen from this table that we reach the exact objective functional in the case of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0050.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0050.gif&quot;}"><span class="no-mml-formula"></span></span>. Also, a comparison between the numerical solution <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0051.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0051.gif&quot;}"><span class="no-mml-formula"></span></span> (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0052.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0052.gif&quot;}"><span class="no-mml-formula"></span></span>) together with the exact solution <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0053.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0053.gif&quot;}"><span class="no-mml-formula"></span></span> at a uniform mesh is given in Table&nbsp;<button class="ref showTableEventRef" data-id="T0002">2</button>. From this table, one can conclude that our method has high order of accuracy and fits with the exact solution. Moreover, the history of the numerical solution <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0054.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0054.gif&quot;}"><span class="no-mml-formula"></span></span> (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0055.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0055.gif&quot;}"><span class="no-mml-formula"></span></span>) is depicted in Figure&nbsp;<a href="#F0002">2</a>.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">Legendre spectral collocation method for approximating the solution of shortest path problems</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Tohidi%2C+Emran"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tohidi%2C+Emran"><span class="NLM_given-names">Emran</span> Tohidi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Navid+Samadi%2C+Omid+Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Navid+Samadi%2C+Omid+Reza"><span class="NLM_given-names">Omid Reza</span> Navid Samadi</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/21642583.2014.986305">https://doi.org/10.1080/21642583.2014.986305</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>13 December 2014
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 1. Numerical results of Example&nbsp;1 for objective functionals.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="false" id="T0001-table-wrapper">
+   <a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">Legendre spectral collocation method for approximating the solution of shortest path problems</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Tohidi%2C+Emran"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tohidi%2C+Emran"><span class="NLM_given-names">Emran</span> Tohidi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Navid+Samadi%2C+Omid+Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Navid+Samadi%2C+Omid+Reza"><span class="NLM_given-names">Omid Reza</span> Navid Samadi</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/21642583.2014.986305">https://doi.org/10.1080/21642583.2014.986305</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>13 December 2014
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 2. Comparison of the exact solution <span class="NLM_disp-formula-image inline-formula rs_preserve">
+       <noscript>
+        <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0061.gif" alt="">
+       </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0061.gif&quot;}"><span class="no-mml-formula"></span></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+       <noscript>
+        <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0062.gif" alt="">
+       </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0062.gif&quot;}"><span class="no-mml-formula"></span></span> at the selected points for <span class="NLM_disp-formula-image inline-formula rs_preserve">
+       <noscript>
+        <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0063.gif" alt="">
+       </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0063.gif&quot;}"><span class="no-mml-formula"></span></span>.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="false" id="T0002-table-wrapper">
+   <a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="figure figureViewer" id="F0002">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Legendre spectral collocation method for approximating the solution of shortest path problems</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tohidi%2C+Emran"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tohidi%2C+Emran"><span class="NLM_given-names">Emran</span> Tohidi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Navid+Samadi%2C+Omid+Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Navid+Samadi%2C+Omid+Reza"><span class="NLM_given-names">Omid Reza</span> Navid Samadi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/21642583.2014.986305">https://doi.org/10.1080/21642583.2014.986305</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>13 December 2014
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 2. </span> Optimal solution history of Example&nbsp;1 with one lower boundary barrier for <i>N</i>=32.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/medium/tssc_a_986305_f0002_c.jpg" loading="lazy" height="440" width="436"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0002">
+  <p class="captionText"><span class="captionLabel">Figure 2. </span> Optimal solution history of Example&nbsp;1 with one lower boundary barrier for <i>N</i>=32.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0002">
+  <div class="figureFootNote-F0002"></div>
+ </div>
+ <p></p>Example 2. 
+ <p>As the second example, we consider the following SPP with two lower and upper boundary barriers (Zamirian et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2007</a></span>): <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0008.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0008.gif&quot;}"><span class="no-mml-formula"></span></span> It should be noted that this SPP has no exact solution. Similar to the previous example, we should transform the interval [3,6] into <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0100.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0100.gif&quot;}"><span class="no-mml-formula"></span></span> by change of variable <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0101.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0101.gif&quot;}"><span class="no-mml-formula"></span></span>. We can solve this SPP by taking different values of <i>N</i>, but for showing the robustness of the presented technique with regard to the method of Zamirian et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2007</a></span>), the considered problem has been solved by taking <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0102.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0102.gif&quot;}"><span class="no-mml-formula"></span></span> and we reach <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0103.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0103.gif&quot;}"><span class="no-mml-formula"></span></span> (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0104.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0104.gif&quot;}"><span class="no-mml-formula"></span></span>), meanwhile the optimal <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0105.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0105.gif&quot;}"><span class="no-mml-formula"></span></span> of Zamirian et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2007</a></span>) is 3.4191. This confirms that our idea reaches the shorter path with respect to the method of Zamirian et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2007</a></span>). The history of this optimal path <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0106.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0106.gif&quot;}"><span class="no-mml-formula"></span></span> (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0107.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0107.gif&quot;}"><span class="no-mml-formula"></span></span>) is depicted in Figure&nbsp;<a href="#F0003">3</a>.</p>
+ <div class="figure figureViewer" id="F0003">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Legendre spectral collocation method for approximating the solution of shortest path problems</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tohidi%2C+Emran"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tohidi%2C+Emran"><span class="NLM_given-names">Emran</span> Tohidi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Navid+Samadi%2C+Omid+Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Navid+Samadi%2C+Omid+Reza"><span class="NLM_given-names">Omid Reza</span> Navid Samadi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/21642583.2014.986305">https://doi.org/10.1080/21642583.2014.986305</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>13 December 2014
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 3. </span> Optimal solution history of Example&nbsp;2 with two boundary barriers for <i>N</i>=25.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/medium/tssc_a_986305_f0003_c.jpg" loading="lazy" height="440" width="440"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0003">
+  <p class="captionText"><span class="captionLabel">Figure 3. </span> Optimal solution history of Example&nbsp;2 with two boundary barriers for <i>N</i>=25.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0003">
+  <div class="figureFootNote-F0003"></div>
+ </div>
+ <p></p>Example 3. 
+ <p>As our final numerical example, we consider the following SPP with two boundary barriers and three interior barriers: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0009.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_um0009.gif&quot;}"><span class="no-mml-formula"></span></span></p>
+ <p>Similar to the previous problem, this SPP has no exact solution. Moreover, a transformation of the interval [3,6] into <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0108.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0108.gif&quot;}"><span class="no-mml-formula"></span></span> by change of variable <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0109.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0109.gif&quot;}"><span class="no-mml-formula"></span></span> should be done. After doing this, we solve this SPP using our basic technique and reach the optimal objective functional <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0110.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0110.gif&quot;}"><span class="no-mml-formula"></span></span> (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0111.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0111.gif&quot;}"><span class="no-mml-formula"></span></span>). The history of this optimal path <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0112.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0112.gif&quot;}"><span class="no-mml-formula"></span></span> (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0113.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0113.gif&quot;}"><span class="no-mml-formula"></span></span>) is depicted in Figure&nbsp;<a href="#F0004">4</a>. From this figure, one can see that the numerical optimal path <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0114.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0114.gif&quot;}"><span class="no-mml-formula"></span></span> (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0115.gif" alt="">
+   </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/tssc_a_986305_ilm0115.gif&quot;}"><span class="no-mml-formula"></span></span>) does not meet the interior barriers. This confirms the efficiency and applicability of the presented idea.</p>
+ <div class="figure figureViewer" id="F0004">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Legendre spectral collocation method for approximating the solution of shortest path problems</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tohidi%2C+Emran"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tohidi%2C+Emran"><span class="NLM_given-names">Emran</span> Tohidi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Navid+Samadi%2C+Omid+Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Navid+Samadi%2C+Omid+Reza"><span class="NLM_given-names">Omid Reza</span> Navid Samadi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/21642583.2014.986305">https://doi.org/10.1080/21642583.2014.986305</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>13 December 2014
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 4. </span> Optimal solution history of Example&nbsp;3 with two boundary and three interior barriers for <i>N</i>=11.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/tssc20/2015/tssc20.v003.i01/21642583.2014.986305/20151218/images/medium/tssc_a_986305_f0004_c.jpg" loading="lazy" height="440" width="440"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0004">
+  <p class="captionText"><span class="captionLabel">Figure 4. </span> Optimal solution history of Example&nbsp;3 with two boundary and three interior barriers for <i>N</i>=11.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0004">
+  <div class="figureFootNote-F0004"></div>
+ </div>
+ <p></p>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i30" class="section-heading-2">5. Conclusion</h2>
+ <p>The aim of this paper is to determine the optimal solution of SPPs with boundary and interior barriers by a direct method of solution based upon truncated Legendre series expansions together with the CGL points as collocation nodes. The method is based upon reducing a nonlinear SPP to an NLP. The unity of the weight function of orthogonality for the truncated Legendre series and the simplicity of the discretization are merits that make our idea very attractive. Moreover, only a small number of truncated Legendre series are needed to obtain a very satisfactory solution. The given numerical examples support this claim.</p>
+</div>

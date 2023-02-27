@@ -1,0 +1,696 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">1. Introduction</h2>
+ <p>The Internet of Medical Things (IoMT) is the blend of medical devices with the Internet of Things (IoT). IoMTs are the future of current healthcare systems where every medical device will be connected and monitored over the Internet via healthcare professionals. This offers a faster and lower cost of health care as it evolves. Figure&nbsp;<a href="#F0001">1</a> shows an example of IoMTs where patient vitals are collected via sensor devices and sent to the IoMT applications through the Internet. The information then flows to the healthcare expert and medical staff and then a response is sent back to the neededpatients.</p>
+ <div class="figure figureViewer" id="F0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 May 2021
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> Internet of medical things (IoMT)</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0001_oc.jpg" loading="lazy" height="319" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> Internet of medical things (IoMT)</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0001">
+  <div class="figureFootNote-F0001"></div>
+ </div>
+ <p></p>
+ <p>During COVID-19 pandemic, there is currently a rise in telehealth practices due to physical distance guidelines which are compelling healthcare professionals to operate patients remotely through IoMT devices [<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>1</a></span>]. Further, Sustainable Development Goals (SDG) by 2030 was approved by the United Nations (UN) in 2015 [<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2</a></span>]. Good health and well-being is an important goal in SDG. Currently, IoMT has the ability to fulfil the goal of good health and well-being. This paper is about providing an overview of IoMT, listing and presenting important emerging technologies such as Physically Unclonable Functions (PUF), blockchain, Artificial Intelligence (AI) and Software-Defined Networking (SDN) in IoMT, and providing case studies of IoMTs. The contributions of this paper are as follows:</p>
+ <ol class="NLM_list NLM_list-list_type-order">
+  <li><p class="inline">Introducing a Cloud-Fog architecture to IoMT.</p></li>
+  <li><p class="inline">Presenting review work on PUF, blockchain, AI, and SDN for e-healthcare.</p></li>
+  <li><p class="inline">Proposing PUF, blockchain, AI, and SDN-based mapping for e-healthcare.</p></li>
+  <li><p class="inline">Providing an experimental study to the case studies considering the above mapping in IoMT.</p></li>
+ </ol>
+ <p></p>
+ <p>The paper is organized as follows: Section&nbsp;<a href="#S002">2</a> provides introductory background to IoMT where the Internet of Things (IoT) and smart hospitals are discussed, Section&nbsp;<a href="#S003">3</a> provides an architecture for IoMTs by having things, fog, and cloud layers. Section&nbsp;<a href="#S004">4</a> introduces PUF, blockchain, AI, and SDN technologies for e-healthcare and maps these technologies with the architecture introduced for IoMT, Section&nbsp;<a href="#S005">5</a> reviews the existing work in e-healthcare related to the considered technologies, Section&nbsp;<a href="#S006">6</a> provides an overview and experimental studies of the case studies presented, finally, Section&nbsp;<a href="#S007">7</a> concludes and provides ideas for future work.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">2. IoMT and Smart E-healthcare</h2>
+ <div id="S002-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">2.1. IoMT and Enabling Wireless Technologies</h3>
+  <p>IoT systems consist of sensors and devices connected via a network of cloud ecosystems over high-speed connectivity between each module. The raw data collected at these devices/sensors is sent directly to the vast storage offered by cloud services. This data is further cleaned and then analysed to gain further insights into it. This requires additional software, tools, and applications which will further assist in visualization, analysis, processing, and management of the data.</p>
+  <p>Figure&nbsp;<a href="#F0002">2</a> shows several wireless technologies such as RFID (Radio Frequency Identification), NFC (Near Field Communications), Bluetooth, LTE (Long Term Evolution) and 5G/6G (and beyond) inter-linked with several devices such as smartphones, monitoring devices, sensors, smart wearable, and other medical devices. Currently, the use of 5G/6G or beyond is prevalent in IoMT due to their high bandwidth and ultra-low latency benefits.</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 May 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Internet of things, enabling technologies and devices</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0002_oc.jpg" loading="lazy" height="366" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Internet of things, enabling technologies and devices</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S002-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">2.2. Smart E-healthcare</h3>
+  <p>Smart hospitals are the hospitals that are built on intelligent automated and optimized modules (maybe based on AI/ML) on the ICT infrastructure to improve patient care procedures and to add new capabilities. There are several applications of smart hospitals such as telemedicine, telehealth, remote robot surgery. Telemedicine is to provide clinical care at a distant location, while telehealth is to provide non-clinical care at a distance. In remote robot surgery, medical robots perform surgery through instruction from the doctor sitting far away.</p>
+  <p>Figure&nbsp;<a href="#F0003">3</a> shows an example of a smart healthcare system in which the inbound data from various sources is first collected (<i>e.g.</i> through remote gathering or physical gathering) and sent to EHR (Electronic Health records systems). Data could be classified as unstructured if it is collected offline on paper as medical notes by the personnel. If the data is collected in a structured form from the devices and sensors by using predefined data fields for users to enter, then it becomes easy to process in further systems such as CRM (Customer Relational Management) System. The CRM brings to use the tools for analysing data and then assigning it to its predefined target in the ecosystem. The essential data and information from EHR systems is sent to the CRM system and it processes this patient data. This processed data generates further triggers to patients and medical personnel in the ecosystem. The patients receive outbound communication from hospitals and health experts in the form of personalised health regimens. The doctors and other medical staff get notified about the reminders and other alerts from the same CRM software in the ecosystem.</p>
+  <div class="figure figureViewer" id="F0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 May 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> Example of smart e-healthcare system</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0003_oc.jpg" loading="lazy" height="171" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> Example of smart e-healthcare system</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0003">
+   <div class="figureFootNote-F0003"></div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i9" class="section-heading-2">3. Architecture for IoMT</h2>
+ <p>The architecture for IoMTs consists of three layers (Figure&nbsp;<a href="#F0004">4</a>). There are three layers: (1) things layer, (2) fog layer, and (3) cloud layer. This is a modified version of the architecture present in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>3</a></span>]. In this architecture, healthcare experts can also communicate directly through the router between the Thing layer and Fog layer and through the local processing servers at the fog layer. Each layer is described below:</p>
+ <ol class="NLM_list NLM_list-list_type-order">
+  <li><p class="inline">The things layer consists of patient monitoring devices, sensors, actuators, medical records, pharmacy controls, nutrition regimen generator, <i>etc</i>. This layer is directly in contact with the users of the ecosystem. The data from elements such as wearables, patient-monitoring data, remote care data is collected at this layer. The devices used at this should be securely placed to ensure integrity in the data collected. The local routers in the ecosystem are responsible for connecting these devices to the fog layer. The data is further processed at the fog and at the cloud layer to generate meaningful information. Further, in order to reduce the delay, the healthcare experts can get the patient data through this router.</p></li>
+  <li><p class="inline">The fog layer operates between the cloud and the things layer. This layer consists of local servers and gateway devices for a sparsely distributed fog networking framework. The local processing power is harnessed by the lower layer devices for real-time response to their users. These servers are also used to manage and administer the security and integrity of the system. The gateway devices at this layer are responsible for redirecting this data from these servers to the cloud layer for further processing. Further, in order to reduce the delay, the healthcare experts can get the patient data through this router.</p></li>
+  <li><p class="inline">The cloud layer consists of data storage and computation resources for the data to be analysed and derive decision-making systems based on it. The cloud also offers a vast reach to incorporate huge medical and healthcare systems to handle their day-to-day operations with ease. This layer consists of cloud resources where the data generated from the medical infrastructure will be stored and analytical work could be performed as deemed necessary in the future.</p></li>
+ </ol>
+ <div class="figure figureViewer" id="F0004">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 May 2021
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 4. </span> Operations within layers in IoMT</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0004_oc.jpg" loading="lazy" height="281" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0004">
+  <p class="captionText"><span class="captionLabel">Figure 4. </span> Operations within layers in IoMT</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0004">
+  <div class="figureFootNote-F0004"></div>
+ </div>
+ <p></p>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i11" class="section-heading-2">4. Emerging Technologies in IoMTs</h2>
+ <p>In this section, we discuss various technologies such as blockchain, PUF, AI, and SDN and their role in IoMT.</p>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">4.1. Blockchain Technology</h3>
+  <p>Blockchain is a decentralized ledger recording transactions of computing nodes in the network. The IoMT has raised growth in distributed computing markets and blockchain offers a solution to many issues arising in the security of participating entities in the healthcare system built around it. The blockchain consists of blocks or nodes that are connected over a network wherein the information exchanged between any of the nodes in the networking is recorded and can further be used for cross-references. These blocks contain the information from previous blocks and this methodology helps in identifying the exact source of miscreants in the network. The blocks that are not identified in the network are thus discarded and thereby paving the way for blockchain being considered for use as a trusting strategy in information exchange systems such as IoMT [<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>4</a></span>].</p>
+  <p>Blockchain enables entities to interact with each other without the presence of a centralized authority in the network. The data entries in blockchain are stored as blocks of data. These blocks as stated earlier contain information about its nearest blocks in the chain with cryptography protocols to bundle them as used securely. These blocks and their data can be read by other users but the data in these blocks remain tamper-proof. Blockchain also enables smooth processing of smart contracts that do not need any central authority to trigger them [<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>5</a></span>]. These contracts are self-executable in design and thus require no supervision. A prevalent “smart contract” company is Ethereum facilitating their service on blockchain platforms [<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>6</a></span>].</p>
+  <p>A visual representation of various healthcare elements on the blockchain platform is shown in Figure&nbsp;<a href="#F0005">5</a>. The role of blockchain in the healthcare sector to adopt solutions built around it requires infrastructure to be divided into smaller modules. These modules can then be integrated with the appropriate devices in the IoMT framework. The resultant system is going to be distributed in nature and would allow decentralization of power in the network. The benefit of deploying blockchain systems comes with a trust factor while the influx of data in the healthcare ecosystem is ever-growing. The blockchain promises to satisfy the ever-increasing demand for data-exchanges over the healthcare infrastructure. The use of blockchain is currently being tested for EHR systems in the hospitals followed by some clinical use trials around the world [<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>7</a></span>].</p>
+  <div class="figure figureViewer" id="F0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 May 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> Use of blockchain in IoMTs</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0005_oc.jpg" loading="lazy" height="394" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> Use of blockchain in IoMTs</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0005">
+   <div class="figureFootNote-F0005"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">4.2. Physically Unclonable Function (PUF) Devices</h3>
+  <p>PUF devices generate a unique fingerprint for the vulnerable elements in the IoMT ecosystem. These unique fingerprints/signatures arise from the variation in the fabrication of these devices. These fingerprints can be used for secret key generation (cryptography keys) to secure the devices and their data in the IoMT ecosystem where the end devices (sensors) are at risk of hardware tampering attacks [<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>8</a></span>]. Figure&nbsp;<a href="#F0006">6</a> encompasses mapping of PUF devices with the architecture introduced in the previous subsection. The PUF devices reside in the thing layer in our mapping. These devices play an important role when it comes to the authentication of IoMT devices in the ecosystem. As shown in Figure <a href="#F0006">6</a>, after the fog layer, security is ensured by more specialized enterprise security solutions offered by service providers in the architecture (such as AI/ML-based).</p>
+  <div class="figure figureViewer" id="F0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 May 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 6. </span> PUF devices enabled IoMTs</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0006image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0006_oc.jpg" loading="lazy" height="168" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0006">
+   <p class="captionText"><span class="captionLabel">Figure 6. </span> PUF devices enabled IoMTs</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0006">
+   <div class="figureFootNote-F0006"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S004-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i16">4.3. AI in IoMT</h3>
+  <p>Figure&nbsp;<a href="#F0007">7</a> shows several IoMT applications of AI, including Machine Learning (ML) and Natural Language Processing (NLP) in e-healthcare. Precision medicine requires advanced diagnostics and tailored regimens with quick delivery time. AI makes a compelling case for this by offering real-time solutions in determining new pathways for treating certain conditions based on historic and real-time data. The various features in the healthcare ecosystem can be modified by using AI-based solutions. These will include AI techniques for the creation of classifiers such as automatic capturing of patient information, scheduling patient appointments, determining lab tests, treatment plans, medications, surgical treatment, <i>etc</i>. These classifiers could further be trained and support decision-making processes. For other classifiers that cannot be recorded digitally, NLP offers methods to extract information from such unstructured data points in the infrastructure. These could come in the form of lab reports, physical examination notes, operative notes, and other discharge related information of the patients [<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>9</a></span>]. Further, machine learning predicts future conditions based on historical data. It applies supervised, unsupervised or reinforced learning to predict future conditions.</p>
+  <div class="figure figureViewer" id="F0007">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 May 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 7. </span> AI, machine learning and NLP enabled IoMTs</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0007image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0007_oc.jpg" loading="lazy" height="188" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0007">
+   <p class="captionText"><span class="captionLabel">Figure 7. </span> AI, machine learning and NLP enabled IoMTs</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0007">
+   <div class="figureFootNote-F0007"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S004-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">4.4. SDN in IoMT</h3>
+  <p>The network part in IoMTs can be divided into two parts: (1) data plane and (2) control plane. The data plane forwards traffic towards its destination, while the control plane performs the necessary tasks that allow the data plane to make forwarding decisions. Software-Defined Networking (SDN) provides a standard way to communicate between the data plane and control plane. The examples of standard SDN protocols are OpenFlow, Open vSwitch Database Management protocol, and OpenFlow Configuration protocol (OF-CONFIG) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>10</a></span>]. As the interface between the data plane and control plane can be made standard using a standard SDN protocol, lots of different data of the data plane can be collected from an external server (may be located at the cloud) using the standard OpenFlow protocol. This enables the development of the different e-healthcare application, as they can reside on the cloud layer.</p>
+  <p>Figure&nbsp;<a href="#F0008">8</a> shows our proposed SDN enabled IoMTs, where IoMT devices are connected with e-healthcare applications, which may be located in the cloud, through the SDN control plane (it can be at fog layer). The SDN control plane collects the data from IoMT devices and provides it to an e-healthcare application. The e-healthcare application could be a security and privacy application, a patient diagnosis application or a patient safety application. Figure <a href="#F0008">8</a> also shows the northbound interface for the communication between the SDN control plane and an AI application. This interface is important for the collection of data from the control plane and the insertion of commands from the AI application to the IoMT device. The proposed architecture is a modified version of the architecture proposed for the Internet of Vehicles enabled with SDN [<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>11</a></span>].</p>
+  <div class="figure figureViewer" id="F0008">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 May 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 8. </span> SDN enabled IoMTs</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0008image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0008_ob.jpg" loading="lazy" height="248" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0008">
+   <p class="captionText"><span class="captionLabel">Figure 8. </span> SDN enabled IoMTs</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0008">
+   <div class="figureFootNote-F0008"></div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i20" class="section-heading-2">5. Related Works</h2>
+ <p>The use of sensors for the collection of data from parameters like temperature, ECG, blood pressure, pulse, and heartbeat has transformed the accuracy of the data and has eventually led to patients getting better service than before [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>12</a></span>]. Patient monitoring systems have improved the response from healthcare experts as well. Table&nbsp;<button class="ref showTableEventRef" data-id="T0001">1</button> provides an overview of the related work in the e-healthcare domain. The first column provides the reference number, the second column provides the enabling technologies used, the third column shows the features considered and the last column depicts the IoMT applications considered.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>23 May 2021
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 1. Related work. HCC is Hepatocellular Carcinom</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F02564602.2021.1927863&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <p>Reference works [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012 CIT0013 CIT0014 CIT0015 CIT0016 CIT0017" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>12–17</a></span>] show the applications of AI/ML for the e-healthcare domain. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>12</a></span>], ML and AI solutions are used to augment the diagnosis and screening process of the identified COVID-19 patients with the help of “radio imaging” technology which works on similar methodology as “computed tomography (CT)”, X-Ray, and blood sample data. Using deep convolutions neural networks, the diagnosis process of the coronavirus disease was sped up by many folds. This helped the experts designing customized solutions for treatment and control the spread in the early days. The vaccination studies are being carried out on such models to come up with an appropriate drug to fight against this virus. Further, in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>13</a></span>], deep learning-based methods were used to screen COVID-19 patients through X-Rays and CT scans. The method has shown 100% accuracy in screening COVID-19 patients.</p>
+ <p>In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>14</a></span>], Layered Recurrent Neural Networks (L-RNN) are applied to predict the missing data in the Hepatocellular Carcinoma data. The problem with this research is that only two data sets were used to measure the accuracy of the method. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>15</a></span>], several ML algorithms, association rule mining, <i>i.e.</i> Partial Tree (PART), Random Forest, Naive Bayes, and Random Tree are compared to detect brain tumour from the Magnetic resonance (MR) images. It is shown that PART outperforms other considered ML techniques in predicting brain tumours. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>16</a></span>], several AI/ML methods are reviewed to monitor cardiovascular diseases. It was argued that most AI methods follow the black-box approach. Therefore, it is hard to know what is the reason for a specific outcome? The same concern is mentioned at [<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>30</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>31</a></span>]. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>17</a></span>], deep reinforcement learning and neural networks-based approaches were used to use the spectrum access, thereby meeting performance requirements in terms of latency, error rate, <i>etc</i>. Further, the need for big data analytics in overcoming other issues such as green and sustainable ICT has highlighted at [<span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>32</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>33</a></span>]. AI and ML solutions are also used to provide security and privacy in networks. For example, in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>34</a></span>], AI/machine learning-based method was proposed to detect DDoS and some privacy attacks.</p>
+ <p>In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0018 CIT0019 CIT0020 CIT0021" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>18–21</a></span>], the application of blockchain in attaining security is applied. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>18</a></span>], ML-assisted blockchain-enabled architecture is proposed to detect and prevent stress in a secure manner. It is highlighted that the use of blockchain can enable security. The problem is that it is difficult to have blockchain-based solutions at IoMT end devices due to their resource overheads. Further, in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>19</a></span>], a blockchain-based authentication method is proposed for medical devices. The benefits of blockchain in the form of decentralization, reliability and security are highlighted in this work. Moreover, in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>20</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>21</a></span>], the secure management of EHR (Electronic Health Record), EMR (Electronic Medical Records), and PHR (Personal Health Records) using blockchain is explored. This work shows its concern on how blockchain storage can cope with the practical needs of EHR/PHR/EMR. Further, in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>22</a></span>], cryptography methods (symmetric and asymmetric) are enhanced to meet the security requirements of medical data.</p>
+ <p>In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0023 CIT0024 CIT0025" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>23–25</a></span>], PUF-based devices are used to ensure security or privacy in the e-healthcare system. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>23</a></span>], PUF-based host tracking system is proposed for contact tracing in the crowded area taking into account the privacy of COVID patients. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>24</a></span>], PUF-based sensors are used to secure physical measurements. Further, [<span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>25</a></span>], PUF-based sensor devices are used to securely monitor for COVID-19 patients.</p>
+ <p>Reference works [<span class="ref-lnk lazy-ref"><a data-rid="CIT0026 CIT0027 CIT0028 CIT0029" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>26–29</a></span>] show the application SDN in IoMT in providing slicing and network management. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>26</a></span>], an AI-enabled SDN application is implemented to detect malware botnets. Moreover, in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>27</a></span>], an SDN-based surgical training framework is proposed for IoMT. This framework will be useful in several telehealth services such as telemedicine, telesurgery, and surgical planning. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>28</a></span>], an SDN-based Non-Orthogonal Multiple Access (NOMA)-based scheduling method is proposed. This considers the channel state, energy consumption, and delay. The results show advantages in terms of energy consumption, network delay, and effective throughput. Furthermore, in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>29</a></span>], an SDN-based e-healthcare management system is proposed with which different QoS requirements could be met using SDN based on different traffic requirements.</p>
+ <p>In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>35</a></span>], we come across various applications of IoMT in the context of COVID-19. The review offers an associated architecture and various other technologies that are deployed to mitigate the virus threat. The paper also highlights the development of new IoMT technologies merged with AI, Big data, and blockchain. Security and Privacy are shown as a major concern for IoMT.</p>
+ <p>Further, in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>36</a></span>], the authors have discussed the challenges faced by data-intensive ecosystems in the cyber-physical systems such as mobile healthcare environmental monitoring. The paper focuses on the security vulnerabilities and solutions for big data systems that will enable these future smart storage systems.</p>
+ <p>Our paper is different from the related work and other survey paper such as [<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>35</a></span>], as it reviews the previous work, implements the case studies (presented in the next section), and shows the applicability of these technologies in IoMT.</p>
+</div>
+<div id="S006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i22" class="section-heading-2">6. Case Studies</h2>
+ <p>This section presents case studies and analysis based on the experimental studies on PUF, AI-enabled SDN, and blockchain.</p>
+ <div id="S006-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i23">6.1. PUF-based Authentication for E-healthcare</h3>
+  <p>Figure&nbsp;<a href="#F0009">9</a> presents an overview of our proposed PUF-based authentication framework where the e-health infrastructure containing IoMT PUF devices are connected over a satellite broadband network with ISP (Internet Service Provider) and mobile networks. Using this framework, we show that IoMT devices can be remotely authenticated and accessed by healthcare professionals on a remote device through a PUF-based mechanism. A detailed view of connected devices can be seen in Figure&nbsp;<a href="#F0010">10</a>. In this case study, we use the Cisco packet tracer (a simulation tool) to simulate the framework.</p>
+  <div class="figure figureViewer" id="F0009">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 May 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 9. </span> PUF-based authentication overview</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0009image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0009_oc.jpg" loading="lazy" height="235" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0009">
+   <p class="captionText"><span class="captionLabel">Figure 9. </span> PUF-based authentication overview</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0009">
+   <div class="figureFootNote-F0009"></div>
+  </div>
+  <div class="figure figureViewer" id="F0010">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 May 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 10. </span> Detailed simulated topology over Cisco packet tracer</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0010image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0010_oc.jpg" loading="lazy" height="500" width="478"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0010">
+   <p class="captionText"><span class="captionLabel">Figure 10. </span> Detailed simulated topology over Cisco packet tracer</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0010">
+   <div class="figureFootNote-F0010"></div>
+  </div>
+  <p></p>
+  <p>Figure <a href="#F0010">10</a> shows all the IoMT devices located in the e-healthcare infrastructure. The topology is created by configuring a Satellite broadband router (SAT), which acts as a pivot point for authentication of devices trying to connect in a fog-cloud architecture. We have added a WAN (Wide Area Network) Cloud Emulator for connecting the end devices to the services controlled from a far away simulated device in the network. A DLC100 Home Gateway is added in our topology for connecting end devices with our ISP over a Cable Modem-PT, which serves as a cable modem for redirecting traffic back and forth. The elements from the street network can be seen in the form of a Cell tower which serves as a 3G/4G/5G point for connecting smartphones.</p>
+  <p>For the representation of the authentication process, we have simulated 13 end devices that reside in an e-health ecosystem. To configure the end devices, we used DHCP IP configurations. The simulation aims at connecting the IoT device including IoMT devices in our environment to various other end devices based on a decentralized authentication server mechanism. We have thus established the topology that can be used to securely connect devices over a discrete channel such as a satellite broadband channel. For this purpose, we based our DNS servers and IoT authentication server on a satellite broadband channel which could discretely serve as an authentication channel.</p>
+  <p>For this case study, we based our IoMT authentication server on 10.0.0.253. This is where every device in our e-health infrastructure will get authenticated based on its credentials and associated PUF signature. An administrator account has been created for registration and remote operation of the devices. For the device, Motorola 1 with PUF the IPv4 Address, its DNS server (10.0.0.254), and the default gateway for packet transmission are configured and represented in <a href="#F0010">10</a>. Similarly, for other end devices in our ecosystem like SmartPhone-PT Motorola 2 with PUF, Laptop-PT Lenovo 320 with PUF, IoT device DOOR with PUF, Wearable device, siren, temperature, and sound monitor, an RFID reader and an air detector, we have used similar configurations for IP generation. The state of these devices framework can be controlled remotely using other end devices like SmartPhone-PT Motorola 2 with PUF, Laptop-PT Lenovo 320 with PUF, SmartPhone-PT Motorola 1 with PUF.</p>
+  <p>Figure&nbsp;<a href="#F0011">11</a> depicts the connection to a remote authentication server at IP address 10.0.0.253 hosting the registration server for our IoT devices in the e-health infrastructure. This can be seen clearly as we have connected all the other end devices in the same network. We have thus established the framework that can be used to securely connect devices over a discrete satellite broadband channel. For authentication in an IoMT simulated environment, we have the “IoT TCP” event filtered out from the list of simulated events on our presented framework. We captured this event in simulation for 0.5 seconds and have presented the case study for authentication processing time in Figures&nbsp;<a href="#F0012">12</a> and&nbsp;<a href="#F0013">13</a>. In Figure <a href="#F0012">12</a>, we find the initiation of the authentication process at the 0.236th second for the event “IoT TCP” and in Figure <a href="#F0013">13</a> we find the same request for the device “temperature monitor” getting served at the 0.242th second. The device “temperature monitor” got captured in the simulation panel first requesting the server at 0.236th seconds and at 0.242th and the request was fulfilled. The time captured for this event is around 0.006 seconds for all other considered devices in the e-health infrastructureframework.</p>
+  <div class="figure figureViewer" id="F0011">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 May 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 11. </span> Remote server authentication</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0011image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0011_oc.jpg" loading="lazy" height="463" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0011">
+   <p class="captionText"><span class="captionLabel">Figure 11. </span> Remote server authentication</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0011">
+   <div class="figureFootNote-F0011"></div>
+  </div>
+  <div class="figure figureViewer" id="F0012">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 May 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 12. </span> Authentication initiation time</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0012image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0012_oc.jpg" loading="lazy" height="283" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0012">
+   <p class="captionText"><span class="captionLabel">Figure 12. </span> Authentication initiation time</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0012">
+   <div class="figureFootNote-F0012"></div>
+  </div>
+  <div class="figure figureViewer" id="F0013">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 May 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 13. </span> Authentication completion time</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0013image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0013_oc.jpg" loading="lazy" height="269" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0013">
+   <p class="captionText"><span class="captionLabel">Figure 13. </span> Authentication completion time</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0013">
+   <div class="figureFootNote-F0013"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S006-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i29">6.2. SDN Enabled E-healthcare</h3>
+  <p>In this subsection, we provide a case study on SDN enabled E-healthcare where SDN is enabled in the IoMT devices and an SDN controller is placed at the cloud, as shown in Figure <a href="#F0008">8</a>. In this case study, not all the IoMT devices have the Internet connectivity to connect with the controller. Therefore, those devices have not communicated with the controller through the other IoMT devices in the network. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>37</a></span>], we provided an algorithm to automatically establish an SDN session between a wireless SDN connected network with the controller where only a few wireless devices can reach the controller directly. In this work, a standard OpenFlow protocol is used as an SDN protocol to connect with the controller. We applied the same algorithm to connect IoMT wireless devices with the controller. In this algorithm, hybrid SDN wireless IoMT devices are used where IoMT wireless devices can run traditional protocols as well as OpenFlow protocol. Traditional routing protocols such as OLSR (Optimized Link State Routing Protocol) is used as a protocol to find the path to the controller. The control paths are established on the path decided by traditional routing protocols and data paths are decided by the application running on the controller (see Figure <a href="#F0008">8</a>).</p>
+  <p>We performed the emulations using Mininet-Wifi (an emulator for wireless SDN emulations). We created three different IoMT device topologies using 20 different IoMT sensor devices: (1) linear, (2) sparse, and (3) dense and the SDN session creation time is calculated. It is shown that as the number of hops between an IoMT device and the controller increases, the SDN session establishment time increases. Further, we calculated the data collection time in SDN. Figure&nbsp;<a href="#F0014">14</a> shows the data collection time. It is shown that data collection time is as short as 16 ms for an IoMT device which 18 hops away from the controller. It shows the short time of SDN in collecting data from wireless IoMT devices even though the device is far away. The future work is to apply AI solutions for issues <i>e.g.</i> security issues of IoMT devices.</p>
+  <div class="figure figureViewer" id="F0014">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 May 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 14. </span> Data collection time (ms)</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0014image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0014_ob.jpg" loading="lazy" height="283" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0014">
+   <p class="captionText"><span class="captionLabel">Figure 14. </span> Data collection time (ms)</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0014">
+   <div class="figureFootNote-F0014"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S006-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i31">6.3. Blockchain Assisted Patient-Centric System</h3>
+  <p>In this case study, our goal is to show how blockchain could be used to ensure the security and privacy of EHR (Electronic Health Records) in the e-healthcare industry. In this subsection, we briefly describe our implemented blockchain assisted patient-centric system. Additional detail of this case study can be found at [<span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>38</a></span>].</p>
+  <p>Figure&nbsp;<a href="#F0015">15</a> shows a blockchain assisted patient-centric system. The case study makes use of a smart contract on an Ethereum consortium blockchain to shift patient's health records being managed and controlled by the healthcare industry to a patient-centric application. Using this system, patients are in control of their health data. Figure <a href="#F0015">15</a> shows the administrator entity in the user-end in addition to patients and hospitals. This entity is responsible for the registration of the hospital entities in the blockchain framework. Hospitals registered with the blockchain framework could securely share patient data with the proposed patient-centric system using the web application in the front end. Once the data is shared with the system, patients are in charge of the data and can share it with any other doctors or hospital entities registered with the Ethereum blockchain patient-centric system. This data is stored on the distributed ledger. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>38</a></span>], we measured the performance and security of this system. It was shown that using the Ethereum blockchain, security could be ensured and performance could be maintained. The delay in accessing such data was less than 1 second.</p>
+  <div class="figure figureViewer" id="F0015">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Internet of Medical Things (IoMT): Overview, Emerging Technologies, and Case Studies</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Razdan%2C+Sahshanu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Razdan%2C+Sahshanu"><span class="NLM_given-names">Sahshanu</span> Razdan</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Sharma%2C+Sachin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sharma%2C+Sachin"><span class="NLM_given-names">Sachin</span> Sharma</a> <a href="https://orcid.org/0000-0002-8358-2258"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/02564602.2021.1927863">https://doi.org/10.1080/02564602.2021.1927863</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 May 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 15. </span> Blockchain assisted patient centric system&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>38</a></span>].</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0015image" src="/na101/home/literatum/publisher/tandf/journals/content/titr20/2022/titr20.v039.i04/02564602.2021.1927863/20221113/images/medium/titr_a_1927863_f0015_oc.jpg" loading="lazy" height="282" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0015">
+   <p class="captionText"><span class="captionLabel">Figure 15. </span> Blockchain assisted patient centric system&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>38</a></span>].</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0015">
+   <div class="figureFootNote-F0015"></div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="S007" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i33" class="section-heading-2">7. Conclusion</h2>
+ <p>In this paper, we provided details about the Internet of Medical Things (IoMT) and presented an architecture for IoMTs. Further, emerging technologies – PUF, Blockchain, Artificial Intelligence and Software-Defined Networking – are investigated for different aspects of IoMTs such as security, privacy, diagnosis, and treatment. Finally, we provided three case studies of IoMTs considering these technologies. The experimental results show the applicability of these technologies in the e-healthcare system for authentication, security, performance, or data collection time.</p>
+ <p>Health systems currently face challenges related to shortages of critical medical professionals, long waiting times, rising demand for services, and financial constraints. IoMT could help in easing some constraints by shortening the time healthcare experts invest in repetitive activities (using AI methods), thus allowing them to focus on other activities, such as seeing more patients.</p>
+ <p>In the PUF authentication case study where we established a framework for authentication of IoT devices in the e-health ecosystem, we found that authentication bottlenecks at satellite broadband pivot point. So in the future, we will divide the authentication process into three stages. In the first stage, we will define the authentication process on the credentials-based PUF signature and then continue the authenticating from there onwards. In the second stage, we will focus upon the actual pivoting point in our framework and use a distributed network topology. In the final stage, we will compare the actual computation costs of the authentication process and deploy such a mechanism wherever possible in the ecosystem.</p>
+ <p>In the case of the blockchain assisted patient-centric system, scalability is the problem. The system can saturate with the number of patients and hospital devices registered with the considered blockchain framework. The problem with SDN solutions will be that each device cannot be made SDN enabled. This means that the gathering of important data will be a challenge. Further, current AI-based solutions follow the black-box approach. These solutions need to be explained so that patients and doctors can understand why decisions are made and why they are important. Currently, researchers are applying methods to make AI accountable [<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>30</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>31</a></span>]. However, the work is in the initial stage currently. Future work could be focused on making AI accountable for IoMTs. Further, there is concern related to the performance efficiency of AI applications.</p>
+</div>

@@ -1,0 +1,1380 @@
+<div id="S0001" class="NLM_sec NLM_sec-type_notes NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">Public Interest Statement</h2>
+ <p>User-generated online product reviews are important for choices made by consumers and for sales and revenues for many retailers. Our study investigate how product category and product popularity mediates the effect of reviews on sales. We divide product categories from search products where objective evaluations are possible before purchases (in example, USB memory sticks is evaluated based on speed and memory capacity) to experience products difficult to evaluate prior to purchase (in example, subjective categories as fashion clothes or movies). Our results document systematic differences in review effects on sales based on product type and popularity, subjectively evaluated products as well as less popular products see the largest relative effect of online product reviews. Based on the results we present the review impact continuum, a model for assessing the expected influence of user online reviews on sales based on product popularity and the type of product.</p>
+</div>
+<div id="S0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">1. Introduction</h2>
+ <p>User-generated online product reviews have become a natural part of the online marketplace experience for both retailers and consumers alike over the last few years. Some, like Yelp and Tripadvisor, have built their entire business model on such reviews, while others, like Amazon and Netflix use it to enhance their core model. The wide-spread use of these systems has also sparked interest from researchers. Several studies have been conducted aiming to understand different aspects of online consumer reviews. Research has already demonstrated an association between how positively a product is rated by consumers on a site and subsequent sales of the product on that site (Chevalier &amp; Mayzlin, <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>; Dellarocas, Zhang, &amp; Awad, <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2007</a></span>). In addition, a relationship between review volume and sales (Duan, Gu, &amp; Whinston, <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>; Liu, <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>) has been established.</p>
+ <p>However, much of the research focus on a single category of products. For instance, Chevalier and Mayzlin (<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>), Forman, Ghose, and Wiesenfeld (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>) and Li and Hitt (<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>) all include a large sample of products and reviews, but focus solely on books. Other studies, like Ba and Pavlou (<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2002</a></span>) and Mudambi and Schuff (<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2010</a></span>) have included products from different categories, but these studies have a small sample of products and do not use product category as a unit of analysis beyond grouping the products as search and experience goods. Several factors indicate, however, that product category properties moderate the influence reviews have on sales. Therefore, it is in general difficult to assess the generalizability of prior research, and to determine whether different results stem from properties in product category or differences between review systems.</p>
+ <p>This paper aims to study the role product category plays as a moderating factor in online reviews, by introducing a novel method for product category classification using natural language processing (NLP). With a selection of hit products and random products for each category, this paper also looks at the product popularity and its relation to the effect of online reviews on sales.</p>
+ <p>The study includes a wide variety of categories, based on a high number of products and number of reviews. The data-set presented includes 1.1 million unique reviews from 4,600 products in 30 different product categories—spanning from the much studied movies and books to novelties, like clothing, jewellery and hardware.</p>
+ <div id="S0003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">1.1. Word-of-mouth and electronic word-of-mouth</h3>
+  <p>In the marketing literature, an important concept is that of word-of-mouth communication (WOM). WOM may be defined as informal communications directed at other consumers about the ownership, usage or characteristics of particular goods and services or their sellers (Hu, Pavlou, &amp; Zhang, <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>). WOM is a phenomenon that has been discussed for a century, with research attention gaining ground in the 1950s (Whyte, <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>1954</a></span>). The effect has since been thoroughly researched, and is believed to be a strong influence on consumers purchase intentions (Arndt, <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>1967</a></span>; Henning, Al-Thurau, Gwinner, Walsh, &amp; Gremler, <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2004</a></span>).</p>
+  <p>The emergence of the internet has led to some interesting possibilities in the domain of WOM communication. Online communities, where consumers share experiences have appeared in all shapes and sizes, bringing with them an entirely new way of conducting WOM communication. Messages can be stored indefinitely, in contrast to the nature of traditional WOM. This allows online WOM communication to potentially saturate larger markets than before, as well as in quicker fashion. Indeed, the term viral is commonly used about the virus like spread of trends on the internet. Some even report that the life cycle of entertainment products has shrunk due to the speed with which messages, and with them, new trends, can spread as described by Dellarocas and Narayan (<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>).</p>
+  <p>This new form of WOM communication has been dubbed electronic word-of-mouth, or eWOM (Henning et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2004</a></span>; Racherla, Mandviwalla, &amp; Connolly, <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2012</a></span>; Zhang, Craciun, &amp; Shin, <span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2010</a></span>). Henning et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2004</a></span>) offer the following definition of eWOM: “a positive or negative statement made by potential, actual, or former customers about a product or company, which is made available to a multitude of people and institutions via the internet” (Henning et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2004</a></span>, p. 39).</p>
+ </div>
+ <div id="S0004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">1.2. Types of products</h3>
+  <p>A search good is a product or service, where the consumer is able to evaluate the quality, features and characteristics easily before purchase, such as a USB drive. According to Nelson (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>1970</a></span>), to maximize expected utility, a consumer will search until the marginal expected cost of search becomes greater than its marginal expected return.</p>
+  <p>Contrasting search goods are experience goods. These are products or services, where quality, features and characteristics are difficult to evaluate in advance of purchase, but can be obtained upon consumption. This can for instance, be a hotel or a restaurant. Nelson (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>1970</a></span>) asserts that marginal cost will be different in the experience case from that in the case of search goods. The expected cost of information in the experience case depends on the utility distribution. The marginal utility of an experiment is the potential loss in utility from consuming a brand at random rather than using the best brand that one has already discovered. He further predicts that the recommendations of others will be used more and have greater impact for purchases of experience goods than search goods.</p>
+ </div>
+</div>
+<div id="S0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i7" class="section-heading-2">2. Hypotheses</h2>
+ <p>The most obvious question when discussing online consumer reviews is of their efficacy, or rather, whether a positive review leads to more sales. Using data from Amazon and BarnesAndNoble.com, Chevalier and Mayzlin (<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>) found that improvement in a book’s reviews lead to an increase in relative sales at the respective site. These findings were later corroborated by Hu, Liu and Zhang (<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>), who analysed data for books sold on Amazon.com. By adopting a transaction cost and investment portfolio framework, effectively treating books as financial assets and reviews as favourable or unfavourable news, Hu, Liu and Chang (<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>) found that consumers responded positively to positive reviews, and negatively to negative reviews. Both of these studies also find that the negative impact of one-star reviews is greater than the positive impact of five-star reviews. The effect of reviews has also been researched outside the realm of Amazon. By combining reviews and ratings from Yelp.com for roughly 70% of all the restaurants in Seattle and quarterly revenue data over several years from Washington State Department of Revenue, Luca (<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2011</a></span>) finds that a one-star increase in average rating leads to a 5–9% increase in revenue.</p>
+ <p>There are also studies that do not find a link between sales and ratings. Duan et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>) used data from Yahoo Movies and Boxofficemojo.com and did not find that the ratings of online user reviews had significant impact on movies’ box office revenues. However, assessing the available literature it can be expected that our data should show some effect on sales from reviews, and it will more likely follow the valence of the reviews than not. We formulate our first hypothesis:</p>
+ <div class="quote">
+  <p>Hypothesis 1: An increase in average rating on a site is associated with increased sales.</p>
+ </div>
+ <p></p>
+ <p>Some research indicates that these effects on sales are moderated by the popularity of the product or service. Luca (<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2011</a></span>) shows that, while ratings on Yelp of independent restaurants in Seattle are affecting their revenue, ratings do not affect restaurants with chain affiliation. In fact, Luca finds that chains have become less popular after the introduction of Yelp, losing market share as Yelp has gained traction. He suggests that this is because the increased information about independent restaurants through online reviews is replacing more traditional sources of information.</p>
+ <p>Zhu and Zhang (<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2010</a></span>) similarly find that online reviews are more influential for less popular games, where players need to rely more on sentiments from other consumers to assess game quality. Dellarocas et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2007</a></span>) did also find that forecasting sales for niche movies can to a larger extent be done on the basis of reviews.</p>
+ <p>The literature seems to agree that for popular, what we can call hit products, a greater array of information channels exist. Large studio movies have immense marketing budgets and famous actors that contribute to the sales of the movies. Chain restaurants have a recognizable and trusted brand, consumers expecting the same service and product regardless of location. Smaller, independent producers can to a lesser extent afford expensive marketing campaigns, leaving consumer opinions a greater share of the available product information. Thus, we formulate the second hypothesis:</p>
+ <div class="quote">
+  <p>Hypothesis 2: The association between average ratings and sales is stronger for non-hit products than for hit products.</p>
+ </div>
+ <p></p>
+ <p>Further, the impact of online consumer reviews seems to vary with the product type. Nelson (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>1970</a></span>) predicted that recommendations between consumers would be more important for experience products than for search products. Since experience products pose a greater challenge to evaluate before trying or consuming, consumers will likely find greater utility of opinions from others for such products. For example, a simple mailing envelope needs only to match a few objective measurements, the dimensions and perhaps the inclusion of a plastic window for displaying the address. A consumer will know if the product is a match without resorting to experiences by peers. Contrasting this, a restaurant can inform potential patrons of their menu, any awards or accolades, but no objective info can tell him how it ultimately tastes. Thus, reviews are expected to be more persuasive for experience products.</p>
+ <p>Indeed, some research has been done on the subject, and gives support to the supposition. Senecal and Nantel (<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2004</a></span>) constructed an experiment allowing subjects to make purchasing decisions after receiving product recommendations, and did find that recommendations for experience products are significantly more influential than recommendations for search products. Park and Lee (<span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2009</a></span>) also showed that the eWOM effect is greater for experience goods than for search goods by having test subjects rate their perceived influence of reviews for a set of search and experience products. Considering all this, the third hypothesis becomes:</p>
+ <div class="quote">
+  <p>Hypothesis 3: The association between average ratings and sales is stronger for experience products than for search products.</p>
+ </div>
+ <p></p>
+ <p>A problem with the original classification of search and experience goods by Nelson (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>1970</a></span>) is that it is binary in nature; later literature tends to treat the distinction as somewhat less discrete. Mudambi and Schuff (<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2010</a></span>) argued that some products would hold qualities from both categories, and be difficult to classify as either search or experience products. In order to treat product categories in a more nuanced fashion and having the ability to classify products that seemingly belong somewhere in the middle, a new variable is needed to determine the relative position of a product between pure search goods and pure experience goods. Looking at previous research, a common denominator in the evaluation process seems to be the degree of subjectivity that is used to assess product quality (Mudambi &amp; Schuff, <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2010</a></span>). Since search products are to a larger extent defined by objective facts, it seems plausible that reviews for search products contain more objective statements. For instance, a USB stick review would likely contain information about it’s storage capacity. Conversely, since experience products cannot as readily be evaluated on objective facts alone, one would expect the ratio of subjective statements in the reviews to be larger.</p>
+ <p>By introducing a new variable, using natural language processing analysis of review texts to quantify the degree of subjectivity with which a product is evaluated, we expect to see differing impacts of reviews, depending on the product’s position on the subjectivity axis.</p>
+ <div class="quote">
+  <p>Hypothesis 4: The association between average ratings and sales is stronger for products that tend to be subjectively evaluated than for products that tend to be objectively evaluated.</p>
+ </div>
+ <p></p>
+ <p>Finally, some of the reviewed literature also sees an effect from the volume of reviews. Duan et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>) did not find a relationship between the rating of movies and box office sales, however they show that sales are significantly influenced by the volume of online posting. Duan et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>) attribute the effect of online user reviews to it being an indicator of the underlying word-of-mouth that plays a dominant role in driving box office revenues. This theory is supported by Zhang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2010</a></span>) and Dellarocas et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2007</a></span>). Liu (<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>) also found that WOM information offers significant explanatory power for both aggregate and weekly box office revenue, especially in the early weeks after a movie opens. Most of this explanatory power, Liu argues, comes from the volume of WOM. Our fifth hypothesis is:</p>
+ <p></p>
+ <div class="quote">
+  <p>Hypothesis 5: A comparatively high number of reviews on a site is associated with comparatively higher sales on that site.</p>
+ </div>
+ <p></p>
+ <p>For a consumer conducting online research, it is beneficial that the opinions posted are trustworthy and present a credible picture of the marketplace. If the available reviews are for some reason skewed towards one end of the scale, the consumer may be enticed to purchase a product that does not represent the optimal choice. This phenomenon is often called review bias.</p>
+ <p>A commonly cited shortcoming of online reviews is under-reporting bias. Under-reporting refers to the notion that the reviews posted for a product are not accurately describing the whole of consumers’ opinions—the population of reviewers may be biased or lacking in magnitude, reaching a verdict that does not reflect the objective quality or value of a product. Under-reporting bias is likely primarily a consequence of the motivations for posting reviews, in which extremely satisfied or extremely dissatisfied consumers are more likely to post reviews. Consumers with mediocre or average experiences simply dont find the same utility in expressing their views (Anderson, <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>; Henning et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2004</a></span>; Hu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>). As such, the rating distributions approach U-shaped curves, where the average values are underrepresented. In fact, Hu et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>) found that about 53% of products reviewed on Amazon.com have bimodal rating distributions, showing signs of the U-shape. We expect that our data should reflect previous findings, giving us:</p>
+ <div class="quote">
+  <p>Hypothesis 6: The distribution of ratings for a product tends to be bimodal, with the low and high end of the scale as local modes.</p>
+ </div>
+ <p></p>
+</div>
+<div id="S0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i8" class="section-heading-2">3. Methodology</h2>
+ <p>The study aims to measure the effect of reviews on sales. As such, there is arguably no more sound data than reviews themselves, along with connected sales points. However, high-resolution sales data are difficult to obtain, so our study uses a proxy called the Amazon sales rank. Much of the previous research focusing on Amazon also uses the sales rank as a proxy for sales, among others Schnapp and Allwine (<span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2001</a></span>) and Chevalier and Goolsbee (<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2003</a></span>). Our statistical models build on methods presented in prior research as Chevalier and Mayzlin (<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>), Li and Hitt (<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>) and Mudambi and Schuff (<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2010</a></span>). Amazon is selected as it is known as the world’s largest online retailer and carries millions of products over hundreds of different categories. Combining in the fact that they have the deepest set of product reviews, as well as a method to determine the magnitude of sales, Amazon seems like a reasonable choice for our data source.</p>
+ <p>One of the services offered by Amazon Web Services is programmatical access to the product offerings and discovery methods on Amazon.com. The API (Application Programming Interface), is a ready-made set of code libraries and functions that developers can use to access different services. In order to access the Amazon databases a set of methods were written in Java. With Java, Amazon allows developers access to the API using the SOAP request protocol.</p>
+ <p>We selected 30 different product categories, for each of these we included the 100 best selling products and 100 randomly picked products (not part of the top 100 products). This was done for several reasons. First of all, simply looking at the top 100 products would not allow many of the products room to climb the sales rankings, which would make it harder to measure the effects on sales from positive reviews. Second, a randomized selection offers a way to compare the effects of reviews for products with varying degrees of popularity. Third, the top 100 products may see a large degree of biases from different types of exposure on Amazon.com that lower ranked products do not. As such, the random sets may serve as a control group, should the top 100 products be too affected by forces other than ratings and reviews. In order to choose the random 100 products a java script was used with random words (Wordnik/getRandomWords) and products was selected.</p>
+ <div id="S0007" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">3.1. Collecting reviews</h3>
+  <p>A VBA script was created to download the required data. Our chosen method for measuring the subjectivity of reviews is through computerized sentiment analysis with subjectivity classification. For analysing the sentiments of reviews, we employed the OpinionFinder library, developed by researchers at the University of Pittsburgh, Cornell University and the University of Utah. The set of OpinionFinder classifiers have been widely used in previous research, reporting good results in classifying subjectivity (see for instance, He, MacDonald, &amp; Ounis, <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>). The subjectivity classifiers included in the toolkit are based on the work by Riloff and Wiebe (<span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2003</a></span>) and Wiebe and Riloff (<span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2005</a></span>). The OpinionFinder toolkit includes two separate subjectivity classifiers. The first classifier is model-based, meaning it is based on a model that can be trained through machine learning. This classifier has a reported accuracy of 76%, subjective precision 79% and subjective recall of 76%. The precision denotes how many of the reported subjective sentences in fact are deemed subjective manually, the recall represents the percentage of manually tagged subjective sentences that are classified as such by OpinionFinder. This method classifies all sentences as either objective or subjective.</p>
+  <p>The second is rule-based, working by applying pre-defined rules to determine whether a sentence is subjective or objective. The rule-based classifier is reported to have a higher accuracy (91.7% for subjective sentences, 83% for objective sentences), but with lower recall (30.9% subjective recall, 32.8% objective recall), since it will only classify a sentence as subjective or objective if it can do so with confidence. The result is therefore, three classifications, objective, subjective or unknown. When calculating fraction of subjectivity with these result, we disregarded those classified as unknown, and employed the number of subjective sentences divided by those classified as either subjective or objective.</p>
+ </div>
+ <div id="S0008" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">3.2. Brief description of the data-set</h3>
+  <p>A total of 1,147,488 primary reviews are included from the 30 product categories used as described in Table <button class="ref showTableEventRef" data-id="T0001">1</button>. Primary reviews is unique reviews while secondary reviews are duplicates of one in the primary set attached to a non-duplicate ASIN (Amazon Standard Identification Number) with distinct sales ranks. As an example, in the movies category one movie may be released on different platforms (DVD, Blu-ray, Amazon Instant), each of these versions may be assigned unique ASINs but reviews are shared.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Online consumers reviews: Examining the moderating effects of product type and product popularity on the review impact on sales</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Moen%2C+%C3%98ystein"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moen%2C+%C3%98ystein"><span class="NLM_given-names">Øystein</span> Moen</a> <a href="https://orcid.org/0000-0002-3578-9000"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Havro%2C+Lars+Jaako"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Havro%2C+Lars+Jaako"><span class="NLM_given-names">Lars Jaako</span> Havro</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Bjering%2C+Einar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bjering%2C+Einar"><span class="NLM_given-names">Einar</span> Bjering</a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311975.2017.1368114">https://doi.org/10.1080/23311975.2017.1368114</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>29 August 2017
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 1. Number of primary and secondary reviews for all categories</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F23311975.2017.1368114&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p>They primary reviews are divided in 986,344 reviews of the top 100 products and 161,144 reviews from the random 100 products. The numbers of reviews vary from hobby fabrics (1,838) and screws (1,919) to movies (103,586) and books (216,361). The mean numbers of reviews per product also varies with movies as highest and envelopes as smallest. Reviews length was in average 160 characters, with 99% of reviews with less than 2,705 characters. Length mode is between 111 and 121 characters for all 30 product categories. Mean length varies from 650 (digital cameras) to 205 (jewellery). The product ratings are not evenly distributed, mean rating was 4.27 and 64.9% of all ratings are five-stars indicating many positive reviews. The subjective scale score (rule based) varies considerable as expected, with highest subjective scores on books and movies (0.22) and lowest scores on hard drives and copy paper (0.05).</p>
+ </div>
+ <div id="S0009" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">3.3. Model specification</h3>
+  <p>For hypotheses 1 and 2 we defined two multiple regression models that aimed to predict the effect of several different variables on the natural logarithm of the sales rank. Ideally, our dependent variable would be the natural logarithm of sales, but the relationship between ln SALES and ln SALESRANK is approximately linear, making ln SALESRANK an adequate substitute. A product’s sales rank on Amazon is likely affected by several variables. Building on work by Chevalier and Mayzlin (<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>), Luca (<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2011</a></span>) and Forman et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>), our regression model assumes that the sales rank is mainly a function of a product’s average rating, price and volume of reviews. In addition, we will be testing for whether or not product type or the degree of subjectivity in evaluation can contribute to the effect of ratings on sales. Finally, it is assumed that certain products experience certain fixed effects. These fixed effects can be the relative popularity of an author or producer, offline promotions, or simply the quality of the product. These fixed effects, however, are difficult to observe and quantify across such a large and varied set, and will not be treated in this model.</p>
+  <p>The specification becomes (Regression 1):</p>
+  <p><span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/oabm_a_1368114_m0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/oabm_a_1368114_m0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block">
+     <mrow>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        SALESRANK
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       =
+      </mo>
+      <mi mathvariant="italic">
+       α
+      </mi>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        β
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        PRICE
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        β
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        AVGRATING
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        β
+       </mi>
+       <mn>
+        3
+       </mn>
+      </msub>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        NUMREVIEWS
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        β
+       </mi>
+       <mn>
+        4
+       </mn>
+      </msub>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        PRODUCTTYPE
+       </mtext>
+       <mtext>
+        p
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        β
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+      <msub>
+       <mtext>
+        AVGRATING
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       ×
+      </mo>
+      <msub>
+       <mtext>
+        PRODUCTTYPE
+       </mtext>
+       <mtext>
+        p
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <mi mathvariant="italic">
+       ε
+      </mi>
+     </mrow>
+    </math></span></p>
+  <p>With subjectivity variables (Regression 2):<span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/oabm_a_1368114_m0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/oabm_a_1368114_m0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block">
+     <mrow>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        SALESRANK
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       =
+      </mo>
+      <mi mathvariant="italic">
+       α
+      </mi>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        β
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        PRICE
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        β
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        AVGRATING
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        β
+       </mi>
+       <mn>
+        3
+       </mn>
+      </msub>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        NUMREVIEWS
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        β
+       </mi>
+       <mn>
+        4
+       </mn>
+      </msub>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        SUBJECTIVITY
+       </mtext>
+       <mtext>
+        p
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        β
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+      <msub>
+       <mtext>
+        AVGRATING
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       ×
+      </mo>
+      <msub>
+       <mtext>
+        SUBJECTIVITY
+       </mtext>
+       <mtext>
+        p
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <mi mathvariant="italic">
+       ε
+      </mi>
+     </mrow>
+    </math></span></p>
+  <p>The subscript p denotes product and t denote time. PRICE<sub>pt</sub> thus, denotes the price for product p at time t. The coefficient <i>β</i><sub>1</sub> may therefore, be seen as a measure of the effect of the product price on ln SALESRANK, or in effect, a proxy for the price elasticity of the product.</p>
+  <p>AVGRATING<sub>pt</sub> represents the average star rating for a product p at time t. Since the sales rank data have been extracted at daily intervals, the average rating for any specific day includes all reviews submitted before or at that specific date. The coefficient <i>β</i><sub>2</sub> thus, represents the effect of the average star rating on the sales rank.</p>
+  <p>The variable NUMREVIEWS<sub>pt</sub> denotes the number of reviews submitted for a product p before or at time t. This is in line with Duan et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>), who suggest that the most important review variable when looking at sales is the volume of reviews, rather than their valence. As Chevalier and Mayzlin (<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>), we use the logarithms of price and number of reviews so that we can compare the effect of percentage change in either variable on the percentage change in sales rank.</p>
+  <p>Further, we include the dummy variable PRODUCTTYPE<sub>p</sub> to control for any effects on sales rank that stem from the product being classified as either a search or experience product. Since our product selection does not guarantee that categories have similar levels of sales ranks, categories may have significantly different mean sales ranks, which could bias the regression. Since not all product categories have been classified as either search or experience goods this variable will only be used with those products.</p>
+  <p>To test for the interaction between product type and the average rating, we include the compound variable AVGRATING<sub>pt</sub>&nbsp;×&nbsp;PRODUCTTYPE<sub>p</sub>. This interaction term is meant to pick up if the effect of the average rating on sales is larger for any of the product types. Similarly, the AVGRATING<sub>pt</sub>&nbsp;×&nbsp;SUBJECTIVITY<sub>p</sub> variable is included to test if the degree of subjectivity really moderates the effect of ratings on sales.</p>
+  <p>An alternative approach used by Chevalier and Mayzlin (<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>) involves substituting the average star rating with variables denoting the fractions of five-star and one-star reviews. This method allows for a more nuanced view of the impact of review valence on sales rank. Substituting these two new variables into Regression 1 we get Regression 3:<span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/oabm_a_1368114_m0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/oabm_a_1368114_m0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block">
+     <mrow>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        SALESRANK
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       =
+      </mo>
+      <mi mathvariant="italic">
+       α
+      </mi>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        β
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        PRICE
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        β
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        NUMREVIEWS
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        β
+       </mi>
+       <mn>
+        3
+       </mn>
+      </msub>
+      <msub>
+       <mtext>
+        PRODUCTTYPE
+       </mtext>
+       <mtext>
+        p
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        γ
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        ONESTAR
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        γ
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+      <msub>
+       <mtext>
+        FIVESTAR
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        γ
+       </mi>
+       <mn>
+        3
+       </mn>
+      </msub>
+      <msub>
+       <mtext>
+        ONESTAR
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       ×
+      </mo>
+      <msub>
+       <mtext>
+        PRODUCTTYPE
+       </mtext>
+       <mtext>
+        p
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mi mathvariant="italic">
+        γ
+       </mi>
+       <mn>
+        4
+       </mn>
+      </msub>
+      <msub>
+       <mtext>
+        FIVESTAR
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       ×
+      </mo>
+      <msub>
+       <mtext>
+        PRODUCTTYPE
+       </mtext>
+       <mtext>
+        p
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <mi mathvariant="italic">
+       ε
+      </mi>
+     </mrow>
+    </math></span></p>
+  <p>Then, ONESTAR<sub>pt</sub> now denotes the fraction of reviews with a rating of one star, and FIVESTAR<sub>pt</sub> denotes the fraction of reviews with a rating of five stars. The coefficients γ<sub>1</sub> and γ<sub>2</sub> represent the effects of the respective fractional variables, or specifically, to what degree the one-star and five-star reviews affect sales.</p>
+  <p>In order to not only measure the correlation between snapshots of sales rank and average rating, we also include a regression model that concerns the total change in a product’s sales rank throughout the recorded period. By subtracting the starting point t&nbsp;=&nbsp;0 from any arbitrary time t in Regression 1 (disregarding coefficients) the following relation appears:<span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/oabm_a_1368114_m0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/oabm_a_1368114_m0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block">
+     <mrow>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        SALESRANK
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       -
+      </mo>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        SALESRANK
+       </mtext>
+       <mrow>
+        <mtext>
+         p
+        </mtext>
+        <mn>
+         0
+        </mn>
+       </mrow>
+      </msub>
+      <mo>
+       =
+      </mo>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        PRICE
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       -
+      </mo>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        PRICE
+       </mtext>
+       <mrow>
+        <mtext>
+         p
+        </mtext>
+        <mn>
+         0
+        </mn>
+       </mrow>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        NUMREVIEWS
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       -
+      </mo>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        NUMREVIEWS
+       </mtext>
+       <mrow>
+        <mtext>
+         p
+        </mtext>
+        <mn>
+         0
+        </mn>
+       </mrow>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mtext>
+        PRODUCTTYPE
+       </mtext>
+       <mtext>
+        p
+       </mtext>
+      </msub>
+      <mo>
+       -
+      </mo>
+      <msub>
+       <mtext>
+        PRODUCTTYPE
+       </mtext>
+       <mtext>
+        p
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mtext>
+        AVGRATING
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       -
+      </mo>
+      <msub>
+       <mtext>
+        AVGRATING
+       </mtext>
+       <mrow>
+        <mtext>
+         p
+        </mtext>
+        <mn>
+         0
+        </mn>
+       </mrow>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mtext>
+        AVGRATING
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       ×
+      </mo>
+      <msub>
+       <mtext>
+        PRODUCTTYPE
+       </mtext>
+       <mtext>
+        p
+       </mtext>
+      </msub>
+      <mo>
+       -
+      </mo>
+      <msub>
+       <mtext>
+        AVGRATING
+       </mtext>
+       <mrow>
+        <mtext>
+         p
+        </mtext>
+        <mn>
+         0
+        </mn>
+       </mrow>
+      </msub>
+      <mo>
+       ×
+      </mo>
+      <msub>
+       <mtext>
+        PRODUCTTYPE
+       </mtext>
+       <mtext>
+        p
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <mi mathvariant="italic">
+       ε
+      </mi>
+     </mrow>
+    </math></span></p>
+  <p>Performing all operations, this gives us Regression 4:<span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/oabm_a_1368114_m0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/oabm_a_1368114_m0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block">
+     <mrow>
+      <mi mathvariant="normal">
+       Δ
+      </mi>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        SALESRANK
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       =
+      </mo>
+      <mi mathvariant="normal">
+       Δ
+      </mi>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        PRICE
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <mi mathvariant="normal">
+       Δ
+      </mi>
+      <mo>
+       ln
+      </mo>
+      <msub>
+       <mtext>
+        NUMREVIEWS
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <mi mathvariant="normal">
+       Δ
+      </mi>
+      <msub>
+       <mtext>
+        AVGRATING
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <mi mathvariant="normal">
+       Δ
+      </mi>
+      <msub>
+       <mtext>
+        AVGRATING
+       </mtext>
+       <mtext>
+        pt
+       </mtext>
+      </msub>
+      <mo>
+       ×
+      </mo>
+      <msub>
+       <mtext>
+        PRODUCTTYPE
+       </mtext>
+       <mtext>
+        p
+       </mtext>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <mi mathvariant="italic">
+       ε
+      </mi>
+     </mrow>
+    </math></span></p>
+  <p>We see that the variable PRODUCTTYPE<sub>p</sub> has been cancelled, which means we do not need to control for differences in mean sales rank for the different categories. This also extends to any unobserved fixed effects that were not included in the first model; as long as the fixed effects are assumed constant through time they will be cancelled through the transformation to a difference regression model.</p>
+  <p>It should be noted that a more traditional first-difference model measuring daily differences was formulated for this purpose, but it proved to limit the available sales data too much, as daily changes in average rating can be very minute. Sales ranks extracted for longer periods of time are likely necessary for such a model to return any significant results.</p>
+ </div>
+ <div id="S0010" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">3.4. Rating distributions</h3>
+  <p>To test for the existence of an under-reporting bias and thus, a U-shaped rating distribution in hypothesis 6, we developed a simple logic test to run on the overall sample as well as on the individual products in the different categories. To have the hypothesized U-shape, showing a tendency towards bimodality, we acknowledge that the number of one-star ratings need to be larger than two-star rating, and the number of five stars need to be larger than four stars. Lastly, we want to exclude those with at spike of ratings in the middle of the distribution. Our test is as follows:<span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/oabm_a_1368114_m0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/oabm_a_1368114_m0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block">
+     <mrow>
+      <mrow>
+       <mtext>
+        Bimodality
+       </mtext>
+       <mspace width="0.333333em"></mspace>
+      </mrow>
+      <mo>
+       =
+      </mo>
+      <mo stretchy="false">
+       (
+      </mo>
+      <mi>
+       f
+      </mi>
+      <mn>
+       1
+      </mn>
+      <mo>
+       &gt;
+      </mo>
+      <mi>
+       f
+      </mi>
+      <mn>
+       2
+      </mn>
+      <mo stretchy="false">
+       )
+      </mo>
+      <mo>
+       ∧
+      </mo>
+      <mo stretchy="false">
+       (
+      </mo>
+      <mi>
+       f
+      </mi>
+      <mn>
+       2
+      </mn>
+      <mo>
+       ≥
+      </mo>
+      <mi>
+       f
+      </mi>
+      <mn>
+       3
+      </mn>
+      <mo stretchy="false">
+       )
+      </mo>
+      <mo>
+       ∨
+      </mo>
+      <mo stretchy="false">
+       (
+      </mo>
+      <mi>
+       f
+      </mi>
+      <mn>
+       3
+      </mn>
+      <mo>
+       ≤
+      </mo>
+      <mi>
+       f
+      </mi>
+      <mn>
+       4
+      </mn>
+      <mo stretchy="false">
+       )
+      </mo>
+      <mo>
+       ∧
+      </mo>
+      <mo stretchy="false">
+       (
+      </mo>
+      <mi>
+       f
+      </mi>
+      <mn>
+       4
+      </mn>
+      <mo>
+       &lt;
+      </mo>
+      <mi>
+       f
+      </mi>
+      <mn>
+       5
+      </mn>
+      <mo stretchy="false">
+       )
+      </mo>
+     </mrow>
+    </math></span></p>
+  <p>where <i>f</i>1, <i>f</i>2, <i>f</i>3, <i>f</i>4 and <i>f</i>5 represents the frequency of the one-, two-, three-, four- and five-star ratings, respectively. This test does not perform any check on how “deep” the U-shape is if it exists, it simply shows a tendency towards bimodality in the rating distribution. The set of statistical bimodal distributions will be a subset of the one identified by our test. Nevertheless, we see this test as sufficient for our use, as we only wish to demonstrate the tendency towards this type of distribution and the possible differences between the categories.</p>
+ </div>
+</div>
+<div id="S0011" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i20" class="section-heading-2">4. Results</h2>
+ <p>This section details the testing of hypotheses, we begin by testing the suppositions with our static regression model, before delving deeper with the difference regression model. Further, <i>R</i><sup>2</sup> values in the tables denote both <i>R</i><sup>2</sup> and adjusted <i>R</i><sup>2</sup>, as these values have been the same for all our regressions. Missing values for these tests have not been included in the regression. This mainly concerns missing sales rank data, as well as products that have no reviews. We have chosen not to interpolate missing sales rank values, as the data-set was considered to contain a sufficient number of observations. For the same reason, we have not included products with missing reviews.</p>
+ <div id="S0012" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i21">4.1. Static regression model</h3>
+  <p>The results of the regression using our static model are shown in Tables <button class="ref showTableEventRef" data-id="T0002">2</button> and <button class="ref showTableEventRef" data-id="T0003">3</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Online consumers reviews: Examining the moderating effects of product type and product popularity on the review impact on sales</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Moen%2C+%C3%98ystein"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moen%2C+%C3%98ystein"><span class="NLM_given-names">Øystein</span> Moen</a> <a href="https://orcid.org/0000-0002-3578-9000"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Havro%2C+Lars+Jaako"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Havro%2C+Lars+Jaako"><span class="NLM_given-names">Lars Jaako</span> Havro</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Bjering%2C+Einar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bjering%2C+Einar"><span class="NLM_given-names">Einar</span> Bjering</a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311975.2017.1368114">https://doi.org/10.1080/23311975.2017.1368114</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>29 August 2017
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 2. Regression results, sales rank and average rating</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F23311975.2017.1368114&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Online consumers reviews: Examining the moderating effects of product type and product popularity on the review impact on sales</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Moen%2C+%C3%98ystein"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moen%2C+%C3%98ystein"><span class="NLM_given-names">Øystein</span> Moen</a> <a href="https://orcid.org/0000-0002-3578-9000"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Havro%2C+Lars+Jaako"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Havro%2C+Lars+Jaako"><span class="NLM_given-names">Lars Jaako</span> Havro</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Bjering%2C+Einar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bjering%2C+Einar"><span class="NLM_given-names">Einar</span> Bjering</a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311975.2017.1368114">https://doi.org/10.1080/23311975.2017.1368114</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>29 August 2017
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 3. Regression results, sales rank and star fraction</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0003&amp;doi=10.1080%2F23311975.2017.1368114&amp;downloadType=CSV"> Download CSV</a><a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p>Limiting the variables to only price, number of reviews, as well as the average rating, we see clear and significant effects of all three. Since strong sales lead to a lower sales rank, variables connected to stronger sales will show a negative sign, whereas variables detrimental to sales will show a positive sign. As one would assume, we see that price is negatively associated with the sales rank, i.e. higher (lower) prices are correlated with lower (higher) sales. Further, the number of reviews shows a strong correlation with the sales rank, higher volumes of reviews being associated with higher sales. This suggests hypothesis 2 is correct. However, more detailed analyses would be necessary in order to determine the causality. From this simple regression, one cannot say whether a higher density of reviews per purchase leads to more sales, or if the larger number of reviews simply stem from more sales. The average rating, as well as the star fraction variables show the expected signs, and all are highly significant. The overall average rating shows correlation with higher sales (lower sales rank). This translates to products higher up on the bestsellers lists having better average ratings, supporting hypothesis 1. Further, the fraction of one-star reviews has a negative association with sales, the fraction of five-star conversely showing a positive association with sales. However, the impact of five-star reviews seems to be stronger than that of one-star reviews, which contradicts earlier findings by Chevalier and Mayzlin (<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>). Both regressions show support for hypothesis 1.</p>
+  <p>When introducing the interaction terms of product category and rating as well as subjectivity and rating (Tables <button class="ref showTableEventRef" data-id="T0004">4</button> and <button class="ref showTableEventRef" data-id="T0005">5</button>), we observe that product categories have significant differences in mean sales rank.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Online consumers reviews: Examining the moderating effects of product type and product popularity on the review impact on sales</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Moen%2C+%C3%98ystein"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moen%2C+%C3%98ystein"><span class="NLM_given-names">Øystein</span> Moen</a> <a href="https://orcid.org/0000-0002-3578-9000"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Havro%2C+Lars+Jaako"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Havro%2C+Lars+Jaako"><span class="NLM_given-names">Lars Jaako</span> Havro</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Bjering%2C+Einar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bjering%2C+Einar"><span class="NLM_given-names">Einar</span> Bjering</a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311975.2017.1368114">https://doi.org/10.1080/23311975.2017.1368114</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>29 August 2017
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 4. Regression results: sales rank and rating by product category</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0004&amp;doi=10.1080%2F23311975.2017.1368114&amp;downloadType=CSV"> Download CSV</a><a data-id="T0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Online consumers reviews: Examining the moderating effects of product type and product popularity on the review impact on sales</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Moen%2C+%C3%98ystein"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moen%2C+%C3%98ystein"><span class="NLM_given-names">Øystein</span> Moen</a> <a href="https://orcid.org/0000-0002-3578-9000"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Havro%2C+Lars+Jaako"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Havro%2C+Lars+Jaako"><span class="NLM_given-names">Lars Jaako</span> Havro</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Bjering%2C+Einar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bjering%2C+Einar"><span class="NLM_given-names">Einar</span> Bjering</a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311975.2017.1368114">https://doi.org/10.1080/23311975.2017.1368114</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>29 August 2017
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 5. Regression results, sales rank and rating by subjectivity</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0005-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0005&amp;doi=10.1080%2F23311975.2017.1368114&amp;downloadType=CSV"> Download CSV</a><a data-id="T0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p>Categories like books and movies that are top-level categories, will have their top 100 products occupy sales ranks 1–100, whereas a lower level category such as screws or mailing envelopes will have its 100 bestselling products placed further down the scale within some larger top-level category. Thus, it would make sense to control for category, in order to account for the bias in mean sales rank. However, introducing product type or subjectivity as a control variable results in severe multi-collinearity issues, making the coefficients volatile and unreliable. To mitigate these issues, we centre the average rating factor in the interaction terms around the mean average rating. This lessens some of the effects, but may still leave some of the coefficients unreliable.</p>
+  <p>Looking at Table <button class="ref showTableEventRef" data-id="T0004">4</button> we see the hypothesized effects. Price and reviews maintain their expected signs, as does the average rating. The product type control shows how the mean sales ranks differ, indicating in this case that the experience products in our sample hold a higher mean sales rank. The most interesting variable in this regression, however, is the interaction term between the average rating and product type. Hypothesis 3 states that experience products should see a greater effect from ratings than their search counterparts. The binary nature of the type variable means that the term only comes into play for experience products, meaning the experience products in our set with a given average rating will see a higher sales rank than a search product with the same rating. This supports hypothesis 3, that product types moderate the effect of reviews on sales.</p>
+  <p>Performing similar regressions with our two subjectivity variables produce comparable results as presented in Table <button class="ref showTableEventRef" data-id="T0005">5</button>.</p>
+  <p>The average rating terms see opposite signs, but for the rule-based subjectivity variable this effect is very small and not statistically significant. For the model-based subjectivity variable, the average rating has severe collinearity with the interaction term, which makes it hard to accurately say which sign is the correct. Removing the average rating produces a negative sign for the interaction term without any collinearity, but may be prone to omitted variable bias. The results are inconclusive, but give some support to hypothesis 4, that subjectively evaluated products see larger effects from reviews than objectively evaluated products.</p>
+  <p>So far, we see that the static model supports hypotheses 1 and 3. In testing hypothesis 4, the subjectivity variables introduce some multi-collinearity issues, but give initial support to the notion that subjectively evaluated products see larger effects from ratings.</p>
+ </div>
+ <div id="S0013" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i26">4.2. Difference regression model</h3>
+  <p>Moving over to the difference regression model, we no longer measure the absolute values of sales ranks, but rather the change from the initial sales rank. This formulation allows us to cancel out the effect of biased mean in categories, as well as any other unobserved fixed effects. In addition, we will more accurately be able to ascribe the change in sales rank from a change in ratings, whereas the first model simply predicted a correlation between high sales and high ratings. Finally, we can also plug in the sales rank itself as a predictor variable, since our dependent variable now is Δ ln SALESRANK. This allows us to test whether any of the observed effects are stronger in certain segments of popularity.</p>
+  <p>Looking at the basic difference model, we test hypothesis 2 by regressing over our top 100 and random product sets. This produces the output in Table <button class="ref showTableEventRef" data-id="T0006">6</button>. We note that the change in price still retains its positive sign, indicating that growth in price leads to lower sales. This effect is statistically insignificant for the random set, however.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Online consumers reviews: Examining the moderating effects of product type and product popularity on the review impact on sales</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Moen%2C+%C3%98ystein"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moen%2C+%C3%98ystein"><span class="NLM_given-names">Øystein</span> Moen</a> <a href="https://orcid.org/0000-0002-3578-9000"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Havro%2C+Lars+Jaako"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Havro%2C+Lars+Jaako"><span class="NLM_given-names">Lars Jaako</span> Havro</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Bjering%2C+Einar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bjering%2C+Einar"><span class="NLM_given-names">Einar</span> Bjering</a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311975.2017.1368114">https://doi.org/10.1080/23311975.2017.1368114</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>29 August 2017
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 6. Regression results: change in sales rank on popularity</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0006-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0006&amp;doi=10.1080%2F23311975.2017.1368114&amp;downloadType=CSV"> Download CSV</a><a data-id="T0006" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p>Contrary to the static model, we see that the growth in number of reviews now seem associated with lower sales. Although seemingly contradicting with our previous findings, the change in sign can be reasonably explained. First, the majority of products see a negative trend in sales, with over 60% of all the products recording a lower sales rank at the end of our data collection than at its commencement. Second, most of these products will, quite naturally, see an increase in reviews as time passes and more people review them. Thus, the dynamic model contributes little to the understanding of the causality between the volume of reviews and sales.</p>
+  <p>We also see a relatively low fit for the model, with <i>R</i><sup>2</sup> values well below 0.1. These can be elevated by controlling for products’ initial sales ranks as well as with a binary variable indicating overall growth or decline in sales. This brings up the <i>R</i><sup>2</sup> value to around 0.500. However, since the signs and magnitudes of our focus variables do not see any significant changes, we omit these variables for the sake of simplicity.</p>
+  <p>Looking at the change in average rating, we see differing signs for the two sets, with the top 100 showing a weak effect with the “wrong” sign, albeit with less statistical significance (<i>p</i>&nbsp;&lt;&nbsp;0.1). The change in rating for the random set, however, shows a relatively strong and statistically significant (<i>p</i>&nbsp;&lt;&nbsp;0.01) effect, with a negative sign. This suggests that the effect of ratings is stronger for less popular products, supporting hypothesis 2, although further tests are necessary to conclusively determine the effect.</p>
+  <p>Exploiting the fact that the variable ln SALESRANK now may be used in the set of predictor variables, we use it in an interaction term with the average rating to see if the effect of the ratings increase with increased sales rank (less popular products). Table <button class="ref showTableEventRef" data-id="T0007">7</button> summarizes the results, showing a negative sign with statistical significance for the interaction term. The negative sign means that an increase in the term leads to higher sales. This indicates that a change in rating at a given level of sales rank will have a smaller effect than the same change in rating at a higher level of sales rank (less popular).</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Online consumers reviews: Examining the moderating effects of product type and product popularity on the review impact on sales</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Moen%2C+%C3%98ystein"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moen%2C+%C3%98ystein"><span class="NLM_given-names">Øystein</span> Moen</a> <a href="https://orcid.org/0000-0002-3578-9000"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Havro%2C+Lars+Jaako"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Havro%2C+Lars+Jaako"><span class="NLM_given-names">Lars Jaako</span> Havro</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Bjering%2C+Einar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bjering%2C+Einar"><span class="NLM_given-names">Einar</span> Bjering</a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311975.2017.1368114">https://doi.org/10.1080/23311975.2017.1368114</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>29 August 2017
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 7. Regression results: change in sales rank by rating and popularity</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0007-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0007&amp;doi=10.1080%2F23311975.2017.1368114&amp;downloadType=CSV"> Download CSV</a><a data-id="T0007" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p>Extending the previous argument, we perform several group-wise regressions for different rating variables with interaction from product categories and subjectivity. Specifically, we do regressions to check the different magnitudes for the coefficients for all products, products with a sales rank greater than or equal to 100, 1,000, 10,000 as well as 100,000. The results of these regressions are summarized in Table <button class="ref showTableEventRef" data-id="T0008">8</button>. With the bestselling products included in the set, the effects seem inconclusive. This suggests that there are other factors in play for these products, with reviews staking a smaller claim of the total purchase decision-making process. This is in accordance to the theory presented when formulating hypothesis 2, which contends that there is a relative abundance of available information about the most popular products. There could also be other phenomena impacting the purchase decisions for these products, such as fashion and hype, or external marketing campaigns. Combined, these other phenomena may contribute to diminishing the importance of consumer generated reviews.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Online consumers reviews: Examining the moderating effects of product type and product popularity on the review impact on sales</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Moen%2C+%C3%98ystein"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moen%2C+%C3%98ystein"><span class="NLM_given-names">Øystein</span> Moen</a> <a href="https://orcid.org/0000-0002-3578-9000"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Havro%2C+Lars+Jaako"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Havro%2C+Lars+Jaako"><span class="NLM_given-names">Lars Jaako</span> Havro</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Bjering%2C+Einar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bjering%2C+Einar"><span class="NLM_given-names">Einar</span> Bjering</a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311975.2017.1368114">https://doi.org/10.1080/23311975.2017.1368114</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>29 August 2017
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 8. Regression results; coefficients and standardized coefficients for effect of rating, rating&nbsp;×&nbsp;category and rating&nbsp;×&nbsp;subjectivity for different segments of sales rank</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0008-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0008&amp;doi=10.1080%2F23311975.2017.1368114&amp;downloadType=CSV"> Download CSV</a><a data-id="T0008" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p>As such, it makes sense to see an increase in the effect of reviews as we exclude more and more of the bestselling products. Indeed, we see that the effect of ΔAR grows for every step as we exclude more of the top-selling products. This supports hypothesis 2, the effect of ratings is larger for less popular products. Likewise, we see that the coefficients for the interaction terms between the change in average rating and category specific variables all increase in magnitude as we move lower in product popularity. In addition, the standardized coefficients of the interaction terms are almost exclusively larger than for the change in rating alone, as shown graphically in Figure <a href="#F0001">1</a>. These findings support hypotheses 2, 3 as well as 4, implying that the effect of reviews is both larger for less popular products, as well as for experience (or subjectively evaluated) products.</p>
+  <div class="figure figureViewer" id="F0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Online consumers reviews: Examining the moderating effects of product type and product popularity on the review impact on sales</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Moen%2C+%C3%98ystein"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moen%2C+%C3%98ystein"><span class="NLM_given-names">Øystein</span> Moen</a> <a href="https://orcid.org/0000-0002-3578-9000"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Havro%2C+Lars+Jaako"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Havro%2C+Lars+Jaako"><span class="NLM_given-names">Lars Jaako</span> Havro</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Bjering%2C+Einar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bjering%2C+Einar"><span class="NLM_given-names">Einar</span> Bjering</a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311975.2017.1368114">https://doi.org/10.1080/23311975.2017.1368114</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>29 August 2017
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1. </span> Review rating distribution.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/medium/oabm_a_1368114_f0001_oc.gif" loading="lazy" height="366" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0001">
+   <p class="captionText"><span class="captionLabel">Figure 1. </span> Review rating distribution.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0001">
+   <div class="figureFootNote-F0001"></div>
+  </div>
+  <p>Hypothesis 6 states that the distribution of ratings tends to be bimodal, where 1 and 5 stars are minor and major modes, respectfully. To test for this, we constructed a simple set of requirements that needed to be fulfilled in order to show tendencies of bimodality. Figure <a href="#F0001">1</a> show the distribution of all ratings in the data-set. Visual inspection of this distribution indicate bimodality.</p>
+  <p>However, to test our hypothesis, it needs to hold on a product level. We therefore, test how many products in our data-set that show signs of bimodality. We limit our data-set to products with more than 20 reviews, which is similar to the limit set in Hu et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>). Of the 3,044 products that remain in our data-set, 1,814 show signs of being bimodal in our simple test. This converts to a 59.6% share. This is slightly higher than the findings of Hu et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>); who found that about 53% of products reviewed on Amazon have bimodal rating distributions. The most likely explanation for this is the more strict statistical approach of Hu. The review sets with statistical significant bimodality will be a subset of the ones identified by our test, thus it is to be expected that our results are slightly higher. Hu et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>) use a DIP test (Hartigan &amp; Hartigan, <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>1985</a></span>), while we use a simpler logic test. An additional explanation could be that the difference stems from the difference in selection of categories. Further analysis shows for instance that books (one of Hu’s three categories) converges around a 54% bimodality, very similar to Hu’s 53%.</p>
+  <p>For robustness, we tested with different limits of number of ratings, to see of it affects the tendency of bimodality. The results shows that the share increases as the limit increases, but seems to converge with more than 110 reviews. The overall share is then at 70.0%. This tells us that as the number of ratings increases, products rating distributions becomes increasingly bimodal. We also split the analysis on category. Results shows that there is a vast range between shoes at a 27% bimodality tendency to ink and toner at a 94% bimodality share.</p>
+  <p>Most digital products seem to have high shares of bimodal rating distributions, while simpler analogue products seem to have lower. We can only speculate in these differences, but it could be that the share of bimodal distributions is correlated with the chance of misuse of the product. Further analysis shows that the requirement that most often fails a distribution from being classified as bimodal is the <i>f</i>1&nbsp;&gt;&nbsp;<i>f</i>2 requirement. It is perhaps so that the “spike” in one-star ratings comes from users that have somehow not been able to use the product properly, and is thus, frustrated and rewards it with a one-star rating. Since proportionally fewer people might experience this with shoes and envelopes than with software and hard drives, it could explain the differences.</p>
+  <p>In conclusion, we see support for hypothesis 6, that the distribution of ratings tends to be bimodal, and find evidence of this in 60% of our products, increasing to 70% as the number of reviews increases. The implication of this result is that the average rating displayed is not a reliable representation of the opinions posted, but rather an unstable balance point between extreme ratings in most cases, which is also argued by Hu et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>). It is worth noting, however, that one could argue that this does not hold for all categories individually. A total of 11 categories have less than 50% bimodal distributions when the limit is 20 reviews. Further research is needed to determine predictors of which categories are exhibiting large degrees of bimodality and which are showing little.</p>
+ </div>
+</div>
+<div id="S0014" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i31" class="section-heading-2">5. Discussion</h2>
+ <p>When constructing the research design, one of our goals was to test the expected effect of ratings on different levels of popularity, and whether products aimed at the masses differ from those serving more niche markets in this regard. Our analyses performed to look at this aspect suggest that the lower we venture into the sales hierarchy, the larger the relative effect of reviews. Testing the relative change in ln SALESRANK against the top 100 and random sets, we saw a strong association between ratings and sales for the random sets. The top 100 products, on the other hand, showed a very weak and less significant effect in the “wrong” direction. Performing group-wise difference regressions for increasingly higher levels of sales rank, we saw strictly increasing magnitudes in the coefficients for the variables denoting change in average rating, as well as interaction terms with average rating and product type, or subjectivity. The statistical analyses performed in this study fit the expected effects for subjectivity. Using our novel subjectivity variables, we matched the findings produced by the established categorization of search and experience goods. Sales do seem to be affected more by reviews in categories with high levels of subjectivity, than in categories with low levels of subjectivity.</p>
+ <p>Nelson (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>1970</a></span>) based his classification of product type on when consumers no longer would incur the cost of search to determine the product quality, opting instead for experience as evaluation. However, with the advent of eWOM, one could argue that fewer and fewer products in fact are experience products in the original sense; consumers are to a larger extent able to evaluate their quality by reading other consumers’ experiences. Their search cost is lowered. Pure experience products such as fiction novels or movies will still not be evaluated equally by the entire population, but with a sufficiently large review mass, surprises in terms of experienced quality should be fewer. As such, several researchers focus on attributes or qualities [for instance Mudambi and Schuff (<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2010</a></span>) that describe products within the two groups instead of trying to mathematically measure the search/experience threshold. This usually means researchers stick to products with unequivocal classifications when conducting research across product categories. Since human interpretation of a vaguely defined set of attributes is required, the chance of differing labels for a product across research is not insignificant. As a result, products with an ambiguous set of search and experience qualities may be avoided altogether, possibly painting an oversimplified picture.</p>
+ <p>In this regard, the notion of a subjectivity variable is superior. Not only does it allow for classification of all products and categories, but by utilizing computerized language processing techniques, we can drastically reduce ambiguity. We outlined our method of assigning each product category a subjectivity score, which resulted in two different subjectivity variables. The subjectivity scores fit the ostensible conventions of search and experience products, placing most all categories in the expected positions.</p>
+ <p>All in all, the subjectivity variables seem to be a worthy addition to our understanding of how reviews, and by extension, how eWOM affects consumers’ purchase decisions for different products. Nevertheless, the question still remains whether the measured subjectivity in the review content is the underlying driver of the increased effect of ratings, or if it is a proxy for some other, more fundamental phenomenon. It should be noted that we cannot separate the possible effect of subjective reviews themselves from the product categories. That is, because of the way the subjectivity variables are measured, we have to acknowledge the possibility that it is the subjective reviews that account for the increased effect of reviews, rather than aspects about the products. This would imply, however, that the majority of consumers write inefficient, i.e. objective, reviews about search products. We have no reason to believe this is the case, but future research should attempt to validate the subjectivity scale by measuring the relative effect of subjective and objective reviews.</p>
+ <div id="S0015" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i32">5.1. Introducing the review impact continuum</h3>
+  <p>Based on our results, we would like to introduce a new concept: the review impact continuum (figure <a href="#F0002">2</a>). Researchers seem to agree to a large degree that online product reviews affect product sales. The effect has also been seen for several different types of products. It has been found to hold for beer (Clemons, Gao, &amp; Hitt, <span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>), video games (Zhu &amp; Zhang, <span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2010</a></span>), books (Chevalier &amp; Mayzlin, <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2006</a></span>; Hu, Liu &amp; Chang, <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>; Li &amp; Hitt, <span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>), movies (Dellarocas et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2007</a></span>) as well as restaurants (Luca, <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2011</a></span>). However, the reported effects vary in magnitude, with some studies even finding that review valence or ratings hold no explanatory power for sales (Duan et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>).</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Online consumers reviews: Examining the moderating effects of product type and product popularity on the review impact on sales</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Moen%2C+%C3%98ystein"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moen%2C+%C3%98ystein"><span class="NLM_given-names">Øystein</span> Moen</a> <a href="https://orcid.org/0000-0002-3578-9000"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Havro%2C+Lars+Jaako"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Havro%2C+Lars+Jaako"><span class="NLM_given-names">Lars Jaako</span> Havro</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Bjering%2C+Einar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bjering%2C+Einar"><span class="NLM_given-names">Einar</span> Bjering</a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311975.2017.1368114">https://doi.org/10.1080/23311975.2017.1368114</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>29 August 2017
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> The review impact continuum.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/oabm20/2017/oabm20.v004.i01/23311975.2017.1368114/20210205/images/medium/oabm_a_1368114_f0002_oc.gif" loading="lazy" height="430" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> The review impact continuum.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <p>To describe the varying degrees of search or experience product features in a product, the horizontal axis is modified to indicate the degree of subjectivity with which one evaluates the product. Pure search products are expected to be evaluated based on largely objective criteria, while pure experience products are expected to be evaluated more with subjective experiences. The popularity of the products marks the second axis in the figure.</p>
+  <p>Products placed within the top-right quadrant will see the largest effect of online reviews. An example could be an independent restaurant or a movie with a limited release. The theory contends that other sources of product information are particularly lacking for these products, and as such, WOM becomes an important channel of product information. In contrast is the argument for the lower left quadrant. We would argue that a common USB stick is a mass-market product, mostly evaluated on the available storage space. WOM will therefore be of less informational value and review impact is therefore relatively lower.</p>
+  <p>Products in the upper left quadrant are harder to evaluate based on objective information alone. We could imagine a USB stick with wireless capabilities. Objective information would exist, but many consumers may be confused as to how one would install and use it, since this is not a run-of-the-mill product. We note that most studies does not specifically measure the difference in effect between niche and mass products in the search category. It has, however, been conceptually posited (Chen &amp; Xie, <span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>). The experience products in the lower right are harder to evaluate beforehand than their counterparts in the lower left corner, but they are easier to evaluate than the niche products in the upper right. Big production movies have famous actors and directors prominently displayed on marketing material. Media builds hype and expectations several months beforehand, and trailers go viral on the internet. There is an abundance of information which means less influence is given to online consumer reviews.</p>
+  <p>Although the above framework already seems to better explain the impact of reviews in a holistic sense, there are some weaknesses that should be addressed. Most importantly, products can very well fall between categories. Let us for instance, consider a smartphone. Computers typically feature some quantifiable aspects, such as screen resolution, storage space, and battery life. However, many consumers are more concerned with ease of use and a solid user experience (UX) design. These two aspects pull in different directions concerning the classification of the product as a search or experience good. This discrepancy is true for many products, as they can often have different sets of features. In order to account for these cases, we increase the complexity of our model. By introducing continuums along both axes, we produce a diagram where products can be plotted on variable points.</p>
+  <p>Further, products may be aiming for something in between the mass and niche markets. It is also not necessarily true that mass-market experience products always see strong or medium effects of reviews, some reporting very low effects for highly popular products (Luca, <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2011</a></span>). The review impact continuum immediately reconciles some of the differences in research findings. For instance, it offers one possible explanation for why Duan et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>) do not find any direct online consumer review effect on sales, even when studying an experience product like movies, while most other researchers do. The movies reviewed in Duan et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2008</a></span>) are a selection of the absolute highest grossing movies in the market. This is the extreme end of the popularity dimension, considering that many movies do not even make it to the box office, and the lack of effect might be explained by the “hit” nature of these products.</p>
+  <p>Similarly, Luca (<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i37" href="#"><span class="off-screen">Citation</span>2011</a></span>) finds that the effect of reviews on sales are non-existing for chain restaurants. Again, our model suggests that this is because of the popularity of these restaurants, and thus not conflicting with the claim that online consumer reviews impact sales for experience products.</p>
+ </div>
+</div>
+<div id="S0016" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i34" class="section-heading-2">6. Conclusions and implications</h2>
+ <p>Our study confirms several previous findings regarding online consumer reviews. We find evidence for reviews having an effect on sales, and that this effect interacts with other factors, most notably the product category as well as product popularity. We find that subjectively evaluated products, as well as less popular products see the largest relative effect of WOM. To the authors’ knowledge, this is the first study that encompasses both of these effects simultaneously. Our findings give initial support to the hypothesized model to explain the relative impact of online reviews, dubbed the review impact continuum.</p>
+ <p>In this study, we also introduce a novel way of categorizing products, using natural language processing with subjectivity classification to measure the degree of subjective sentences used by consumers when evaluating the products. This subjectivity variable is used throughout our study, complementing and possibly replacing the standard categorization of search and experience products. Our subjectivity variable holds up remarkably well, matching previous findings, while including significantly larger sets of products and reviews, as well as products that have previously been difficult to classify.</p>
+ <p>This paper also reveals some evidence of rating biases. About 60% of the 1.1 million reviews in our data-set show signs of bimodality, meaning the average rating displayed is not a reliable representation of the opinions posted, but rather an unstable balance point between extreme ratings. Although our study has been performed with data from Amazon, we believe the results should hold for other online retailers and review systems as well.</p>
+ <div id="S0017" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i35">6.1. Implications for researchers</h3>
+  <p>We assert that future research on the impact of online consumer reviews need to properly treat product category and popularity as a factor, and that this can be done using our proposed NLP-based subjectivity score, and actual sales numbers or other proxies for it, like sales rank. This could make it possible to compare the relative effects of review systems that sell different products, and to better identify best practices in this market. More research is needed to identify other possible drivers, we therefore, propose development of quantifiable measurements for product complexity and further studies of the impact price has on the effect of online consumer reviews.</p>
+  <p>Although our results and previous research regarding product type implies that the differences in effects of reviews stem from attributes of the products, we cannot conclusively rule out the possibility that the increased effect is related to the subjectivity of the reviews themselves. If this were the case, objective reviews would be less effective. To rule this possibility out, future research should attempt to validate the subjectivity scale by measuring the relative effect of subjective and objective reviews on products with equal subjectivity scores. If there is no discernible differences in the effect of these reviews, one can assume that the larger effect of reviews observed for subjectively evaluated products is a result of the products—not the reviews. This would both validate previous findings with search and experience classifications, as well as strengthening the validity of the subjectivity scale.</p>
+  <p>We also encourage further NLP studies to develop our proposition to use subjectivity in assessing the WOM exposure for businesses. Such studies should among other things focus on systematizing possible differences in subjectivity score when using online input from different sources to expand the reliability and utility of the model. In addition, exploration is needed to assess the potential NLP holds as a WOM monitor tool, and the implications this could have for a contemporary approach for businesses to control WOM. We believe this area holds a significant potential.</p>
+  <p>To properly address the causality questions that remain, especially for the causation for the association between the volume of reviews and sales, we propose a regression analysis with time lagged dependent or predictor variables. This could conceivably be able to isolate growth in either the dependent variable or the predictor, and identify a related response in the affected variable. In addition, we contend that such an analysis could show even stronger correlation between ratings and sales.</p>
+ </div>
+ <div id="S0018" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i36">6.2. Implications for managers</h3>
+  <p>The results of this study have several applications for managers. Using the review impact continuum, it is possible to quickly evaluate the expected impact of online consumer reviews on their business, and take appropriate actions. It could strengthen understandings of the basic mechanisms, and provide a framework for better customizing marketing approaches for different products, dependent on their expected influence from reviews. In particular, we propose that managers for businesses selling niche products and services utilize the greater potential influence of eWOM for their offerings. This may aid them in conducting smarter campaigns, gaining the most out of their budgets.</p>
+  <p>Many businesses might also experience considerable effects in addressing the unhappy consumers responsible for the minor mode in the bimodal distribution of ratings. Assuming these are customers with particular challenges in the usage of the products, addressing them inside the review systems could help solve their difficulties and thus lower the share of one-star reviews and increase the average rating for the product, positively impacting sales. Indeed, some companies have started with this type of customer responses, particularly within the mobile app market, but we contend that gains could be achieved in other markets as well.</p>
+  <p>Finally, this paper proposes a novel and cost effective method of assessing the WOM exposure for businesses, using NLP to measure the subjectivity level of the existing WOM. This could assist managers in allocating and prioritizing appropriate amounts of resources on either controlling or stimulating WOM, according to the expected ROI. Using NLP sentiment classification, we propose that it might be possible to get insight into the actual mood of WOM at any moment, and as such be able to act quickly on the current WOM at any time, i.e. limiting negative WOM or exploiting positive WOM.</p>
+ </div>
+</div>

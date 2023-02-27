@@ -1,0 +1,186 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i7" class="section-heading-2">Introduction</h2>
+ <p>Smoking continues to be the leading preventable cause of death and illness, causing 8 million premature deaths each year [<span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>1</a></span>]. In Finland, 14% of adults smoke daily [<span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>2</a></span>]. Smoking is a clear risk factor for initiation and progression of several diseases and often affects long-term treatment outcomes [<span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>3</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>4</a></span>]. Therefore, all clinical guidelines recommend that the risks of smoking should be discussed with patients. It is also important that the conversations are well documented. For health professionals, it is crucial to include this piece of information in their routine care in order to reliably assess the risks and efficacy of the treatment and to provide smoking cessation assistance. However, physicians often underuse these opportunities to deliver cessation intervention to smokers [<span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>5</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span>]. Already, a short discussion with a patient has been shown to increase the likelihood of quitting [<span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>7</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>8</a></span>] with combined behavioral support and pharmacotherapy being the most effective [<span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>9</a></span>].</p>
+ <p>In Finnish electronic health records (EHR), smoking is usually documented as free text. This makes it challenging for secondary use of EHRs when, for example, the effectiveness of given treatments is evaluated. The development of natural language processing (NLP) technologies has improved these processes [<span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>10</a></span>] but, due to the complex nature of clinical phrases and expressions, the applications have proven challenging. Even more obstacles are encountered when these applications have been transferred to other languages beyond English. In recent years, deep learning-based approaches have brought new solutions for NLP tasks but the algorithms still need large training sets to be valid. One solution is to utilize transfer learning [<span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>11</a></span>]. In 2018, Howard and Ruder developed the Universal Language Model Fine-tuning (ULMFiT) model a transfer learning method that can be used for various NLP tasks, including text classification [<span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>12</a></span>]. The idea is to first pre-train the language model to learn the structure and general features of the study language. This can be done without any labels, for example, with a massive text data obtained from the internet. Then, the model is fine-tuned with a domain-specific language. Finally, a classification model is built on top of the fine-tuned language model using a labelled dataset. Thus, knowledge is transferred from the pre-training phase into the classifier that results in better classifiers than the ones trained on the labelled, usually much smaller dataset alone [<span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>10</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>11</a></span>]. Besides ULMFiT, several similar models have been published, for example, by Google [<span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>13</a></span>], Facebook [<span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>14</a></span>] and OpenAI [<span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>15</a></span>].</p>
+ <p>The aim of our study was to examine the documentation of the discussions between the clinician and the patient about smoking and in case of current smokers, the encouragement of smoking cessation. We wanted to also know whether these practices have improved at the Turku University Hospital over a 9-year period. In total, we studied seven common chronic diseases in which smoking cessation is an essential part of the treatment. We also investigated the performance of a ULMFiT-based algorithm in classifying the patients into never, ex – or current smokers.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i8" class="section-heading-2">Methods</h2>
+ <div id="s0002-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">Study cohort and data source</h3>
+  <p>The narrative reports of the patients who were &gt;18&nbsp;years of age and diagnosed between the years 2010 and 2016 with asthma (ICD10 codes J45-46), chronic obstructive pulmonary disease (COPD, J44), type 1 diabetes (E10), type 2 diabetes (E11), sleep apnoea (G47), ischemic heart diseases (IHD I20-25), or cerebral infarction (I63) at the Turku University Hospital were included. Patients were either diagnosed for the first time with the disease or they were referred to secondary health care for treatment optimization. The patients’ medical narratives were then followed for two years starting from the first visit. Majority of the narrative reports, which are part of EHR, were made by physician, but small number of narratives were made by other healthcare professionals. If a patient had two or more of above-mentioned diagnoses, the patient was only included in the group defined by the diagnosis that appeared first, i.e. a patient was first treated for this disease at the study hospital.</p>
+ </div>
+ <div id="s0002-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">Identification of the patients’ smoking status</h3>
+  <p>All Finnish sentences specific to smoking and tobacco were extracted from the medical narratives using the rule-based algorithm 1. These sentences were then analysed using the ULMFiT-based algorithm that classified smoking-related phrases into three classes: current smoker, ex-smoker, or never smoker. The algorithm was pre-trained using the Finnish Wikipedia 2019 and then finetuned using the Finnish narrative reports of 5,000 cancer patients from the same hospital. The narrative reports were manually annotated into the same three classes [<span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>16</a></span>]. In addition, a total of 40 random patients in each disease group studied were classified in a similar fashion by a physician (EH) in order to validate the performance of the algorithm in these particular disease groups. If the patient’s smoking status changed over time, the most frequently appearing status was included in the study.</p>
+ </div>
+ <div id="s0002-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">Identification of the patients who were encouraged to quit smoking</h3>
+  <p>In a similar manner, ad hoc rules for the Finnish terms related to an encouragement to quit smoking were used to extract corresponding sentences. The algorithm was manually validated using a random sample of 50&nbsp;+&nbsp;50 patients classified as current smokers and either being or not being encouraged to quit smoking. Based on patients’ medical records, we also evaluated the number of visits to the nurse-managed smoking cessation program at the Turku University Hospital.</p>
+  <p>This retrospective, registry-based study approach was approved by the administration of the Turku University Hospital (number T316/2019). The data was stored and analyzed in a secured IT environment owned by the Turku University Hospital. Only the study team had access to the data through 2-factor authentication.</p>
+ </div>
+ <div id="s0002-s2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">Statistical analyses</h3>
+  <p>Statistical analyses were performed with Excel for Mac 2018. The figure was made using Excel for Mac 2018. Continuous variables were presented as means and standard deviation (SD) for normally distributed variables or median and interquartile range (IQR) for non-normally distributed variables. Categorical variables were presented as frequencies and proportions. Statistical comparison between the groups was carried out using a chi-squared test. Statistical significance was considered as a p-value &lt;0.05.</p>
+  <p>The performance of the algorithms was assessed based on accuracy, precision, recall and F1-score. We built a 2&nbsp;×&nbsp;2 confusion matrix with the following labels: true positive (TP), true negative (TN), false-positive (FP) and false-negative (FN). We compared the algorithms’ results to the physician’s classification (true values). Accuracy describes the proportion of true values ((TP+TN)/ n), precision defines the accuracy of positive values (TP/(TP+FP)), recall is the fraction of correctly predicted true values of all true values (TP/(TP+FN) and F1-score combines precision and recall to a single value (2/(1/precision+1/recall)). The performance of the ULMFiT algorithm was evaluated separately for current, ex – and never smokers.</p>
+ </div>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i13" class="section-heading-2">Results</h2>
+ <div id="s0003-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">Characteristics of the study cohort</h3>
+  <p>Based on our approach we identified a total of 4,549 adult asthma, 2,111 COPD, 5,931 sleep apnoea, 632 type 1 diabetes, 8,281 type 2 diabetes, 9,200 IHD, and 4,946 cerebral infarction patients (<button class="ref showTableEventRef" data-id="t0001">Table 1</button>). The median length of their 2-year medical narrative after the given diagnosis varied from 12 to 28 events consisting mainly of inpatient and outpatient visits.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Documentation of the patient’s smoking status in common chronic diseases – analysis of medical narrative reports using the ULMFiT based text classification</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Hirvonen%2C+Eveliina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Hirvonen%2C+Eveliina"><span class="NLM_given-names">Eveliina</span> Hirvonen</a> <a href="https://orcid.org/0000-0002-4921-3387"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Karlsson%2C+Antti"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Karlsson%2C+Antti"><span class="NLM_given-names">Antti</span> Karlsson</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Saaresranta%2C+Tarja"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saaresranta%2C+Tarja"><span class="NLM_given-names">Tarja</span> Saaresranta</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Laitinen%2C+Tarja"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Laitinen%2C+Tarja"><span class="NLM_given-names">Tarja</span> Laitinen</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/20018525.2021.2004664">https://doi.org/10.1080/20018525.2021.2004664</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Characteristics and smoking statuses of the patient groups studied based on the two-year follow-up</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F20018525.2021.2004664&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0003-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">Smoking status in different disease groups and over time</h3>
+  <p>Within the total cohort, 40.1% of all patient’s medical documentation failed to reveal any smoking-related phrases during their two-year medical narrative. When comparing the documentation since the years 2010–2012 to 2016–2018, some improvement was observed especially in patients with cerebral infarction (344/695 and 453/674, +18%, p =&nbsp;0.001, respectively) (<a href="#f0001">Figure 1</a>). A patient’s smoking status was documented significantly more frequently in COPD (86%) and sleep apnoea patients (83%) compared to other groups (84% vs 53%, p &lt;&nbsp;0.001). In general, health professionals had documented discussions on smoking with the ex – and current smokers more often than with the never smokers during a two-year follow-up.</p>
+  <div class="figure figureViewer" id="f0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Documentation of the patient’s smoking status in common chronic diseases – analysis of medical narrative reports using the ULMFiT based text classification</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Hirvonen%2C+Eveliina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Hirvonen%2C+Eveliina"><span class="NLM_given-names">Eveliina</span> Hirvonen</a> <a href="https://orcid.org/0000-0002-4921-3387"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Karlsson%2C+Antti"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Karlsson%2C+Antti"><span class="NLM_given-names">Antti</span> Karlsson</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Saaresranta%2C+Tarja"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saaresranta%2C+Tarja"><span class="NLM_given-names">Tarja</span> Saaresranta</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Laitinen%2C+Tarja"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Laitinen%2C+Tarja"><span class="NLM_given-names">Tarja</span> Laitinen</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/20018525.2021.2004664">https://doi.org/10.1080/20018525.2021.2004664</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>23 November 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure1. </span> Percentage of patients with at least one documented smoking status during a two-year follow-up</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/zecr20/2021/zecr20.v008.i01/20018525.2021.2004664/20211221/images/medium/zecr_a_2004664_f0001_b.gif" loading="lazy" height="342" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0001">
+   <p class="captionText"><span class="captionLabel">Figure1. </span> Percentage of patients with at least one documented smoking status during a two-year follow-up</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0001">
+   <div class="figureFootNote-f0001"></div>
+  </div>
+  <p></p>
+  <p>The proportion of never smokers varied between disease groups from 3% to 53% (<button class="ref showTableEventRef" data-id="t0001">Table 1</button>). Of COPD patients, 70% were classified as the current smokers in comparison to 25–36% in the other disease groups (<button class="ref showTableEventRef" data-id="t0001">Table 1</button>). Overall, the proportions of patients classified as current smokers decreased in all disease groups over the 9-year observation period. We compared the ratio of current smokers across the patient groups in years 2010–2011 (N&nbsp;=&nbsp;2043/5885, 34.7%) and 2015–2016 (N&nbsp;=&nbsp;1962/6411, 30.6%), and found a 4.1% decline in active smoking.</p>
+ </div>
+ <div id="s0003-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i17">Smoking cessation</h3>
+  <p>About half of the current smokers (49%) had discussed smoking cessation with the healthcare professional (<button class="ref showTableEventRef" data-id="t0002">Table 2</button>). When the currently smoking asthma patients were selected as the control group, smoking cessation was discussed 9% more frequently with COPD patients and 11% more frequently with type 1 diabetes patients. On few occasions had current smokers been referred to the nurse-managed smoking cessation programme. However, asthma, COPD and sleep apnoea patients had significantly more visits to the intervention nurse than the other patient groups (223/3324, 6.7% vs 55/3781, 1.5%, p &lt;&nbsp;0.001).</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Documentation of the patient’s smoking status in common chronic diseases – analysis of medical narrative reports using the ULMFiT based text classification</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Hirvonen%2C+Eveliina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Hirvonen%2C+Eveliina"><span class="NLM_given-names">Eveliina</span> Hirvonen</a> <a href="https://orcid.org/0000-0002-4921-3387"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Karlsson%2C+Antti"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Karlsson%2C+Antti"><span class="NLM_given-names">Antti</span> Karlsson</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Saaresranta%2C+Tarja"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saaresranta%2C+Tarja"><span class="NLM_given-names">Tarja</span> Saaresranta</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Laitinen%2C+Tarja"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Laitinen%2C+Tarja"><span class="NLM_given-names">Tarja</span> Laitinen</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/20018525.2021.2004664">https://doi.org/10.1080/20018525.2021.2004664</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Encouragement and active intervention for smoking cessation during a two-year follow-up among the current smokers</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F20018525.2021.2004664&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0003-s2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">Validation of the algorithms used</h3>
+  <p>The performance of the rule-based algorithm 1 in finding smoking-related sentences is shown in <button class="ref showTableEventRef" data-id="t0003">Table 3</button>. The ULMFiT-based classifier performed best for never smokers (F1-score 91.9). For the classification of ex-smokers and current smokers, the F1-scores were 80.4 and 78.5, respectively. The errors observed were related [<span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>1</a></span>] to the differentiation between current and former smoker [<span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>2</a></span>], to ambiguous expressions such as ‘the patient has a long smoking history’ and ‘the patient is an occasional smoker’, and [<span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>3</a></span>] to exposure to passive smoking. Among current smokers, an F1-score of the rule-based algorithm 2 (identifying sentences related to smoking cessation interventions) was 87.9.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Documentation of the patient’s smoking status in common chronic diseases – analysis of medical narrative reports using the ULMFiT based text classification</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Hirvonen%2C+Eveliina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Hirvonen%2C+Eveliina"><span class="NLM_given-names">Eveliina</span> Hirvonen</a> <a href="https://orcid.org/0000-0002-4921-3387"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Karlsson%2C+Antti"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Karlsson%2C+Antti"><span class="NLM_given-names">Antti</span> Karlsson</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Saaresranta%2C+Tarja"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saaresranta%2C+Tarja"><span class="NLM_given-names">Tarja</span> Saaresranta</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Laitinen%2C+Tarja"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Laitinen%2C+Tarja"><span class="NLM_given-names">Tarja</span> Laitinen</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/20018525.2021.2004664">https://doi.org/10.1080/20018525.2021.2004664</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Performance of the algorithms employed</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F20018525.2021.2004664&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i19" class="section-heading-2">Discussion</h2>
+ <p>In the present registry-based study, we report how often a patient’s smoking status and the conversation between the patient and the clinician about smoking cessation were documented in the narrative reports of EHR. A large number of reports of the patients with asthma, COPD, sleep apnoea, type 1 and 2 diabetes, IHD and cerebral infarction were followed for two years starting from their first visit to the Turku University Hospital due to the foregoing disease. We used a combination of rule-based and deep learning-based algorithms to extract and classify smoking statuses from written language of EHR. In 60% of patients, we found smoking status documented. On average, smoking status was documented significantly more frequently among the COPD (86%) and the sleep apnoea (83%) patients than in the rest of the patient groups (53%). Half of the patients classified as current smokers had discussed smoking cessation with the clinician. The trends over 9-year observation period showed that clinicians documented smoking status more often in years 2016–2018 than in years 2010–2012.</p>
+ <p>The Finnish EHRs include both structured and non-structured elements where smoking status is often documented in a non-structured manner. Many clinicians believe point-and-click EHR templates can limit their ability to capture the unique clinical story and to adequately document their medical decision-making process which is unique to each patient encounter [<span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>17</a></span>]. On the other hand, without validated language models and classifiers working in multiple languages, narrative reports might become a challenge for building the foundation for evidence-based medicine and clinical decision support needed in every hospital. In this study, we showed that the performance of the ULMFiT-based algorithm varied from good to excellent in classifying patients’ smoking status from Finnish narrative reports. Overall, ULMFiT and other deep learning-based approaches have shown to be promising tools in standardization of language used in narrative reports including abbreviations, acronyms, eponyms, slang and jargon words [<span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>18</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>19</a></span>]. An additional benefit of using this type of language model is that, once fine-tuned for Finnish medical narratives, the classifier can be further developed for other study needs.</p>
+ <p>Finnish clinical guidelines encourage the clinicians to ask patients about smoking and advise the smokers to quit [<span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>20</a></span>]. In Finland, 14% of people smoke daily [<span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>2</a></span>]. The overall decline in active smoking during the study years (4%) was similar what has been reported in general adult population [<span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>2</a></span>]. It is possible that documentation of smoking is most often missed when the patient does not smoke, since then no intervention is needed. Prior studies have reported that 44–95% of patients with asthma, COPD or diabetes have a smoking status documented in primary care EHR [<span class="ref-lnk lazy-ref"><a data-rid="cit0021 cit0022 cit0023 cit0024" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>21–24</a></span>]. Studies in secondary health care are scarce. Our study showed that clinicians ask smoking more frequently during recent years compared to before. The trends improved especially in the patient groups with the poorest documentation in the beginning of the study period. Due to the retrospective study design, the physicians or patients were not aware of the study, which increases the reliability of the results. Smoking status was documented most actively in patients with sleep apnoea and COPD. In the study hospital, asthma, sleep apnoea and COPD patients were treated by pulmonologists. It did not, however, explain the observed differences alone. Compared to other specialities, a pulmonologist may ask about smoking more systematically and the implementation of preliminary information forms some years ago have probably increased documentation activity. A recent study also found, that pulmonologists experience less barriers, such as lack of training, than the other specialists [<span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>25</a></span>]. In the present study, the minor proportion of patients had participated in the nurse-managed smoking cessation program. That is most likely due to that fact that the Finnish primary healthcare system has the main responsibility in counselling and managing smoking cessation programs. However, physicians working in secondary care should also use their authoritative role in supporting cessation [<span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>5</a></span>]. As a limitation, our study included patients only from one hospital and patients were classified only to one disease group based on the diagnosis that appeared first. This choice was made on the basis of making the patient group definitions and follow-up time definitions unique and simple. A more refined approach could be used in future studies</p>
+ <p>Previous studies have shown that, although physicians ask about smoking, they are less likely to offer practical advice to quit [<span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>25</a></span>]. In our study, 49% of current smokers had discussed smoking cessation with the physician. In addition to behavioural support, pharmacological treatment has also shown to increase the success rates in smoking cessation [<span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>26</a></span>]. First-line pharmacotherapies for smoking cessation include nicotine replacement therapy (NRT). Since NRT is based on over-the-counter products, it was unfortunately impossible for us to follow the treatment through hospital EHR. It is also possible that clinicians discussed smoking and smoking cessation with the patients more active than what was documented in EHR. The highest intervention rate was among patients with type 1 diabetes (61%). These patients were younger than those in the other disease groups that may affect the physician’s activity. However, it seems that the clinicians still miss opportunities to talk about the importance of smoking cessation on long-term outcomes. Prior studies have found that the knowledge, attitudes, interest, lack of time and confidence are the common reasons not to implement smoking cessation intervention more effectively [<span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>5</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>25</a></span>]. However, many specialists do not refer smokers to a cessation nurse either [<span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i21 _i23 _i24" href="#"><span class="off-screen">Citation</span>25</a></span>]. Interestingly, in our study, the proportion sleep apnoea patients who were currently smoking and were encouraged to quit smoking by the clinician, was 11% less compared to asthma patients despite more frequent documentation of smoking status. The reason for this finding is unclear. One could speculate that clinicians do not consider smoking in sleep apnoea patients as harmful as in asthma patients. Another reason might be that sleep apnoea patients are less likely to accept referral to a smoking cessation program due to the fear of gaining more weight after smoking cessation. Furthermore, patients’ interest, physicians’ unawareness of available services and disregard for shared responsibilities could explain the discrepancy.</p>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i20" class="section-heading-2">Conclusion</h2>
+ <p>In conclusion, even when the negative effects of smoking on treatment outcomes are well established, physicians still do not systematically document patients’ smoking status. Therefore, it is possible that they do not take potential smoking into account when monitoring therapy outcomes either. Secondly, EHRs are growing sources for real-world data studies increasing the need for natural language processing. In the present study, we showed that a deep learning-based ULMFiT classifier can detect and classify patients’ smoking status efficiently from medical narrative reports.</p>
+</div>

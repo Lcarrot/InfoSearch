@@ -1,0 +1,2551 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">Introduction</h2>
+ <p>As technology expands rapidly in the recent years, now every individual is using internet which provide the most significant way for e-shopping, e-learning, telemedicine and provide a social platform for communication and interactions between different people by using different social networking sites like Facebook, Twitter, Instagram, Blogs and many other that allow people to engage in discussion group and express their opinions with anonymity (Al-Smadi et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>; Lytos et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>; Vuong et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0043" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>). While dealing with social media, sentiment analysis is the most important task to understand the behavior and attitude of an individual toward a particular problem and get to know what the people actually think (Sailunaz and Alhajj <span class="ref-lnk lazy-ref"><a data-rid="cit0040" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>). Sentiment analysis analyze the emotions of the users behind text written by the user by using different machine learning technique like Natural Language Processing (NLP), text analytics, computational linguistics, and so on (Ananiadou, Thompson, and Nawaz <span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2013</a></span>; Xing, Pallucchini, and Cambria <span class="ref-lnk lazy-ref"><a data-rid="cit0044" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>).</p>
+ <p>Due to growing interaction of people with social networking sites, companies and organization are more interested in sentiment analysis to deploy winning marketing strategies, to target more customers, overcome their weaknesses and to compete the market (Luo, Huang, and Zhu <span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>). Companies are putting their efforts to understand what the individual consumer thinks about their product by extracting the emotions behind their words. Similarly, politicians are interested in what the public talk about them, their reputation, what media say about them, and so on, and this media text information is needed to calculate the probability to know who is going to win or lose the coming election. We can apply sentiment analysis on many other topics like sports, entertainment, medicine and harassment, and so on (Araque, Zhu, and Iglesias <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>; Jahangir et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2017</a></span>). Sentiment analysis become popular now a days because of using advance methods of NLP, data mining, data analysis, predictive study and contextual analysis of a document become a rising research area (Al-Ayyoub et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>).</p>
+ <p>European languages mainly English is considered as a rich language when we talk about the available of the resource and tools when desired to perform sentiment analysis, but there are several other languages that are consider poor resource language and unfortunately Roman Urdu is one of them. Pakistan national language is Urdu and Urdu is spoken and understood in five different areas of South Asia. So, it also requires standard corpora to perform any task related to NLP, but it is very difficult morphologically because the spoken of Urdu and Hindi are very similar and can be interpreted by the people of both the nations but their writing scripts are different. So, instead of using Urdu script, Roman Urdu (writing Urdu script using English alphabets) is preferred because the South Asian users (like Pakistan, India and other South Asian) usually interact on social media by using Roman Urdu scripts. For example, the Roman Urdu script for “what are you doing” goes as “ap kiya kr rahy hn.” Hence, the sentiment analysis for the Roman Urdu language is also very important because it helps non Urdu speaking users to understand the emotions of the Urdu speaking users behind text. And it is very helpful for the companies to expand their market at international level by understanding the sentiments of the international consumers. Sentiment analysis for Roman Urdu is important if South Asian market is needed to be target, because majority of the Urdu speakers express their emotions, ideas, thoughts and opinion by using Roman Urdu scripts. And we can see it on Facebook, Twitter and many other websites.</p>
+ <p>The proposed method is a novel model that can perform sentiment analysis for a language script which have high diversity in writing, Roman Urdu. The main target of this study is to achieve better accuracy by consuming less computational time. For this purpose, RUSA-19 Roman Urdu corpus is used, which is a collection of 10,021 sentences extracted from five different topics: drama, technology, food &amp; recipes, politics and sports. It’s a human annotator that is annotated and the evaluation is divided into three different classification groups: positive, negative and neutral.This paper is ordered into six different sections. In the next section, we will study some previous research related to sentiment analysis most importantly for Urdu language. In the third section, we will discuss more about RUSA-19 Roman Urdu corpus. Section four, we mainly concentrated on the methodology. Section five, we discusses the experimental results of our model designed to perform sentiment analysis of Roman Urdu text classification models. In Section 6 we will perform a comparative analysis and finally in Section 7 we will conclude the paper.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">Literature Review</h2>
+ <p>In 2019, the class imbalance problem is addressed. This problem in encountered while using the Machine Learning algorithms, it divides the classes into 2 categories one is a minor class (it contains fewer instances) and the other is a major class (it contains more instances). In some cases, an imbalance class problem affects the accuracy and sometimes it improves the results. In this paper cluster-based under-sampling technique is used, in this approach instances of the major class are converted into minor class, and they used 5 different clustering methods with the combination of ML and classification algorithms and 3 ensemble learning models. And the results show that the combination of these 4 techniques improved the predictive performance of the model (Onan <span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2022</a></span>). In 2016, the Auto-Keyword extraction problem is discussed and it’s an important domain of research in NLP. It helps to extract important features or words from a text document and provide precise information about the document. In this paper performance of five different models (Text-Rank algorithm, most frequent, co-occurrence, term frequency and eccentricity keyword extraction model) are evaluated with the help of ensemble and classification algorithms. According to the results, the conjunction of most-frequent keyword extraction and ensemble of Random Forest outperformed and achieved the highest accuracy of 94% for the ACM data set (Onan <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>). In 2019, the topic extraction problem is resolved, in the domain of data mining topic extraction plays an important role in the organization of the collected text. In this study, they proposed a two-stage topic extraction model (word embedding and cluster analysis). The conjunction of these 2 models was applied to the 160,421 abstracts with different genre like medical, data science, Artificial Intelligence, and so on. This model predicted the genre against each abstract and based on the results it is observed that the proposed model enhanced the accuracy and performance of the clustering algorithms (Onan, Korukoğlu, and Bulut <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2016</a></span>).</p>
+ <p>In 2015, research was carried out to compress the data obtained from social web mining by extracting important features to reduce processing time and improve the performance of the model. In this paper, they introduced the ensemble feature selection method to address this problem, they used different feature selection techniques and performed aggregation on each extracted feature list. For aggregation, they used a genetic algorithm. For the evaluation, k-mean cluster and Naive Bayes, algorithms are used, and the evaluation results show that the proposed technique improves the performance and efficiency of the genetic algorithm, and achieved 95% accuracy for the Naive Bayes classifier with the conjunction of the genetic algorithm (Onan <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>). In 2017, the extraction of subjective information from a robust data set is quite difficult to perform, but this information plays a key role in the performance of language processing models. In this study, they tried to overcome that problem by introducing the hybrid ensemble pruning technique with the combination of a clustering algorithm and randomized search. First, the classifier cluster the data based on their predictive features and then applied classification algorithms to each cluster, which ultimately reduced the search space. For the evaluation, they compared the proposed model with 3 different ensemble models and proves that their model outperformed the remaining models in terms of performance and accuracy (Onan and Korukoğlu <span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2016</a></span>). In 2020, an article was published that addressed sentiment analysis problem, and they combined different models like TF-IDF with CNN-LSTM model. This model comprises 5 different layers, and each layer playing an important role in better performance of the model, and these layers are weighted word embedding, CNN, max pooling and dense layer. For the model evaluation, different performance predictive techniques like GloVe, word2Vec, LDA2vec, fastText and DOC2vec were used. And they have observed that the combination of CNN and LSTM worked really good together, and they have achieved higher accuracy against their proposed model, which is 94% and its a huge achievements (Onan, Korukoğlu, and Bulut <span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p>
+ <p>In 2019, sentiment analysis was performed on student evaluations of teaching (SET) review dataset to improve their quality of education. They have used Recurrent Neural Network (RNN) model for sentiment analysis, with the conjunction of Convolutional ML algorithms, DL algorithms, and ensemble learning methods, and they have achieved 98% accuracy as a result (Onan <span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2020</a></span>). In 2020, massive open online courses (MOOC) review dataset were to understand the sentiments on the MOOC users. They have performed a comparative analysis between deep learning and ensemble learning models to present an efficient model in term of productivity and accuracy. And as a result they have achieved 95% accuracy for LSTM model with the conjunction of GolVe word embedding scheme (Onan <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>). In 2021, another study was carried out to identify sarcasm in the text document and they have introduced a weighted word embedding technique using tri-grams, to assign higher values to important words without losing word order. For this purpose, three layers of bi-directional LSTM were used for sarcastic text identification. To evaluate this model sarcasm text corpus was used with the help of fastText, word2Vec, and GloVe model. Term frequency and TF-IDF weighting functions were used for unsupervised learning. And they have achieved 95% accuracy for classification (Onan <span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2020</a></span>). In 2016, for efficient text genre, classification problem is discussed, and proposed a technique through which they can overcome this problem. And they have used an ensemble learning technique that combines the output of different classifiers to achieve a better classification, for its evaluation comparative analysis is performed among different feature extraction techniques like linguistic features, <i>n</i>-gram feature extraction, and authorship attribution with the help of 5 different learning algorithms like logistic regression (LR), support vector machines (SVM), Naive Bayes, Random Forest, k-mean cluster using LFA corpus. And they have achieved high predictive performance against their proposed scheme, that is 94% (Onan <span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2016</a></span>).</p>
+ <p>In 2019, research was carried out to handle sarcasm sentences while performing sentiment analysis. It’s a type of non-literal language, which is used to express negative emotions using positive literal meaning words. This study was mainly designed to improve the quality or performance of sentiment classification models by incorporating sarcasm sentences. For this purpose deep learning techniques like Word2vec, LDA2vec, GloVe word embedding and FastText were used. They have achieved very good accuracies and it was observed that LDA2Vec outperformed as compared to other embedding techniques and they have achieved 75–85% accuracy for subset number 1 to 6 (Onan and Tocoglu <span class="ref-lnk lazy-ref"><a data-rid="cit0037" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2021</a></span>). In the domain of text mining, another research was carried out in 2018, and they proposed a multi-functional classifier based n the swarm intelligence optimization (SO) technique. This model was mainly introduced to overcome the limitations of LDA (Latent Dirichlet Allocation), as LDA faces difficulty in handling high dimensional data. A hybrid approach was proposed that can handle diversity and multi-class clustering. The ensemble was combined to manage diversity among the classifiers and employed the SI algorithm on the combined diversity matrix. For the evaluation of SO-LDA different algorithms (GA, PSO, CSA) were used and it was observed that SO-LDA performed very well and efficiently overcome the limitations of the previous model (Onan <span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2022</a></span>). In 2016, sentiment analysis is performed on the micro blogging data set. Micro blogging data is collected from social networking sites it could be a short post, comment or message, and so on. Many techniques have been implemented in the literature that performed sentiment analysis on these micro blogging websites, but the results were not that satisfactory. In this study, they tried to achieve better accuracies in term of classification and topic identification, and they proposed a multi-model joint sentiment topic (MJST) with the conjunction of LDA that deeply analyze and classify based on the hidden topic. This technique not only classifies the text but also defines the personality of the author based on the writing. The experimental results prove the outstanding performance of the model in terms of accuracy (Onan <span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+ <p>In 2016, sentiment analysis is performed on the micro blogging data set. Micro blogging data is collected from social networking sites it could be a short post, comment or message, and so on. Many techniques have been implemented in the literature that performed sentiment analysis on these micro blogging websites, but the results were not that satisfactory. In this study, they tried to achieve better accuracies in term of classification and topic identification, and they proposed a multi-model joint sentiment topic (MJST) with the conjunction of LDA that deeply analyze and classify based on the hidden topic. This technique not only classifies the text but also defines the personality of the author based on the writing. The experimental results prove the outstanding performance of the model in terms of accuracy (Huang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2022</a></span>). In 2021, a really interesting study was performed, in which long short-term memory (LSTM) tried to improve. In literature, LSTM played an important role in the domain of sentiment analysis and text classification, but this model is not capable enough to capture emotion modulation effects while extracting features for sentiment analysis. To overcome its limitations, a new variant of LSTM was introduced by integrating emotional intelligence (EI) and named ELSTM. This model improved the feature extraction ability of the model and effectively performed emotion modulation by capturing structure patterns in the text (Huang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2021</a></span>).</p>
+ <div id="s0002-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i4">Brief Discussion on SemEval and Semantic Analysis</h3>
+  <p>In the literature a lot of work has been done in the domain of sentiment analysis and a series of SemEval corpora compilations are the most prominent attempt of literature that mainly work in the field of semantic analysis. For this purpose, huge corpora have been generated in Arabic and English language (Al-Ayyoub et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>). These corpora are mostly based on reviews, tweets, comments, messages, entertainment, technical products, food and restaurants. With time, the size of SemEval corpora increases by introducing versions of garner like 2013 the data-sets based on Twitter (split into 9728 training, 1654 development, and 3813 testing data-set) and 2093 SMS (sentenced based text). In 2014, version is based on Twitter data set with 86 bitterness tweets and a Live journal data set of about 1142. In 2016 and 2017, the data set is divided into 5 different subtasks and performed these four operations on each data set ((1) training, (2) development, (3) development testing and (4) testing). For A subtask 30,632 sized data-set was used, 17,639 for B and D, and 30,632 sized dataset was used for C and E subtask (Kiritchenko, Mohammad, and Salameh <span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2016</a></span>; Nawaz, Thompson, and Ananiadou <span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2013</a></span>).</p>
+  <p>The research of sentiment analysis has also been carried out in many other different languages like German, Italian, Korean and Indonesian. KOSAC is the Korean corpus based on 332 news articles. Parser1 is the German corpus created using Amazon reviews and it is a collection of 63,067 sentences (Safder and Hassan <span class="ref-lnk lazy-ref"><a data-rid="cit0039" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>). The Indonesian corpus was created using 5.3 Twitter tweets with the help of the twitter streaming API (Boland, Wira-Alam, and Messerschmidt <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2013</a></span>). Italian corpus is a collection of 2,648 sentences related to entertainment media like films and dramas. And the whole corpus was manually annotated and classified into five different sentiments like a negative, strong negative, neutral, positive, and strong positive (Zhang, Wang, and Liu <span class="ref-lnk lazy-ref"><a data-rid="cit0045" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2018</a></span>). Different methods have been used in previous work to process sentiment analysis. Both supervised (support vector machine (SVM)) and unsupervised (rule based) machine learning techniques have been applied to SemEval in 2014. It used the technique of determining the sentiment polarity of the sentence and based on that polarity score it classifies the data. If the polarity score is greater than 0, then it is positive; if it is smaller than 0, then it is negative; otherwise, it is neutral (Chen, Liu, and Chiu <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2011</a></span>). In version 2016 of SemEval, Gaussian Regression, Random Forest and Linear Regression techniques were used. To represent the influence of the positive emotion in a sentence, a supervised learning method is used to score between 0 and 1. Further, Spearman’s rank and Kendall’s rank were used to access the results (Attardi and Sartiano <span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2016</a></span>). In the publication of SemEval 2017, two different classification methods were used long short-term memory RNN (LSTM_RNN). It can study long-term dependencies and uses word indexes as input chains and machine-based learning used for feature representation by embedding words. Embedding is an advanced NLP system that relates and represents the phrases or words in a real number vector. For separating the data-set into classes SVM is used. Further, random forest technique is used to produce decision trees (El-Beltagy, Kalamawy, and Soliman <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p>
+  <p>Turney’s approach is another unsupervised technique called Thumbs up/thumbs down is used to perform semantic analysis. This method deals with adverbs and adjectives in the sentences and then further classified based on the word’s polarity (Chen, Liu, and Chiu <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2011</a></span>). Artificial Neural networks (ANN) also play an important role in the research of semantic analysis, ANN is also a retrieval technique, use to retrieve semantic information from the data-set and use to separate the data-set into positive, negative, and neutral or fuzzy classes (Naseem and Hussain <span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2007</a></span>). Gatti and Dos Santos suggested a technique based on a deep Convolutional Neural Network (deep CNN), this method performed semantic analysis on SemEval corpus by using the character to sentence-level information (Al-Amin, Islam, and Uzzal <span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2017</a></span>). In 2017, three classifier techniques have been used CNN, logistic regression (LR) and multi-layer perceptron model; this technique was implemented on the Twitter data-set which classifies the data based on message topics and message quantification (Attardi and Sartiano <span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2016</a></span>). In Feb 2020, Zainab and Iqra performed sentiment analysis on a manually generated Roman Urdu dataset and named it RUSA-19. They applied recurrent convolutional neural network (RCNN) model, rule-based approach, and Ngram model and they achieve very good accuracy. And we will discuss this in detail in the comparative analysis section. In 2020, another research was carried out by A. Arwa and B. Reem to investigate people’s opinion and utilize it to make better decisions. For this purpose, they used a Twitter dataset and applied machine learning algorithms to classify balanced and unbalanced datasets by using different classification algorithms. And it was observed that the performance of the model is directly proportional to the number of classes, the performance of the model decreases with the increase in the number of classes. And they have achieved very good accuracies for the balanced dataset by using Naïve Byes and ID3 models and for unbalanced datasets, classifiers like Random Forest, K-mean classifier, Decision and Random Tree performed very well (El-Beltagy, Kalamawy, and Soliman <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2017</a></span>). In 2011, another study was carried out to investigate Twitter user’s demographic information by using Twitter dataset. And the dataset consists of 184,000 Twitter users with labeled gender. And the dataset consists of 4 fields (text of the tweets, full name, screen name, and description). After applying classification algorithms, they have achieved 92% accuracy (Shamsi et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0041" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2021</a></span>).</p>
+ </div>
+ <div id="s0002-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">Semantic Analysis at Linguistic Level</h3>
+  <p>Based on the studies performed at the linguistic level to work on sentiment analysis, many poor-resource languages (like Hindi, Urdu, Arabic and Thai language) take part in this research. A Hindi annotated database has been created by using the polarity technique. With the help of this algorithm, they achieved 80.21% accuracy (Burger et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2011</a></span>). That is also considered an under-resourced language; in 2017, they proposed a machine learning technique to detect abusive words in the Thai language and they achieve 86.01% F-measure. Research in sentiment analysis based on the Bengali language was carried out on the Bengali comment data-set, and they used the Word2Vec technique to achieve 75.5% accuracy (Naseem and Hussain <span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2007</a></span>). In 2019, a machine learning approach was conducted for the Arabic dataset to perform sentiment analysis, and the dataset consists of more than 151,000 Arabic tweets labeled into two classes positive and negative. Algorithms like SVM, AdaBoost, Naive Bayes (NB) and Round Robin (RR) were used, a comparative analysis was performed between all of them and it is observed that RR outperformed in terms of accuracy if we compare it with other models, and AdaBoost is the least performer and achieved 80% accuracy (Al-Amin, Islam, and Uzzal <span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p>
+  <p>A study was executed by M. Nabel in 2015, to perform Sentiment Analysis of the Arabic dataset ASTD, which consists of more than 94,000 Arabic tweets. And sentiment analysis is performed with help of the SVM model and they have achieved 81% accuracy (Gamal et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>). In 2016, sentiment analysis was performed based on entertainment media mainly movie reviews. They used a dataset of more than 21,100 tweets of movie reviews. Date divided to perform training and testing then preprocessing techniques were applied and achieved 75% accuracy for SVM and 65% accuracy for NB model (Nabil, Aly, and Atiya <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2015</a></span>). In 2013, sentiment analysis and subjectivity analysis were performed to analyze the French tweets dataset to predict the French CAC40 stock market. The dataset consists of 1000 positive and negative French book reviews. For further processing, corpus is split into ¾ for training and testing and achieved 80% accuracy by applying the Neural Network model (Amolik et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2016</a></span>).</p>
+ </div>
+ <div id="s0002-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">Research Gap and Limitations</h3>
+  <p>Based on the literature review, none of the poor resource languages (like Hindi, Khmer, Arabic and Thai language) implemented the combinations of different variants of the Neural Network (NN) algorithm for task classification. Therefore, it is vital to work on this approach, especially to test poor resource language as we have done in our work. To achieve better performance in terms of accuracy, precision, recall and F measure was performed in minimum possible computational time.</p>
+ </div>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i7" class="section-heading-2">Methodology</h2>
+ <p>In this section, the proposed method of deep learning models of faster RCNN, rule based and n gram methods on the data-set RUSA-19 has been implemented.</p>
+ <div id="s0003-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i8">Faster Recurrent Convolutional Neural Network (Fast RCNN)</h3>
+  <p>The faster RCNN was mainly introduced to overcome the limitations of the traditional neural network models like RNN, CNN, and RCNN model. The RNN model examines the text token by token, extracts the text-based information from the given data, and stores them in the hidden layer. But the limitations of this model are that it only considers the most frequently used word of the sentence and generates a result based on these words, and it changes the overall sentiment of the text. To resolve that issue, CNN was presented with a max-pooling layer, and the RCNN model came into being as a hybrid of RNN and CNN model.</p>
+  <p>The polling layer of CNN works as a selector the select the important words from the text or sentence. But CNN uses a fix-sized search window which affects the learning speed of the CNN model. RCNN is considered as a computationally expensive model to train or test the data. To overcome the drawbacks of the RCNN model, the Fast RCNN model was introduced. But both (RCNN and Fast RCNN) use selective search techniques to find out region proposals, and as we know selective search is a time-consuming technique and we want better performance of the network.</p>
+  <p>A new model called faster RCNN was introduced to overcome the limitations of the previous models. This model eliminate the selective search algorithm and established a separate network for learning and prediction, and named it region proposal network (RPN), where regression and classification algorithms are embedded.</p>
+ </div>
+ <div id="s0003-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">Proposed Model Infrastructure</h3>
+  <p>The proposed model infrastructure consists of the following modules:</p>
+  <div id="s0003-s2002-s3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i10">Input</h4>
+   <p>RUSA-19 corpus is used as an input data set. It consists of Roman Urdu sentences collected from five different genres like entertainment media, sports, foods, medicine and technology.</p>
+  </div>
+  <div id="s0003-s2002-s3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i11">Pre-Processing</h4>
+   <p>Input data is pre-processed using different techniques like:</p>
+   <div id="s0003-s2002-s3002-s4001" class="NLM_sec NLM_sec_level_4">
+    <h5 class="section-heading-5" id="_i12">Tokenization</h5>
+    <p>Tokenization is a process of dividing the sentence into words or tokens with the count of their frequencies. As we can see in the <a href="#f0001">Figure 1</a>, we have a sentence “Zarorat ijad ki maa hai” and in the tokenization process whole sentence is divided into words with their frequency counts, here we have total of five words and every word have frequency count is 1, means no word is repeated.</p>
+    <div class="figure figureViewer" id="f0001">
+     <div class="hidden figureViewerArticleInfo">
+      <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+      <div class="articleAuthors articleInfoSection">
+       <div class="authorsHeading">
+        All authors
+       </div>
+       <div class="authors">
+        <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+       </div>
+      </div>
+      <div class="articleLowerInfo articleInfoSection">
+       <div class="articleLowerInfoSection articleInfoDOI">
+        <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+       </div>
+       <div class="articleInfoPublicationDate articleLowerInfoSection border">
+        <h6>Published online:</h6>26 September 2022
+       </div>
+      </div>
+     </div>
+     <div class="figureThumbnailContainer">
+      <div class="figureInfo">
+       <div class="short-legend">
+        <p class="captionText"><span class="captionLabel">Figure 1. </span> Tokenization example.</p>
+       </div>
+      </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/medium/uaai_a_2123094_f0001_oc.jpg" loading="lazy" height="148" width="500"></a>
+      <div class="figureDownloadOptions">
+       <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+      </div>
+     </div>
+    </div>
+    <div class="hidden rs_skip" id="fig-description-f0001">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> Tokenization example.</p>
+    </div>
+    <div class="hidden rs_skip" id="figureFootNote-f0001">
+     <div class="figureFootNote-f0001"></div>
+    </div>
+    <p></p>
+   </div>
+   <div id="s0003-s2002-s3002-s4002" class="NLM_sec NLM_sec_level_4">
+    <h5 class="section-heading-5" id="_i14">Lower Casing</h5>
+    <p>Lower casing is important because it helps to handle the data properly and remove the complexity. Here in the example we have “Z” and “I” is in caps in the original sentence so after applying lower casing technique all words will be in small <a href="#f0002">figure 2</a>.</p>
+    <div class="figure figureViewer" id="f0002">
+     <div class="hidden figureViewerArticleInfo">
+      <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+      <div class="articleAuthors articleInfoSection">
+       <div class="authorsHeading">
+        All authors
+       </div>
+       <div class="authors">
+        <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+       </div>
+      </div>
+      <div class="articleLowerInfo articleInfoSection">
+       <div class="articleLowerInfoSection articleInfoDOI">
+        <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+       </div>
+       <div class="articleInfoPublicationDate articleLowerInfoSection border">
+        <h6>Published online:</h6>26 September 2022
+       </div>
+      </div>
+     </div>
+     <div class="figureThumbnailContainer">
+      <div class="figureInfo">
+       <div class="short-legend">
+        <p class="captionText"><span class="captionLabel">Figure 2. </span> Lower casing example.</p>
+       </div>
+      </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0002image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/medium/uaai_a_2123094_f0002_oc.jpg" loading="lazy" height="146" width="500"></a>
+      <div class="figureDownloadOptions">
+       <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+      </div>
+     </div>
+    </div>
+    <div class="hidden rs_skip" id="fig-description-f0002">
+     <p class="captionText"><span class="captionLabel">Figure 2. </span> Lower casing example.</p>
+    </div>
+    <div class="hidden rs_skip" id="figureFootNote-f0002">
+     <div class="figureFootNote-f0002"></div>
+    </div>
+    <p></p>
+   </div>
+   <div id="s0003-s2002-s3002-s4003" class="NLM_sec NLM_sec_level_4">
+    <h5 class="section-heading-5" id="_i16">Stop Words</h5>
+    <p>This method reduces the data size by removing the useless words from the text and only considering the meaningful words as we can see in the figure it removes “hui, k, to,e” from the sentence. It is important to note that the meaning of the sentence should not be changed after removing the useless words (<a href="#f0003">Figure 3</a>).</p>
+    <div class="figure figureViewer" id="f0003">
+     <div class="hidden figureViewerArticleInfo">
+      <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+      <div class="articleAuthors articleInfoSection">
+       <div class="authorsHeading">
+        All authors
+       </div>
+       <div class="authors">
+        <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+       </div>
+      </div>
+      <div class="articleLowerInfo articleInfoSection">
+       <div class="articleLowerInfoSection articleInfoDOI">
+        <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+       </div>
+       <div class="articleInfoPublicationDate articleLowerInfoSection border">
+        <h6>Published online:</h6>26 September 2022
+       </div>
+      </div>
+     </div>
+     <div class="figureThumbnailContainer">
+      <div class="figureInfo">
+       <div class="short-legend">
+        <p class="captionText"><span class="captionLabel">Figure 3. </span> Stop word example.</p>
+       </div>
+      </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0003image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/medium/uaai_a_2123094_f0003_oc.jpg" loading="lazy" height="143" width="500"></a>
+      <div class="figureDownloadOptions">
+       <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+      </div>
+     </div>
+    </div>
+    <div class="hidden rs_skip" id="fig-description-f0003">
+     <p class="captionText"><span class="captionLabel">Figure 3. </span> Stop word example.</p>
+    </div>
+    <div class="hidden rs_skip" id="figureFootNote-f0003">
+     <div class="figureFootNote-f0003"></div>
+    </div>
+    <p></p>
+   </div>
+  </div>
+  <div id="s0003-s2002-s3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i18">RNN (Recurrent Neural Network)</h4>
+   <p>RNN is a bidirectional model and it is famous for of its forward and backward movement. Because of its bi-directional functionality it produce some result than take feedback and reproduce an improved result. We can say that RNN is a self-learning model and its accuracy increase with the increase in the number of recurrent steps (<a href="#f0004">Figure 4</a>).</p>
+   <div class="figure figureViewer" id="f0004">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>26 September 2022
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 4. </span> RNN (recurrent neural network) Model.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0004image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/medium/uaai_a_2123094_f0004_oc.jpg" loading="lazy" height="203" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0004">
+    <p class="captionText"><span class="captionLabel">Figure 4. </span> RNN (recurrent neural network) Model.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0004">
+    <div class="figureFootNote-f0004"></div>
+   </div>
+   <p></p>
+  </div>
+  <div id="s0003-s2002-s3004" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i20">RNN Feature Map</h4>
+   <p>Feature map extract the meaningful features out of the text for which further become the input of RPN model.</p>
+  </div>
+  <div id="s0003-s2002-s3005" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i21">RPN</h4>
+   <p>RPN is an important module of faster RCNN model because it plays an important role in term of consuming less computational power and execution time. It takes input from the Feature map and performs classification and regression operations on it and generates another feature map named as RPN based feature map.</p>
+  </div>
+  <div id="s0003-s2002-s3006" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i22">RPN Based Feature Map</h4>
+   <p>This is the new feature map generated based on the RPN output, which further becomes the input of Max pooling layer.</p>
+  </div>
+  <div id="s0003-s2002-s3007" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i23">Max Polling Layer</h4>
+   <p>Max pooling layer pol out the maximum weighted information out of the feature ma and ignore the low weighted information.</p>
+  </div>
+  <div id="s0003-s2002-s3008" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i24">FC (Full Connection Layer)</h4>
+   <p>It takes input from the Max layer and processes it in the fully connected layer, which further passes through the classification algorithms; here we are using binary and tertiary classification algorithms.</p>
+  </div>
+  <div id="s0003-s2002-s3009" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i25">Classifier (Binary and Tertiary Classifier)</h4>
+   <p>In the end, two classifiers are used binary (binary deals with two classes positive and negative) and tertiary (binary deals with three classes positive, negative and neutral). Comparative analysis is also performed to analyze the performance of these two classifiers (<a href="#f0005">Figure 5</a>).</p>
+   <div class="figure figureViewer" id="f0005">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>26 September 2022
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 5. </span> Architecture diagram of faster RCNN.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0005image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/medium/uaai_a_2123094_f0005_b.gif" loading="lazy" height="491" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0005">
+    <p class="captionText"><span class="captionLabel">Figure 5. </span> Architecture diagram of faster RCNN.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0005">
+    <div class="figureFootNote-f0005"></div>
+   </div>
+   <p></p>
+   <p>And generate a feature map out of it that extracts the feature and sends it to RPN (it plays an important role in the faster RCNN model, it is based on classification and regression algorithms) and it chooses selective data out of it or resized it. And its output becomes the input of the featured map, this map extracts features of the input data. Further Max pooling layer is applied to it, and it deals with mapping and pooling. Max pooling is used for utilizing a single feature map for all the proposals generated by RPN in a single pass.<disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0001.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          c
+         </mi>
+        </mrow>
+       </mrow><mi mathvariant="normal">
+        _
+       </mi><mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          l
+         </mi>
+        </mrow>
+       </mrow><mfenced open="(" close=")">
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            w
+           </mi>
+           <mi mathvariant="normal">
+            i
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+       </mfenced><mrow>
+        <mrow>
+         <mi>
+           
+         </mi>
+        </mrow>
+       </mrow><mo>
+        =
+       </mo><mrow>
+        <msub>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            f
+           </mi>
+          </mrow>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mrow>
+            <mi mathvariant="normal">
+             a
+            </mi>
+            <mi mathvariant="normal">
+             c
+            </mi>
+            <mi mathvariant="normal">
+             t
+            </mi>
+           </mrow>
+          </mrow>
+         </mrow>
+        </msub>
+       </mrow><mrow>
+        <mrow>
+         <mi>
+           
+         </mi>
+        </mrow>
+       </mrow><mfenced open="(" close=")">
+        <mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mrow>
+            <msup>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                W
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                l
+               </mi>
+              </mrow>
+             </mrow>
+            </msup>
+           </mrow>
+          </mrow>
+         </mfenced>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            c
+           </mi>
+          </mrow>
+         </mrow>
+         <mi mathvariant="normal">
+          _
+         </mi>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            l
+           </mi>
+          </mrow>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mrow>
+            <msub>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                w
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mrow>
+               <mrow>
+                <mi mathvariant="normal">
+                 i
+                </mi>
+               </mrow>
+              </mrow>
+              <mo>
+               −
+              </mo>
+              <mn>
+               1
+              </mn>
+             </mrow>
+            </msub>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mi>
+               
+             </mi>
+            </mrow>
+           </mrow>
+          </mrow>
+         </mfenced>
+         <mrow>
+          <mrow>
+           <mi>
+             
+           </mi>
+          </mrow>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <mrow>
+           <mi>
+             
+           </mi>
+          </mrow>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mrow>
+            <msup>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                W
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mrow>
+               <mrow>
+                <mi mathvariant="normal">
+                 s
+                </mi>
+                <mi mathvariant="normal">
+                 e
+                </mi>
+                <mi mathvariant="normal">
+                 m
+                </mi>
+               </mrow>
+              </mrow>
+              <mi mathvariant="normal">
+               _
+              </mi>
+              <mrow>
+               <mrow>
+                <mi mathvariant="normal">
+                 l
+                </mi>
+               </mrow>
+              </mrow>
+             </mrow>
+            </msup>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mi>
+               
+             </mi>
+            </mrow>
+           </mrow>
+          </mrow>
+         </mfenced>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            e
+           </mi>
+           <mi mathvariant="normal">
+            m
+           </mi>
+           <mi mathvariant="normal">
+            b
+           </mi>
+          </mrow>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mrow>
+            <msub>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                w
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mrow>
+               <mrow>
+                <mi mathvariant="normal">
+                 i
+                </mi>
+               </mrow>
+              </mrow>
+              <mo>
+               −
+              </mo>
+              <mn>
+               1
+              </mn>
+             </mrow>
+            </msub>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mi>
+               
+             </mi>
+            </mrow>
+           </mrow>
+          </mrow>
+         </mfenced>
+        </mrow>
+       </mfenced>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+    </disp-formula-group><disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0002.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          c
+         </mi>
+        </mrow>
+       </mrow><mi mathvariant="normal">
+        _
+       </mi><mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          r
+         </mi>
+        </mrow>
+       </mrow><mfenced open="(" close=")">
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            w
+           </mi>
+           <mi mathvariant="normal">
+            i
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+       </mfenced><mrow>
+        <mrow>
+         <mi>
+           
+         </mi>
+        </mrow>
+       </mrow><mo>
+        =
+       </mo><mrow>
+        <msub>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            f
+           </mi>
+          </mrow>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mrow>
+            <mi mathvariant="normal">
+             a
+            </mi>
+            <mi mathvariant="normal">
+             c
+            </mi>
+            <mi mathvariant="normal">
+             t
+            </mi>
+           </mrow>
+          </mrow>
+         </mrow>
+        </msub>
+       </mrow><mrow>
+        <mrow>
+         <mi>
+           
+         </mi>
+        </mrow>
+       </mrow><mfenced open="(" close=")">
+        <mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mrow>
+            <msup>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                W
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                r
+               </mi>
+              </mrow>
+             </mrow>
+            </msup>
+           </mrow>
+          </mrow>
+         </mfenced>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            c
+           </mi>
+          </mrow>
+         </mrow>
+         <mi mathvariant="normal">
+          _
+         </mi>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            r
+           </mi>
+          </mrow>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mrow>
+            <msub>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                w
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mrow>
+               <mrow>
+                <mi mathvariant="normal">
+                 i
+                </mi>
+               </mrow>
+              </mrow>
+              <mo>
+               −
+              </mo>
+              <mn>
+               1
+              </mn>
+             </mrow>
+            </msub>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mi>
+               
+             </mi>
+            </mrow>
+           </mrow>
+          </mrow>
+         </mfenced>
+         <mrow>
+          <mrow>
+           <mi>
+             
+           </mi>
+          </mrow>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <mrow>
+           <mi>
+             
+           </mi>
+          </mrow>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mrow>
+            <msup>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                W
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mrow>
+               <mrow>
+                <mi mathvariant="normal">
+                 s
+                </mi>
+                <mi mathvariant="normal">
+                 e
+                </mi>
+                <mi mathvariant="normal">
+                 m
+                </mi>
+               </mrow>
+              </mrow>
+              <mi mathvariant="normal">
+               _
+              </mi>
+              <mrow>
+               <mrow>
+                <mi mathvariant="normal">
+                 r
+                </mi>
+               </mrow>
+              </mrow>
+             </mrow>
+            </msup>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mi>
+               
+             </mi>
+            </mrow>
+           </mrow>
+          </mrow>
+         </mfenced>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            e
+           </mi>
+           <mi mathvariant="normal">
+            m
+           </mi>
+           <mi mathvariant="normal">
+            b
+           </mi>
+          </mrow>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mrow>
+            <msub>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                w
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mrow>
+               <mrow>
+                <mi mathvariant="normal">
+                 i
+                </mi>
+               </mrow>
+              </mrow>
+              <mo>
+               −
+              </mo>
+              <mn>
+               1
+              </mn>
+             </mrow>
+            </msub>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mi>
+               
+             </mi>
+            </mrow>
+           </mrow>
+          </mrow>
+         </mfenced>
+        </mrow>
+       </mfenced>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+    </disp-formula-group></p>
+   <p>At training time, the data is labeled into three classes positive (1) negative (2) and neutral (0) based on the conditions that we discussed in chapter 3 (3.3 Annotation process).</p>
+   <p><a href="#m0001">Equations (1)</a> and (<a href="#m0002">2</a>) are used to perform the left context c_l(wi) and right context c_r(wi) for the word Wi. And word embedding is calculated on wi represented as emb(<span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_ilm0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           w
+          </mi>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            i
+           </mi>
+          </mrow>
+         </mrow>
+         <mo>
+          −
+         </mo>
+         <mn>
+          1
+         </mn>
+        </mrow>
+       </msub>
+      </mrow>
+     </math></span>). <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_ilm0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msup>
+        <mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           W
+          </mi>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           l
+          </mi>
+         </mrow>
+        </mrow>
+       </msup>
+      </mrow>
+     </math></span> represents the matrix that transforms the hidden layer to the next hidden layer. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_ilm0003.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msup>
+        <mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           W
+          </mi>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            s
+           </mi>
+           <mi mathvariant="normal">
+            e
+           </mi>
+           <mi mathvariant="normal">
+            m
+           </mi>
+          </mrow>
+         </mrow>
+         <mi mathvariant="normal">
+          _
+         </mi>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            l
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+       </msup>
+      </mrow>
+     </math></span> It combines the current word I semantics with c_l and is a nonlinear activation function<disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0003.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        x
+       </mi><mi>
+        i
+       </mi><mo>
+        =
+       </mo><mfenced open="[" close="]">
+        <mrow>
+         <mrow>
+          <msub>
+           <mrow>
+            <mrow>
+             <mrow>
+              <mi>
+               C
+              </mi>
+             </mrow>
+            </mrow>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mrow>
+              <mi mathvariant="bold">
+               v
+              </mi>
+              <mi mathvariant="bold">
+               l
+              </mi>
+             </mrow>
+            </mrow>
+           </mrow>
+          </msub>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mi>
+            W
+           </mi>
+           <mi>
+            i
+           </mi>
+          </mrow>
+         </mfenced>
+         <mo>
+          :
+         </mo>
+         <mi>
+          e
+         </mi>
+         <mi>
+          m
+         </mi>
+         <mi>
+          b
+         </mi>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mi>
+            W
+           </mi>
+           <mi>
+            i
+           </mi>
+          </mrow>
+         </mfenced>
+         <mo>
+          ;
+         </mo>
+         <mrow>
+          <msub>
+           <mrow>
+            <mrow>
+             <mrow>
+              <mi>
+               C
+              </mi>
+             </mrow>
+            </mrow>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mrow>
+              <mi mathvariant="bold">
+               v
+              </mi>
+              <mi mathvariant="bold">
+               r
+              </mi>
+             </mrow>
+            </mrow>
+           </mrow>
+          </msub>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mi>
+            W
+           </mi>
+           <mi>
+            i
+           </mi>
+          </mrow>
+         </mfenced>
+        </mrow>
+       </mfenced>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+    </disp-formula-group></p>
+   <p>In <a href="#m0003">Equation (3)</a>, concatenation of context vector are performed for left context<span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_ilm0004.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           C
+          </mi>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            v
+           </mi>
+           <mi mathvariant="normal">
+            l
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+       </msub>
+      </mrow>
+     </math></span>, word embedding emb(Wi) and right context <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_ilm0005.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           C
+          </mi>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            v
+           </mi>
+           <mi mathvariant="normal">
+            r
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+       </msub>
+      </mrow>
+     </math></span>.</p>
+   <p>In the next step, tanh activation function is applied to generate a semantic vector that contains important semantics of the text. And this semantic vector becomes an input of the Region Proposal Network RPN. The goal of RPN is to generate a set score of its probability of being related to a particular class.</p>
+   <p>The output of RPN is based on a features map, and the projected featured map of RPN became the input of the max pooling layer. It takes two inputs one from RNN and the other from RPN as shown in <a href="#m0004">Equation. (4)</a>.<disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0004.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          y
+         </mi>
+        </mrow>
+       </mrow><mi mathvariant="normal">
+        _
+       </mi><mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          i
+         </mi>
+        </mrow>
+       </mrow><mo>
+        =
+       </mo><mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          M
+         </mi>
+         <mi mathvariant="normal">
+          a
+         </mi>
+         <mi mathvariant="normal">
+          x
+         </mi>
+        </mrow>
+       </mrow><mfenced open="[" close="]">
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            t
+           </mi>
+           <mi mathvariant="normal">
+            a
+           </mi>
+           <mi mathvariant="normal">
+            n
+           </mi>
+           <mi mathvariant="normal">
+            h
+           </mi>
+          </mrow>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mrow>
+            <msup>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                W
+               </mi>
+              </mrow>
+             </mrow>
+             <mn>
+              1
+             </mn>
+            </msup>
+           </mrow>
+           <mrow>
+            <msub>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                x
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                i
+               </mi>
+              </mrow>
+             </mrow>
+            </msub>
+           </mrow>
+           <mo>
+            +
+           </mo>
+           <mrow>
+            <msup>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                c
+               </mi>
+              </mrow>
+             </mrow>
+             <mn>
+              1
+             </mn>
+            </msup>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mi>
+               
+             </mi>
+            </mrow>
+           </mrow>
+          </mrow>
+         </mfenced>
+         <mrow>
+          <mrow>
+           <mi>
+             
+           </mi>
+          </mrow>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            R
+           </mi>
+           <mi mathvariant="normal">
+            P
+           </mi>
+           <mi mathvariant="normal">
+            N
+           </mi>
+          </mrow>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mrow>
+            <msup>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                W
+               </mi>
+              </mrow>
+             </mrow>
+             <mn>
+              1
+             </mn>
+            </msup>
+           </mrow>
+           <mrow>
+            <msub>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                x
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                i
+               </mi>
+              </mrow>
+             </mrow>
+            </msub>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mi>
+               
+             </mi>
+            </mrow>
+           </mrow>
+           <mo>
+            +
+           </mo>
+           <mrow>
+            <msup>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                c
+               </mi>
+              </mrow>
+             </mrow>
+             <mn>
+              1
+             </mn>
+            </msup>
+           </mrow>
+          </mrow>
+         </mfenced>
+         <mrow>
+          <mrow>
+           <mi>
+             
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+       </mfenced>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+    </disp-formula-group></p>
+   <p>In <a href="#m0005">Equation (5)</a>, helps to compute the output layer.<disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0005.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0005" class="disp-formula-label">(5) </span></span></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          Y
+         </mi>
+        </mrow>
+       </mrow><mi mathvariant="normal">
+        _
+       </mi><mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          i
+         </mi>
+        </mrow>
+       </mrow><mo>
+        =
+       </mo><mrow>
+        <mrow>
+         <mi>
+           
+         </mi>
+        </mrow>
+       </mrow><mfenced open="(" close=")">
+        <mrow>
+         <mrow>
+          <msup>
+           <mrow>
+            <mrow>
+             <mi mathvariant="normal">
+              W
+             </mi>
+            </mrow>
+           </mrow>
+           <mn>
+            2
+           </mn>
+          </msup>
+         </mrow>
+         <mrow>
+          <msub>
+           <mrow>
+            <mrow>
+             <mi mathvariant="normal">
+              x
+             </mi>
+            </mrow>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mi mathvariant="normal">
+              i
+             </mi>
+            </mrow>
+           </mrow>
+          </msub>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mi>
+             
+           </mi>
+          </mrow>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <mrow>
+           <mi>
+             
+           </mi>
+          </mrow>
+         </mrow>
+         <mrow>
+          <msup>
+           <mrow>
+            <mrow>
+             <mi mathvariant="normal">
+              c
+             </mi>
+            </mrow>
+           </mrow>
+           <mn>
+            1
+           </mn>
+          </msup>
+         </mrow>
+        </mrow>
+       </mfenced>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0005" class="disp-formula-label">(5) </span></span></span></span>
+    </disp-formula-group></p>
+   <p><a href="#m0005">Equation 5</a> is further passed in <a href="#m0006">Equation 6</a> through a softmax function which produce results in the form of probability which is further classified in classes.<disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0006.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0006" class="disp-formula-label">(6) </span></span></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          P
+         </mi>
+        </mrow>
+       </mrow><mi mathvariant="normal">
+        _
+       </mi><mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          i
+         </mi>
+        </mrow>
+       </mrow><mo>
+        =
+       </mo><mrow>
+        <mfrac>
+         <mrow>
+          <mrow>
+           <msub>
+            <mrow>
+             <mrow>
+              <mi mathvariant="normal">
+               Y
+              </mi>
+             </mrow>
+            </mrow>
+            <mrow>
+             <mrow>
+              <mi mathvariant="normal">
+               k
+              </mi>
+             </mrow>
+            </mrow>
+           </msub>
+          </mrow>
+         </mrow>
+         <mrow>
+          <msubsup>
+           <mrow>
+            <mo>
+             ∑
+            </mo>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mrow>
+              <mi mathvariant="normal">
+               k
+              </mi>
+             </mrow>
+            </mrow>
+            <mo>
+             =
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mi mathvariant="normal">
+              n
+             </mi>
+            </mrow>
+           </mrow>
+          </msubsup>
+          <mrow>
+           <msub>
+            <mrow>
+             <mrow>
+              <mi mathvariant="normal">
+               Y
+              </mi>
+             </mrow>
+            </mrow>
+            <mrow>
+             <mrow>
+              <mi mathvariant="normal">
+               k
+              </mi>
+             </mrow>
+            </mrow>
+           </msub>
+          </mrow>
+         </mrow>
+        </mfrac>
+       </mrow>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0006" class="disp-formula-label">(6) </span></span></span></span>
+    </disp-formula-group></p>
+  </div>
+ </div>
+ <div id="s0003-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i33">3.3. Annotation Process</h3>
+  <p>Different rules were designed to annotate data and the collected data are annotated after defining rules of annotation. The whole corpus is classified into three different classes, positive, negative and neutral class. The descriptions of these classes are discussed below.</p>
+  <div id="s0003-s2003-s3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i34">Positive Class</h4>
+   <p>As we are dealing with the review, so we can call positive class as a positive_review and in our model we represented positive class as 1. There are certain rules that define a particular sentence as a positive class sentence and the rules are following:</p>
+   <ul class="NLM_list NLM_list-list_type-bullet" id="list_0001">
+    <li><p class="inline">If the sentence shows positive emotion in all aspect (Martin <span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2013</a></span>).</p></li>
+    <li><p class="inline">Sentence is positive, in the existence of an agreement of approval</p></li>
+    <li><p class="inline">If the given sentence expresses both positive and neutral emotions, then it is classified as positive. Positive dominates over negative sentiment.</p></li>
+    <li><p class="inline">Sentences with words like admiration, thank you, greetings are considered as positive.</p></li>
+   </ul>
+   <p></p>
+   <p><a href="#f0006">Figure 6</a> represents the positive class; here a sentence used “Mubarak ho islamabad ki shandar kamiyabi k leye.” In this sentence, we have total 8 words and according to the rules out of 8 words 3 words (Mubarak, shandar, kamiyabi) belongs to positive class, and 3 (ho, ki, k, leye) are the stop words. As we can see no negative word is used in this sentence, so we can predict that the review or sentence is positive.</p>
+   <div class="figure figureViewer" id="f0006">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>26 September 2022
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 6. </span> Positive class example.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0006image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/medium/uaai_a_2123094_f0006_oc.jpg" loading="lazy" height="153" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0006">
+    <p class="captionText"><span class="captionLabel">Figure 6. </span> Positive class example.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0006">
+    <div class="figureFootNote-f0006"></div>
+   </div>
+   <p></p>
+  </div>
+  <div id="s0003-s2003-s3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i36">Negative Class</h4>
+   <p>A Negative class data is also called negative_review and in our model we represented it with 2. Following are the rules that define a review as negative class review.</p>
+   <ul class="NLM_list NLM_list-list_type-bullet" id="list_0002">
+    <li><p class="inline">If the sentence shows negative emotions is all aspect (Pontiki et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2016</a></span>).</p></li>
+    <li><p class="inline">If negative sentiments are more than the other sentiment then it is labeled as negative sentiments.</p></li>
+    <li><p class="inline">A sentence is considered as negative, if un-softened disagreements are used (Javed et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2014</a></span>).</p></li>
+    <li><p class="inline">Terms like boycott, punishing, and judging make the verdicts negative (Javed et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2014</a></span>)</p></li>
+    <li><p class="inline">Negation of positive adjective make the sentence negative (Ganapathibhotla and Liu <span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2008</a></span>), because negation in a sentence is considered as a sentence with negative emotions.</p></li>
+   </ul>
+   <p></p>
+   <p><a href="#f0007">Figure 7</a> exemplifies the negative class, “ye team kabhi nahi jeet sakti”; in this sentence, we have total 6 words and based on the rules, “nahi” is a negative word and the word “kabhi” increases the intensity of negativity. And collectively it makes the whole sentence negative.</p>
+   <div class="figure figureViewer" id="f0007">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>26 September 2022
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 7. </span> Negative class example.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0007image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/medium/uaai_a_2123094_f0007_oc.jpg" loading="lazy" height="139" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0007">
+    <p class="captionText"><span class="captionLabel">Figure 7. </span> Negative class example.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0007">
+    <div class="figureFootNote-f0007"></div>
+   </div>
+   <p></p>
+  </div>
+  <div id="s0003-s2003-s3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i38">Neutral Class</h4>
+   <p>Reviews of neutral class are also called neutral reviews, represented as 0. Following are the conditions:</p>
+   <ul class="NLM_list NLM_list-list_type-bullet" id="list_0003">
+    <li><p class="inline">Information based on facts consider as neutral sentence (Boland, Wira-Alam and Messerschmidt <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2013</a></span>).</p></li>
+    <li><p class="inline">Sentence is neutral, if it is grounded on thoughts (Turney <span class="ref-lnk lazy-ref"><a data-rid="cit0042" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2002</a></span>).</p></li>
+    <li><p class="inline">A sentences with fuzziness or less surety are marked neutral sentences [3]</p></li>
+    <li><p class="inline">Sentences with mix sentiment are considered as a neutral sentence (Lytos, Lagkas, Sarigiannidis and Bontcheva <span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i57 _i58" href="#"><span class="off-screen">Citation</span>2019</a></span>).</p></li>
+   </ul>
+   <p></p>
+   <p><a href="#f0008">Figure 8</a> is a neutral class example; here the sentence used is “Lahore har gaya magar game achi thi” this sentence consist of 7 words, “har gaya” shows negativity and “game achi” shows positivity, hence the number of positive words is equal to negative words, so they cancel out each other’s effect and make the sentence neutral.</p>
+   <div class="figure figureViewer" id="f0008">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>26 September 2022
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 8. </span> Neutral class example.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0008image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/medium/uaai_a_2123094_f0008_oc.jpg" loading="lazy" height="145" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0008">
+    <p class="captionText"><span class="captionLabel">Figure 8. </span> Neutral class example.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0008">
+    <div class="figureFootNote-f0008"></div>
+   </div>
+   <p></p>
+   <p>These are the three classes, in which the whole corpus is divided. Different rules are defined to annotate the data and all the rules are taken from the literature.</p>
+  </div>
+ </div>
+ <div id="s0003-s2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i40">Corpus Statistics</h3>
+  <p>RUSA-19 corpus is divided into 9 different statistics positive, negative, neutral reviews, number of reviews, tokens, and types, reviews maximum, minimum and average length with their counts. This corpus contains of 10,021 Roman Urdu reviews from five different genres, of which positive reviews are 3778 which equals to 38% of the corpus; 2941 negative reviews equivalent to 29%; and 3302 neutral reviews equals to 33% of the corpus.</p>
+  <p><button class="ref showTableEventRef" data-id="t0001">Table 1</button> shows the results obtained from previous related work and <button class="ref showTableEventRef" data-id="t0002">Table 2</button> shows the results obtaied from previous work at the linguistic level. As shown in <button class="ref showTableEventRef" data-id="t0003">Table 3</button>, the number of tokens in our corpus is 1,46,558 for 10,021 reviews and out of 1,46,558 tokens, we have 21,750 unique words named as “Types.” Minimum length of a review sentences is 1 word, Average length is 15 words and maximum length is 154 words.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Result obtained from previous related work.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F08839514.2022.2123094&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Result obtained from previous work at the linguistic level.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F08839514.2022.2123094&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Corpus Statistics.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F08839514.2022.2123094&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0003-s2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i41">Initial Conditions</h3>
+  <p>For sentiment analysis, standard parameters were designed to setup this model and used as an initial parameter and these are following:</p>
+ </div>
+ <div id="s0003-s2006" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i42">Evaluation Measure</h3>
+  <p>In this research, two different set of experiments (tertiary and binary classification) were performed on the same data set with the help of our suggested model faster RCNN. We implemented rule-based technique for the comparative analysis of both the experiments. For this purpose, we divide the data set, binary classification method used 6720 Roman Urdu sentences from RUSA-19 corpus and Tertiary used 10,020 sentences.</p>
+  <p><button class="ref showTableEventRef" data-id="t0004">Table 4</button> shows the initial parameters of Faster RCNN model. Further, <i>n</i>-gram mode is used to evaluate rule-based approach It simply tokenize the words into tokens, which act as our lexicons and used as input to perform polarity detection. And the output of this model is further used to evaluate accuracy, recall, F measure and precision. The following <button class="ref showTableEventRef" data-id="t0005">Table 5</button> describes all of the special symbols that we will use for the evaluation. <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0007.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0007" class="disp-formula-label">(7) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         a
+        </mi>
+        <mi mathvariant="normal">
+         c
+        </mi>
+        <mi mathvariant="normal">
+         c
+        </mi>
+        <mi mathvariant="normal">
+         u
+        </mi>
+        <mi mathvariant="normal">
+         r
+        </mi>
+        <mi mathvariant="normal">
+         a
+        </mi>
+        <mi mathvariant="normal">
+         c
+        </mi>
+        <mi mathvariant="normal">
+         y
+        </mi>
+       </mrow>
+      </mrow><mo>
+       =
+      </mo><mrow>
+       <mrow>
+        <mi>
+          
+        </mi>
+       </mrow>
+      </mrow><mrow>
+       <mfrac>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            T
+           </mi>
+           <mi mathvariant="normal">
+            p
+           </mi>
+          </mrow>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            T
+           </mi>
+           <mi mathvariant="normal">
+            n
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            T
+           </mi>
+           <mi mathvariant="normal">
+            p
+           </mi>
+          </mrow>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            T
+           </mi>
+           <mi mathvariant="normal">
+            n
+           </mi>
+          </mrow>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            F
+           </mi>
+           <mi mathvariant="normal">
+            p
+           </mi>
+          </mrow>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            F
+           </mi>
+           <mi mathvariant="normal">
+            n
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0007" class="disp-formula-label">(7) </span></span></span></span>
+   </disp-formula-group><disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0008.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0008.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0008" class="disp-formula-label">(8) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         r
+        </mi>
+        <mi mathvariant="normal">
+         e
+        </mi>
+        <mi mathvariant="normal">
+         c
+        </mi>
+        <mi mathvariant="normal">
+         a
+        </mi>
+        <mi mathvariant="normal">
+         l
+        </mi>
+        <mi mathvariant="normal">
+         l
+        </mi>
+       </mrow>
+      </mrow><mo>
+       =
+      </mo><mrow>
+       <mrow>
+        <mi>
+          
+        </mi>
+       </mrow>
+      </mrow><mrow>
+       <mfrac>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            T
+           </mi>
+           <mi mathvariant="normal">
+            p
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            T
+           </mi>
+           <mi mathvariant="normal">
+            p
+           </mi>
+          </mrow>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            F
+           </mi>
+           <mi mathvariant="normal">
+            n
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0008" class="disp-formula-label">(8) </span></span></span></span>
+   </disp-formula-group><disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0009.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0009.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0009" class="disp-formula-label">(9) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         p
+        </mi>
+        <mi mathvariant="normal">
+         r
+        </mi>
+        <mi mathvariant="normal">
+         e
+        </mi>
+        <mi mathvariant="normal">
+         c
+        </mi>
+        <mi mathvariant="normal">
+         i
+        </mi>
+        <mi mathvariant="normal">
+         o
+        </mi>
+        <mi mathvariant="normal">
+         n
+        </mi>
+       </mrow>
+      </mrow><mo>
+       =
+      </mo><mrow>
+       <mrow>
+        <mi>
+          
+        </mi>
+       </mrow>
+      </mrow><mrow>
+       <mfrac>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            T
+           </mi>
+           <mi mathvariant="normal">
+            p
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            T
+           </mi>
+           <mi mathvariant="normal">
+            p
+           </mi>
+          </mrow>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            F
+           </mi>
+           <mi mathvariant="normal">
+            p
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0009" class="disp-formula-label">(9) </span></span></span></span>
+   </disp-formula-group><disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0010.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/uaai_a_2123094_m0010.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0010" class="disp-formula-label">(10) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         F
+        </mi>
+        <mspace width="thinmathspace"></mspace>
+        <mi mathvariant="normal">
+         m
+        </mi>
+        <mi mathvariant="normal">
+         e
+        </mi>
+        <mi mathvariant="normal">
+         a
+        </mi>
+        <mi mathvariant="normal">
+         s
+        </mi>
+        <mi mathvariant="normal">
+         u
+        </mi>
+        <mi mathvariant="normal">
+         r
+        </mi>
+        <mi mathvariant="normal">
+         e
+        </mi>
+       </mrow>
+      </mrow><mo>
+       =
+      </mo><mn>
+       2
+      </mn><mrow>
+       <mrow>
+        <mo>
+         ∗
+        </mo>
+       </mrow>
+      </mrow><mrow>
+       <mfrac>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            p
+           </mi>
+           <mi mathvariant="normal">
+            r
+           </mi>
+           <mi mathvariant="normal">
+            e
+           </mi>
+           <mi mathvariant="normal">
+            c
+           </mi>
+           <mi mathvariant="normal">
+            i
+           </mi>
+           <mi mathvariant="normal">
+            s
+           </mi>
+           <mi mathvariant="normal">
+            o
+           </mi>
+           <mi mathvariant="normal">
+            n
+           </mi>
+           <mo>
+            ∗
+           </mo>
+           <mi mathvariant="normal">
+            r
+           </mi>
+           <mi mathvariant="normal">
+            e
+           </mi>
+           <mi mathvariant="normal">
+            c
+           </mi>
+           <mi mathvariant="normal">
+            a
+           </mi>
+           <mi mathvariant="normal">
+            l
+           </mi>
+           <mi mathvariant="normal">
+            l
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            p
+           </mi>
+           <mi mathvariant="normal">
+            r
+           </mi>
+           <mi mathvariant="normal">
+            e
+           </mi>
+           <mi mathvariant="normal">
+            c
+           </mi>
+           <mi mathvariant="normal">
+            i
+           </mi>
+           <mi mathvariant="normal">
+            s
+           </mi>
+           <mi mathvariant="normal">
+            o
+           </mi>
+           <mi mathvariant="normal">
+            n
+           </mi>
+          </mrow>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            r
+           </mi>
+           <mi mathvariant="normal">
+            e
+           </mi>
+           <mi mathvariant="normal">
+            c
+           </mi>
+           <mi mathvariant="normal">
+            a
+           </mi>
+           <mi mathvariant="normal">
+            l
+           </mi>
+           <mi mathvariant="normal">
+            l
+           </mi>
+          </mrow>
+         </mrow>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0010" class="disp-formula-label">(10) </span></span></span></span>
+   </disp-formula-group></p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 4. </span> Faster RCNN model initial parameters.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0004&amp;doi=10.1080%2F08839514.2022.2123094&amp;downloadType=CSV"> Download CSV</a><a data-id="t0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 5. </span> Special symbols description used for evaluation.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0005-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0005&amp;doi=10.1080%2F08839514.2022.2123094&amp;downloadType=CSV"> Download CSV</a><a data-id="t0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>These are the formulas of accuracy, recall, precision and F measure, which are used for evaluation of the proposed model.</p>
+ </div>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i47" class="section-heading-2">Results and Discussion</h2>
+ <p>This section describes the performance and effectiveness of the faster RCNN model based on the results of the experiments. And comparative analysis is performed between faster RCNN, RCNN, rule-based approach and <i>N</i>-gram model on the base of their experimental results. Same data set is used in all models; binary and tertiary classification is performed in every model.</p>
+ <div id="s0004-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i48">Faster RCNN Results and Evaluation</h3>
+  <p>According to <button class="ref showTableEventRef" data-id="t0006">Table 6</button>, using faster RCNN we achieved 0.9173 accuracy, 0.9083 precision, 0.9124 recalls and 0.9175 F1 score for binary classification. And for tertiary classification, we achieved 0.8994 accuracy, 0.08873 precision, 0.08875 recall and 0.8987 F1 score. It is observed that, faster RCNN model outperforms the RCNN, rule-based approach and <i>N</i>-gram model. But if we compare the binary and tertiary classification results, it is observed that the performance of faster RCNN for binary classification is far better than tertiary classification. We observed that, tertiary performed poorly for all models, and there could be multiple reasons behind its poor performance. It could be because of more number of classes or it could be because of more number of sentences with longer length.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 6. </span> Comparative analysis of faster RCNN model for binary and tertiary classification experiment.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0006-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0006&amp;doi=10.1080%2F08839514.2022.2123094&amp;downloadType=CSV"> Download CSV</a><a data-id="t0006" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0004-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i49">Comparative Analysis</h3>
+  <p>Deep comparative analysis is performed in this section, where we have compared our research model faster RCNN with previously implemented RCNN, rule-based approach and <i>N</i>-gram model on the same data set. The result of our model and remaining models are listed below in <button class="ref showTableEventRef" data-id="t0007">Table 7</button>. According to <button class="ref showTableEventRef" data-id="t0007">Table 7</button>, we can see that our model outperformed as compared to other models for both binary and tertiary classification.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 7. </span> Comparative analysis of faster RCNN model with RCNN, rule-based approach and <i>N</i>-gram model for binary and tertiary classification.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0007-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0007&amp;doi=10.1080%2F08839514.2022.2123094&amp;downloadType=CSV"> Download CSV</a><a data-id="t0007" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>In <button class="ref showTableEventRef" data-id="t0007">Table 7</button>, we can observe that faster RCNN is performing far better than RCNN, rule-based approach and <i>N</i>-gram model, in term of accuracy, precision, recall and F1 measure.</p>
+  <p><a href="#f0009">Figure 9</a> shows the performance of faster RCNN, RCNN, rule-based approach and <i>N</i>-gram model for binary classification and <a href="#f0004">Figure 4</a> shows the performance of these models for binary classification. And it is observed that the blue line which actually shows faster RCNN is greater than the remaining bars.</p>
+  <div class="figure figureViewer" id="f0009">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 September 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 9. </span> Assessment of Accuracy, Precision, Recall, and F1 score by binary classification for all models using RUSA-19 Corpus.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0009image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/medium/uaai_a_2123094_f0009_oc.jpg" loading="lazy" height="346" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0009">
+   <p class="captionText"><span class="captionLabel">Figure 9. </span> Assessment of Accuracy, Precision, Recall, and F1 score by binary classification for all models using RUSA-19 Corpus.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0009">
+   <div class="figureFootNote-f0009"></div>
+  </div>
+  <p></p>
+  <p><a href="#f0010">Figure 10</a> shows the performance of faster RCNN, RCNN, rule-based approach and <i>N</i>-gram model for binary classification and <a href="#f0004">Figure 4</a> shows the performance of these models for tertiary classification.</p>
+  <div class="figure figureViewer" id="f0010">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 September 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 10. </span> Assessment of accuracy, precision, recall, and F1 score by tertiary classification for all models using RUSA-19 Corpus.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0010image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/medium/uaai_a_2123094_f0010_oc.jpg" loading="lazy" height="260" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0010">
+   <p class="captionText"><span class="captionLabel">Figure 10. </span> Assessment of accuracy, precision, recall, and F1 score by tertiary classification for all models using RUSA-19 Corpus.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0010">
+   <div class="figureFootNote-f0010"></div>
+  </div>
+  <p></p>
+  <p><a href="#f0011 f0012">Figures 11 and 12</a> show the performance of <i>N</i>-gram model of different grams (like: 2-gram, 3-gram, 4-gram and 5-gram) for binary and binary classification.</p>
+  <div class="figure figureViewer" id="f0011">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 September 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 11. </span> Comparison of precision, recall, and F1 score of binary classification for 2 to 5-gram.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0011image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/medium/uaai_a_2123094_f0011_oc.jpg" loading="lazy" height="248" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0011">
+   <p class="captionText"><span class="captionLabel">Figure 11. </span> Comparison of precision, recall, and F1 score of binary classification for 2 to 5-gram.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0011">
+   <div class="figureFootNote-f0011"></div>
+  </div>
+  <div class="figure figureViewer" id="f0012">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 September 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 12. </span> Comparison of Precision, recall, and F1 score of tertiary classification for 2 to 5-gram.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0012image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/medium/uaai_a_2123094_f0012_oc.jpg" loading="lazy" height="217" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0012">
+   <p class="captionText"><span class="captionLabel">Figure 12. </span> Comparison of Precision, recall, and F1 score of tertiary classification for 2 to 5-gram.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0012">
+   <div class="figureFootNote-f0012"></div>
+  </div>
+  <p></p>
+  <p><a href="#f0013">Figure 13</a> shows the performance of faster RCNN model for two different classification techniques binary and tertiary classification, training accuracy between 0.4 and 0.9 is represented in Y-axis and epochs between 0 and 100 are represented on X-axis.</p>
+  <div class="figure figureViewer" id="f0013">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 September 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 13. </span> Faster RCNN training accuracy for binary and tertiary classification.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0013image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2123094/20221215/images/medium/uaai_a_2123094_f0013_oc.jpg" loading="lazy" height="229" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0013">
+   <p class="captionText"><span class="captionLabel">Figure 13. </span> Faster RCNN training accuracy for binary and tertiary classification.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0013">
+   <div class="figureFootNote-f0013"></div>
+  </div>
+  <p></p>
+  <p>If we observe the graph, we can see that the training increases gradually and become stable after passing some epochs. The faster RCNN model can perform very efficiently even for a low resource language, and Roman Urdu is also a low-resource language. So because of this fact, it has the capability of avoiding noise and can extract more contextual information.</p>
+ </div>
+ <div id="s0004-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i55">Comparative Analysis</h3>
+  <p>According to <button class="ref showTableEventRef" data-id="t0007 t0008">Tables 7 and 8</button>, we can say that our proposed model outperform the previous proposed models in term of accuracy and speed. We have implemented both RCNN and faster RCNN and both the models performed very well in term of accuracy and F1 score but the processing time for both the models are different. For example, for one epoch RCNN took 51 min it means for 10 epochs this model took 51 × 10 = 510 mins and its huge time consuming. Because of this processing time consumption, we wanted to use faster RCNN, and the proposed model completed one epoch in 10.2 min and for 10 epochs it only took 10.2x10 = 102 min and it’s a huge difference. So we can say that faster RCNN outperformed than RCNN in terms of speed.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep Sentiments Analysis for Roman Urdu Dataset Using Faster Recurrent Convolutional Neural Network Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nagra%2C+Arfan+Ali"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nagra%2C+Arfan+Ali"><span class="NLM_given-names">Arfan Ali</span> Nagra</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alissa%2C+Khalid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alissa%2C+Khalid"><span class="NLM_given-names">Khalid</span> Alissa</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ghazal%2C+Taher+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ghazal%2C+Taher+M"><span class="NLM_given-names">Taher M.</span> Ghazal</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kukunuru%2C+Saigeeta"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kukunuru%2C+Saigeeta"><span class="NLM_given-names">Saigeeta</span> Kukunuru</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Asif%2C+Muhammad+Mugees"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Asif%2C+Muhammad+Mugees"><span class="NLM_given-names">Muhammad Mugees</span> Asif</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Fawad%2C+Muhammad"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fawad%2C+Muhammad"><span class="NLM_given-names">Muhammad</span> Fawad</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2123094">https://doi.org/10.1080/08839514.2022.2123094</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 8. </span> Comparative analysis of faster RCNN model in term of speed.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0008-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0008&amp;doi=10.1080%2F08839514.2022.2123094&amp;downloadType=CSV"> Download CSV</a><a data-id="t0008" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i56" class="section-heading-2">Conclusion</h2>
+ <p>In recent times, a number of studies have been carried out in the domain of sentiment analysis and English language is enriched with the new vocabulary. However, for Roman Urdu, the research work is very limited. It is reported that a good accuracy for a linguistic model can be achieved but it requires massive data processing techniques such as LDA, TF-IDF. These techniques also require manual crafting to extract features from the dataset. In contrast, the popular deep learning models can efficiently perform feature extraction with end to end processing and only the input data with a few pre-processing steps is required. This study opens up a new domain for further research as it builds a deep learning model which will be the language independent and work efficiently for low resource languages as well. Our research work has also highlighted the essential insights in deep learning model to process complex languages and it efficiently processes Roman Urdu as well. The only limitation is that the dataset is very complex as Roman Urdu has variety of words and different spellings for the same word (like for “what” we can use all these words; kia, kiya, kya, etc.). We have performed our analysis on a corpus of 10,021 sentences. It is a small dataset to develop a generalized model for performing sentiment analysis on a language. In future, we will extend our dataset to three or four times and employ a modified version of FRCNN that will further enhance the accuracy levels.</p>
+</div>

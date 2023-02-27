@@ -1,0 +1,270 @@
+<div id="S0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i8" class="section-heading-2">Introduction</h2>
+ <p>The new disease COVID-19 may profoundly affect long-term functioning. Recent studies suggest that after hospitalisation, patients may suffer from a reduction in overall quality of life with persistent low physical and mental functioning [<span class="ref-lnk lazy-ref"><a data-rid="CIT0001 CIT0002 CIT0003 CIT0004 CIT0005" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>1–5</a></span>]. Almost 80% of hospitalised patients report at least one persistent symptom at 6 months [<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>6</a></span>] to one year after symptom onset [<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>7</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>8</a></span>]. Impairments in multiple categories within the functions, activity- and participation domain of the International Classification of Functioning, Disability and Health (ICF) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>9</a></span>] underline the need for appropriate and personalised rehabilitation during hospitalisation as well as post-discharge [<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>10</a></span>]. Deployment of such rehabilitation requires insight into the course and predictors of the level of functions, activities and participation over multiple ICF categories. This information is usually derived from structured questionnaires and measurements or could be manually extracted from health records [<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>11</a></span>] which is cumbersome and of which results only become available afterwards for relatively small numbers of patients.</p>
+ <p>Instantaneous assessment in large groups of patients is possible by recent developments in the field of artificial intelligence by analysing the rich and diverse information available in the Electronic Health Records (EHR), mainly encompassing written notes from health care professionals [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>12</a></span>]. Relevant information in these unstructured rather than structured text data can be recognised and harvested automatically using computational modelling (natural language processing, NLP) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>13</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>14</a></span>]. Free text descriptions exhibit large variation and ambiguity that are difficult to handle by such search tools with consequences for precision and recall [<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>15</a></span>]. Mobility function information was shown to be reliably captured from physical therapy clinical notes using human annotation [<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>16</a></span>]. NLP coding was subsequently shown to be able to link narrative observations of mobility status to standardised ICF codes [<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>17</a></span>]. Recently, a comprehensive analysis of mobility functioning information, including annotation, machine sequence labelling and quality control was described [<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>18</a></span>]. However, automated functional assessment of COVID-19 patients requires labelling of multiple ICF categories and their levels within written EHR notes from different involved healthcare professionals. Such reports contain very diverse information on the functioning of patients, formulated using a mixture of expert and laymen expressions. Detecting ICF categories in such notes is challenging due to the large variation and ambiguity in a linguistic sense.</p>
+ <p>The aim of the present study was to describe a methodology for and determine the feasibility, reliability and internal validity of using NLP for the automated assessment of the level of functioning, according to different key categories of the ICF. Unstructured data was obtained from the EHR’s of non-COVID-19 and COVID-19 in- and outpatients, exhibiting large variation and ambiguity in textual structure and expressions.</p>
+</div>
+<div id="S0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i9" class="section-heading-2">Materials and methods</h2>
+ <div id="S0002-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">Initial dataset</h3>
+  <p>Clinical notes were obtained from the electronic health records (EHR) of the Amsterdam University Medical Centres for the years 2017 to June 2020.</p>
+ </div>
+ <div id="S0002-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">Ethics</h3>
+  <p>An experienced hospital privacy officer was consulted to determine the legal, privacy, and ethical prerequisites. The data were stored on a secure server at the hospital. Study approval was obtained by the Medical Ethical committee of Amsterdam University Medical Centre (ID number 2020.277).</p>
+ </div>
+ <div id="S0002-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">General approach</h3>
+  <p>A standard machine learning protocol was adopted, encompassing the following steps: (1) determination of COVID-19 relevant ICF categories and levels; (2) selection of sample texts from the initial dataset; (3) human annotation of the selected texts with ICF categories and levels; (4) construction of the classification model; (5) training and optimising the classification model (ICF classifier) for the ICF categories and levels; (6) calculating the performance of the ICF classifier.</p>
+ </div>
+ <div id="S0002-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i13">Determination of ICF categories and levels</h3>
+  <p>Potentially relevant ICF categories for COVID-19 patients were initially selected from the literature. A final choice was made based on consensus meetings within a multidisciplinary ad-hoc expert panel in an iterative way. Based on the identified literature, an initial choice for ICF categories relevant for COVID-19, four relevant ICF categories were selected to be highly impacted by this novel disease [<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>19</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>20</a></span>]: Emotional functions (b152), Exercise tolerance functions (b455), Walking and Moving (d450–d469), Work and Employment (d840–859, <button class="ref showTableEventRef" data-id="t0001">Table 1</button>). Levels were aligned with existing scales, i.e. the Functional Ambulation Categories (FAC) and metabolic equivalents (METs), else according to the ICF.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Automated recognition of functioning, activity and participation in COVID-19 from electronic patient records by natural language processing: a proof- of- concept</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Meskers%2C+Carel+G+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Meskers%2C+Carel+G+M"><span class="NLM_given-names">Carel G. M.</span> Meskers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=van+der+Veen%2C+Sabina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+der+Veen%2C+Sabina"><span class="NLM_given-names">Sabina</span> van der Veen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Jenia"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Jenia"><span class="NLM_given-names">Jenia</span> Kim</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Meskers%2C+Caroline+J+W"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Meskers%2C+Caroline+J+W"><span class="NLM_given-names">Caroline J. W.</span> Meskers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Smit%2C+Quirine+T+S"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Smit%2C+Quirine+T+S"><span class="NLM_given-names">Quirine T. S.</span> Smit</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Verkijk%2C+Stella"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Verkijk%2C+Stella"><span class="NLM_given-names">Stella</span> Verkijk</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Geleijn%2C+Edwin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Geleijn%2C+Edwin"><span class="NLM_given-names">Edwin</span> Geleijn</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Widdershoven%2C+Guy+A+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Widdershoven%2C+Guy+A+M"><span class="NLM_given-names">Guy A. M.</span> Widdershoven</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Vossen%2C+Piek+T+J+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Vossen%2C+Piek+T+J+M"><span class="NLM_given-names">Piek T. J. M.</span> Vossen</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=van+der+Leeden%2C+Marike"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+der+Leeden%2C+Marike"><span class="NLM_given-names">Marike</span> van der Leeden</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/07853890.2021.2025418">https://doi.org/10.1080/07853890.2021.2025418</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>18 January 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> COVID-19 relevant ICF categories and levels.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F07853890.2021.2025418&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+ </div>
+ <div id="S0002-S2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">Selection of sample texts from the initial dataset</h3>
+  <p>A first sample was taken from the 2017 to 2018 records, which encompassed non-COVID-19 data only. A second sample encompassed COVID-19 patient notes only and was taken from the 2020 records using the tag for COVID-19 diagnosis that was provided in the patient data. To enhance the number of positive examples, stratified sampling was applied to the data using keywords that were associated with each of the selected ICF categories. Only the notes with keyword matches were considered and randomised sampling was applied within these to get equal coverage across the four target ICF categories. Finally, 3996 notes were selected from non-COVID-19 patients and 1583 from patients diagnosed with COVID-19.</p>
+ </div>
+ <div id="S0002-S2006" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">Human annotation of the selected texts with ICF categories and levels</h3>
+  <p>Eight native Dutch speaking medical, PT or dental students were recruited for the annotation process. The annotation was supported by two students with a language-technology background and trained in-text annotation tasks. Annotation guidelines were created within the iterative process of defining the ICF categories and levels with criteria to check their applicability and examples to illustrate the process. Guidelines were applied to a subset of 30 documents shared by all annotators, collecting problematic examples through a shared spreadsheet and discussing these examples in a joint meeting. Problematic examples were documented in the new versions of the guidelines. This process was repeated until no major issues were detected and the consensus was reached. Once the guideline was finalised, annotators were provided with separate random batches from the total set of 3996 patient notes. The notes were loaded one by one in the annotation environment InCepTion (The Ubiquitous Knowledge Processing (UKP) Lab at the Department of Computer Science, Technische Universität Darmstadt, <a class="ext-link" href="https://inception-project.github.io" target="_blank">https://inception-project.github.io</a>) from the secured server. The text was presented in separate sentences, line-by-line. Annotators were instructed to annotate each line separately for the categories and the levels by marking the relevant words in the sentence. Sentences without annotation were considered as negative examples for which no ICF category applied. The annotators first completed the non-COVID-19 batch, after which they continued with the COVID-19 batch.</p>
+ </div>
+ <div id="S0002-S2007" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i16">Construction of the classification model (ICF classifier)</h3>
+  <p>The classification of sentences was split into two separate tasks: (1) classifying the ICF categories and (2) classifying the level for the assigned category. The former was treated as a multilabel classification task whereas the latter was considered as a regression task. Due to the computing limitation of the server where the data was hosted (CPU only), we used a support vector machine (SVM) model for the multilabel classifier (task 1) and a logistic regression model for the level labelling (task 2), both as provided in the Scikit-learn package, version 0.24 (<a class="ext-link" href="https://scikit-learn.org/stable" target="_blank">https://scikit-learn.org/stable</a>). Sentences were transformed into vector representations using BERTje [<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>21</a></span>]; a version of the pre-trained neural network BERT (Bidirectional Encoder Representations from Transformers [<span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>22</a></span>]), specifically made for Dutch text.</p>
+ </div>
+ <div id="S0002-S2008" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i17">Training and testing of the ICF classifier</h3>
+  <p>For each ICF category, a classifier was trained on 80% and tested on 20% of the data. Since most sentences in the notes did not receive a label, we down-sampled the negative examples. Empirical testing for the COVID-19 data showed that down sampling to 12.5% gave the best results. For the non-COVID-19 data down sampling to 25% gave the best results. To establish the impact of the size of the training data on performance, the COVID-19 data were cut up into smaller parts (20%, 40%, 60% and 80% of the complete COVID-19 training data set). These models were trained and tested on COVID-19 data and were evaluated on the sentence level.</p>
+ </div>
+ <div id="S0002-S2009" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">Calculating the performance of the ICF classifier</h3>
+  <p>Annotators were paired in two teams of two to establish the Inter-Annotator-Agreement (IAA). IAA was calculated using Cohens’ kappa and Krippendorf’s alpha. Model performance regarding category identification was calculated by recall (True Positives/(True Positives + False Negatives) and precision (True Positives/(True Positives + False Positives); F1 represents the harmonic average of precision and recall: F1 = 2 × ((Precision × Recall)/(Precision + Recall)). Model performance regarding level identification was calculated by Mean Squared Error (MSE), Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE).</p>
+ </div>
+</div>
+<div id="S0003" class="NLM_sec NLM_sec-type_results NLM_sec_level_1">
+ <h2 id="_i19" class="section-heading-2">Results</h2>
+ <p>In total, 4112 sentences of non-COVID-19 and 1061 sentences of COVID-19 notes were annotated (5173 sentences in total). IAA scores for annotator pair one reached a Cohen-Kappa of 0.76 and a Krippendorff-Alpha of 0.61. Pair two reached a Cohen-Kappa of 0.86 and a Krippendorff-Alpha of 0.59. The average Cohen-Kappa score was 0.81 and the average Krippendorff-Alpha score was 0.6.</p>
+ <p>The distribution of the annotations is shown in <a href="#F0001">Figure 1</a>. The total amount of annotations of non-COVID-19 was almost four times the amount of COVID-19 data, with a similar distribution of the categories except for Work and Employment.</p>
+ <div class="figure figureViewer" id="F0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Automated recognition of functioning, activity and participation in COVID-19 from electronic patient records by natural language processing: a proof- of- concept</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Meskers%2C+Carel+G+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Meskers%2C+Carel+G+M"><span class="NLM_given-names">Carel G. M.</span> Meskers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=van+der+Veen%2C+Sabina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+der+Veen%2C+Sabina"><span class="NLM_given-names">Sabina</span> van der Veen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Jenia"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Jenia"><span class="NLM_given-names">Jenia</span> Kim</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Meskers%2C+Caroline+J+W"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Meskers%2C+Caroline+J+W"><span class="NLM_given-names">Caroline J. W.</span> Meskers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Smit%2C+Quirine+T+S"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Smit%2C+Quirine+T+S"><span class="NLM_given-names">Quirine T. S.</span> Smit</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Verkijk%2C+Stella"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Verkijk%2C+Stella"><span class="NLM_given-names">Stella</span> Verkijk</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Geleijn%2C+Edwin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Geleijn%2C+Edwin"><span class="NLM_given-names">Edwin</span> Geleijn</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Widdershoven%2C+Guy+A+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Widdershoven%2C+Guy+A+M"><span class="NLM_given-names">Guy A. M.</span> Widdershoven</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Vossen%2C+Piek+T+J+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Vossen%2C+Piek+T+J+M"><span class="NLM_given-names">Piek T. J. M.</span> Vossen</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=van+der+Leeden%2C+Marike"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+der+Leeden%2C+Marike"><span class="NLM_given-names">Marike</span> van der Leeden</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/07853890.2021.2025418">https://doi.org/10.1080/07853890.2021.2025418</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>18 January 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> Overview of the annotation data divided into non-COVID-19 and COVID-19 notes for each annotated ICF category. Each category is differentiated in levels (0–4 and in the case of Walking &amp; Moving and Exercise Tolerance 0–5).</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/iann20/2022/iann20.v054.i01/07853890.2021.2025418/20230217/images/medium/iann_a_2025418_f0001_c.jpg" loading="lazy" height="477" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> Overview of the annotation data divided into non-COVID-19 and COVID-19 notes for each annotated ICF category. Each category is differentiated in levels (0–4 and in the case of Walking &amp; Moving and Exercise Tolerance 0–5).</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0001">
+  <div class="figureFootNote-F0001"></div>
+ </div>
+ <p>The distribution of the levels for the COVID-19 and non-COVID-19 cohorts is shown in <a href="#F0002">Figure 2</a>. For the category Walking and Moving, level 4 was dominant for non-COVID-19 notes (59% versus 21% COVID-19) and level 0 for COVID-19 notes (47% versus 7% non-COVID-19).</p>
+ <div class="figure figureViewer" id="F0002">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Automated recognition of functioning, activity and participation in COVID-19 from electronic patient records by natural language processing: a proof- of- concept</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Meskers%2C+Carel+G+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Meskers%2C+Carel+G+M"><span class="NLM_given-names">Carel G. M.</span> Meskers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=van+der+Veen%2C+Sabina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+der+Veen%2C+Sabina"><span class="NLM_given-names">Sabina</span> van der Veen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Jenia"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Jenia"><span class="NLM_given-names">Jenia</span> Kim</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Meskers%2C+Caroline+J+W"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Meskers%2C+Caroline+J+W"><span class="NLM_given-names">Caroline J. W.</span> Meskers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Smit%2C+Quirine+T+S"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Smit%2C+Quirine+T+S"><span class="NLM_given-names">Quirine T. S.</span> Smit</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Verkijk%2C+Stella"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Verkijk%2C+Stella"><span class="NLM_given-names">Stella</span> Verkijk</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Geleijn%2C+Edwin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Geleijn%2C+Edwin"><span class="NLM_given-names">Edwin</span> Geleijn</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Widdershoven%2C+Guy+A+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Widdershoven%2C+Guy+A+M"><span class="NLM_given-names">Guy A. M.</span> Widdershoven</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Vossen%2C+Piek+T+J+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Vossen%2C+Piek+T+J+M"><span class="NLM_given-names">Piek T. J. M.</span> Vossen</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=van+der+Leeden%2C+Marike"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+der+Leeden%2C+Marike"><span class="NLM_given-names">Marike</span> van der Leeden</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/07853890.2021.2025418">https://doi.org/10.1080/07853890.2021.2025418</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>18 January 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 2. </span> Distribution of level annotations for Walking &amp; Moving (FAC score) across COVID-19 and non-COVID-19 data.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/iann20/2022/iann20.v054.i01/07853890.2021.2025418/20230217/images/medium/iann_a_2025418_f0002_c.jpg" loading="lazy" height="340" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0002">
+  <p class="captionText"><span class="captionLabel">Figure 2. </span> Distribution of level annotations for Walking &amp; Moving (FAC score) across COVID-19 and non-COVID-19 data.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0002">
+  <div class="figureFootNote-F0002"></div>
+ </div>
+ <p>As shown in <button class="ref showTableEventRef" data-id="t0002">Table 2</button>, an F1 score of 0.7 was obtained for the classification of Emotional functions in non-COVID-19 data and scores close to 0.7 for the classification of Walking and Moving in both non-COVID-19 and COVID-19 data. Classification of Exercise tolerance functions showed low performance and annotations of the category Work and Employment were too sparse in this specific dataset of patients.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">Automated recognition of functioning, activity and participation in COVID-19 from electronic patient records by natural language processing: a proof- of- concept</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Meskers%2C+Carel+G+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Meskers%2C+Carel+G+M"><span class="NLM_given-names">Carel G. M.</span> Meskers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=van+der+Veen%2C+Sabina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+der+Veen%2C+Sabina"><span class="NLM_given-names">Sabina</span> van der Veen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Jenia"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Jenia"><span class="NLM_given-names">Jenia</span> Kim</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Meskers%2C+Caroline+J+W"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Meskers%2C+Caroline+J+W"><span class="NLM_given-names">Caroline J. W.</span> Meskers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Smit%2C+Quirine+T+S"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Smit%2C+Quirine+T+S"><span class="NLM_given-names">Quirine T. S.</span> Smit</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Verkijk%2C+Stella"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Verkijk%2C+Stella"><span class="NLM_given-names">Stella</span> Verkijk</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Geleijn%2C+Edwin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Geleijn%2C+Edwin"><span class="NLM_given-names">Edwin</span> Geleijn</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Widdershoven%2C+Guy+A+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Widdershoven%2C+Guy+A+M"><span class="NLM_given-names">Guy A. M.</span> Widdershoven</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Vossen%2C+Piek+T+J+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Vossen%2C+Piek+T+J+M"><span class="NLM_given-names">Piek T. J. M.</span> Vossen</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=van+der+Leeden%2C+Marike"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+der+Leeden%2C+Marike"><span class="NLM_given-names">Marike</span> van der Leeden</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/07853890.2021.2025418">https://doi.org/10.1080/07853890.2021.2025418</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>18 January 2022
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Performance of the ICF category classification.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F07853890.2021.2025418&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p><button class="ref showTableEventRef" data-id="t0003">Table 3</button> shows the performance of the regression models in terms of Mean Squared Error (MSE), Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE) for prediction of the levels of Walking and Moving and Emotional functions for non-COVID-19 and COVID-19 patients respectively. Combining COVID-19 and non-COVID-19 data improved the results. The only exception to this was the level prediction for Walking and Moving” with an RMSE of 1.94 compared to 1.17 in COVID-19 data only.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">Automated recognition of functioning, activity and participation in COVID-19 from electronic patient records by natural language processing: a proof- of- concept</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Meskers%2C+Carel+G+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Meskers%2C+Carel+G+M"><span class="NLM_given-names">Carel G. M.</span> Meskers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=van+der+Veen%2C+Sabina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+der+Veen%2C+Sabina"><span class="NLM_given-names">Sabina</span> van der Veen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Jenia"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Jenia"><span class="NLM_given-names">Jenia</span> Kim</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Meskers%2C+Caroline+J+W"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Meskers%2C+Caroline+J+W"><span class="NLM_given-names">Caroline J. W.</span> Meskers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Smit%2C+Quirine+T+S"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Smit%2C+Quirine+T+S"><span class="NLM_given-names">Quirine T. S.</span> Smit</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Verkijk%2C+Stella"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Verkijk%2C+Stella"><span class="NLM_given-names">Stella</span> Verkijk</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Geleijn%2C+Edwin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Geleijn%2C+Edwin"><span class="NLM_given-names">Edwin</span> Geleijn</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Widdershoven%2C+Guy+A+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Widdershoven%2C+Guy+A+M"><span class="NLM_given-names">Guy A. M.</span> Widdershoven</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Vossen%2C+Piek+T+J+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Vossen%2C+Piek+T+J+M"><span class="NLM_given-names">Piek T. J. M.</span> Vossen</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=van+der+Leeden%2C+Marike"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+der+Leeden%2C+Marike"><span class="NLM_given-names">Marike</span> van der Leeden</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/07853890.2021.2025418">https://doi.org/10.1080/07853890.2021.2025418</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>18 January 2022
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Best models regression analysis for each relevant scoring level.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F07853890.2021.2025418&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p>The results of the impact of the size of the training dataset on COVID data are shown in <a href="#F0003">Figure 3</a>: per category, grouped bars from top to bottom show the magnitude of precision (P), recall (R) and F1 as a function of increasing size. <a href="#F0003">Figure 3</a> shows that recall is always increasing as the data size increases, and precision is not decreasing linearly.</p>
+ <div class="figure figureViewer" id="F0003">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Automated recognition of functioning, activity and participation in COVID-19 from electronic patient records by natural language processing: a proof- of- concept</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Meskers%2C+Carel+G+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Meskers%2C+Carel+G+M"><span class="NLM_given-names">Carel G. M.</span> Meskers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=van+der+Veen%2C+Sabina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+der+Veen%2C+Sabina"><span class="NLM_given-names">Sabina</span> van der Veen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Jenia"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Jenia"><span class="NLM_given-names">Jenia</span> Kim</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Meskers%2C+Caroline+J+W"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Meskers%2C+Caroline+J+W"><span class="NLM_given-names">Caroline J. W.</span> Meskers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Smit%2C+Quirine+T+S"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Smit%2C+Quirine+T+S"><span class="NLM_given-names">Quirine T. S.</span> Smit</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Verkijk%2C+Stella"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Verkijk%2C+Stella"><span class="NLM_given-names">Stella</span> Verkijk</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Geleijn%2C+Edwin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Geleijn%2C+Edwin"><span class="NLM_given-names">Edwin</span> Geleijn</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Widdershoven%2C+Guy+A+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Widdershoven%2C+Guy+A+M"><span class="NLM_given-names">Guy A. M.</span> Widdershoven</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Vossen%2C+Piek+T+J+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Vossen%2C+Piek+T+J+M"><span class="NLM_given-names">Piek T. J. M.</span> Vossen</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=van+der+Leeden%2C+Marike"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+der+Leeden%2C+Marike"><span class="NLM_given-names">Marike</span> van der Leeden</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/07853890.2021.2025418">https://doi.org/10.1080/07853890.2021.2025418</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>18 January 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 3. </span> Impact of the size of the training data on performance on COVID-19 data. Per category, grouped bars from top to bottom show the magnitude of precision (P), recall (R) and their harmonic mean (F1) as a function of increasing sample size.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/iann20/2022/iann20.v054.i01/07853890.2021.2025418/20230217/images/medium/iann_a_2025418_f0003_c.jpg" loading="lazy" height="337" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0003">
+  <p class="captionText"><span class="captionLabel">Figure 3. </span> Impact of the size of the training data on performance on COVID-19 data. Per category, grouped bars from top to bottom show the magnitude of precision (P), recall (R) and their harmonic mean (F1) as a function of increasing sample size.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0003">
+  <div class="figureFootNote-F0003"></div>
+ </div>
+</div>
+<div id="S0004" class="NLM_sec NLM_sec-type_discussion NLM_sec_level_1">
+ <h2 id="_i23" class="section-heading-2">Discussion</h2>
+ <p>The present paper provides a proof-of-concept for the automated recognition of multiple ICF categories and their levels from written notes by different health care professionals in EHRs for non-COVID-19 and -COVID-19 patients using natural language processing. Four ICF categories, Emotional functions, Exercise tolerance, Walking and Moving and Work and Employment were considered important for COVID-19 patients; levels were chosen either based on existing scores i.e. functional ambulation categories, metabolic equivalents or according to the ICF. Using an iterative annotation procedure, Cohen-Kappa scores of the inter-annotator agreement were higher than 0.8 and, with a limited amount of data, F1 scores up to 0.7 for two ICF categories were reached.</p>
+ <p>As far as we know, this is for the first time, a comprehensive procedure is described for the automated detection of multiple ICF categories and assignment of their levels from EHR free text notes based on an iterative annotation process. Facing the large variation and ambiguity of free-text notes, an iterative annotation process is a prerequisite for&nbsp;reaching sufficient accuracy. Agreement of human coders was previously compared with automated NLP selection of ICF code and assignment of performance- and capacity qualifiers in rehabilitation discharge notes [<span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>23</a></span>]. Low performance of the NLP algorithm in the sense of precision and recall in recognising conceptual text requiring interpretation shows the need for robust annotation. Robust annotation guidelines were developed based on the mobility domain of the ICF [<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>16</a></span>]. Recently, using a small set of selected clinical narratives from physical therapy encounters, an F1 of 0.84 was reported for the classification of the mobility domain using similar NLP techniques [<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>17</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>18</a></span>]. Our work differs from previous work in several aspects. First, rather than targeted clinical narratives, we used more diverse and rich notes that covered a larger variety of information coming from a large variety of health professionals. Using diverse and rich notes made our task more difficult and complex, as there was more variation and ambiguity of the language used. Secondly, we considered multiple domains, among which non-clinical domains such as Emotional function, whereas former authors only used specific classifications within a single domain. Thirdly, while former authors used existing English contextualised language models trained on PubMed (BioBERT) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>24</a></span>] or on PubMed with EHR fine-tuning (clinicalBERT) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>25</a></span>], we used a general Dutch language model not adapted to clinical language. Fourthly, given the specific target on Mobility, former authors were able to differentiate the task into specific classification tasks for detecting expressions for actions, assistance and quantification. In our case, the ICF domains were less strictly defined and full sentence classification was required to capture their semantics. We demonstrated that our performance (F1 score of 0.70) is nevertheless competitive with previous work given the small training set we used.</p>
+ <p>Varying the size of the training dataset shows that increasing the amount of annotated data will further increase the performance of the model in recognising ICF categories. Low recall of the ICF category Exercise tolerance may be explained by its wide range of lexical representations which were not captured to a sufficient degree by the current annotation efforts. For Work and Employment, a low number of annotated sentences prevented further analysis. This category is assumed to be more relevant after discharge of COVID-19 patients which data was only sparsely available in our dataset.</p>
+ <p>Further improvements in performance may be reached by using different and/or optimised text modelling techniques. We are currently developing a customised language model from a large database of clinical notes that is not specific to any type of patient. This model is based on the state-of-the-art Transformer model RoBERTa [<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>26</a></span>] which was specifically built to improve the BERT model, which BioBERT and clinicalBERT are based on. The expectation is that this neural network can recognise the difference between e.g. the two mentions of “walk” in the sentences “The patient was walked through the treatment protocol” and “The patient was able to go for a 10- minute walk,” which is important for our investigation. We currently encoded each sentence in the data set by the mean function over the tokens in the last four layers of the transformer model. This resulted in a one-dimensional tensor with 768 dimensions that is given to a support vector machine (SVM) classifier. With our customised language model, we will be able to directly fine-tune the model for classification on top of all 12 layers with 1014 dimensions [<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i27 _i28 _i29 _i30" href="#"><span class="off-screen">Citation</span>27</a></span>]. Based on the literature, we expect this to give a further boost in performance.</p>
+ <p>The importance of annotating a specific target population can be observed by the different handling of non-COVID-19 versus COVID-19 patients. For instance, when predicting the category Walking and Moving and its levels using COVID-19 data as test data, it was best to only use COVID-19 data during the training phase, even though the batch of non-COVID-19 data was bigger with a potential of better performance. This indicates that the population of non-COVID-19 patients is not representative of COVID-19 patients.</p>
+ <p>When considering the scores of level assignments, it is important to take into consideration that Walking and Moving has 6 levels while Emotional functions has 5. A difference of 1.17–1.28 on a scale of 6 is a good score, as is a deviation of 0.66–0.82 on a scale of 5. The increase of RMSE when combining non-COVID and COVID data can be explained by the big difference in level data across non-COVID-19: level annotations of Walking and Moving into FAC-scores are very different for COVID-19 and non-COVID-19. The regression results confirm this difference in the data. This means it is not fruitful to use non-COVID-19 data when training a model to predict COVID-19 data, as a machine learning model may be overfitted on a class that it comes across most frequently.</p>
+ <p>Our results demonstrate the potential of computational language modelling to classify ICF categories and their levels. Extension to other relevant ICF categories and further improvement of the current ICF classifiers are needed by expanding and improving the annotation guidelines and annotating more clinical notes. The developed ICF classifiers can be used to automatically analyse large amounts of EHR data, with a specific focus on the course and prediction of functioning after COVID-19 infection. These data can subsequently be combined with the structured patient- and treatment-specific data as stored within EHRs or collected in any other way, using functional status as an outcome variable in any COVID-19 related research.</p>
+ <div id="S0004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i24">Study strength &amp; limitations</h3>
+  <p>A rigorous annotation procedure was adopted in a large data-set of EHR notes from both non-COVID and COVID-19 patients. Due to the specific sample of hospitalised patients, the low prevalence of category&nbsp;Work &amp; Employment in the COVID-19 sample prevented further analysis; extension with data from home-care providers such as general practitioners and physiotherapists is warranted.</p>
+ </div>
+</div>
+<div id="S0005" class="NLM_sec NLM_sec-type_conclusions NLM_sec_level_1">
+ <h2 id="_i25" class="section-heading-2">Conclusions</h2>
+ <p>A proof-of-concept is obtained by demonstrating feasibility, reliability and internal validity for the automated recognition of multiple ICF categories and their levels from written notes in a hospital EHR by different health care professionals for non-COVID and -COVID-19 patients using natural language processing.</p>
+</div>

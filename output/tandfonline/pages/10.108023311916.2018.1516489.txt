@@ -1,0 +1,6106 @@
+<div id="S0001" class="NLM_sec NLM_sec_level_1"></div>
+<div id="S0002" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">1. Introduction</h2>
+ <p>The induction motor (IM) and its control have been widely researched in the last three decades due to many reasons; the IM is less expensive compared to other motors types, so the IM can be used in a wide rang of applications such as heavy lifting, wind turbine and electrical vehicle. In addition, the maintenance cost can be neglected in the IM due to its construction. In other words, one can notice that a wide range of industrial drive applications use IMs (Buja &amp; Kazmierkowski, <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2</a></span>; Leonhard, <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2001</a></span>) than other motor types. These drivers have been designed and built using the “modern” or vector modeling method. The IM vector modeling depends on two reference frames; stationary and arbitrary, which were originally introduced by Clark and Park using well-known 3-to-2 phase transformations (Clarke, <span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>1943</a></span>; Park, <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>15</a></span>). Theses transformations as well as field orientation control (FOC) technique lead to an IM model in which we can deal with the IM similar to the DC motor (Holtz, <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>10</a></span>). However, engineers always demand more efficient industrial drives, i.e., fast, simple and robust performance, for the IM application.</p>
+ <p>On the other hand a nonlinear model predictive control (NMPC) is one of the most important control algorithms, since we can employ an explicit nonlinear model as well as constraints on state and control variables (Diehl, Findeisen, &amp; Schwarzkopf et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2002</a></span>; Hong, Wang, Li, &amp; Wozny et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2006</a></span>; Qin &amp; Badgwell, <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2003</a></span>). (Chang &amp; Kim, <span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>1997</a></span>) have suggested a minimum-time minimum-loss speed control algorithm for IMs under FOC with IM variable constraints to obtain high performance and efficiency. (Miranda, Cort´Es, &amp; Yuz et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2009</a></span>) presented a predictive control algorithm that uses a state-space model.</p>
+ <p>Scoltock <i>et al</i> <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2010</a></span>have compared two MPC of IM. Namely, forced machine current control which was proposed in the early 1980s and model predictive direct torque/current control. They show through a simulation proposal that the steady-state performance of both methods is similar when the switching horizon of second method is limited. However, when the switching horizon is extended, the performance of the second method is improved. Wang and Gan (Wang &amp; Gan, <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2013</a></span>) have proposed the design of gain scheduled continuous-time MPC with constraints. They used the linearized model of induction machine example to illustrate this controller.</p>
+ <p>The conventional field orientation condition concept is to make the IM emulate the separately excited DC motor as a source of adjustable torque. This will be done by assuming one of the flux components equals to zero while the motor rotating and then one can easily obtain the needed frequency for the motor operating point. However, in this work we use the original nonlinear model of the IM to formulate the nonlinear optimal control problem. That is, both flux components are not assumed to be zeros, but they are considered state variables in the NMPC problem. On the other hand, the control variables will then be the input frequency and source voltages (in the voltage-fed case) or the frequency and source currents (in the current-fed case).</p>
+ <p>This paper is organized as follows. Section <a href="#S0003">2</a> presents the IM nonlinear equations in a rotating <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0001.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     d
+    </mi><mi>
+     q
+    </mi>
+   </math></span> frame. Section <a href="#S0004">3</a> presents concept of NMPC used for IM control. Section <a href="#S0005">4</a> presents the problem formulation and the control objective. Sections <a href="#S0006">5</a> and <a href="#S0007">6</a> show the structures the IM-MPC controller using third order and fifth order models, respectively, which are simulated in Section <a href="#S0008">7</a>. Finally, Section <a href="#S0009">8</a> concludes the paper.</p>
+</div>
+<div id="S0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">2. Induction motor dynamics</h2>
+ <p>An IM “T” equivalent circuit as shown in Figure <a href="#F0001">1</a> is represented in a rotating <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0002.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     d
+    </mi><mi>
+     q
+    </mi>
+   </math></span> frame for a three phase symmetrical IM. For a squirrel cage IM, the rotor bar ends are shorted circuit, i.e., <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0003.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       v
+      </mi>
+      <mrow>
+       <mi>
+        q
+       </mi>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0004.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       v
+      </mi>
+      <mrow>
+       <mi>
+        d
+       </mi>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span> equal zero.<disp-formula-group id="M0001">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(1) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mfrac>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           i
+          </mi>
+          <mrow>
+           <mi>
+            d
+           </mi>
+           <mi>
+            s
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </mfrac>
+     </mrow><mo>
+      =
+     </mo><mo>
+      −
+     </mo><mfenced open="(" close=")">
+      <mrow>
+       <mrow>
+        <mfrac>
+         <mrow>
+          <mrow>
+           <msub>
+            <mi>
+             R
+            </mi>
+            <mi>
+             s
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+         <mrow>
+          <mi>
+           σ
+          </mi>
+          <mrow>
+           <msub>
+            <mi>
+             L
+            </mi>
+            <mi>
+             s
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+        </mfrac>
+       </mrow>
+       <mo>
+        +
+       </mo>
+       <mrow>
+        <mfrac>
+         <mrow>
+          <mn>
+           1
+          </mn>
+          <mo>
+           −
+          </mo>
+          <mi>
+           σ
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           σ
+          </mi>
+          <mrow>
+           <msub>
+            <mi>
+             L
+            </mi>
+            <mi>
+             r
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+        </mfrac>
+       </mrow>
+      </mrow>
+     </mfenced><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        s
+       </mi>
+      </msub>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           m
+          </mi>
+         </msub>
+        </mrow>
+        <mrow>
+         <msub>
+          <mi>
+           R
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         σ
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           s
+          </mi>
+         </msub>
+        </mrow>
+        <msubsup>
+         <mi>
+          L
+         </mi>
+         <mi>
+          r
+         </mi>
+         <mn>
+          2
+         </mn>
+        </msubsup>
+       </mrow>
+      </mfrac>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           m
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         σ
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           s
+          </mi>
+         </msub>
+        </mrow>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfrac>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+      </msub>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mrow>
+      <mfrac>
+       <mn>
+        1
+       </mn>
+       <mrow>
+        <mi>
+         σ
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           s
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfrac>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        v
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(1) </span></span></span></span>
+  </disp-formula-group> <disp-formula-group id="M0002">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(2) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mfrac>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           i
+          </mi>
+          <mrow>
+           <mi>
+            q
+           </mi>
+           <mi>
+            s
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </mfrac>
+     </mrow><mo>
+      =
+     </mo><mo>
+      −
+     </mo><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        s
+       </mi>
+      </msub>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      −
+     </mo><mfenced open="(" close=")">
+      <mrow>
+       <mrow>
+        <mfrac>
+         <mrow>
+          <mrow>
+           <msub>
+            <mi>
+             R
+            </mi>
+            <mi>
+             s
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+         <mrow>
+          <mi>
+           σ
+          </mi>
+          <mrow>
+           <msub>
+            <mi>
+             L
+            </mi>
+            <mi>
+             s
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+        </mfrac>
+       </mrow>
+       <mo>
+        +
+       </mo>
+       <mrow>
+        <mfrac>
+         <mrow>
+          <mn>
+           1
+          </mn>
+          <mo>
+           −
+          </mo>
+          <mi>
+           σ
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           σ
+          </mi>
+          <mrow>
+           <msub>
+            <mi>
+             L
+            </mi>
+            <mi>
+             r
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+        </mfrac>
+       </mrow>
+      </mrow>
+     </mfenced><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      −
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           m
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         σ
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           s
+          </mi>
+         </msub>
+        </mrow>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfrac>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+      </msub>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           m
+          </mi>
+         </msub>
+        </mrow>
+        <mrow>
+         <msub>
+          <mi>
+           R
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         σ
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           s
+          </mi>
+         </msub>
+        </mrow>
+        <msubsup>
+         <mi>
+          L
+         </mi>
+         <mi>
+          r
+         </mi>
+         <mn>
+          2
+         </mn>
+        </msubsup>
+       </mrow>
+      </mfrac>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mrow>
+      <mfrac>
+       <mn>
+        1
+       </mn>
+       <mrow>
+        <mi>
+         σ
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           s
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfrac>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        v
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(2) </span></span></span></span>
+  </disp-formula-group> <disp-formula-group id="M0003">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(3) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mfrac>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           λ
+          </mi>
+          <mrow>
+           <mi>
+            d
+           </mi>
+           <mi>
+            r
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </mfrac>
+     </mrow><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           m
+          </mi>
+         </msub>
+        </mrow>
+        <mrow>
+         <msub>
+          <mi>
+           R
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfrac>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      −
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           R
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfrac>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mfenced open="(" close=")">
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          ω
+         </mi>
+         <mi>
+          s
+         </mi>
+        </msub>
+       </mrow>
+       <mo>
+        −
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          ω
+         </mi>
+         <mi>
+          m
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+     </mfenced><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(3) </span></span></span></span>
+  </disp-formula-group> <disp-formula-group id="M0004">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(4) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mfrac>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           λ
+          </mi>
+          <mrow>
+           <mi>
+            q
+           </mi>
+           <mi>
+            r
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </mfrac>
+     </mrow><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           m
+          </mi>
+         </msub>
+        </mrow>
+        <mrow>
+         <msub>
+          <mi>
+           R
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfrac>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      −
+     </mo><mfenced open="(" close=")">
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          ω
+         </mi>
+         <mi>
+          s
+         </mi>
+        </msub>
+       </mrow>
+       <mo>
+        −
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          ω
+         </mi>
+         <mi>
+          m
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+     </mfenced><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      −
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           R
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfrac>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(4) </span></span></span></span>
+  </disp-formula-group></p>
+ <div class="figure figureViewer" id="F0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Simulation of three-phase induction motor using nonlinear model predictive control technique</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tamimi%2C+Jasem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tamimi%2C+Jasem"><span class="NLM_given-names">Jasem</span> Tamimi</a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311916.2018.1516489">https://doi.org/10.1080/23311916.2018.1516489</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>25 September 2018
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> “T” equivalent circuit model of the IM: (a) in <i>d</i>-axis and (b) in <i>q</i>-axis.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/medium/oaen_a_1516489_f0001_c.jpg" loading="lazy" height="107" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> “T” equivalent circuit model of the IM: (a) in <i>d</i>-axis and (b) in <i>q</i>-axis.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0001">
+  <div class="figureFootNote-F0001"></div>
+ </div>
+ <p></p>
+ <p>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0005.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       R
+      </mi>
+      <mi>
+       s
+      </mi>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <mtext>
+      &nbsp;
+     </mtext>
+    </mrow><mrow>
+     <msub>
+      <mi>
+       R
+      </mi>
+      <mi>
+       r
+      </mi>
+     </msub>
+    </mrow>
+   </math></span> are the stator and rotor resistance, respectively, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0006.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       L
+      </mi>
+      <mi>
+       s
+      </mi>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <mtext>
+      &nbsp;
+     </mtext>
+    </mrow><mrow>
+     <msub>
+      <mi>
+       L
+      </mi>
+      <mi>
+       r
+      </mi>
+     </msub>
+    </mrow>
+   </math></span> are the stator and rotor inductance, respectively, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0007.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       L
+      </mi>
+      <mi>
+       m
+      </mi>
+     </msub>
+    </mrow>
+   </math></span> is the mutual machine inductance, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0008.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       v
+      </mi>
+      <mrow>
+       <mi>
+        d
+       </mi>
+       <mi>
+        s
+       </mi>
+      </mrow>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <mtext>
+      &nbsp;
+     </mtext>
+    </mrow><mrow>
+     <msub>
+      <mi>
+       v
+      </mi>
+      <mrow>
+       <mi>
+        q
+       </mi>
+       <mi>
+        s
+       </mi>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span> are the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0009.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     d
+    </mi><mo>
+     −
+    </mo>
+   </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0010.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     q
+    </mi><mo>
+     −
+    </mo>
+   </math></span>axes stator voltage, respectively, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0011.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       i
+      </mi>
+      <mrow>
+       <mi>
+        d
+       </mi>
+       <mi>
+        s
+       </mi>
+      </mrow>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <mtext>
+      &nbsp;
+     </mtext>
+    </mrow><mrow>
+     <msub>
+      <mi>
+       i
+      </mi>
+      <mrow>
+       <mi>
+        q
+       </mi>
+       <mi>
+        s
+       </mi>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span> are the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0012.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     d
+    </mi><mo>
+     −
+    </mo>
+   </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0013.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     q
+    </mi><mo>
+     −
+    </mo>
+   </math></span>axses stator current, respectively, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0014.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       λ
+      </mi>
+      <mrow>
+       <mi>
+        d
+       </mi>
+       <mi>
+        s
+       </mi>
+      </mrow>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <mtext>
+      &nbsp;
+     </mtext>
+    </mrow><mrow>
+     <msub>
+      <mi>
+       λ
+      </mi>
+      <mrow>
+       <mi>
+        q
+       </mi>
+       <mi>
+        s
+       </mi>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span> are the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0015.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     d
+    </mi><mo>
+     −
+    </mo>
+   </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0016.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     q
+    </mi><mo>
+     −
+    </mo>
+   </math></span>axses rotor flux, respectively, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0017.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       ω
+      </mi>
+      <mi>
+       s
+      </mi>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <mtext>
+      &nbsp;
+     </mtext>
+    </mrow><mrow>
+     <msub>
+      <mi>
+       ω
+      </mi>
+      <mi>
+       m
+      </mi>
+     </msub>
+    </mrow>
+   </math></span> are the synchronous and mechanical speeds, respectively. The synchronous speed is given by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0018.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       ω
+      </mi>
+      <mi>
+       s
+      </mi>
+     </msub>
+    </mrow><mo>
+     =
+    </mo><mrow>
+     <mfrac>
+      <mrow>
+       <mn>
+        2
+       </mn>
+       <mi>
+        π
+       </mi>
+       <mi>
+        f
+       </mi>
+      </mrow>
+      <mi>
+       p
+      </mi>
+     </mfrac>
+    </mrow>
+   </math></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0019.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     p
+    </mi>
+   </math></span> is the number pole pairs. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0020.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     σ
+    </mi><mo>
+     =
+    </mo><mn>
+     1
+    </mn><mo>
+     −
+    </mo><mrow>
+     <mfrac>
+      <mrow>
+       <msubsup>
+        <mi>
+         L
+        </mi>
+        <mi>
+         m
+        </mi>
+        <mn>
+         2
+        </mn>
+       </msubsup>
+      </mrow>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          L
+         </mi>
+         <mi>
+          s
+         </mi>
+        </msub>
+       </mrow>
+       <mrow>
+        <msub>
+         <mi>
+          L
+         </mi>
+         <mi>
+          r
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+     </mfrac>
+    </mrow>
+   </math></span> is called the leakage factor. For more detail on the derivation of <a href="#M0001">Equations (1)</a>–<a href="#M0004">(4)</a>, the reader may refer toGehlot and Alsina (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>1993</a></span>; Miranda et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2009</a></span>; Ozpineci &amp; Tolbert, <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2003</a></span>; Rashid, <span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2009</a></span>). The induced torque in the IM is as follows:<disp-formula-group id="UM0001">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_um0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_um0001.gif&quot;}"><span class="mml-formula"></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        T
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mn>
+        3
+       </mn>
+       <mn>
+        2
+       </mn>
+      </mfrac>
+     </mrow><mi>
+      p
+     </mi><mover>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          λ
+         </mi>
+         <mi>
+          s
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+      <mo stretchy="false">
+       →
+      </mo>
+     </mover><mo>
+      ⊗
+     </mo><mover>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          i
+         </mi>
+         <mi>
+          s
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+      <mo stretchy="false">
+       →
+      </mo>
+     </mover><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mn>
+         3
+        </mn>
+        <mi>
+         p
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           m
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mn>
+         2
+        </mn>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfrac>
+     </mrow><mfenced open="(" close=")">
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          i
+         </mi>
+         <mrow>
+          <mi>
+           q
+          </mi>
+          <mi>
+           s
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mrow>
+        <msub>
+         <mi>
+          λ
+         </mi>
+         <mrow>
+          <mi>
+           d
+          </mi>
+          <mi>
+           r
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mo>
+        −
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          i
+         </mi>
+         <mrow>
+          <mi>
+           d
+          </mi>
+          <mi>
+           s
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mrow>
+        <msub>
+         <mi>
+          λ
+         </mi>
+         <mrow>
+          <mi>
+           q
+          </mi>
+          <mi>
+           r
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+      </mrow>
+     </mfenced>
+    </math></span>
+  </disp-formula-group></p>
+ <p>The motion equation of the rotating motor shaft is given as follows:<disp-formula-group id="M0005">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(5) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mfrac>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           ω
+          </mi>
+          <mi>
+           m
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </mfrac>
+     </mrow><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           T
+          </mi>
+          <mrow>
+           <mi>
+            i
+           </mi>
+           <mi>
+            n
+           </mi>
+           <mi>
+            d
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+        <mo>
+         −
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           T
+          </mi>
+          <mi>
+           L
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mi>
+        J
+       </mi>
+      </mfrac>
+     </mrow><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mn>
+         3
+        </mn>
+        <mi>
+         p
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           m
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mn>
+         2
+        </mn>
+        <mi>
+         J
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mi>
+           r
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfrac>
+     </mrow><mfenced open="(" close=")">
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          i
+         </mi>
+         <mrow>
+          <mi>
+           q
+          </mi>
+          <mi>
+           s
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mrow>
+        <msub>
+         <mi>
+          λ
+         </mi>
+         <mrow>
+          <mi>
+           d
+          </mi>
+          <mi>
+           r
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mo>
+        −
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          i
+         </mi>
+         <mrow>
+          <mi>
+           d
+          </mi>
+          <mi>
+           s
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mrow>
+        <msub>
+         <mi>
+          λ
+         </mi>
+         <mrow>
+          <mi>
+           q
+          </mi>
+          <mi>
+           r
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+      </mrow>
+     </mfenced><mo>
+      −
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           T
+          </mi>
+          <mi>
+           L
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mi>
+        J
+       </mi>
+      </mfrac>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(5) </span></span></span></span>
+  </disp-formula-group></p>
+ <p>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0021.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     J
+    </mi>
+   </math></span> is the shaft moment of inertia and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0022.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       T
+      </mi>
+      <mi>
+       L
+      </mi>
+     </msub>
+    </mrow>
+   </math></span> is the load torque (Gehlot &amp; Alsina, <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>1993</a></span>; Miranda et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2009</a></span>).</p>
+</div>
+<div id="S0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i13" class="section-heading-2">3. Model predictive control of the IM</h2>
+ <p>MPC is a control strategy therewith we compute, online, the plant control that optimize (minimize) certain performance index subject to model equations and constrains involving states and controls (Bartholomew Biggs, <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2008</a></span>; Chen, O’Reilly, &amp; Ballance, <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2003</a></span>; Tamimi &amp; Li, <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2009</a></span>). Therefore, the model is used to predict the process output at a future time horizon by finding an optimal control sequence for a predefined objective functional using the theory of the optimal control (Camacho &amp; Alba, <span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2013</a></span>).</p>
+ <p>The system to be controlled is explicitly described by a set of differential algebraic equations (DAEs), e.g., (1) to (5) for the IM case, with initial conditions that are measured or estimated before optimization. Again, the optimal control is then formulated by defining a performance index to be minimized subject to the set of the DAEs, initial conditions as well as box constraints on the state and control variables. This optimal control problem must be defined along the <i>prediction</i> horizon, say <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0023.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       T
+      </mi>
+      <mi>
+       p
+      </mi>
+     </msub>
+    </mrow>
+   </math></span>. Using the MPC, first part the optimal control is only applied to the plant (IM) over the control horizon <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0024.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       T
+      </mi>
+      <mi>
+       c
+      </mi>
+     </msub>
+    </mrow>
+   </math></span> (where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0025.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       T
+      </mi>
+      <mi>
+       c
+      </mi>
+     </msub>
+    </mrow><mtext>
+     &nbsp;
+    </mtext><mo>
+     &lt;
+    </mo><mtext>
+     &nbsp;
+    </mtext><mrow>
+     <msub>
+      <mi>
+       T
+      </mi>
+      <mi>
+       p
+      </mi>
+     </msub>
+    </mrow>
+   </math></span>). If there are no disturbances and no model-plant mismatch then we can apply the input over the prediction horizon. But when we have disturbances and model-plant mismatches, the computed control strategy can be not realized. Therefore, a feedback mechanism will be implemented, that means, the computed open-loop input function will be implemented only until the next feedback measurements are available.</p>
+ <p>Thus, the basic structure of the MPC implementation to various dynamic processes can be shown in Figure <a href="#F0002">2(a</a>). Figure <a href="#F0002">2(b</a>) shows the basic principle of the MPC. We use the system model to predict the future plant outputs, based on past and current values and optimal future controls as well as the system constraints.</p>
+ <div class="figure figureViewer" id="F0002">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Simulation of three-phase induction motor using nonlinear model predictive control technique</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tamimi%2C+Jasem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tamimi%2C+Jasem"><span class="NLM_given-names">Jasem</span> Tamimi</a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311916.2018.1516489">https://doi.org/10.1080/23311916.2018.1516489</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>25 September 2018
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 2. </span> (a) Basic MPC control loop and (b) principle of model predictive control (MPC).</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/medium/oaen_a_1516489_f0002_c.jpg" loading="lazy" height="135" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0002">
+  <p class="captionText"><span class="captionLabel">Figure 2. </span> (a) Basic MPC control loop and (b) principle of model predictive control (MPC).</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0002">
+  <div class="figureFootNote-F0002"></div>
+ </div>
+ <p></p>
+ <p>Accordingly, the MPC methodology can be summarized as follows:</p>
+ <ol class="NLM_list NLM_list-list_type-order">
+  <li><p class="inline">Measure and/or estimate state variables at time instant <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0026.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         t
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow>
+     </math></span>.</p></li>
+  <li><p class="inline">Compute an optimal control vector by solving an open-loop optimal control problem over a future prediction horizon subject to model equations, constrains on states and controls based on measured and/or estimated state variables.</p></li>
+  <li><p class="inline">Apply the first part of the computed optimal controls until the new state measurements and/or estimations are available.</p></li>
+  <li><p class="inline">Set <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0027.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       j
+      </mi><mo>
+       =
+      </mo><mi>
+       j
+      </mi><mo>
+       +
+      </mo><mn>
+       1
+      </mn>
+     </math></span> and continue with step 1.</p></li>
+ </ol>
+ <p></p>
+</div>
+<div id="S0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i15" class="section-heading-2">4. Problem formulation</h2>
+ <p><a href="#M0001">Equations (1)</a> to <a href="#M0005">(5)</a> represent the IM dynamics which can be rewritten in a compact form<disp-formula-group id="UM0002">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_um0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_um0002.gif&quot;}"><span class="mml-formula"></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mfrac>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         x
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </mfrac>
+     </mrow><mo>
+      =
+     </mo><mi>
+      f
+     </mi><mo stretchy="false">
+      (
+     </mo><mi>
+      x
+     </mi><mo>
+      ,
+     </mo><mi>
+      u
+     </mi><mo stretchy="false">
+      )
+     </mo>
+    </math></span>
+  </disp-formula-group></p>
+ <p>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0028.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     x
+    </mi><mo>
+     =
+    </mo><mrow>
+     <msup>
+      <mfenced open="[" close="]">
+       <mrow>
+        <mtable rowspacing="4pt" columnspacing="1em">
+         <mtr>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               i
+              </mi>
+              <mrow>
+               <mi>
+                d
+               </mi>
+               <mi>
+                s
+               </mi>
+              </mrow>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               i
+              </mi>
+              <mrow>
+               <mi>
+                q
+               </mi>
+               <mi>
+                s
+               </mi>
+              </mrow>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               λ
+              </mi>
+              <mrow>
+               <mi>
+                d
+               </mi>
+               <mi>
+                r
+               </mi>
+              </mrow>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               λ
+              </mi>
+              <mrow>
+               <mi>
+                q
+               </mi>
+               <mi>
+                r
+               </mi>
+              </mrow>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               ω
+              </mi>
+              <mi>
+               m
+              </mi>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+         </mtr>
+        </mtable>
+       </mrow>
+      </mfenced>
+      <mi>
+       T
+      </mi>
+     </msup>
+    </mrow>
+   </math></span> is the state vector and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0029.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0029.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     u
+    </mi><mo>
+     =
+    </mo><mrow>
+     <msup>
+      <mfenced open="[" close="]">
+       <mrow>
+        <mtable rowspacing="4pt" columnspacing="1em">
+         <mtr>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               v
+              </mi>
+              <mrow>
+               <mi>
+                d
+               </mi>
+               <mi>
+                s
+               </mi>
+              </mrow>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               v
+              </mi>
+              <mrow>
+               <mi>
+                q
+               </mi>
+               <mi>
+                s
+               </mi>
+              </mrow>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+          <mtd>
+           <mi>
+            f
+           </mi>
+          </mtd>
+         </mtr>
+        </mtable>
+       </mrow>
+      </mfenced>
+      <mi>
+       T
+      </mi>
+     </msup>
+    </mrow>
+   </math></span> is the control vector; thus, the control variables of the IM are the stator voltage and source frequency. However, the IM dynamics can be reduced, namely, only <a href="#M0003">Equations (3)</a>–<a href="#M0005">(5)</a> are used to describe the IM. In this the state vector is only <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0030.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0030.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     x
+    </mi><mo>
+     =
+    </mo><mrow>
+     <msup>
+      <mfenced open="[" close="]">
+       <mrow>
+        <mtable rowspacing="4pt" columnspacing="1em">
+         <mtr>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               λ
+              </mi>
+              <mrow>
+               <mi>
+                d
+               </mi>
+               <mi>
+                r
+               </mi>
+              </mrow>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               λ
+              </mi>
+              <mrow>
+               <mi>
+                q
+               </mi>
+               <mi>
+                r
+               </mi>
+              </mrow>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               ω
+              </mi>
+              <mi>
+               m
+              </mi>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+         </mtr>
+        </mtable>
+       </mrow>
+      </mfenced>
+      <mi>
+       T
+      </mi>
+     </msup>
+    </mrow>
+   </math></span> and the control vector is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0031.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0031.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     u
+    </mi><mo>
+     =
+    </mo><mrow>
+     <msup>
+      <mfenced open="[" close="]">
+       <mrow>
+        <mtable rowspacing="4pt" columnspacing="1em">
+         <mtr>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               i
+              </mi>
+              <mrow>
+               <mi>
+                d
+               </mi>
+               <mi>
+                s
+               </mi>
+              </mrow>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               i
+              </mi>
+              <mrow>
+               <mi>
+                q
+               </mi>
+               <mi>
+                s
+               </mi>
+              </mrow>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+          <mtd>
+           <mi>
+            f
+           </mi>
+          </mtd>
+         </mtr>
+        </mtable>
+       </mrow>
+      </mfenced>
+      <mi>
+       T
+      </mi>
+     </msup>
+    </mrow>
+   </math></span>, i.e., the stator currents and sources frequency are considered as control variables.</p>
+ <p>Now the control objective is to find the optimal control vector <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0032.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0032.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     u
+    </mi>
+   </math></span>, even with reduced model (<a href="#M0003">Equations 3</a>–<a href="#M0005">5</a>) or complete model (<a href="#M0001">Equations 1</a>–<a href="#M0005">5</a>), within the NMPC framework (cf. Steps 1–4, Section <a href="#S0004">3</a>), and at the same time satisfy some constraints on the sate and control variables. In this paper, we assume only a constraint for the IM speed is only needed for the control.</p>
+</div>
+<div id="S0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i17" class="section-heading-2">5. Model predictive control of the current-fed IM</h2>
+ <p>If the stator currents are the control variables of the IM, <a href="#M0001">Equations (1)</a> and (<a href="#M0002">2</a>) can be neglected. Then the reduced-order equation in the excitation reference-frame can be expressed by <a href="#M0003">Equations (3)</a>–<a href="#M0005">(5)</a>. In the conventional field-oriented control, decoupling between input and output variables have been made (Chan et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>1990</a></span>). In this control strategy, the rotor flux in <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0033.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0033.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     q
+    </mi><mo>
+     −
+    </mo>
+   </math></span>axis equals zero where in <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0034.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0034.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     d
+    </mi><mo>
+     −
+    </mo>
+   </math></span>axis must be constant. Therefore, for given desired torque and rotor flux the stator currents and input frequency can be easily computed (Trzynadlowski, <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>1994</a></span>).</p>
+ <p>In this work, we let all state as well as control variables be optimized in the NMPC framework. Figure <a href="#F0003">3</a> shows block diagram of the IM control using NMPC with considering the stator currents are the control variables. Here the state variables are the rotor fluxes which will be estimated using flux estimator, see Trzynadlowski (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>1994</a></span>), as well as the rotor speed which will be measured. Both rotor flux estimations and rotor speed measurement will be fed back to the NMPC and considered as initial conditions each NMPC solution. On the other hand, the control variables are the stator current and operating frequency of the inverter.</p>
+ <div class="figure figureViewer" id="F0003">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Simulation of three-phase induction motor using nonlinear model predictive control technique</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tamimi%2C+Jasem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tamimi%2C+Jasem"><span class="NLM_given-names">Jasem</span> Tamimi</a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311916.2018.1516489">https://doi.org/10.1080/23311916.2018.1516489</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>25 September 2018
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 3. </span> Block diagram of the adjustable current fed IM with NMPC.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/medium/oaen_a_1516489_f0003_c.jpg" loading="lazy" height="243" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0003">
+  <p class="captionText"><span class="captionLabel">Figure 3. </span> Block diagram of the adjustable current fed IM with NMPC.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0003">
+  <div class="figureFootNote-F0003"></div>
+ </div>
+ <p></p>
+ <p>Therefore, the NOPC of the NMPC can be summarized as follows:<disp-formula-group id="M0006">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(6a) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <munder>
+      <mrow>
+       <mo form="prefix">
+        min
+       </mo>
+      </mrow>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          i
+         </mi>
+         <mrow>
+          <mi>
+           d
+          </mi>
+          <mi>
+           s
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          i
+         </mi>
+         <mrow>
+          <mi>
+           q
+          </mi>
+          <mi>
+           s
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        f
+       </mi>
+      </mrow>
+     </munder><msubsup>
+      <mrow>
+       <mo>
+        ∫
+       </mo>
+      </mrow>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          t
+         </mi>
+         <mi>
+          j
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          t
+         </mi>
+         <mi>
+          j
+         </mi>
+        </msub>
+       </mrow>
+       <mo>
+        +
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          T
+         </mi>
+         <mi>
+          p
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+     </msubsup><mi>
+      L
+     </mi><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mi>
+      f
+     </mi><mo>
+      ,
+     </mo><mi>
+      t
+     </mi><mo stretchy="false">
+      )
+     </mo><mi>
+      d
+     </mi><mi>
+      t
+     </mi><mo>
+      ,
+     </mo><mspace width="thinmathspace"></mspace>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(6a) </span></span></span></span>
+  </disp-formula-group></p>
+ <p>subject to<disp-formula-group id="M0007">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(6b) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo><mo>
+      =
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         j
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mtext>
+      &nbsp;
+     </mtext><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo><mo>
+      =
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         j
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mtext>
+      &nbsp;
+     </mtext><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo><mo>
+      =
+     </mo><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mrow>
+        <mi>
+         m
+        </mi>
+        <mi>
+         j
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      .
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(6b) </span></span></span></span>
+  </disp-formula-group> <disp-formula-group id="M0008">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0008.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(6c) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mi>
+      f
+     </mi><mrow>
+      <msubsup>
+       <mo stretchy="false">
+        ]
+       </mo>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         min
+        </mo>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msubsup>
+     </mrow><mo>
+      ≤
+     </mo><mrow>
+      <mo stretchy="false">
+       [
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         i
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          s
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mrow>
+       <msub>
+        <mi>
+         i
+        </mi>
+        <mrow>
+         <mi>
+          q
+         </mi>
+         <mi>
+          s
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mi>
+       f
+      </mi>
+      <mrow>
+       <msup>
+        <mo stretchy="false">
+         ]
+        </mo>
+        <mi>
+         T
+        </mi>
+       </msup>
+      </mrow>
+     </mrow><mo>
+      ≤
+     </mo><mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mi>
+      f
+     </mi><mrow>
+      <msubsup>
+       <mo stretchy="false">
+        ]
+       </mo>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         max
+        </mo>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msubsup>
+     </mrow><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mi mathvariant="normal">
+      ∀
+     </mi><mi>
+      t
+     </mi><mo>
+      ∈
+     </mo><mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mrow>
+      <msub>
+       <mi>
+        T
+       </mi>
+       <mi>
+        p
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      ]
+     </mo><mo>
+      ,
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(6c) </span></span></span></span>
+  </disp-formula-group> <disp-formula-group id="M0009">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0009.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(6d) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+      </msub>
+     </mrow><mrow>
+      <msubsup>
+       <mo stretchy="false">
+        ]
+       </mo>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         min
+        </mo>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msubsup>
+     </mrow><mo>
+      ≤
+     </mo><mrow>
+      <mo stretchy="false">
+       [
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          r
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mrow>
+         <mi>
+          q
+         </mi>
+         <mi>
+          r
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mrow>
+       <msub>
+        <mi>
+         ω
+        </mi>
+        <mi>
+         m
+        </mi>
+       </msub>
+      </mrow>
+      <mrow>
+       <msup>
+        <mo stretchy="false">
+         ]
+        </mo>
+        <mi>
+         T
+        </mi>
+       </msup>
+      </mrow>
+     </mrow><mo>
+      ≤
+     </mo><mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+      </msub>
+     </mrow><mrow>
+      <msubsup>
+       <mo stretchy="false">
+        ]
+       </mo>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         max
+        </mo>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msubsup>
+     </mrow><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mi mathvariant="normal">
+      ∀
+     </mi><mi>
+      t
+     </mi><mo>
+      ∈
+     </mo><mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mrow>
+      <msub>
+       <mi>
+        T
+       </mi>
+       <mi>
+        p
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      ]
+     </mo><mo>
+      ,
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(6d) </span></span></span></span>
+  </disp-formula-group></p>
+ <p>and <a href="#M0003">Equations (3)</a>–<a href="#M0005">(5)</a>, where <a href="#M0006">Equation (6a)</a> represents the cost functional which includes the Lagrange function <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0035.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0035.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     L
+    </mi><mo stretchy="false">
+     (
+    </mo><mo>
+     .
+    </mo><mo stretchy="false">
+     )
+    </mo>
+   </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0036.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0036.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       t
+      </mi>
+      <mi>
+       j
+      </mi>
+     </msub>
+    </mrow>
+   </math></span> is each time instant when the states estimations and measurements are available, i.e., <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0037.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0037.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       λ
+      </mi>
+      <mrow>
+       <mi>
+        d
+       </mi>
+       <mi>
+        r
+       </mi>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <mtext>
+      &nbsp;
+     </mtext>
+    </mrow><mrow>
+     <msub>
+      <mi>
+       λ
+      </mi>
+      <mrow>
+       <mi>
+        q
+       </mi>
+       <mi>
+        r
+       </mi>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0038.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0038.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       ω
+      </mi>
+      <mrow>
+       <mi>
+        m
+       </mi>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0039.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0039.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     j
+    </mi><mo>
+     =
+    </mo><mn>
+     1
+    </mn><mo>
+     ,
+    </mo><mn>
+     2
+    </mn><mo>
+     ,
+    </mo><mo>
+     …
+    </mo>
+   </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0040.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0040.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       T
+      </mi>
+      <mi>
+       p
+      </mi>
+     </msub>
+    </mrow>
+   </math></span> is the prediction horizon. <a href="#M0009">Equations (6d)</a> and (<a href="#M0008">6c</a>) are called box constraint on state and control variables, respectively. Note that the control horizon <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0041.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0041.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       T
+      </mi>
+      <mi>
+       c
+      </mi>
+     </msub>
+    </mrow><mo>
+     =
+    </mo><mrow>
+     <msub>
+      <mi>
+       t
+      </mi>
+      <mrow>
+       <mi>
+        j
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+     </msub>
+    </mrow><mo>
+     −
+    </mo><mrow>
+     <msub>
+      <mi>
+       t
+      </mi>
+      <mi>
+       j
+      </mi>
+     </msub>
+    </mrow>
+   </math></span>.</p>
+ <p>Without loss of generality, an additional path constraint, e.g, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0042.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0042.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     s
+    </mi><mo stretchy="false">
+     (
+    </mo><mrow>
+     <msub>
+      <mi>
+       λ
+      </mi>
+      <mrow>
+       <mi>
+        d
+       </mi>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       λ
+      </mi>
+      <mrow>
+       <mi>
+        q
+       </mi>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       ω
+      </mi>
+      <mi>
+       m
+      </mi>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       i
+      </mi>
+      <mrow>
+       <mi>
+        d
+       </mi>
+       <mi>
+        s
+       </mi>
+      </mrow>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       i
+      </mi>
+      <mrow>
+       <mi>
+        q
+       </mi>
+       <mi>
+        s
+       </mi>
+      </mrow>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mi>
+     f
+    </mi><mo>
+     ,
+    </mo><mi>
+     t
+    </mi><mo stretchy="false">
+     )
+    </mo><mo>
+     ≥
+    </mo><mn>
+     0
+    </mn><mrow>
+     <mtext>
+      &nbsp;
+     </mtext>
+    </mrow><mi mathvariant="normal">
+     ∀
+    </mi><mi>
+     t
+    </mi><mo>
+     ∈
+    </mo><mo stretchy="false">
+     [
+    </mo><mrow>
+     <msub>
+      <mi>
+       t
+      </mi>
+      <mi>
+       j
+      </mi>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       t
+      </mi>
+      <mi>
+       j
+      </mi>
+     </msub>
+    </mrow><mo>
+     +
+    </mo><mrow>
+     <msub>
+      <mi>
+       T
+      </mi>
+      <mi>
+       p
+      </mi>
+     </msub>
+    </mrow><mo stretchy="false">
+     ]
+    </mo>
+   </math></span> can be added to Problem (6) to satisfy some torque and power rating constraint, however, this constraint is not used in our work.</p>
+</div>
+<div id="S0007" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i23" class="section-heading-2">6. Model predictive control of the voltage-fed IM</h2>
+ <p>In the voltage-fed IM case, the control signal for a voltage source inverter are the stator voltages. In this case, all <a href="#M0001">Equations (1)</a>–(5) are considered. This means, the stator currents, rotor voltages as well as rotor speed are considered as system states where the synchronous speed or excitation frequency is third control command that will be fed to the voltage source inverter. Figure <a href="#F0004">4</a> shows block diagram of the IM adjustable drive control using NMPC with voltage-fed commands.</p>
+ <div class="figure figureViewer" id="F0004">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Simulation of three-phase induction motor using nonlinear model predictive control technique</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tamimi%2C+Jasem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tamimi%2C+Jasem"><span class="NLM_given-names">Jasem</span> Tamimi</a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311916.2018.1516489">https://doi.org/10.1080/23311916.2018.1516489</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>25 September 2018
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 4. </span> Block diagram of the adjustable voltage fed IM with NMPC.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/medium/oaen_a_1516489_f0004_c.jpg" loading="lazy" height="243" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0004">
+  <p class="captionText"><span class="captionLabel">Figure 4. </span> Block diagram of the adjustable voltage fed IM with NMPC.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0004">
+  <div class="figureFootNote-F0004"></div>
+ </div>
+ <p></p>
+ <p>Moreover, the NOPC of the NMPC system is:<disp-formula-group id="M0010">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0010.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(7a) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <munder>
+      <mrow>
+       <mo form="prefix" movablelimits="true">
+        min
+       </mo>
+      </mrow>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          v
+         </mi>
+         <mrow>
+          <mi>
+           d
+          </mi>
+          <mi>
+           s
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          v
+         </mi>
+         <mrow>
+          <mi>
+           q
+          </mi>
+          <mi>
+           s
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        f
+       </mi>
+      </mrow>
+     </munder><msubsup>
+      <mrow>
+       <mo>
+        ∫
+       </mo>
+      </mrow>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          t
+         </mi>
+         <mi>
+          j
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          t
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+       </mrow>
+       <mo>
+        +
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          T
+         </mi>
+         <mi>
+          p
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+     </msubsup><mi>
+      L
+     </mi><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        v
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        v
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mi>
+      f
+     </mi><mo>
+      ,
+     </mo><mi>
+      t
+     </mi><mo stretchy="false">
+      )
+     </mo><mi>
+      d
+     </mi><mi>
+      t
+     </mi><mo>
+      ,
+     </mo><mspace width="thinmathspace"></mspace>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(7a) </span></span></span></span>
+  </disp-formula-group></p>
+ <p>subject to<disp-formula-group id="M0011">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0011.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(7b) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo><mo>
+      =
+     </mo><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+        <mi>
+         j
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo><mo>
+      =
+     </mo><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+        <mi>
+         j
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(7b) </span></span></span></span>
+  </disp-formula-group> <disp-formula-group id="M0012">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0012.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(7c) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo><mo>
+      =
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         j
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo><mo>
+      =
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         j
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(7c) </span></span></span></span>
+  </disp-formula-group> <disp-formula-group id="M0013">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0013.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(7d) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo><mo>
+      =
+     </mo><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mrow>
+        <mi>
+         m
+        </mi>
+        <mi>
+         j
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(7d) </span></span></span></span>
+  </disp-formula-group> <disp-formula-group id="M0014">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0014.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(7e) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mi>
+      f
+     </mi><mrow>
+      <msubsup>
+       <mo stretchy="false">
+        ]
+       </mo>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         min
+        </mo>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msubsup>
+     </mrow><mo>
+      ≤
+     </mo><mrow>
+      <mo stretchy="false">
+       [
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         i
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          s
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mrow>
+       <msub>
+        <mi>
+         i
+        </mi>
+        <mrow>
+         <mi>
+          q
+         </mi>
+         <mi>
+          s
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mi>
+       f
+      </mi>
+      <mrow>
+       <msup>
+        <mo stretchy="false">
+         ]
+        </mo>
+        <mi>
+         T
+        </mi>
+       </msup>
+      </mrow>
+     </mrow><mo>
+      ≤
+     </mo><mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mi>
+      f
+     </mi><mrow>
+      <msubsup>
+       <mo stretchy="false">
+        ]
+       </mo>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         max
+        </mo>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msubsup>
+     </mrow><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mi mathvariant="normal">
+      ∀
+     </mi><mi>
+      t
+     </mi><mo>
+      ∈
+     </mo><mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mrow>
+      <msub>
+       <mi>
+        T
+       </mi>
+       <mi>
+        p
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      ]
+     </mo><mo>
+      ,
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(7e) </span></span></span></span>
+  </disp-formula-group> <disp-formula-group id="M0015">
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0015.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(7f) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+      </msub>
+     </mrow><mrow>
+      <msubsup>
+       <mo stretchy="false">
+        ]
+       </mo>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         min
+        </mo>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msubsup>
+     </mrow><mo>
+      ≤
+     </mo><mrow>
+      <mo stretchy="false">
+       [
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          r
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mrow>
+         <mi>
+          q
+         </mi>
+         <mi>
+          r
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mrow>
+       <msub>
+        <mi>
+         ω
+        </mi>
+        <mi>
+         m
+        </mi>
+       </msub>
+      </mrow>
+      <mrow>
+       <msup>
+        <mo stretchy="false">
+         ]
+        </mo>
+        <mi>
+         T
+        </mi>
+       </msup>
+      </mrow>
+     </mrow><mo>
+      ≤
+     </mo><mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+      </msub>
+     </mrow><mrow>
+      <msubsup>
+       <mo stretchy="false">
+        ]
+       </mo>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         max
+        </mo>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msubsup>
+     </mrow><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mspace width="thinmathspace"></mspace><mi mathvariant="normal">
+      ∀
+     </mi><mi>
+      t
+     </mi><mo>
+      ∈
+     </mo><mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mrow>
+      <msub>
+       <mi>
+        T
+       </mi>
+       <mi>
+        p
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      ]
+     </mo><mo>
+      ,
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(7f) </span></span></span></span>
+  </disp-formula-group></p>
+ <p>and <a href="#M0001">Equations (1)</a>–(5), where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0043.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0043.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       i
+      </mi>
+      <mrow>
+       <mi>
+        d
+       </mi>
+       <mi>
+        s
+       </mi>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0044.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0044.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       i
+      </mi>
+      <mrow>
+       <mi>
+        q
+       </mi>
+       <mi>
+        s
+       </mi>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span> are the stator current measurements each time instant <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0045.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0045.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       t
+      </mi>
+      <mi>
+       j
+      </mi>
+     </msub>
+    </mrow>
+   </math></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0046.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0046.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     j
+    </mi><mo>
+     =
+    </mo><mn>
+     1
+    </mn><mo>
+     ,
+    </mo><mn>
+     2
+    </mn><mo>
+     ,
+    </mo><mo>
+     …
+    </mo>
+   </math></span></p>
+</div>
+<div id="S0008" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i31" class="section-heading-2">7. Simulation results</h2>
+ <p>In this section, we demonstrate the efficiency of the proposed strategy. We use an IM that has the following parameter (that is used in Trzynadlowski, <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>1994</a></span>): Three-phase, 10 hp delta-connected, squirrel-cage IM, the stator rated voltage is 220&nbsp;V, the rated frequency is 60&nbsp;Hz with rated speed 1164 rpm with three pole pairs. Stator and rotor referred to stator resistances are 0.294 and 0.156Ω, respectively. Magnetizing, stator and rotor inductances are 0.041&nbsp;H, 0.0424&nbsp;H and 0.0417&nbsp;H, respectively. Rotor moment of inertia is 0.4 <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0048.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0048.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     k
+    </mi><mi>
+     g
+    </mi><mo>
+     .
+    </mo><mrow>
+     <msup>
+      <mi>
+       m
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msup>
+    </mrow>
+   </math></span>.</p>
+ <div id="S0008-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i32">7.1. Simulation of the current-fed IM</h3>
+  <p>We apply the MPC of current-fed IM using numerical algorithm group framework (NAG) and interior point optimizer (IPOPT) which are used to combined multiple shooting and collocation on finite elements methods (Tamimi &amp; Li, <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2009</a></span>). The simulation is done using I7 machine, 6&nbsp;G Byte RAM and 2.6 GHz.</p>
+  <p>The control goal is to drive the IM from initial state into desired speed. Thus, to match this goal robustly, a stability constraint might be used. Therefore, we use a stability technique used in Tamimi and Li (<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2011</a></span>) and the NOPC (6) can be be reformulated by<disp-formula-group id="M0016">
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0016.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0016.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(8a) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <munder>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         min
+        </mo>
+       </mrow>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           i
+          </mi>
+          <mrow>
+           <mi>
+            d
+           </mi>
+           <mi>
+            s
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           i
+          </mi>
+          <mrow>
+           <mi>
+            q
+           </mi>
+           <mi>
+            s
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         f
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         a
+        </mi>
+       </mrow>
+      </munder><msubsup>
+       <mrow>
+        <mo>
+         ∫
+        </mo>
+       </mrow>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           t
+          </mi>
+          <mi>
+           j
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           t
+          </mi>
+          <mi>
+           j
+          </mi>
+         </msub>
+        </mrow>
+        <mo>
+         +
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           T
+          </mi>
+          <mi>
+           p
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </msubsup><mi>
+       L
+      </mi><mo stretchy="false">
+       (
+      </mo><mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          r
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ,
+      </mo><mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mrow>
+         <mi>
+          q
+         </mi>
+         <mi>
+          r
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ,
+      </mo><mrow>
+       <msub>
+        <mi>
+         ω
+        </mi>
+        <mi>
+         m
+        </mi>
+       </msub>
+      </mrow><mo>
+       ,
+      </mo><mrow>
+       <msub>
+        <mi>
+         i
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          s
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ,
+      </mo><mrow>
+       <msub>
+        <mi>
+         i
+        </mi>
+        <mrow>
+         <mi>
+          q
+         </mi>
+         <mi>
+          s
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ,
+      </mo><mi>
+       f
+      </mi><mo>
+       ,
+      </mo><mi>
+       a
+      </mi><mo>
+       ,
+      </mo><mi>
+       t
+      </mi><mo stretchy="false">
+       )
+      </mo><mi>
+       d
+      </mi><mi>
+       t
+      </mi><mo>
+       ,
+      </mo><mspace width="thinmathspace"></mspace>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(8a) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>subject to constraints (6b)–(6d), and <a href="#M0001">Equations (1)</a>–<a href="#M0005">(5)</a> and<disp-formula-group id="M0017">
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0017.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0017.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(8b) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mo>
+       −
+      </mo><mi>
+       ζ
+      </mi><mrow>
+       <msup>
+        <mi>
+         e
+        </mi>
+        <mrow>
+         <mo>
+          −
+         </mo>
+         <mi>
+          a
+         </mi>
+         <mi>
+          t
+         </mi>
+        </mrow>
+       </msup>
+      </mrow><mo>
+       −
+      </mo><msubsup>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+       <mi>
+        F
+       </mi>
+      </msubsup><mo>
+       ≤
+      </mo><mrow>
+       <msub>
+        <mi>
+         ω
+        </mi>
+        <mi>
+         m
+        </mi>
+       </msub>
+      </mrow><mo stretchy="false">
+       (
+      </mo><mi>
+       t
+      </mi><mo stretchy="false">
+       )
+      </mo><mo>
+       ≤
+      </mo><mi>
+       ζ
+      </mi><mrow>
+       <msup>
+        <mi>
+         e
+        </mi>
+        <mrow>
+         <mo>
+          −
+         </mo>
+         <mi>
+          a
+         </mi>
+         <mi>
+          t
+         </mi>
+        </mrow>
+       </msup>
+      </mrow><mo>
+       +
+      </mo><msubsup>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+       <mi>
+        F
+       </mi>
+      </msubsup>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(8b) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0049.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0049.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      ζ
+     </mi>
+    </math></span> is called the maximum mechanical speed overshoot and be pre-defined and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0050.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0050.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      a
+     </mi>
+    </math></span> is the convergence rate of the mechanical speed which will be optimized. Now define <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0051.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0051.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      L
+     </mi><mo stretchy="false">
+      (
+     </mo><mo>
+      .
+     </mo><mo stretchy="false">
+      )
+     </mo>
+    </math></span> in (8a) by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0052.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0052.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mfenced open="(" close=")">
+      <mrow>
+       <mfenced open="|" close="|">
+        <mrow>
+         <mfenced open="|" close="|">
+          <mrow>
+           <mrow>
+            <msub>
+             <mi>
+              ω
+             </mi>
+             <mi>
+              m
+             </mi>
+            </msub>
+           </mrow>
+           <mo>
+            −
+           </mo>
+           <msubsup>
+            <mi>
+             ω
+            </mi>
+            <mi>
+             m
+            </mi>
+            <mi>
+             F
+            </mi>
+           </msubsup>
+           <mrow>
+            <mo>
+             |
+            </mo>
+           </mrow>
+           <msubsup>
+            <mrow>
+             <mo>
+              |
+             </mo>
+            </mrow>
+            <mi>
+             q
+            </mi>
+            <mn>
+             2
+            </mn>
+           </msubsup>
+           <mo>
+            +
+           </mo>
+          </mrow>
+         </mfenced>
+        </mrow>
+       </mfenced>
+       <mi>
+        ζ
+       </mi>
+       <mrow>
+        <msup>
+         <mi>
+          e
+         </mi>
+         <mrow>
+          <mo>
+           −
+          </mo>
+          <mi>
+           a
+          </mi>
+          <mi>
+           t
+          </mi>
+         </mrow>
+        </msup>
+       </mrow>
+       <mrow>
+        <mo>
+         |
+        </mo>
+       </mrow>
+       <msubsup>
+        <mrow>
+         <mo>
+          |
+         </mo>
+        </mrow>
+        <mrow>
+         <mover>
+          <mi>
+           q
+          </mi>
+          <mo stretchy="false">
+           ˆ
+          </mo>
+         </mover>
+        </mrow>
+        <mn>
+         2
+        </mn>
+       </msubsup>
+      </mrow>
+     </mfenced>
+    </math></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0053.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0053.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mfenced open="|" close="|">
+       <mrow>
+        <mfenced open="|" close="|">
+         <mo>
+          .
+         </mo>
+        </mfenced>
+       </mrow>
+      </mfenced>
+      <mi>
+       q
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msubsup>
+    </math></span> is the Euclidian norm and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0054.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0054.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mi>
+       ω
+      </mi>
+      <mi>
+       m
+      </mi>
+      <mi>
+       F
+      </mi>
+     </msubsup>
+    </math></span> is a desired mechanical speed and defined as 100&nbsp;rad/sec. Arbitrary choosing <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0055.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0055.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      ζ
+     </mi><mo>
+      =
+     </mo><mn>
+      110
+     </mn><mi>
+      r
+     </mi><mi>
+      a
+     </mi><mi>
+      d
+     </mi><mrow>
+      <mo>
+       /
+      </mo>
+     </mrow><mi>
+      s
+     </mi><mi>
+      e
+     </mi><mi>
+      c
+     </mi>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0056.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0056.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      q
+     </mi>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0057.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0057.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mover>
+      <mi>
+       q
+      </mi>
+      <mo stretchy="false">
+       ˆ
+      </mo>
+     </mover>
+    </math></span> are fixed to 0.1, prediction and control horizons are 1 and 0.1 s, respectively .<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span> <sup>1</sup> </a></span> Box constraints (14) and (15) are as follows: <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0058.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0058.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+      </msub>
+     </mrow><mrow>
+      <msubsup>
+       <mo stretchy="false">
+        ]
+       </mo>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         min
+        </mo>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msubsup>
+     </mrow><mo>
+      =
+     </mo><mo stretchy="false">
+      [
+     </mo><mo>
+      −
+     </mo><mn>
+      2
+     </mn><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mo>
+      −
+     </mo><mn>
+      2
+     </mn><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mo>
+      −
+     </mo><mn>
+      160
+     </mn><mo stretchy="false">
+      ]
+     </mo>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0059.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0059.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+      </msub>
+     </mrow><mrow>
+      <msubsup>
+       <mo stretchy="false">
+        ]
+       </mo>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         max
+        </mo>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msubsup>
+     </mrow><mo>
+      =
+     </mo><mo stretchy="false">
+      [
+     </mo><mn>
+      2
+     </mn><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mn>
+      2
+     </mn><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mn>
+      160
+     </mn><mo stretchy="false">
+      ]
+     </mo>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0060.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0060.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mi>
+      f
+     </mi><mrow>
+      <msubsup>
+       <mo stretchy="false">
+        ]
+       </mo>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         min
+        </mo>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msubsup>
+     </mrow><mo>
+      =
+     </mo><mrow>
+      <mo stretchy="false">
+       [
+      </mo>
+      <mo>
+       −
+      </mo>
+      <mn>
+       90
+      </mn>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mo>
+       −
+      </mo>
+      <mn>
+       90
+      </mn>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mn>
+       0
+      </mn>
+      <mrow>
+       <msup>
+        <mo stretchy="false">
+         ]
+        </mo>
+        <mi>
+         T
+        </mi>
+       </msup>
+      </mrow>
+     </mrow>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0061.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0061.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mi>
+      f
+     </mi><mrow>
+      <msubsup>
+       <mo stretchy="false">
+        ]
+       </mo>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         max
+        </mo>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msubsup>
+     </mrow><mo>
+      =
+     </mo><mrow>
+      <mo stretchy="false">
+       [
+      </mo>
+      <mn>
+       90
+      </mn>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mn>
+       90
+      </mn>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mn>
+       120
+      </mn>
+      <mrow>
+       <msup>
+        <mo stretchy="false">
+         ]
+        </mo>
+        <mi>
+         T
+        </mi>
+       </msup>
+      </mrow>
+     </mrow>
+    </math></span>. The prediction horizon is divided to 100 subintervals. Figure <a href="#F0005">5(a</a>) shows the rotor fluxes profiles and rotor speed profile, <span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0002" href="#" data-reflink="fn"><span class="off-screen">Footnote</span> <sup>2</sup> </a></span> while Figure <a href="#F0005">5(b</a>) shows the control profiles, i.e., stator current and excitation frequency.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0003" href="#" data-reflink="fn"><span class="off-screen">Footnote</span> <sup>3</sup> </a></span></p>
+  <div class="figure figureViewer" id="F0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Simulation of three-phase induction motor using nonlinear model predictive control technique</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Tamimi%2C+Jasem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tamimi%2C+Jasem"><span class="NLM_given-names">Jasem</span> Tamimi</a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311916.2018.1516489">https://doi.org/10.1080/23311916.2018.1516489</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>25 September 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> (a) Rotor fluxes and speed using MPC with the current-fed control method. (b) Stator currents and excitation frequency using MPC with the current-fed control method.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/medium/oaen_a_1516489_f0005_c.jpg" loading="lazy" height="203" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> (a) Rotor fluxes and speed using MPC with the current-fed control method. (b) Stator currents and excitation frequency using MPC with the current-fed control method.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0005">
+   <div class="figureFootNote-F0005"></div>
+  </div>
+  <p></p>
+  <p>Moreover, adding Inequality (8b) to OCP (6) (cf. OCP (8)) will increase the speed of convergence to the desired motor speed ensure that the desired motor speed is reached. That is, without Constraint (8b) will take more time to reach the desired motor speed. However, to solve the OCP using one of the direct methods, a discretization scheme will be used and thus the OCP is converted to a nonlinear programming (NLP) problem which will be solved usually by the method of sequential quadratic programming (SQP) (Bartholomew Biggs, <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2008</a></span>; Chen et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2003</a></span>; Tamimi &amp; Li, <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2009</a></span>). Without loss of generality, the size of the resulted NLP problem depends on the size of the OCP, i.e., number of control and state variables, as well as the number of subintervals used in discretization method. By adding such inequality constraints to the OCP, the number of state variables will be doubled but, however, the size of the corresponding NLP problem does not significantly increase. The reason for this observation is that the introduced inequality constraints are governed by linear, decoupled system dynamics (cf. Inequality (8b)) and, therefore, the additional size of the NLP problem comes only from the size of the vector <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0062.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0062.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      a
+     </mi>
+    </math></span>. If the combined multiple shooting-collocation approach (Tamimi &amp; Li, <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i42" href="#"><span class="off-screen">Citation</span>2009</a></span>), for example, is used to solve the OCP (8), the inequality constraint is used to stabilize the IM speed and the number of the subinterval used to discretize the OCP is 100 subintervals, then the size of the NLP problem by adding the inequality constraint will be 607 instead of 606, see Table <button class="ref showTableEventRef" data-id="T0001">1</button> for calculation of the NLP size. However, for the solution of OCP (8), adding these inequality constraints may cause additional computational expense due to the restriction of the system states .</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Simulation of three-phase induction motor using nonlinear model predictive control technique</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tamimi%2C+Jasem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tamimi%2C+Jasem"><span class="NLM_given-names">Jasem</span> Tamimi</a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311916.2018.1516489">https://doi.org/10.1080/23311916.2018.1516489</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>25 September 2018
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> NLP size calculation of OCP (8)</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="false" id="T0001-table-wrapper">
+    <a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S0008-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i36">7.2. Simulation of the voltage-fed IM</h3>
+  <p>Again, to simulate the voltage-fed IM in Section <a href="#S0007">6</a>, the control goal is to drive the IM into desired, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0069.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0069.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mi>
+       w
+      </mi>
+      <mi>
+       m
+      </mi>
+      <mi>
+       F
+      </mi>
+     </msubsup>
+    </math></span>, speed. Thus the MPC problem is repeatedly solve the following NOPC, taking in mind the box constraint and the steady state operating point. Therefore, the nonlinear OCP can be defined as follows:<disp-formula-group id="M0018">
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0018.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0018.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(9a) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <munder>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         min
+        </mo>
+       </mrow>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           i
+          </mi>
+          <mrow>
+           <mi>
+            d
+           </mi>
+           <mi>
+            s
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           i
+          </mi>
+          <mrow>
+           <mi>
+            q
+           </mi>
+           <mi>
+            s
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         f
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         a
+        </mi>
+       </mrow>
+      </munder><msubsup>
+       <mrow>
+        <mo>
+         ∫
+        </mo>
+       </mrow>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           t
+          </mi>
+          <mi>
+           j
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           t
+          </mi>
+          <mi>
+           j
+          </mi>
+         </msub>
+        </mrow>
+        <mo>
+         +
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           T
+          </mi>
+          <mi>
+           p
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </msubsup><mi>
+       L
+      </mi><mo stretchy="false">
+       (
+      </mo><mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          r
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ,
+      </mo><mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mrow>
+         <mi>
+          q
+         </mi>
+         <mi>
+          r
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ,
+      </mo><mrow>
+       <msub>
+        <mi>
+         ω
+        </mi>
+        <mi>
+         m
+        </mi>
+       </msub>
+      </mrow><mo>
+       ,
+      </mo><mrow>
+       <msub>
+        <mi>
+         i
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          s
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ,
+      </mo><mrow>
+       <msub>
+        <mi>
+         i
+        </mi>
+        <mrow>
+         <mi>
+          q
+         </mi>
+         <mi>
+          s
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ,
+      </mo><mi>
+       f
+      </mi><mo>
+       ,
+      </mo><mi>
+       a
+      </mi><mo>
+       ,
+      </mo><mi>
+       t
+      </mi><mo stretchy="false">
+       )
+      </mo><mi>
+       d
+      </mi><mi>
+       t
+      </mi><mo>
+       ,
+      </mo><mspace width="thinmathspace"></mspace>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(9a) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>subject to Constraints (7b)–(6d), and <a href="#M0001">Equations (1)</a> to <a href="#M0005">(5)</a> and<disp-formula-group id="M0019">
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0019.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_m0019.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(9b) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mo>
+       −
+      </mo><mi>
+       ζ
+      </mi><mrow>
+       <msup>
+        <mi>
+         e
+        </mi>
+        <mrow>
+         <mo>
+          −
+         </mo>
+         <mi>
+          a
+         </mi>
+         <mi>
+          t
+         </mi>
+        </mrow>
+       </msup>
+      </mrow><mo>
+       −
+      </mo><msubsup>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+       <mi>
+        F
+       </mi>
+      </msubsup><mo>
+       ≤
+      </mo><mrow>
+       <msub>
+        <mi>
+         ω
+        </mi>
+        <mi>
+         m
+        </mi>
+       </msub>
+      </mrow><mo stretchy="false">
+       (
+      </mo><mi>
+       t
+      </mi><mo stretchy="false">
+       )
+      </mo><mo>
+       ≤
+      </mo><mi>
+       ζ
+      </mi><mrow>
+       <msup>
+        <mi>
+         e
+        </mi>
+        <mrow>
+         <mo>
+          −
+         </mo>
+         <mi>
+          a
+         </mi>
+         <mi>
+          t
+         </mi>
+        </mrow>
+       </msup>
+      </mrow><mo>
+       +
+      </mo><msubsup>
+       <mi>
+        ω
+       </mi>
+       <mi>
+        m
+       </mi>
+       <mi>
+        F
+       </mi>
+      </msubsup>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="" class="disp-formula-label">(9b) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>The objective functional is also similar to that in Section <a href="#S0008-S2001">7.1</a>. In addition, the stator voltages <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0070.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/oaen_a_1516489_ilm0070.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        v
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        a
+       </mi>
+       <mi mathvariant="normal">
+        n
+       </mi>
+       <mi mathvariant="normal">
+        d
+       </mi>
+      </mrow>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        v
+       </mi>
+       <mrow>
+        <mi>
+         q
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ∈
+     </mo><mo stretchy="false">
+      [
+     </mo><mo>
+      −
+     </mo><mn>
+      330
+     </mn><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mn>
+      330
+     </mn><mo stretchy="false">
+      ]
+     </mo><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mi>
+      V
+     </mi>
+    </math></span>. Figure <a href="#F0006">6(a</a>) shows the stator currents and rotor fluxes profiles with zero initial conditions an Figure <a href="#F0006">6(b</a>) shows the rotor speed, stator voltages and input frequency of the IM.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0006" href="#" data-reflink="fn"><span class="off-screen">Footnote</span> <sup>6</sup> </a></span></p>
+  <div class="figure figureViewer" id="F0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Simulation of three-phase induction motor using nonlinear model predictive control technique</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Tamimi%2C+Jasem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tamimi%2C+Jasem"><span class="NLM_given-names">Jasem</span> Tamimi</a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311916.2018.1516489">https://doi.org/10.1080/23311916.2018.1516489</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>25 September 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 6. </span> (a) Stator currents and rotor fluxes using MPC with the voltage-fed control method. (b) Rotor speed, stator currents and excitation frequency using MPC with the voltage-fed control method.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0006image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2018/oaen20.v005.i01/23311916.2018.1516489/20210219/images/medium/oaen_a_1516489_f0006_c.jpg" loading="lazy" height="205" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0006">
+   <p class="captionText"><span class="captionLabel">Figure 6. </span> (a) Stator currents and rotor fluxes using MPC with the voltage-fed control method. (b) Rotor speed, stator currents and excitation frequency using MPC with the voltage-fed control method.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0006">
+   <div class="figureFootNote-F0006"></div>
+  </div>
+  <p></p>
+  <p>We note that, in both cases the motor speed reaches the desired speed within 0.2&nbsp;s.</p>
+ </div>
+</div>
+<div id="S0009" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i40" class="section-heading-2">8. Conclusion</h2>
+ <p>In this paper, NMPC is applied to control the IM. Therefore, the formulated optimal control problem (OCP) is repeatedly solved using NMPC. This OCP is first formulated using the third order IM model, thus, the system states are the fluxes in the arbitrary rotating frame as well as the motor speed where the controls are the stator currents and input frequency. The OCP is formulated using the fifth order model, i.e., the system states are the fluxes in the arbitrary rotating frame, the stator currents in the stator frame and the motor speed where the systems controls are the terminal stator voltage in the stator frame and the input frequency. These nonlinear OCPs are solved using direct method. Moreover, stabilization constraints are added the OCPs to ensure the stability of the motor speed. Simulation results show the effectiveness of the proposed controller in both cases where the motor speed reaches the desired speed after 0.2&nbsp;s.</p>
+</div>

@@ -1,0 +1,433 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">1. Introduction</h2>
+ <p>With the advent of social media, individuals can express their opinions on a subject instantaneously and, on many social networks, in a highly public manner. When such data are continuously collected, general public perceptions on topics are traceable as they fluctuate in response to news events, disruptions, or thoughts and experiences in the digital and physical world around them. In the field of urban planning, this has tangible potential benefits as a form of passive participation, whereby those who design and provide services for the city can have an increased pool of information that could support decision-making.</p>
+ <p>In urban public transportation, network customers are increasingly using their digital voice to communicate both positive comments and concerns about conditions of service – such as timeliness, safety, crowdedness, cost of travel and comfort. Further, they are using this voice to communicate their sentiment toward specific news events such as union strikes, making high-level political commentary and responding to announcements of future infrastructure services. The promise of the Smart City is that these digital traces can be identified, captured, categorized, collated, and visualized to underpin evidence toward informed policy development, enacting new modes of governance and empowering those citizens who choose to volunteer this information.</p>
+ <p>Thus, it is seen that the potential that social media data holds for the transport sector is that, if effectively harvested, these data can potentially enhance, complement, or even replace existing data collection and participation techniques. However, although this data is freely available – the process of computing high volumes of short, unstructured messages into tangible metrics for planners and decision-makers comes at a cost, both in terms of financing, ownership, and resources, as well as posing significant challenges, given the nature of language as well as in the ways that people interact online.</p>
+ <p>Given the potential of this medium, there have been, to date, limited examples of how government transportation agencies realistically exploit these new forms of data. Further, studies on citizen motivations for using these platforms, their preferences, awareness, and their expectations in this context on how their data traces are used, is limited. This research thus forms a case study that examines social media data, passively collected transport performance big data, and survey data together. This contributes to a holistic evaluation of the current opportunities and challenges of this medium in the context of big data to inform operational transport planning in the city of Sydney, Australia.</p>
+ <p>The objective of this work is specifically to analyze the use of Twitter as a tool capable of measuring historic and real-time feedback and satisfaction among public transport users in Sydney. A Mixed Methods approach combining qualitative and quantitative survey questions with data mining and machine learning/natural language processing techniques achieves this objective in relation to five Research Questions (RQs) formulated as: <statement></statement></p>
+ <p>RQ1–To what extent is Twitter used as a platform for expressing dissatisfaction with the transport network in Sydney?</p> <statement>
+  <p>RQ2–What are the most prominent topics and issues generally talked about on Twitter in regard to transport and can these be grouped computationally?</p>
+ </statement> <statement>
+  <p>RQ3–Is there a relationship between transport-related Tweets and actual transport performance derived from big data?</p>
+ </statement> <statement>
+  <p>RQ4–What inherent bias is there is measuring satisfaction levels of Sydney transport users through this medium?</p>
+ </statement> <statement content-type="question">
+  <p>RQ5–To what extent are users satisfied with traditional feedback channels, and is mining Tweets an appropriate channel?</p>
+ </statement>
+ <p></p>
+ <p>Key recommendations focus on how such data can be used, analyzed, and combined to represent citizen feedback concerning the public transport system, accurately. Further, a discussion considers the readiness of such technologies for uptake in real-world urban transport planning contexts.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">2. Related work</h2>
+ <p>Understanding the properties and characteristics of urban things to gain operational insight through big data feeds is a key objective and motivation behind the Smart City. Big data represents a profound transformation in the relative volume, variety, and accessibility of information available to governments, organizations, and the public at large. Social media content, such as geolocated Tweets or those referring to geographic phenomena, such as transport, is a form of Volunteered Geographic Information (VGI). VGI has appeared in geographic literature for over a decade now, with Goodchild (<span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2007</a></span>) arguing that such forms of contributed data can broaden the number and type of people playing a role in the design of cities; empowering citizens as “sensors” augments existing government datasets to provide more information for more collaborative decision-making.</p>
+ <p>VGI forms an attractive form of passive civic participation in this regard for cities, for corporations and for more busy citizens – in a world where active forms of participation such as public hearings and citizen panels, seem less relevant given the ubiquity of information communication technologies. Tenney and Sieber (<span class="ref-lnk lazy-ref"><a data-rid="cit0039" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2016</a></span>) discuss some of the broader contractions of this – and their research suggests VGI holds abundant opportunities to enable public participation, however for these to be adopted with restraint until more transparent forms of underpinning algorithmic processes for such information are more widely available. In a similar vein, Kitchin, Lauriault, and Gavin (<span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2015</a></span>) review indicators, urban benchmarking, and urban dashboard initiatives. They highlight that these are not simple data assemblages, but rather ”<i>complex, politically-infused, socio-technical systems that, rather than reflecting cities, actively frame and produce them</i>” (ibid., <span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2015</a></span>, 1).</p>
+ <p>A significant body of literature on Twitter use by citizens to assist in government services falls under the category of real-time disaster information for emergency management (Panagiotopoulos et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2016</a></span>). This might be a form of co-production – where citizens volunteer information, amplify a civic service, to provide a civic good. Real-time information system process data and allow continuous sentiment analysis, which can also be used to detect incidents (Tasoulis et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0037" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+ <p>Beyond detection of disasters – traffic events, congestion, and accidents are also highly popular research applications of social media data in the transport field – see for examples (Gong and Sinnott <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2015</a></span>; Gu, Qian, and Chen <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2016</a></span>; Salas et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2017</a></span>; Tejaswin, Kumar, and Gupta <span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2015</a></span>; D. Wang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0041" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2014</a></span>). Increasingly researchers are applying more sophisticated machine learning techniques (Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0045" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+ <p>Numerous studies employ sentiment analysis techniques on social media data. Social media content has allowed monitoring of the well-being of individuals, as well as of entire communities (Quercia et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2012</a></span>). Beyond detecting events, work such as the “geography of happiness” allows measurements that give insights into types of content posted and their relationship between high-level population-scale demographic metrics (Mitchell et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2013</a></span>). Limited studies, however, link such well-being derived through social media with sensor data from infrastructure assets – for example, how do deficiencies in transport provision relate to decreased social media well-being?</p>
+ <p>Schweitzer (<span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2014</a></span>) studied how stigma is generated through social media (Twitter) on public transport. The authors discuss the role planners may have in maintaining a civil dialogue by deeper engagement with citizens on these platforms. The importance of using Twitter as an additional source of transport-related information is discussed by Kuflik et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2017</a></span>). These authors identify several challenges with the use of data mining techniques such as those in natural language processing. The authors note that improving data mining techniques for Twitter data has implications to public participation and is strong field for further work. Studies such as that by Collins, Hasan, and Ukkusuri (<span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2013</a></span>) acknowledge that performance metrics generally represent interests of business without focusing on the customer and that an increasing body of work should reflect performance indicators that include end users.</p>
+ <p>Sentiment analysis, specifically applied to transport, has been employed by Saragih and Girsang (<span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2018</a></span>) using Facebook and Twitter to more accurately understand opinions on transport. The authors note that while this kind of opinion mining is popular in business, it is less popular in government organizations, such as transport authorities in Indonesia. Bruno et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2019</a></span>) use data mining techniques to understand the tourism industry and travel behavior in Bamako, Mali. Mendez et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2019</a></span>) engaged in both sentiment analysis and topic modeling in order to capture bus user experiences on the network in Santiago, Chile. The authors found these techniques effective for representing the opinions of bus commuters in this context.</p>
+ <p>As the volume of social media data increases – so does the volume of data generated by the transportation network. The volume and distribution of transport data are growing due to the widespread deployment of sensors in vehicles, mobile phones, and other devices. Limited work to date has looked at directly comparing these datasets, which is an important omission to consider, as they are generated simultaneously. In a recent review of the use of big data in public transportation, Welch and Widita (<span class="ref-lnk lazy-ref"><a data-rid="cit0043" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2019</a></span>) suggest that public transport research could indeed benefit from further pairing of transport big data sources (such as GPS, smart cards) with social media data to infer customer satisfaction and confirm assumptions about demographics and travel behavior. As such, this work aims to make a valuable contribution in terms of validating (or invalidating) assumptions of patterns within social media data using modern openly available computational techniques.</p>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">3. Method</h2>
+ <p>The following section describes the data collection and analysis methods used to address the five proposed research questions. The data sources and models used in this study are open-source and represent what is freely available to governments, researchers, and citizen scientists. <a href="#f0001">Figure 1</a> illustrates this workflow.</p>
+ <div class="figure figureViewer" id="f0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Social media as passive geo-participation in transportation planning – how effective are topic modeling &amp; sentiment analysis in comparison with citizen surveys?</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Lock%2C+Oliver"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lock%2C+Oliver"><span class="NLM_given-names">Oliver</span> Lock</a> <a href="https://orcid.org/0000-0003-4165-1232"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Pettit%2C+Christopher"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pettit%2C+Christopher"><span class="NLM_given-names">Christopher</span> Pettit</a> <a href="https://orcid.org/0000-0002-1328-9830"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/10095020.2020.1815596">https://doi.org/10.1080/10095020.2020.1815596</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>21 September 2020
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> Pipeline for collecting and processing data for this study</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/tgsi20/2020/tgsi20.v023.i04/10095020.2020.1815596/20210523/images/medium/tgsi_a_1815596_f0001_b.gif" loading="lazy" height="272" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> Pipeline for collecting and processing data for this study</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0001">
+  <div class="figureFootNote-f0001"></div>
+ </div>
+ <p></p>
+ <div id="s0003-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">3.1. Data collection</h3>
+  <div id="s0003-s2001-s3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i8">3.1.1. Tweets</h4>
+   <p>A Tweet is a message displayed on a user’s profile page on the social media platform Twitter, which is publicly visible by default, and shared with all his or her “followers”. Tweets are, at the time of writing, limited to 280 characters and may include URLs, tags (where another user is specified with the “@” symbol, implying a form of dialogue with that user), and hashtags (where a particular topic is denoted and traceable through the “#” symbol).</p>
+   <p>In order to obtain a sample of Sydney transport-related content on the platform, Tweets were collected continuously for over a year using the Twitter Search API to form a longitudinal sample from January 2018 to April 2019. This is a freely available service, which has limitations when not continuously collected. For example, these are only available in 7-day time windows, potentially reducing the number of results shown. These limitations are ameliorated by using very specific search terms, separating queries, and querying continuously over time to create comprehensive data samples.</p>
+   <p>A manual review of keywords used by Sydney transport users and commentators on the network prior to collection, indicated a number of official accounts run by the State government transport body, Transport for NSW (hereafter, TfNSW). These are regularly used to communicate with and between the public in Sydney (such as @TrainsInfo, @T1SydneyTrains, @BusesInnerWest), as well as a set of regular hashtags used less formally (#sydneytrains, #sydneybuses, #nswtransport, #sydneytransport &amp; #transportfornsw). This review led to creation of 26 key search terms to identify Tweets related to expressing an opinion about transport in Sydney as outlined in <a href="#app0001">Appendix A</a>.</p>
+   <p>It was also found, early on and notably, that geolocated Tweets related to public transport (i.e. using these tags and hashtags) were an extremely small (&lt;1%) sample of Tweets and thus geographic coordinates did not form a component of this study. Approximately 55,000 unique Tweets were used as the sample for this study; representing the activity of approximately 13,200 unique usernames; 34,000 additional Tweets were collected in the form retweets, which were not used. While the study did not use geographic coordinates, this information still contains a rich source of geographic information – such as placenames, which describe train stations, bus stops and event locations, and service names, which describe individual routes and lines and denote specific geographic areas.</p>
+  </div>
+  <div id="s0003-s2001-s3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i9">3.1.2. Transport performance</h4>
+   <p>High-volume data feeds related to transport performance were processed to ascertain the relationship between peak Twitter activity and public transportation disruptions. The General Transit Feed Specification – Real-Time (hereafter, GTFS-RT) was collected from the TfNSW API that provides this feed as open to the public. This is accessible through the TfNSW Open Data Hub and Developer Portal (TfNSW <span class="ref-lnk lazy-ref"><a data-rid="cit0040" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2019</a></span>). The GTFS-RT is an extension of the GTFS, which contains static timetable information, and also includes real-time fleet updates to application developers. This real-time fleet information was collected for a period of 12&nbsp;months from April 2018 to April 2019 from a combination of two TfNSW API services – the “Vehicle Positions API” and the “Public Transport – Real-time Alerts API”.</p>
+   <p>The data from both APIs were joined based on their trip identifiers and matching timestamp information. This provides a comprehensive inventory of where services are located at a regular interval and their performance information. These APIs were queried every minute for the study period. This approximates to around 525,000 individual snapshots of the entire network in NSW – leading to over 500 million individual GPS points embedded with additional metadata which include performance information. Additional studies highlight the visual analytics of the geographic information found in such volumetric transport data (Lock, Bednarz, and Pettit <span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2019</a></span>). An open-source sub-set of this data has been made available by the authors (Lock <span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2020</a></span>).</p>
+  </div>
+  <div id="s0003-s2001-s3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i10">3.1.3. User survey</h4>
+   <p>An online survey captured demographic information, comments, and motivations by Twitter users to post about transport performance. Participants were selected from the pool of collected Tweets A research account was created on the Twitter platform to manually send Direct Messages (DMs) to these users. DMs are an opt-in service for users, so not every identified account could be contacted. The target pool of survey results was 100 respondents, the survey was closed when 114 responses were obtained. The web survey ran from November 9, 2018 to January 28, 2019. Survey questions can be found in <a href="#app0002">Appendix B</a>.</p>
+   <p>The questions of the survey, in summary, captured the following information:</p>
+   <ul class="NLM_list NLM_list-list_type-bullet">
+    <li><p class="inline"><b>Validation, demographics, eligibility</b> – did the user indeed post on social media related to transport performance in the last 12&nbsp;months? What are some basic characteristics of the respondent – age and employment?</p></li>
+    <li><p class="inline"><b>Existing knowledge</b> – how much do users already know about social media, Sydney, transport, and politics?</p></li>
+    <li><p class="inline"><b>Communication platforms</b> – where does the user usually express their positive or negative experiences of transport?</p></li>
+    <li><p class="inline"><b>Motivation –</b> why did the user choose to Tweet about this in the last 12&nbsp;months?</p></li>
+    <li><p class="inline"><b>Self-efficacy</b> – does the user feel as if services can be influenced in a meaningful way? This factor relates to their both willingness and ability to participate.</p></li>
+    <li><p class="inline"><b>Satisfaction</b> – are they satisfied with this form of participating? Are they satisfied with the current transport performance?</p></li>
+    <li><p class="inline"><b>Preferred participation</b> – Which best describes the way they personally want to engage in improving everyday public transport services?</p></li>
+    <li><p class="inline"><b>Open-ended questions</b> – do users have any other comments, stories?</p></li>
+   </ul>
+   <p></p>
+  </div>
+ </div>
+ <div id="s0003-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">3.2. Analysis methods</h3>
+  <div id="s0003-s2002-s3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i12">3.2.1. Sentiment analysis</h4>
+   <p>Sentiment analysis is receiving increased interest in the cities domain in ascertaining public responses to the provision of civic services through social media. Sentiment analysis is a challenging task, which aims to deduct the polarity of text and capture meanings and opinions – despite the potential lack of contextual information, as well as spelling and grammar mistakes. Such analysis is further problematic on social media, as there is an inclination to use abbreviated language as well as slang, irony, or sarcasm.</p>
+   <p>Sentiment analysis for this study was undertaken using natural language toolkit “nltk” (Bird, Klein, and Loper <span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2009</a></span>). Specifically, the open-source VADER (Valence Aware Dictionary for sEntiment Reasoning) rule-based model for sentiment analysis for social media text was used (Hutto and Gilbert <span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2014</a></span>).</p>
+   <p>VADER was specifically adjusted for sentiment in social media contexts (such as Twitter). VADER receives sentences as input and provides three values – for positive, neutral, and negative sentiments. These were transformed into a fourth, compound value, representing the overall polarity of a sentence. Examples of relevant studies using VADER include detecting public sentiment about the Great Barrier Reef (Becken et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2017</a></span>) and creating training data sets for more sophisticated machine learning algorithms to predict election results (Ramteke et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p>
+   <p>A small sample of open-source VADER results was also compared with results from IBM Watson Tone Analyzer (IBM <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2019</a></span>), representing a “Smart City” vendor product which, at present, is free for small users but more costly for larger-scale organizations. Tone Analyzer detects “<i>joy, fear, sadness, anger, analytical, confident and tentative”</i> tone in text using supervised machine learning techniques (ibid.,<span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2019</a></span>).</p>
+  </div>
+  <div id="s0003-s2002-s3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i13">3.2.2. Topic modeling</h4>
+   <p>Topic modeling is a statistical modeling technique for identifying abstract “topics” that occur in groups of “documents” (here, Tweets). This study uses Latent Dirichlet Allocation (LDA) as a topic extraction model. This is an unsupervised machine learning model developed by Blei, Ng, and Jordan (<span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2003</a></span>). Using this technique, words that appear many times together in the same document are assumed to be related, and therefore are more likely to be assigned to the same topic. Co-occurring words are placed into topics through a clustering process. This is known as a “bag-of-words” model.</p>
+   <p>A mixture of topics is produced for every document. For example, a document can be 20% topic A, 40% topic B and 40% topic C. This is in contrast to other clustering algorithms (such as k-means and DBSCAN), which assign each object to one distinct group. The open-source Gensim library (Rehurek and Sojka <span class="ref-lnk lazy-ref"><a data-rid="cit0033" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2010</a></span>) was used to perform the LDA. To prepare for LDA, Tweet text undergoes a text normalization process – including removal of stop words, punctuation, lemmatization, and being made lower case (Loria et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2014</a></span>).</p>
+   <p>This technique is generally applied to news items and long written works. Its application on short and informal documents like Tweets is increasingly being applied for detecting and analyzing events. Examples include in disasters (Huang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2015</a></span>; Kireyev, Palen, and Anderson <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2009</a></span>) and crime (Wang, Gerber, and Brown <span class="ref-lnk lazy-ref"><a data-rid="cit0042" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2012</a></span>). In the context of urban planning and management, Lansley and Longley (<span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2016a</a></span>) have applied the LDA method to study the spatial and temporal distribution of unique Tweet topics in the city of London. The authors demonstrated that these data and method reveal insights useful to the study of urban dynamics such as land-use and activity patterns. Here we use this technique to investigate the daily interests (topics) of those using certain keywords related to public transport in the city of Sydney.</p>
+  </div>
+ </div>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i14" class="section-heading-2">4. Results</h2>
+ <div id="s0004-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">4.1. RQ1 – Expressing content or discontent</h3>
+  <p>This first section investigates the use of sentiment and tone analysis techniques in understanding the levels of satisfaction reported by public transport users on social media inherently communicated through their use of language. Using the VADER natural language processing method on the full sample of Tweets, it was found approximately 36% of all Tweets were found to express a negative sentiment, 29% a neutral sentiment and 35% positive sentiment. Based on this, there is no conclusive majority was identified using this method. Manual scans of these results indicate that in many cases, content that could be interpreted as sarcastic was not picked up as negative sentiment, but rather as positive.</p>
+  <p>The IBM Watson Tone Analyzer was used for this sample, for the month of June. Due to the cost of using this service, analysis was limited to this time. The results identified just over a quarter (26%) of the Tweets as having the strongest tone as “Tentative”, followed by 16% “Analytical”, 11% “Confident”, 9% Joy, 6% Sadness, 4% “Anger” and less than 1% “Fear”. A large proportion, 28%’, could not be given a tone, flagged as “#N/A”.</p>
+  <p>By comparing both methods, we can observe where positive emotions (such as “joy”) and negative (such as “fear” and “sadness”) detected using the trained models from IBM Watson Tone Analyzer are also detected through the VADER derived sentiment values. When comparing VADER sentiment values to tone for the same month, the “Tentative” tone appears at high volume across all VADER sentiment values. Tentative comments using VADER are labeled as “questionable” and “doubtful” in nature. “Joy” appears almost exclusively in the positive VADER categories, and “Anger” and “Sadness” also, almost exclusively in the negative categories. This gives an indication of confidence about results and presence of false positives or negatives, the results appear in <a href="#f0002">Figure 2</a>.</p>
+  <p>Consider a question such as “<i>Can you please confirm, will my train be very, or just slightly delayed? It’s been a joy waiting</i>”. This is an example of a message that would be marked as “tentative” and “positive” using these techniques, though our intuition of this context would tell us this message is negative and sarcastic.</p>
+  <div class="figure figureViewer" id="f0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Social media as passive geo-participation in transportation planning – how effective are topic modeling &amp; sentiment analysis in comparison with citizen surveys?</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Lock%2C+Oliver"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lock%2C+Oliver"><span class="NLM_given-names">Oliver</span> Lock</a> <a href="https://orcid.org/0000-0003-4165-1232"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Pettit%2C+Christopher"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pettit%2C+Christopher"><span class="NLM_given-names">Christopher</span> Pettit</a> <a href="https://orcid.org/0000-0002-1328-9830"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/10095020.2020.1815596">https://doi.org/10.1080/10095020.2020.1815596</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>21 September 2020
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Volume of tweets in June 2018, categorized by both Sentiment (VADER, 1 to 5) and Tone (from IBM Watson Tone Analyzer)</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0002image" src="/na101/home/literatum/publisher/tandf/journals/content/tgsi20/2020/tgsi20.v023.i04/10095020.2020.1815596/20210523/images/medium/tgsi_a_1815596_f0002_c.jpg" loading="lazy" height="218" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Volume of tweets in June 2018, categorized by both Sentiment (VADER, 1 to 5) and Tone (from IBM Watson Tone Analyzer)</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0002">
+   <div class="figureFootNote-f0002"></div>
+  </div>
+  <p></p>
+  <p>The user survey results indicate a much clearer expression of discontent from the majority of citizens. They also highlight the mixed and multiple reasons why these people have chosen to post on social media. When asked, 77% of survey participants highlighted several reasons, their reason to post was <i>“to complain”</i> (described as “using their opinion to highlight bad or undesirable services”) represented the most popular response. Further, participants also stated they also used social media <i>“to vent”</i> (68%), <i>“to understand” (54%), “to suggest” (54%)</i> and <i>“to praise”</i> (39%).</p>
+  <p>As such, a post containing multiple motives such as both “<i>to complain”</i> and <i>“to suggest”</i> cannot be sufficiently summarized through sentiment alone; but perhaps, through multiple techniques such as above – “negative” and “analytical” in tone. Further details of the survey results can be found in <a href="#app0003">Appendix C</a>.</p>
+  <p>Results indicate that, although there are high volumes of dissatisfaction expressed about the public transport system, this would be an oversimplification. Through survey results, 77% highlighted one of their main reasons of posting to complain. Automated approaches such as VADER captured 36% negative sentiment, and Tone Analyzer a highly similar value of 36% for tentative, anger, fear, and sadness tones combined. The results show that open-source methods of natural language processing (such as VADER) are useful techniques but limited in understanding nuances such as sarcasm. By using a multiple model approach (exploring results of VADER and IBM Watson Tone Analyzer combined), a more balanced understanding of the sentiment of these messages can potentially be made.</p>
+ </div>
+ <div id="s0004-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i17">4.2. RQ2 – Topic analysis</h3>
+  <p>In this section, the LDA Topic Model approach ascertained an overview of topics derived from the full sample of Tweets. By iteratively assessing the results, 12 (<i>k</i>&nbsp;=&nbsp;12) clusters were found to be useful in providing a salient overview of themes. The topics ranged from issues with individual services (topics 2,3,5,8,11), about the train experience (topics 5,12) automated or semi-automated reporting on service delays (topic 1), responses to news events (topics 2,4,10,12) as well as disgruntled messages with limited context (5,9). The following table highlights the most common 20 words that were co-located for each of the modeled topics, as well as an interpretation based on viewing individual Tweets that were highly rated for each topic. Further, it highlights the percent of overall Tweets had their dominant topic as that topic. These results are summarized in <button class="ref showTableEventRef" data-id="t0001">Table 1</button>. A correlation matrix of the clustering results is in <a href="#app0004">Appendix D</a>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Social media as passive geo-participation in transportation planning – how effective are topic modeling &amp; sentiment analysis in comparison with citizen surveys?</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Lock%2C+Oliver"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lock%2C+Oliver"><span class="NLM_given-names">Oliver</span> Lock</a> <a href="https://orcid.org/0000-0003-4165-1232"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Pettit%2C+Christopher"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pettit%2C+Christopher"><span class="NLM_given-names">Christopher</span> Pettit</a> <a href="https://orcid.org/0000-0002-1328-9830"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/10095020.2020.1815596">https://doi.org/10.1080/10095020.2020.1815596</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>21 September 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> LDA results – 12 derived topics, interpretation, and percent of Tweets with that as dominant topic</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F10095020.2020.1815596&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>In terms of the user survey, results indicate that access to information, travel time, waiting time, network design and crowdedness were rated as the four most important topics for those who had tweeted about transport performance, respectively. Safety and comfort were also rated as important. Comfort, stop access, customer service, and ticketing were rated as the four least important. Other responses specifically mentioned wider issues such as privatization of services, reporting damaged faulty rolling stock, and more thorough communication on what to do during disruptions and faults as important topics to discuss on Twitter.</p>
+  <p>Clear similarities between results of the survey and the topic modeling were identified – revealing important mutual topics such as accessing information at crucial times and delays. The topic modeling, however, revealed further insights about content from accounts, which likely did not participate in the surveys (possibly, more largely reflecting the nature of the platform itself). These include content from automated bots, identification of large-scale disruptions to the network, recurring names of lines and services, and specific commentary on political issues/figures which were not captured at the same scale in the survey. Although the volume of Tweets changes week to week, the distribution of these topics did not experience significant variation over time.</p>
+ </div>
+ <div id="s0004-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">4.3. RQ3 – Relationship</h3>
+  <p>In this section, we investigate whether there is a relationship between transport delays and daily Tweet volume. <a href="#f0003">Figure 3</a> compares daily network-wide delay for rail and bus (indicated by the color of the point) with the volume of Tweets (indicated by the size of the point) over a 12&nbsp;month period. It is the result of combining and aggregating minute-by-minute delay information for the year, from April 2018 to April 2019. A trip delay is when at any time of the day, a trip was delayed 20&nbsp;minutes or more. This creates an overall network performance measure for that day as the percent of trips delayed.</p>
+  <p>In general, rail performance sits below 2.5% of services per day reaching this delay. For buses, this is closer to 5% of services and much more variable (expected, as they generally operate in a congested environment). While buses experienced some days above 5%, this did not peak much higher than 10%. Rail services, on average encountered fewer delays than buses, but periodically experienced very heavy peaks of reduced performance. These results could be quickly verified by searching local news articles (ABC, Sydney Morning Herald) and weather reports (Bureau of Meteorology <span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2018</a></span>) of the same date, which are included in the graph for context.</p>
+  <p>These reflect major incidents related to maintenance issues, staffing issues, staffing, signaling, and unusual weather events. These issues affected 15% of all services and almost 45% of all daily services, so there was an expectation of major peaks in social media activity related to these issues. While this was true for some of the events, we can see in <a href="#f0003">Figure 3</a>–<a href="#f0005">Figure 5</a> that this did not occur in all cases.</p>
+  <div class="figure figureViewer" id="f0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Social media as passive geo-participation in transportation planning – how effective are topic modeling &amp; sentiment analysis in comparison with citizen surveys?</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Lock%2C+Oliver"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lock%2C+Oliver"><span class="NLM_given-names">Oliver</span> Lock</a> <a href="https://orcid.org/0000-0003-4165-1232"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Pettit%2C+Christopher"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pettit%2C+Christopher"><span class="NLM_given-names">Christopher</span> Pettit</a> <a href="https://orcid.org/0000-0002-1328-9830"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/10095020.2020.1815596">https://doi.org/10.1080/10095020.2020.1815596</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>21 September 2020
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> Daily delayed rail and bus trips in comparison with daily volume of Sydney transport-related tweets over time; annotated with information about significant transport disruptions documented during the year</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0003image" src="/na101/home/literatum/publisher/tandf/journals/content/tgsi20/2020/tgsi20.v023.i04/10095020.2020.1815596/20210523/images/medium/tgsi_a_1815596_f0003_c.jpg" loading="lazy" height="277" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> Daily delayed rail and bus trips in comparison with daily volume of Sydney transport-related tweets over time; annotated with information about significant transport disruptions documented during the year</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0003">
+   <div class="figureFootNote-f0003"></div>
+  </div>
+  <p></p>
+  <p>The following <a href="#f0004">Figure 4</a> illustrates the percentage of bus trips delayed by at least 20&nbsp;minutes in comparison with daily Tweet volume. It can be seen that there is a clear range between 0% and 6% delay and 0–200 Tweets per day these fall into. A weak linear relationship appears between these variables when describing moments with a high Tweet volume and less optimal performance.</p>
+  <div class="figure figureViewer" id="f0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Social media as passive geo-participation in transportation planning – how effective are topic modeling &amp; sentiment analysis in comparison with citizen surveys?</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Lock%2C+Oliver"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lock%2C+Oliver"><span class="NLM_given-names">Oliver</span> Lock</a> <a href="https://orcid.org/0000-0003-4165-1232"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Pettit%2C+Christopher"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pettit%2C+Christopher"><span class="NLM_given-names">Christopher</span> Pettit</a> <a href="https://orcid.org/0000-0002-1328-9830"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/10095020.2020.1815596">https://doi.org/10.1080/10095020.2020.1815596</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>21 September 2020
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> Daily delayed bus trips in comparison with the daily volume of Sydney transport-related Tweets</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0004image" src="/na101/home/literatum/publisher/tandf/journals/content/tgsi20/2020/tgsi20.v023.i04/10095020.2020.1815596/20210523/images/medium/tgsi_a_1815596_f0004_c.jpg" loading="lazy" height="272" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> Daily delayed bus trips in comparison with the daily volume of Sydney transport-related Tweets</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0004">
+   <div class="figureFootNote-f0004"></div>
+  </div>
+  <div class="figure figureViewer" id="f0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Social media as passive geo-participation in transportation planning – how effective are topic modeling &amp; sentiment analysis in comparison with citizen surveys?</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Lock%2C+Oliver"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lock%2C+Oliver"><span class="NLM_given-names">Oliver</span> Lock</a> <a href="https://orcid.org/0000-0003-4165-1232"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Pettit%2C+Christopher"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pettit%2C+Christopher"><span class="NLM_given-names">Christopher</span> Pettit</a> <a href="https://orcid.org/0000-0002-1328-9830"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/10095020.2020.1815596">https://doi.org/10.1080/10095020.2020.1815596</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>21 September 2020
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> Daily delayed rail trips in comparison with the daily volume of Sydney transport-related Tweets</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0005image" src="/na101/home/literatum/publisher/tandf/journals/content/tgsi20/2020/tgsi20.v023.i04/10095020.2020.1815596/20210523/images/medium/tgsi_a_1815596_f0005_c.jpg" loading="lazy" height="272" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> Daily delayed rail trips in comparison with the daily volume of Sydney transport-related Tweets</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0005">
+   <div class="figureFootNote-f0005"></div>
+  </div>
+  <p></p>
+  <p><a href="#f0005">Figure 5</a> shows the same data, but for rail. Again, rail experiences far less variability in the performance metrics. The relationship appears more pronounced; however, the overall network performance still does not present a heavy influence on Tweet volume. Following these comparisons, there are no immediately salient relationships visible between network performance, in terms of delay, and Tweet volume.</p>
+ </div>
+ <div id="s0004-s2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i22">4.4 RQ4 – Bias</h3>
+  <p>The following section discusses three specific potential biases measurable through the survey and Tweets – age, employment, and regularity of travel. First, we discuss the sample of users available. Of approximately 13,200 usernames in the Tweet sample, the survey sample was 114. We applied a confidence level of 95% and achieved a confidence interval of 9.2% indicating that the survey reflects the general population of Twitter users who had voiced an opinion on transport in the previous 12&nbsp;months.</p>
+  <p><button class="ref showTableEventRef" data-id="t0002">Table 2</button> presents a comparison between the age distribution of the Twitter users who responded to the survey in relationship with that found within the Australian 2016 Census (Australian Bureau of Statistics <span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2016</a></span>). This compares a) the general population in Greater Sydney b) the population who responded to the survey and c) the population of the general labor force.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Social media as passive geo-participation in transportation planning – how effective are topic modeling &amp; sentiment analysis in comparison with citizen surveys?</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Lock%2C+Oliver"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lock%2C+Oliver"><span class="NLM_given-names">Oliver</span> Lock</a> <a href="https://orcid.org/0000-0003-4165-1232"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Pettit%2C+Christopher"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pettit%2C+Christopher"><span class="NLM_given-names">Christopher</span> Pettit</a> <a href="https://orcid.org/0000-0002-1328-9830"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/10095020.2020.1815596">https://doi.org/10.1080/10095020.2020.1815596</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>21 September 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Proportion of population in survey sample (social media) versus Labor Force and general population in Sydney</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F10095020.2020.1815596&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>Comparing the general population, to that found in the survey, we see that it is likely that those aged above 65 are under-represented, and 25–34 are over-represented when using this platform. Conclusions cannot be made about those 17 and under, as they were excluded from the survey. Furthermore, survey respondents were more similar in structure to the labor force than the general population, in particular at the 18–24 and 35–44 age brackets. From these results, it seems likely that this group contains more 25–34-year-olds in comparison with both the general population of Sydney and its labor force.</p>
+  <p>In terms of regularity of travel, the transport-related Tweets showed an expected trend of following peak travel periods (i.e. when most people are using the transport network). A summary of total volume of transport-related Tweets versus time of day is shown in <a href="#f0006">Figure 6</a>. On weekdays, the periods between 7 am – 10 am and 5 pm – 8 pm had the highest volumes of posts. On weekends, the volume of Tweets was more evenly distributed – with more Tweets occurring on Saturdays than Sundays. Generally, more of this activity occurs in the second half of the day (after 12pm) than the first half of the day.</p>
+  <div class="figure figureViewer" id="f0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Social media as passive geo-participation in transportation planning – how effective are topic modeling &amp; sentiment analysis in comparison with citizen surveys?</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Lock%2C+Oliver"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lock%2C+Oliver"><span class="NLM_given-names">Oliver</span> Lock</a> <a href="https://orcid.org/0000-0003-4165-1232"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Pettit%2C+Christopher"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pettit%2C+Christopher"><span class="NLM_given-names">Christopher</span> Pettit</a> <a href="https://orcid.org/0000-0002-1328-9830"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/10095020.2020.1815596">https://doi.org/10.1080/10095020.2020.1815596</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>21 September 2020
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 6. </span> Sample of transport Tweets in Sydney by weekday and time of day</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0006image" src="/na101/home/literatum/publisher/tandf/journals/content/tgsi20/2020/tgsi20.v023.i04/10095020.2020.1815596/20210523/images/medium/tgsi_a_1815596_f0006_c.jpg" loading="lazy" height="358" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0006">
+   <p class="captionText"><span class="captionLabel">Figure 6. </span> Sample of transport Tweets in Sydney by weekday and time of day</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0006">
+   <div class="figureFootNote-f0006"></div>
+  </div>
+  <p></p>
+  <p>Results indicate that potential sample bias is in line with other research, which has found large populations of social media users (Facebook &amp; Twitter) to generally be younger than the wider population (Blank <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2017</a></span>; Mellon and Prosser <span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2017</a></span>). These studies also indicate that social media users represent a more educated group than the wider population. As such, content reflects the interests, values, priorities of a particular sub-set of public transport users – which is more useful as a window to that population but more limited for wider-scale generalizations. Further recommendations on extending this understanding of bias appear in the discussion section.</p>
+ </div>
+ <div id="s0004-s2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i24">4.5. RQ5 – Replacement</h3>
+  <p>This section will discuss insights from the survey results, which asked both targeted and open-ended questions in order to gain insight into how satisfied respondents were with existing feedback channels.</p>
+  <p>In terms of platform uptake, the results of the survey indicated that respondents had a low uptake of official channels – such as calling, emailing, and online forms. Fewer than half, 38%, of participants reported using these in the past 12&nbsp;months. As such, more than half (62%) of the respondents had not used these channels. The results also indicate a very low presence in physical or community meetings, where only 7% have attended those related to transport in Sydney. In terms of responsiveness, although citizens can be messaged back through online channels, many respondents noted when answering open-ended questions that it is unclear as to whether these affected any form of tangible operational response.</p>
+  <p>When prompted about preferred engagement formats, two key engagement formats were notable in the responses. Firstly, despite only 7% having reported attended meetings in the past 12&nbsp;months, there was an unexpectedly expressed a high level of interest in actually being able to attend physical meetings. This was described by one respondent as a desire “<i>to attend government workshops/forums/public discussions</i>” on the topic.</p>
+  <p>Secondly, many users suggested engagement platforms using web and mobile applications. Numerous responses desired a seamless way to give feedback through mobile applications, for example through “<i>an app integrated with Opal/etc allowing for quick reporting of service issues</i>,” or through Star Rating features after trips such as in services such as Uber, Ola, and Didi. These descriptions involved applications that would use linked data from their transport smartcard (Opal) to give feedback directly about trips captured by their card.</p>
+  <p>As well as suggesting digital platform solutions, many participants advocated for optimized use of their data. This was an important topic, summarized by four key quotes. One user-specified: <i>“I don’t have time to constantly chase for change on public transport. I rather the data do the talking”</i>. Another user wrote that transport providers should <i>“[use] anonymised data about traveller habits to improve the way public transport responds.”</i> Another user wrote that operators should “<i>collect and review social media data about transport performance,”</i> while one wrote: <i>“I think social media [data] does give a pretty reasonable picture of what’s happening when it comes to public transport at least.”</i></p>
+  <p>When prompted about preferred levels of participation, the majority of participants (80%) stated they would prefer active ways to participate in operational transport planning decisions. Of this, 48% of the total expressed a willingness to contribute small amounts of time (such as surveys and questionnaires). The other 32% were willing to devote longer periods (such as focus groups, workshops and interviews). A remaining 14% preferred passive forms of participation – they wanted their data to be collected and used without any personal input. Interestingly, 2% indicated that they did not want any input in the process. The final 4% (“Other”) described forms which were mixtures or described no preferences as they felt that their voice would not be heard.</p>
+  <p>When prompted about satisfaction with current feedback mechanisms, this was reported as notably low. The majority (79%) of respondents indicated that they were below “Satisfied”. Respondents were 15% “Very unsatisfied” and “37% Unsatisfied”. Of those the 14% that was satisfied, only 3% were “Very satisfied”.</p>
+  <p>As well as the quantitative response, there was an unanticipated high volume of detailed qualitative written responses in forms of stories and anecdotes prompted by two of the questions “<i>Do you have any other comments, stories, anecdotes about your engagement in dialogue on public transport services?</i>” (50 responses, an average of 68 words per response) and “<i>Describe a way you personally would want to engage in improving everyday public transport services?</i>” (108 responses, an average of 22 words per response). More details about these quotes are found in <a href="#app0005">Appendix E</a>.</p>
+  <p>From these results, it was clear that the majority survey respondents articulate their desire to have a more active voice in operational transport issues. The results indicate that more comprehensive participation mechanisms than the current feedback channels would be suitable in this context. Several digital platforms and applications were suggested, but these would need to be clearly designed and intended as active participation mechanisms, rather than solely as passive data collection techniques.</p>
+ </div>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i25" class="section-heading-2">5. Discussion</h2>
+ <p>A variety of analytical methods were employed to understand the usefulness of Twitter data and modern data mining techniques in ascertaining customer experience and feedback concerning operational transport performance. The mixture of methods, particularly those probing user intentions in the survey, proved an effective mechanism for understanding the discourse about transport performance in Sydney.</p>
+ <p>In addressing RQ1, a large proportion of surveyed users used the platform to complain and to vent, but also had motives to suggest improvements and praise services. In analyzing sentiment and tone from all Tweets – sarcasm was specifically difficult to deal with and likely masked a proportion of comments perceived as negative. The use of multiple models demonstrated useful potential in the understanding language in ways that are more complex; adding confidence to the interpretation of these results.</p>
+ <p>When deliberating on such techniques, it is worth considering research studies such as González-Ibánez, Muresan, and Wacholder (<span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2011</a></span>, 585) who found that, in detecting sarcasm, “<i>humans do not perform significantly better than the simple automatic classification methods</i>”. This reveals that, ultimately, the authors of the Tweets themselves only fully know the intended tone and sentiment of a message.</p>
+ <p>Sarcasm detection in sentiment analysis cannot be achieved without having a deep understanding of the context of the situation, the specific topic, and the environment. For example, Peng et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0029" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2019</a></span>) found that sarcastic expressions on social media are more regular at times during a service disruption (in the telecommunications industry) than on regular days – which can pose problematic results if it is not understood and may even mask the effects of the disruption. The use of third party or proprietary machine learning models, with limited access to understanding who trained them and how, makes it difficult to ascertain whether they will perform effectively in certain contexts (i.e. related to transport, and in Australia). Ensuring that training models are adapted to specific contexts and scenarios can address this gap.</p>
+ <p>In addressing RQ2, a number of salient topics could be extracted using the LDA modeling approach. These could potentially be useful for operational planning – such as flagging comments, which are related to specific lines and services. Many other topics shown demonstrate usefulness beyond application of this study – such as commentary of news events, which may be useful for political decision-making. Importantly, the topic modeling also highlighted the potential percentage of Tweets which were not useful – for example those not including any contextual information, or those from bots which continuously report information using similar words. A limitation of the LDA approach is the specification of the number of clusters (k), and the potential time-consuming nature of manual human interpretation of the categories.</p>
+ <p>In addressing RQ3, we found that there is a low to moderate relationship between transport-related Tweets and actual full network performance as measured by delay, for a variety of reasons. A delay on even one critical service say, after a sporting event, may not necessarily be flagged as a significant delay across the whole network – however it may have a significant social media response. Results from the survey also indicate the access to information was more important than delay itself – that people would prefer to know what is going on, or what to do during the delay, rather than the delay itself. Secondly, as identified in the topic modeling, not all Tweets relate specifically to daily performance. Thirdly, not all Tweets are specifically negative or about delay. Thus, there are many more factors at play related to satisfaction with the network and potential improvements, than the performance of the network itself.</p>
+ <p>In addressing RQ4, the population breakdown largely reflected the labor force in age. As inferred from the time of posting, it is also highly likely that these Tweets occurred during peak travel periods and thus were posted by those who commute during peak hour. Researchers and practitioners should be mindful of this, so as not to ignore edge cases for off-peak travel and those who may not use Twitter. Inversely, this group indeed represents a data source for a population who may not have the same levels of disposable time as others and we may need to rely on these passively collected data sources to engage them when using a mixed approach.</p>
+ <p>Further study on bias in this context could further generate commentary on socioeconomic variables, ethnicity, and gender. While the survey data provide several respondent characteristics, there are ways in which social media user names and identifiers can be used to infer demographic characteristics such as age and gender (Lansley and Longley <span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2016b</a></span>). There are also associations between use of language and socioeconomic variables which can further complement this work (Preoţiuc-Pietro et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2015</a></span>). The recruitment strategy for the survey sample targeted Twitter users, and thus the sample does not represent views of those who do not post on that platform.</p>
+ <p>In addressing RQ5, this component of the study elicited very insightful responses. There was a very strong user preference for alternate forms of engagement as opposed to existing platforms, which this group had low satisfaction levels. New platforms and tools might allow these people an opportunity to provide more seamless feedback on the network in an active way. The majority of participants would prefer active forms of participation, and while some indicated that they would like passive data used, this was noticeably much lower.</p>
+</div>
+<div id="s0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i26" class="section-heading-2">6. Conclusions</h2>
+ <p>Planners and operators committed to a stronger role for public transport in cities should further develop their social media strategies in how they communicate with citizens on social media as identified in a similar context for Sydney (Williamson and Ruming <span class="ref-lnk lazy-ref"><a data-rid="cit0044" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2019</a></span>). They must also consider the ways they choose to collect, monitor, and analyze social media data in meaningful and participatory ways (Lock et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i28" href="#"><span class="off-screen">Citation</span>2020</a></span>). As illustrated by this research, a wide array of topics, sentiments, and relationships can be ascertained from social media data and transport data feeds using low-cost models and tools. However, surveys, for all their potential shortcomings, are still useful mechanisms by which we can address the potential cognitive dissonances these methods may reveal.</p>
+ <p>Although comprehensive information is available, these findings suggest that these feeds are a complementary rather than a primary form of data collection due to limitations within the sample and the techniques used to derive meaning from these data. While we can estimate and infer from these feeds, the motivations and true desires of people are more reliable when they are asked directly. Forms of stream analytics, dashboards, and the formation of metrics, as such, need to move beyond simply showing data as it is, but modeling information on the fly and presenting an array of cross-validated results guided by human input.</p>
+ <p>Unique to this research was using survey data directly from those Twitter users – asked directly to those who have posted on social media. Such data were highly useful in identifying motivations behind these posts, and ultimately that large numbers of those sampled would indeed prefer robustly active forms of participation. While unearthing some of the challenges associated with using human sensor data, this research demonstrates further exploration of assemblages of modeled collective-sensed data as one of the many forms of participation that should exist in the city is worthwhile.</p>
+</div>

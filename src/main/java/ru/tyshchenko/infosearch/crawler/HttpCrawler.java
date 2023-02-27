@@ -33,7 +33,7 @@ public class HttpCrawler {
                 .distinct()
                 .map(pair -> {
                     String[] parts = pair.getValue0().split("/");
-                    String name = parts[parts.length - 1] + ".txt";
+                    String name = parts[parts.length - 2] + parts[parts.length - 1] + ".txt";
                     fileUploader.uploadFile(pair.getValue1(), name);
                     return new Pair<>(pair.getValue0(), name);
                 }).toList();

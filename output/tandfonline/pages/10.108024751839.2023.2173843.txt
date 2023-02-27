@@ -1,0 +1,2768 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">1. Introduction</h2>
+ <p>Nowadays, the development of social networks and e-commerce helps users share and quickly consult feedback about products and services of business organizations. Customers tend to refer to comments before making decisions. In addition, users' comments are also valuable resource for business organizations to analyse, develop, and improve their products and services to provide the best customer experience. Unfortunately, manual processing by human annotation is not possible for massive comments. Hence, the Opinion Mining task has attracted much attention from researchers worldwide and business organizations in the field of Natural Language Processing (NLP). Most of the research has recently focused on solving this task at the aspect level, called Aspect-based Sentiment Analysis. Therefore, more insight information can be extracted from the tremendous comments automatically. For example, given a review for the restaurant domain as ‘<i>This place is great, but the food is not delicious</i>’. There are two aspect categories (Restaurant#General and Food#Quality) in this sentence; but the sentiment polarity of categories is contradictory (positive for Restaurant#General, negative for Food#Quality). It is obvious that the polarity for two aspect categories is different. Analysing the comments on positive or negative categories has been able to improve the service and attract new customers.</p>
+ <p>There are currently more than 7000 languages worldwide Joshi et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020a</a></span>); however, most recent research focuses only on resource-rich languages such as English, Chinese, Arabic, etc. These languages have a lot of abundant and diverse annotated resources for various NLP tasks and tools. Moreover, building a new dataset requires more resources and costs to manually annotate for a specific language. Therefore, the lack of annotated datasets for low-resource languages has become a challenge for researchers in the NLP field. Recently, the great work of Hedderich et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021</a></span>) presented an overview of different approaches to improving the performance of low-resource languages, including data enhancement, multilingual language models, etc. Following the success of multilingual BERT Devlin et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>), there are many pre-trained transformer multilingual models such as XLM-R (Conneau et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>), InfoXLM (Chi et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021a</a></span>), XLM-Align (Chi et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021b</a></span>), which are beneficial for low-resource languages, with the task-specific annotated data being scarce. There are several recent studies that take advantage of exist pre-trained multilingual language model to improve the performance of system on different tasks such as sentiment analysis (Kumar &amp; Albuquerque, <span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021</a></span>; Pei et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2022</a></span>; Sarkar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>; Sultan et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0049" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>), Named Entity Recognition (Arkhipov et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>; Pires et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>; Sharma et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2022b</a></span>), Hate Speech Detection (Sharma et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0046" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2022a</a></span>), and other tasks (Bhatnagar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2022</a></span>; Sun et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0051" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2022</a></span>). In addition, pre-trained multilingual language models have been applied in zero-shot (Artetxe &amp; Schwenk, <span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>; Keung et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>; Kim et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021</a></span>; Lauscher et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020a</a></span>; Nooralahzadeh et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>; Pamungkas et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021</a></span>; Phan et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021</a></span>) cross-lingual for various NLP tasks. However, most of these studies only compared the performance of mBERT to XLM-R models as well as used English as a source language. There is no fair comparison when the amount of training data is different between languages in the zero-shot learning scenario.</p>
+ <p>There is no study on exploring the state-of-the-art (SOTA) pretrained multilingual language models to ABSA in both zero-shot and joint training cross-lingual scenarios. Therefore, the major objective of this study is to investigate the effectiveness of fine-tuning multilingual contextualized language models in both zero-shot and joint training cross-lingual scenarios on two main tasks of ABSA: Aspect Category Detection (ACD) and Category-Sentiment Classification (CSC). In this work, we make important contributions to the ABSA task, including:</p>
+ <ul class="NLM_list NLM_list-list_type-bullet">
+  <li><p class="inline">Firstly, we explore the power of zero-shot transfer learning for five languages in the context of lacking labelled training data in the target resource-poor language.</p></li>
+  <li><p class="inline">Secondly, we conduct experiments to answer a research question: ‘Why do not we use another language as the source language instead of using English for ABSA tasks in the zero-shot scenario?’. Because many previous studies have trained models on English data and tested them on non-English languages (Keung et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>; Lin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>) in the zero-shot setting.</p></li>
+  <li><p class="inline">Thirdly, we evaluate the system's performance in a joint training strategy by mixing training data of the source language and target language and combining multiple source languages.</p></li>
+  <li><p class="inline">Finally, many of the latest multilingual language models as InfoXLM, XLM-Align have not been explored before on zero-shot and joint learning cross-lingual task, especially resource-low languages. In this paper, we also investigate several latest pre-trained multilingual transformer models for two tasks in the ABSA problem.</p></li>
+ </ul>
+ <p></p>
+ <p>The remainder of this paper is structured as follows: Section <a href="#S002">2</a> presents a survey of previous studies on ABSA task, zero-shot and joint learning research. Section <a href="#S003">3</a> describes the methodology using different pre-trained language models in zero-shot and joint learning scenarios. Section <a href="#S004">4</a> presents the experimental results. Our conclusions are found in the final section.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">2. Related work</h2>
+ <p>This section consists of three sub-sections covering the associated studies for the ABSA problem, zero-shot and joint training cross-lingual in the NLP field. The purpose of this paper is to explore the performance of zero-shot and joint training cross-lingual for ABSA tasks. Therefore, we survey the most recent work concerning the ABSA in Section <a href="#S002-S2001">2.1</a>, zero-shot learning in Section <a href="#S002-S2002">2.2</a> and joint learning in Section <a href="#S002-S2003">2.3</a>.</p>
+ <div id="S002-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">2.1. Aspect-based sentiment analysis</h3>
+  <p>In recent years, the power of contextual language models has increased the performance in system to the field of the ABSA. First, there are many datasets published for the research community at shared-task SemEval 2014 (Pontiki et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2014</a></span>), SemEval 2015 (Pontiki et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2015</a></span>), SemEval 2016 (Pontiki et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2016</a></span>). The shared-task SemEval provided several datasets from various domains in languages such as English, Chinese, Dutch, etc. These datasets are very popular and are benchmark datasets for many ABSA tasks. Recently, the pre-trained BERT (Devlin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>) language models have shown their effectiveness in various tasks in ABSA problems.</p>
+  <p>Sun et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>) presented four new methods based on fine-tuning BERT with an auxiliary sentence for T(ABSA) problem. They transformed this problem into a sentence-pair classification task and fine-tuned the pre-trained BERT model. Their experimental results demonstrated the advantages of sentence pair classification based on the BERT model for the ABSA task, however, their models take a lot of computation resources and time for training. Hoang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>) presented an overview of fine-tuning the pre-trained BERT model to address the out-of-domain ABSA problem at both levels of datasets by using the sentence pair classification approach. However, the authors just conducted the experiments on the English language instead of other languages in the SemEval datasets. Li et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>) presented an end-to-end neural-based on BERT architecture for the aspect term with corresponding sentiment polarity. They formulated two tasks as a sequence labelling problem and used the pre-trained BERT embedding as the embedding layer combined with several different layers (linear layer, recurrent network, self-attention, and conditional random fields layer) on top of BERT. Their experimental results showed that the BERT-based model is a powerful architecture to improve the performance of aspect-based sentiment analysis problems.</p>
+  <p>On the other hand, Xu et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>) proposed a BERT-based post-training model for the OTE task and Review reading comprehension (RRC) to enhance the domain-awareness. Due to the difference between the training corpus of BERT and the review corpus, this novel post-training to adapt BERT using two unsupervised objectives on the task-specific corpus to learn the domain-awareness contextualized representations. Rietzler et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>) analysed the behaviour of domain-specific and cross-domain post-training techniques based on BERT language modelling for the Aspect-Target Sentiment Classification task. The experimental results indicated that domain-specific language model fine-tuning produce the state-of-the-art performance. Unfortunately, we have to provide enough a domain-specific corpora and resources to train the BERT model for a specific domain. This might may not be feasible for low-resource language and computationally-insufficient studies. Subsequently, Karimi et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021</a></span>) showed that using adversarial training with domain-specific post-trained BERT could further improve ABSA performance. In addition, they also investigated the number of training epochs and dropout values that can significantly affect on model's performance. Song et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0048" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>) investigated the potential of BERT intermediate layers to improve the performance of BERT fine-tuning using the LSTM pooling or the attention mechanism. The experimental results demonstrated the effectiveness of the proposed approach to the ABSA problem. Wan et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0054" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>) proposed a novel architecture that relied on the BERT language model to address the limitation of implicit terms in the review. Their model is able to capture the dependence of sentiments on both term expressions and aspect categories in the sequence by jointly learning. We can see that most of the above research focus on high-resource language such as English by leverage the available monolingual language models to improve the performance on supervised learning in ABSA problem.</p>
+ </div>
+ <div id="S002-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">2.2. Zero-shot cross-lingual</h3>
+  <p>The development of deep learning architectures has achieved significant success in many areas; however, it requires a sufficient amount of labelled training data (Wang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0055" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>). Furthermore, labelling processing is time-consuming and expensive for several tasks; therefore, zero-shot learning methods (Larochelle et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2008</a></span>) have been studied on various topics in the field of NLP, especially for languages without resources to train supervised models.</p>
+  <p>Jebbara and Cimiano (<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>) addressed the lack of available annotated data for specific languages by applying a zero-shot cross-lingual approach for the opinion target expressions task. To do that, the author used the alignment of embeddings to calculate the cross-lingual representation of two languages based on the FastText embedding (Bojanowski et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2017</a></span>). Jebbara and Cimiano (<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>) presented the experiments using the Convolutional Neural Network as a baseline model and demonstrated the effectiveness of zero-shot learning. However, in this work, the authors ignore the influence of the data size of the target language. Lauscher et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020b</a></span>) presented extensive experiments for zero-shot cross-lingual transfer using multilingual pre-trained language models (mBERT, XLM-R) on different NLP tasks. The authors analysed the conditions and factors that affect the performance of cross-lingual transfer, such as the linguistic similarity and size of pre-training data. van der Heijden et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0052" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>) presented a comprehensive comparison of a multilingual word and sentence representation for Named Entity Recognition and Part-of-Speech task in zero-shot learning settings. The results showed that pre-trained multilingual BERT outperformed other supervised models. However, the authors compared the mBERT model to the XLM transformer model (Conneau &amp; Lample, <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>) instead of XLM-R.</p>
+  <p>Recently, Pamungkas et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021</a></span>) investigated the zero-shot learning approach for hate speech detection based on knowledge from resource-rich language. However, the author only transferred knowledge from English; therefore, the effectiveness of using knowledge of other languages has not been studied in the article. Kim et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021</a></span>) presented a parallel-labelled cross-lingual named entity recognition in English and Korean to develop a zero-shot learning model. They fine-tuned the mBERT in English and transferred the trained model to Korean, and compared it to the embedding and annotation projection approach. The experimental results showed that the order of words in the target language is important in cross-lingual learning. Kumar and Albuquerque (<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021</a></span>) applied the power of the XLM-R model to transfer knowledge from the English to Hindi dataset for the sentiment analysis dataset. Unfortunately, the author just compared the performance of the XLM-R large model to deep learning approaches; it is difficult to conclude that the XLM-R model is suitable for zero-shot scenario. Phan et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021</a></span>) presented a study on zero-shot cross-lingual learning on pre-trained multilingual models (mBERT and XLM-R) for two sub-tasks in ABSA problem. Unfortunately, the authors did not pay attention to the number of training samples among languages. This leads to unfair comparisons between models and languages.</p>
+ </div>
+ <div id="S002-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">2.3. Joint training</h3>
+  <p>The joint training scenario is an idea of training one model on multiple languages because many languages share common features such as morphological, phonological, and syntactic phenomena (Ammar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2016</a></span>; Bender, <span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2011</a></span>; Mulcaire et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2018</a></span>). As a result, training in multiple languages can improve the performance of models in related languages. Ammar et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2016</a></span>) found that the training model on multilingual treebanks of multiple languages outperformed the monolingual training data for parsing tasks. However, the authors employed the traditional deep learning model (LSTM) combined with static multilingual word embedding instead of contextual word representation. Mulcaire et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2018</a></span>) also applied this idea by combining training data across languages for semantic role-labelling tasks. The experimental results showed that joint learning could achieve better performance than monolingual data. Aharoni et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>) presented extensive experiments in multilingual neural machine translation by training multilingual languages in a single model. This demonstrated that multilingual joint learning has been shown to be beneficial in various NLP tasks. The authors employed the XLM-R language model as the baselines. Recently, the development of multilingual pre-trained language models brings a lot of benefits to low-resource languages. With plenty of pre-trained language models and languages, how to choose them to improve the performance of a specific language is an interesting problem.</p>
+ </div>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i8" class="section-heading-2">3. Cross-lingual framework</h2>
+ <p><a href="#F0001">Figures 1</a> and <a href="#F0002">2</a> provide a comprehensive view of the zero-shot and joint learning cross-lingual learning on our experiments. We conduct two strategies on two main ABSA tasks, including Aspect Category Detection and Category-Sentiment Classification tasks. First, we present the problem formulation of two experimental tasks. Second, we summarize the methodology we used to build based models corresponding to two tasks. Third, we present the detail of zero-shot cross-lingual transfer learning approach based on the based models of five languages. Finally, we explain the cross-lingual joint training approach in this paper. As shown in <a href="#F0001">Figure 1</a>, the model is trained with training data of one source language (e.g. Spanish) based on a multilingual pretrained language model. Then the trained model is tested on target languages (e.g. English, French) in a zero-shot manner. While in the joint learning cross-lingual, the model is trained on the combined data of two source languages (e.g. Spanish and French) as in <a href="#F0002">Figure 2</a>.</p>
+ <div class="figure figureViewer" id="F0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>16 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> The architecture of zero-shot cross-lingual for ABSA tasks.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/medium/tjit_a_2173843_f0001_oc.jpg" loading="lazy" height="168" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> The architecture of zero-shot cross-lingual for ABSA tasks.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0001">
+  <div class="figureFootNote-F0001"></div>
+ </div>
+ <div class="figure figureViewer" id="F0002">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>16 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 2. </span> The architecture of joint training cross-lingual for ABSA tasks.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/medium/tjit_a_2173843_f0002_oc.jpg" loading="lazy" height="159" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0002">
+  <p class="captionText"><span class="captionLabel">Figure 2. </span> The architecture of joint training cross-lingual for ABSA tasks.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0002">
+  <div class="figureFootNote-F0002"></div>
+ </div>
+ <p></p>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">3.1. Problem formulation</h3>
+  <p></p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline"><i>Aspect Category Detection</i>: The purpose of this task is to identify the pre-defined list of the entity E and attribute A pairs towards which is mentioned in a given sentence. A review of length <i>N</i> can be represented as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0001.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         X
+        </mi>
+        <mi>
+         r
+        </mi>
+       </msub><mo>
+        =
+       </mo><mo fence="false" stretchy="false">
+        {
+       </mo><msub>
+        <mi>
+         w
+        </mi>
+        <mn>
+         1
+        </mn>
+       </msub><mo>
+        ,
+       </mo><mspace width="thickmathspace"></mspace><msub>
+        <mi>
+         w
+        </mi>
+        <mn>
+         2
+        </mn>
+       </msub><mo>
+        ,
+       </mo><mspace width="thickmathspace"></mspace><mo>
+        …
+       </mo><mo>
+        ,
+       </mo><mspace width="thickmathspace"></mspace><msub>
+        <mi>
+         w
+        </mi>
+        <mi>
+         N
+        </mi>
+       </msub><mo fence="false" stretchy="false">
+        }
+       </mo>
+      </math></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0002.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msub>
+      </math></span> denotes <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0003.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msup>
+        <mi>
+         i
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mi>
+          h
+         </mi>
+        </mrow>
+       </msup>
+      </math></span> word. To tackle this task, we consider it as a multi-label classification problem where the output can be defined as a binary vector <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0004.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        Y
+       </mi><mo>
+        =
+       </mo><mo fence="false" stretchy="false">
+        {
+       </mo><msub>
+        <mi>
+         y
+        </mi>
+        <mn>
+         1
+        </mn>
+       </msub><mo>
+        ,
+       </mo><mspace width="thickmathspace"></mspace><msub>
+        <mi>
+         y
+        </mi>
+        <mn>
+         2
+        </mn>
+       </msub><mo>
+        ,
+       </mo><mspace width="thickmathspace"></mspace><mo>
+        …
+       </mo><mo>
+        ,
+       </mo><mspace width="thickmathspace"></mspace><msub>
+        <mi>
+         y
+        </mi>
+        <mi>
+         C
+        </mi>
+       </msub><mo fence="false" stretchy="false">
+        }
+       </mo>
+      </math></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0005.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         y
+        </mi>
+        <mi>
+         c
+        </mi>
+       </msub>
+      </math></span> denotes <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0006.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msup>
+        <mi>
+         c
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mi>
+          h
+         </mi>
+        </mrow>
+       </msup>
+      </math></span> aspect category, C is the number of aspect category of the specific domain.</p></li>
+   <li><p class="inline"><i>Category-Sentiment Classification</i>: Given a review sentence of length <i>N</i> can be represented as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0007.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         X
+        </mi>
+        <mi>
+         r
+        </mi>
+       </msub><mo>
+        =
+       </mo><mo fence="false" stretchy="false">
+        {
+       </mo><msub>
+        <mi>
+         w
+        </mi>
+        <mn>
+         1
+        </mn>
+       </msub><mo>
+        ,
+       </mo><mspace width="thickmathspace"></mspace><msub>
+        <mi>
+         w
+        </mi>
+        <mn>
+         2
+        </mn>
+       </msub><mo>
+        ,
+       </mo><mspace width="thickmathspace"></mspace><mo>
+        …
+       </mo><mo>
+        ,
+       </mo><mspace width="thickmathspace"></mspace><msub>
+        <mi>
+         w
+        </mi>
+        <mi>
+         N
+        </mi>
+       </msub><mo fence="false" stretchy="false">
+        }
+       </mo>
+      </math></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0008.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msub>
+      </math></span> denotes <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0009.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msup>
+        <mi>
+         i
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mi>
+          h
+         </mi>
+        </mrow>
+       </msup>
+      </math></span> word. The main task of CSC task is to detect the aspect categories and identify the associated sentiment polarities in the sentence. Formally, let the output Y be the set of one-hot vectors <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0010.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        Y
+       </mi><mo>
+        =
+       </mo><mo fence="false" stretchy="false">
+        {
+       </mo><mi>
+        a
+       </mi><msub>
+        <mi>
+         p
+        </mi>
+        <mn>
+         1
+        </mn>
+       </msub><mo>
+        ,
+       </mo><mspace width="thickmathspace"></mspace><mi>
+        a
+       </mi><msub>
+        <mi>
+         p
+        </mi>
+        <mn>
+         2
+        </mn>
+       </msub><mo>
+        ,
+       </mo><mspace width="thickmathspace"></mspace><mo>
+        …
+       </mo><mo>
+        ,
+       </mo><mspace width="thickmathspace"></mspace><mi>
+        a
+       </mi><msub>
+        <mi>
+         p
+        </mi>
+        <mi>
+         c
+        </mi>
+       </msub><mo stretchy="false">
+        )
+       </mo><mo fence="false" stretchy="false">
+        }
+       </mo>
+      </math></span> with <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0011.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        a
+       </mi><msub>
+        <mi>
+         p
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msub><mo>
+        =
+       </mo><mo stretchy="false">
+        (
+       </mo><msubsup>
+        <mi>
+         y
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         a
+        </mi>
+       </msubsup><mo>
+        ,
+       </mo><mspace width="thickmathspace"></mspace><msubsup>
+        <mi>
+         y
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         p
+        </mi>
+       </msubsup><mo stretchy="false">
+        )
+       </mo>
+      </math></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0012.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msubsup>
+        <mi>
+         y
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         a
+        </mi>
+       </msubsup>
+      </math></span> represents the <i>i</i>-th category in the set of C aspect categories, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0013.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msubsup>
+        <mi>
+         y
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         p
+        </mi>
+       </msubsup>
+      </math></span> represents the sentiment corresponding to the <i>i</i>-th aspect category in the set of positive, neutral, negative sentiment labels.</p></li>
+  </ul>
+  <p></p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">3.2. Methodology</h3>
+  <p>In recent years, deep contextual language models have been introduced and the SOTA results have been achieved in various downstream NLP tasks. These models are already trained on a large unlabelled corpus and then is fine-tuned to downstream tasks. The aim of this study is to perform the zero-shot and joint training cross-lingual for ABSA tasks in five languages using transfer learning techniques based on pre-trained language models. However, we need a large amount of data and computational resources to train these models, which might not be possible for low-resource languages. Therefore, pre-trained multilingual language models are released to tackle this gap in research. From the work of Kalyan et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021</a></span>), there are many available multilingual language models. We employ the models mBERT and XLM-R because they support the languages in our experimental datasets. Moreover, we employ the latest SOTA multilingual models, such as InfoXLM and XLM-Align to conduct our experiments based on their ability in cross-lingual NLP tasks. Late in this section, we summarize the pre-trained multilingual transformer models used in this paper:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline"><i>mBERT</i>: This is the BERT architecture Devlin et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>) trained on a multilingual Wikipedia of 104 highest-resource languages on the two tasks: Masked language modelling (MLM) và Next sentence prediction (NSP).</p></li>
+   <li><p class="inline"><i>XLM-R</i>: An optimized version of BERT which is trained based on the MLM task on 2.5T of data across 100 languages filtered from Common Crawl text (Conneau et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>). This model outperforms the mBERT model in a variety of cross-lingual NLP tasks.</p></li>
+   <li><p class="inline"><i>InfoXLM</i>: Chi et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021a</a></span>) presented a new cross-lingual pre-trained language model, named InfoXLM. This model is trained on monolingual and parallel data based on jointly training cross-lingual contrast with multilingual masked language modelling and translation language modelling. The pre-training data is similar to XLM-R model (Conneau et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>). The experimental results demonstrated that InfoXLM achieved better performance in cross-lingual transferability.</p></li>
+   <li><p class="inline"><i>XLM-Align</i>: This is a pre-trained cross-lingual language model by applying the denoising word alignment task (Chi et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021b</a></span>). The model's training process consists of two steps: (1) self-labelling word alignments for translation pair; (2) random mask tokens in the bitext sentence. The extensive experiments on cross-lingual tasks showed that this model is effective for various datasets such as Sentence Classification (XNLI, PAWS-X), Question Answering (XQuAD,MLQA, and TyDiQA), etc.</p></li>
+  </ul>
+  <p></p>
+  <p>To explore the performance of zero-shot and joint training cross-lingual approaches in different languages, we fine-tuned the above models based on the recommendation of the previous work (Devlin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>) and use different additional linear layers for each task. The detail of the two based models is described in the following section.</p>
+  <div id="S003-S2002-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i13">3.2.1. Aspect category detection</h4>
+   <p>Aspect Category Detection is a multi-label classification where zero or more aspect categories can be detected from the sentence. <a href="#F0003">Figure 3</a> illustrates the architecture for this task. Let the input sentence consists of a sequence of words: <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0014.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       X
+      </mi><mo>
+       =
+      </mo><mo fence="false" stretchy="false">
+       {
+      </mo><msub>
+       <mi>
+        w
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub><mo>
+       ,
+      </mo><mspace width="thickmathspace"></mspace><msub>
+       <mi>
+        w
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub><mo>
+       ,
+      </mo><mspace width="thickmathspace"></mspace><mo>
+       …
+      </mo><mo>
+       ,
+      </mo><mspace width="thickmathspace"></mspace><msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        N
+       </mi>
+      </msub><mo fence="false" stretchy="false">
+       }
+      </mo>
+     </math></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0015.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </math></span> denotes <i>i</i>th word. After pre-processing text, two special tokens noted [CLS] and [SEP] are added to the beginning and ending of the sequence. Because the experimental data is the sentence-level review, we use the padding operation to pad sentences in a uniform length. The max length value is the length of the longest sentence in the data set and is ensured to be shorter than the input of the transformer models. Then, this sequence is fed directly to pre-trained multilingual language models to obtain the representations for tokens. The output is a sequence of hidden states (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0016.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        H
+       </mi>
+       <mi>
+        X
+       </mi>
+       <mi>
+        L
+       </mi>
+      </msubsup>
+     </math></span>) represented as follows: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        H
+       </mi>
+       <mi>
+        X
+       </mi>
+       <mi>
+        L
+       </mi>
+      </msubsup><mo>
+       =
+      </mo><mo stretchy="false">
+       [
+      </mo><msubsup>
+       <mi>
+        h
+       </mi>
+       <mrow>
+        <mi>
+         C
+        </mi>
+        <mi>
+         L
+        </mi>
+        <mi>
+         S
+        </mi>
+       </mrow>
+       <mi>
+        L
+       </mi>
+      </msubsup><mo>
+       ,
+      </mo><mspace width="thickmathspace"></mspace><msubsup>
+       <mi>
+        h
+       </mi>
+       <mn>
+        1
+       </mn>
+       <mi>
+        L
+       </mi>
+      </msubsup><mo>
+       ,
+      </mo><mspace width="thickmathspace"></mspace><msubsup>
+       <mi>
+        h
+       </mi>
+       <mn>
+        2
+       </mn>
+       <mi>
+        L
+       </mi>
+      </msubsup><mo>
+       ,
+      </mo><mspace width="thickmathspace"></mspace><mo>
+       …
+      </mo><mo>
+       ,
+      </mo><mspace width="thickmathspace"></mspace><msubsup>
+       <mi>
+        h
+       </mi>
+       <mrow>
+        <mi>
+         S
+        </mi>
+        <mi>
+         E
+        </mi>
+        <mi>
+         P
+        </mi>
+       </mrow>
+       <mi>
+        L
+       </mi>
+      </msubsup><mo stretchy="false">
+       ]
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0017.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        H
+       </mi>
+       <mi>
+        X
+       </mi>
+       <mi>
+        L
+       </mi>
+      </msubsup><mo>
+       ∈
+      </mo><msup>
+       <mi>
+        R
+       </mi>
+       <mrow>
+        <mi>
+         N
+        </mi>
+        <mo>
+         ×
+        </mo>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          i
+         </mi>
+         <msub>
+          <mi>
+           m
+          </mi>
+          <mi>
+           h
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </msup>
+     </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0018.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       d
+      </mi><mi>
+       i
+      </mi><msub>
+       <mi>
+        m
+       </mi>
+       <mi>
+        h
+       </mi>
+      </msub>
+     </math></span> is the dimension of the representation vector, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0019.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        h
+       </mi>
+       <mi>
+        i
+       </mi>
+       <mi>
+        L
+       </mi>
+      </msubsup>
+     </math></span> is the hidden state of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0020.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msup>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msup>
+     </math></span> input token in L transformer layers. The final hidden state <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0021.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        h
+       </mi>
+       <mrow>
+        <mi>
+         C
+        </mi>
+        <mi>
+         L
+        </mi>
+        <mi>
+         S
+        </mi>
+       </mrow>
+       <mi>
+        L
+       </mi>
+      </msubsup>
+     </math></span> of the [CLS] token in the last layer is used as the representation of input review. Finally, a fully connected layer with a sigmoid activation is added to the top model for task-specific. The model's output is a probability vector for the length corresponding to the size of the number of pre-defined categories. The sigmoid function will generate the corresponding probability of whole aspect categories. The aspect category is assigned to the review if the probability is greater than a threshold. The threshold is optimized on the validation set by using grid search. We employ the binary cross entropy as the loss function to calculate the predicted probability with the true label: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       L
+      </mi><mo stretchy="false">
+       (
+      </mo><mi mathvariant="normal">
+       Θ
+      </mi><mo stretchy="false">
+       )
+      </mo><mo>
+       =
+      </mo><mo>
+       −
+      </mo><munderover>
+       <mo>
+        ∑
+       </mo>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+       <mrow>
+        <mi>
+         C
+        </mi>
+       </mrow>
+      </munderover><msub>
+       <mi>
+        y
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub><mo>
+       ⋅
+      </mo><mi>
+       log
+      </mi><mo>
+       ⁡
+      </mo><mo stretchy="false">
+       (
+      </mo><mrow>
+       <mover>
+        <msub>
+         <mi>
+          y
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo stretchy="false">
+         ^
+        </mo>
+       </mover>
+      </mrow><mo stretchy="false">
+       )
+      </mo><mo>
+       +
+      </mo><mo stretchy="false">
+       (
+      </mo><mn>
+       1
+      </mn><mo>
+       −
+      </mo><msub>
+       <mi>
+        y
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub><mo stretchy="false">
+       )
+      </mo><mo>
+       ⋅
+      </mo><mi>
+       log
+      </mi><mo>
+       ⁡
+      </mo><mo stretchy="false">
+       (
+      </mo><mn>
+       1
+      </mn><mo>
+       −
+      </mo><mrow>
+       <mover>
+        <msub>
+         <mi>
+          y
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo stretchy="false">
+         ^
+        </mo>
+       </mover>
+      </mrow><mo stretchy="false">
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span></p>
+   <div class="figure figureViewer" id="F0003">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>16 February 2023
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 3. </span> The overall architecture is based on the pre-trained transformer language models for the Aspect Category Detection task.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/medium/tjit_a_2173843_f0003_oc.jpg" loading="lazy" height="500" width="456"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0003">
+    <p class="captionText"><span class="captionLabel">Figure 3. </span> The overall architecture is based on the pre-trained transformer language models for the Aspect Category Detection task.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0003">
+    <div class="figureFootNote-F0003"></div>
+   </div>
+   <p></p>
+  </div>
+  <div id="S003-S2002-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i17">3.2.2. Category-Sentiment classification</h4>
+   <p>The output of this task is the pairs of {Aspect category, Sentiment} mentioned in a given review. It means that this compound task detects the aspect categories and their corresponding sentiment polarities simultaneously in this compound task. To deal with this problem, a multi-task approach based on the BERT models, inspired by the previous works (Dai et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>; Schmitt et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2018</a></span>; Van Thin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0053" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2022</a></span>), is employed to predict the output of each aspect category with its corresponding sentiment as a one-hot vector with four elements. The first element indicates whether the aspect category is mentioned in the review, while the three other elements represent three levels of sentiment polarity of each category; for example, the pair of ‘Quality, positive’ is encoded as [0 1 0 0]. As shown in <a href="#F0004">Figure 4</a>, we have the C softmax output layers corresponding to C aspect categories. We can train a model for an aspect category independently; however, this does not help the model explore correlated information between categories. Therefore, we build a multi-task architecture to utilize the correlation and influence between multi-aspect categories in the review. As similar to the ACD architecture, we use the last hidden state of the CLS token <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0022.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        H
+       </mi>
+       <mrow>
+        <mi>
+         c
+        </mi>
+        <mi>
+         l
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+       <mi>
+        L
+       </mi>
+      </msubsup>
+     </math></span> as the representation of input review and feed it into the <i>C</i> fully connected layers with softmax activation. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0003.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msup>
+       <mrow>
+        <mover>
+         <mi>
+          y
+         </mi>
+         <mo stretchy="false">
+          ^
+         </mo>
+        </mover>
+       </mrow>
+       <mrow>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         a
+        </mi>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mrow>
+      </msup><mo>
+       =
+      </mo><mi>
+       S
+      </mi><mi>
+       o
+      </mi><mi>
+       f
+      </mi><mi>
+       t
+      </mi><mi>
+       m
+      </mi><mi>
+       a
+      </mi><mi>
+       x
+      </mi><mo stretchy="false">
+       (
+      </mo><msup>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         a
+        </mi>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mrow>
+      </msup><mo>
+       ⋅
+      </mo><msubsup>
+       <mi>
+        H
+       </mi>
+       <mrow>
+        <mi>
+         c
+        </mi>
+        <mi>
+         l
+        </mi>
+        <mi>
+         s
+        </mi>
+       </mrow>
+       <mi>
+        L
+       </mi>
+      </msubsup><mo>
+       +
+      </mo><msup>
+       <mi>
+        b
+       </mi>
+       <mrow>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         a
+        </mi>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mrow>
+      </msup><mo stretchy="false">
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span>where <i>a</i> is the aspect category <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0023.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msup>
+       <mi>
+        a
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msup>
+     </math></span> in the total C aspect categories, weight <i>W</i> and bias <i>b</i> are the parameters during training. Our model is optimized by minimizing the sum of categorical cross-entropy loss in each category as follows: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0004.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       L
+      </mi><mo stretchy="false">
+       (
+      </mo><mi mathvariant="normal">
+       Θ
+      </mi><mo stretchy="false">
+       )
+      </mo><mo>
+       =
+      </mo><mo>
+       −
+      </mo><munder>
+       <mo>
+        ∑
+       </mo>
+       <mrow>
+        <mi>
+         a
+        </mi>
+        <mo>
+         ∈
+        </mo>
+        <mi>
+         C
+        </mi>
+       </mrow>
+      </munder><munderover>
+       <mo>
+        ∑
+       </mo>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+       <mrow>
+        <mn>
+         4
+        </mn>
+       </mrow>
+      </munderover><msubsup>
+       <mi>
+        y
+       </mi>
+       <mi>
+        i
+       </mi>
+       <mi>
+        a
+       </mi>
+      </msubsup><mo>
+       ⋅
+      </mo><mi>
+       log
+      </mi><mo>
+       ⁡
+      </mo><mo stretchy="false">
+       (
+      </mo><msubsup>
+       <mrow>
+        <mover>
+         <mi>
+          y
+         </mi>
+         <mo stretchy="false">
+          ^
+         </mo>
+        </mover>
+       </mrow>
+       <mi>
+        i
+       </mi>
+       <mi>
+        a
+       </mi>
+      </msubsup><mo stretchy="false">
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span>where C is the number of the aspect category, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0024.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        y
+       </mi>
+       <mi>
+        i
+       </mi>
+       <mi>
+        a
+       </mi>
+      </msubsup>
+     </math></span> is the true one-hot vector for the <i>a</i> category and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0025.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mrow>
+        <mover>
+         <mi>
+          y
+         </mi>
+         <mo stretchy="false">
+          ^
+         </mo>
+        </mover>
+       </mrow>
+       <mi>
+        i
+       </mi>
+       <mi>
+        a
+       </mi>
+      </msubsup>
+     </math></span> is the probability vector of prediction for the <i>a</i> category.</p>
+   <div class="figure figureViewer" id="F0004">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>16 February 2023
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 4. </span> The overall architecture is based on the pre-trained transformer language models for the Category-Sentiment Classification task.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/medium/tjit_a_2173843_f0004_oc.jpg" loading="lazy" height="500" width="489"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0004">
+    <p class="captionText"><span class="captionLabel">Figure 4. </span> The overall architecture is based on the pre-trained transformer language models for the Category-Sentiment Classification task.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0004">
+    <div class="figureFootNote-F0004"></div>
+   </div>
+   <p></p>
+  </div>
+ </div>
+ <div id="S003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i21">3.3. Zero-shot cross-lingual transfer learning</h3>
+  <p>In most studies in the NLP field, termed zero-shot cross-lingual transfer learning means that the transfer model which is trained on the source language can be used to predict the target language without training data (Karthikeyan et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>; Keung et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>; Lauscher et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020a</a></span>; Nooralahzadeh et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>). Based on this scenario, we experiment with two steps as follows: (1) Fine-tuning pre-trained multilingual language models on the training data of source language; (2) transferring the knowledge weight to evaluate the test data of the target language. <a href="#F0005">Figure 5</a> shows this strategy for the zero-shot cross-lingual evaluation between two languages in our experiments. Unlike previous works, in this paper, we train and transfer the model to different source languages instead of using only English. Furthermore, we evaluated the performance when using the combination of multiple source languages as training data.</p>
+  <div class="figure figureViewer" id="F0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> The weight transfer strategy between two languages for zero-shot cross-lingual evaluation for the Aspect Category Detection task.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/medium/tjit_a_2173843_f0005_oc.jpg" loading="lazy" height="261" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> The weight transfer strategy between two languages for zero-shot cross-lingual evaluation for the Aspect Category Detection task.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0005">
+   <div class="figureFootNote-F0005"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S003-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i23">3.4. Cross-lingual joint training</h3>
+  <p>In zero-shot learning, the model is trained and tested on two different languages, while in multilingual joint learning, the model is trained on the combination of source and target language data. For example, we have labelled training data in English and French language as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0026.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       L
+      </mi>
+      <mrow>
+       <mi>
+        e
+       </mi>
+       <mi>
+        n
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0027.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       L
+      </mi>
+      <mrow>
+       <mspace width="thinmathspace"></mspace>
+       <mi>
+        f
+       </mi>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msub>
+    </math></span>. The task is to use <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0028.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       L
+      </mi>
+      <mrow>
+       <mi>
+        e
+       </mi>
+       <mi>
+        n
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0029.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0029.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       L
+      </mi>
+      <mrow>
+       <mspace width="thinmathspace"></mspace>
+       <mi>
+        f
+       </mi>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> to train a model and classify the review texts in the target language <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0030.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0030.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       L
+      </mi>
+      <mrow>
+       <mspace width="thinmathspace"></mspace>
+       <mi>
+        f
+       </mi>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msub>
+    </math></span>. This approach has been shown to be beneficial in various cross-lingual tasks (Aharoni et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>; Johnson et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2017</a></span>; Mulcaire et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2018</a></span>; van der Heijden et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0052" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>; Zhou et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2016</a></span>). In order to evaluate the benefit of joint training based on multilingual language model, we conduct two experiments for the ABSA task as follows: (1) Combining the full training data of source and target language pair as the new training set and then evaluate on the test set of the target language, (2) Combining the entire training data of all languages to train a model and then evaluating it on the test sets of each language.</p>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i24" class="section-heading-2">4. Experiments</h2>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i25">4.1. Datasets and settings</h3>
+  <div id="S004-S2001-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i26">4.1.1. Datasets</h4>
+   <p>We use the SemEval 2016 dataset (Pontiki et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2016</a></span>) for the restaurant domain to conduct whole experiments, including languages such as English (en), French (fr), Spanish (es), Dutch (nl), and Russian (ru). These datasets have different sizes and this difference greatly affects the experimental results from the zero-shot and joint learning scenarios, especially in languages with lots of training data. To address this challenge, we use iterative stratification (Sechidis et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2011</a></span>) to recreate the datasets for our experiments. These datasets are split into sub-datasets, including about 1200 training samples and 400 testing samples for five languages. The statistics of datasets are shown in <button class="ref showTableEventRef" data-id="T0001">Table 1</button>.</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Distribution of datasets for five languages in our experiments.</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F24751839.2023.2173843&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <p></p>
+  </div>
+  <div id="S004-S2001-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i27">4.1.2. Experimental settings</h4>
+   <p>In this study, we utilize the pre-trained multilingual language models, which are available on the Hugging Face library (Wolf et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0056" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>), including mBERT<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>1</sup></a></span>, XLM-R<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0002" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>2</sup></a></span>, XLM-Align<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0003" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>3</sup></a></span>, and InfoXLM<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0004" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>4</sup></a></span> for the base version, XLM-R<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0005" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>5</sup></a></span> and InfoXLMInfoXLM<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0006" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>6</sup></a></span> for the large version. For the zero-shot and joint learning cross-lingual evaluation, we use the best individual-based model due to the limitation of computational resources. For the hyper-parameters, this study applies the cross-validation technique on the training set to choose the optimized parameters for each model and language. These parameters are learning rate, number of epochs, etc., mentioned in <button class="ref showTableEventRef" data-id="T0002">Table 2</button>. For both tasks, we implemented an AdamW optimizer for different learning rates for each language. Batch sizes are selected with 32, 64, and 16. The experiments have shown that our model requires more epochs to prevent the under-fitting problem because the two tasks are the type of the multi-label classification task. Therefore, we set the number of epochs at 30 and 40 for the ACD and CSC tasks, respectively, with an early stopping strategy.</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Hyper-parameters settings of two tasks for the study.</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F24751839.2023.2173843&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <p></p>
+  </div>
+  <div id="S004-S2001-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i28">4.1.3. Evaluation metrics</h4>
+   <p>The experimental results are reported using micro-averaging <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0031.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0031.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       F
+      </mi><mn>
+       1
+      </mn><mo>
+       −
+      </mo><mi>
+       s
+      </mi><mi>
+       c
+      </mi><mi>
+       o
+      </mi><mi>
+       r
+      </mi><msub>
+       <mi>
+        e
+       </mi>
+       <mrow>
+        <mi>
+         M
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         c
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> by calculating the model's output to the gold annotation (Pontiki et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2016</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2015</a></span>). The <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0032.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0032.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       F
+      </mi><mn>
+       1
+      </mn><mo>
+       −
+      </mo><mi>
+       s
+      </mi><mi>
+       c
+      </mi><mi>
+       o
+      </mi><mi>
+       r
+      </mi><msub>
+       <mi>
+        e
+       </mi>
+       <mrow>
+        <mi>
+         M
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         c
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> is the common evaluation metric to evaluate the performance of ABSA task. To get the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0033.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0033.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       F
+      </mi><mn>
+       1
+      </mn><mo>
+       −
+      </mo><mi>
+       s
+      </mi><mi>
+       c
+      </mi><mi>
+       o
+      </mi><mi>
+       r
+      </mi><msub>
+       <mi>
+        e
+       </mi>
+       <mrow>
+        <mi>
+         M
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         c
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub>
+     </math></span>, we calculate the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0034.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0034.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       P
+      </mi><mi>
+       r
+      </mi><mi>
+       e
+      </mi><mi>
+       c
+      </mi><mi>
+       i
+      </mi><mi>
+       s
+      </mi><mi>
+       i
+      </mi><mi>
+       o
+      </mi><msub>
+       <mi>
+        n
+       </mi>
+       <mrow>
+        <mi>
+         M
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         c
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0035.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0035.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       R
+      </mi><mi>
+       e
+      </mi><mi>
+       c
+      </mi><mi>
+       a
+      </mi><mi>
+       l
+      </mi><msub>
+       <mi>
+        l
+       </mi>
+       <mrow>
+        <mi>
+         M
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         c
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> for each class as follows: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0005.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       P
+      </mi><mi>
+       r
+      </mi><mi>
+       e
+      </mi><mi>
+       c
+      </mi><mi>
+       i
+      </mi><mi>
+       s
+      </mi><mi>
+       i
+      </mi><mi>
+       o
+      </mi><msub>
+       <mi>
+        n
+       </mi>
+       <mrow>
+        <mi>
+         M
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         c
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <munderover>
+          <mo>
+           ∑
+          </mo>
+          <mrow>
+           <mi>
+            i
+           </mi>
+           <mo>
+            =
+           </mo>
+           <mn>
+            1
+           </mn>
+          </mrow>
+          <mrow>
+           <mi>
+            C
+           </mi>
+          </mrow>
+         </munderover>
+         <msubsup>
+          <mi>
+           T
+          </mi>
+          <mi>
+           P
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+        </mrow>
+        <mrow>
+         <munderover>
+          <mo>
+           ∑
+          </mo>
+          <mrow>
+           <mi>
+            i
+           </mi>
+           <mo>
+            =
+           </mo>
+           <mn>
+            1
+           </mn>
+          </mrow>
+          <mrow>
+           <mi>
+            C
+           </mi>
+          </mrow>
+         </munderover>
+         <mo stretchy="false">
+          (
+         </mo>
+         <msubsup>
+          <mi>
+           T
+          </mi>
+          <mi>
+           P
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+         <mo>
+          +
+         </mo>
+         <msubsup>
+          <mi>
+           F
+          </mi>
+          <mi>
+           N
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0006.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       R
+      </mi><mi>
+       e
+      </mi><mi>
+       c
+      </mi><mi>
+       a
+      </mi><mi>
+       l
+      </mi><msub>
+       <mi>
+        l
+       </mi>
+       <mrow>
+        <mi>
+         M
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         c
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <munderover>
+          <mo>
+           ∑
+          </mo>
+          <mrow>
+           <mi>
+            i
+           </mi>
+           <mo>
+            =
+           </mo>
+           <mn>
+            1
+           </mn>
+          </mrow>
+          <mrow>
+           <mi>
+            C
+           </mi>
+          </mrow>
+         </munderover>
+         <msubsup>
+          <mi>
+           T
+          </mi>
+          <mi>
+           P
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+        </mrow>
+        <mrow>
+         <munderover>
+          <mo>
+           ∑
+          </mo>
+          <mrow>
+           <mi>
+            i
+           </mi>
+           <mo>
+            =
+           </mo>
+           <mn>
+            1
+           </mn>
+          </mrow>
+          <mrow>
+           <mi>
+            C
+           </mi>
+          </mrow>
+         </munderover>
+         <mo stretchy="false">
+          (
+         </mo>
+         <msubsup>
+          <mi>
+           T
+          </mi>
+          <mi>
+           P
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+         <mo>
+          +
+         </mo>
+         <msubsup>
+          <mi>
+           F
+          </mi>
+          <mi>
+           P
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0007.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(7) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       F
+      </mi><mn>
+       1
+      </mn><mo>
+       −
+      </mo><mi>
+       s
+      </mi><mi>
+       c
+      </mi><mi>
+       o
+      </mi><mi>
+       r
+      </mi><msub>
+       <mi>
+        e
+       </mi>
+       <mrow>
+        <mi>
+         M
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         c
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <mn>
+          2
+         </mn>
+         <mo>
+          ×
+         </mo>
+         <mi>
+          P
+         </mi>
+         <mi>
+          r
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          o
+         </mi>
+         <msub>
+          <mi>
+           n
+          </mi>
+          <mrow>
+           <mi>
+            M
+           </mi>
+           <mi>
+            i
+           </mi>
+           <mi>
+            c
+           </mi>
+           <mi>
+            r
+           </mi>
+           <mi>
+            o
+           </mi>
+          </mrow>
+         </msub>
+         <mo>
+          ×
+         </mo>
+         <mi>
+          R
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          l
+         </mi>
+         <msub>
+          <mi>
+           l
+          </mi>
+          <mrow>
+           <mi>
+            M
+           </mi>
+           <mi>
+            i
+           </mi>
+           <mi>
+            c
+           </mi>
+           <mi>
+            r
+           </mi>
+           <mi>
+            o
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+        <mrow>
+         <mi>
+          P
+         </mi>
+         <mi>
+          r
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          o
+         </mi>
+         <msub>
+          <mi>
+           n
+          </mi>
+          <mrow>
+           <mi>
+            M
+           </mi>
+           <mi>
+            i
+           </mi>
+           <mi>
+            c
+           </mi>
+           <mi>
+            r
+           </mi>
+           <mi>
+            o
+           </mi>
+          </mrow>
+         </msub>
+         <mo>
+          +
+         </mo>
+         <mi>
+          R
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          l
+         </mi>
+         <msub>
+          <mi>
+           l
+          </mi>
+          <mrow>
+           <mi>
+            M
+           </mi>
+           <mi>
+            i
+           </mi>
+           <mi>
+            c
+           </mi>
+           <mi>
+            r
+           </mi>
+           <mi>
+            o
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(7) </span></span></span></span>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0036.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0036.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        T
+       </mi>
+       <mi>
+        P
+       </mi>
+      </msub>
+     </math></span> represents the number of instances that are correctly predicted with positive label, while <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0037.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0037.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        F
+       </mi>
+       <mi>
+        P
+       </mi>
+      </msub>
+     </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0038.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0038.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        F
+       </mi>
+       <mi>
+        N
+       </mi>
+      </msub>
+     </math></span> represent the number of instances with labels incorrectly predicted to be positive or negative, respectively. The value <i>C</i> shows the number of classes; in our case <i>C</i> = 12. For the ACD task, the classes are the Entity-Attribute pairs, while the F1-score will be calculated based on the tuples (Entity-Attribute-Polarity) for the CSC task.</p>
+  </div>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i32">4.2. Results</h3>
+  <p>This section presents the experimental results of three scenarios: (1) performance of different pre-trained language models; (2) evaluation of zero-shot learning; (3) evaluation of joint learning scenario.</p>
+  <div id="S004-S2002-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i33">4.2.1. Performance of multilingual models</h4>
+   <p>We first compare the effectiveness of multilingual pre-trained language models on two ABSA tasks. <button class="ref showTableEventRef" data-id="T0003">Tables 3</button> and <button class="ref showTableEventRef" data-id="T0004">4</button> show the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0039.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0039.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       F
+      </mi><mn>
+       1
+      </mn><mo>
+       −
+      </mo><mi>
+       s
+      </mi><mi>
+       c
+      </mi><mi>
+       o
+      </mi><mi>
+       r
+      </mi><msub>
+       <mi>
+        e
+       </mi>
+       <mrow>
+        <mi>
+         M
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         c
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> per model per language for the tasks of ACD and CSC, with the highest scores per language shown in bold and underlined. Note that the results represent the performance of models trained and tested on the specific language data. It can be observed that the large models improve the results over base models further. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0040.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0040.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       I
+      </mi><mi>
+       n
+      </mi><mi>
+       f
+      </mi><mi>
+       o
+      </mi><mi>
+       X
+      </mi><mi>
+       L
+      </mi><msub>
+       <mi>
+        M
+       </mi>
+       <mrow>
+        <mi>
+         l
+        </mi>
+        <mi>
+         a
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         g
+        </mi>
+        <mi>
+         e
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> model achieved the highest scores in most languages except Dutch for the ACD task. While <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0041.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0041.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       I
+      </mi><mi>
+       n
+      </mi><mi>
+       f
+      </mi><mi>
+       o
+      </mi><mi>
+       X
+      </mi><mi>
+       L
+      </mi><msub>
+       <mi>
+        M
+       </mi>
+       <mrow>
+        <mi>
+         l
+        </mi>
+        <mi>
+         a
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         g
+        </mi>
+        <mi>
+         e
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> model shows the effectiveness in all languages for the CSC task. Our experimental results confirmed that the large models perform better than base pre-trained models. Among based language models, the XLM-Align model achieved high scores for languages except Dutch and Russian for the ACD task. One of the reasons for the worse performance of the XLM-Align model in comparison with the XLM-R model in Dutch and Rusian is the size of pre-training data in the pre-trained model as a previous study (Lauscher et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020b</a></span>). Specifically, the size of pre-training data of the XLM-R model is larger than XLM-Align (29.3G and 25.9G for Dutch, 278G, and 253.3G for Russian). Compared with <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0042.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0042.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       X
+      </mi><mi>
+       L
+      </mi><mi>
+       M
+      </mi><mo>
+       −
+      </mo><msub>
+       <mi>
+        R
+       </mi>
+       <mrow>
+        <mi>
+         b
+        </mi>
+        <mi>
+         a
+        </mi>
+        <mi>
+         s
+        </mi>
+        <mi>
+         e
+        </mi>
+       </mrow>
+      </msub>
+     </math></span>, XLM-Align gives 0.4%, +5.81%, and 1.98% improvements in English, French, and Spanish. While XLM-R still shows effectiveness in the Dutch and Russian with 3.33% and 0.2% improvements than XLM-Align. Comparing the results of InfoXLM against XLM-Align shows that the performance of the two models is quite competitive, which depends on the language and task, but the difference is not significant. These experimental results are similar to the CSC task. These results show that the performance of pre-trained multilingual language models is different based on the language. Therefore, we recommend that future studies compare the performance of these models in a specific language, particularly low-resource languages, to select the best model.</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 3. </span> The performances of multilingual pre-trained language models on five datasets for Aspect Category Detection task.</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="T0003-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0003&amp;doi=10.1080%2F24751839.2023.2173843&amp;downloadType=CSV"> Download CSV</a><a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 4. </span> The performances of multilingual pre-trained language models on five datasets for Category Sentiment Classification task.</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="T0004-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0004&amp;doi=10.1080%2F24751839.2023.2173843&amp;downloadType=CSV"> Download CSV</a><a data-id="T0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <p></p>
+  </div>
+  <div id="S004-S2002-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i34">4.2.2. Zero-shot cross-lingual</h4>
+   <p>In this section, we present the results in zero-shot on two following scenarios. First, we investigate the performance of each model, which is trained on the source language and evaluated on the target language. Secondly, we examine the effectiveness of the model which are trained on multiple source languages without the target language. We choose the XLM-Align as the primary model for this setting.</p>
+   <p><button class="ref showTableEventRef" data-id="T0005">Table 5</button> presents the zero-shot cross-lingual results on source-target language pairs of the ACD and CSC tasks. The row and column represent the source and target language, respectively. The best performance of the cross-lingual language pair is bold for each column. As shown in <button class="ref showTableEventRef" data-id="T0005">Table 5</button>, it can be seen that training model on the English language achieves the best scores on the French language for two tasks. Moreover, we observe that the performances of the XLM-Align model are different on two tasks in some language pairs in this setting. For example, using French as the source language gives the best score on Dutch for the ACD task; however, the best source language for the CSC task is English. It can be seen that the CSC task is a compound task that aim to assign the set of aspect categories and corresponding sentiment – which may yield different results than ACD. In addition, the ratio of training data toward the sentiment polarity class between languages is also different. This leads to inconsistent experimental results between the two tasks. Moreover, our experimental results indicate the effect of similar languages on zero-shot transfer learning. For example, the model is trained on English (a Germanic language) data to produce the higher scores in typologically or etymologically languages such as French and Spanish (Romance languages) than Russian (a Slavic language). The reason is that most of modern English vocabulary is borrowed from the Romance languages (Şenel et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 5. </span> The results of zero-shot cross lingual on the five datasets using XLM-Align model.</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="T0005-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0005&amp;doi=10.1080%2F24751839.2023.2173843&amp;downloadType=CSV"> Download CSV</a><a data-id="T0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <p></p>
+   <p>This demonstrates that the selection of source language to transfer knowledge in the zero-shot setting also influences performance in the target language. <a href="#F0006">Figure 6</a> shows the best scores of the monolingual model compared with the zero-shot cross-lingual setting. In general, it is obvious that the performance of zero-shot learning is lower than the monolingual model. This result is acceptable in the context of no training data in the target language. Specifically, when comparing the highest zero-shot cross-lingual results with the monolingual results, we can see that the difference ranges from 3.89% to 9.81% and 4.96% to 7.12% for the ACD and CSC tasks, respectively.</p>
+   <div class="figure figureViewer" id="F0006">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>16 February 2023
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 6. </span> The graph compares the best results in monolingual models, which are trained both trained and tested on target language data (blue bar), and zero-shot cross-lingual setting (red bar).</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0006image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/medium/tjit_a_2173843_f0006_oc.jpg" loading="lazy" height="140" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0006">
+    <p class="captionText"><span class="captionLabel">Figure 6. </span> The graph compares the best results in monolingual models, which are trained both trained and tested on target language data (blue bar), and zero-shot cross-lingual setting (red bar).</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0006">
+    <div class="figureFootNote-F0006"></div>
+   </div>
+   <p></p>
+   <p>Moreover, we conduct an experiment to find out the effectiveness of the training model in a combination of multiple languages. Therefore, in this experiment, we combine the training data of source languages without the target language. <button class="ref showTableEventRef" data-id="T0006">Table 6</button> presents the scores of this experiment for two tasks. We can also observe that the training model on combination data gains better scores in all of the languages in both tasks. In particular, there is a remarkable increase for the ACD task in Dutch, Spanish, and English with +7.33%, +5.25%, and +4.41%, respectively. For the CSC task, the model also improves <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0043.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/tjit_a_2173843_ilm0043.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       F
+      </mi><mn>
+       1
+      </mn><mo>
+       −
+      </mo><mi>
+       s
+      </mi><mi>
+       c
+      </mi><mi>
+       o
+      </mi><mi>
+       r
+      </mi><msub>
+       <mi>
+        e
+       </mi>
+       <mrow>
+        <mi>
+         M
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         c
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> in the range from 3.35% to 7.67% in all languages.</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 6. </span> The results of zero-shot setting where training XLM-Align model on a combination of different languages.</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="T0006-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0006&amp;doi=10.1080%2F24751839.2023.2173843&amp;downloadType=CSV"> Download CSV</a><a data-id="T0006" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <p></p>
+  </div>
+  <div id="S004-S2002-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i36">4.2.3. Joint training</h4>
+   <p><button class="ref showTableEventRef" data-id="T0007">Table 7</button> shows the results of joint training of language pairs for two tasks. The main diagonal represents the best scores (<button class="ref showTableEventRef" data-id="T0003">Tables 3</button> and <button class="ref showTableEventRef" data-id="T0004">4</button>) where the model is trained and tested on the data of the target language. In general, the joint training approach can improve the performance of the model; however, it is obvious that the improvements depend on the language pair. We found that training the pairs in the same language group related to linguistic relations<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0007" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>7</sup></a></span> such as English with Dutch, French, and Spanish brings the benefit over other pairs. In addition, instead of joint training for each language pair, we combine the training data for all languages, including the target language, as the final training set. The results of this experiment are summarized in <button class="ref showTableEventRef" data-id="T0008">Table 8</button>.</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 7. </span> The results of joint training of source and target languages on the five dataset.</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="T0007-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0007&amp;doi=10.1080%2F24751839.2023.2173843&amp;downloadType=CSV"> Download CSV</a><a data-id="T0007" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 8. </span> The results of joint training approach based on the combination of multiple training sets.</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="T0008-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0008&amp;doi=10.1080%2F24751839.2023.2173843&amp;downloadType=CSV"> Download CSV</a><a data-id="T0008" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <p></p>
+  </div>
+ </div>
+ <div id="S004-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i37">4.3. Discussion</h3>
+  <p>First, we discuss the role of source languages in zero-shot cross-lingual transfer learning based on our experimental results. We surveyed that most previous studies (Larochelle et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2008</a></span>) choose English as the source language to transfer knowledge in zero-shot learning because of the following reasons: (1) English is one of the rich-resource languages in research community (Joshi et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020b</a></span>); (2) English is a top language that have a large size in the pre-training data in most current pre-trained multilingual language models (Chi et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021a</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2021b</a></span>; Conneau et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2020</a></span>; Devlin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2019</a></span>). However, our experimental results, which are shown in <button class="ref showTableEventRef" data-id="T0005">Table 5</button> indicated that other languages could be the source language instead of English. For example, transferring knowledge from French produced the highest scores in Spanish for the ACD task, while Spanish gave the best score for the Russian language for both tasks. In addition, it is observed that the languages which belong to the same language group with closer linguistic relations, such as English and Dutch, Spanish and French, or with close lexical distance (Şenel et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i43 _i44" href="#"><span class="off-screen">Citation</span>2017</a></span>), such as English and French, produced the highest scores for the target language in the zero-shot setting. Therefore, the linguistic relationship and lexical distance between the source language and the target language play an important role in zero-shot cross-lingual learning.</p>
+  <p>Second, <button class="ref showTableEventRef" data-id="T0009">Tables 9</button> and <button class="ref showTableEventRef" data-id="T0010">10</button> show the performances of three approaches for the ACD and CSC tasks, respectively. Generally, we observe that the results of zero-shot learning – which is trained on the source language and tested on the target language, are always lower than the results of monolingual learning – which is trained and tested on the target language. Another interesting point is that training model on multiple source languages improves the performance in terms of F1-score than a source language for all languages in both tasks. Especially, we notice that the performance of zero-shot learning in multiple source settings gives approximately the best results than the monolingual setting for the CSC task in all languages except Russian. The reason might relate to the distance between languages and the distribution of aspect categories with corresponding sentiment polarity. Because the CSC task considers the category and polarity as ground truth and has a large imbalance between the classes, therefore, combing multiple source languages can increase and diversify the number of training samples. When comparing the joint training results with the remaining, it can be seen that joint training improves the performance of the model in all languages, particularly close-relation languages. Furthermore, by combining multiple training data for all languages, including the target language, the model performs better than using only one source language for all languages; the difference is significant for the CSC task.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>16 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 9. </span> Results of three approaches on five languages for the aspect category detection.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0009-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0009&amp;doi=10.1080%2F24751839.2023.2173843&amp;downloadType=CSV"> Download CSV</a><a data-id="T0009" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>16 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 10. </span> Results of three approaches on five languages for the Category Sentiment Classification task.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0010-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0010&amp;doi=10.1080%2F24751839.2023.2173843&amp;downloadType=CSV"> Download CSV</a><a data-id="T0010" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>In order to explore the effectiveness of the joint learning approach, we conducted experiments with different sizes of the training set in the source and target language. We consider two scenarios: (1) combining the full training set of the source language with part of the training set of the target language; (2) In contrast, we combine a part of the training set of the source language with the full training set of the target language. The source language for a specific language is selected based on joint learning results (see in <button class="ref showTableEventRef" data-id="T0007">Table 7</button>). For example, the combination of English and Dutch languages produces the best score for the Dutch language. As shown in <a href="#F0007">Figures 7</a> and <a href="#F0008">8</a>, we can see that the model's performance increases with the size of the training samples for the target language. These results proved that combining more annotated data for the target language increases the performance of multilingual models, which are only trained on the source language data.</p>
+  <div class="figure figureViewer" id="F0007">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 7. </span> Joint learning results for the combination of the source language with the amount of training samples from the target language for the Aspect Category Detection task.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0007image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/medium/tjit_a_2173843_f0007_oc.jpg" loading="lazy" height="282" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0007">
+   <p class="captionText"><span class="captionLabel">Figure 7. </span> Joint learning results for the combination of the source language with the amount of training samples from the target language for the Aspect Category Detection task.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0007">
+   <div class="figureFootNote-F0007"></div>
+  </div>
+  <div class="figure figureViewer" id="F0008">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Exploring zero-shot and joint training cross-lingual strategies for aspect-based sentiment analysis based on contextualized multilingual language models</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=van+Thin%2C+Dang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Thin%2C+Dang"><span class="NLM_given-names">Dang</span> Van Thin</a> <a href="https://orcid.org/0000-0001-8340-1405"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Quoc+Ngo%2C+Hung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Quoc+Ngo%2C+Hung"><span class="NLM_given-names">Hung</span> Quoc Ngo</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ngoc+Hao%2C+Duong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ngoc+Hao%2C+Duong"><span class="NLM_given-names">Duong</span> Ngoc Hao</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Luu-Thuy+Nguyen%2C+Ngan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Luu-Thuy+Nguyen%2C+Ngan"><span class="NLM_given-names">Ngan</span> Luu-Thuy Nguyen</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2023.2173843">https://doi.org/10.1080/24751839.2023.2173843</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 8. </span> Joint learning results for the combination of the source language with amount of training samples from the target language for the Category-Sentiment Classification task.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0008image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/0/tjit20.ahead-of-print/24751839.2023.2173843/20230216/images/medium/tjit_a_2173843_f0008_oc.jpg" loading="lazy" height="284" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0008">
+   <p class="captionText"><span class="captionLabel">Figure 8. </span> Joint learning results for the combination of the source language with amount of training samples from the target language for the Category-Sentiment Classification task.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0008">
+   <div class="figureFootNote-F0008"></div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i40" class="section-heading-2">5. Conclusion</h2>
+ <p>In this paper, we studied the ability of different contextualized multilingual language models in the zero-shot and joint training cross-lingual settings. We conducted experiments on two sub-tasks in the ABSA problem for five languages. For the zero-shot cross-lingual setting, we explore two scenarios relying on two strategies: (1) training on a source language; (2) training on the multiple source languages to fine-tuning the models. The results showed that it is beneficial to take advantage of multiple source languages in a zero-shot cross-lingual setting. Moreover, the experimental results indicate that the selection of source languages also plays an important role in achieve good results for the target language. Although our results indicated that the performance of zero-shot learning is not as good as in a monolingual setting, the results are pretty impressive in case there is no training data for the target language.</p>
+ <p>For the joint training cross-lingual study, two experiments were conducted to demonstrate the effectiveness of the multilingual language models on the mixture dataset. We found that a joint training model on the group languages with linguistic relations can perform better than monolingual data. Through extensive experiments in several languages, we demonstrated the efficacy of cross-lingual joint training. Furthermore, we explored the combination of the source language with amount of training samples from the target language. The results indicated that the performance of the model increased proportionally to the number of data samples in the target language.</p>
+ <p>Finally, from the performance of fine-tuning various pre-trained multilingual language models in five languages, we recommend that future studies should compare the performance of different models in the specific language in order to select the best model, especially for low-resource languages. In future work, we plan to examine a broader set of languages (Asian, Africa, etc.) and tasks to obtain more comprehensive evaluations.</p>
+</div>

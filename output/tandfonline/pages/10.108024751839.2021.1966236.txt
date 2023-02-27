@@ -1,0 +1,459 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">1. Introduction</h2>
+ <p>Using the example of our early works on Polish, we would like to share our experience of the last three decades in the challenging task of developing NLP-based technologies in the situation of initial shortage of digital language resources. Our objective behind this overview is to contribute to the discussion of possible solutions of scarcity of resources and tools for the low-resourced languages.</p>
+ <p>For a long time, that is, from the fifteenth till the eighteenth centuries, Polish was a lingua franca over a large part of Central and Eastern Europe. During the Renaissance and Baroque periods there was intensive literary production in Poland followed by the first modern dictionaries and grammars. Still until recently descriptions of the Polish language were addressed to human users for teaching and translation purposes. For this reason, they were of little use to the language industries because of lack of precision.</p>
+ <p>Polish was considered as a ‘less-resourced-language' at least until the end of the twentieth century. The negative effects of this deficiency may still be observed. The awareness actions undertaken by the EU followed by appropriate funding measures in the 1990s were important milestones in the development of human language technologies in Central Europe. The new bridges emerging between the technologically advanced research communities and the newcomers often stimulated the appearance of new and original ideas. International grants bringing together partners from various language communities representing different linguistic traditions were often oriented to the creation of basic language resources and tools in order to serve the dynamically growing language industries in Europe including Poland. The general condition of language technologies for Polish is now good and efficient so that Polish is no longer classified as ‘less-resourced'. Nevertheless, there are still many gaps to fill.</p>
+ <p>This paper is organized into five sections, followed by conclusions and references. After the introduction and a brief reference to the beginnings of our research, we present an overview of some of our projects related to the language resources and tools we had to develop in order to be able to process texts in Polish and develop real-scale systems like POLINT-112-SMS (Section 3.3.3) with language understanding competence. In particular attention was given to electronic dictionaries, WordNet-inspired lexical ontologies, collocations, and the organization of grammatical data into a lexicon-grammar (Vetulani &amp; Vetulani, <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2020</a></span>) and, last but not least, the role of human resources.</p>
+ <p>The first four sections are mainly concerned with the presentation of works on Polish language technologies aimed at applications in artificial intelligence systems. In Section 5, we draft the first steps towards applying the methodological model so far tested for Polish to the selected Indo-Aryan languages of India.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">2. Early Works in Poland and in India</h2>
+ <p>Among the first attempts to use computers for processing Polish texts and speech, the research conducted in the 1970s in Warsaw and Poznań was noteworthy (L. Bolc, S. Szpakowicz for text, W. Jassem, M. Steffen-Batóg for speech processing). In the late 1970s and early 1980s, the first attempts to implement systems that understood Polish were carried out (independently), for example, by W. Lubaszewski, St. Szpakowicz and Z. Vetulani.</p>
+ <p>Typical of these early works was the unavailability of real-size electronic language resources as well as of NLP dedicated tools for Polish. These early studies on NL parsing and logic-based question-answering were found inspiring two decades later when we started working on real-size applications (Vetulani, <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2012</a></span>). However, real-size applications also require real-scale resources.</p>
+ <p>The NLP activities started in India in a serious manner in the last quarter of the twentieth century. Realizing the importance of these activities for the development and growth of the country, the Government of India provided support to Indian universities and institutes (see Section <a href="#S005">5</a>.<a href="#S005">5</a> selection of the main outcomes of this involvement).</p>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">3. Basic resources for text processing</h2>
+ <p>During our first attempts to design non-trivial rule-based question-answering systems with deep understanding<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>1</sup></a></span> (Vetulani, <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1988</a></span>) we identified the most urgent needs: electronic dictionaries, computer processible grammars and corpora (for general language, but also for domain-specific applications). Several national and European projects contributed to partially fill the gaps in resources and tools.</p>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">3.1. Dictionary project POLEX (1994–1996)</h3>
+  <p>Polish is a highly inflecting language and, therefore, it has a relatively free word order. Consequently, the simple adaptation of processing algorithms that are efficient for English or French appeared hard to apply. This is so, because the information concerning the function of a word in the sentence is typically encoded in the word form, independently of its linear position in the sentence. The evidence forced us to propose our own algorithms, for example, parsers (Vetulani, <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1988</a></span>) that require a precise description of Polish grammar. In the field of morphology, a huge amount of work by lexicographers until the 1990s did not lead to a standard description of Polish words that would not require the individual linguistic competence of users to interpret dictionaries. We proposed an unambiguous inflectional description system<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0002" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>2</sup></a></span> capable of eliminating the need for human linguistic competence to interpret word forms and, therefore, appropriate for the development of machine-processing software (Vetulani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1998a</a></span>). POLEX is a morphological dictionary of core Polish words of general interest included in a large traditional paper dictionary (Szymczak, <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1995</a></span>). It uses a precise machine-interpretable formalism (coding system), which is the same for all categories (classes of speech) (Vetulani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1998a</a></span>).</p>
+  <p>The dictionary entries are described as a list of four parameters: <i>basic form</i>, <i>list of stems</i>, <i>paradigmatic inflection code</i>, and <i>distribution of stems</i>. Two of these parameters, i.e. the <i>paradigmatic inflection code</i> and <i>distribution of stems</i>, describe how to associate endings to stems to obtain the required forms of the word (distribution associates stems to the paradigmatic positions).</p>
+  <p>The first public release of the resource contained (2007) over 42,000 nouns, 12,000 verbs, 15,000 adjectives, 25,000 participles, and about 200 pronouns.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0003" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>3</sup></a></span></p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">3.2. First steps towards lexicon-grammars for Polish</h3>
+  <p>In the 1970s, Maurice Gross (LADL, Paris 7) proposed a grammatical lexicon based on the idea of storing words together with possibly all relevant syntactic and semantic information (Gross, <span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1975</a></span>). Lexicon-Grammars were developed first for French, then for other languages. Consequently, predicative words were studied from the point of view of their aptitude to form elementary sentences. Gross introduced the term <i>lexicon grammar</i> (Fr. <i>lexique</i>-<i>grammaire</i>) in the sense of the method of describing the meaning of predicative words by providing descriptions of how these words form simple sentences. What distinguishes lexicon grammars from traditional grammatical descriptions of a language is that lexicon-grammar entries contain an exhaustive grammatical descriptions (on syntactic and semantic levels) of well-defined senses of words. This property renders lexical-grammars well-suited for NLP applications.</p>
+  <div class="quote">
+   <p>‘Numerous doctoral dissertations under the supervision of Maurice Gross were oriented towards languages other than French (his own doctoral dissertation was about comparing French with English) ranging from other Romance languages, through Greek, Korean and Arabic. These works showed that Gross’s theoretical hypotheses are confirmed on typologically very diverse material, which gives them a strong conceptual basis.’ (Lamiroy, <span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2003</a></span>)<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0004" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>4</sup></a></span></p>
+  </div>
+  <p></p>
+  <div id="S003-S2002-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i8">3.2.1. The EUREKA Project GENELEX (1990–1994)</h4>
+   <p>GENELEX<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0005" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>5</sup></a></span> was an initiative – which first addressed some Western-European languages, starting with English, French, German, and Italian – to realize the idea of lexicon-grammar in the form of a generic model for lexicons and to propose software tools for lexicon management (Antoni-Lay et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1994</a></span>). The first of the two reasons given by Antoni-Lay for large-size lexicons was that when Natural Language applications left the research labs for the world of practical applications, they were required to cover a wide variety of language phenomena, and this implied real-scale resources such as electronic dictionaries, grammars and corpora. The second reason was the tendency observed already in the eighties (and even before<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0006" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>6</sup></a></span>) to put a large amount of grammatical information into a lexicon. This tendency finally led to grammatical systems with relatively few grammar rules and more complex lexicon instead (see (Gross, <span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1975</a></span>), (Polański, <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1992</a></span>)).</p>
+   <p>Although Polish was not covered by the GENELEX project, it was studied in two EU projects, GRAMLEX and CEGLEX, aimed at testing the potential of the novel GENELEX-based LT solutions to some languages not represented in GENELEX.</p>
+  </div>
+  <div id="S003-S2002-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i9">3.2.2. PECO-COPERNICUS Project 1032 CEGLEX (1995–1996)</h4>
+   <p>The main goal of the CEGLEX consortium<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0007" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>7</sup></a></span> (Vetulani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1995</a></span>) was to test the GENELEX proposal of a generic model for reusable lexicons for three official languages spoken in Central Europe: Czech, Hungarian and Polish.</p>
+   <p>The CEGLEX/GENELEX model claims to be theory-welcoming, complete, (i.e. to cover all relevant phenomena on three classical layers: morphological, syntactic, and semantic), as well as easily applicable to different languages. The three layers of the CEGLEX/GENELEX model were confronted with the data for languages under consideration with generally positive results, especially for Czech and Polish. In particular, the model had to be adapted to accept language data for the Polish language. On this occasion, some modifications were proposed concerning the representation of the inflection phenomena specific to the Polish language.</p>
+  </div>
+  <div id="S003-S2002-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i10">3.2.3. PECO-COPERNICUS Project 621 GRAMLEX (1995–1998)</h4>
+   <p>‘The aim of GRAMLEX was to facilitate the initiation, coordination and standardization of the construction of morphological dictionary packages'<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0008" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>8</sup></a></span> for the following European languages: French, Hungarian, Italian and Polish,<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0009" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>9</sup></a></span> including a detailed formal description of the morphology of the Polish language. The intention of the GRAMLEX tasks for Polish was to contribute to the improvement of the situation concerning language engineering tools and resources. Among the main achievements was a corpus-based morphological dictionary (for over 22,500 entries derived from POLEX) as well as the related tools and applications (lemmatizer, inflected form generator, concordance generator and others<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0010" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>10</sup></a></span>) in the GENELEX format (Vetulani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1998b</a></span>). The project GRAMLEX was related to the two projects mentioned above POLEX and CEGLEX lexemes.</p>
+  </div>
+ </div>
+ <div id="S003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">3.3. Further steps towards lexicon grammars for Polish. PolNet 3.0 as lexicon-grammar</h3>
+  <p>The IT applications with language competence we were able to develop until 1990 were all classified as toy-systems. This was caused by the lack of real-size digital, easily machine-processable electronic resources. This problem was addressed in the R&amp;D grant ‘Text Processing Technologies for Homeland Security Purposes'<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0011" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>11</sup></a></span></p>
+  <div id="S003-S2003-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i12">3.3.1. POLINT – 112 – SMS: a system with natural language competence (2006–2010)</h4>
+   <p>Within the above-mentioned grant, we created a prototype of the system that was designed to assist the monitoring of mass events and to enhance real-time identification of potentially dangerous situations in the crowd of fans in order to fix processes with a high degeneration risk (early prevention). This application required a powerful natural language competence to understand and process SMS messages exchanged between the security staff agents in the uncontrolled natural language (cf. Vetulani &amp; Osiński, <span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>). The understanding module of the system is rule-based because of the need to obtain a very precise representation of the utterance content that is crucial in processing sensitive information. Messages were supposed to be written in standard, correct and unconstrained Polish. Resources essential for this project, besides the machine-readable grammar and dictionaries, were ontologies for knowledge representation and logic-based reasoning and text and dialogues corpora to support the implementation of the language processing model of the application.</p>
+  </div>
+  <div id="S003-S2003-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i13">3.3.2. Corpora</h4>
+   <p>Text and speech corpora have numerous applications in language processing. First of all, they constitute an empirical foundation on which to construct language models. The elementary application of a corpus consists in identifying and cataloguing language use phenomena important for further text processing (like parsing, understanding, etc.). Several corpora were used to implement the POLINT-112-SMS system. For purposes such as concepts acquisition for ontology building or creating frequency-based heuristics for language processing, it is common to apply large corpora. In our case, we used the open version of the Polish National Corpus (Przepiórkowski, <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2004</a></span>).</p>
+   <p>In the cases where project-specific linguistic information was necessary, we were obliged to collect the necessary corpora. Some of them were:</p>
+   <ul class="NLM_list NLM_list-list_type-bullet">
+    <li><p class="inline">the experimentally collected St. Claus Corpus of informative dialogues (Vetulani, <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1989</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1990</a></span>, Vetulani <span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2004</a></span>),</p></li>
+    <li><p class="inline">the corpus of 1700 private SMS messages (Vetulani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2010</a></span>; Walkowska et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0046" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2009</a></span>),</p></li>
+    <li><p class="inline">the corpus of experimental <i>Role Playing Game</i> dialogues (Vetulani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2010</a></span>)/1374 dialogs/,</p></li>
+    <li><p class="inline">experimental Wizard_of_Oz – supported dialogs (Vetulani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2010</a></span>)/1198 dialogs/,</p></li>
+    <li><p class="inline">a juridical text corpus (papers/23/, books/2/, documents/80/) (Vetulani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2010</a></span>),</p></li>
+    <li><p class="inline">speech corpus – emergency line 997<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0012" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>12</sup></a></span> (24 h of recording for 1818 calls, partially transcribed into text and tagged/58,935 words/).</p></li>
+   </ul>
+   <p></p>
+  </div>
+  <div id="S003-S2003-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i14">3.3.3. PolNet – PolishWordnet as lexical ontology (since 2006)<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0013" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>13</sup></a></span></h4>
+   <p>The absence of lexical ontologies reflecting conceptualization typical of Polish<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0014" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>14</sup></a></span> speakers in the market inspired us to develop PolNet PolishWordnet – a lexical database of the type of PrincetonWordNet.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0015" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>15</sup></a></span> We built it from scratch according to the so-called merge model methodology. Creation of PolNet started in 2006 and continues. The resource development procedure was based on the exploration of traditional dictionaries and the use of available language corpora such as the IPI PAN Corpus (Przepiórkowski, <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2004</a></span>). Incremental development of PolNet started with general and frequently used vocabulary.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0016" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>16</sup></a></span> We decided to select the most widely used words found in a reference corpus of Polish language (Vetulani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1997</a></span>), with an important exception made for methodological reasons: even though we intended PolNet to be a resource of general interest, we assumed its possibly early validation in the real-size applications for which having a domain-specific terminology represented in the system was crucial.</p>
+   <p>By 2008, the initial PolNet version based on noun synsets related by hyponymy/hyperonymy relations was already large enough to serve as a core lexical ontology for real-size applications. However, in order to develop a POLINT-112-SMS system prototype, an extension of the core set of nouns with domain terminology was necessary. Further extension with verbs and collocations transformed PolNet into a lexicon-grammar (Vetulani &amp; Vetulani, <span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2014a</a></span>), bringing to PolNet various new possibilities, such as facilitating the implementation of parsers. By including the verb category in PolNet we brought ideas inspired by FrameNet (Fillmore et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2002</a></span>) and VerbNet (Palmer, <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2009</a></span>) projects to PolNet. The verbal part was at the heart of the entire network (Vetulani &amp; Obrębski, <span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2010</a></span>). Its organizing backbone was the system of semantic roles (Palmer, <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2009</a></span>).</p>
+  </div>
+  <div id="S003-S2003-S3004" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i15">3.3.4. First step from PolNet to lexicon-grammar PolNet 1.0.</h4>
+   <p>Already in the early 1980s, information typically contained in lexicon-grammar entries for predicative words, simple or compound, was considered useful for parsing and generating natural language sentences. Lexical entries used in the PROLOG code of the demonstration system ORBIS<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0017" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>17</sup></a></span> were, in fact, lexicon-grammar units describing syntactic and sematic valency of words. The syntactic/semantic valency (valency structure) appeared useful to avoid the acceptance of incorrect sentences by a parser and the production of incorrect sentences by a generation algorithm. It is also helpful to build error-correcting software. The qualitative evolution of PolNet, initially conceived as a lexical ontology, towards a lexicon-grammar of Polish took place between the release of PolNet 0.1 (2009) and PolNet 3.0 (2014). The pragmatic reason to substantially enrich PolNet was the need of an efficient parsing engine to support the understanding module. In addition to noun synsets that make of PolNet 0.1 (2009) a lexical ontology, we decided to enrich PolNet with verb synsets containing syntactic/semantic information in the form of valency structure. The valency structure of a predicative word provides the morpho-syntactic and semantic constraints on the acceptable fillers of the argument positions opened by this word (like <i>case, number, gender, preposition, register</i>, etc. for morpho-syntactic constraints and semantic roles (Palmer, <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2009</a></span>) like <i>agent, patient, beneficiary,</i> etc. for semantic ones). Later, we decided to refine our idea of verb synsets taking into account the granularity issues related to synonymy. We focused on verb–noun constraints corresponding to the particular argument positions of the verb. For our purposes, we proposed the following definition: verb + meaning pairs are only synonymous when they take the same semantic roles and the same concepts as values (see more in (Vetulani &amp; Vetulani, <span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2015</a></span>)). In particular, the valency structure of a verb is one of the indices of meaning (i.e. all members of a synset share the valency structure). Verb synsets appeared already in the first public release of PolNet in 2011 (PolNet 1.0) (Vetulani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2016</a></span>). This extension opened a new generation of PolNet systems that we call now ‘PolNet – Polish Lexicon-Grammar systems'. The expansion of PolNet to the Lexicon Grammar of Polish was based on the results of research on predicative verbs assembled in the Dictionary of Polish Verbs (Polański 1980–1992) where linguistic descriptions were provided for 7000 Polish predicative verbs. The valency information permitted us to make a smart use of PolNet as it was enriched with lexicon-grammar features when implementing the POLINT-112-SMS system. In addition to using PolNet as a lexical ontology in the World Knowledge and Situation Analysis Modules, we made use of the valency information to enhance the efficiency of the parser as part of the Text Understanding Module. In this module, syntactic/semantic valency information stored in the lexicon-grammar rules was used to control parsing execution by heuristics<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0018" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>18</sup></a></span> in order to speed up parsing due to additional information gathered at the pre-analysis stage. The effect of substantially reducing the processing time was due to the reduction of the search space.</p>
+  </div>
+  <div id="S003-S2003-S3005" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i16">3.3.5. Collocations in PolNet 2.0 – PolNet 3.0</h4>
+   <p>As the usefulness of PolNet as lexical ontology in the development of real-size systems was positively verified by the above-mentioned application, we decided to take the next steps towards the full lexicon-grammar. The versions PolNet 2.0 and PolNet 3.0 were important milestones in this process. The passage from PolNet 1.0 to PolNet 2.0 (Vetulani &amp; Vetulani, <span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2014b</a></span>) was marked by inclusion of a set of verb–noun collocations from the syntactic dictionary of verb–noun collocations (Vetulani, <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2000</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2012</a></span>)<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0019" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>19</sup></a></span> or directly from corpora described in (Vetulani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2010</a></span>).<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0020" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>20</sup></a></span> Verb–noun collocations, typically composed of a noun (as predicate) and a predicatively empty support verb<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0021" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>21</sup></a></span> (Vetulani, <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2000</a></span>), play in the sentence the same role as simple predicative verbs in other cases, as for example, for <i>conduct an evaluation/evaluate</i> or <i>carry out an assessment/assess.</i> However, such a connection does not always exist, and some verb-nominal collocations do not have an equivalent in the given language system in the form of a single (synthetic) predicate-verb, as it is the case in Polish for <i>mieć nadzieję</i> (to hope) and <i>czynić dobro</i> (to do good). It is, therefore, all the more advisable that such dictionary data (i.e. the entire class of verbo-nominal collocations) should be acquired and entered into dictionaries and to PolNet. As the logical centre of the sentence, collocations assign certain properties to the sentence arguments (subject and complements) and establish relationships between the subject and its complements. Thus, the role of predicative collocations<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0022" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>22</sup></a></span> in the lexicon-grammar is equally as important as the role of simple predicative verbs, especially when for purposes of further processing,<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0023" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>23</sup></a></span> information carried by predicative elements appears useful. Being predicatively empty, the support verb in Polish still plays a significant auxiliary function in the interpretation of the predicates. This is due to its possible emotional and metaphorical aspects. A support verb may provide information on the language register, aspect (<i>perfective/imperfective</i>), action mood (<i>inchoative, terminative, progressive</i> etc.) or pragmatic/situational meaning (as <i>politeness</i> or <i>informality</i>). The ‘predicatively empty' support verb contributes to the sense of the collocation and to its disambiguation. Despite its non-predicative function in the sentence, the support verb plays an important role in the semantic analysis of the whole sentence. In fact, it is impossible to determine the meaning of a noun predicate without a detailed analysis of the accompanying (support) verb.</p>
+   <p>As for the role of the support verb in the description of noun predicates:</p>
+   <table class="listgroup" border="0" width="95%" list-type="simple">
+    <tbody>
+     <tr class="li1">
+      <td valign="top" class="list-td">–</td>
+      <td colspan="5" valign="top"><p>firsty, because the class of nouns is heterogeneous, particular problems arise when it is necessary to distinguish predicative words in this class. Supportive verbs play a fundamental role in distinguishing predicative nouns from among all nouns. The syntactic rule of necessity to use a predicate noun together with a verb devoid of its basic meaning, turns out to be helpful. Thus, one can see in a supporting verb the unifying factor for the entire class of predicative nouns, that is, both those predicates that have their equivalents belonging to other grammatical categories (such as, for example, in Polish <i>odnie<span class="monospace">ść</span> zwyci<span class="monospace">ę</span>stwo/zwyci<span class="monospace">ęż</span>y<span class="monospace">ć</span></i> (in English defete)) and those that in a given language system are considered autonomous, that is, they do not have a synthetic verb equivalent.</p></td>
+     </tr>
+     <tr class="li1">
+      <td valign="top" class="list-td">–</td>
+      <td colspan="5" valign="top"><p>secondly, the support verb, in many cases, helps to avoid the polysemy of the predicative form (here: the predicative noun) – which is important in terms of applications. In different linguistic realizations (applications) the same lexical forms display different semantic features: for example, in Polish many concrete nouns [CONCR] take the abstract character [ABSTR] in some use and become a predicate (then they coexist with an support /auxiliary/ verb) – compare, for example, the noun ‘telefon' as the name of a specific object and its abstract use with the expression ‘wykonał telefon' (meaning ‘made a call'). Further: it turns out that the noun, being semantically marked as [ABSTR], most often remains ambiguous, and hence there is a need for its further (more precise) description. Referring to a verb that coexists with a noun predicate in many cases allows to recognize the meaning of the predicate unequivocally. In other words, in order to eliminate the polysemy of the predicative form, it is enough to use it with the appropriate support verbs (corresponding to different senses). We call these forms, together with the corresponding support verbs, ‘verbo-nominal collocations'.</p></td>
+     </tr>
+     <tr class="li1">
+      <td valign="top" class="list-td">–</td>
+      <td colspan="5" valign="top"><p>thirdly, the support verb is an element that specifies the meaning of the entire verb – nominal phrase. These are cases in which the replacement of a verb component does not change the basic meaning of the predicate, but makes this meaning concrete. For example, <i>nałożyć/nakładać cenę [impose a price]; określić/określać cenę [set/define a price]; ustalić/ustalać cenę [set/fix a price], wyznaczyć/wyznaczać cenę [fix a price].</i> In all these cases, we are dealing with the same basic (deep) sense. Verbs that accompany the predicate ‘price' bring the so-called semantic ‘surplus' and their use depends on linguistic register (loose, official, etc.) or the type of discourse (specialist, scientific, etc.) or – in Polish (as in other Slavic languages) with a grammatical aspect (perfective/imperfective) (cf. Ewa Jędrzejko in: <i>Słownik polskich zwrotów werbo-nominalnych. Zeszyt próbny /Dictionary of Polish verbo-nominal phrases. Sample book;</i> in Polish/ (Jędrzejko, <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1998</a></span>:49)).</p></td>
+     </tr>
+    </tbody>
+   </table>
+   <p></p>
+   <p>Verbal-nominal collocations based on the same predicative form do not have to be semantically related and may differ significantly in terms of use. Compare two classes of collocations of different meanings, both based on the same predicative form, the first of which is related to interpersonal contacts and the second is related to reporting. The formal distinguishing feature that characterizes them is a set of support verbs as well as syntactic and semantic requirements that determine the function of individual collocations in a sentence.</p>
+   <div class="boxed-text">
+    <p>Class 1:</p>
+    <p><i>relacja</i> – interpersonal contacts</p>
+    <p>być w relacji/ być w(Ms)/N1(D);MOD/N2do(D), /* be in relationship with */</p>
+    <p>być w relacjach/ być w(Ms,lmn)/MOD/N1z(N), /* be in relations with */</p>
+    <p>nawiązać relację/ nawiązać(B)/N1z(N), /* establish a relationship with */</p>
+    <p>pozostawać w relacji/ pozostawać w(Ms)/N1(D;MOD/N2do(D), /* stay in relations with */</p>
+    <p>układać relacje/ układać(B,lmn)/MOD/N1z(N), /*arrange a relationship with */</p>
+    <p>ułożyć relacje/ ułożyć (B,lmn)/MOD/N1z(N), /* arrange a relationship with */</p>
+    <p>utrzymać relacje/ urzymać(B,lmn)/MOD/N1z(N), /* maintain a relationship with */</p>
+    <p>utrzymywać relacje/ utrzymywać(B,lmn)/N1z(N), /* maintain a relationship with */</p>
+    <p>wchodzić w relację/ wchodzić w(B)/N1z(N), /* interact with */</p>
+    <p>wejść w relację/ wejść w(B)/N1z(N), /*interact with */</p>
+    <p>zachować relacje/ zachować(B,lmn)/MOD/N1z(N), /* keep relationships */</p>
+    <p>zachowywać relacje/ zachowywać(B,lmn)/MOD/N1z(N), /* keep relationships */</p>
+    <p>Class 2: <i>relacja –</i> reporting</p>
+    <p>nadawać relację/ nadawać(B)/N1z(D), /* broadcast a report */</p>
+    <p>/prowadzić relację/ prowadzić(B)/N1z(D), /* to report on */</p>
+    <p>przedstawiać relację/ przedstawiać(B)/N1(C)/N2z(D), /* present a report */</p>
+    <p>przedstawić relację/ przedstawić(B)/N1(C)/N2z(D), /* present a report */</p>
+    <p>przekazać relację/ przekazać(B)/N1(C)/N2z(D), /* provide a report from */</p>
+    <p>przekazywać relację/ przekazywać(B)/N1(C)/N2z(D), /* provide a report from */</p>
+    <p>składać relację/ składać(B)/N1(C)/N2z(D), /* provide an account of */</p>
+    <p>zdać relację/ zdać(B)/N1(C);przed(N)/N2z(D), /* to report on */</p>
+    <p>zdawać relację/ zdawać(B)/N1(C);przed(N)/N2z(D), /* to report on */</p>
+    <p>złożyć relację/ złożyć(B)/N1(C)/N2z(D), /* to report on */</p>
+    <p>zrobić relację/ zrobić(B)/N1(C)/N2z(D), /* make a report on */</p>
+   </div>
+   <p>The study of predicative collocations is equally important for language technology as for the traditional domains of language teaching and translation. This is because of the conventional nature of collocations, whose structure and lexical selection are unpredictable. This is one more reason to have all the varieties of predicative collocations included in the lexicon-grammar with as complete a description as possible. Adding verb–noun collocations to PolNet appeared a non-trivial task because of specific morpho-syntactic phenomena related to collocations such as syntactic synonymy<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0024" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>24</sup></a></span> (Vetulani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2016</a></span>), as well as the problem of (optimal) granularity of verbal synsets. In Vetulani and Vetulani, (<span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2014b</a></span>), we observed that granularity is directly related to <i>synonymy which is the basis of the organization of the wordnet database in synsets,</i> (i.e. synonyms should belong to the same synset; see above). Our approach differs from that of Miller and Fellbaum (see in (Miller et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1990</a></span>) and (Vossen et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1998</a></span>)), who postulate a very weak understanding of this concept (based on <i>an invariability test with respect to just one linguistic context</i>), often leading to very large synsets.</p>
+   <p>Version 3.0 of PolNet was meticulously cleaned and extended<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0025" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>25</sup></a></span> with respect to the Version 2.0. It has been user-tested as a resource for modelling semantic similarity between words (Kubis, <span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2015</a></span>).</p>
+  </div>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i18" class="section-heading-2">4. Last but not least: human resources</h2>
+ <p>The possibility of gaining the status of a High-Resourced Language depends on the existence of a research community of experts qualified to create NLP resources and tools. For Polish, this difficult requirement was satisfied from the very beginning due to the existence of well-qualified computer science manpower and very competent descriptive linguists. This fact made possible the creation of crucial language resources independently in several research centres throughout the country.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0026" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>26</sup></a></span></p>
+ <p>The increase in the volume of R&amp;D work in Poland is correlated with the progress of Polish computational linguistics. The Language and Technology Conferences (LTC) organized in Poznań mobilized since 1995 over 1.360 authors from over 60 countries (see <a class="ext-link" href="http://www.ltc.amu.edu.pl" target="_blank">http://www.ltc.amu.edu.pl</a>). For 25 years, LTC was for Polish authors a natural forum to present research about Polish. More than 300 LTC contributors representing national and private institutions of fundamental research, R&amp;D groups and companies testify to the creation in Poland of a strong community of HLT developers. This means the promotion of Poland to the small number of countries with solid human capital in the area of Language Technologies who are well prepared to develop language technologies for their mother tongue.</p>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i19" class="section-heading-2">5. Application of lexicon-grammar approach to Indian languages: case studies of Hindi, Odia, and Bengali</h2>
+ <div id="S005-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i20">5.1. Current mid-term collaborative project</h3>
+  <p>The intention behind the present collaboration between UAM (Research Group on Computational Linguistics) and the GLA University (Institute of Applied Sciences and Humanities) is to propose a generic model for the elaboration of theoretical bases for Language Industries (presented in this paper) for Indo-Aryan Languages. This model, developed and tested for the Polish language, is described in this article.</p>
+  <p>The long-term perspective of this cooperation aims at meeting the different needs of those languages of the Indian subcontinent that do not have the sufficiently required language resources and tools and, as a result, are Less-Resourced Languages.</p>
+  <p>India has 22 constitutionally recognized scheduled languages<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0027" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>27</sup></a></span>, including Sanskrit and Hindi, whereas it has two official languages, that is, Hindi and English. Out of these 22scheduled languages, 15 are Indo-Aryan, 4 Dravidian, 2 Tibeto-Burman, and 1 Austroasiatic (Munda). It will be an excellent testing ground for validation of our approach on a big scale if we can apply it on some selected Indo-Aryan Languages. There are several reasons why this work should be considered an important contribution to the development of the still missing basic linguistic resources for several of these languages (middle-resourced languages, see Vetulani &amp; Vetulani, <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2020</a></span>). Some of these reasons are:</p>
+  <ol class="NLM_list NLM_list-list_type-order">
+   <li><p class="inline">Polish is an important language of the Indo-European language family which may be considered as a bridge between the major modern West-European languages (all Romance and Germanic languages) and most of languages of India because of its syntactic and semantic properties.</p></li>
+   <li><p class="inline">Over the last 25 years, the Polish language has advanced from the group of low-resourced languages to the group of technologically advanced languages with important language resources and tools.</p></li>
+   <li><p class="inline">The choice of a group of Indian languages to test the usability of the model presented here results from several premises:</p>
+    <ul class="NLM_list NLM_list-list_type-simple">
+     <li><p class="inline">- Existence of numerous similarities on the morphological, syntactic and semantic level between the Polish language and the Indo-Aryan languages; these similarities are often absent in the case of the English language, which makes it difficult to apply the methodological patterns tested for the English language; the same is true for other important West-European languages, such as French and German.</p></li>
+     <li><p class="inline">- Existence of a well-trained workforce of experts – both linguists and language engineers – of these languages,</p></li>
+    </ul><p></p></li>
+   <li><p class="inline">The support of the Government of India on the basis of its sensitivity to the social and economic benefits of the development of the Language Industries.</p></li>
+  </ol>
+  <p></p>
+ </div>
+ <div id="S005-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i21">5.2. Existing resources, tools and know-how for Hindi, Odia, and Bengali to reuse in current and forthcoming work</h3>
+  <p>The NLP activities on Indian languages began much later than similar works on the languages of the Western world. Due to generous support and continuous encouragement from the Government of India, in a short span of time, a number of universities and institutes developed resources and created tools for various activities, such as WordNets, Indian Language to Indian Language Machine Translation Systems, Parallel Corpora, Shallow Parser Tools, Tree Banks, and monolingual as well as parallel corpora in specified domains in the constitutionally recognized languages. Some of these are available on the following sites:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline">IndoWordNet: <a class="ext-link" href="https://www.cfilt.iitb.ac.in/indowordnet/" target="_blank">https://www.cfilt.iitb.ac.in/indowordnet/</a></p></li>
+   <li><p class="inline">Indian Language to Indian Language Machine Translation: <a class="ext-link" href="https://ltrc.iiit.ac.in/" target="_blank">https://ltrc.iiit.ac.in/</a></p></li>
+   <li><p class="inline">Indian Languages Corpora Initiative: <a class="ext-link" href="http://sanskrit.jnu.ac.in/index.jsp" target="_blank">http://sanskrit.jnu.ac.in/index.jsp</a></p></li>
+   <li><p class="inline">Shallow Parser Tools in Indian Languages: <a class="ext-link" href="http://calts.uohyd.ac.in/calts/tools.php" target="_blank">http://calts.uohyd.ac.in/calts/tools.php</a></p></li>
+  </ul>
+  <p></p>
+  <p>One can also find resources and tools on the following site of the Ministry of Electronics and Information Technology, Government of India: Technology Development for Indian Languages (TDIL): <a class="ext-link" href="https://tdil.meity.gov.in" target="_blank">https://tdil.meity.gov.in</a>. It must be noticed, however, that the impressive work that has been done so far does not cover all 22 local official languages, nor does it concern the majority of the country’s population. In any case, the obtained tools, resources, and acquired know-how can be used and further developed for more effective and efficient applications on the selected Less-Resourced Indian languages. Some important publications that deal with various aspects of these languages in the pan Indian context are: as follows: Gender-agreement in Oriya (Mohanty, <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1989</a></span>), Dravidian Substratum and Indo-Aryan Languages, International Journal of Dravidian Linguistics (Mohanty, <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2008</a></span>), WordNets for Indian Languages: Some Issues. (Mohanty, <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2010</a></span>), Oriya: A Confluence of Aryan, Dravidian and Munda (Mohanty, <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2011</a></span>), Brutti e mo poshe kuTumba: oDia: bha:sha:baigya:nika carca:ra nutana diganta (in Odia) (Mohanty, <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2016</a></span>), Issues in the Creation of Synsets in Odia WordNet (Mohanty, Malik, Bhol, et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p>
+ </div>
+ <div id="S005-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i22">5.3 Some specific properties of Hindi, Odia, and Bengali</h3>
+  <p>According to the Sanskrit grammatical tradition, the verb plays the most important role in a sentence. Besides the simple verbs that have only a root along with the inflections, conjunct and compound verbs<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0028" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>28</sup></a></span> are two important characteristic features of most Indian languages. The conjunct verbs have the N + V or Adj.+V structure, whereas the compound verbs consist of more than one verb. These compound verbs were almost absent in Sanskrit and are an innovation in the modern Indian languages (like Hindi, Odia and Bengali). The V<sub>1</sub> in a compound verb conveys the semantic content, whereas the following ones contribute to the grammatical aspects.</p>
+  <p>Let us take examples from Odia:</p>
+  <div class="quote">
+   <p>(1) rāma madhu-ku Tankā de-lā</p>
+   <p>Ram Madhu-to money gave</p>
+   <p><i>Ram gave money to Madhu</i>.</p>
+  </div>
+  <div class="quote">
+   <p>(2) rāma madhu-ku sikhyā de-lā</p>
+   <p>Ram Madhu-to teaching gave</p>
+   <p><i>Ram taught a lesson to Madhu</i>.</p>
+  </div>
+  <p></p>
+  <p>In sentence (1), the verb /de-lā/ ‘gave’ has two objects, that is, Madhu is the indirect object and /Tankā/ is the direct object. But in sentence (2), /sikhyā/ ‘teaching’ is not the direct object of the verb /delā/ ‘gave’; instead, the two-word expression /sikhyā delā/, as a whole, is a non-compositional verbal unit with ‘Madhu’ as its direct object. The fact that the same verb form /delā/ ‘gave’ behaves differently in (1) and (2) is clearly reflected in their meanings. A similar trend can be found in the use of compound verbs in most Indian languages.</p>
+  <p>Let us take examples from Odia again to show that traditional speech-to-text transcription can be ambiguous (and <i>ipso facto</i> causes text understanding problems if no context is provided).</p>
+  <p>In sentence (3), /soi/ and /gala/ are two different verbs which form a multi-verb construction.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0029" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>29</sup></a></span></p>
+  <div class="quote">
+   <p>(3) rāma dui ghaNTā soi galā</p>
+   <p>Ram two hour having slept went</p>
+  </div>Having slept for two hours, Ram went (Ram slept for two hours and went).
+  <p></p>
+  <p>In turn, in the following example (4), /soi-galā/ is a predicative two-word verbal unit composed of the verbs <i>V</i><sub>1</sub> and <i>V</i><sub>2</sub> (/so-i/ and /ga-la/ respectively), where <i>V</i><sub>1</sub> is the predicative <i>polar verb</i>, and it expresses the meaning ‘to sleep’, whereas the <i>V</i><sub>2</sub> /ga-la/ which is a semantically void <i>vector verb</i> plays the role of the support verb for <i>V</i><sub>1</sub>, that is, the act of sleeping. Although <i>V</i><sub>2</sub> is semantically empty, it determines the aspect of the whole predicative construction.</p>
+  <div class="quote">
+   <p>(4) rāma dui ghaNTā soi-galā</p>
+   <p>Ram two hour sleep-went</p>
+   <p><i>Ram slept for two hours</i>.</p>
+  </div>
+  <p></p>
+  <p>We should mention here that the replacement of the vector verb by another one may change the aspect of the whole construction. For example, another <i>V</i><sub>2</sub> vector verb /paDilā/ ‘fell down’ may assign the aspect of suddenness to <i>V</i><sub>1</sub> whereas the <i>V</i><sub>2</sub> vector verb /cālilā/ ‘walked’ may add the aspect of continuation. The examples (5) and (6) are illustrative:</p>
+  <div class="quote">
+   <p>(5) rāma dui ghaNTā soi-paDilā</p>
+   <p>Ram two hour sleep-fell down</p>
+   <p><i>Ram slept suddenly for two hours</i>.</p>
+  </div>and 
+  <div class="quote">
+   <p>(6) rāma dui ghaNTā soi-cālilā</p>
+   <p>Ram two hour sleep-walked</p>
+   <p><i>Ram continued sleeping for two hours.</i></p>
+  </div>
+  <p></p>
+ </div>
+ <div id="S005-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i23">5.4. Outline of the current work on application of lexicon-grammar approach to Indian languages</h3>
+  <p>The current work on the application of the lexicon-grammar approach to Indian Languages is still in its initial phase and focusses on the identification of crucial linguistic phenomena on the syntactic and semantic levels for Hindi, Odia and Bengali. However, already at this stage, we identify several similarities with respect to Slavic languages, in particular Polish.</p>
+  <p>The following two tasks are our priority now.</p>
+  <ol class="NLM_list NLM_list-list_type-order">
+   <li><p class="inline">An exhaustive analysis of the verb-based collocations (conjunct verbs) in the selected Indian languages like Hindi, Odia and Bengali is intended to give a clear description of what kind of nouns and adjectives can be combined with support verbs (vector verbs) to convey the intended meanings. This study will also address the synonymy necessary to correctly extend Indian wordnets to cover collocations.</p></li>
+   <li><p class="inline">Some compound verbs can take even four or five roots. A detailed analysis of the compound verbs in Hindi, Odia and Bengali will bring out the order in which different vectors and polar verbs are used in such multiword constructions and what grammatical functions the latter perform in various lexical environments.</p></li>
+  </ol>
+  <p></p>
+ </div>
+</div>
+<div id="S006" class="NLM_sec NLM_sec-type_conclusions NLM_sec_level_1">
+ <h2 id="_i24" class="section-heading-2">6. Conclusions</h2>
+ <p>In this paper, we presented some of our achievements in the field of Language Engineering for Polish over more than 30 years (cf. (Vetulani &amp; Vetulani, <span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>) and other references below), and we present the recently launched project to apply the methodology presented here to the selection of Less/Medium Resourced Indian languages.</p>
+ <p>These achievements, in parallel with those of the other Polish academic centres, mean that Polish is no longer considered as belonging to the class of Less-Resourced Languages as it was in the 1990s. Not being exhaustive, this presentation aims at showing the nature of the challenges to be faced when developing sophisticated systems for language processing for Less-Resourced Languages. It is fundamental to possess text (or/and speech where necessary) corpora to serve as an empirical basis for the computer modelling of language competence, and to create tools to build and process these corpora (such as lemmatizers, taggers, concordance creators, electronic dictionaries and lexicons, grammars, parsers and text (voice) generators, etc.). The acquisition of such an instrumentarium is a <i>conditio sine qua non</i> for leaving the group of Less-Resourced Languages, and thereby acquiring the necessary potential for creating advanced applications on an industrial scale. To start working to join the still small group of High-Resourced Languages, it is essential to dispose of initial manpower composed of researchers and engineers with a linguistic or/and IT background. In our case, this pre-condition was satisfied, although initially, only very few were experts in both domains. The need to acquire a solid empirical basis for computer processible resources and related tools for creating non-trivial systems with human language competence was obvious for us from the beginning, but, nevertheless, only work on real-size systems with language competence (such as POLINT-112-SMS) would appear to be a key milestone in the understanding of the scale of the problem. An important side-effect of this project was the creation of a strong multidisciplinary group of well-trained experts in language-related technologies capable of facing operational challenges. These practical works confirmed our understanding of the problems of the scarcity of tools, but first of all permitted us to identify our priorities on the way to enriching our instrumentarium. Among these priorities, there is a further development of the Polish lexicon-grammar integrated with the PolNet lexical basis.</p>
+ <p>Our developments were presented recently at the large impact conferences as WILDRE 5 workshop (affiliated with LREC 2020) and ICCCI (Viet-Nam, 2020). The intention behind these presentations was to encourage colleagues from India and other countries to take on the exciting challenge to push forwards the development of language resources for the Less- or Medium-Resourced but prominent Indo-Aryan languages.</p>
+</div>
+<div id="S007" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i25" class="section-heading-2">Annex – Selected Examples (by Panchanan Mohanty)<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0030" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>30</sup></a></span></h2>
+ <div id="S007-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i26">A.1 Difference between clause-initial and clause-final complementizer</h3>
+  <div id="S007-S2001-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i27">1.1. Hindi has only the clause-initial complementizer /ki/.</h4>
+   <p></p>
+   <div class="quote">
+    <p>rawi jāntā hai [ki rām ghar-par hai]</p>
+    <p>Ravi knows Comp. Ram home-Loc. be-3Sg.Prs.</p>
+    <p><i>Ravi knows that Ram is at home</i>.</p>
+   </div>
+   <p></p>
+  </div>
+  <div id="S007-S2001-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i28">1.2. Odia and Bengali have both the clause-initial complementizer /je/ and the clause-final complementizer /boli/ and /bole/ respectively.</h4>
+   <div id="S007-S2001-S3002-S4001" class="NLM_sec NLM_sec_level_4">
+    <h5 class="section-heading-5" id="_i29">1.2.1. <i>Odia</i></h5>
+    <div id="S007-S2001-S3002-S4001-S5001" class="NLM_sec NLM_sec_level_5">
+     <h6 class="section-heading-6" id="_i30">1.2.1.1. Clause-final</h6>
+     <p></p>
+     <div class="quote">
+      <p>[rāma ghar-e ach-i <b>boli]</b> rabi jāN-e</p>
+      <p>Ram home-Loc. be-3Prs. Comp. Rabi know-3Prs.</p>
+      <p><i>Rabi knows that Ram is at home</i>.</p>
+     </div>
+     <p></p>
+    </div>
+    <div id="S007-S2001-S3002-S4001-S5002" class="NLM_sec NLM_sec_level_5">
+     <h6 class="section-heading-6" id="_i31">1.2.1.2. Clause initial</h6>
+     <p></p>
+     <div class="quote">
+      <p>rabi jāN-e [je rāma ghar-e ach-i]</p>
+      <p>Rabi know-3Prs. Comp. Ram home-Loc. be-3Prs.</p>
+      <p><i>Rabi knows that Ram is at home</i>.</p>
+     </div>
+     <p></p>
+    </div>
+   </div>
+   <div id="S007-S2001-S3002-S4002" class="NLM_sec NLM_sec_level_4">
+    <h5 class="section-heading-5" id="_i32">1.2.2. Bengali</h5>
+    <div id="S007-S2001-S3002-S4002-S5001" class="NLM_sec NLM_sec_level_5">
+     <h6 class="section-heading-6" id="_i33">1.2.2.1. Clause final</h6>
+     <p></p>
+     <div class="quote">
+      <p>[rām bāRi-te āch-e bole] robi jān-e</p>
+      <p>Ram home-Loc. be-3Prs. Comp Rabi know-3Prs.</p>
+      <p><i>Rabi knows that Ram is at home</i>.</p>
+     </div>
+     <p></p>
+    </div>
+    <div id="S007-S2001-S3002-S4002-S5002" class="NLM_sec NLM_sec_level_5">
+     <h6 class="section-heading-6" id="_i34">1.2.2.2. Clause initial</h6>
+     <p></p>
+     <div class="quote">
+      <p>robi jān-e [je rām bāRi -te āch-e]</p>
+      <p>Rabi know-3Prs. Comp. Ram home-Loc. be-3Prs.</p>
+      <p><i>Rabi knows that Ram is at home</i>.</p>
+     </div>
+     <p></p>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+<div id="S008" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i35" class="section-heading-2">A.2 Agreement</h2>
+ <div id="S008-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i36">2.1. Verb and modifier</h3>
+  <p>In Hindi the verb and the modifier agree with the subject in terms of gender and number. However, if the subject is in the ergative case the finite verb agrees with the object.</p>
+  <p><i>Hindi</i>:</p>
+  <div id="S008-S2001-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i37">2.1.1.1</h4>
+   <p></p>
+   <div class="quote">
+    <p>rām Ghar jā-e-gā</p>
+    <p>Ram home go-Fut.3Sg.M.</p>
+    <p><i>Ram will go home</i>.</p>
+   </div>
+   <p></p>
+  </div>
+  <div id="S008-S2001-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i38">2.1.1.2</h4>
+   <div class="quote">
+    <p>sītā ghar jā-e-gī</p>
+    <p>Sita home go-Fut.3Sg.F.</p>
+    <p><i>Sita will go home</i>.</p>
+   </div>
+  </div>
+  <div id="S008-S2001-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i39">2.1.1.3</h4>
+   <p></p>
+   <div class="quote">
+    <p>rām-ne Cāwal khā-yā</p>
+    <p>Ram-Erg. rice-M. eat-Perf.3Sg..M.Sg.</p>
+    <p><i>Ram will eat rice</i>.</p>
+   </div>
+   <p></p>
+  </div>
+  <div id="S008-S2001-S3004" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i40">2.1.1.4</h4>
+   <p></p>
+   <div class="quote">
+    <p>rām-ne roṭī khā-ī</p>
+    <p>Ram-Erg. bread-F. eat-Perf.3Sg.F.Sg.</p>
+    <p><i>Ram ate bread</i>.</p>
+   </div>
+   <p></p>
+  </div>
+  <div id="S008-S2001-S3005" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i41">2.1.1.5</h4>
+   <p></p>
+   <div class="quote">
+    <p>sītā-ne cāwal khā-yā</p>
+    <p>Sita-Erg. rice-M eat-Perf.M.3Sg.</p>
+    <p><i>Sita ate rice</i>.</p>
+   </div>
+   <p></p>
+  </div>
+  <div id="S008-S2001-S3006" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i42">2.1.1.6</h4>
+   <p></p>
+   <div class="quote">
+    <p>sītā-ne roṭī khā-ī</p>
+    <p>Sita-Erg. bread-F. eat-Perf.F.3Sg.</p>
+    <p><i>Sita ate bread</i>.</p>
+   </div>
+   <p></p>
+  </div>
+ </div>
+ <div id="S008-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i43">2.2. Person and number</h3>
+  <p>Odia has person and number agreement between the animate subject and the finite verb, but not between the inanimate subject and the verb. However Bengali has only person agreement and no number agreement. Odia and Bengali do not have grammatical gender and, therefore, no gender agreement between the subject and the verb. But feminine nouns are derived from most masculine human nouns by adding the feminine gender suffixes whereas sex-indicating adjectives are used with the non-human nouns to indicate whether they are male or female.</p>
+  <div id="S008-S2002-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i44">2.2.1. Number agreement with animate subjects:</h4>
+   <p><i>Odia</i></p>
+   <div class="quote">
+    <p>se ga-lā</p>
+    <p>she/he/it go-Past.3Sg.</p>
+    <p><i>She/he/it went</i>.</p>
+    <p>se-māne ga-le</p>
+    <p>they go-Past.3Pl.</p>
+   </div>They went.
+   <p></p>
+  </div>
+  <div id="S008-S2002-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i45">2.2.2. No number agreement with inanimate subjects:</h4>
+   <p></p>
+   <div class="quote">
+    <p>go-Te kār ga-lā</p>
+    <p>one-Cl. car go-Past.3Sg.</p>
+   </div>One car went. 
+   <div class="quote">
+    <p>dui-Tā kār ga-lā</p>
+    <p>two-Cl. car go-Past.3Sg.</p>
+    <p><i>Two cars went</i>.</p>
+   </div>
+   <p></p>
+  </div>
+ </div>
+</div>
+<div id="S009" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i46" class="section-heading-2">A.3. Gender</h2>
+ <p>Non-human animate nouns in Odia and Bengali cannot take a gender marker unlike Hindi; instead a sex-indicating word is used.</p>
+ <p><i>Hindi</i>:</p>
+ <div class="quote">
+  <p>  billā (male cat), billī (female cat)</p>
+ </div>
+ <p></p>
+ <p><i>Odia</i>:</p>
+ <div class="quote">
+  <p>  aNDirā bilei (male cat), māi bilei (female cat).</p>
+ </div>
+ <p></p>
+ <p><i>Bengali</i>:</p>
+ <div class="quote">
+  <p>  hulo beRāl (male cat), meni beRāl (female cat)</p>
+ </div>
+ <p></p>
+</div>
+<div id="S010" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i47" class="section-heading-2">A.4. Singular and plural markers</h2>
+ <p>Unlike Hindi and Polish, Odia and Bengali nouns do not take the plural markers if they are preceded by a plurality indicating numeral or a quantifier.</p>
+ <div id="S010-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i48">4.1. Odia</h3>
+  <p></p>
+  <div class="quote">
+   <p>cari-jaNa <b>pilā</b> ās-i-th-il-e</p>
+   <p>four-Cl. <b>child</b> come-Perf-Aux-Past-3Pl.</p>
+   <p><i>Four children had come</i>.</p>
+  </div>
+  <p></p>
+ </div>
+ <div id="S010-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i49">4.2. Bengali</h3>
+  <p></p>
+  <div class="quote">
+   <p>car-jon <b>chele</b> esh-e-ch-il-o</p>
+   <p>four-Cl. <b>boy</b> come-Pref.-Aux-Past.</p>
+   <p><i>Four boys had come</i>.</p>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="S011" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i50" class="section-heading-2">A.5. Compound verbs</h2>
+ <p>Hindi, Odia, Bengali use compound verbs frequently and regularly while the compounds of the form verb + verb do not exist in Polish, except when the polar verb is an infinitive. On the other hand, compounds with the verb + verb (Inf.) structure are frequent in Polish.</p>
+ <p><i>Hindi</i>:</p>
+ <div class="quote">
+  <p>ritā so-ga-ī</p>
+  <p>Rita sleep-go-Perf-F-3Sg.</p>
+  <p><i>Rita slept</i>.</p>
+ </div>
+ <p></p>
+ <p><i>Odia</i>:</p>
+ <div class="quote">
+  <p>ritā soi-ga-l-ā</p>
+  <p>Rita sleep-go-Past-3Sg.</p>
+  <p><i>Rita slept</i>.</p>
+ </div>
+ <p></p>
+ <p><i>Polish</i>:</p>
+ <div class="quote">
+  <p>Ram poszedł spać  /subject + vector verb (finite) + polar verb (infinitive)/</p>
+  <p>Ram go-Past-3Sg (to) sleep Inf   /a one-word synonym for the predicative phrase <i>poszedł spa<span class="monospace">ć</span></i> does not exist in Polish/</p>
+  <p><i>Ram went to sleep.    /as in several Indian languages the vector verb may modify aspect/</i>.</p>
+  <p>But:</p>
+  <p>Ram śpi</p>
+  <p>Ram sleep-Pres-3Sg</p>
+  <p><i>Ram sleeps</i>.</p>
+ </div>
+ <p></p>
+</div>

@@ -1,0 +1,1396 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">Introduction</h2>
+ <p>Conversational implicature is the core topic of pragmatics, and it is also one of the difficult problems to be overcome in natural language processing. However, the research paths of conversational implicatures appear to be contradictory in pragmatics and computer science. Turney and Pantel (<span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2010</a></span>) have put forward a hypothesis as the cornerstone of natural language processing: “If units of text have similar vectors in a text frequency matrix, then they tend to have similar meanings.” According to this hypothesis, since conversational implicatures are a subset of meaning, similar implicatures should also be reflected by similar lexical frequency metrics; that is, implicatures can be distinguished only by lexical features. However, since conversational implicature is expressed implicitly which is meant without being part of what is said (Huang <span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2017</a></span>, 156), some linguists are more inclined to believe that a specific context is a necessary condition for understanding conversational implicatures; that is, the conversational implicatures cannot be obtained only according to the features of language forms. For example, Huang (<span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2014</a></span>, 32) claimed that “a conversational implicature is not part of what a sentence means.” From that viewpoint, it is impossible to deduce conversational implicatures only from literal information of text. Therefore, there is a superficial disagreement between computer science and pragmatics about whether conversational implicatures can be calculated only by vectors generated from lexical features. To judge which view is more reasonable and explore the reasons for the divergence between them carefully, it is necessary to verify whether conversational implicatures can be obtained only through lexical features empirically.</p>
+ <p>Since computer scholars believe that the similarity of meaning can be judged only by the similarity of frequencies, it seems that some clues can be obtained without contextual information when judging the conversational implicatures. However, a wide range of philosophers including relevance theorists, some neo-Wittgensteinians, and some Sellarsians claimed that every single expression is context sensitive, or “if the only context sensitivity you take into account is that due to the expressions in the basic set, you won’t get a proposition or anything truth evaluable” (Cappelen and Lepore <span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2005</a></span>, 7–8). They considered all meaning is determined by context. Similarly, Clark (<span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2013</a></span>, 15) also believed that the inference of the hearer to the implicature will not use “linguistic meanings of the words,” which is inconsistent with the view of computer scholars. Therefore, even we prove that the conversational implicature is computable, it is also necessary to study whether the computer needs to rely on the context to infer the implicature. If the computer obtains some clues about the implicature without the context information, it can at least show that “all meaning is determined by context” is not completely perfect, which can assist to verify the views “against radical contextualism” held by scholars such as Lassiter (<span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2021</a></span>).</p>
+ <p>At present, the research on conversational implicature itself mainly focuses on presupposition, pragmatic function, etc. The research approaches mainly include theoretical analysis and statistical and corpus methods. Sbisà (<span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2021</a></span>) examined the explicitation practice of implicit meaning through theoretical analysis, and gave a method to distinguish implicature and presupposition. Based on corpus coding, Garassino, Brocca, and Masia (<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2022</a></span>) analyzed some implicit strategies of political communication in a corpus of British and Italian tweets by calculating Kappa and AC1 value (Hoek and Scholman <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2017</a></span>). More scholars are willing to pay attention to the cognitive process of implicature. Li et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2018</a></span>) proposed a Bayesian belief network model of indirect speech act theory based on idealized cognitive model and probabilistic pragmatics (Frank and Goodman <span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2012</a></span>; Goodman and Frank <span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2016</a></span>), and the cognitive process of particularized conversational implicature is explained from a computational perspective. Kecskes (<span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2021</a></span>) explained “simplicature” from the perspective of social cognition and proposed a model to explain the relationship and interplay between factors that affect implicature processing. Feng, Yu, and Zhou (<span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2021</a></span>) adopted functional MRI (fMRI) and transcranial direct current stimulation (tDCS) discovering particularized implicature and generalized implicature comprehension shared the multivariate fMRI patterns of language processing, of which particularized implicature could elicit theory-of-mind-related pattern. Wylie et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2022</a></span>) provided the conditions for children to produce implicature and depicted its underlying social-cognitive mechanisms. Based on relevant literature, the current research on conversational implicature is almost all along the path of pragmatics, that is, understanding conversational implicature in a specific context, but ignoring the information about whether conversational implicature can be obtained only through lexical features. If lexical features can indeed provide clues for conversational implicatures, it proves the feasibility of pragmatic computing to a certain extent, which provides a new way for natural language processing.</p>
+ <p>In order to investigate whether the similarity of lexical features can represent the similarity of conversational implicatures to a certain extent and determine the degree of context dependence when classifying implicatures, three main research questions are proposed here: (1) Can the text classification of conversational implicatures be performed based only on lexical features? How is its accuracy? (2) What features are needed to classify conversational implicatures based on lexical factors? (3) Will the results of this text classification be different because of the context utterance or the type of implicature? To solve the above problems, we first use meta-transformer of logistic regression for selecting features based on importance weights to select the Optimal Feature Set for text classification, and then use the binomial logistic regression model to classify the conversational implicatures to obtain the classification results. Finally, the classification results are statistically tested to draw conclusions.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">Materials and Methods</h2>
+ <p>Here, we first introduce the used corpus sources and related concepts, and then the logistic regression and its classifier will be analyzed briefly.</p>
+ <div id="s0002-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i4">Corpus Source</h3>
+  <p>The corpus required for the experiments is selected from the annotated dataset of conversational implicatures in English dialogue constructed by George and Mamidi (<span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2020</a></span>), from which 600 items with the particularized implicature as yes (N = 300) and no (N = 300) are selected, including context utterance, response utterance, and implicature. Here are two examples:</p>
+  <div class="quote">
+   <p>Example 1:</p>
+  </div>
+  <div class="quote">
+   <p>Context utterance: Are you going for the party?</p>
+  </div>
+  <div class="quote">
+   <p>Response utterance: <i>Is the pope Catholic</i>?</p>
+  </div>
+  <p></p>
+  <p>The listener asks the speaker if he or she is going to a party, and the speaker asks back if the Pope is Catholic. According to common sense and encyclopedic knowledge, the fact that the Pope is Catholic is beyond doubt, and the answer is “yes.” Meanwhile, the words of interlocutors should be related according to Cooperative Principles. Therefore, the hearer deduces that the speaker means that he or she is going to a party, so here the implicature can be labeled as “yes.”</p>
+  <div class="quote">
+   <p>Example 2:</p>
+  </div>
+  <div class="quote">
+   <p>Context utterance: Did you go to the movies last night?</p>
+   <p>Response utterance: <i>I had to study last night</i>.</p>
+  </div>
+  <p></p>
+  <p>The listener asked the speaker if he or she went to the movies last night, and the speaker replied that he or she had to study last night. According to common sense, if he or she was studying last night, he or she would have to take up the time that he or she should go to the movies, so the speaker’s implicature is that he or she didn’t go to the movies last night, and the implicature can be labeled as “no.”</p>
+  <p>In the experiments, the particularized implicature is regarded as the label of classification, and each context utterance and response utterance are merged and extracted to form a document (the total number of documents is 600), which is used for classification. In addition, information containing only response utterance is extracted as text to judge the relationship between the features of language forms and particularized implicature under non-contextual conditions, which is used to discover the strength of context utterance’s role in text classification.</p>
+ </div>
+ <div id="s0002-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">Binomial Logistic Regression Model</h3>
+  <p>The classifier used here for the text classification of conversational implicatures is a binomial logistic regression model, which is represented by a conditional probability distribution <i>P</i>(<i>Y</i>|<i>X</i>) in the form of a parameterized logistic distribution (Li <span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2022</a></span>, 78–79).</p>
+  <p>Suppose the weight vector is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      w
+     </mi><mo>
+      =
+     </mo><mrow>
+      <msup>
+       <mfenced open="(" close=")">
+        <mrow>
+         <mrow>
+          <msup>
+           <mi>
+            w
+           </mi>
+           <mrow>
+            <mfenced open="(" close=")">
+             <mn>
+              1
+             </mn>
+            </mfenced>
+           </mrow>
+          </msup>
+         </mrow>
+         <mo>
+          ,
+         </mo>
+         <mrow>
+          <msup>
+           <mi>
+            w
+           </mi>
+           <mrow>
+            <mfenced open="(" close=")">
+             <mn>
+              2
+             </mn>
+            </mfenced>
+           </mrow>
+          </msup>
+         </mrow>
+         <mo>
+          ,
+         </mo>
+         <mo>
+          …
+         </mo>
+         <mo>
+          ,
+         </mo>
+         <mrow>
+          <msup>
+           <mi>
+            w
+           </mi>
+           <mrow>
+            <mfenced open="(" close=")">
+             <mi>
+              n
+             </mi>
+            </mfenced>
+           </mrow>
+          </msup>
+         </mrow>
+         <mo>
+          ,
+         </mo>
+         <mi>
+          b
+         </mi>
+        </mrow>
+       </mfenced>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          T
+         </mi>
+        </mrow>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span>, and the input vector is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      x
+     </mi><mo>
+      =
+     </mo><mrow>
+      <msup>
+       <mfenced open="(" close=")">
+        <mrow>
+         <mrow>
+          <msup>
+           <mi>
+            x
+           </mi>
+           <mrow>
+            <mfenced open="(" close=")">
+             <mn>
+              1
+             </mn>
+            </mfenced>
+           </mrow>
+          </msup>
+         </mrow>
+         <mo>
+          ,
+         </mo>
+         <mrow>
+          <msup>
+           <mi>
+            x
+           </mi>
+           <mrow>
+            <mfenced open="(" close=")">
+             <mn>
+              2
+             </mn>
+            </mfenced>
+           </mrow>
+          </msup>
+         </mrow>
+         <mo>
+          ,
+         </mo>
+         <mo>
+          …
+         </mo>
+         <mo>
+          ,
+         </mo>
+         <mrow>
+          <msup>
+           <mi>
+            x
+           </mi>
+           <mrow>
+            <mfenced open="(" close=")">
+             <mi>
+              n
+             </mi>
+            </mfenced>
+           </mrow>
+          </msup>
+         </mrow>
+         <mo>
+          ,
+         </mo>
+         <mn>
+          1
+         </mn>
+        </mrow>
+       </mfenced>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          T
+         </mi>
+        </mrow>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span>, then the binomial logistic regression model is as follows:<disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_m0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       P
+      </mi><mfenced open="(" close=")">
+       <mrow>
+        <mi>
+         Y
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mi>
+         y
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         s
+        </mi>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mo>
+            |
+           </mo>
+          </mrow>
+         </mrow>
+        </mrow>
+        <mi>
+         x
+        </mi>
+       </mrow>
+      </mfenced><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            e
+           </mi>
+           <mi mathvariant="normal">
+            x
+           </mi>
+           <mi mathvariant="normal">
+            p
+           </mi>
+          </mrow>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mover>
+            <mi>
+             w
+            </mi>
+            <mo stretchy="false">
+             ˆ
+            </mo>
+           </mover>
+           <mo>
+            ⋅
+           </mo>
+           <mi>
+            x
+           </mi>
+          </mrow>
+         </mfenced>
+        </mrow>
+        <mrow>
+         <mn>
+          1
+         </mn>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            e
+           </mi>
+           <mi mathvariant="normal">
+            x
+           </mi>
+           <mi mathvariant="normal">
+            p
+           </mi>
+          </mrow>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mover>
+            <mi>
+             w
+            </mi>
+            <mo stretchy="false">
+             ˆ
+            </mo>
+           </mover>
+           <mo>
+            ⋅
+           </mo>
+           <mi>
+            x
+           </mi>
+          </mrow>
+         </mfenced>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+   </disp-formula-group><disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_m0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       P
+      </mi><mfenced open="(" close=")">
+       <mrow>
+        <mi>
+         Y
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mi>
+         n
+        </mi>
+        <mi>
+         o
+        </mi>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mo>
+            |
+           </mo>
+          </mrow>
+         </mrow>
+        </mrow>
+        <mi>
+         x
+        </mi>
+       </mrow>
+      </mfenced><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mn>
+         1
+        </mn>
+        <mrow>
+         <mn>
+          1
+         </mn>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            e
+           </mi>
+           <mi mathvariant="normal">
+            x
+           </mi>
+           <mi mathvariant="normal">
+            p
+           </mi>
+          </mrow>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mover>
+            <mi>
+             w
+            </mi>
+            <mo stretchy="false">
+             ˆ
+            </mo>
+           </mover>
+           <mo>
+            ⋅
+           </mo>
+           <mi>
+            x
+           </mi>
+          </mrow>
+         </mfenced>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>The parameters here are estimated by maximum likelihood estimation, let <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      P
+     </mi><mfenced open="(" close=")">
+      <mrow>
+       <mi>
+        Y
+       </mi>
+       <mo>
+        =
+       </mo>
+       <mi>
+        y
+       </mi>
+       <mi>
+        e
+       </mi>
+       <mi>
+        s
+       </mi>
+       <mrow>
+        <mrow>
+         <mrow>
+          <mo>
+           |
+          </mo>
+         </mrow>
+        </mrow>
+       </mrow>
+       <mi>
+        x
+       </mi>
+      </mrow>
+     </mfenced><mo>
+      =
+     </mo><mi>
+      π
+     </mi><mfenced open="(" close=")">
+      <mi>
+       x
+      </mi>
+     </mfenced>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      P
+     </mi><mfenced open="(" close=")">
+      <mrow>
+       <mi>
+        Y
+       </mi>
+       <mo>
+        =
+       </mo>
+       <mi>
+        n
+       </mi>
+       <mi>
+        o
+       </mi>
+       <mrow>
+        <mrow>
+         <mrow>
+          <mo>
+           |
+          </mo>
+         </mrow>
+        </mrow>
+       </mrow>
+       <mi>
+        x
+       </mi>
+      </mrow>
+     </mfenced><mo>
+      =
+     </mo><mn>
+      1
+     </mn><mo>
+      −
+     </mo><mi>
+      π
+     </mi><mfenced open="(" close=")">
+      <mi>
+       x
+      </mi>
+     </mfenced>
+    </math></span>, then the log-likelihood function is<disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_um0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_um0001.gif&quot;}"><span class="mml-formula"></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       L
+      </mi><mfenced open="(" close=")">
+       <mi>
+        w
+       </mi>
+      </mfenced><mo>
+       =
+      </mo><munderover>
+       <mrow>
+        <mo>
+         ∑
+        </mo>
+       </mrow>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+       <mi>
+        N
+       </mi>
+      </munderover><mfenced open="[" close="]">
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           y
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msub>
+        </mrow>
+        <mo form="prefix">
+         log
+        </mo>
+        <mi>
+         π
+        </mi>
+        <mfenced open="(" close=")">
+         <mrow>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             i
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+        </mfenced>
+        <mo>
+         +
+        </mo>
+        <mfenced open="(" close=")">
+         <mrow>
+          <mn>
+           1
+          </mn>
+          <mo>
+           −
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             y
+            </mi>
+            <mi>
+             i
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+        </mfenced>
+        <mo form="prefix">
+         log
+        </mo>
+        <mfenced open="(" close=")">
+         <mrow>
+          <mn>
+           1
+          </mn>
+          <mo>
+           −
+          </mo>
+          <mi>
+           π
+          </mi>
+          <mfenced open="(" close=")">
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               x
+              </mi>
+              <mi>
+               i
+              </mi>
+             </msub>
+            </mrow>
+           </mrow>
+          </mfenced>
+         </mrow>
+        </mfenced>
+       </mrow>
+      </mfenced>
+     </math></span>
+   </disp-formula-group><disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_um0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_um0002.gif&quot;}"><span class="mml-formula"></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mo>
+       =
+      </mo><munderover>
+       <mrow>
+        <mo>
+         ∑
+        </mo>
+       </mrow>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+       <mi>
+        N
+       </mi>
+      </munderover><mfenced open="[" close="]">
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           y
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msub>
+        </mrow>
+        <mo form="prefix">
+         log
+        </mo>
+        <mrow>
+         <mfrac>
+          <mrow>
+           <mi>
+            π
+           </mi>
+           <mfenced open="(" close=")">
+            <mrow>
+             <mrow>
+              <msub>
+               <mi>
+                x
+               </mi>
+               <mi>
+                i
+               </mi>
+              </msub>
+             </mrow>
+            </mrow>
+           </mfenced>
+          </mrow>
+          <mrow>
+           <mn>
+            1
+           </mn>
+           <mo>
+            −
+           </mo>
+           <mi>
+            π
+           </mi>
+           <mfenced open="(" close=")">
+            <mrow>
+             <mrow>
+              <msub>
+               <mi>
+                x
+               </mi>
+               <mi>
+                i
+               </mi>
+              </msub>
+             </mrow>
+            </mrow>
+           </mfenced>
+          </mrow>
+         </mfrac>
+        </mrow>
+        <mo>
+         +
+        </mo>
+        <mo form="prefix">
+         log
+        </mo>
+        <mfenced open="(" close=")">
+         <mrow>
+          <mn>
+           1
+          </mn>
+          <mo>
+           −
+          </mo>
+          <mi>
+           π
+          </mi>
+          <mfenced open="(" close=")">
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               x
+              </mi>
+              <mi>
+               i
+              </mi>
+             </msub>
+            </mrow>
+           </mrow>
+          </mfenced>
+         </mrow>
+        </mfenced>
+       </mrow>
+      </mfenced>
+     </math></span>
+   </disp-formula-group><disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_um0003.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_um0003.gif&quot;}"><span class="mml-formula"></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mo>
+       =
+      </mo><munderover>
+       <mrow>
+        <mo>
+         ∑
+        </mo>
+       </mrow>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+       <mi>
+        N
+       </mi>
+      </munderover><mfenced open="[" close="]">
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           y
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msub>
+        </mrow>
+        <mfenced open="(" close=")">
+         <mrow>
+          <mi>
+           w
+          </mi>
+          <mo>
+           ⋅
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             i
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+        </mfenced>
+        <mo>
+         −
+        </mo>
+        <mo form="prefix">
+         log
+        </mo>
+        <mfenced open="(" close=")">
+         <mrow>
+          <mn>
+           1
+          </mn>
+          <mo>
+           −
+          </mo>
+          <mi>
+           e
+          </mi>
+          <mi>
+           x
+          </mi>
+          <mi>
+           p
+          </mi>
+          <mfenced open="(" close=")">
+           <mrow>
+            <mi>
+             w
+            </mi>
+            <mo>
+             ⋅
+            </mo>
+            <mrow>
+             <msub>
+              <mi>
+               x
+              </mi>
+              <mi>
+               i
+              </mi>
+             </msub>
+            </mrow>
+           </mrow>
+          </mfenced>
+         </mrow>
+        </mfenced>
+       </mrow>
+      </mfenced>
+     </math></span>
+   </disp-formula-group></p>
+  <p>Maximize <i>L</i>(<i>w</i>) to get an estimate of <i>w</i>. Substituting the obtained estimates <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mover>
+      <mi>
+       w
+      </mi>
+      <mo stretchy="false">
+       ˆ
+      </mo>
+     </mover>
+    </math></span> into formulas (1) and (2), the logistic regression model for the classification of implicatures is obtained.</p>
+ </div>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i11" class="section-heading-2">Experiments and Results</h2>
+ <p>Here the experimental processes are introduced in general, and then the details and results of each experiment are described one by one.</p>
+ <div id="s0003-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">Experiment Procedure</h3>
+  <p>The experiment is mainly divided into four steps: data calculation, feature sorting and selection, automatic text classification, and significance test of classification results.</p>
+  <p>First, data calculation. Calculate the corresponding data of lexical features according to the indicators. The main lexical indicators include: (1) Descriptive statistics: such as the mean and standard deviation of number of syllables, and the mean and standard deviation of number of letters. (2) Lexical diversity: such as type-token ratio of content word lemmas and all words, MTLD and VOCD (McCarthy and Jarvis <span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2010</a></span>). (3) Other vocabulary information: such as average word frequency for content words and all words; average minimum word frequency in sentences; familiarity, concreteness, imageability, and polysemy for content words; hypernymy for nouns and verbs, etc. The entire calculation process is automatically completed using Coh-Metrix Web Tool (Graesser et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2004</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2014</a></span>; Graesser, McNamara, and Kulikowich <span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2011</a></span>).</p>
+  <p>Second, feature sorting and selection. The meta-transformer of logistic regression for selecting features based on importance weights is used to calculate the coefficients, and then the coefficients are sorted from large to small in absolute value to determine the importance of features. After sorting, forward selection is used to continuously add new features from the empty set, and then select the feature combination with the highest accuracy as the feature set for text classification.</p>
+  <p>Third, automatic text classification. After the features are determined, the logistic regression algorithm is used for text classification (Zhou <span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2021</a></span>, 62–65). Four-fold cross-validation is used for classification. Each time, 75% of the corpus (N<sub>yes_train</sub> = 225, N<sub>no_train</sub> = 225) is selected as the training set, and the remaining 25% of the corpus (N<sub>test</sub> = N<sub>yes_test</sub> + N<sub>no_test</sub> = 150) is used as the test set. Because the order of the corpus is shuffled using a random number generator to ensure that different types of corpus are not adjacent to each other, the test sets in each fold cross-validation are directly selected in order, that is, corresponding to “1-75,” “76-150,” “151-225,” and “226-300” respectively. The training set is the data other than the test set.</p>
+  <p>Fourth, the significance test of the classification results. After obtaining the results of text classification, it is necessary to judge the statistical dependence between lexical features and conversational implicatures by performing goodness-of-fit test with equal expected frequency, and then determine whether the text classification of conversational implicatures can be performed only by lexical features. In addition, to determine whether the inclusion of “context utterance” and different types of conversational implicatures will affect the text classification results, it is necessary to use Independent-Samples <i>T</i>-Test, Paired-Samples <i>T</i>-Test and Contingency Analysis to determine the difference relationship between variables.</p>
+ </div>
+ <div id="s0003-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i13">The Text Classification of Conversational Implicatures with Context Utterance</h3>
+  <p>The first experiment conducts text classification based on both context utterance and response utterance. Its main goal is to find a feature set composed of lexical features that is suitable for text classification with implicatures as a label, and then perform text classification on this basis to obtain classification results.</p>
+  <p>After feature sorting and selection, the Optimal Feature Set <i>F</i><sub><i>1</i></sub> for text classification based on both context utterance and response utterance is found. This feature set contains 17 features in total. According to the interpretation in Coh-Metrix and the coefficients obtained in feature selection, the Optimal Feature Set <i>F</i><sub><i>1</i></sub> is summarized as shown in <button class="ref showTableEventRef" data-id="t0001">Table 1</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Text Classification of Conversational Implicatures Based on Lexical Features</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Xianbo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Xianbo"><span class="NLM_given-names">Xianbo</span> Li</a> <a href="https://orcid.org/0000-0002-2949-2753"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2127598">https://doi.org/10.1080/08839514.2022.2127598</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Features and their coefficients in the Optimal Feature Set <i>F</i><sub><i>1</i></sub>.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F08839514.2022.2127598&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>It can be found from <button class="ref showTableEventRef" data-id="t0001">Table 1</button> that when the text used for classification includes both context utterance and response utterance, the required features are not only large in number (17), but also rich in variety, including descriptive statistics, lexical diversity, and those related values used to represent word information. The features haven’t included in <i>F</i><sub><i>1</i></sub> include the mean of concreteness for content words and the mean of age of acquisition for content words. Although these two features have a large variance, their contribution to the discriminant category is not enough. The variance of the value of lexical diversity of all words from VOCD is 0, which cannot be used as a decision feature for text classification obviously.</p>
+  <p>Next, data analysis is performed on the results of text classification. The experiment records the classification results of each cross-validation. First, the basic classifier evaluation measures are shown here, including the number of true positive (TP) and true negative (TN). Based on this basis, the true positive rate (sensitivity), true negative rate (specificity), and recognition rate (accuracy) are reported. Next, the Independent-Samples <i>T</i>-Test is also performed on the texts labeled “yes” and “no” to examine whether the accuracy rates of different categories are significantly different to judge whether the reliability of the classification is related to the type of implicature. Finally, a goodness-of-fit test with equal expected frequency is performed on the accuracy, and then it is determined whether the logistic regression based on the Optimal Feature Set <i>F</i><sub><i>1</i></sub> is an effective method for the classification of implicatures to verify whether automatic classification of conversational implicatures can be performed based on lexical features. The experimental results are shown in <button class="ref showTableEventRef" data-id="t0002">Table 2</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Text Classification of Conversational Implicatures Based on Lexical Features</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Xianbo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Xianbo"><span class="NLM_given-names">Xianbo</span> Li</a> <a href="https://orcid.org/0000-0002-2949-2753"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2127598">https://doi.org/10.1080/08839514.2022.2127598</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Results of the performance measures, <i>T</i>-test and Goodness-of-fit test for the text classification of conversational implicatures with context utterance.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="false" id="t0002-table-wrapper">
+    <a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>According to <button class="ref showTableEventRef" data-id="t0002">Table 2</button>, the accuracy of each fold cross-validation is concentrated around 60%, and the overall accuracy is 59%. This accuracy cannot fully explain that the feature set <i>F</i><sub><i>1</i></sub> can be used as the basis for the text classification of conversational implicatures, because random factors may also cause the accuracy to be higher than the general value. According to the <i>p</i>-value in the goodness-of-fit test, two of the four tests are significant (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      0.001
+     </mn>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mn>
+        3
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      0.014
+     </mn>
+    </math></span>), one is marginally significant (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      0.050
+     </mn>
+    </math></span>), and one is not significant (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mn>
+        4
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      0.327
+     </mn>
+    </math></span>). This shows that under the current sample size corpus, it can basically be determined that the feature set <i>F</i><sub><i>1</i></sub> is the influencing factor of implicature. From the overall result of goodness-of-fit test, the significance is obvious (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        χ
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msup>
+     </mrow><mo>
+      =
+     </mo><mn>
+      19.440
+     </mn>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      p
+     </mi><mo>
+      =
+     </mo><mn>
+      0.000
+     </mn>
+    </math></span>). The results of this test are not surprising, because as the sample size increases, when the accuracy is fixed at 59%, the interference of random factors will become smaller and smaller. Therefore, the Optimal Feature Set <i>F</i><sub><i>1</i></sub> can be used as the basis for the text classification of conversational implicatures.</p>
+  <p>Next, consider whether the above classification is balanced in the positive and negative categories. According to the sensitivity and specificity in each fold of cross-validation, there is no obvious rule for the accuracy of positive and negative classes. Overall, the value of sensitivity (59.3%) and specificity (58.7%) are not much different, and after Independent-Samples <i>T</i>-Test, whether it is cross-validation for each fold or the whole, the significance of all tests is greater than 0.05. That is, when text classification is performed based on context utterance and response utterance at the same time, the classification accuracy has nothing to do with the type of implicature. This shows that with context utterance, the text classification of conversational implicatures is balanced in positive and negative categories.</p>
+ </div>
+ <div id="s0003-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">The Text Classification of Conversational Implicatures Without Context Utterance</h3>
+  <p>The previous experiments show that lexical features can significantly contribute to the text classification of conversational implicatures when context utterance is included. However, since the text used in that experiment includes both context utterance and response utterance, it is difficult to determine that the contributor to the correct classification is the response utterance spoken by the speaker; that is, the true source of the successful classification is uncertain. To determine the contribution of response utterance to text classification, all context utterances in the corpus can be eliminated, and the text classification can be performed again. Then, by observing whether there is any change in the experimental results, it can be judged to what extent the influence on the text classification of conversational implicatures comes from “response utterance.” Like the previous experiment, the main goal of this experiment is to find a feature set composed of lexical features that is suitable for text classification with implicatures as labels. Based on this, the text classification is carried out, and the classification results are obtained in the similar way.</p>
+  <p>After feature sorting and selection, this paper finds the Optimal Feature Set <i>F</i><sub><i>2</i></sub> for text classification only based on response utterance, which contains five features in total. According to the interpretation in Coh-Metrix and the coefficients obtained in feature selection, the Optimal Feature Set <i>F</i><sub><i>2</i></sub> is summarized as shown in <button class="ref showTableEventRef" data-id="t0003">Table 3</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Text Classification of Conversational Implicatures Based on Lexical Features</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Xianbo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Xianbo"><span class="NLM_given-names">Xianbo</span> Li</a> <a href="https://orcid.org/0000-0002-2949-2753"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2127598">https://doi.org/10.1080/08839514.2022.2127598</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Features and their coefficients in the Optimal Feature Set <i>F</i><sub><i>2</i></sub>.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F08839514.2022.2127598&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>From <button class="ref showTableEventRef" data-id="t0003">Table 3</button>, when the text used for classification only contains response utterance, the required number of features is only 5, and the types are more single, including only three descriptive statistics and two related values used to represent word information. It can be found that when the text classification of conversational implicatures is performed only according to the response utterance, the statistics of the number of letters and syllables and the frequency for content words may be able to be used as effective features for classification. However, the specific effectiveness needs to be judged according to the experimental results.</p>
+  <p>Next, data analysis is performed on the results of text classification. Like the first experiment, the basic classifier evaluation measures are shown here, and then Independent-Samples <i>T</i>-Test is performed on the text labeled “yes” and “no” to check whether the accuracy of different categories is significantly different to judge whether the reliability of the classification is related to the type of implicature. Finally, a goodness-of-fit test with equal expected frequency is performed on the accuracy, and then it is determined whether the logistic regression based on the Optimal Feature Set <i>F</i><sub><i>2</i></sub> is an effective method for the classification of implicatures to verify whether automatic classification of conversational implicatures can be performed based on lexical features. The experimental results are shown in <button class="ref showTableEventRef" data-id="t0004">Table 4</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Text Classification of Conversational Implicatures Based on Lexical Features</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Xianbo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Xianbo"><span class="NLM_given-names">Xianbo</span> Li</a> <a href="https://orcid.org/0000-0002-2949-2753"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2127598">https://doi.org/10.1080/08839514.2022.2127598</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 4. </span> Results of the performance measures, <i>T</i>-test and Goodness-of-fit test for the text classification of conversational implicatures without context utterance.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="false" id="t0004-table-wrapper">
+    <a data-id="t0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>According to <button class="ref showTableEventRef" data-id="t0004">Table 4</button>, the accuracy of each fold cross-validation is concentrated around 60%, and the overall accuracy is 60.7%. This accuracy cannot fully explain that the feature set <i>F</i><sub><i>2</i></sub> can be used as the basis for the text classification of conversational implicatures, because random factors may also cause the accuracy to be higher than the general value. According to the <i>p</i>-value in the goodness-of-fit test, two of the four tests are very significant (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      0.000
+     </mn>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mn>
+        4
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      0.006
+     </mn>
+    </math></span>), and twice are marginally significant (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0016.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      0.072
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <mrow>
+       <mi>
+         
+       </mi>
+      </mrow>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mn>
+        3
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      0.050
+     </mn>
+    </math></span>). This shows that under the current sample size corpus, it can basically be determined that the feature set <i>F</i><sub><i>2</i></sub> is the influencing factor of implicature. From the overall results of goodness-of-fit test, the significance is still obvious (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0017.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi>
+          χ
+         </mi>
+        </mrow>
+       </mrow>
+       <mn>
+        2
+       </mn>
+      </msup>
+     </mrow><mo>
+      =
+     </mo><mn>
+      27.307
+     </mn>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0018.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      p
+     </mi><mo>
+      =
+     </mo><mn>
+      0.000
+     </mn>
+    </math></span>). According to the above results, it can be determined that only based on the response utterance, the Optimal Feature Set <i>F</i><sub><i>2</i></sub> can be used as the basis for the text classification of conversational implicatures.</p>
+  <p>Likewise, consider whether the above classification is balanced in the positive and negative categories. According to the sensitivity and specificity in the cross-validation of each fold, the accuracy of the positive class is lower than that of the negative class in most cases, but fold 4 is an exception. Overall, the value of sensitivity (57.7%) is lower than that of specificity (63.7%). However, after Independent-Samples <i>T</i>-Test, the significance of most cross-validation and overall <i>T</i>-test is greater than 0.05. It shows that when text classification is performed only based on response utterance, the classification accuracy has nothing to do with the category of implicature; that is, in the absence of context utterance, the text classification of conversational implicatures is also balanced in positive and negative categories.</p>
+ </div>
+ <div id="s0003-s2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">Comparison Between with and without Context Utterance</h3>
+  <p>The influence of context utterance and response utterance on the classification results can be determined by comparing the first two experiments horizontally. In addition to determining the size relationship between the two by comparing the relevant indicators in the accuracy and goodness-of-fit test, and since classification with context utterance and classification without context utterance are in one-to-one correspondence, Paired-Samples <i>T</i>-Test can be performed on them to determine whether the results of the two experiments are significantly different. The results of the comparison are organized as shown in <button class="ref showTableEventRef" data-id="t0005">Table 5</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Text Classification of Conversational Implicatures Based on Lexical Features</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Xianbo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Xianbo"><span class="NLM_given-names">Xianbo</span> Li</a> <a href="https://orcid.org/0000-0002-2949-2753"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2127598">https://doi.org/10.1080/08839514.2022.2127598</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 5. </span> Comparison between with and without context utterance.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="false" id="t0005-table-wrapper">
+    <a data-id="t0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>In <button class="ref showTableEventRef" data-id="t0005">Table 5</button>, the accuracy and goodness-of-fit test statistics of the two experiments are first compared. It can be found that in the four-fold cross-validation, the situations of “with context utterance” (with C.) greater than and less than “without context utterance” (without C.) appear at the same time. The results of the Paired-Samples <i>T</i>-Test show that there is no significant difference in each fold of cross-validation (<i>p</i>-values are all greater than 0.05), and the overall significance is 0.473 &gt; 0.05. It shows that overall, the impact of lexical features on the text classification of conversational implicatures is not significantly different when including “context utterance” or not.</p>
+  <p>The above results show that when classifying texts based on lexical features and using conversational implicatures as labels, context is not involved as a factor, and the classification is only done based on the literal features of response utterance. This shows that computers take a completely different path from humans when using lexical features to judge conversational implicatures. The core contextual information in pragmatics for judging conversational implicatures is not used in the text classification based on logistic regression. However, according to the conclusion of the text classification of conversational implicatures without context utterance, that is, lexical features have a significant impact on the binary classification of conversational implicatures, it is proved that literal features based on the language itself also play an important role in judging particularized implicatures. This computational approach, rarely covered in traditional pragmatics, can expand methods of reasoning about implicatures. To a certain extent, it proves the rationality of computational pragmatics as an effective supplement to classical theories of conversational implicatures.</p>
+ </div>
+ <div id="s0003-s2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i16">The Contingency Relationship Between Context and Implicature in the Case of Inconsistent Classification Results</h3>
+  <p>The previous experiments give the overall test results of the text classification of conversational implicatures in the situations of with and without context utterance. Besides, there is another important issue worth considering, that is, from the perspective of the accuracy of classification results, whether the inclusion of context utterance and the type of conversational implicatures are related. If they are related, different corpora should be chosen when targeting texts of different types of implicatures; if they are irrelevant, the selected method and corpus are universal, and a unified approach can be adopted to classify the text of various implicatures. To study this problem, we need to pay special attention to those cases where the judgment is different between “with context” and “without context.” To do this, a new variable needs to be defined, that is, “score difference.”</p>
+  <p>The “score difference” is defined as follows: if the classification is correct in “with context” but incorrect in “without context,” then score difference = 1; if the classification is incorrect in “with context” but correct in “without context,” then score difference = −1; if the classification is correct or incorrect in both “with context” and “without context,” then score difference = 0. According to the definition, when the score difference = 0, it means that the classification results of the two groups of experiments are consistent, and there is no need to care too much. When score difference = ±1, it means that the classification results of the two groups of experiments are different, and the circumstances under which this discrepancy arises need to be analyzed in detail. Therefore, this experiment only considers the case where the classification results of the two groups of experiments are different, that is, only statistical analysis is performed for the data with score difference = ±1.</p>
+  <p>By performing contingency analysis on the score difference and the type of conversational implicatures, the corresponding frequencies and their significance test results can be obtained, as shown in <button class="ref showTableEventRef" data-id="t0006">Table 6</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Text Classification of Conversational Implicatures Based on Lexical Features</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Xianbo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Xianbo"><span class="NLM_given-names">Xianbo</span> Li</a> <a href="https://orcid.org/0000-0002-2949-2753"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2022.2127598">https://doi.org/10.1080/08839514.2022.2127598</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 6. </span> Results of frequency statistics and contingency analysis for context and implicature.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0006-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0006&amp;doi=10.1080%2F08839514.2022.2127598&amp;downloadType=CSV"> Download CSV</a><a data-id="t0006" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>According to <button class="ref showTableEventRef" data-id="t0006">Table 6</button>, the <i>p</i>-values of all the significance tests of contingency analysis are greater than 0.05, which suggests there is no correlation between the inclusion of context utterance and the type of conversational implicatures. So, the unified and universal methods and corpus can be used to classify the text of various implicatures, and there is no need to consider the type of implicature.</p>
+ </div>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i17" class="section-heading-2">Discussion</h2>
+ <p>This section discusses two issues: first, answer the three questions posed in “introduction;” second, discuss which type of text is more effective in the practice of natural language processing.</p>
+ <div id="s0004-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">Answers to Research Questions</h3>
+  <p>Now, the three research questions raised in the “introduction” are answered based on the experimental results. The first question is whether the text classification of conversational implicatures can be performed based only on lexical features. The answer to this question is yes. According to the experimental results of “with context utterance,” the text classification of conversational implicatures can be performed based on the feature set <i>F</i><sub><i>1</i></sub>, and the accuracy rate is 59% (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0020.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        χ
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msup>
+     </mrow><mo>
+      =
+     </mo><mn>
+      19.440
+     </mn>
+    </math></span>, Sig. = 0.000). According to the experimental results of “without context utterance,” the text classification of conversational implicatures can be performed based on the feature set <i>F</i><sub><i>2</i></sub>, with an accuracy rate of 60.7% (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0021.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        χ
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msup>
+     </mrow><mo>
+      =
+     </mo><mn>
+      27.307
+     </mn>
+    </math></span>, Sig. = 0.000). This suggests that different types of conversational implicatures can be distinguished only by lexical features, regardless of whether “context utterance” is included. Thus, although conversational implicatures are highly context dependent (Potts <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2005</a></span>, 25), through representations of sentences and words may not only be able to calculate semantic similarity (Ahmad and Faisal <span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2022</a></span>), but also characterize the similarity of conversational implicatures.</p>
+  <p>The second question is what features are needed to classify conversational implicatures based on lexical factors. Comparing the two experiments, it can be found that whether “context utterance” is included or not affects the selection of optimal classification features. If “context utterance” is included, the Optimal Feature Set <i>F</i><sub><i>1</i></sub> for classification contains 17 features; If “context utterance” is not included, the Optimal Feature Set <i>F</i><sub><i>2</i></sub> contains only 5 features. Comparing <button class="ref showTableEventRef" data-id="t0001 t0003">Tables 1 and 3</button>, it can be found that the feature set <i>F</i><sub><i>2</i></sub> is a subset of <i>F</i><sub><i>1</i></sub>; that is, the features of <i>F</i><sub><i>2</i></sub> have all appeared in <i>F</i><sub><i>1</i></sub>. Therefore, if conversational implicatures are classified based on lexical factors, the most needed features are the statistics of the number of letters and syllables and the frequency for content words, as presented by the feature set <i>F</i><sub><i>2</i></sub>.</p>
+  <p>The third question is whether the results of text classification will be different because of the difference in including “context utterance” or the type of implicature. The answer to this question is no. According to the results of the Independent-Samples <i>T</i>-Test in <button class="ref showTableEventRef" data-id="t0002 t0004">Tables 2 and 4</button>, there is no significant difference in the classification results between different types of implicatures. According to the results of the Paired-Samples <i>T</i>-Test in <button class="ref showTableEventRef" data-id="t0005">Table 5</button>, the classification results are also not significantly different between texts with or without context utterance. According to the results of the contingency analysis in <button class="ref showTableEventRef" data-id="t0006">Table 6</button>, even if the two variables of context utterance and the type of implicature are considered at the same time, there is no significant difference in the local results between them. In summary, the results of text classification will not be different due to the difference in context utterance or the type of implicature.</p>
+ </div>
+ <div id="s0004-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i19">What Kind of Corpus Should Be Selected in the Classification of Implicatures?</h3>
+  <p>The next question that needs to be discussed is which text should be selected in the specific practice of classification. First, according to the answer to the third research question, the results of text classification will not be different due to the difference in context utterance or the type of implicature, that is, a unified method and corpus can be used to classify the text of various implicatures. That is, this kind of classification has universality.</p>
+  <p>Under the guarantee of this universality, we further examine the feature numbers of “with context utterance” and “without context utterance.” Obviously, the number of features contained in the Optimal Feature Set <i>F</i><sub><i>1</i></sub> is 17, which is greater than the number of features contained in the Optimal Feature Set <i>F</i><sub><i>2</i></sub>, which is 5. Generally, if the classification performance is similar, the smaller the number of features, the simpler the model, and the more effective each feature is. Therefore, it is more effective to select the text of “without context utterance” and adopt the Optimal Feature Set <i>F</i><sub><i>2</i></sub>. And according to the accuracy of the two methods and the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0022.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2022.2127598/20221215/images/uaai_a_2127598_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        χ
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msup>
+     </mrow>
+    </math></span> statistic of the goodness-of-fit test, the result of “without context utterance” is slightly better than the result of “with context utterance.” This further suggests that using only “response utterance” for the classification of implicatures is a better choice. Therefore, when performing the text classification of conversational implicatures based on lexical features, there is no need to add “context utterance,” and the text can be limited to “response utterance.” This can explain, to a certain extent, the difference between the way computers deal with conversational implicatures and the way linguists do. From the perspective of “meaning,” pragmatic scholar (Kecskes <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2008</a></span>) argued that meaning is mostly dependent on context, and there is no doubt that conversational implicature is no exception. But the computer’s processing of meaning is almost entirely based on linguistic forms, and what is most sought after in AI are ways of representing resource extraction in symbols (Kavanagh <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2022</a></span>; Monte-Serrat and Cattani <span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i21 _i22 _i23" href="#"><span class="off-screen">Citation</span>2021</a></span>, 177). So for now, the computational processing of conversational implicatures is still mainly based on the lexical features and various statistics in response utterances. This difference in research perspectives, to a certain extent, has led to the divergence of human and computer research paths of “meaning.” From the experimental results of this study, the computer’s processing path for conversational implicatures based on the language form also passed the chi-square test, which verifies the validity of this computational model and method to some extent.</p>
+ </div>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i20" class="section-heading-2">Conclusions</h2>
+ <p>The conclusions drawn from this study are summarized as follows: First, after a goodness-of-fit test with equal expected frequency, this paper proves that there is a statistical dependency between lexical features and conversational implicatures. So, the text classification of conversational implicatures can be done only with lexical features. Second, in the classification process, the most effective lexical features contain both the statistics of the number of letters and syllables and two frequencies for content words. They have a significant effect on the classification of implicatures. Finally, the results of text classification do not differ due to the context utterance or the type of implicature. Therefore, common methods and corpora can be used to classify implicatures automatically.</p>
+ <p>Future research directions can be considered from the following perspectives: First, adopt a more suitable classification algorithm or carry out algorithm improvement aimed at implicature. Second, expand the amount of data. When the amount of corpus is larger, its laws and knowledge will be more obvious. Third, replace the feature. This paper uses lexical features. In the future, other features such as in syntax or discourse analysis can be further considered, and for pragmatic researchers, an important task is to propose new features according to theories of pragmatics, and then the classification of conversational implicatures based on new features can be carried out, which has the potential to improve the classification performance greatly.</p>
+</div>

@@ -1,0 +1,715 @@
+<div id="s0001" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">Introduction</h2>
+ <p>In this article, we propose exploratory text data analysis (ETDA) as a technique for use in the analysis of text-based data sets to generate hypotheses relating to system improvement. Quality engineers often have text data available on multiple subjects. These could be in the form of customer surveys, complaints, line transcripts, maintenance squawks, or warranty reports. Yet, they often lack the techniques to use these data effectively for quality improvement purposes.</p>
+ <p>Tukey (<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1977</a></span>) proposed exploratory data analysis (EDA) as a general method for generating hypotheses using visualizations for statistical problems. De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>) proposed a prescriptive framework for applying EDA in the context of quality improvement projects. Here, we focus on EDA in the context of both quality improvement and text data. Therefore, ETDA is intended to be a special case of EDA and the associated quality framework of De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>). Beyond providing a set of techniques or data visualization methods, ETDA like EDA seeks to provide a set of principles and methods to guide the performance of data analysis (Tukey <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1977</a></span>).</p>
+ <p>As noted by Tukey (<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1977</a></span>) and others, EDA contrasts with confirmatory data analysis (CDA). EDA seeks to generate hypotheses while CDA has the goal of testing existing hypotheses. For instance, in a regression/hypothesis testing problem, EDA might be conducted as a first step to identify possible regressors to include in a model using scatter or <i>XY</i> plots. The shot size in injection molding, for example, might be hypothesized to affect the fraction of nonconforming units. Once the model form is selected, then CDA proceeds to calculation of the <i>p</i>-values and interpretation of their implications for proving hypotheses. Then, proof might be generated that shot size does indeed affect the fraction of nonconforming units.</p>
+ <p>Another type of analysis called descriptive data analysis (DDA) is potentially used as part of both EDA and CDA (De Mast and Trip <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>). DDA is concerned with the summary of data, for example, statistics such as the sample mean and sample standard deviation. DDA also suppresses the uninformative part of the set to highlight its important features. In large-scale problems dealing with big data arrays, measurements such as means and standard deviations, visualizations in tables and graphs, or other descriptive statistics reduce the complexity of the data sets (Good <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1983</a></span>). DDA helps inquirers to prune unimportant data and focus on the salient features. In the context of our proposed ETDA framework, preprocessing of data may be viewed as DDA. Therefore, like EDA, ETDA is intended to be an extension of DDA.</p>
+ <p>As noted previously, ETDA is proposed to be a special case of EDA that analyzes plain text datasets to derive high-quality information in quality improvement topics. Allen and Xiong (<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2012</a></span>) and Sui (2017) provide examples of the application of ETDA techniques in exploring Toyota Camry user reviews. Allen et&nbsp;al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2016</a></span>) leverage ETDA for hypothesis generation for call center improvement factors. Here, we seek to provide a prescriptive framework for ETDA for all quality improvement projects using real-life applications of ETDA from case studies like those used by De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>). These cases are selected to represent a variety of areas relevant to quality practitioners including automotive engineering, calling centers, and information technology. Even though the nature of text mining is associated with low signal-to-noise ratios, our framework can identify suggestive patterns in unstructured data.</p>
+ <p>In the following section, a motivating example is described which relates to consumer reports on the Toyota Camry. Next, we propose the ETDA framework and describes its relationship to the framework from De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>). Subsequent sections elaborate on the steps of the ETDA: identifying the problems and associated text data; preprocessing of the text data; text data analysis and display options; text data salient feature identification; and lastly salient identification interpretation. Four additional examples further illustrate the principles and methods. Finally, we offer remarks relating to the discussion of the issues that a practitioner might encounter while employing ETDA.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">Example 1: Quality improvement for Toyota Camry</h2>
+ <p>In the first example, the Toyota Camry consumer report dataset from Allen and Xiong (<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2012</a></span>) is used. This dataset contains 1,067 records of user reports for the automobile model between the years 2000 to 2010. Additional details about the analysis method and “topic models” are shown in a later section. The data including customer complaint or survey results were available in many industries and were provided by Consumer Reports.</p>
+ <p>The records include fields of summary, pros, cons, comments, and driving experience. Here, only cons texts are analyzed to generate quality hypotheses. Natural language processing (NLP) and latent Dirichlet allocation (LDA) are applied using 10 topics. NLP and LDA are discussed in more detail in the next section and the Appendix. The resulting Pareto chart is given in <a href="#F0001">Figure 1</a>. In the chart, the clusters or topics are represented by the top words ranked using estimated posterior probability. The charted quantities are the estimated posterior cluster proportions following Allen and Xiong (<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2012</a></span>).</p>
+ <div class="figure figureViewer" id="F0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Exploratory text data analysis for quality hypothesis generation</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Allen%2C+Theodore+T"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Allen%2C+Theodore+T"><span class="NLM_given-names">Theodore T.</span> Allen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sui%2C+Zhenhuan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sui%2C+Zhenhuan"><span class="NLM_given-names">Zhenhuan</span> Sui</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Akbari%2C+Kaveh"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Akbari%2C+Kaveh"><span class="NLM_given-names">Kaveh</span> Akbari</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08982112.2018.1481216">https://doi.org/10.1080/08982112.2018.1481216</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>29 October 2018
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> Topic proportion for cons in Toyota Camry Consumer Report.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/medium/lqen_a_1481216_f0001_c.jpg" loading="lazy" height="251" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> Topic proportion for cons in Toyota Camry Consumer Report.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0001">
+  <div class="figureFootNote-F0001"></div>
+ </div>
+ <p>The first topic can be interpreted to mean that consumers are complaining about road noise or wind noise because of tire problems. This topic accounts for 21.80% of con words among the 10 topics. The second most frequent topic is about uncomfortable seating, accounting for 17.85%. This is consistent with the 2010 Camry recalls for seat heater/cooler problems caused by damage to electrical wiring in the seat heater when the seat cushion is compressed. The third most frequent topic (yellow column) verifies the well-known uncontrolled acceleration problem which embarrassed the Toyota Corporation during the 2009–2011 period.</p>
+ <p>The implications for quality improvement projects are clear. The data and charts serve to clarify that priority should be given to addressing the widely publicized unintended acceleration problem over tire noise and uncomfortable seats. Such analysis can not only help in putting problems into better perspective but also generate hypotheses for further investigation. Even complete remediation of the unintended acceleration would reduce only approximately 17% of the claims, although this was a catastrophic symbolic quality problem for Toyota.</p>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i6" class="section-heading-2">The principles and framework of ETDA</h2>
+ <p>In this section, we review the purposes of EDA from De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>) and describe the special context of text modeling and ETDA. Also, we clarify our extension of their framework. As noted by those authors, EDA’s main purposes are “to generate hypotheses”, “to generate clues”, “to discover influence factors”, and “to build understanding of the nature of the problem”. Like the EDA framework, the ETDA framework also seeks to reveal the potential relationships between key process output variables (KPOVs) in six sigma terminology or <i>Y</i>’s and the associated key process input variables (KPIVs) or <i>X</i>’s. Thus, the first principle formalizes the purpose:</p>
+ <div class="quote">
+  <p>A. <i>The purpose of ETDA is to leverage text documents to help in the identification of dependent variables, Ys, and independent variables, Xs, that may prove to be of interest for understating or solving the problem under study.</i></p>
+ </div>
+ <p>De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>) draw a distinction between situations in which there is a relatively easy way to identify the key output variables (KOVs, Ys) and other situations. When it is easier to differentiate (situation #1), the total negative instances, for example, defects, are the sum of available categories of instances: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/lqen_a_1481216_m0001.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/lqen_a_1481216_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="block" overflow="scroll" altimg="eq-00001.gif">
+    <mi>
+     Y
+    </mi><mo>
+     =
+    </mo><msub>
+     <mrow>
+      <mi>
+       Y
+      </mi>
+     </mrow>
+     <mrow>
+      <mn>
+       1
+      </mn>
+     </mrow>
+    </msub><mo>
+     +
+    </mo><msub>
+     <mrow>
+      <mi>
+       Y
+      </mi>
+     </mrow>
+     <mrow>
+      <mn>
+       2
+      </mn>
+     </mrow>
+    </msub><mo>
+     +
+    </mo><msub>
+     <mrow>
+      <mi>
+       Y
+      </mi>
+     </mrow>
+     <mrow>
+      <mn>
+       3
+      </mn>
+     </mrow>
+    </msub><mo>
+     +
+    </mo><mo>
+     ⋯
+    </mo><mi mathvariant="normal">
+     &nbsp;
+    </mi>
+   </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span></p>
+ <p>In these situations, EDA (and ETDA) should be able to identify the leading terms and associate hypotheses for clear follow-up activities. The first example in <a href="#F0001">Figure 1</a> shows how ETDA identifies dependent variables (<i>Y</i>s) for further study using NLP and a popular clustering method called LDA (Blei, Ng, and Jordan <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2003</a></span>). Additional details about NLP and LDA are described in the next section. The important new element here is that word counts are associated with the quality issues rather than simple counts of nonconformities or other numerical process information.</p>
+ <p>In the second type of situation classified by De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>), the data are more limited. The practitioner can only identify that there is another lower level of attribution and analysis needed. Then, the sum of negative events is written: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/lqen_a_1481216_m0002.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/lqen_a_1481216_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="block" overflow="scroll" altimg="eq-00002.gif">
+    <mi>
+     Y
+    </mi><mo>
+     =
+    </mo><msub>
+     <mrow>
+      <mi>
+       E
+      </mi>
+     </mrow>
+     <mrow>
+      <mn>
+       1
+      </mn>
+     </mrow>
+    </msub><mo>
+     +
+    </mo><msub>
+     <mrow>
+      <mi>
+       E
+      </mi>
+     </mrow>
+     <mrow>
+      <mn>
+       2
+      </mn>
+     </mrow>
+    </msub><mo>
+     +
+    </mo><msub>
+     <mrow>
+      <mi>
+       E
+      </mi>
+     </mrow>
+     <mrow>
+      <mn>
+       3
+      </mn>
+     </mrow>
+    </msub><mo>
+     +
+    </mo><mo>
+     ⋯
+    </mo>
+   </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/lqen_a_1481216_ilm0001.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/lqen_a_1481216_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="inline" overflow="scroll" altimg="eq-00003.gif">
+    <msub>
+     <mrow>
+      <mi>
+       E
+      </mi>
+     </mrow>
+     <mrow>
+      <mi>
+       i
+      </mi>
+     </mrow>
+    </msub><mo>
+     =
+    </mo><mi>
+     f
+    </mi><mo stretchy="false">
+     (
+    </mo><msub>
+     <mrow>
+      <mi>
+       X
+      </mi>
+     </mrow>
+     <mrow>
+      <mi>
+       j
+      </mi>
+      <mn>
+       1
+      </mn>
+     </mrow>
+    </msub><mo>
+     ,
+    </mo><msub>
+     <mrow>
+      <mi>
+       X
+      </mi>
+     </mrow>
+     <mrow>
+      <mi>
+       j
+      </mi>
+      <mn>
+       2
+      </mn>
+     </mrow>
+    </msub><mo>
+     ,
+    </mo><mi mathvariant="normal">
+     &nbsp;
+    </mi><msub>
+     <mrow>
+      <mi>
+       X
+      </mi>
+     </mrow>
+     <mrow>
+      <mi>
+       j
+      </mi>
+      <mn>
+       3
+      </mn>
+     </mrow>
+    </msub><mo>
+     ,
+    </mo><mo>
+     …
+    </mo><mo stretchy="false">
+     )
+    </mo>
+   </math></span>. The investigators could acquire clues about causal factors (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/lqen_a_1481216_ilm0002.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/lqen_a_1481216_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="inline" overflow="scroll" altimg="eq-00004.gif">
+    <msub>
+     <mrow>
+      <mi>
+       E
+      </mi>
+     </mrow>
+     <mrow>
+      <mi>
+       i
+      </mi>
+     </mrow>
+    </msub>
+   </math></span>) by analyzing the text documents with respect to independent variables (<i>X</i>s). A case study of how ETDA helps to identify clues for further investigation about independent variables (<i>X</i>s) is described in Example 2.</p>
+ <p>De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>) proposed a three-step process for quality improvement-related EDA. Because of the complexities of text modeling, in ETDA the first step of their process is divided into two parts creating four steps:</p>
+ <ol class="NLM_list NLM_list-list_type-order">
+  <li><p class="inline">Text data preprocessing.</p></li>
+  <li><p class="inline">Text data analysis and display.</p></li>
+  <li><p class="inline">Salient feature identification.</p></li>
+  <li><p class="inline">Salient feature interpretation.</p></li>
+ </ol>
+ <p></p>
+ <p>The next sections describe additional principles elaborating on those in De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>) for these steps. The key aspects of text include the ability of the text data itself to directly provide causal insights in a way that ordinary data cannot.</p>
+ <p>While NLP is an entire field of inquiry with many possible complications, the general emphases of Tukey and EDA are transparency and simplicity (Tukey <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1977</a></span>). Therefore, the second ETDA (new) principle is as follows:</p>
+ <div class="quote">
+  <p>B1. <i>NLP methods for ETDA should be simple with stop words that can be adjusted and standard stemming. Then, the users should perceive NLP as transparent and understandable.</i></p>
+ </div>
+ <p>In our examples, results are primarily based on simple word counts on different topics or clusters. Simple weightings of words associated with sentiment scores are also considered. Also, in general, NLP methods create word or document cluster “tags” and numerical values to permit further data exploration steps. This leads to the principle:</p>
+ <div class="quote">
+  <p>B2. <i>Apply clustering methods to tag documents with numbers relating to cluster membership. These tags can be either manually or automatically generated and are useful for plotting and hypothesis generation.</i></p>
+ </div>
+ <p>Among the most widely cited and used methods for unstructured text clustering and automatic tag generation is LDA (Blei et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2003</a></span>). LDA is described in more detail in the Appendix. LDA involves fitting a distribution to the words with probabilities often through Bayesian estimation of the chances that a random word is in a cluster (or “topic”) and that it will assume a specific selection from the dictionary, that is, the topic definition posterior mean probability estimates.</p>
+ <p>Both assigning words and document proportions to topics and defining topics through word probability estimates permit the study of quality issues at a higher granularity than the cluster level.</p>
+ <div class="quote">
+  <p>B3. <i>Apply a simple and relatively transparent sentiment score analysis to transform the text to values (positive, zero, or negative numbers for further analysis).</i></p>
+ </div>
+ <p>There are many methods for assigning values to individual words, sentences, or documents relating to their positive or negative value (Liu <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2012</a></span>; Pang and Lee <span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2008</a></span>; Turney <span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2002</a></span>).</p>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i9" class="section-heading-2">Text data preprocessing</h2>
+ <p>Methods to permit word tabulations and sentiment analyses generally require NLP methods (Feldman and Sanger <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>). There are variants, of course. Yet, commonly irrelevant or “stop” words are first removed such as “of” and “a” which often offer limited contributions to meaning. Sometimes custom words with little meaning are manually added to stop word lists. Then, words are “stemmed” so that “qualities” and “quality” might become “quality” and, potentially, synonyms are replaced. Finally, the stemmed words are replaced by numbers for clustering or other analysis activities.</p>
+ <p>After the stop words are removed and the words are stemmed, a list of distinct words is called a “dictionary” for each set of documents. A simple approach used here to address multiple fields in a database is to append field titles to these stemmed nonstop words. Porter (<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1980</a></span>) proposed an algorithm to handle words that have different forms for grammatical reasons as well as derivationally related words with similar meanings. Combining all these steps the methods used in the example are:</p>
+ <ul class="NLM_list NLM_list-list_type-none">
+  <li><p class="inline"><i>Step 1</i>. Split the document into words.</p></li>
+  <li><p class="inline"><i>Step 2</i>. Remove the punctuation or symbols and (optionally) make all words lower case.</p></li>
+  <li><p class="inline"><i>Step 3</i>. Remove the stopping words.</p></li>
+  <li><p class="inline"><i>Step 4</i>. Stem the words with the Porter Stemming Algorithm.</p></li>
+  <li><p class="inline"><i>Step 5</i>. Append the field titles in parentheses to each word (if appropriate).</p></li>
+ </ul>
+ <p></p>
+ <p>Once the dictionary is available and the words are pre-processed, clustering and assignments of weights or “semantic” analysis are generally the primary techniques for additional processing.</p>
+ <p>Of primary interest in LDA is the probabilities defining the clusters or topics (“topic probabilities”) and the probabilities relating to the changes that words in specific documents relate to the topics (“document-topic” probabilities). The estimated mean values for these defining probabilities provide inputs to further analyses.</p>
+ <p>The direct Bayesian approach to estimate these mean posterior probabilities defining the clusters is called “collapsed Gibbs” sampling (Griffiths and Steyvers <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2004</a></span>; Teh et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>). Allen et&nbsp;al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2017</a></span>) and Parker et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2017</a></span>) created an approximate but relatively computationally efficient method for estimating the topic probabilities and the document-topic matrices based on <i>k</i>-means clustering. In this method, the clusters are used as topics by calculating the Euclidean distance from each quantified document to the estimated cluster centers and using the inverse of distance as the probabilities of the stemmed words falling in each topic (Sui and Allen 2016; Parker et al. 2016).</p>
+ <p>Some clusters might be associated with problems or customer complaints of specific nature, as we illustrate in <a href="#F0001">Figure 1</a>. Yet, in general, words in topic models do not have clear positive or negative interpretations. In many situations, methods that explicitly place values on words in the dictionary can facilitate additional insights.</p>
+ <p>In some cases, words could be related to emotional states such as “angry”, “anxious”, “happy”, “sad”, or “neutral”. In other cases, the “sentiments” could even be customized for quality professionals to tally a specified list of terms indicating likely quality defects. With arbitrariness, words can be rated individually with scores about their strengths. Here, to reduce the arbitrariness and for simplicity, words are generically rated as positive or negative. The sum of the positive words in a document is denoted by <i>P</i> and the sum of the negative words by <i>N</i>. The sentiment score (<i>S</i>) used in our examples is <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/lqen_a_1481216_m0003.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/lqen_a_1481216_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="block" overflow="scroll" altimg="eq-00005.gif">
+    <mi>
+     S
+    </mi><mo>
+     =
+    </mo><mrow>
+     <mrow>
+      <mi mathvariant="normal">
+       ln
+      </mi>
+     </mrow>
+     <mo>
+      ⁡
+     </mo>
+     <mrow>
+      <mfenced separators="|">
+       <mrow>
+        <mn>
+         0.5
+        </mn>
+        <mo>
+         +
+        </mo>
+        <mi>
+         P
+        </mi>
+       </mrow>
+      </mfenced>
+      <mo>
+       −
+      </mo>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         ln
+        </mi>
+       </mrow>
+       <mo>
+        ⁡
+       </mo>
+       <mrow>
+        <mfenced separators="|">
+         <mrow>
+          <mn>
+           0.5
+          </mn>
+          <mo>
+           +
+          </mo>
+          <mi>
+           N
+          </mi>
+         </mrow>
+        </mfenced>
+       </mrow>
+      </mrow>
+     </mrow>
+    </mrow><mo>
+     .
+    </mo>
+   </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span></p>
+ <p>In general, our objectives for clustering and for sentiment scoring are to produce quantitative data to facilitate hypothesis generation. In the next section, we describe how the derived outputs can be used to create visualizations to aid in quality improvements.</p>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i11" class="section-heading-2">Text data analysis and display</h2>
+ <p>After preparing text-creating numbers relating to cluster identities and membership or sentiment score, one can follow steps 2–4 which derive from methods of De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>). Then, graphical presentations in ETDA can aid in highlighting and presenting findings to analysts (Good <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1983</a></span>; Hoaglin et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1983</a></span>; Bisgaard <span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1996</a></span>). Therefore, after preprocessing, the next step is to display text data in a straightforward way that exploits the power of pattern recognition.</p>
+ <div class="quote">
+  <p>C. <i>Process and display the quantitative text data to reveal distributions and potential hypotheses for ways to improve system quality.</i></p>
+ </div>
+ <p>As for non-text EDA, graphical presentations can reveal what the inquirer did not expect beforehand (Bisgaard <span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1996</a></span>). For EDTA, revealing patterns can relate to counts of words on specific topics (clusters) or differences across topics. At this phase, the primary visualization tools include Pareto or sorted bar charting methods, running charts, and so on to view different topics, contents, and quantitative text data. Note that, in <a href="#F0001">Figure 1</a>, the topic proportions are captured through Pareto charts. The inquirer could examine the topics from the largest probability to the least and, therefore, illuminate potential causes of defects.</p>
+ <div class="quote">
+  <p>C1 (Stratified Data). <i>Process and display the quantitative text data so as to reveal distribution across and within strata.</i></p>
+ </div>
+ <p>Quality ratings can provide ordered strata. ETDA can help the inquirer to narrow down the searching range for the defects by focusing only on the low ratings into which defects mostly fall. Hence, practitioners can display cluster information at different strata levels to generate hypothesis for design inputs as illustrated in Example 2.</p>
+ <p>A special type of strata explored by De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>) is time strata. From their analysis, the following principle is derived:</p>
+ <div class="quote">
+  <p>C2 (Data plus time order). <i>Process and display the quantitative text data such that they will reveal distribution throughout the whole-time duration.</i></p>
+ </div>
+ <p>This principle is illustrated in the following example. The example also illustrates roles for regression modeling, histogram, and trend plotting.</p>
+ <div class="quote">
+  <p>C3 (Multiple field data). <i>Process and display the quantitative text data to reveal distributions for different fields.</i></p>
+ </div>
+ <p>In relation to the Toyota Camry case explored in Example 1, Allen and Xiong (<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2012</a></span>) presented topic modeling across multiple data fields including summary, pros, cons, comment, and driving experience. To handle the multiple field data, the words in the dictionary are labeled with the field labels, for example, “(summary) wear” which increases the size of the dictionary but does not affect the mechanics of clustering in the Appendix. An alternative way to handle multiple field text data would be to plot the causal relationships for all the fields on the same chart and compare them to look for variations within or across fields.</p>
+</div>
+<div id="s0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i12" class="section-heading-2">Text data salient feature identification</h2>
+ <p>The next step in EDTA is the identification of the salient features again following EDA in De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>). Those authors wrote that salient features are the “finger prints” that clarify the key Xs and causes. Shewhart (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1931</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1939</a></span>) defined the identification of salient features as finding out “the clues to the existence of assignable causes” for the non-randomness. The causes being sought, therefore, often relate to deviations of system outputs from standards or predicted outputs. This leads to the following principle:</p>
+ <div class="quote">
+  <p>D. <i>Search for deviations or variations from reference standard.</i></p>
+ </div>
+ <p>Text data are different from normal numerical data in that they typically do not conform to certain distributions and contain a good deal of noise information. However, if certain causes of variation dominate, they would still leave clues for their identification. Also, the scales used such as sentiment analyses contain arbitrariness. As an example of this principle consider the residual analysis in Example 3 in <a href="#F0003">Figure 3(b)</a>. The deviation signals another cause.</p>
+ <p>Another type of variation is between groups. This leads to the following principle.</p>
+ <div class="quote">
+  <p>D1 (Stratified data). <i>Look for deviations or variations from other groups.</i></p>
+ </div>
+ <p>In the Honda Civic’s consumer report in Example 2, it is seen that while the green line topic has a decreasing trend from rating score 1 to 5, most of the other topics have either a flat or an increasing trend. In Example 2, clearly, the green line differs greatly from other groups. This deviation of trending behavior reveals clues of salient features for the quality problem. This leads to clarity about the importance of transmission issues over other “groups” or types.</p>
+ <p>Another type of deviation relates to time periods leading to the following principle.</p>
+ <div class="quote">
+  <p>D2 (Data plus time order). <i>Look for deviations or variations from previous time intervals.</i></p>
+ </div>
+ <p>Time series plots of cluster posterior probabilities (proportions) or sentiments can facilitate the search for important inputs (<i>X</i>s). These could include partial autocorrelation function or, alternatively, simple difference plots. Example 4 illustrates the use of a run chart of the period-to-period differences in the posterior mean topic proportions revealing a salient feature. In this case, the salient feature relates to a new cause generating cyber security incidents.</p>
+ <p>As described in De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>), the final principle of the framework is:</p>
+ <div class="quote">
+  <p>E. <i>The identified salient features should be interpreted using context knowledge. This knowledge can be supplemented with word clouds and using the top words in topics in decision trees or cause and effect diagrams.</i></p>
+ </div>
+ <p>In this step, salient features are turned into hypotheses using context knowledge. Niiniluoto (<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1999</a></span>) introduced the concept of abductive reasoning in which “the inquirers compare conceptual combinations to the observations until all the pieces seem to fit together and a possible explanation pops up.” In the following examples, these principles and methods are illustrated. Hypotheses are generated about the key input or output variables and the likely causes of quality problems.</p>
+</div>
+<div id="s0007" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i13" class="section-heading-2">Illustrative examples</h2>
+ <p>In this section, four additional examples are used to illustrate application of the principles and methods described previously. The hypotheses generated are tied to practical decision-making and outcomes.</p>
+ <div id="s0008" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">Example 2: Quality improvement for Honda Civic</h3>
+  <p>This example relates to 628 records for the Honda Civic model between the years 2000 and 2010. The data are associated with the scores from 1 (very dissatisfied) to 5 (very satisfied). The field of comments and rating scores are used for data display and analysis. To improve customers’ satisfaction, analysts are assigned to look for the reasons for low ratings from customers. Gibbs sampling estimation of LDA modeling are employed to cluster the comments into 10 topics.</p>
+  <p>Next, line charts of topic proportions for the documents associated with the different rating scores are present in <a href="#F0002">Figure 2</a>. Only five top cluster definitions are denoted as rated by their proportions. The green line topic has 25.35%, 20.51%, 22.01%, 10.07%, and 5.50% for ratings from 1 (the poorest) to 5 (the best) respectively, which implies that the topic is associated with 25.6% of all words associated and rating level 1, and 20.5% among all topics at rating level 2, and so on. This topic relates to complaints that “Honda has a transmission problem and needs to be repaired or replaced.” Inspecting <a href="#F0002">Figure 2</a>, the hypothesis that focusing on transmission warrantee production would likely remove the major negative causes at all levels. It also suggests that a variety of levels of distress may be attributable to the same transmission cause.</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Exploratory text data analysis for quality hypothesis generation</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Allen%2C+Theodore+T"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Allen%2C+Theodore+T"><span class="NLM_given-names">Theodore T.</span> Allen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sui%2C+Zhenhuan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sui%2C+Zhenhuan"><span class="NLM_given-names">Zhenhuan</span> Sui</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Akbari%2C+Kaveh"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Akbari%2C+Kaveh"><span class="NLM_given-names">Kaveh</span> Akbari</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08982112.2018.1481216">https://doi.org/10.1080/08982112.2018.1481216</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>29 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Topic proportion vs. rating scores for comments in Honda Civic Consumer Report.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/medium/lqen_a_1481216_f0002_c.jpg" loading="lazy" height="183" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Topic proportion vs. rating scores for comments in Honda Civic Consumer Report.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <p>Therefore, the decision variables associated with transmission design (<i>X</i>s) are targeted for prioritization in design changes. The strata (rating scores) for different topics are the “variable containers” (De Mast and Trip <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>), and the causal relationship is suggested through the variations of topic proportions across strata.</p>
+ </div>
+ <div id="s0009" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i16">Example 3: Quality improvement for the Ford F-150</h3>
+  <p>This example is also based on Consumer Reports data providing 369 records for the Ford F-150. The example involves the years 2000–2010 and the actual numbers of recalls from 2000–2010 during those years. Sentiment analysis is done for each of the 369 comments in the consumer report using <a href="#M0003">Eq. [3]</a> tabulated using software from CX Data Science. By tabulated recall counts against the sentiment scores from the report text, a relationship can be established. The linear relationship of sentiment scores and the actual number of recalls is shown in <a href="#F0003">Figure 3(a)</a>. From this, the following linear regression model is derived: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/lqen_a_1481216_m0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/lqen_a_1481216_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(5) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block" overflow="scroll" altimg="eq-00006.gif">
+     <mover accent="true">
+      <mrow>
+       <mi>
+        S
+       </mi>
+      </mrow>
+      <mo>
+       ̂
+      </mo>
+     </mover><mo>
+      =
+     </mo><mn>
+      0.4950
+     </mn><mo>
+      −
+     </mo><mn>
+      0.03767
+     </mn><mi mathvariant="normal">
+      &nbsp;
+     </mi><mo stretchy="true">
+      (
+     </mo><mo>
+      #
+     </mo><mtext>
+      Recalls
+     </mtext><mo stretchy="true">
+      )
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(5) </span></span></span></span></p>
+  <div class="figure figureViewer" id="F0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Exploratory text data analysis for quality hypothesis generation</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Allen%2C+Theodore+T"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Allen%2C+Theodore+T"><span class="NLM_given-names">Theodore T.</span> Allen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sui%2C+Zhenhuan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sui%2C+Zhenhuan"><span class="NLM_given-names">Zhenhuan</span> Sui</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Akbari%2C+Kaveh"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Akbari%2C+Kaveh"><span class="NLM_given-names">Kaveh</span> Akbari</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08982112.2018.1481216">https://doi.org/10.1080/08982112.2018.1481216</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>29 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> Linear regression model and residual plots for comments sentiment scores.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/medium/lqen_a_1481216_f0003_c.jpg" loading="lazy" height="333" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> Linear regression model and residual plots for comments sentiment scores.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0003">
+   <div class="figureFootNote-F0003"></div>
+  </div>
+  <p>The sentiment score is predicted to be high when the recall number is low. The histogram of residuals of the linear regression relationship is plotted in <a href="#F0003">Figure 3(b)</a>. Based on the bimodality of the distribution for the residual plot, it seems that there is likely another cause for the low scores in addition to recalls. This shows the evidence of presence of a “lurking variable” worth investigating for the quality improvement.</p>
+  <p>Plotting the residuals by time strata (model year) in <a href="#F0003">Figure 3(c)</a> provides information about the timeliness of the missing cause. Most importantly, perhaps, the residual plot indicates that the causes do not endure to the latest model years.</p>
+  <p>The highest negative sentiment score residuals are found in 2000 and 2002. Exploration of the comments in 2000 and 2001 shows that many are about poor gas mileage. In 2000, the trucks miles-per-gallon averaged only 13 city/17 highway miles per gallon (MPG). From 2002 to 2007, truck MPG improved resulting in fewer customer complaints about this shortcoming. This is reflected in the less negative residuals in 2003–2007. After 2008, fuel consumption improved further, reaching more than 20 MPG on highways. <a href="#F0003">Figure 3(d)</a> shows the linear relationship between yearly average residuals of the comments sentiment score versus MPG. Combining both the inferences from <a href="#F0003">Figure 3(b) and (d)</a>, it is suggested that further improvements might not reduce negative sentiment after 2010 since mean negative sentiment is dominated by recalls.</p>
+  <p>Example 3 illustrates how ETDA can provide insights relevant to design teams and related prioritization. This is a case in which text data is used to help discover dependent variables (<i>X</i>s) by focusing on one or more time intervals in the data. The bimodality distribution of residuals deviates from the expected normal distribution of linear regression residuals. To summarize, an approximate model of sentiment is first generated using recall counts. Then, inspecting the residuals, an additional factor relating to miles per gallon is hypothesized and may lead to a refined model. Further investigation suggests that the effects for the F-150 associated with gas mileage might only be operating in the early years of the time period studied.</p>
+ </div>
+ <div id="s0010" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i19">Example 4: Cyber attack incidents related to Heartbleed</h3>
+  <p>This example uses the cyber security Twitter account data detailed in Allen et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2017</a></span>) and Sui et al. (2015). A large Midwest institution suffered from a high number of cyber-attacks and experienced a sudden computer intrusion hike in April 2014. To leverage ETDA for the quality hypothesis generation, inquirers collected 16,047 Tweets from January 2014 to December 2014 from 16 Twitter accounts of noted cyber experts. The collapsed Gibbs Sampling Topic Modeling techniques is used to break the Tweets into 10 topics. For each topic, the topic proportions are acquired for each month and the differences from the previous month are charted in the running time chart in <a href="#F0004">Figure 4</a>. The third topic in the legend is associated with the grey-colored line and references the famous “Heartbleed” vulnerability. Retweets (rt) is a common and potentially uninformative common term. Adding “rt” to the “stop word” list may be desirable so that it can be removed from consideration in the analysis.</p>
+  <div class="figure figureViewer" id="F0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Exploratory text data analysis for quality hypothesis generation</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Allen%2C+Theodore+T"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Allen%2C+Theodore+T"><span class="NLM_given-names">Theodore T.</span> Allen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sui%2C+Zhenhuan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sui%2C+Zhenhuan"><span class="NLM_given-names">Zhenhuan</span> Sui</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Akbari%2C+Kaveh"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Akbari%2C+Kaveh"><span class="NLM_given-names">Kaveh</span> Akbari</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08982112.2018.1481216">https://doi.org/10.1080/08982112.2018.1481216</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>29 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> Topic proportion differences (month-to-month) vs. months.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/medium/lqen_a_1481216_f0004_c.jpg" loading="lazy" height="191" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> Topic proportion differences (month-to-month) vs. months.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0004">
+   <div class="figureFootNote-F0004"></div>
+  </div>
+  <p>Cluster or topic 3 experiences a sudden increase in topic proportion in April 2014 and a sudden decrease in topic proportion in October 2014, while other topics’ changes are relatively constant, fluctuating around zero. This pattern is consistent with the timing of the public disclosure of the vulnerability, “Heartbleed”, on April 1, 2014. This vulnerability resulted from a lack of bounds in memory allocations for operating systems, which allowed large amounts of information to be stolen from any susceptible computer.</p>
+  <p>Upon this disclosure, many hackers made use of the vulnerability before a patch could be created resulting, among other disruptions, in the roughly 400% increase in cyberattacks experienced by the large Midwest institution in the month of April 2014. The sudden increase in topic proportion that month shows a surge in discussion of the issue on Twitter. <a href="#F0004">Figure 4</a> suggests both that the uptick in incidents might likely have been caused by Heartbleed and that the issues was resolved by September.</p>
+  <p>Example 4 also shows how cluster posterior probability estimates can provide reference values for comparisons between clusters. General reference comparisons lead to the principle:</p>
+  <div class="quote">
+   <p>D3. <i>Look for deviations or variations from other references which could be other fields.</i></p>
+  </div>
+  <p>For data with multiple fields, a comparison of causal relationships across and within fields can be beneficial. If one or some of the fields behave differently from most other fields, the salient features of those abnormal fields could be explored for quality hypothesis generation.</p>
+  <div class="quote">
+   <p>D4. <i>Look for salient feature based on prior perceptions, rules, or knowledge.</i></p>
+  </div>
+  <p>Prior experience or field knowledge can help to identify salient features. In Example 2, the finding that a topic has a high proportion of low ratings and a low proportion of high ratings, obviously suggests it is worth exploring for salient features related to quality.</p>
+  <p>Example 5 illustrates the use of context knowledge to generate hypotheses in a customer support feedback call center. In this case, the context knowledge enters explicitly in the clustering process. Also, it enters in identifying the subsystems that should likely be prioritized for additional study.</p>
+ </div>
+ <div id="s0011" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i21">Example 5: Call center improvement</h3>
+  <p>Allen et&nbsp;al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2016</a></span>) presented a call center service improvement problem to an insurance company. Using 2,378 records of conversations between the service representatives and callers, Allen et&nbsp;al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2016</a></span>) extended and applied the topic modeling with subject matter refined topic (SMERT) to acquire 10 topics. Applying this variation of LDA allowed a process of topic editing and refinement of the topic definitions. Mulaik (<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>1985</a></span>) argued that iterative interpretation of salient features is often crucial in exploring problems. The incorporation of subject matter expertise could greatly help with the interpreting through subject matter knowledge. This combination could further achieve a more definitive result relating to the root cause of problems under study. The estimated topic proportions that emerged are shown in <a href="#F0005">Figure 5</a>.</p>
+  <div class="figure figureViewer" id="F0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Exploratory text data analysis for quality hypothesis generation</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Allen%2C+Theodore+T"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Allen%2C+Theodore+T"><span class="NLM_given-names">Theodore T.</span> Allen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sui%2C+Zhenhuan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sui%2C+Zhenhuan"><span class="NLM_given-names">Zhenhuan</span> Sui</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Akbari%2C+Kaveh"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Akbari%2C+Kaveh"><span class="NLM_given-names">Kaveh</span> Akbari</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08982112.2018.1481216">https://doi.org/10.1080/08982112.2018.1481216</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>29 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> Call center clusters from SMERT model with manually entered interpretations.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/medium/lqen_a_1481216_f0005_c.jpg" loading="lazy" height="287" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> Call center clusters from SMERT model with manually entered interpretations.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0005">
+   <div class="figureFootNote-F0005"></div>
+  </div>
+  <p>By describing the topics as sentences instead of word lists, the result is directly relevant to call center operations. Automatic answering logic can then target the top issues. This logic could permit reducing the burden on the order answerers. For example, improved logic relating to bills and payment could address over 20% of the call volume. Further, by studying <a href="#F0005">Figure 5</a>, we estimate that improved automatic information and verification (relating to topic 2) might reduce the call volume by approximately 12%.</p>
+  <p>Analyzing the top topic (topic #1) by proportion further can suggest additional salient features and suggest more detailed causal hypotheses. Topic #1 relates to a certain type of unresolved calls and therefore a quality-related problem. To gain insights into addressing this problem, the word cloud software from Davies (<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2017</a></span>) is applied in <a href="#F0006">Figure 6</a>. <a href="#F0006">Figure 6(a)</a> shows the word cloud from all the call center data. <a href="#F0006">Figure 6(b)</a> shows a word cloud from an artificial corpus created by expressing words in proportion to the posterior mean topic probability estimates. From this comparison, a hypothesis is generated that the cause of the problem relates to note-taking involving the customer service representative (CSR) and agents. Similarly, the words with the highest posterior mean probabilities in this topic probability can be used to populate a cause and effect matrix in <a href="#F0007">Figure 7</a>. The result might be interpreted as a need to improve the specific methods: billing, canceling, refunds, and payments. Therefore, the results illuminate the proportion of each of the common issues that can be addressed and relatively specific hypotheses about how to make improvements.</p>
+  <div class="figure figureViewer" id="F0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Exploratory text data analysis for quality hypothesis generation</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Allen%2C+Theodore+T"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Allen%2C+Theodore+T"><span class="NLM_given-names">Theodore T.</span> Allen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sui%2C+Zhenhuan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sui%2C+Zhenhuan"><span class="NLM_given-names">Zhenhuan</span> Sui</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Akbari%2C+Kaveh"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Akbari%2C+Kaveh"><span class="NLM_given-names">Kaveh</span> Akbari</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08982112.2018.1481216">https://doi.org/10.1080/08982112.2018.1481216</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>29 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 6. </span> (a) Word cloud of all call center data and (b) word cloud of words associated with topic #1.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0006image" src="/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/medium/lqen_a_1481216_f0006_c.jpg" loading="lazy" height="151" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0006">
+   <p class="captionText"><span class="captionLabel">Figure 6. </span> (a) Word cloud of all call center data and (b) word cloud of words associated with topic #1.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0006">
+   <div class="figureFootNote-F0006"></div>
+  </div>
+  <div class="figure figureViewer" id="F0007">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Exploratory text data analysis for quality hypothesis generation</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Allen%2C+Theodore+T"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Allen%2C+Theodore+T"><span class="NLM_given-names">Theodore T.</span> Allen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sui%2C+Zhenhuan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sui%2C+Zhenhuan"><span class="NLM_given-names">Zhenhuan</span> Sui</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Akbari%2C+Kaveh"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Akbari%2C+Kaveh"><span class="NLM_given-names">Kaveh</span> Akbari</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08982112.2018.1481216">https://doi.org/10.1080/08982112.2018.1481216</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>29 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 7. </span> Cause and effect matrix populated using the top words from topic #1.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0007image" src="/na101/home/literatum/publisher/tandf/journals/content/lqen20/2018/lqen20.v030.i04/08982112.2018.1481216/20190222/images/medium/lqen_a_1481216_f0007_c.jpg" loading="lazy" height="354" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0007">
+   <p class="captionText"><span class="captionLabel">Figure 7. </span> Cause and effect matrix populated using the top words from topic #1.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0007">
+   <div class="figureFootNote-F0007"></div>
+  </div>
+ </div>
+</div>
+<div id="s0012" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i25" class="section-heading-2">Final remarks</h2>
+ <p>In this article, we describe how the exploratory (EDA) framework of De Mast and Trip (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i27" href="#"><span class="off-screen">Citation</span>2007</a></span>) applies to text data. The resulting ETDA principles are developed using examples from real-world quality improvement projects. The purposes of the overall analysis can be identified first. Then, ETDA involves an initial “preprocessing” step which could involve clustering, sentiment analysis, or another procedure which transforms the text into quantitative inputs for further analysis. The first set of proposed principles and methods (A) primarily relates to identification of key input and output variables. The second set relates to using transparent word counts or weighted counts (B) and the third relates to studying the nature of the variation (C). Methods for investigating deviations from a standard are then studied (D) and methods for exploring the salient features are described (E).</p>
+ <p>While automated algorithms could help in certain steps such as text data analysis and display (<i>Step 2</i>) and identification of salient features (<i>Step 3</i>), it is difficult to imagine that interpretation (<i>Step 4</i>) could easily be automated. In our examples, it required intuition to relate the topics or semantic relationships with possible causes of interest to practitioners. Automatic preprocessing, however, is perhaps the main motivation for the use of text modeling methods with millions of Tweets, for example, being transformed in seconds into a Pareto chart as in <a href="#F0001">Figure 1</a>.</p>
+ <p>Also, it should be noted that ETDA only generates hypotheses and not confirmed results. Additional data collection and CDA are generally needed to generate facts about the causes of problems. The subjectivity of text, clustering, and semantic analyses only compound the inherent indeterminacy of EDA. Therefore, if the results of ordinary EDA are regarded skeptically, this skepticism should likely be deepened for EDTA.</p>
+ <p>Data available for ETDA are growing and likely compromises most of all data. Yet, there is the common issue that available data might not be representative of the relevant populations. In Example 2, inputs from Consumer Reports members may not be representative of the owner population. Therefore, there is a need to combine EDTA with other statistical methods in the analysis process. Further, while there is no clear problem with using the same data to generate and test hypotheses, the subjectivity of text data suggest an additional burden in collecting new data for confirmation will often be needed. Text data might rarely seem appropriate for proving physical effects in a manner like other types of engineering data.</p>
+ <p>We developed ETDA with various forms of text inputs to quality and design engineering in mind: surveys, complaint transcripts, customer ratings, or maintenance squawks. We hope that the principles, methods, and diagrams introduced here may become a standard part of the analysis process for these types of data. Then, more promising hypotheses about the causes for quality problems and avenues for improvements may be generated in part because the clinical “mind set” commonly in use relating to other types of data can be extended to text data.</p>
+ <p>Many topics are available for future research. Example 4 illustrates the partial exploitation of the document topic matrix (DTM) from LDA to visualize the time series of issues. Other possibilities for exploiting the DTM matrices include clustering the documents and retrieving documents primarily relevant to specific topics which can be explored. Additional investigations can illuminate relevant routines in software familiar to quality professionals including in R, Python, SAS, JMP, and SPSS Modeler.</p>
+</div>

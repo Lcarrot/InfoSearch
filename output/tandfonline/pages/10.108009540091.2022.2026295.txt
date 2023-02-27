@@ -1,0 +1,4115 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">1. Introduction</h2>
+ <p>Entity recognition (NER) (Yang et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0055" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018</a></span>) and relation extraction (RE) (Liu et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2015</a></span>; Zhao et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021a</a></span>) are two important tasks in text mining. When a sentence is given, the entities and their types are detected first by entity recognition. Take the sentence in Figure&nbsp;<a href="#F0001">1</a> as an example, “Richard” and “Celeste” are two entities with type People(Peop), and “Ohio” is another entity with type Location(Loc). Then, the semantic relationships between the entities will be determined by relation extraction. For example, there is a “Live in” relation between entities in Figure <a href="#F0001">1</a>. In this way, the relationship structure of entities in unstructured texts can be obtained automatically (Liu et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2019</a></span>; Sharma et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2020</a></span>; Zhao et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0061" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2020</a></span>). Accordingly, entity recognition and relation extraction play essential roles in information extraction (IE). Besides, they are enablers for other natural language processing tasks, such as knowledge base population (Viswanathan et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2015</a></span>), information retrieval (Chen et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2015</a></span>), and question answering (Yih et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0056" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2016</a></span>).</p>
+ <div class="figure figureViewer" id="F0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Entity and relation collaborative extraction approach based on multi-head attention and gated mechanism</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Wei"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Wei"><span class="NLM_given-names">Wei</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Shan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Shan"><span class="NLM_given-names">Shan</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chen%2C+Shuhui"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chen%2C+Shuhui"><span class="NLM_given-names">Shuhui</span> Chen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Weng%2C+Tien-Hsiung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Weng%2C+Tien-Hsiung"><span class="NLM_given-names">Tien-Hsiung</span> Weng</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kang%2C+WenJie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kang%2C+WenJie"><span class="NLM_given-names">WenJie</span> Kang</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2026295">https://doi.org/10.1080/09540091.2022.2026295</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>04 February 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> An sentence example from the CoNLL04 dataset.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/medium/ccos_a_2026295_f0001_oc.jpg" loading="lazy" height="50" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> An sentence example from the CoNLL04 dataset.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0001">
+  <div class="figureFootNote-F0001"></div>
+ </div>
+ <p></p>
+ <p>At first, NER and RE are generally organised as two successive subtasks. A major disadvantage of such an approach is that errors can propagate and spread across subtasks. Specifically, errors generated in NER could be propagated to RE (Li et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2017</a></span>). Another disadvantage is that the correlations between two subtasks are ignored, while these correlations may benefit the coordination between these two subtasks. Recently, joint models have been put forward to realise NER and RE simultaneously (Li et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2017</a></span>; Nayak &amp;&nbsp;Ng,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2020</a></span>; Xiao et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0053" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2020</a></span>), which merge these two subtasks into an individual task. In other words, for an input, joint models extract the entities and relations in the input text simultaneously. Therefore, the above two disadvantages can be eliminated in the joint models. Such models have achieved gratifying results. Miwa and&nbsp;Bansal&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2016</a></span>), Katiyar and&nbsp;Cardie&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2017</a></span>), Bekoulis et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018a</a></span>), Nguyen and&nbsp;Verspoor&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2019</a></span>) and Eberts and&nbsp;Ulges&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2019</a></span>). However, we notice that two limitations still exist in those models:</p>
+ <ol class="NLM_list NLM_list-list_type-order">
+  <li><p class="inline">Little work has been done to utilise label information in the joint model. However, the entity types contained in the label information play an important role in RE. To our best knowledge, few studies make sufficient use of label space information in their joint model. Some exceptions are Miwa and&nbsp;Bansal&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2016</a></span>), Bekoulis et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018a</a></span>) and Wan et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0049" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021</a></span>), which fuse label space information in their model by simple feature concatenation. Those works are beneficial attempts that prove the positive contribution of label information to the joint extraction task.</p></li>
+  <li><p class="inline">Several RNN- and CNN-based models, such as tree-LSTM structured model (Miwa &amp;&nbsp;Bansal,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2016</a></span>) and globally normalised CNN-model (Adel &amp;&nbsp;Schütze,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2017</a></span>), are proposed to realise the joint extraction task. Furthermore, Bekoulis et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018a</a></span>) regards the joint extraction as a multi-head selection problem and proposes a multi-head model. Wadden et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0048" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2019</a></span>) extract global features of context to extend graph neural network (GNN) for the joint task. In these models, all entities in the sentence are treated equally. However, the importance of each entity in the joint extraction task is different. In this case, noises will likely be introduced into the model if all entities are used indiscriminately, especially for the multi-head model.</p></li>
+ </ol>
+ <p></p>
+ <p>To address these two limitations, a novel end-to-end joint entity and relation extraction model, called Gated and Attentive Network Collaborative Extracting (GANCE), is proposed in this paper.</p>
+ <p>Firstly, the label information is exploited in GANCE, and then a gating mechanism is applied to fuse token and label information dynamically. In this way, the entity types in label information are utilised by GANCE and benefit the performance of relation extraction.</p>
+ <p>Secondly, a multi-head attention module is designed to capture the attention weight between tokens. Then, another multi-head attention module is used to refine the attention weight after the label information is integrated by gating. Based on these two-layer multi-head attention modules, the relevance of the entities can be extracted and the potential relevant entities can be detected. Since the relevant entities could conduce to the RE task (Zhao et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021a</a></span>), it is anticipated that GANCE could achieve better performance on RE than the existing models.</p>
+ <p>Finally, the correctness and feasibility of the proposed GANCE are validated based on two public datasets, i.e, CoNLL04 and ADE. Furthermore, the comparison results between several competitive approaches and GANCE show that GANCE could achieve better performance.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">2. Related work</h2>
+ <div id="S002-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">2.1. Entity and relation extraction</h3>
+  <p>Early entity and relation extraction are mostly configured as two subtasks. Then two models (NER model and RE model) are designed to solve the two subtasks in pipeline way (Chan &amp;&nbsp;Roth,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2011</a></span>; Miwa et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2009</a></span>; Nadeau &amp;&nbsp;Sekine,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2007</a></span>). Yang and&nbsp;Cardie&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0054" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2013</a></span>) and Miwa and&nbsp;Sasaki&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2014</a></span>) propose the joint extraction model. However, early joint models involve non-trivial feature engineering and rely heavily on NLP tools.</p>
+  <p>Recently, with the development of deep learning, joint models tend to adopt RNN-based and CNN-based structures to skip feature engineering (Alberto,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018</a></span>; Chiang et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2019</a></span>; de Jesús Rubio,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2009</a></span>; de Rubio,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2020</a></span>; Furlán et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2020</a></span>; Islas et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021</a></span>; Lin et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2020</a></span>; Shen et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021</a></span>). Miwa and&nbsp;Bansal&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2016</a></span>) design a bidirectional tree-structured RNNs model, which makes full use of dependency tree and word sequence information to extract relationships between entities. Wang et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0051" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2016</a></span>) propose multi-level attention CNNs to extract relations. Similarly, Katiyar and&nbsp;Cardie&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2017</a></span>) introduce a traditional attention model to extract relations. Li et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2019</a></span>) design a multi-round problem method for entity and relation extraction. This method applies BERT as the core model and achieves promising performance on multiple datasets. Bekoulis et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018b</a></span>) propose a multi-head mechanism to predict multiple relationships. However, it requires manual feature extraction and the assistance of external tools. Bekoulis et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018b</a></span>) encode the whole sentence by a BiLSTM. Then the output is fed into a multi-head mechanism.</p>
+ </div>
+ <div id="S002-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">2.2. Label space information</h3>
+  <p>The information extraction problem can be regarded as a sequence labelling problem, which will generate label space information (label information for short). Sequence labelling aims to give a label to each element in the sequence. In general, in NLP, a sequence refers to a sentence, and an element refers to a word in the sentence. Named Entity Recognition (NER) is a subtask of information extraction, which needs to locate and classify elements. For NER, its label information includes the locations and types of elements. In this paper, the BIO joint tagging method is used to tag each element with “<i>B-X</i>”, “<i>I-X</i>”, or “<i>O</i>”. Where “<i>B-X</i>” indicates the beginning of the element of type <i>X</i>, “<i>I-X</i>” indicates the middle position of the element of type <i>X</i>, and “<i>O</i>”indicates that the element does not have a type. As the entity “Richard Celeste” shown in Figure <a href="#F0001">1</a>, “<i>Richard</i>” is labelled as “<i>B-Peop</i>” since it is the first element of the entity with the type name. Then “<i>Celeste</i>” is labelled as “<i>I-Peop</i>”. Since “<i>Celeste</i>” is followed by a word labelled “<i>O</i>”, it can be inferred that “<i>Celeste</i>” is the end boundary of this entity.</p>
+  <p>Some studies have proved that label space information does play a positive role in entity relation extraction. To facilitate zero-shot learning, label space information is first applied to computer vision (Zhang &amp;&nbsp;Saligrama,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2016</a></span>). Recently, label information has been widely used in other NLP tasks. Yu et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2019</a></span>) apply label space information to text classification task, Bekoulis et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018b</a></span>) and Miwa and&nbsp;Bansal&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2016</a></span>) has utilised the label information by simple feature concatenation in their RE model, Wang et&nbsp;al. (Wang et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0052" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021</a></span>) proposes a new method to eliminate the different treatment on the two sub-tasks' (i.e. entity detection and relation classification) label spaces, and a unified label space is used for entity relation extraction. Previous studies have proved that label space information plays a positive role in entity relation extraction.</p>
+ </div>
+ <div id="S002-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">2.3. Relevant entity</h3>
+  <p>In other words, the stronger the correlation between two entities, these two entities are more likely to be relevant entities, which further indicates there may be a relationship between them. For example, assuming A is an entity with type “Location”, B is an entity with type “people”, and C is an entity with type “ organisation”. Compared with A and C, A and B would have a stronger correlation for the “Live in” relationship than that of A and C. Therefore, there is a greater possibility of A and B having a “Live in” relationship in one sentence.</p>
+  <p>Based on this observation, we use the attention mechanism to capture the correlation between entities and potential relevant entities, which is helpful to our entity relation extraction. In addition, the traditional neural network model can only learn the close-distance relevant entities, it is difficult to capture long-distance relevant entities. Hence, a multi-head attention mechanism is used in GANCE to solve this problem.</p>
+ </div>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i8" class="section-heading-2">3. The GANCE model</h2>
+ <p>This section provides the detailed design of GANCE. The overall flowchart of GANCE is illustrated in Figure&nbsp;<a href="#F0002">2</a>. Firstly, token representation is obtained by a BiLSTM and a multi-head attention module (Section&nbsp;<a href="#S003-S2001-S3001">3.1.1</a>). Then, a low-dimension label representation is obtained by randomly initialised vectors (Section&nbsp;<a href="#S003-S2001-S3002">3.1.2</a>). Next, a gating mechanism and another multi-head attention module are carefully designed to fuse and update the token and label representation (Section&nbsp;<a href="#S003-S2002">3.2</a>). Meanwhile, conditional random field (CRF) (Lafferty et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2002</a></span>) and multi-head mechanism&nbsp;(Bekoulis et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018a</a></span>) are employed as the decoding module for NER and RE, respectively (Section&nbsp;<a href="#S003-S2003">3.3</a>). Lastly, the training and inference processes are described (Section&nbsp;<a href="#S003-S2004">3.4</a>).</p>
+ <div class="figure figureViewer" id="F0002">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Entity and relation collaborative extraction approach based on multi-head attention and gated mechanism</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Wei"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Wei"><span class="NLM_given-names">Wei</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Shan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Shan"><span class="NLM_given-names">Shan</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chen%2C+Shuhui"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chen%2C+Shuhui"><span class="NLM_given-names">Shuhui</span> Chen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Weng%2C+Tien-Hsiung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Weng%2C+Tien-Hsiung"><span class="NLM_given-names">Tien-Hsiung</span> Weng</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kang%2C+WenJie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kang%2C+WenJie"><span class="NLM_given-names">WenJie</span> Kang</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2026295">https://doi.org/10.1080/09540091.2022.2026295</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>04 February 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 2. </span> The overall flowchart of GANCE. Token representation is first obtained by a BiLSTM and a multi-head attention module. Then, a low-dimension label representation is obtained by embedding. Next, a gating mechanism and another multi-head attention module are carefully designed to fuse token and label information.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/medium/ccos_a_2026295_f0002_oc.jpg" loading="lazy" height="290" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0002">
+  <p class="captionText"><span class="captionLabel">Figure 2. </span> The overall flowchart of GANCE. Token representation is first obtained by a BiLSTM and a multi-head attention module. Then, a low-dimension label representation is obtained by embedding. Next, a gating mechanism and another multi-head attention module are carefully designed to fuse token and label information.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0002">
+  <div class="figureFootNote-F0002"></div>
+ </div>
+ <p></p>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">3.1. Token and label representation</h3>
+  <div id="S003-S2001-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i11">3.1.1. Token representation</h4>
+   <p><b>Word-level Encoder:</b> Recently, distributed feature representation has been widely used in NLP, especially for the deep learning methods (Luo et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018</a></span>). Based on distributed feature representation, the discrete words in a sentence can be mapped into continuous input embeddings. In this paper, word embedding, character embedding, and ELMO embedding (Peters et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018</a></span>) are utilised and concatenated as the final embedding. Accordingly, given a sentence <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       W
+      </mi><mo>
+       =
+      </mo><msub>
+       <mi>
+        w
+       </mi>
+       <mrow>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><mo>
+       …
+      </mo><msub>
+       <mi>
+        w
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> as a sequence of tokens, each token <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> is mapped into a real-valued embedding <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0003.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub><mo>
+       ∈
+      </mo><msup>
+       <mrow>
+        <mi mathvariant="double-struck">
+         R
+        </mi>
+       </mrow>
+       <mrow>
+        <msub>
+         <mi>
+          d
+         </mi>
+         <mrow>
+          <mi>
+           w
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+      </msup>
+     </math></span>. This embedding representation implies the semantic and syntactic meanings of the token. Therefore, the sequence <i>W</i> is transformed into a set of embedding vectors. Then, a BiLSTM is utilised to encode those embedding vectors. Denote the embedding vectors of sequence <i>W</i> as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0004.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       X
+      </mi><mo>
+       =
+      </mo><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        x
+       </mi>
+       <mrow>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><mo>
+       …
+      </mo><mo>
+       ,
+      </mo><msub>
+       <mi>
+        x
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+       </mrow>
+      </msub><mo stretchy="false">
+       )
+      </mo>
+     </math></span>, where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0005.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       n
+      </mi>
+     </math></span> is the length of the sentence. The BiLSTM takes <i>X</i> as input, as shown in Equations&nbsp;(<a href="#M0001">1</a>)–(<a href="#M0002">2</a>). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+       <mtr>
+        <mtd>
+         <mover>
+          <msub>
+           <mi>
+            h
+           </mi>
+           <mrow>
+            <mi>
+             t
+            </mi>
+           </mrow>
+          </msub>
+          <mo>
+           →
+          </mo>
+         </mover>
+        </mtd>
+        <mtd>
+         <mi></mi>
+         <mo>
+          =
+         </mo>
+         <mover>
+          <mrow>
+           <mi>
+            L
+           </mi>
+           <mi>
+            S
+           </mi>
+           <mi>
+            T
+           </mi>
+           <mi>
+            M
+           </mi>
+          </mrow>
+          <mo>
+           →
+          </mo>
+         </mover>
+         <mo stretchy="false">
+          (
+         </mo>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mrow>
+           <mi>
+            t
+           </mi>
+          </mrow>
+         </msub>
+         <mo>
+          ,
+         </mo>
+         <mover>
+          <msub>
+           <mi>
+            h
+           </mi>
+           <mrow>
+            <mi>
+             t
+            </mi>
+            <mo>
+             −
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+          </msub>
+          <mo>
+           →
+          </mo>
+         </mover>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+       <mtr>
+        <mtd>
+         <mover>
+          <msub>
+           <mi>
+            h
+           </mi>
+           <mrow>
+            <mi>
+             t
+            </mi>
+           </mrow>
+          </msub>
+          <mo>
+           ←
+          </mo>
+         </mover>
+        </mtd>
+        <mtd>
+         <mi></mi>
+         <mo>
+          =
+         </mo>
+         <mover>
+          <mrow>
+           <mi>
+            L
+           </mi>
+           <mi>
+            S
+           </mi>
+           <mi>
+            T
+           </mi>
+           <mi>
+            M
+           </mi>
+          </mrow>
+          <mo>
+           ←
+          </mo>
+         </mover>
+         <mo stretchy="false">
+          (
+         </mo>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mrow>
+           <mi>
+            t
+           </mi>
+          </mrow>
+         </msub>
+         <mo>
+          ,
+         </mo>
+         <mover>
+          <msub>
+           <mi>
+            h
+           </mi>
+           <mrow>
+            <mi>
+             t
+            </mi>
+            <mo>
+             +
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+          </msub>
+          <mo>
+           ←
+          </mo>
+         </mover>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span>Afterwards, the outputs of the forward and backward LSTM at each timestep are concatenated as the output <i>H</i> of the BiLSTM, as shown in equation(3). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0003.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        h
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><mrow>
+       <mo>
+        [
+       </mo>
+       <mover>
+        <msub>
+         <mi>
+          h
+         </mi>
+         <mrow>
+          <mi>
+           t
+          </mi>
+         </mrow>
+        </msub>
+        <mo>
+         →
+        </mo>
+       </mover>
+       <mo>
+        ;
+       </mo>
+       <mover>
+        <msub>
+         <mi>
+          h
+         </mi>
+         <mrow>
+          <mi>
+           t
+          </mi>
+         </mrow>
+        </msub>
+        <mo>
+         ←
+        </mo>
+       </mover>
+       <mo>
+        ]
+       </mo>
+      </mrow><mspace width="1em"></mspace><mi>
+       H
+      </mi><mo>
+       =
+      </mo><mrow>
+       <mo>
+        [
+       </mo>
+       <msub>
+        <mi>
+         h
+        </mi>
+        <mn>
+         1
+        </mn>
+       </msub>
+       <mo>
+        ,
+       </mo>
+       <msub>
+        <mi>
+         h
+        </mi>
+        <mn>
+         2
+        </mn>
+       </msub>
+       <mo>
+        ,
+       </mo>
+       <mo>
+        …
+       </mo>
+       <mo>
+        ,
+       </mo>
+       <msub>
+        <mi>
+         h
+        </mi>
+        <mi>
+         n
+        </mi>
+       </msub>
+       <mo>
+        ]
+       </mo>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span><b>Multi-head attention:</b> Multi-head attention allows the model to jointly attend to information from different representation subspaces at different positions. In this paper, our attention layers are both based on the multi-head attention formulation (Vaswani et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0046" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2017</a></span>). One critical advantage of multi-head attention is its ability to model the long-range dependency, which is beneficial for extracting relevant entities. A scaled dot product is chosen for the compatibility function in multi-head attention. Compared with the standard additive attention mechanism (Bahdanau et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2014</a></span>), which is implemented using a one-layer feed-forward neural network, scaled dot product enables efficient computation. Given a matrix of <i>n</i> query vectors <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0006.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       Q
+      </mi><mo>
+       ∈
+      </mo><msup>
+       <mrow>
+        <mi mathvariant="double-struck">
+         R
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mo>
+         ∗
+        </mo>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msup>
+     </math></span>, keys vectors <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0007.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       K
+      </mi><mo>
+       ∈
+      </mo><msup>
+       <mrow>
+        <mi mathvariant="double-struck">
+         R
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mo>
+         ∗
+        </mo>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msup>
+     </math></span> and value vectors <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0008.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       V
+      </mi><mo>
+       ∈
+      </mo><msup>
+       <mrow>
+        <mi mathvariant="double-struck">
+         R
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mo>
+         ∗
+        </mo>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msup>
+     </math></span>. The multi-head attention is calculated as Equations&nbsp;(<a href="#M0004">4</a>)–(<a href="#M0006">6</a>): <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0004.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+       <mtr>
+        <mtd>
+         <mi>
+          A
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          n
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          n
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <mi>
+          Q
+         </mi>
+         <mo>
+          ,
+         </mo>
+         <mi>
+          K
+         </mi>
+         <mo>
+          ,
+         </mo>
+         <mi>
+          V
+         </mi>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mtd>
+        <mtd>
+         <mi></mi>
+         <mo>
+          =
+         </mo>
+         <mi>
+          s
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          f
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          m
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          x
+         </mi>
+         <mrow>
+          <mo>
+           (
+          </mo>
+          <mfrac>
+           <mrow>
+            <mi>
+             Q
+            </mi>
+            <msup>
+             <mi>
+              K
+             </mi>
+             <mrow>
+              <mi>
+               T
+              </mi>
+             </mrow>
+            </msup>
+           </mrow>
+           <msqrt>
+            <mn>
+             2
+            </mn>
+            <mi>
+             d
+            </mi>
+           </msqrt>
+          </mfrac>
+          <mo>
+           )
+          </mo>
+         </mrow>
+         <mi>
+          V
+         </mi>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0005.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+       <mtr>
+        <mtd>
+         <mi>
+          h
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          a
+         </mi>
+         <msub>
+          <mi>
+           d
+          </mi>
+          <mrow>
+           <mi>
+            i
+           </mi>
+          </mrow>
+         </msub>
+        </mtd>
+        <mtd>
+         <mi></mi>
+         <mo>
+          =
+         </mo>
+         <mi>
+          A
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          n
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          n
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <mi>
+          Q
+         </mi>
+         <msubsup>
+          <mi>
+           W
+          </mi>
+          <mrow>
+           <mi>
+            i
+           </mi>
+          </mrow>
+          <mrow>
+           <mi>
+            Q
+           </mi>
+          </mrow>
+         </msubsup>
+         <mo>
+          ,
+         </mo>
+         <mi>
+          K
+         </mi>
+         <msubsup>
+          <mi>
+           W
+          </mi>
+          <mrow>
+           <mi>
+            i
+           </mi>
+          </mrow>
+          <mrow>
+           <mi>
+            K
+           </mi>
+          </mrow>
+         </msubsup>
+         <mo>
+          ,
+         </mo>
+         <mi>
+          V
+         </mi>
+         <msubsup>
+          <mi>
+           W
+          </mi>
+          <mrow>
+           <mi>
+            i
+           </mi>
+          </mrow>
+          <mrow>
+           <mi>
+            V
+           </mi>
+          </mrow>
+         </msubsup>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0006.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+       <mtr>
+        <mtd>
+         <mi>
+          M
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <mi>
+          Q
+         </mi>
+         <mo>
+          ,
+         </mo>
+         <mi>
+          K
+         </mi>
+         <mo>
+          ,
+         </mo>
+         <mi>
+          V
+         </mi>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mtd>
+        <mtd>
+         <mi></mi>
+         <mo>
+          =
+         </mo>
+         <mi>
+          C
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          n
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <mi>
+          h
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          a
+         </mi>
+         <msub>
+          <mi>
+           d
+          </mi>
+          <mrow>
+           <mn>
+            1
+           </mn>
+          </mrow>
+         </msub>
+         <mo>
+          ,
+         </mo>
+         <mo>
+          …
+         </mo>
+         <mo>
+          ,
+         </mo>
+         <mi>
+          h
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          a
+         </mi>
+         <msub>
+          <mi>
+           d
+          </mi>
+          <mrow>
+           <mi>
+            h
+           </mi>
+          </mrow>
+         </msub>
+         <mo stretchy="false">
+          )
+         </mo>
+         <msup>
+          <mi>
+           W
+          </mi>
+          <mrow>
+           <mi>
+            o
+           </mi>
+          </mrow>
+         </msup>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6) </span></span></span></span>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0009.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       h
+      </mi><mi>
+       e
+      </mi><mi>
+       a
+      </mi><msub>
+       <mi>
+        d
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> refers to the <i>i</i>th head of multi-head attention. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0010.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         Q
+        </mi>
+       </mrow>
+      </msubsup><mo>
+       ∈
+      </mo><msup>
+       <mrow>
+        <mi mathvariant="double-struck">
+         R
+        </mi>
+       </mrow>
+       <mrow>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+        <mo>
+         ∗
+        </mo>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+        <mrow>
+         <mo>
+          /
+         </mo>
+        </mrow>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msup><mo>
+       ,
+      </mo><msubsup>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         K
+        </mi>
+       </mrow>
+      </msubsup><mo>
+       ∈
+      </mo><msup>
+       <mrow>
+        <mi mathvariant="double-struck">
+         R
+        </mi>
+       </mrow>
+       <mrow>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+        <mo>
+         ∗
+        </mo>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+        <mrow>
+         <mo>
+          /
+         </mo>
+        </mrow>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msup>
+     </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0011.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         V
+        </mi>
+       </mrow>
+      </msubsup><mo>
+       ∈
+      </mo><msup>
+       <mrow>
+        <mi mathvariant="double-struck">
+         R
+        </mi>
+       </mrow>
+       <mrow>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+        <mo>
+         ∗
+        </mo>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+        <mrow>
+         <mo>
+          /
+         </mo>
+        </mrow>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msup>
+     </math></span>, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0012.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msup>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msup><mo>
+       ∈
+      </mo><msup>
+       <mrow>
+        <mi mathvariant="double-struck">
+         R
+        </mi>
+       </mrow>
+       <mrow>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+        <mo>
+         ∗
+        </mo>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msup>
+     </math></span> are trainable parameter matrices.</p>
+   <p>For simplicity, the above multi-head attention module is defined as Equation&nbsp;(<a href="#M0007">7</a>): <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0007.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(7) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       M
+      </mi><mo>
+       =
+      </mo><mi>
+       S
+      </mi><mi>
+       A
+      </mi><mi>
+       N
+      </mi><mo stretchy="false">
+       (
+      </mo><mi>
+       Q
+      </mi><mo>
+       ,
+      </mo><mi>
+       K
+      </mi><mo>
+       ,
+      </mo><mi>
+       V
+      </mi><mo stretchy="false">
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(7) </span></span></span></span>As shown in Figure&nbsp;<a href="#F0003">3</a>(a) and Equation&nbsp;(<a href="#M0008">8</a>), the output <i>H</i> of the BiLSTM is regarded as queries, keys and values matrices and is fed into the multi-head attention. Finally, the token representation is generated, which denotes as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0013.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msup>
+       <mi>
+        M
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msup><mo>
+       ,
+      </mo><msup>
+       <mi>
+        M
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msup><mo>
+       ∈
+      </mo><msup>
+       <mrow>
+        <mi mathvariant="double-struck">
+         R
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mo>
+         ∗
+        </mo>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msup>
+     </math></span>. For the parallel attention heads in GANCE, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0014.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       h
+      </mi><mo>
+       =
+      </mo><mn>
+       8
+      </mn>
+     </math></span> is employed. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0008.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0008.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0008" class="disp-formula-label">(8) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msup>
+       <mi>
+        M
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msup><mo>
+       =
+      </mo><mi>
+       S
+      </mi><mi>
+       A
+      </mi><mi>
+       N
+      </mi><mo stretchy="false">
+       (
+      </mo><mi>
+       H
+      </mi><mo>
+       ,
+      </mo><mi>
+       H
+      </mi><mo>
+       ,
+      </mo><mi>
+       H
+      </mi><mo stretchy="false">
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0008" class="disp-formula-label">(8) </span></span></span></span></p>
+   <div class="figure figureViewer" id="F0003">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Entity and relation collaborative extraction approach based on multi-head attention and gated mechanism</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Wei"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Wei"><span class="NLM_given-names">Wei</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Shan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Shan"><span class="NLM_given-names">Shan</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chen%2C+Shuhui"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chen%2C+Shuhui"><span class="NLM_given-names">Shuhui</span> Chen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Weng%2C+Tien-Hsiung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Weng%2C+Tien-Hsiung"><span class="NLM_given-names">Tien-Hsiung</span> Weng</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kang%2C+WenJie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kang%2C+WenJie"><span class="NLM_given-names">WenJie</span> Kang</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/09540091.2022.2026295">https://doi.org/10.1080/09540091.2022.2026295</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>04 February 2022
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 3. </span> Two multi-head attention modules with different types of inputs. One multi-head attention module takes features <i>H</i> as input and output the token representation <span class="NLM_disp-formula-image inline-formula rs_preserve">
+         <noscript>
+          <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0015.gif" alt="">
+         </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+         <math>
+          <msup>
+           <mi>
+            M
+           </mi>
+           <mrow>
+            <mi>
+             t
+            </mi>
+           </mrow>
+          </msup>
+         </math></span>. Another multi-head attention takes features <span class="NLM_disp-formula-image inline-formula rs_preserve">
+         <noscript>
+          <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0016.gif" alt="">
+         </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+         <math>
+          <msup>
+           <mi>
+            M
+           </mi>
+           <mrow>
+            <mi>
+             F
+            </mi>
+           </mrow>
+          </msup>
+         </math></span> as input and output the token-label representation <span class="NLM_disp-formula-image inline-formula rs_preserve">
+         <noscript>
+          <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0017.gif" alt="">
+         </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+         <math>
+          <msup>
+           <mi>
+            M
+           </mi>
+           <mrow>
+            <mi>
+             t
+            </mi>
+            <mo>
+             −
+            </mo>
+            <mi>
+             l
+            </mi>
+           </mrow>
+          </msup>
+         </math></span>.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/medium/ccos_a_2026295_f0003_oc.jpg" loading="lazy" height="294" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0003">
+    <p class="captionText"><span class="captionLabel">Figure 3. </span> Two multi-head attention modules with different types of inputs. One multi-head attention module takes features <i>H</i> as input and output the token representation <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0015.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msup>
+        <mi>
+         M
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+        </mrow>
+       </msup>
+      </math></span>. Another multi-head attention takes features <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0016.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msup>
+        <mi>
+         M
+        </mi>
+        <mrow>
+         <mi>
+          F
+         </mi>
+        </mrow>
+       </msup>
+      </math></span> as input and output the token-label representation <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0017.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msup>
+        <mi>
+         M
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mo>
+          −
+         </mo>
+         <mi>
+          l
+         </mi>
+        </mrow>
+       </msup>
+      </math></span>.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0003">
+    <div class="figureFootNote-F0003"></div>
+   </div>
+   <p></p>
+  </div>
+  <div id="S003-S2001-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i21">3.1.2. Label representation</h4>
+   <p>As illustrated in Figure <a href="#F0001">1</a>, the label with BIO (Beginning, Inside, Outside) format is used in this paper for NER (Zhao et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021a</a></span>,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0060" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021b</a></span>). Motivated by Miwa and&nbsp;Bansal&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2016</a></span>), each label is represented by a randomly initialised embedding vector, whose size denotes as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0018.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        d
+       </mi>
+       <mi>
+        l
+       </mi>
+      </msub>
+     </math></span>. After the fine-tune during the training, the generated vector sequence <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0019.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       L
+      </mi><mo>
+       ∈
+      </mo><msup>
+       <mrow>
+        <mi mathvariant="double-struck">
+         R
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mo>
+         ∗
+        </mo>
+        <msub>
+         <mi>
+          d
+         </mi>
+         <mi>
+          l
+         </mi>
+        </msub>
+       </mrow>
+      </msup>
+     </math></span> is used as the label representation. Note that gold labels are used only during training. For inference, predicted labels are utilised. In other words, the entity labels predicted by the NER model (CRF) are used in the process of relation inference.</p>
+  </div>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i22">3.2. Token-Label fusion representation</h3>
+  <p>To further exploit the token and label information, it is necessary to fuse the token representation and label representation. Instead of using naive fusion ways such as simple concatenation or <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0020.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msup>
+      <mi>
+       M
+      </mi>
+      <mrow>
+       <mi>
+        F
+       </mi>
+      </mrow>
+     </msup><mo>
+      =
+     </mo><msup>
+      <mi>
+       M
+      </mi>
+      <mrow>
+       <mi>
+        t
+       </mi>
+      </mrow>
+     </msup><mo>
+      +
+     </mo><mi>
+      L
+     </mi>
+    </math></span>, a gating mechanism and a multi-head attention module are applied for representations fusion and update in GANCE. The motivation behind this design is that the importance of the representations should be determined by the specific context. Hence the fusion should be implemented in a dynamic form, which could be realised by the gate and multi-head attention mechanism.</p>
+  <p>At first, gating is used to fuse the token and label representation as Equations (<a href="#M0009">9</a>)–(<a href="#M0010">10</a>): <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0009.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0009" class="disp-formula-label">(9) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mi>
+         α
+        </mi>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mi>
+         σ
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <msub>
+         <mi>
+          W
+         </mi>
+         <mrow>
+          <mi>
+           t
+          </mi>
+         </mrow>
+        </msub>
+        <msup>
+         <mi>
+          M
+         </mi>
+         <mrow>
+          <mi>
+           t
+          </mi>
+         </mrow>
+        </msup>
+        <mo>
+         +
+        </mo>
+        <msub>
+         <mi>
+          W
+         </mi>
+         <mrow>
+          <mi>
+           l
+          </mi>
+         </mrow>
+        </msub>
+        <mi>
+         L
+        </mi>
+        <mo>
+         +
+        </mo>
+        <msub>
+         <mi>
+          b
+         </mi>
+         <mrow>
+          <mi>
+           f
+          </mi>
+         </mrow>
+        </msub>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0009" class="disp-formula-label">(9) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0010.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0010" class="disp-formula-label">(10) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <msup>
+         <mi>
+          M
+         </mi>
+         <mrow>
+          <mi>
+           F
+          </mi>
+         </mrow>
+        </msup>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mi>
+         α
+        </mi>
+        <mo>
+         ⊙
+        </mo>
+        <msup>
+         <mi>
+          M
+         </mi>
+         <mrow>
+          <mi>
+           t
+          </mi>
+         </mrow>
+        </msup>
+        <mo>
+         +
+        </mo>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mn>
+         1
+        </mn>
+        <mo>
+         −
+        </mo>
+        <mi>
+         α
+        </mi>
+        <mo stretchy="false">
+         )
+        </mo>
+        <mo>
+         ⊙
+        </mo>
+        <mi>
+         L
+        </mi>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0010" class="disp-formula-label">(10) </span></span></span></span>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0021.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       W
+      </mi>
+      <mrow>
+       <mi>
+        t
+       </mi>
+      </mrow>
+     </msub><mo>
+      ,
+     </mo><msub>
+      <mi>
+       W
+      </mi>
+      <mrow>
+       <mi>
+        l
+       </mi>
+      </mrow>
+     </msub><mo>
+      ∈
+     </mo><msup>
+      <mrow>
+       <mi mathvariant="double-struck">
+        R
+       </mi>
+      </mrow>
+      <mrow>
+       <mn>
+        2
+       </mn>
+       <mi>
+        d
+       </mi>
+       <mo>
+        ∗
+       </mo>
+       <mn>
+        2
+       </mn>
+       <mi>
+        d
+       </mi>
+      </mrow>
+     </msup><mo>
+      ,
+     </mo><msub>
+      <mi>
+       b
+      </mi>
+      <mrow>
+       <mi>
+        f
+       </mi>
+      </mrow>
+     </msub><mo>
+      ∈
+     </mo><msup>
+      <mrow>
+       <mi mathvariant="double-struck">
+        R
+       </mi>
+      </mrow>
+      <mrow>
+       <mn>
+        2
+       </mn>
+       <mi>
+        d
+       </mi>
+      </mrow>
+     </msup><mo>
+      .
+     </mo><mo>
+      ⊙
+     </mo>
+    </math></span> is element-wise multiplication.</p>
+  <p>Then, a multi-head attention module takes <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0022.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msup>
+      <mi>
+       M
+      </mi>
+      <mrow>
+       <mi>
+        F
+       </mi>
+      </mrow>
+     </msup>
+    </math></span> as its input and outputs the updated token-label representation. As shown in Figure <a href="#F0003">3</a>(b), the multi-head attention component feeds <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0023.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msup>
+      <mi>
+       M
+      </mi>
+      <mrow>
+       <mi>
+        F
+       </mi>
+      </mrow>
+     </msup>
+    </math></span> as queries, keys, and values matrices by using different linear projections. Finally, the fused token-label representation <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0024.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msup>
+      <mi>
+       M
+      </mi>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        l
+       </mi>
+      </mrow>
+     </msup>
+    </math></span> is computed as Equation(11) : <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0011.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0011" class="disp-formula-label">(11) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msup>
+      <mi>
+       M
+      </mi>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        l
+       </mi>
+      </mrow>
+     </msup><mo>
+      =
+     </mo><mi>
+      S
+     </mi><mi>
+      A
+     </mi><mi>
+      N
+     </mi><mo stretchy="false">
+      (
+     </mo><msup>
+      <mi>
+       M
+      </mi>
+      <mrow>
+       <mi>
+        F
+       </mi>
+      </mrow>
+     </msup><mo>
+      ,
+     </mo><msup>
+      <mi>
+       M
+      </mi>
+      <mrow>
+       <mi>
+        F
+       </mi>
+      </mrow>
+     </msup><mo>
+      ,
+     </mo><msup>
+      <mi>
+       M
+      </mi>
+      <mrow>
+       <mi>
+        F
+       </mi>
+      </mrow>
+     </msup><mo stretchy="false">
+      )
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0011" class="disp-formula-label">(11) </span></span></span></span></p>
+ </div>
+ <div id="S003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i26">3.3. Decoder layer</h3>
+  <p><b>NER:</b> To identify the entities, a CRF layer is added in GANCE. It takes token representation <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0025.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msup>
+      <mi>
+       M
+      </mi>
+      <mrow>
+       <mi>
+        t
+       </mi>
+      </mrow>
+     </msup><mo>
+      =
+     </mo><mo stretchy="false">
+      [
+     </mo><msubsup>
+      <mi>
+       m
+      </mi>
+      <mrow>
+       <mn>
+        1
+       </mn>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+      </mrow>
+     </msubsup><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><msubsup>
+      <mi>
+       m
+      </mi>
+      <mrow>
+       <mi>
+        n
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+      </mrow>
+     </msubsup><mo stretchy="false">
+      ]
+     </mo>
+    </math></span> as input. As Equations (<a href="#M0012">12</a>)–(<a href="#M0013">13</a>) show, the output of the CRF layer is a sequence of predicted tagging label probabilities <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0026.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      Y
+     </mi><mo>
+      =
+     </mo><msub>
+      <mi>
+       y
+      </mi>
+      <mrow>
+       <mn>
+        1
+       </mn>
+      </mrow>
+     </msub><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><msub>
+      <mi>
+       y
+      </mi>
+      <mrow>
+       <mi>
+        n
+       </mi>
+      </mrow>
+     </msub>
+    </math></span>: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0012.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0012" class="disp-formula-label">(12) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mi>
+         P
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         Y
+        </mi>
+        <mrow>
+         <mo stretchy="false">
+          |
+         </mo>
+        </mrow>
+        <msup>
+         <mi>
+          M
+         </mi>
+         <mrow>
+          <mi>
+           t
+          </mi>
+         </mrow>
+        </msup>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mfrac>
+         <mrow>
+          <munderover>
+           <mo>
+            ∏
+           </mo>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mo>
+             =
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+           <mrow>
+            <mi>
+             n
+            </mi>
+           </mrow>
+          </munderover>
+          <msub>
+           <mi>
+            φ
+           </mi>
+           <mrow>
+            <mi>
+             n
+            </mi>
+           </mrow>
+          </msub>
+          <mo stretchy="false">
+           (
+          </mo>
+          <msub>
+           <mi>
+            y
+           </mi>
+           <mrow>
+            <mi>
+             n
+            </mi>
+            <mo>
+             −
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+          </msub>
+          <mo>
+           ,
+          </mo>
+          <msub>
+           <mi>
+            y
+           </mi>
+           <mrow>
+            <mi>
+             n
+            </mi>
+           </mrow>
+          </msub>
+          <mo>
+           ,
+          </mo>
+          <msup>
+           <mi>
+            M
+           </mi>
+           <mrow>
+            <mi>
+             t
+            </mi>
+           </mrow>
+          </msup>
+          <mo stretchy="false">
+           )
+          </mo>
+         </mrow>
+         <mrow>
+          <munder>
+           <mo>
+            ∑
+           </mo>
+           <mrow>
+            <msup>
+             <mi>
+              y
+             </mi>
+             <mrow>
+              <mi mathvariant="normal">
+               ′
+              </mi>
+             </mrow>
+            </msup>
+            <mo>
+             ∈
+            </mo>
+            <msup>
+             <mi>
+              Y
+             </mi>
+             <mrow>
+              <mi mathvariant="normal">
+               ′
+              </mi>
+             </mrow>
+            </msup>
+           </mrow>
+          </munder>
+          <munderover>
+           <mo>
+            ∏
+           </mo>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mo>
+             =
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+           <mrow>
+            <mi>
+             n
+            </mi>
+           </mrow>
+          </munderover>
+          <msub>
+           <mi>
+            φ
+           </mi>
+           <mrow>
+            <mi>
+             n
+            </mi>
+           </mrow>
+          </msub>
+          <mo stretchy="false">
+           (
+          </mo>
+          <msubsup>
+           <mi>
+            y
+           </mi>
+           <mrow>
+            <mi>
+             n
+            </mi>
+            <mo>
+             −
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+           <mrow>
+            <mi mathvariant="normal">
+             ′
+            </mi>
+           </mrow>
+          </msubsup>
+          <mo>
+           ,
+          </mo>
+          <msubsup>
+           <mi>
+            y
+           </mi>
+           <mrow>
+            <mi>
+             n
+            </mi>
+           </mrow>
+           <mrow>
+            <mi mathvariant="normal">
+             ′
+            </mi>
+           </mrow>
+          </msubsup>
+          <mo>
+           ,
+          </mo>
+          <msup>
+           <mi>
+            M
+           </mi>
+           <mrow>
+            <mi>
+             t
+            </mi>
+           </mrow>
+          </msup>
+          <mo stretchy="false">
+           )
+          </mo>
+         </mrow>
+        </mfrac>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0012" class="disp-formula-label">(12) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0013.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0013" class="disp-formula-label">(13) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <msub>
+         <mi>
+          φ
+         </mi>
+         <mrow>
+          <mi>
+           n
+          </mi>
+         </mrow>
+        </msub>
+        <mo stretchy="false">
+         (
+        </mo>
+        <msub>
+         <mi>
+          y
+         </mi>
+         <mrow>
+          <mi>
+           n
+          </mi>
+         </mrow>
+        </msub>
+        <mo>
+         ,
+        </mo>
+        <msub>
+         <mi>
+          y
+         </mi>
+         <mrow>
+          <mi>
+           n
+          </mi>
+          <mo>
+           −
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+        </msub>
+        <mo>
+         ,
+        </mo>
+        <msup>
+         <mi>
+          M
+         </mi>
+         <mrow>
+          <mi>
+           t
+          </mi>
+         </mrow>
+        </msup>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mi>
+         exp
+        </mi>
+        <mo>
+         ⁡
+        </mo>
+        <mo stretchy="false">
+         (
+        </mo>
+        <msub>
+         <mi>
+          W
+         </mi>
+         <mrow>
+          <mi>
+           n
+          </mi>
+         </mrow>
+        </msub>
+        <msup>
+         <mi>
+          M
+         </mi>
+         <mrow>
+          <mi>
+           t
+          </mi>
+         </mrow>
+        </msup>
+        <mo>
+         +
+        </mo>
+        <msub>
+         <mi>
+          b
+         </mi>
+         <mrow>
+          <mi>
+           n
+          </mi>
+         </mrow>
+        </msub>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0013" class="disp-formula-label">(13) </span></span></span></span>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0027.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       W
+      </mi>
+      <mrow>
+       <mi>
+        n
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0028.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       b
+      </mi>
+      <mrow>
+       <mi>
+        n
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> are model parameters.</p>
+  <p><b>RE:</b> A multi-head mechanism is utilised for RE, and token-label fusion representation <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0029.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0029.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msup>
+      <mi>
+       M
+      </mi>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        l
+       </mi>
+      </mrow>
+     </msup>
+    </math></span> is the input. Suppose <i>C</i> is a set of relation labels. The multi-head mechanism aims to give a value for each tuple <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0030.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0030.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      (
+     </mo><msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        i
+       </mi>
+      </mrow>
+     </msub><mo>
+      ,
+     </mo><msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub><mo>
+      ,
+     </mo><msub>
+      <mi>
+       c
+      </mi>
+      <mi>
+       r
+      </mi>
+     </msub><mo stretchy="false">
+      )
+     </mo>
+    </math></span>, where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0031.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0031.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        i
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> is the head token, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0032.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0032.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> is the tail token, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0033.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0033.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       c
+      </mi>
+      <mi>
+       r
+      </mi>
+     </msub>
+    </math></span> denotes the <i>r</i>th relation between <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0034.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0034.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        i
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0035.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0035.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub>
+    </math></span>. There are multiple heads in each pair of tokens <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0036.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0036.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo>
+      &lt;
+     </mo><msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        i
+       </mi>
+      </mrow>
+     </msub>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0037.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0037.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub><mo>
+      &gt;
+     </mo>
+    </math></span>, and each head computes a value for one relation. Given a relation label <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0038.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0038.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       c
+      </mi>
+      <mi>
+       r
+      </mi>
+     </msub>
+    </math></span> using a single layer neural network, the score s<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0039.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0039.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      (
+     </mo><msubsup>
+      <mi>
+       m
+      </mi>
+      <mrow>
+       <mi>
+        i
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        l
+       </mi>
+      </mrow>
+     </msubsup><mo>
+      ,
+     </mo><msubsup>
+      <mi>
+       m
+      </mi>
+      <mrow>
+       <mi>
+        j
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        l
+       </mi>
+      </mrow>
+     </msubsup><mo>
+      ,
+     </mo><msub>
+      <mi>
+       c
+      </mi>
+      <mi>
+       r
+      </mi>
+     </msub><mo stretchy="false">
+      )
+     </mo>
+    </math></span> of word <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0040.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0040.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> is computed as Equation (<a href="#M0014">14</a>), which is further used as the head of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0041.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0041.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        i
+       </mi>
+      </mrow>
+     </msub>
+    </math></span>: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0014.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0014" class="disp-formula-label">(14) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      s
+     </mi><mo stretchy="false">
+      (
+     </mo><msubsup>
+      <mi>
+       m
+      </mi>
+      <mrow>
+       <mi>
+        i
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        l
+       </mi>
+      </mrow>
+     </msubsup><mo>
+      ,
+     </mo><msubsup>
+      <mi>
+       m
+      </mi>
+      <mrow>
+       <mi>
+        j
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        l
+       </mi>
+      </mrow>
+     </msubsup><mo>
+      ,
+     </mo><msub>
+      <mi>
+       c
+      </mi>
+      <mrow>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msub><mo stretchy="false">
+      )
+     </mo><mo>
+      =
+     </mo><mi>
+      V
+     </mi><mspace width="thinmathspace"></mspace><mrow>
+      <mi mathvariant="normal">
+       tanh
+      </mi>
+     </mrow><mo stretchy="false">
+      (
+     </mo><mi>
+      U
+     </mi><msubsup>
+      <mi>
+       m
+      </mi>
+      <mrow>
+       <mi>
+        i
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        l
+       </mi>
+      </mrow>
+     </msubsup><mo>
+      +
+     </mo><mi>
+      W
+     </mi><msubsup>
+      <mi>
+       m
+      </mi>
+      <mrow>
+       <mi>
+        j
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        l
+       </mi>
+      </mrow>
+     </msubsup><mo>
+      +
+     </mo><msub>
+      <mi>
+       b
+      </mi>
+      <mrow>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msub><mo stretchy="false">
+      )
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0014" class="disp-formula-label">(14) </span></span></span></span>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0042.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0042.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      V
+     </mi><mo>
+      ∈
+     </mo><msup>
+      <mrow>
+       <mi mathvariant="double-struck">
+        R
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        z
+       </mi>
+      </mrow>
+     </msup><mo>
+      ,
+     </mo><mi>
+      W
+     </mi><mo>
+      ∈
+     </mo><msup>
+      <mrow>
+       <mi mathvariant="double-struck">
+        R
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        z
+       </mi>
+       <mo>
+        ∗
+       </mo>
+       <mn>
+        2
+       </mn>
+       <mi>
+        d
+       </mi>
+      </mrow>
+     </msup><mo>
+      ,
+     </mo><mi>
+      U
+     </mi><mo>
+      ∈
+     </mo><msup>
+      <mrow>
+       <mi mathvariant="double-struck">
+        R
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        z
+       </mi>
+       <mo>
+        ∗
+       </mo>
+       <mn>
+        2
+       </mn>
+       <mi>
+        d
+       </mi>
+      </mrow>
+     </msup><mo>
+      ,
+     </mo><msub>
+      <mi>
+       b
+      </mi>
+      <mrow>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msub><mo>
+      ∈
+     </mo><msup>
+      <mrow>
+       <mi mathvariant="double-struck">
+        R
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        z
+       </mi>
+      </mrow>
+     </msup>
+    </math></span>, and <i>z</i> is the width of the layer. The probability that token <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0043.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0043.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        i
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> and token <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0044.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0044.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> have a <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0045.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0045.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       c
+      </mi>
+      <mrow>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> relationship can be calculated by Equations&nbsp;(<a href="#M0015">15</a>)–(<a href="#M0016">16</a>): <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0015.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0015" class="disp-formula-label">(15) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mi>
+         P
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mrow>
+         <mi mathvariant="normal">
+          head
+         </mi>
+        </mrow>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <msub>
+         <mi>
+          w
+         </mi>
+         <mrow>
+          <mi>
+           i
+          </mi>
+         </mrow>
+        </msub>
+        <mo>
+         ,
+        </mo>
+        <mrow>
+         <mi mathvariant="normal">
+          relation
+         </mi>
+        </mrow>
+        <mo>
+         =
+        </mo>
+        <msub>
+         <mi>
+          c
+         </mi>
+         <mrow>
+          <mi>
+           r
+          </mi>
+         </mrow>
+        </msub>
+        <mrow>
+         <mo stretchy="false">
+          |
+         </mo>
+        </mrow>
+        <msub>
+         <mi>
+          w
+         </mi>
+         <mrow>
+          <mi>
+           j
+          </mi>
+         </mrow>
+        </msub>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0015" class="disp-formula-label">(15) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0016.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0016.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0016" class="disp-formula-label">(16) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mi>
+         σ
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         s
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <msubsup>
+         <mi>
+          m
+         </mi>
+         <mrow>
+          <mi>
+           i
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           t
+          </mi>
+          <mo>
+           −
+          </mo>
+          <mi>
+           l
+          </mi>
+         </mrow>
+        </msubsup>
+        <mo>
+         ,
+        </mo>
+        <msubsup>
+         <mi>
+          m
+         </mi>
+         <mrow>
+          <mi>
+           j
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           t
+          </mi>
+          <mo>
+           −
+          </mo>
+          <mi>
+           l
+          </mi>
+         </mrow>
+        </msubsup>
+        <mo>
+         ,
+        </mo>
+        <msub>
+         <mi>
+          c
+         </mi>
+         <mrow>
+          <mi>
+           r
+          </mi>
+         </mrow>
+        </msub>
+        <mo stretchy="false">
+         )
+        </mo>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0016" class="disp-formula-label">(16) </span></span></span></span>where <i>σ</i> is the sigmoid function. During inference, the most probable candidate tuple <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0046.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0046.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      (
+     </mo><msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        i
+       </mi>
+      </mrow>
+     </msub><mo>
+      ,
+     </mo><msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub><mo>
+      ,
+     </mo><msub>
+      <mi>
+       c
+      </mi>
+      <mi>
+       k
+      </mi>
+     </msub><mo stretchy="false">
+      )
+     </mo>
+    </math></span> are selected using threshold-based prediction.</p>
+ </div>
+ <div id="S003-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i32">3.4. Training and inference</h3>
+  <p>During the training process, the parameters are optimised to maximise the conditional likelihood in Equation&nbsp;(<a href="#M0017">17</a>) for NER (Zhao et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021a</a></span>): <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0017.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0017.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0017" class="disp-formula-label">(17) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mrow>
+       <mi mathvariant="script">
+        L
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        n
+       </mi>
+       <mi>
+        e
+       </mi>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msub><mo>
+      =
+     </mo><mo>
+      −
+     </mo><mi>
+      log
+     </mi><mo>
+      ⁡
+     </mo><mi>
+      P
+     </mi><mi>
+      r
+     </mi><mo stretchy="false">
+      (
+     </mo><mi>
+      Y
+     </mi><mrow>
+      <mo stretchy="false">
+       |
+      </mo>
+     </mrow><msup>
+      <mi>
+       M
+      </mi>
+      <mrow>
+       <mi>
+        t
+       </mi>
+      </mrow>
+     </msup><mo stretchy="false">
+      )
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0017" class="disp-formula-label">(17) </span></span></span></span>For RE, the cross-entropy <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0047.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0047.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mrow>
+       <mi mathvariant="script">
+        L
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        r
+       </mi>
+       <mi>
+        e
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> is calculated as shown in Equation&nbsp;(<a href="#M0018">18</a>): <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0018.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0018.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0018" class="disp-formula-label">(18) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <msub>
+         <mrow>
+          <mi mathvariant="script">
+           L
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           r
+          </mi>
+          <mi>
+           e
+          </mi>
+         </mrow>
+        </msub>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <munderover>
+         <mo>
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           j
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mrow>
+          <mi>
+           n
+          </mi>
+         </mrow>
+        </munderover>
+        <munderover>
+         <mo>
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           i
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mrow>
+          <mi>
+           n
+          </mi>
+         </mrow>
+        </munderover>
+        <munderover>
+         <mo>
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           k
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           0
+          </mn>
+         </mrow>
+         <mrow>
+          <mi>
+           o
+          </mi>
+         </mrow>
+        </munderover>
+        <mo>
+         −
+        </mo>
+        <mi>
+         log
+        </mi>
+        <mo>
+         ⁡
+        </mo>
+        <mi>
+         P
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mrow>
+         <mi mathvariant="normal">
+          head
+         </mi>
+        </mrow>
+        <mo>
+         =
+        </mo>
+        <msub>
+         <mi>
+          w
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo>
+         ,
+        </mo>
+       </mtd>
+      </mtr>
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <mspace width="1em"></mspace>
+        <mrow>
+         <mi mathvariant="normal">
+          relation
+         </mi>
+        </mrow>
+        <mo>
+         =
+        </mo>
+        <msub>
+         <mi>
+          c
+         </mi>
+         <mi>
+          k
+         </mi>
+        </msub>
+        <mrow>
+         <mo stretchy="false">
+          |
+         </mo>
+        </mrow>
+        <msub>
+         <mi>
+          w
+         </mi>
+         <mrow>
+          <mi>
+           j
+          </mi>
+         </mrow>
+        </msub>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0018" class="disp-formula-label">(18) </span></span></span></span>where <i>o</i> is the number of relations (heads).</p>
+  <p>The objective of the joint entity and relation extraction task is set as Equation (<a href="#M0019">19</a>) shows, where <i>w</i> and <i>θ</i> denote tokens and model parameters, respectively. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0019.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0019.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0019" class="disp-formula-label">(19) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mrow>
+       <mi mathvariant="script">
+        L
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        j
+       </mi>
+       <mi>
+        o
+       </mi>
+       <mi>
+        i
+       </mi>
+       <mi>
+        n
+       </mi>
+       <mi>
+        t
+       </mi>
+      </mrow>
+     </msub><mo stretchy="false">
+      (
+     </mo><mi>
+      w
+     </mi><mo>
+      ;
+     </mo><mi>
+      θ
+     </mi><mo stretchy="false">
+      )
+     </mo><mo>
+      =
+     </mo><msub>
+      <mrow>
+       <mi mathvariant="script">
+        L
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        n
+       </mi>
+       <mi>
+        e
+       </mi>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msub><mo>
+      +
+     </mo><msub>
+      <mrow>
+       <mi mathvariant="script">
+        L
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        r
+       </mi>
+       <mi>
+        e
+       </mi>
+      </mrow>
+     </msub>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0019" class="disp-formula-label">(19) </span></span></span></span>Similar to Kendall et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018</a></span>), we combine NER and RE objectives using homoscedastic uncertainty to learn relative weights from the data. We proceed here directly to the loss that is in our case given as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0048.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0048.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mrow>
+       <mi mathvariant="script">
+        L
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        j
+       </mi>
+       <mi>
+        o
+       </mi>
+       <mi>
+        i
+       </mi>
+       <mi>
+        n
+       </mi>
+       <mi>
+        t
+       </mi>
+      </mrow>
+     </msub><mo stretchy="false">
+      (
+     </mo><mi>
+      w
+     </mi><mo>
+      ;
+     </mo><mi>
+      θ
+     </mi><mo stretchy="false">
+      )
+     </mo><mo>
+      =
+     </mo><msubsup>
+      <mrow>
+       <mi mathvariant="script">
+        L
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        n
+       </mi>
+       <mi>
+        e
+       </mi>
+       <mi>
+        r
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        ′
+       </mi>
+      </mrow>
+     </msubsup><mo>
+      +
+     </mo><msubsup>
+      <mrow>
+       <mi mathvariant="script">
+        L
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        r
+       </mi>
+       <mi>
+        e
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        ′
+       </mi>
+      </mrow>
+     </msubsup>
+    </math></span> instead of Equation&nbsp;(<a href="#M0019">19</a>). Where, <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0020.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0020.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0020" class="disp-formula-label">(20) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <msubsup>
+         <mrow>
+          <mi mathvariant="script">
+           L
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           n
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           r
+          </mi>
+         </mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           ′
+          </mi>
+         </mrow>
+        </msubsup>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mfrac>
+         <mn>
+          1
+         </mn>
+         <mrow>
+          <mn>
+           2
+          </mn>
+          <msubsup>
+           <mi>
+            σ
+           </mi>
+           <mrow>
+            <mn>
+             1
+            </mn>
+           </mrow>
+           <mrow>
+            <mn>
+             2
+            </mn>
+           </mrow>
+          </msubsup>
+         </mrow>
+        </mfrac>
+        <msub>
+         <mrow>
+          <mi mathvariant="script">
+           L
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           n
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           r
+          </mi>
+         </mrow>
+        </msub>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         w
+        </mi>
+        <mo>
+         ;
+        </mo>
+        <mi>
+         θ
+        </mi>
+        <mo stretchy="false">
+         )
+        </mo>
+        <mo>
+         +
+        </mo>
+        <mi>
+         log
+        </mi>
+        <mo>
+         ⁡
+        </mo>
+        <msub>
+         <mi>
+          σ
+         </mi>
+         <mrow>
+          <mn>
+           1
+          </mn>
+         </mrow>
+        </msub>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0020" class="disp-formula-label">(20) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0021.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_m0021.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0021" class="disp-formula-label">(21) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <msubsup>
+         <mrow>
+          <mi mathvariant="script">
+           L
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           r
+          </mi>
+          <mi>
+           e
+          </mi>
+         </mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           ′
+          </mi>
+         </mrow>
+        </msubsup>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mfrac>
+         <mn>
+          1
+         </mn>
+         <mrow>
+          <mn>
+           2
+          </mn>
+          <msubsup>
+           <mi>
+            σ
+           </mi>
+           <mrow>
+            <mn>
+             2
+            </mn>
+           </mrow>
+           <mrow>
+            <mn>
+             2
+            </mn>
+           </mrow>
+          </msubsup>
+         </mrow>
+        </mfrac>
+        <msub>
+         <mrow>
+          <mi mathvariant="script">
+           L
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           r
+          </mi>
+          <mi>
+           e
+          </mi>
+         </mrow>
+        </msub>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         w
+        </mi>
+        <mo>
+         ;
+        </mo>
+        <mi>
+         θ
+        </mi>
+        <mo stretchy="false">
+         )
+        </mo>
+        <mo>
+         +
+        </mo>
+        <mi>
+         log
+        </mi>
+        <mo>
+         ⁡
+        </mo>
+        <msub>
+         <mi>
+          σ
+         </mi>
+         <mrow>
+          <mn>
+           2
+          </mn>
+         </mrow>
+        </msub>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0021" class="disp-formula-label">(21) </span></span></span></span></p>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i38" class="section-heading-2">4. Experiments and result analysis</h2>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i39">4.1. Dataset</h3>
+  <p>Public benchmarks CoNLL04 (Roth &amp;&nbsp;Yih,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2004</a></span>) and ADE (Gurulingappa et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2012</a></span>) are used to validate the effectiveness of the proposed method. CoNLL04 consists of 910/243/288 instances for training/validation/testing. Besides, 10-fold cross-validation are adopted on the ADE dataset. Three commonly used evaluation metrics in machine learning are used to evaluate the model, including Precision (P), Recall (R), and F1 score (F).</p>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i40">4.2. Implementation details</h3>
+  <p>There are 3 BiLSTM layers in GANCE, and the size of hidden layer <i>d</i> and label embeddings <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0049.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0049.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       d
+      </mi>
+      <mi>
+       l
+      </mi>
+     </msub>
+    </math></span> are set as 64 and 25, respectively. The optimiser is Adam, with learning rate is set as 0.0005. The size of character embeddings, word embeddings and ELMO&nbsp; (Peters et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018</a></span>) are set as 128, 128, and 1024 respectively. Lastly, the training takes 180 epochs for convergence.</p>
+ </div>
+ <div id="S004-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i41">4.3. Performance on benchmarks</h3>
+  <p>The performance comparison of different models on two datasets are provided and analysed as follows.</p>
+  <p><b>CoNLL04:</b> The performance of different models on CoNLL04 is shown in Table&nbsp;<button class="ref showTableEventRef" data-id="T0001">1</button>. It can be seen that the proposed GANCE achieves the best results on NER and RE among the existing models. Compared with SpERT (Eberts &amp;&nbsp;Ulges,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2019</a></span>), which mainly relies on pre-trained language model(BERT) to obtain span representation, our model achieves substantial improvements on both NER (+1.38%) and RE (+2.12%). Moreover, our model achieves greater performance improvement (NER (+6.71%) and RE (+11.64%)) compared with Multi-head + AT (Bekoulis et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018a</a></span>). Note that Multi-head + AT uses feature concatenation to capture label-space information. It indicates that the effectiveness of our method GANCE for capturing information on multiple entity types and relation types from a sentence. Furthermore, we can observe that our method GANCE with ELMO and SpERT (Eberts &amp;&nbsp;Ulges,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2019</a></span>) with BERT have significant improvement both on entities and relations. The reason is that the pre-training method is useful in NLP tasks.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Entity and relation collaborative extraction approach based on multi-head attention and gated mechanism</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Wei"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Wei"><span class="NLM_given-names">Wei</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Shan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Shan"><span class="NLM_given-names">Shan</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chen%2C+Shuhui"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chen%2C+Shuhui"><span class="NLM_given-names">Shuhui</span> Chen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Weng%2C+Tien-Hsiung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Weng%2C+Tien-Hsiung"><span class="NLM_given-names">Tien-Hsiung</span> Weng</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kang%2C+WenJie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kang%2C+WenJie"><span class="NLM_given-names">WenJie</span> Kang</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2026295">https://doi.org/10.1080/09540091.2022.2026295</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>04 February 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Comparison of results with previous papers on the CoNLL04 dataset.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F09540091.2022.2026295&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p><b>ADE:</b> Table&nbsp;<button class="ref showTableEventRef" data-id="T0002">2</button> shows the performance of different models on dataset ADE. Again our method obtains the state-of-the-art performance. GANCE achieves better performance on NER and RE compared with the latest Table-Sequence model. Particularly, the F1 score of RE of GANCE increase by 1.24% over that of Table-Sequence model.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Entity and relation collaborative extraction approach based on multi-head attention and gated mechanism</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Wei"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Wei"><span class="NLM_given-names">Wei</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Shan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Shan"><span class="NLM_given-names">Shan</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chen%2C+Shuhui"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chen%2C+Shuhui"><span class="NLM_given-names">Shuhui</span> Chen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Weng%2C+Tien-Hsiung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Weng%2C+Tien-Hsiung"><span class="NLM_given-names">Tien-Hsiung</span> Weng</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kang%2C+WenJie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kang%2C+WenJie"><span class="NLM_given-names">WenJie</span> Kang</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2026295">https://doi.org/10.1080/09540091.2022.2026295</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>04 February 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Comparison of results with previous papers on the ADE dataset.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F09540091.2022.2026295&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S004-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i42">4.4. performance against entity distance</h3>
+  <p>For two entities, their entity distance refers to the absolute character offset between the last character of the entity that appears first and the last character of the entity that appears second. The distance between related entities influences the effect of relationship extraction, and capturing long-distance entity dependencies is always a difficult problem in relation to extraction. To evaluate the impact of the entity distance on the performance of GANCE, experiments are conducted on the CoNLL04 dataset.</p>
+  <p>According to different entity distance (i.e. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0050.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0050.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo>
+      ≥
+     </mo><mn>
+      20
+     </mn>
+    </math></span>, 9-19, 0-9), the CoNLL04 dataset is divided into three parts (Zhao et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021a</a></span>). Multi-head + AT (Bekoulis et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2018a</a></span>) is set as the baseline because the same decoding layer is used in it as GANCE. Under different entity distances, the performance of GANCE and the baseline is depicted in Figure&nbsp;<a href="#F0004">4</a>. It can be seen from Figure <a href="#F0004">4</a> that GANCE outperforms the baseline under all different entity distances. Moreover, the performance of the GANCE is much better than the baseline when the distance between entities exceeds 20 characters. Specifically, GANCE leads by 15.59% in the F1 score for RE. In conclusion, GANCE could maintain remarkable performance even though a long entity distance exists. This is in line with expectations since GANCE can detect relevant entities by learning attention weights between the entities in the sentence.</p>
+ </div>
+ <div id="S004-S2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i43">4.5. Effect of homoscedastic uncertainty</h3>
+  <p>The effect of loss with and without homoscedastic uncertainty is further analysed in this section. As shown in Figure&nbsp;<a href="#F0005">5</a>, GANCE based on the loss with homoscedastic uncertainty realises better performance on the dataset CoNLL04. Specifically, the F1 score of GANCE with weight loss is 0.8% and 1.08% higher than that of GANCE without weight loss for NER and RE, respectively. This is reasonable since homoscedastic uncertainty could capture the correlation confidence between NER and RE. Therefore, the model based on the loss with homoscedastic uncertainty could learn to balance the weights optimally. Moreover, as seen in Figure <a href="#F0005">5</a>, the performance of the two models (Weight loss and Without weight loss) have similar trends. It can be observed that the performance of both models is closer to the maximum even from the early training epochs.</p>
+  <div class="figure figureViewer" id="F0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Entity and relation collaborative extraction approach based on multi-head attention and gated mechanism</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Wei"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Wei"><span class="NLM_given-names">Wei</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Shan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Shan"><span class="NLM_given-names">Shan</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chen%2C+Shuhui"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chen%2C+Shuhui"><span class="NLM_given-names">Shuhui</span> Chen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Weng%2C+Tien-Hsiung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Weng%2C+Tien-Hsiung"><span class="NLM_given-names">Tien-Hsiung</span> Weng</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kang%2C+WenJie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kang%2C+WenJie"><span class="NLM_given-names">WenJie</span> Kang</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2026295">https://doi.org/10.1080/09540091.2022.2026295</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>04 February 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> The performance comparison of the baseline and GANCE under different entity distances on dataset CoNLL04. Multi-head + AT is set as the baseline. (a) RE and (b) NER.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/medium/ccos_a_2026295_f0004_oc.jpg" loading="lazy" height="325" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> The performance comparison of the baseline and GANCE under different entity distances on dataset CoNLL04. Multi-head + AT is set as the baseline. (a) RE and (b) NER.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0004">
+   <div class="figureFootNote-F0004"></div>
+  </div>
+  <div class="figure figureViewer" id="F0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Entity and relation collaborative extraction approach based on multi-head attention and gated mechanism</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Wei"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Wei"><span class="NLM_given-names">Wei</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Shan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Shan"><span class="NLM_given-names">Shan</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chen%2C+Shuhui"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chen%2C+Shuhui"><span class="NLM_given-names">Shuhui</span> Chen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Weng%2C+Tien-Hsiung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Weng%2C+Tien-Hsiung"><span class="NLM_given-names">Tien-Hsiung</span> Weng</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kang%2C+WenJie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kang%2C+WenJie"><span class="NLM_given-names">WenJie</span> Kang</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2026295">https://doi.org/10.1080/09540091.2022.2026295</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>04 February 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> F1 score of GANCE with weighting loss and without it on the dataset CoNLL04. Weight loss indicates that the model adopts homoscedastic uncertainty to weight loss.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/medium/ccos_a_2026295_f0005_oc.jpg" loading="lazy" height="422" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> F1 score of GANCE with weighting loss and without it on the dataset CoNLL04. Weight loss indicates that the model adopts homoscedastic uncertainty to weight loss.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0005">
+   <div class="figureFootNote-F0005"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S004-S2006" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i46">4.6. Ablation study</h3>
+  <p>To further assess the impact of different modules on the performance of GANCE, an ablation study is designed and executed on the dataset CoNLL04. Three modules (the gate module and two multi-head attention modules) are evaluated in the following four ways, and the results are summarised in Table&nbsp;<button class="ref showTableEventRef" data-id="T0003">3</button>.</p>
+  <ol class="NLM_list NLM_list-list_type-roman-upper">
+   <li><p class="inline"><b>The gate module</b>. The gate module is replaced with a simple feature addition scheme (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0051.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0051.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msup>
+        <mi>
+         M
+        </mi>
+        <mrow>
+         <mi>
+          F
+         </mi>
+        </mrow>
+       </msup><mo>
+        =
+       </mo><msup>
+        <mi>
+         M
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+        </mrow>
+       </msup><mo>
+        +
+       </mo><mi>
+        L
+       </mi>
+      </math></span>). It is found that the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0052.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0052.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        F
+       </mi><mn>
+        1
+       </mn>
+      </math></span> score performance of GANCE on NER and RE drops to 89.44 (−0.88%) and 72.14(−1.45%) respectively. Therefore, the gate module used in GANCE is essential for capturing relevant entities.</p></li>
+   <li><p class="inline"><b>Multi-head attention module in token representation</b>. This multi-head attention module is ablated in both tasks. After the ablation, the performance of GANCE significantly decreases on NER and RE. Specifically, the F1 score decreases by 2.1% and 1.93% on NER and RE, respectively. These results prove that the applied multi-head module does benefit from capturing self-correlations among tokens.</p></li>
+   <li><p class="inline"><b>Multi-head attention module in token-label fusion representation</b>. This multi-head attention module is deleted and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0053.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2026295/20230104/images/ccos_a_2026295_ilm0053.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msup>
+        <mi>
+         M
+        </mi>
+        <mrow>
+         <mi>
+          F
+         </mi>
+        </mrow>
+       </msup>
+      </math></span> is directly used for decoding. The results show that the F1 score drops by 1.67% and 1.57% on NER and RE, respectively.</p></li>
+   <li><p class="inline"><b>Both multi-head attention modules</b>. After removing both attention modules, worse results on NER (−4%) and RE (−3.48%) are caused, which demonstrates that the proposed attention modules play a vital role in enhancing character representations.</p></li>
+  </ol>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Entity and relation collaborative extraction approach based on multi-head attention and gated mechanism</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Wei"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Wei"><span class="NLM_given-names">Wei</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Shan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Shan"><span class="NLM_given-names">Shan</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chen%2C+Shuhui"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chen%2C+Shuhui"><span class="NLM_given-names">Shuhui</span> Chen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Weng%2C+Tien-Hsiung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Weng%2C+Tien-Hsiung"><span class="NLM_given-names">Tien-Hsiung</span> Weng</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kang%2C+WenJie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kang%2C+WenJie"><span class="NLM_given-names">WenJie</span> Kang</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2026295">https://doi.org/10.1080/09540091.2022.2026295</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>04 February 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Ablation evaluation on the dataset CoNLL04.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="false" id="T0003-table-wrapper">
+    <a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S004-S2007" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i47">4.7. Extraction cases analysis</h3>
+  <p>To gain further insights about GANCE, an error analysis is provided as Table&nbsp;<button class="ref showTableEventRef" data-id="T0004">4</button> shows. For case1, it can be observed that “<i>Rocky Mountains</i> ”, “ <i>Montana</i>” and “<i>Livingston</i>” can be correctly detected as Location entities. Besides, GANCE identifies the two “<i>Located_ In</i>” relations between these entities. For case2, GANCE cannot recognise that there is a “ <i>Live_in</i>” relationship between “ <i>Peter Murtha</i>” and “<i>U.S.</i>”. Besides, the “<i>OrgBased_In</i>” relation between ‘<i>Justice Department</i>” and ‘<i>U.S.</i>” is also omitted. The reason is that “<i>Justice Department</i>” and “ <i>Peter Murtha</i>” are involved in more than one relation.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Entity and relation collaborative extraction approach based on multi-head attention and gated mechanism</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Wei"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Wei"><span class="NLM_given-names">Wei</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Shan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Shan"><span class="NLM_given-names">Shan</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chen%2C+Shuhui"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chen%2C+Shuhui"><span class="NLM_given-names">Shuhui</span> Chen</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Weng%2C+Tien-Hsiung"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Weng%2C+Tien-Hsiung"><span class="NLM_given-names">Tien-Hsiung</span> Weng</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kang%2C+WenJie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kang%2C+WenJie"><span class="NLM_given-names">WenJie</span> Kang</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2026295">https://doi.org/10.1080/09540091.2022.2026295</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>04 February 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 4. </span> Extraction cases of GANCE on dataset CoNLL004. True entities are highlighted in bold.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0004&amp;doi=10.1080%2F09540091.2022.2026295&amp;downloadType=CSV"> Download CSV</a><a data-id="T0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i48" class="section-heading-2">5. Concluding remarks</h2>
+ <p>In this paper, we propose a Gated and Attentive Network Collaborative Extracting (GANCE) for the task of joint entity relation extraction. GANCE consists of a gating mechanism and two multi-head attention modules. Besides, homoscedastic uncertainty to weight losses is introduced between the two tasks. Compared with existing joint methods, GANCE provides a new way to utilise label-space information and detect relevant entities. Experimental results on two benchmarks demonstrate that GANCE could effectively improve the performance of NER and RE by fusing label-space information and detecting relevant entities effectively.</p>
+ <p>For future work, text-based entity and relationship extraction can be used in more related research fields in the Internet of Things, such as relationship prediction, link mining, image recognition (Liang, Long, et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021</a></span>), attack detection (Kang,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2020</a></span>), QoS prediction and anti-attack protection (Liang, Li, et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021</a></span>), security defense (Liang, Ning, et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021</a></span>), IP circuit protection (Liang et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2020</a></span>), etc. Besides, it can be combined with many new technologies, such as Blockchain (Liang et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2020</a></span>), big data (Chen, Liang, Zhou, et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021</a></span>), service recommendation (Chen, Liang, Xu, et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2021</a></span>), Security Risk Assessment (Kang et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i49 _i50" href="#"><span class="off-screen">Citation</span>2020</a></span>), etc. In addition, related research on entity representation, text mining, and relation extraction can be conducted based on images, videos, and audios. which would have theoretical significance and application value for the Intelligent Internet of Things (IIoT) development.</p>
+</div>

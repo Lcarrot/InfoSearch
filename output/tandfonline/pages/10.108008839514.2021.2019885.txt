@@ -1,0 +1,2202 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">Introduction</h2>
+ <p>Nowadays, there are several ways to represent language words. One broadly used word representation method is word embeddings, which connects the human understanding of language to a machine and is crucial to solving many natural-language-processing (NLP) problems. Word embedding is a common method to learn word representation where words with close meaning have close representations (Mikolov et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2013b</a></span>; Pennington, Socher, and Manning <span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2014</a></span>). Some traditional methods, such as one-hot encoding and bag of words, are helping some machine learning (ML) tasks, but they are un-ordered, and therefore, the context and frequency of words are lost. Nevertheless, these methods do not give any information about the meaning (semantics) and the structural relationships between words (syntax) (Duong et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>). In word embedding, all the words in a language are represented in n-dimensional space with real-valued numbers, where each number draws a dimension of the word’s meaning. As a result, semantically close words have close vectors and vice versa.</p>
+ <p>A method, proposed by Google researchers, for learning word embeddings is based on either the skip-gram or the continuous bag-of-words (CBOW) architectures, which are implemented in Word2vec (Mikolov et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2013b</a></span>) and Fast-Text (Joulin et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>) libraries. FastText is an extension of Word2vec, representing sentences with a bag of words, a bag of n-grams, sub-word information, and sharing information across classes through a hidden representation. Another approach, proposed by Stanford university researchers, is Glove, which is achieved by mapping words into a latent space where the distance between words is related to semantic similarity (Pennington, Socher, and Manning <span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2014</a></span>).</p>
+ <p>In many NLP tasks, especially in Neural Machine Translation (NMT) (Bahdanau, Cho, and Bengio <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>), monolingual word vectors are trained independently for each language on its corpora. And then, these monolingual vectors map to a shared space on a bilingual dictionary (Lazaridou, Dinu, and Baroni <span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2015</a></span>; Mikolov et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2013a</a></span>). There is a structural similarity between word embedding spaces across the source and target languages, so their mapping is worthwhile. The mapping between word vectors is known as cross-lingual word embedding model, which enables cross-lingual information transfer. Cross-lingual word embedding is a natural extension facilitates several cross-lingual applications, such as sentiment analysis, dependency parsing, and machine translation.</p>
+ <p>There is an excellent demand for cross-lingual word embedding models in the broad majority of language pairs, including a resource-lean language (e.g., Turkmen) with a resource-rich language (e.g., Turkish, France). Furthermore, there are no cross-lingual word embedding models for many combinations of significant resource-rich languages (e.g., Spanish-Russian). Recently, some methods have been suggested for cross-lingual word embedding models. In most of these methods, large parallel corpora or sizable dictionaries with high-quality bilingual word embedding models have been used to learn a high-performance mapping between languages (Ammar et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>; Gouws, Bengio, and Corrado <span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2015</a></span>; Vulić and Moens <span class="ref-lnk lazy-ref"><a data-rid="cit0043" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2015</a></span>).</p>
+ <p>A critical obstacle toward bilingual transfer is lexical matching between the source and the target languages. Such lexical matchings are not prepared for most languages and dialect pairs, so discovering word mappings with no prior knowledge is extremely valuable for cross-lingual applications. Prior works have focused on independently trained word embeddings in each language by monolingual corpora. They learn a linear transformation to map the embeddings using a small or medium-sized lexical matching as a bilingual seed dictionary from the source language to the target language (Artetxe, Labaka, and Agirre <span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>). The ability to produce lexical items of two different languages in a shared cross-lingual space leads the NLP research further. Word-level connections between languages are used in transferred statistical parsing (Ammar et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>; Zeman et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0046" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018</a></span>) or language understanding systems (Mrkšić et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2017</a></span>) and later by using a tiny seed bilingual dictionary (Artetxe, Labaka, and Agirre <span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>; Kondrak, Hauer, and Nicolai <span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2017</a></span>). However, they do not satisfactorily handle good accuracy and need more labeled data to get better results.</p>
+ <p>To succeed in lexical matching in language pairs’ problem, we perform the exact dictated words in our experiments that increase accuracy without labeled data. Notably, if the source and the target languages are relevant or come from a common language family, they have much mutual intelligibility. By applying some pre-processing steps, we increase lexical matching among pair languages. Since the number of the exact dictated words is significant, we use them to learn a neural network to find a nonlinear mapping between word vectors of languages.</p>
+ <p>This paper presents a new approach to studying bilingual word embeddings mapping between related languages. First, we use Wikipedia XML dumps for each language as the text source and extract tokens in each language. Next, we use the Word2vec model library to produce word embeddings. Then, we obtain the words with the same dictation between language pairs. Finally, we train our model using the results obtained in the previous step, to find the mapping between word embeddings. The contributions of this paper are:</p>
+ <ul class="NLM_list NLM_list-list_type-bullet">
+  <li><p class="inline">To improve the bilingual word embedding mapping method between languages.</p></li>
+  <li><p class="inline">To find nonlinear transformation mappings, especially for low-resource and relative languages.</p></li>
+  <li><p class="inline">The proposed model is based on recent research on the combination of neural machine translation encoder-decoder and GAN models.</p></li>
+  <li><p class="inline">Our proposed model augments a 4-layer BLSTM encoder-decoder with an attention mechanism, taking context into the model to learn bilingual word mappings and complete bilingual word embeddings.</p></li>
+  <li><p class="inline">A convolutional neural network implements our proposed model discriminator to distinguish real target vectors.</p></li>
+  <li><p class="inline">We design a list of experiments on seven language pairs. Our experimental results demonstrate a significant advantages of learning word mapping in related languages.</p></li>
+ </ul>
+ <p></p>
+ <p>The structure of our paper is illustrated in <a href="#f0001">Figure 1</a>. The rest of the paper proceeds as follows. First, we present some essential points and the evolution of the cross-lingual word embedding models in <a href="#s0002">Section 2</a>. Next, in <a href="#s0003">Section 3</a>, the method for data collection and experimental setup are detailed. <a href="#s0004">Section 4</a>, describes the implemented system. Next, in <a href="#s0005">Section 5</a>, our experimental results are illustrated. Finally, we conclude our paper results in <a href="#s0006">Section 6</a>.</p>
+ <div class="figure figureViewer" id="f0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Learning Bilingual Word Embedding Mappings with Similar Words in Related Languages Using GAN</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Alipour%2C+Ghafour"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alipour%2C+Ghafour"><span class="NLM_given-names">Ghafour</span> Alipour</a> <a href="https://orcid.org/0000-0002-2070-4334"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Bagherzadeh+Mohasefi%2C+Jamshid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bagherzadeh+Mohasefi%2C+Jamshid"><span class="NLM_given-names">Jamshid</span> Bagherzadeh Mohasefi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Feizi-Derakhshi%2C+Mohammad-Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Feizi-Derakhshi%2C+Mohammad-Reza"><span class="NLM_given-names">Mohammad-Reza</span> Feizi-Derakhshi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2021.2019885">https://doi.org/10.1080/08839514.2021.2019885</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>08 February 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> Overall organization of the paper.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/medium/uaai_a_2019885_f0001_b.gif" loading="lazy" height="288" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> Overall organization of the paper.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0001">
+  <div class="figureFootNote-f0001"></div>
+ </div>
+ <p></p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">The Evaluation of the Field</h2>
+ <p>Most cross-lingual word embedding models are created and extended using monolingual word embedding models (Vulić and Moens <span class="ref-lnk lazy-ref"><a data-rid="cit0043" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2015</a></span>). At first, the model learns word embedding vectors for each language words using its large monolingual corpora. Then, it retains a mapping from the source language word embeddings to the target language word embeddings. In the next section, we briefly review the monolingual word embedding models.</p>
+ <div id="s0002-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">Word Embedding Models</h3>
+  <p>Word2vec (Mikolov et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2013b</a></span>) is a shallow neural network with two layers to produce word embeddings in a language. It receives a massive corpus of text documents as input and creates a vector space where each word in the corpus keeps in touch with a vector in the space. Word vectors in the vector space have a specification that semantically close words in the corpus have close vectors in the space. Word2vec is implemented in two structures: Skip-gram and continuous bag-of-words (CBOW).</p>
+  <p>Skip-gram with negative sampling (Mikolov et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2013b</a></span>) is a popular model due to its robustness and training performance (Levy, Goldberg, and Dagan <span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2015</a></span>). It produces a language model by converging on learning effective representation instead of modeling word probabilities accurately. It provides word vectors that are good at predicting the surrounding context words by offering a source word. The model minimizes the following skip-gram objective, using training data: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         L
+        </mi>
+        <mrow>
+         <mi>
+          S
+         </mi>
+         <mi>
+          G
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><mo>
+       −
+      </mo><mrow>
+       <mfrac>
+        <mn>
+         1
+        </mn>
+        <mi>
+         N
+        </mi>
+       </mfrac>
+      </mrow><munderover>
+       <mrow>
+        <mo>
+         ∑
+        </mo>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+       <mi>
+        N
+       </mi>
+      </munderover><munder>
+       <mrow>
+        <mo>
+         ∑
+        </mo>
+       </mrow>
+       <mrow>
+        <mo>
+         −
+        </mo>
+        <mi>
+         C
+        </mi>
+        <mo>
+         ≤
+        </mo>
+        <mi>
+         j
+        </mi>
+        <mo>
+         ≤
+        </mo>
+        <mi>
+         C
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mrow>
+         <mtext>
+          &nbsp;
+         </mtext>
+        </mrow>
+        <mi>
+         j
+        </mi>
+        <mo>
+         ≠
+        </mo>
+        <mn>
+         0
+        </mn>
+       </mrow>
+      </munder><mo form="prefix">
+       log
+      </mo><mi>
+       P
+      </mi><mfenced open="(" close=")">
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           w
+          </mi>
+          <mrow>
+           <mi>
+            t
+           </mi>
+           <mo>
+            +
+           </mo>
+           <mi>
+            j
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mo>
+            |
+           </mo>
+          </mrow>
+         </mrow>
+        </mrow>
+        <mrow>
+         <msub>
+          <mi>
+           w
+          </mi>
+          <mi>
+           t
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfenced>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>N is the number of words in the training corpus, and C is the context window’s size. The reverse of Skip-gram is Continuous Bag of Words (CBOW). It tries to produce a source word according to the surrounding words. CBOW minimizes the following objective in training data. <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         L
+        </mi>
+        <mrow>
+         <mi>
+          C
+         </mi>
+         <mi>
+          B
+         </mi>
+         <mi>
+          O
+         </mi>
+         <mi>
+          W
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><mo>
+       −
+      </mo><mrow>
+       <mfrac>
+        <mn>
+         1
+        </mn>
+        <mi>
+         N
+        </mi>
+       </mfrac>
+      </mrow><munderover>
+       <mrow>
+        <mo>
+         ∑
+        </mo>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+       <mi>
+        N
+       </mi>
+      </munderover><mo form="prefix">
+       log
+      </mo><mi>
+       P
+      </mi><mo stretchy="false">
+       (
+      </mo><mrow>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mi>
+         t
+        </mi>
+       </msub>
+      </mrow><mrow>
+       <mrow>
+        <mrow>
+         <mo>
+          |
+         </mo>
+        </mrow>
+       </mrow>
+      </mrow><mrow>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mo>
+          −
+         </mo>
+         <mi>
+          C
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ,
+      </mo><mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow><mo>
+       …
+      </mo><mo>
+       ,
+      </mo><mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow><mrow>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mo>
+          −
+         </mo>
+         <mn>
+          1
+         </mn>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ,
+      </mo><mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow><mrow>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mo>
+          +
+         </mo>
+         <mn>
+          1
+         </mn>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ,
+      </mo><mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow><mo>
+       …
+      </mo><mo>
+       ,
+      </mo><mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow><mrow>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mo>
+          +
+         </mo>
+         <mi>
+          C
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mrow>
+       <mrow>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mrow>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>The skip-gram architecture weighs nearby context words more heavily than more distant context words. According to the authors (Mikolov et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2013a</a></span>), CBOW is faster while skip-gram is slower but better for infrequent words. Explained models are shown in <a href="#f0002">Figure 2</a>.</p>
+  <div class="figure figureViewer" id="f0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Learning Bilingual Word Embedding Mappings with Similar Words in Related Languages Using GAN</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Alipour%2C+Ghafour"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alipour%2C+Ghafour"><span class="NLM_given-names">Ghafour</span> Alipour</a> <a href="https://orcid.org/0000-0002-2070-4334"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Bagherzadeh+Mohasefi%2C+Jamshid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bagherzadeh+Mohasefi%2C+Jamshid"><span class="NLM_given-names">Jamshid</span> Bagherzadeh Mohasefi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Feizi-Derakhshi%2C+Mohammad-Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Feizi-Derakhshi%2C+Mohammad-Reza"><span class="NLM_given-names">Mohammad-Reza</span> Feizi-Derakhshi</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08839514.2021.2019885">https://doi.org/10.1080/08839514.2021.2019885</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 February 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> The architecture of CBOW and Skip-gram as described in (Mikolov et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2013b</a></span>).</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0002image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/medium/uaai_a_2019885_f0002_b.gif" loading="lazy" height="248" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> The architecture of CBOW and Skip-gram as described in (Mikolov et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2013b</a></span>).</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0002">
+   <div class="figureFootNote-f0002"></div>
+  </div>
+  <p></p>
+  <p>The Global Vectors for Word Representation (GloVe) (Pennington, Socher, and Manning <span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2014</a></span>) extends the Word2vec method; and efficiently learns word vectors. Word2vec and GloVe do the same things and perform similarly in NLP tasks. The notable difference is the way they are built. Word2vec builds word embeddings using a predictive model, while GloVe is a count-based model. Glove learns to make a co-occurrence matrix by counting the frequency of appearing a word in a context.</p>
+  <p>FastText (Bojanowsk et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2017</a></span>), another extension of the Word2vec model, handles each word as a composition of character n-grams and not tokens. For example, with different representations of “school” and “house,” we can build a representation for “schoolhouse,” which would otherwise appear too infrequently to learn dictionary-level embeddings. This difference enables FastText to generate better word embeddings for rare words and out of vocabulary words. Both Glove and Word2vec cannot generate highly efficient word embeddings for rare words.</p>
+ </div>
+ <div id="s0002-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">Cross-Lingual Mapping-based Approaches</h3>
+  <p>Mapping-based approaches try to learn a mapping between monolingual representations of two languages. In these approaches, first, the method trains monolingual word embeddings on massive monolingual corpora. Then they learn a transformation matrix between monolingual representations in different languages to map unknown words of languages. They frequently generate a list of word pairs between the source and the target languages that they translate. There are four types of mapping-based word embedding approaches proposed (Ruder, Vulic, and Søgaard <span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019</a></span>): Regression methods, Orthogonal methods, Canonical methods, and Margin methods.</p>
+  <p><b>Regression methods</b> are the most powerful methods for learning a linear transformation between word embeddings of source and target languages by maximizing their similarity. Mikolov, Le, and Sutskever (<span class="ref-lnk lazy-ref"><a data-rid="cit0033" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2013</a></span>) noted that the words and their translations have similar geometric relations in monolingual word embeddings if a suitable linear transformation is applied.</p>
+  <p><b>Orthogonal methods</b> apply orthogonality constraints on the transformation mapping matrix, which improves regression methods’ performance. Based on the assumption, the transformation matrix W is orthogonal (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        W
+       </mi>
+       <mi>
+        T
+       </mi>
+      </msup>
+     </mrow><mi>
+      W
+     </mi><mo>
+      =
+     </mo><mi>
+      I
+     </mi>
+    </math></span>). The solution is obtained from the singular value decomposition of YX<sup>T</sup>. <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0003.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msup>
+        <mi>
+         W
+        </mi>
+        <mrow>
+         <mrow>
+          <mo>
+           ∗
+          </mo>
+         </mrow>
+        </mrow>
+       </msup>
+      </mrow><mo>
+       =
+      </mo><mi>
+       a
+      </mi><mi>
+       r
+      </mi><mi>
+       g
+      </mi><munder>
+       <mrow>
+        <mo form="prefix" movablelimits="true">
+         min
+        </mo>
+       </mrow>
+       <mi>
+        W
+       </mi>
+      </munder><mfenced open="|" close="|">
+       <mrow>
+        <mfenced open="|" close="|">
+         <mrow>
+          <mi>
+           W
+          </mi>
+          <mi>
+           X
+          </mi>
+          <mo>
+           −
+          </mo>
+          <mi>
+           Y
+          </mi>
+         </mrow>
+        </mfenced>
+       </mrow>
+      </mfenced><mo>
+       =
+      </mo><mi>
+       U
+      </mi><mrow>
+       <msup>
+        <mi>
+         V
+        </mi>
+        <mi>
+         T
+        </mi>
+       </msup>
+      </mrow><mi>
+       s
+      </mi><mo>
+       .
+      </mo><mi>
+       t
+      </mi><mi>
+       U
+      </mi><mi mathvariant="normal">
+       Σ
+      </mi><mrow>
+       <msup>
+        <mi>
+         V
+        </mi>
+        <mi>
+         T
+        </mi>
+       </msup>
+      </mrow><mo>
+       =
+      </mo><mi>
+       S
+      </mi><mi>
+       V
+      </mi><mi>
+       D
+      </mi><mfenced open="(" close=")">
+       <mrow>
+        <mi>
+         Y
+        </mi>
+        <mrow>
+         <msup>
+          <mi>
+           X
+          </mi>
+          <mi>
+           T
+          </mi>
+         </msup>
+        </mrow>
+       </mrow>
+      </mfenced>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+   </disp-formula-group></p>
+  <p><b>Canonical methods</b> map both languages’ word embeddings to a new shared space using Canonical Correlation Analysis (CCA) that maximizes their similarity. Faruqui and Dyer (<span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2014</a></span>) use CCA to map words from two languages into a shared embedding space.</p>
+  <p><b>Margin methods</b> map the source language’s word embeddings to maximize the margin between correct translations and other candidates. Lazaridou, Dinu, and Baroni (<span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2015</a></span>) propose another objective for the linear transformation. They realize that using least-squares as an objective for learning a projection matrix leads to hubness. To find the correct translation vector <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        y
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> of a source word <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>, they use a margin-based (max-margin) ranking loss (Collobert and Weston <span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2008</a></span>) to train the model. Jinsong Su et al. use graph-based semantic information to learn bilingual word embedding (Jinsong, et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018a</a></span>).</p>
+  <p>Creating robust cross-lingual word representations with some parallel data (seed lexicon) is an essential avenue of research. All references in <button class="ref showTableEventRef" data-id="t0001">Table 1</button>, have worked on linear transformation.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Learning Bilingual Word Embedding Mappings with Similar Words in Related Languages Using GAN</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Alipour%2C+Ghafour"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alipour%2C+Ghafour"><span class="NLM_given-names">Ghafour</span> Alipour</a> <a href="https://orcid.org/0000-0002-2070-4334"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Bagherzadeh+Mohasefi%2C+Jamshid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bagherzadeh+Mohasefi%2C+Jamshid"><span class="NLM_given-names">Jamshid</span> Bagherzadeh Mohasefi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Feizi-Derakhshi%2C+Mohammad-Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Feizi-Derakhshi%2C+Mohammad-Reza"><span class="NLM_given-names">Mohammad-Reza</span> Feizi-Derakhshi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2021.2019885">https://doi.org/10.1080/08839514.2021.2019885</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>08 February 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Word embedding mapping methods</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F08839514.2021.2019885&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>Unfortunately, most linear transformation mapping approaches are not accurate enough. Therefore, the approaches require a long way to be more precise and reliable. Besides, there are rare efforts in nonlinear transformation mappings. Both Mikolov et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2013b</a></span>) and Conneau et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018</a></span>) found that a linear transformation performs better than a nonlinear transformation learned via a feedforward neural network. Makhzani et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>) use adversarial autoencoders to map word embeddings between languages. The reported performances are weak in comparison to other methods.</p>
+  <p>Jinsong et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018a</a></span>) to model the bilingual semantics produce a neural generative autoencoder. Zhang et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0049" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2020</a></span>) for cross-lingual embedding mappings use Wasserstein GAN (Arjovsky, Chintala, and Bottou <span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2017</a></span>), which combines back-translation with target-side and preliminary mappings learning. Their used dataset was not big enough, and the model requires more iterations to converge on the discriminator as it will be slower to be trained on it.</p>
+  <p>In brief, there has not been any neural network-based model yet that proves to construct a more effective mapping model on feedforward neural networks. Early cross-lingual word embedding models relied on a large amount of parallel data (Artetxe, Labaka, and Agirre <span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>; Mikolov et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2013b</a></span>). Still, more recent methods have tried to minimize the amount of supervision necessary (Artetxe, Labaka, and Agirre <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2017</a></span>; Levy, Søgaard, and Goldberg <span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2017</a></span>; Smith et al. ; Vulic´ and Korhonen <span class="ref-lnk lazy-ref"><a data-rid="cit0044" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>). Some researchers have presented almost unsupervised methods that do not use any form of cross-lingual supervision data (Conneau et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018</a></span>; Shigeto et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0039" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2015</a></span>; Valerio and Barone <span class="ref-lnk lazy-ref"><a data-rid="cit0042" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>; Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0047" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2017</a></span>). Unsupervised cross-lingual word embeddings try to evolve bilingual lexicons and machine translation models without parallel corpora and translations (Duong et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>; Lample et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+  <p>Recently, approaches have been proposed that learn an initial seed lexicon in a completely unsupervised way. All unsupervised cross-lingual word embeddings methods are based on the mapping approaches. Conneau et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018</a></span>) learn an initial mapping in an adversarial way by training a discriminator to differentiate between projected and actual target language embeddings. Artetxe et al. (Artetxe, Labaka, and Agirre <span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018</a></span>) propose to use an initialization method based on the heuristic that translations have similar similarity distributions across languages. Hoshen and Wolf (<span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018</a></span>) introduced a method with the first project vectors of the N most frequent words to a lower-dimensional space with PCA. Their approach minimizes the sum of Euclidean distances by learning <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mo stretchy="false">
+         →
+        </mo>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo stretchy="false">
+         →
+        </mo>
+        <mi>
+         s
+        </mi>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span> enforce cyclical consistency constraints that force vectors round-projected to the other language space and back to remain unchanged.</p>
+ </div>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i11" class="section-heading-2">Data Collection and Experimental Setup</h2>
+ <p>Turkic languages are spoken across a wide area, stretching from the Balkans in Europe through Central Asia to northeast Siberia (Hammarström, Forkel, and Haspelmath <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2017</a></span>). There exist several alphabets used by Turkic languages. The Latin alphabet is a well-established alphabet in the Turkic languages today. It is currently used by (with different versions) Turkey, Uzbekistan, Azerbaijan, and Turkmenistan and will be used by Kazakhstan.</p>
+ <p>Turkish, the official language of Turkey, is the most widely spoken of the Turkic languages and has the biggest articles set in the family inside the Wikipedia dumps. We use Turkish as the source language in our bilingual mapping experiments and Azerbaijani, Turkmen, and Uzbek as the target languages.</p>
+ <p>The Indo-European languages are among the most major language families and are mostly used in western and southern Eurasia. For our experiments, from the North Germanic branch of the family, we chose Swedish as the source language, Danish and Norwegian languages as the target languages, and from the south Slavic branch, we selected Serbian as a source, Croatian, and Bosnian as the target languages.</p>
+ <p>One of the first things required for NLP tasks is a corpus that refers to a collection of texts. One of the best rich sources of a well-organized vast amount of non-adversarial textual data is Wikipedia. It is freely and conveniently available online, which makes it a valuable resource to build NLP systems.</p>
+ <p>By each language Wikipedia text dumps (XML files), we prepared a monolingual corpus for all mentioned languages. For each language, its Wikipedia dump contains just the latest versions of the Wikipedia articles (November 2021). <button class="ref showTableEventRef" data-id="t0002">Table 2</button> shows the number of articles and tokens of the languages.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">Learning Bilingual Word Embedding Mappings with Similar Words in Related Languages Using GAN</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Alipour%2C+Ghafour"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alipour%2C+Ghafour"><span class="NLM_given-names">Ghafour</span> Alipour</a> <a href="https://orcid.org/0000-0002-2070-4334"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Bagherzadeh+Mohasefi%2C+Jamshid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bagherzadeh+Mohasefi%2C+Jamshid"><span class="NLM_given-names">Jamshid</span> Bagherzadeh Mohasefi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Feizi-Derakhshi%2C+Mohammad-Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Feizi-Derakhshi%2C+Mohammad-Reza"><span class="NLM_given-names">Mohammad-Reza</span> Feizi-Derakhshi</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/08839514.2021.2019885">https://doi.org/10.1080/08839514.2021.2019885</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 February 2022
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 2. </span> An approximate count of articles and tokens in Wikipedia dumps for each language (K&nbsp;=&nbsp;1000)</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F08839514.2021.2019885&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <p>To construct a text corpus from Wikipedia without article markups, punctuations, and links, we use the WikiCorpus tool from gensim,<a href="#en0001"><sup>1</sup></a> an XML parser library for Python, which converts Wikipedia dump files to text corpus. To pre-process the text corpus for the Word2Vec model, we convert all the corpus text to lowercase form and delete all the special characters, digits, and extra spaces from the text. After that, we use the Word2vec implementation of the gensim library to provide a monolingual embedding model in each language. As for Word2vec parameters, no lemmatization was done, the window size was set to 5, and the output dimensions were set to 768. We only estimated representation vectors for words, which occurred five times or more in the monolingual corpus. <a href="#f0003">Figure 3</a> shows the learning process for word vectors in each language.</p>
+ <div class="figure figureViewer" id="f0003">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Learning Bilingual Word Embedding Mappings with Similar Words in Related Languages Using GAN</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Alipour%2C+Ghafour"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alipour%2C+Ghafour"><span class="NLM_given-names">Ghafour</span> Alipour</a> <a href="https://orcid.org/0000-0002-2070-4334"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Bagherzadeh+Mohasefi%2C+Jamshid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bagherzadeh+Mohasefi%2C+Jamshid"><span class="NLM_given-names">Jamshid</span> Bagherzadeh Mohasefi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Feizi-Derakhshi%2C+Mohammad-Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Feizi-Derakhshi%2C+Mohammad-Reza"><span class="NLM_given-names">Mohammad-Reza</span> Feizi-Derakhshi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2021.2019885">https://doi.org/10.1080/08839514.2021.2019885</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>08 February 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 3. </span> The process of learning word vectors in each language.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0003image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/medium/uaai_a_2019885_f0003_oc.jpg" loading="lazy" height="500" width="376"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0003">
+  <p class="captionText"><span class="captionLabel">Figure 3. </span> The process of learning word vectors in each language.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0003">
+  <div class="figureFootNote-f0003"></div>
+ </div>
+ <p></p>
+ <p>In our experiments, there are seven language pairs, Turkish-Azerbaijani, Turkish-Uzbek, Turkish-Turkmen, Swedish-Danish, Swedish-Norwegian, Serbian-Bosnian, and Serbian-Croatian. All language pairs are relevant and use the Latin alphabet; so many words have the same dictation and meaning.</p>
+ <p>We need a few thousand word pairs as a seed dictionary for better and accurate bilingual word embeddings transformation. Preparing a seed dictionary between languages is usually not easy and requires a lot of cost and effort. On the other hand, a reasonable size seed dictionary makes the final word embedding mapping model more accurate.</p>
+ <p>We propose choosing the exact dictation words as the bilingual seed dictionary. The underlying assumption is that word embeddings across relative languages share similar local and global arrangements. For example, the distance between the words <i>Kedi</i> and <i>Köpek</i> in Turkish should be relatively similar to the distance between <i>Pişik</i> and <i>İt</i> in Azerbaijani. We try to recover the transformation between language pairs using seed dictionaries. We split each seed dictionary into three parts: a training set, a test set, and a validation set. <button class="ref showTableEventRef" data-id="t0003">Table 3</button> shows the number of the same dictation tokens in the language pairs and the amount of their training set, test set, and validation set.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">Learning Bilingual Word Embedding Mappings with Similar Words in Related Languages Using GAN</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Alipour%2C+Ghafour"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alipour%2C+Ghafour"><span class="NLM_given-names">Ghafour</span> Alipour</a> <a href="https://orcid.org/0000-0002-2070-4334"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Bagherzadeh+Mohasefi%2C+Jamshid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bagherzadeh+Mohasefi%2C+Jamshid"><span class="NLM_given-names">Jamshid</span> Bagherzadeh Mohasefi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Feizi-Derakhshi%2C+Mohammad-Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Feizi-Derakhshi%2C+Mohammad-Reza"><span class="NLM_given-names">Mohammad-Reza</span> Feizi-Derakhshi</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/08839514.2021.2019885">https://doi.org/10.1080/08839514.2021.2019885</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 February 2022
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 3. </span> The number of words in seed dictionaries and size of the training, validation, and test sets (K&nbsp;=&nbsp;1000)</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F08839514.2021.2019885&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i13" class="section-heading-2">Implemented System</h2>
+ <p>In this section, we present our proposed network. A brief overview of the proposed network is illustrated in <a href="#f0004">Figure 4</a>. The network includes two main parts. These parts are: A generator network that transfers a word vector from a source language to a target language, and the discriminator network that distinguishes the real/fake word vector.</p>
+ <div class="figure figureViewer" id="f0004">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Learning Bilingual Word Embedding Mappings with Similar Words in Related Languages Using GAN</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Alipour%2C+Ghafour"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alipour%2C+Ghafour"><span class="NLM_given-names">Ghafour</span> Alipour</a> <a href="https://orcid.org/0000-0002-2070-4334"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Bagherzadeh+Mohasefi%2C+Jamshid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bagherzadeh+Mohasefi%2C+Jamshid"><span class="NLM_given-names">Jamshid</span> Bagherzadeh Mohasefi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Feizi-Derakhshi%2C+Mohammad-Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Feizi-Derakhshi%2C+Mohammad-Reza"><span class="NLM_given-names">Mohammad-Reza</span> Feizi-Derakhshi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2021.2019885">https://doi.org/10.1080/08839514.2021.2019885</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>08 February 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 4. </span> Overview of the proposed model.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0004image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/medium/uaai_a_2019885_f0004_oc.jpg" loading="lazy" height="500" width="414"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0004">
+  <p class="captionText"><span class="captionLabel">Figure 4. </span> Overview of the proposed model.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0004">
+  <div class="figureFootNote-f0004"></div>
+ </div>
+ <p></p>
+ <p>A GAN (Goodfellow et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2014</a></span>) comprises a generator model, G, and a discriminator model, D. The generator objects to learn a mapping function from a prior noise distribution <i>p</i><sub>y</sub> to an unknown data distribution <i>p</i><sub>x</sub> in the real data space. The discriminator tries to discern between generated and real data. Both networks are trained competing against each other in a min-max game with value function <i>V (G, D)</i>: <disp-formula-group>
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <munder>
+      <mrow>
+       <mo form="prefix" movablelimits="true">
+        min
+       </mo>
+      </mrow>
+      <mi>
+       G
+      </mi>
+     </munder><munder>
+      <mrow>
+       <mo form="prefix" movablelimits="true">
+        max
+       </mo>
+      </mrow>
+      <mi>
+       D
+      </mi>
+     </munder><mi>
+      V
+     </mi><mfenced open="(" close=")">
+      <mrow>
+       <mi>
+        G
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        D
+       </mi>
+      </mrow>
+     </mfenced><mo>
+      =
+     </mo><mrow>
+      <msub>
+       <mi>
+        E
+       </mi>
+       <mrow>
+        <mi>
+         X
+        </mi>
+        <mo stretchy="false">
+         →
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           p
+          </mi>
+          <mi>
+           x
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mfenced open="[" close="]">
+      <mrow>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          l
+         </mi>
+         <mi mathvariant="normal">
+          o
+         </mi>
+         <mi mathvariant="normal">
+          g
+         </mi>
+        </mrow>
+       </mrow>
+       <mfenced open="(" close=")">
+        <mrow>
+         <mi>
+          D
+         </mi>
+         <mfenced open="(" close=")">
+          <mi>
+           X
+          </mi>
+         </mfenced>
+        </mrow>
+       </mfenced>
+      </mrow>
+     </mfenced><mo>
+      +
+     </mo><mrow>
+      <msub>
+       <mi>
+        E
+       </mi>
+       <mrow>
+        <mi>
+         Y
+        </mi>
+        <mo stretchy="false">
+         →
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           p
+          </mi>
+          <mi>
+           y
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mfenced open="[" close="]">
+      <mrow>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          l
+         </mi>
+         <mi mathvariant="normal">
+          o
+         </mi>
+         <mi mathvariant="normal">
+          g
+         </mi>
+        </mrow>
+       </mrow>
+       <mfenced open="(" close=")">
+        <mrow>
+         <mn>
+          1
+         </mn>
+         <mo>
+          −
+         </mo>
+         <mi>
+          D
+         </mi>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mi>
+            G
+           </mi>
+           <mo stretchy="false">
+            (
+           </mo>
+           <mi>
+            Y
+           </mi>
+          </mrow>
+         </mfenced>
+        </mrow>
+       </mfenced>
+      </mrow>
+     </mfenced>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+  </disp-formula-group></p>
+ <p>During training, the generator learns to generate more realistic vectors to deceive the discriminator while the discriminator improves itself to discern the real vectors from the generated one. Our GAN model is mainly focused on learning one-to-one mappings from an input vector to an output vector.</p>
+ <p>Let <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0006.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <mrow>
+      <mi mathvariant="bold-italic">
+       X
+      </mi>
+     </mrow>
+    </mrow><mo>
+     =
+    </mo><mfenced open="{" close="}">
+     <mrow>
+      <mrow>
+       <msub>
+        <mi>
+         x
+        </mi>
+        <mn>
+         1
+        </mn>
+       </msub>
+      </mrow>
+      <mo>
+       .
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         x
+        </mi>
+        <mn>
+         2
+        </mn>
+       </msub>
+      </mrow>
+      <mo>
+       .
+      </mo>
+      <mo>
+       …
+      </mo>
+      <mo>
+       .
+      </mo>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mrow>
+       <msub>
+        <mi>
+         x
+        </mi>
+        <mrow>
+         <mfenced open="|" close="|">
+          <mi>
+           X
+          </mi>
+         </mfenced>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+     </mrow>
+    </mfenced>
+   </math></span> be the vocabulary of a source language <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0007.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       S
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub>
+    </mrow>
+   </math></span> with |X| words, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0008.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <mrow>
+      <mi mathvariant="bold-italic">
+       X
+      </mi>
+     </mrow>
+    </mrow><mo>
+     ∈
+    </mo><mrow>
+     <msup>
+      <mrow>
+       <mrow>
+        <mi mathvariant="double-struck">
+         R
+        </mi>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mfenced open="|" close="|">
+        <mi>
+         X
+        </mi>
+       </mfenced>
+       <mo>
+        ×
+       </mo>
+       <mi>
+        l
+       </mi>
+      </mrow>
+     </msup>
+    </mrow>
+   </math></span> be the corresponding word embeddings of length l and let <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0009.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <mrow>
+      <mi mathvariant="bold-italic">
+       Y
+      </mi>
+     </mrow>
+    </mrow><mo>
+     =
+    </mo><mfenced open="{" close="}">
+     <mrow>
+      <mrow>
+       <msub>
+        <mi>
+         y
+        </mi>
+        <mn>
+         1
+        </mn>
+       </msub>
+      </mrow>
+      <mo>
+       .
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         y
+        </mi>
+        <mn>
+         2
+        </mn>
+       </msub>
+      </mrow>
+      <mo>
+       .
+      </mo>
+      <mo>
+       …
+      </mo>
+      <mo>
+       .
+      </mo>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mrow>
+       <msub>
+        <mi>
+         y
+        </mi>
+        <mrow>
+         <mfenced open="|" close="|">
+          <mi>
+           Y
+          </mi>
+         </mfenced>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+     </mrow>
+    </mfenced>
+   </math></span> be the vocabulary of the target language <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0010.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       T
+      </mi>
+      <mi>
+       j
+      </mi>
+     </msub>
+    </mrow>
+   </math></span> with |Y| words, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0011.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <mrow>
+      <mi mathvariant="bold-italic">
+       Y
+      </mi>
+     </mrow>
+    </mrow><mo>
+     ∈
+    </mo><mrow>
+     <msup>
+      <mrow>
+       <mrow>
+        <mi mathvariant="double-struck">
+         R
+        </mi>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mfenced open="|" close="|">
+        <mi>
+         Y
+        </mi>
+       </mfenced>
+       <mo>
+        ×
+       </mo>
+       <mrow>
+        <mi>
+         m
+        </mi>
+       </mrow>
+      </mrow>
+     </msup>
+    </mrow>
+   </math></span> is the corresponding word embeddings of length m. We denote the word vector for a word x by X.</p>
+ <p>The source and target languages are aligned with a seed lexicon dictionary (binary matrix) D so that <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0012.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mrow>
+       <mrow>
+        <mi mathvariant="bold-italic">
+         D
+        </mi>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mrow>
+        <mrow>
+         <mi mathvariant="bold-italic">
+          i
+         </mi>
+         <mi mathvariant="bold-italic">
+          j
+         </mi>
+        </mrow>
+       </mrow>
+      </mrow>
+     </msub>
+    </mrow><mo>
+     =
+    </mo><mn>
+     1
+    </mn>
+   </math></span> if the i-th word in the source language is aligned with the j-th word in the target language. Our objective is to find the dictionary matrix D by learning the mapping matrix W, which transforms input language word embeddings X to the target language word embeddings Y. Our bilingual word embeddings training algorithm is as follows:</p>
+ <p>The generator consists of an encoder-decoder architecture with an attention mechanism (Bahdanau, Cho, and Bengio <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>; Luong and Manning <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>), as shown in <a href="#f0005">Figure 5</a>.</p>
+ <div class="figure figureViewer" id="f0005">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Learning Bilingual Word Embedding Mappings with Similar Words in Related Languages Using GAN</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Alipour%2C+Ghafour"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alipour%2C+Ghafour"><span class="NLM_given-names">Ghafour</span> Alipour</a> <a href="https://orcid.org/0000-0002-2070-4334"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Bagherzadeh+Mohasefi%2C+Jamshid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bagherzadeh+Mohasefi%2C+Jamshid"><span class="NLM_given-names">Jamshid</span> Bagherzadeh Mohasefi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Feizi-Derakhshi%2C+Mohammad-Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Feizi-Derakhshi%2C+Mohammad-Reza"><span class="NLM_given-names">Mohammad-Reza</span> Feizi-Derakhshi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2021.2019885">https://doi.org/10.1080/08839514.2021.2019885</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>08 February 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 5. </span> Encoder-Decoder architecture with an attention mechanism (Bahdanau, Cho, and Bengio <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>).</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0005image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/medium/uaai_a_2019885_f0005_oc.jpg" loading="lazy" height="329" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0005">
+  <p class="captionText"><span class="captionLabel">Figure 5. </span> Encoder-Decoder architecture with an attention mechanism (Bahdanau, Cho, and Bengio <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>).</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0005">
+  <div class="figureFootNote-f0005"></div>
+ </div>
+ <p></p>
+ <p>In our experiments, encoder and decoder networks are recurrent neural networks (RNN) implemented by stacking multiple Bi-directional Long Short-Term Memory (BLSTM) layers. The encoder reads the source word embedding vector <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0013.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mrow>
+       <mrow>
+        <mi mathvariant="bold-italic">
+         x
+        </mi>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mrow>
+        <mi mathvariant="bold-italic">
+         k
+        </mi>
+       </mrow>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span> and produces a high-level representation <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0014.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <mrow>
+      <mi mathvariant="bold-italic">
+       h
+      </mi>
+     </mrow>
+    </mrow><mo>
+     =
+    </mo><mfenced open="{" close="}">
+     <mrow>
+      <mrow>
+       <msub>
+        <mi>
+         h
+        </mi>
+        <mn>
+         1
+        </mn>
+       </msub>
+      </mrow>
+      <mo>
+       .
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         h
+        </mi>
+        <mn>
+         2
+        </mn>
+       </msub>
+      </mrow>
+      <mo>
+       .
+      </mo>
+      <mo>
+       …
+      </mo>
+      <mo>
+       .
+      </mo>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+      <mrow>
+       <msub>
+        <mi>
+         h
+        </mi>
+        <mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           m
+          </mi>
+         </mrow>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mtext>
+        &nbsp;
+       </mtext>
+      </mrow>
+     </mrow>
+    </mfenced>
+   </math></span>: <disp-formula-group>
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0005" class="disp-formula-label">(5) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mrow>
+       <mi mathvariant="bold-italic">
+        h
+       </mi>
+      </mrow>
+     </mrow><mo>
+      =
+     </mo><mi>
+      E
+     </mi><mi>
+      n
+     </mi><mi>
+      c
+     </mi><mi>
+      o
+     </mi><mi>
+      d
+     </mi><mi>
+      e
+     </mi><mi>
+      r
+     </mi><mfenced open="(" close=")">
+      <mrow>
+       <mrow>
+        <mi mathvariant="bold-italic">
+         X
+        </mi>
+       </mrow>
+      </mrow>
+     </mfenced>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0005" class="disp-formula-label">(5) </span></span></span></span>
+  </disp-formula-group></p>
+ <p>The decoder network reads the encoding and generates an output sequence in the target language word embeddings space. Attention is a mechanism that gives a richer encoding of the source sequence to construct a context vector used by the decoder. The decoder calculates the likelihood of the sequence, based on the conditional probability of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0015.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mrow>
+       <mrow>
+        <mi mathvariant="bold-italic">
+         y
+        </mi>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mrow>
+        <mi mathvariant="bold-italic">
+         u
+        </mi>
+       </mrow>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span>, given the input feature <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0016.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <mrow>
+      <mi mathvariant="bold-italic">
+       h
+      </mi>
+     </mrow>
+    </mrow>
+   </math></span> and the previous labels <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0017.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mrow>
+       <mrow>
+        <mi mathvariant="bold-italic">
+         y
+        </mi>
+       </mrow>
+      </mrow>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </mrow><mo>
+     :
+    </mo><mrow>
+     <mrow>
+      <mi mathvariant="bold-italic">
+       u
+      </mi>
+     </mrow>
+    </mrow><mo>
+     −
+    </mo><mn>
+     1
+    </mn>
+   </math></span>, using the chain rule: <disp-formula-group>
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0006" class="disp-formula-label">(6) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      p
+     </mi><mo stretchy="false">
+      (
+     </mo><mrow>
+      <mrow>
+       <mi mathvariant="bold-italic">
+        y
+       </mi>
+      </mrow>
+     </mrow><mrow>
+      <mo>
+       |
+      </mo>
+     </mrow><mrow>
+      <mrow>
+       <mi mathvariant="bold-italic">
+        x
+       </mi>
+      </mrow>
+     </mrow><mo stretchy="false">
+      )
+     </mo><mo>
+      =
+     </mo><munder>
+      <mrow>
+       <mo>
+        ∏
+       </mo>
+      </mrow>
+      <mi>
+       u
+      </mi>
+     </munder><mi>
+      p
+     </mi><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mrow>
+        <mrow>
+         <mi mathvariant="bold-italic">
+          y
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mrow>
+         <mi mathvariant="bold-italic">
+          u
+         </mi>
+        </mrow>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mo>
+       |
+      </mo>
+     </mrow><mrow>
+      <mrow>
+       <mi mathvariant="bold-italic">
+        h
+       </mi>
+      </mrow>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mrow>
+        <mrow>
+         <mi mathvariant="bold-italic">
+          y
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         :
+        </mo>
+        <mrow>
+         <mrow>
+          <mi mathvariant="bold-italic">
+           u
+          </mi>
+         </mrow>
+        </mrow>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0006" class="disp-formula-label">(6) </span></span></span></span>
+  </disp-formula-group></p>
+ <p>The input to the encoder is a word embedding with d =&nbsp;768 elements. To implement each of the encoder and decoder models, we use 4 BLSTM stack layers. The encoder model’s output is a fixed-size vector that represents the internal representation of the input sequence. The number of memory cells in each layer is 256.</p>
+ <p>Hence, we use the generator network to learn a mapping function from a real word vector sample X to generated a sample y<sub>gen</sub> which is corresponding to a real word vector y<sub>real</sub>. The discriminator network <i>D</i> is a CNN network used to evaluate how well the generator network generates fake samples. The discriminator inputs all the generated vectors and tries to distinguish between the real and generated vectors.</p>
+ <p>The network’s output is a 768-dimensional vector, where it is a closely aligned word vector to the model’s input word vector. To learn word embedding mapping, we use an iterative refinement to find the final mapping. First, we produce the seed dictionary through the exact dictation words. Next, the system refines the dictionary until convergence. The proposed algorithm used to find the dictionary matrix D is shown below.</p>
+ <p>Input: X (source language word embeddings)</p>
+ <p>Input: Z (target language word embeddings)</p>
+ <p>Input: D (seed dictionary)</p>
+ <p>1: Until convergence:</p>
+ <p>1.1: Mapping_GAN_Model ← LEARN_MAPPING (X, Y, D)</p>
+ <p>1.2: D ← LEARN_DICTIONARY (X, Y, Mapping_GAN_Model)</p>
+ <p>1. 3: EVALUATE DICTIONARY(D)</p>
+ <p>Output: D</p>
+ <p>We use the dot product as the similarity measure to learn a dictionary, roughly equivalent to cosine similarity between the source language word embeddings and the target language word embeddings. We set <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0018.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mrow>
+       <mrow>
+        <mi mathvariant="bold-italic">
+         D
+        </mi>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mrow>
+        <mrow>
+         <mi mathvariant="bold-italic">
+          i
+         </mi>
+         <mi mathvariant="bold-italic">
+          j
+         </mi>
+        </mrow>
+       </mrow>
+      </mrow>
+     </msub>
+    </mrow><mo>
+     =
+    </mo><mn>
+     1
+    </mn>
+   </math></span> if <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0019.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mi>
+     j
+    </mi><mo>
+     =
+    </mo><munder>
+     <mrow>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         a
+        </mi>
+        <mi mathvariant="normal">
+         r
+        </mi>
+        <mi mathvariant="normal">
+         g
+        </mi>
+        <mi mathvariant="normal">
+         m
+        </mi>
+        <mi mathvariant="normal">
+         a
+        </mi>
+        <mi mathvariant="normal">
+         x
+        </mi>
+       </mrow>
+      </mrow>
+     </mrow>
+     <mi>
+      k
+     </mi>
+    </munder><mfenced open="(" close=")">
+     <mrow>
+      <mrow>
+       <msub>
+        <mi>
+         y
+        </mi>
+        <mrow>
+         <mi>
+          g
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          n
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mi>
+       d
+      </mi>
+      <mi>
+       o
+      </mi>
+      <mi>
+       t
+      </mi>
+      <mrow>
+       <msub>
+        <mi>
+         Y
+        </mi>
+        <mrow>
+         <mrow>
+          <msup>
+           <mi>
+            k
+           </mi>
+           <mo>
+            ∗
+           </mo>
+          </msup>
+         </mrow>
+        </mrow>
+       </msub>
+      </mrow>
+     </mrow>
+    </mfenced>
+   </math></span> and for otherwise, we set <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0020.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <mtext>
+      &nbsp;
+     </mtext>
+    </mrow><mrow>
+     <msub>
+      <mrow>
+       <mrow>
+        <mi mathvariant="bold-italic">
+         D
+        </mi>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mrow>
+        <mrow>
+         <mi mathvariant="bold-italic">
+          i
+         </mi>
+         <mi mathvariant="bold-italic">
+          j
+         </mi>
+        </mrow>
+       </mrow>
+      </mrow>
+     </msub>
+    </mrow><mo>
+     =
+    </mo><mn>
+     0
+    </mn>
+   </math></span>.</p>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i19" class="section-heading-2">Results</h2>
+ <p>To induce word embeddings, we use Wikipedia text dumps. We create independent monolingual word embeddings in each language using Wod2vec in the genism library. In our experiments, we set d =&nbsp;728 for the number of dimensions of word embeddings and w =&nbsp;5 for the size of context window. Each word embeddings vector contains floating-point numbers within the range −8 to +8. Experiments are conducted on the Google Colab server.</p>
+ <p>We implemented the model using TensorFlow and Keras. Backpropagation through time (BPTT) and Adam optimizer with learning rate 0.001 are used to optimize the objective function. We implemented four neural networks to find the best bilingual mapping model, including Vanilla LSTM, Encoder-decoder, Encoder-decoder with attention, and our proposed model. All of the implemented models are trained at least 1000 epochs, and the batch size is set to 500. The models take around 8–10&nbsp;hours to train in the Google Colab server system, except for our proposed model, which takes approximately 11–12&nbsp;hours. The similarity percentage between two vectors <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0021.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mrow>
+       <mrow>
+        <mi mathvariant="bold-italic">
+         y
+        </mi>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mi>
+        r
+       </mi>
+       <mi>
+        e
+       </mi>
+       <mi>
+        a
+       </mi>
+       <mi>
+        l
+       </mi>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0022.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mrow>
+       <mrow>
+        <mi mathvariant="bold-italic">
+         y
+        </mi>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mi>
+        g
+       </mi>
+       <mi>
+        e
+       </mi>
+       <mi>
+        n
+       </mi>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span> is computed using the following formula: <disp-formula-group>
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/uaai_a_2019885_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0007" class="disp-formula-label">(7) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      S
+     </mi><mi>
+      i
+     </mi><mi>
+      m
+     </mi><mfenced open="(" close=")">
+      <mrow>
+       <mrow>
+        <msub>
+         <mrow>
+          <mrow>
+           <mi mathvariant="bold-italic">
+            y
+           </mi>
+          </mrow>
+         </mrow>
+         <mrow>
+          <mi>
+           g
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           n
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mrow>
+          <mrow>
+           <mi mathvariant="bold-italic">
+            y
+           </mi>
+          </mrow>
+         </mrow>
+         <mrow>
+          <mi>
+           r
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           l
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+      </mrow>
+     </mfenced><mo>
+      =
+     </mo><mrow>
+      <mtext>
+       &nbsp;
+      </mtext>
+     </mrow><mrow>
+      <mfrac>
+       <mn>
+        1
+       </mn>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         +
+        </mo>
+        <mi>
+         E
+        </mi>
+        <mi>
+         u
+        </mi>
+        <mi>
+         c
+        </mi>
+        <mi mathvariant="normal">
+         _
+        </mi>
+        <mi>
+         d
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         s
+        </mi>
+        <mfenced open="(" close=")">
+         <mrow>
+          <mrow>
+           <msub>
+            <mrow>
+             <mrow>
+              <mi mathvariant="bold-italic">
+               y
+              </mi>
+             </mrow>
+            </mrow>
+            <mrow>
+             <mi>
+              g
+             </mi>
+             <mi>
+              e
+             </mi>
+             <mi>
+              n
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mo>
+           ,
+          </mo>
+          <mrow>
+           <msub>
+            <mrow>
+             <mrow>
+              <mi mathvariant="bold-italic">
+               y
+              </mi>
+             </mrow>
+            </mrow>
+            <mrow>
+             <mi>
+              r
+             </mi>
+             <mi>
+              e
+             </mi>
+             <mi>
+              a
+             </mi>
+             <mi>
+              l
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+         </mrow>
+        </mfenced>
+       </mrow>
+      </mfrac>
+     </mrow><mrow>
+      <mrow>
+       <mo>
+        ∗
+       </mo>
+      </mrow>
+     </mrow><mn>
+      100
+     </mn>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0007" class="disp-formula-label">(7) </span></span></span></span>
+  </disp-formula-group></p>
+ <p>The mean similarity of each language pair is obtained using the mean of all similarities in it. <button class="ref showTableEventRef" data-id="t0004">Table 4</button> summarizes the accuracy of our proposed model compared to the other implemented models. The results show that the highest performance is achieved in the proposed model. The impact of the initial dictionary mass on the quality of the results is shown in <a href="#f0006">Figure 6</a>. For example, for the Azerbaijani column, we calculated the rate of its similar words by Turkish to its all words (82/140&nbsp;=&nbsp;46%). Our experiments show that mass seed dictionaries increase the quality of mapping.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">Learning Bilingual Word Embedding Mappings with Similar Words in Related Languages Using GAN</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Alipour%2C+Ghafour"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alipour%2C+Ghafour"><span class="NLM_given-names">Ghafour</span> Alipour</a> <a href="https://orcid.org/0000-0002-2070-4334"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Bagherzadeh+Mohasefi%2C+Jamshid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bagherzadeh+Mohasefi%2C+Jamshid"><span class="NLM_given-names">Jamshid</span> Bagherzadeh Mohasefi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Feizi-Derakhshi%2C+Mohammad-Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Feizi-Derakhshi%2C+Mohammad-Reza"><span class="NLM_given-names">Mohammad-Reza</span> Feizi-Derakhshi</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/08839514.2021.2019885">https://doi.org/10.1080/08839514.2021.2019885</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 February 2022
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 4. </span> Implemented model’s performance in different networks</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0004-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0004&amp;doi=10.1080%2F08839514.2021.2019885&amp;downloadType=CSV"> Download CSV</a><a data-id="t0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="figure figureViewer" id="f0006">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Learning Bilingual Word Embedding Mappings with Similar Words in Related Languages Using GAN</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Alipour%2C+Ghafour"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alipour%2C+Ghafour"><span class="NLM_given-names">Ghafour</span> Alipour</a> <a href="https://orcid.org/0000-0002-2070-4334"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Bagherzadeh+Mohasefi%2C+Jamshid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bagherzadeh+Mohasefi%2C+Jamshid"><span class="NLM_given-names">Jamshid</span> Bagherzadeh Mohasefi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Feizi-Derakhshi%2C+Mohammad-Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Feizi-Derakhshi%2C+Mohammad-Reza"><span class="NLM_given-names">Mohammad-Reza</span> Feizi-Derakhshi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2021.2019885">https://doi.org/10.1080/08839514.2021.2019885</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>08 February 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 6. </span> Initial seed dictionary impact on the bilingual transform mapping.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0006image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/medium/uaai_a_2019885_f0006_oc.jpg" loading="lazy" height="288" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0006">
+  <p class="captionText"><span class="captionLabel">Figure 6. </span> Initial seed dictionary impact on the bilingual transform mapping.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0006">
+  <div class="figureFootNote-f0006"></div>
+ </div>
+ <p></p>
+ <p>In <a href="#f0007">Figure 7</a>, we show the difference between the real and generated vectors of 3-sample word vectors (the word vectors of <i>şanslı, sevgi</i>, and <i>barış</i>).</p>
+ <div class="figure figureViewer" id="f0007">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Learning Bilingual Word Embedding Mappings with Similar Words in Related Languages Using GAN</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Alipour%2C+Ghafour"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alipour%2C+Ghafour"><span class="NLM_given-names">Ghafour</span> Alipour</a> <a href="https://orcid.org/0000-0002-2070-4334"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Bagherzadeh+Mohasefi%2C+Jamshid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bagherzadeh+Mohasefi%2C+Jamshid"><span class="NLM_given-names">Jamshid</span> Bagherzadeh Mohasefi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Feizi-Derakhshi%2C+Mohammad-Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Feizi-Derakhshi%2C+Mohammad-Reza"><span class="NLM_given-names">Mohammad-Reza</span> Feizi-Derakhshi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2021.2019885">https://doi.org/10.1080/08839514.2021.2019885</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>08 February 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 7. </span> Differences between real and generated vectors in 3 sample words.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0007image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2022/uaai20.v036.i01/08839514.2021.2019885/20221215/images/medium/uaai_a_2019885_f0007_oc.jpg" loading="lazy" height="500" width="213"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0007">
+  <p class="captionText"><span class="captionLabel">Figure 7. </span> Differences between real and generated vectors in 3 sample words.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0007">
+  <div class="figureFootNote-f0007"></div>
+ </div>
+ <p></p>
+ <p>Previous works have used different methods to learn bilingual word embedding mappings; <button class="ref showTableEventRef" data-id="t0005">Table 5</button> reports previous methods’ best results compared to the proposed method. These results demonstrate that our method produces better mappings than previous ones.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">Learning Bilingual Word Embedding Mappings with Similar Words in Related Languages Using GAN</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Alipour%2C+Ghafour"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alipour%2C+Ghafour"><span class="NLM_given-names">Ghafour</span> Alipour</a> <a href="https://orcid.org/0000-0002-2070-4334"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Bagherzadeh+Mohasefi%2C+Jamshid"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Bagherzadeh+Mohasefi%2C+Jamshid"><span class="NLM_given-names">Jamshid</span> Bagherzadeh Mohasefi</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Feizi-Derakhshi%2C+Mohammad-Reza"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Feizi-Derakhshi%2C+Mohammad-Reza"><span class="NLM_given-names">Mohammad-Reza</span> Feizi-Derakhshi</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/08839514.2021.2019885">https://doi.org/10.1080/08839514.2021.2019885</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 February 2022
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 5. </span> Accuracy of the proposed method compared with previous works</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0005-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0005&amp;doi=10.1080%2F08839514.2021.2019885&amp;downloadType=CSV"> Download CSV</a><a data-id="t0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+</div>
+<div id="s0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i23" class="section-heading-2">Conclusion</h2>
+ <p>This paper proposes a new method to learn bilingual word embedding mapping that improves previous works (Artetxe, Labaka, and Agirre <span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>; Faruqui and Dyer <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2014</a></span>; Smith et al. ; Xing et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0045" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2015</a></span>; Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0048" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2016</a></span>). We used a GAN model to learn bilingual correspondence from monolingual corpora and initial seed dictionary. Our approach’s effectiveness suggests potential NLP task applications, which require a word-level bilingual transfer, such as bilingual machine translation.</p>
+</div>

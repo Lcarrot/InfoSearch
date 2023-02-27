@@ -1,0 +1,3158 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">Introduction</h2>
+ <p>Literature review serves the purpose of obtaining a basic, comprehensive discussion in a given field (Thomas and Tabrizi <span class="ref-lnk lazy-ref"><a data-rid="cit0067" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2018</a></span>). Literature review includes research results, existing problems, and new development trends in a certain period of time, and these are comprehensively discussed and evaluated (Ya-Nan, Miao, and Zhi-Peng et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2014</a></span>).</p>
+ <p>With the progress of society, countries are attributing more importance to the development of wind power, which leads to the production of an increasing number of academic papers (Shengtian et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0059" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2018</a></span>). Reference (Kok <span class="ref-lnk lazy-ref"><a data-rid="cit0033" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2015</a></span>) mentioned in his paper that renewable energy has been on the world agenda due to environmental issues and the need for energy supply security. Wind energy is one of the most cost-effective renewable energy sources in regions abundant in wind and is applied on a large scale globally. Reference (Tran and Chen <span class="ref-lnk lazy-ref"><a data-rid="cit0069" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2016</a></span>) analyzed wind energy resources of Phuquoc Island in Vietnam and showed that wind energy can be the source of energy for about 300,000 rural non-electric households. The study in (Guo, Ren, and Li <span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>) analyzed wind power generation in the context of the coordinated development of the Beijing-Tianjin-Hebei region. According to reference (Leung and Yang <span class="ref-lnk lazy-ref"><a data-rid="cit0037" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2012</a></span>), it is estimated that by 2030, wind energy will generate 20% of the electricity in the US, and according to reference (Ming, Kun, and Jun 2013), China has a total of 52.58 gigawatts of wind power connected to the power grid. Reference (Mezidi, Guerri, and Boudia et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0047" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2020</a></span>) pointed out that the installed capacity of wind power is fully developed worldwide.</p>
+ <p>In addition, reference (Yang, Li, and Wang <span class="ref-lnk lazy-ref"><a data-rid="cit0079" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2013</a></span>) analyzed different wind power systems to choose a financially effective wind power system. The research in (Díaz-González et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2012</a></span>) introduced several energy storage technologies for wind power to enable an increased penetration of wind power in power systems. And (Shan <span class="ref-lnk lazy-ref"><a data-rid="cit0058" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>) summarized some common modeling methods and put forward the research prospects of wind power modeling. In this direction, we applied machine learning algorithms to analyze the literature in this field; “wind power” was taken as the keyword in Web of Science Core Collection (WoSCC) and China National Knowledge Infrastructure (CNKI). In WOSCC, the number of relevant papers published is about 6000 per year; 8,032 papers were published in 2018. In CNKI, the total number of related doctoral dissertations published is 785 from 2012 to 2019, with the maximum 124 in 2014.</p>
+ <p>Literature review papers are mainly comprised of descriptions lacking visualization techniques. These are two problems that need to be solved as follows:</p>
+ <p>• Showing research trends and changes of research hotspots in these papers.</p>
+ <p>• Obtaining the connections between high-frequency words.</p>
+ <p>To address these problems, machine learning algorithms are used herein to conduct a literature review analysis. Research has been conducted on the application of machine learning algorithms in the field of wind energy. In this direction, in (Heydari et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>), they have studied a method for forecasting wind and solar power generation based on a compound neural network. The study in (Nezhad et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0050" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2020</a></span>) used machine learning algorithms and Sentinel 1 satellite data to develop a new predictive model to evaluate the potential of wind sources. These show that it is feasible to use machine learning algorithms in the field of wind energy. However, the existing use of machine learning algorithms in the field of wind power generation focuses on prediction, optimization, and other problems. Reference (Acikgoz, Yildiz, and Sekkeli <span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2020</a></span>) used the Extreme Learning Machine (ELM) for wind energy prediction. Reference (Bilgili and Sahin <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2013</a></span>) explained that the artificial neural network method can be used to measure data of surrounding stations to successfully predict the wind speed of any target station. The study in (Gendeel et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>) proposed a method based on Variational Mode Decomposition (VMD) and Least Square Support Vector Machine (LS-SVM) to optimize the power system planning and operation of wind farms. Compared with these existing studies, this paper applies machine learning algorithms to analyze the literature review research in the field of wind power.</p>
+ <p>Therefore, the purpose of this research is to use text mining, word segmentation, T-Distributed Stochastic Neighbor Embedding (T-SNE), and other machine learning algorithms that belong to the field of natural language processing (NLP) to analyze and study the literature in the field of wind power, to obtain research hotspots, research trends and the spatial distribution of articles; furthermore, by reducing dimensionality of the data, images and other methods were used to intuitively display the research results.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">Review methodology</h2>
+ <p>The model framework of the entire study can be seen in <a href="#f0001">Figure 1</a>.</p>
+ <div class="figure figureViewer" id="f0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>08 February 2021
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> Model framework</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0001_oc.jpg" loading="lazy" height="232" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> Model framework</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0001">
+  <div class="figureFootNote-f0001"></div>
+ </div>
+ <p></p>
+ <p>The data in this paper were obtained relying on WoSCC and CNKI. In both WoSCC and CNKI, wind power was used as a topic word to search for papers in the field of wind power. Next, data processing was performed on the obtained document data, including data cleaning, word segmentation, and word vector acquisition. Then the machine learning algorithm was applied to the processed data to obtain the visual analysis result of the paper data.</p>
+ <p>• The high-frequency vocabulary in the author, abstract, and keywords of the paper were displayed in the form of a word cloud; therefore, the research hotspots of the paper were seen.</p>
+ <p>• In the form of a ThemeRiver graph, the trend of the keyword change by year was obtained and the change of the research trend of the wind power field was analyzed.</p>
+ <p>• The location of the paper was shown in the form of a spatial distribution map, and the situation of the country or region on wind power research was obtained.</p>
+ <p>• Through the method of dimensionality reduction, the keywords of the paper were clustered and analyzed, and the relationship diagram was obtained to analyze the correlation between the keywords.</p>
+ <p>The review methodology selected in this study has the ability to analyze wind power-related papers using machine learning algorithms. However, this study also has certain limitations. In the diagrams of relationships, only the relationship between words can be observed, while the connection between authors and high-frequency vocabularies cannot be seen; this will also be the direction of our next research.</p>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i6" class="section-heading-2">Text processing</h2>
+ <p>NLP is an important research direction in the field of artificial intelligence, which mainly aims to realize the effective communication between humans and computers by natural language so that computers can understand the human language from the data dimensions (Wang, Shi-Wen, and Zhu et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0071" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2015</a></span>). For humans, it is easy to understand what a king or a queen means, but for computers, it is hard to understand every word because its storage form is based on binary digits (Bing, Fan, and Wei et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>). To study NLP, various machine learning algorithms have been invented. Latent Semantic Analysis (LSA) (Wild <span class="ref-lnk lazy-ref"><a data-rid="cit0073" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2015</a></span>), Probabilistic Latent Semantic Analysis (pLSA) (Zuo, Wang, and Lai <span class="ref-lnk lazy-ref"><a data-rid="cit0055" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>), and Latent Dirichlet Allocation (LDA) are topic models, word2vec, fastText and glove are fixed representations based on word vectors, and ELMo (embedding from language model), GPT (Generative Pre-Training) and Bert (Bidirectional Encoder Representation from Transformers) which are dynamic representations based on word vectors (Peng, Yan, and Lu <span class="ref-lnk lazy-ref"><a data-rid="cit0053" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>). Our purpose is to analyze papers related to wind power and to use word-embedding of related words to obtain their word vectors and analyze them. Thus, the word2vec algorithm is adopted to conduct this research.</p>
+ <p>In the following section, the method of text processing is briefly described.</p>
+ <div id="s0003-s2001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">Introduction of word segmentation</h3>
+  <p>Since there are natural spaces as separators in English, the word segmentation technique (Xi, Tang, and Li <span class="ref-lnk lazy-ref"><a data-rid="cit0076" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2011</a></span>) is mainly applied to texts in Chinese (Xiu and Song <span class="ref-lnk lazy-ref"><a data-rid="cit0078" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2013</a></span>). In Chinese (Zeng, Zhang, and Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0054" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2010</a></span>), words are the smallest and meaningful language components that can move independently (Shuang-Yun, Yu-Hong, and Wei <span class="ref-lnk lazy-ref"><a data-rid="cit0061" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2013</a></span>). Chinese language uses a single word as the basic writing unit, and there are no marks to distinguish among words. Therefore, for the natural language processing of the Chinese language, texts are usually cut into logical word sequences, and then data analysis and processing are performed. Chinese word segmentation is a basic method of Chinese natural language processing and has been widely used in Chinese text processing, information extraction, text mining, and other applications (Li, Zhang, and Huang et al.).</p>
+  <p>Chinese word segmentation is an important basis for Chinese abstract processing, as well. Chinese word segmentation refers to cutting a sequence of Chinese characters into individual words. There are many Chinese word segmentation tools (Xinhui, Yunqiu, and Kaixi <span class="ref-lnk lazy-ref"><a data-rid="cit0077" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>), including Pangu segmentation (Min <span class="ref-lnk lazy-ref"><a data-rid="cit0048" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2012</a></span>), Paoding segmentation, Jieba segmentation, Peking University pkuseg segmentation (Huang <span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2013</a></span>). Since data are processed in the Python environment, the best-performing Jieba word segmentation is adopted, which not only supports traditional Chinese word segmentation and user-defined dictionaries but also provides a concise mode, a full mode, and a search engine mode. Different word segmentation modes are used in order to meet different application needs of the users.</p>
+  <p>The algorithm mechanism in Jieba word segmentation is as follows (Li, Wen, and Yang <span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2016</a></span>):</p>
+  <p>• Achieving efficient word map scanning based on prefix dictionaries to generate directed acyclic graphs (DAGs) of all possible word formations of Chinese characters in sentences.</p>
+  <p>• Dynamic programming to find the maximum probability path, and the maximum segmentation combination based on word frequency.</p>
+  <p>• For unregistered words, the HMM (Hidden Markov Model) based on the ability to form Chinese characters is adopted and the Viterbi algorithm is used.</p>
+ </div>
+ <div id="s0003-s2002" class="NLM_sec NLM_sec-type_intro NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i8">Introduction of word2vec</h3>
+  <p>Word2vec (Lauren, Qu, and Huang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0052" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>) is a word-embedding method presenting a word with a low-dimensional embedding vector (Liu, Liu, and Chen <span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>). The essence of word embedding means that the vector distances between similar words are very close. Examples in <a href="#f0002">Figure 2</a>.</p>
+  <div class="figure figureViewer" id="f0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Word vector examples</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0002image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0002_oc.jpg" loading="lazy" height="149" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Word vector examples</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0002">
+   <div class="figureFootNote-f0002"></div>
+  </div>
+  <p></p>
+  <p>Word2vec maps words to another space, revealing the underlying connections between objects while preserving their features. Compared with the sparse matrix one-hot mode, its word vector (Hoffmann, Hosseini, and Ren et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2020</a></span>) represents richer meanings, and to a certain extent, it is easier for human beings to accept and conduct secondary analysis and processing (Qu, Fang, and Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0056" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+  <p>Word2vec uses a single hidden layer, and the fully connected neural network shown in <a href="#f0003">Figure 3</a> to get the vectors. The neurons in the hidden layer are all linear neurons. The input layer is set to have as many neurons as words in the vocabulary used for training. The size of hidden layer is set to the dimensions of the generated word vector. The output layer is the same size as the input layer. After training using a model, such as the CBOW or skip-gram model, the data in the middle layer is the word vector we would like to get (Zhao, Bo, and Lin et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0081" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2015</a></span>). The skip-gram pattern is described below.</p>
+  <div class="figure figureViewer" id="f0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> Neural network for word vector training</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0003image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0003_b.gif" loading="lazy" height="219" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> Neural network for word vector training</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0003">
+   <div class="figureFootNote-f0003"></div>
+  </div>
+  <p></p>
+  <div id="s0003-s2002-s3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i11">Skip-gram model</h4>
+   <p>The skip-gram model (Al-Amin, Islam, and Uzzal <span class="ref-lnk lazy-ref"><a data-rid="cit0044" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>) was proposed by reference (Swoboda, Hemmje, and Dascalu et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0064" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2016</a></span>). <a href="#f0004">Figure 4</a> shows the process of the skip-gram model. This model can be seen as the inverse process of CBOW model. The target word of the CBOW model is input in the skip-gram model, and the context is output.</p>
+   <div class="figure figureViewer" id="f0004">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>08 February 2021
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 4. </span> The skip-gram model</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0004image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0004_b.gif" loading="lazy" height="361" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0004">
+    <p class="captionText"><span class="captionLabel">Figure 4. </span> The skip-gram model</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0004">
+    <div class="figureFootNote-f0004"></div>
+   </div>
+   <p></p>
+   <p><span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         v
+        </mi>
+        <mrow>
+         <mi>
+          w
+         </mi>
+         <mi>
+          i
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+     </math></span> is used to represent the input vector of the unique word (also called the center word) in the input layer, so in this case, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       h
+      </mi>
+     </math></span> of the hidden layer is defined in accordance with formula <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0003.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       h
+      </mi><mo>
+       =
+      </mo><mrow>
+       <msup>
+        <mi>
+         W
+        </mi>
+        <mi>
+         T
+        </mi>
+       </msup>
+      </mrow><mi>
+       x
+      </mi><mo>
+       =
+      </mo><msubsup>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         k
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mo>
+         ⋅
+        </mo>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mrow>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          T
+         </mi>
+        </mrow>
+       </mrow>
+      </msubsup><mo>
+       =
+      </mo><msubsup>
+       <mi>
+        v
+       </mi>
+       <mrow>
+        <mi>
+         w
+        </mi>
+        <mi>
+         i
+        </mi>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msubsup>
+     </math></span>. This means that <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0004.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       h
+      </mi>
+     </math></span> simply copies the weight matrix <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0005.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       W
+      </mi>
+     </math></span> which is associated with the input word <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0006.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         W
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msub>
+      </mrow>
+     </math></span>.</p>
+  </div>
+ </div>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i13" class="section-heading-2">Data visualization and dimensionality reduction</h2>
+ <p>In the era of big data, there is a significantly high amount of complex data. The transformation of data dimensions has also increased dramatically. For example, the dimension of a set of images is the number of pixels in the image, which ranges from thousands to millions. It is easy for a computer to process high-dimensional data, but humans can perceive only three dimensions; this leads to data dimensionality reduction.</p>
+ <p>Data dimensionality reduction is a basic method often used in scientific research and engineering practice (Kaur, Aujla, and Kumar et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2018</a></span>). Projecting higher-dimensional raw data onto lower-dimensional surfaces can help us better filter noise signals and extract the more universal hidden features in the data without supervision. Data dimensionality reduction can also help us better visualize the existing data and propose more explanatory models.</p>
+ <div id="s0004-s2001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">Introduction to principal component analysis (PCA)</h3>
+  <p>The PCA is a commonly used unsupervised learning method. This method uses orthogonal transformation to transform observation data represented by linear correlation variables into few data represented by linearly independent variables, which are called the main components. The number of principal components is usually smaller than the number of original variables; thus, PCA belongs to the dimensionality reduction method. PCA is mainly used to discover the basic structure of data, that is, the relationship between variables in the data. It is a powerful tool for data analysis and is also used for preprocessing data for other machine learning methods.</p>
+  <p>The goal of PCA is to find a new set of orthogonal basis <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo fence="false" stretchy="false">
+      {
+     </mo><mrow>
+      <msub>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          u
+         </mi>
+        </mrow>
+       </mrow>
+       <mn>
+        1
+       </mn>
+      </msub>
+     </mrow><mrow>
+      <mrow>
+       <mo>
+        ,
+       </mo>
+      </mrow>
+     </mrow><mrow>
+      <msub>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          u
+         </mi>
+        </mrow>
+       </mrow>
+       <mn>
+        2
+       </mn>
+      </msub>
+     </mrow><mrow>
+      <mrow>
+       <mo>
+        ,
+       </mo>
+      </mrow>
+     </mrow><mo>
+      ⋯
+     </mo><mrow>
+      <mrow>
+       <mo>
+        ,
+       </mo>
+      </mrow>
+     </mrow><mrow>
+      <msub>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          u
+         </mi>
+        </mrow>
+       </mrow>
+       <mi>
+        k
+       </mi>
+      </msub>
+     </mrow><mo fence="false" stretchy="false">
+      }
+     </mo>
+    </math></span> (Dimension decreases from n to k), so that after the data points are projected on the plane formed by the orthogonal basis, the distance between data is maximized, that is, the variance between data is maximized. If the variance of the data projected on each orthogonal basis is the largest, then the projection distance on the plane formed by the orthogonal basis is also the largest.</p>
+  <p>Assuming an orthogonal basis <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        u
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>, the projection distance of the data point <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> on the base is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mi>
+       x
+      </mi>
+      <mi>
+       i
+      </mi>
+      <mi>
+       T
+      </mi>
+     </msubsup><mo>
+      ⋅
+     </mo><mrow>
+      <msub>
+       <mi>
+        u
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>, so the variance <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        J
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> of the projection of all data on the base is <a href="#m0001">Equation (1)</a>: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         J
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mn>
+         1
+        </mn>
+        <mi>
+         m
+        </mi>
+       </mfrac>
+      </mrow><mrow>
+       <munderover>
+        <mo movablelimits="false">
+         ∑
+        </mo>
+        <mrow>
+         <mi>
+          i
+         </mi>
+         <mo>
+          =
+         </mo>
+         <mn>
+          1
+         </mn>
+        </mrow>
+        <mrow>
+         <mi>
+          m
+         </mi>
+        </mrow>
+       </munderover>
+      </mrow><mrow>
+       <mo stretchy="false">
+        (
+       </mo>
+       <msubsup>
+        <mi>
+         x
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         T
+        </mi>
+       </msubsup>
+       <mo>
+        −
+       </mo>
+       <msubsup>
+        <mi>
+         x
+        </mi>
+        <mrow>
+         <mi>
+          c
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          n
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          r
+         </mi>
+        </mrow>
+        <mi>
+         T
+        </mi>
+       </msubsup>
+       <mrow>
+        <msub>
+         <mi>
+          u
+         </mi>
+         <mi>
+          j
+         </mi>
+        </msub>
+       </mrow>
+       <mrow>
+        <msup>
+         <mo stretchy="false">
+          )
+         </mo>
+         <mn>
+          2
+         </mn>
+        </msup>
+       </mrow>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>Among them: m is the number of samples, and the data x is initialized with 0 mean before data calculation, that is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mrow>
+        <mi>
+         c
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         t
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      0
+     </mn>
+    </math></span>, thus <a href="#m0002">Equation (2)</a> is obtained: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         J
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mn>
+         1
+        </mn>
+        <mi>
+         m
+        </mi>
+       </mfrac>
+      </mrow><mrow>
+       <munderover>
+        <mo movablelimits="false">
+         ∑
+        </mo>
+        <mrow>
+         <mi>
+          i
+         </mi>
+         <mo>
+          =
+         </mo>
+         <mn>
+          1
+         </mn>
+        </mrow>
+        <mi>
+         m
+        </mi>
+       </munderover>
+      </mrow><mrow>
+       <msup>
+        <mfenced open="(" close=")">
+         <mrow>
+          <msubsup>
+           <mi>
+            x
+           </mi>
+           <mi>
+            i
+           </mi>
+           <mi>
+            T
+           </mi>
+          </msubsup>
+          <mrow>
+           <msub>
+            <mi>
+             u
+            </mi>
+            <mi>
+             j
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+        </mfenced>
+        <mn>
+         2
+        </mn>
+       </msup>
+      </mrow><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mn>
+         1
+        </mn>
+        <mi>
+         m
+        </mi>
+       </mfrac>
+      </mrow><mrow>
+       <munderover>
+        <mo movablelimits="false">
+         ∑
+        </mo>
+        <mrow>
+         <mi>
+          i
+         </mi>
+         <mo>
+          =
+         </mo>
+         <mn>
+          1
+         </mn>
+        </mrow>
+        <mi>
+         m
+        </mi>
+       </munderover>
+      </mrow><mfenced open="(" close=")">
+       <mrow>
+        <msubsup>
+         <mi>
+          u
+         </mi>
+         <mi>
+          j
+         </mi>
+         <mi>
+          T
+         </mi>
+        </msubsup>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msub>
+        </mrow>
+        <mo>
+         ⋅
+        </mo>
+        <msubsup>
+         <mi>
+          x
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          T
+         </mi>
+        </msubsup>
+        <mrow>
+         <msub>
+          <mi>
+           u
+          </mi>
+          <mi>
+           j
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfenced><mo>
+       =
+      </mo><msubsup>
+       <mi>
+        u
+       </mi>
+       <mi>
+        j
+       </mi>
+       <mi>
+        T
+       </mi>
+      </msubsup><mo>
+       ⋅
+      </mo><mrow>
+       <mfrac>
+        <mn>
+         1
+        </mn>
+        <mi>
+         m
+        </mi>
+       </mfrac>
+      </mrow><mrow>
+       <munderover>
+        <mo movablelimits="false">
+         ∑
+        </mo>
+        <mrow>
+         <mi>
+          i
+         </mi>
+         <mo>
+          =
+         </mo>
+         <mn>
+          1
+         </mn>
+        </mrow>
+        <mi>
+         m
+        </mi>
+       </munderover>
+      </mrow><mfenced open="(" close=")">
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msub>
+        </mrow>
+        <msubsup>
+         <mi>
+          x
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          T
+         </mi>
+        </msubsup>
+       </mrow>
+      </mfenced><mo>
+       ⋅
+      </mo><mrow>
+       <msub>
+        <mi>
+         u
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>And then <a href="#m0003">Equation (3)</a> is also obtained: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0003.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         J
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><msubsup>
+       <mi>
+        u
+       </mi>
+       <mi>
+        j
+       </mi>
+       <mi>
+        T
+       </mi>
+      </msubsup><mo>
+       ⋅
+      </mo><mrow>
+       <mfrac>
+        <mn>
+         1
+        </mn>
+        <mi>
+         m
+        </mi>
+       </mfrac>
+      </mrow><mfenced open="(" close=")">
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mn>
+           1
+          </mn>
+         </msub>
+        </mrow>
+        <msubsup>
+         <mi>
+          x
+         </mi>
+         <mn>
+          1
+         </mn>
+         <mi>
+          T
+         </mi>
+        </msubsup>
+        <mo>
+         +
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mn>
+           2
+          </mn>
+         </msub>
+        </mrow>
+        <msubsup>
+         <mi>
+          x
+         </mi>
+         <mn>
+          2
+         </mn>
+         <mi>
+          T
+         </mi>
+        </msubsup>
+        <mo>
+         +
+        </mo>
+        <mo>
+         ⋯
+        </mo>
+        <mo>
+         +
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mi>
+           m
+          </mi>
+         </msub>
+        </mrow>
+        <msubsup>
+         <mi>
+          x
+         </mi>
+         <mi>
+          m
+         </mi>
+         <mi>
+          T
+         </mi>
+        </msubsup>
+       </mrow>
+      </mfenced><mo>
+       ⋅
+      </mo><mrow>
+       <msub>
+        <mi>
+         u
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><msubsup>
+       <mi>
+        u
+       </mi>
+       <mi>
+        j
+       </mi>
+       <mi>
+        T
+       </mi>
+      </msubsup><mo>
+       ⋅
+      </mo><mrow>
+       <mfrac>
+        <mn>
+         1
+        </mn>
+        <mi>
+         m
+        </mi>
+       </mfrac>
+      </mrow><mo stretchy="false">
+       (
+      </mo><mo stretchy="false">
+       [
+      </mo><mrow>
+       <msub>
+        <mi>
+         x
+        </mi>
+        <mn>
+         1
+        </mn>
+       </msub>
+      </mrow><mo>
+       ⋯
+      </mo><mrow>
+       <msub>
+        <mi>
+         x
+        </mi>
+        <mi>
+         m
+        </mi>
+       </msub>
+      </mrow><mo stretchy="false">
+       ]
+      </mo><mo>
+       ⋅
+      </mo><mfenced open="[" close="]">
+       <mrow>
+        <mtable rowspacing="4pt" columnspacing="1em">
+         <mtr>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               x
+              </mi>
+              <mn>
+               1
+              </mn>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+         </mtr>
+         <mtr>
+          <mtd>
+           <mo>
+            ⋮
+           </mo>
+          </mtd>
+         </mtr>
+         <mtr>
+          <mtd>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               x
+              </mi>
+              <mi>
+               m
+              </mi>
+             </msub>
+            </mrow>
+           </mrow>
+          </mtd>
+         </mtr>
+        </mtable>
+       </mrow>
+      </mfenced><mo stretchy="false">
+       )
+      </mo><mo>
+       ⋅
+      </mo><mrow>
+       <msub>
+        <mi>
+         u
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo>
+       ==
+      </mo><mrow>
+       <mfrac>
+        <mn>
+         1
+        </mn>
+        <mi>
+         m
+        </mi>
+       </mfrac>
+      </mrow><msubsup>
+       <mi>
+        u
+       </mi>
+       <mi>
+        j
+       </mi>
+       <mi>
+        T
+       </mi>
+      </msubsup><mi>
+       X
+      </mi><mrow>
+       <msup>
+        <mi>
+         X
+        </mi>
+        <mi>
+         T
+        </mi>
+       </msup>
+      </mrow><mrow>
+       <msub>
+        <mi>
+         u
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>Since <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mfrac>
+       <mn>
+        1
+       </mn>
+       <mi>
+        m
+       </mi>
+      </mfrac>
+     </mrow><mi>
+      X
+     </mi><mrow>
+      <msup>
+       <mi>
+        X
+       </mi>
+       <mi>
+        T
+       </mi>
+      </msup>
+     </mrow>
+    </math></span> is a constant, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      S
+     </mi><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mn>
+        1
+       </mn>
+       <mi>
+        m
+       </mi>
+      </mfrac>
+     </mrow><mi>
+      X
+     </mi><mrow>
+      <msup>
+       <mi>
+        X
+       </mi>
+       <mi>
+        T
+       </mi>
+      </msup>
+     </mrow>
+    </math></span> is assumed here, then <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        J
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><msubsup>
+      <mi>
+       u
+      </mi>
+      <mi>
+       j
+      </mi>
+      <mi>
+       T
+      </mi>
+     </msubsup><mo>
+      ⋅
+     </mo><mi>
+      S
+     </mi><mo>
+      ⋅
+     </mo><mrow>
+      <msub>
+       <mi>
+        u
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>, according to the objective of PCA, we need to solve the corresponding <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0016.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        u
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> when <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0017.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        J
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> is maximum.</p>
+  <p>Solving according to the Lagrange operator (obtaining the extreme value), <a href="#m0004">Equation (4)</a> is: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0004.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable rowspacing="4pt" columnspacing="1em">
+       <mtr>
+        <mtd>
+         <mrow>
+          <mrow>
+           <msub>
+            <mi>
+             J
+            </mi>
+            <mi>
+             j
+            </mi>
+           </msub>
+          </mrow>
+          <mo>
+           =
+          </mo>
+          <msubsup>
+           <mi>
+            u
+           </mi>
+           <mi>
+            j
+           </mi>
+           <mi>
+            T
+           </mi>
+          </msubsup>
+          <mi>
+           S
+          </mi>
+          <mrow>
+           <msub>
+            <mi>
+             u
+            </mi>
+            <mi>
+             j
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+        </mtd>
+       </mtr>
+       <mtr>
+        <mtd>
+         <mrow>
+          <mi>
+           s
+          </mi>
+          <mo>
+           .
+          </mo>
+          <mi>
+           t
+          </mi>
+          <mo>
+           .
+          </mo>
+          <msubsup>
+           <mi>
+            u
+           </mi>
+           <mi>
+            j
+           </mi>
+           <mi>
+            T
+           </mi>
+          </msubsup>
+          <mrow>
+           <msub>
+            <mi>
+             u
+            </mi>
+            <mi>
+             j
+            </mi>
+           </msub>
+          </mrow>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>Then the constructor is <a href="#m0005">Equation (5)</a>: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0005.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0005" class="disp-formula-label">(5) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       F
+      </mi><mo stretchy="false">
+       (
+      </mo><mrow>
+       <msub>
+        <mi>
+         u
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo stretchy="false">
+       )
+      </mo><mo>
+       =
+      </mo><msubsup>
+       <mi>
+        u
+       </mi>
+       <mi>
+        j
+       </mi>
+       <mi>
+        T
+       </mi>
+      </msubsup><mi>
+       S
+      </mi><mrow>
+       <msub>
+        <mi>
+         u
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo>
+       +
+      </mo><mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo stretchy="false">
+       (
+      </mo><mn>
+       1
+      </mn><mo>
+       −
+      </mo><msubsup>
+       <mi>
+        u
+       </mi>
+       <mi>
+        j
+       </mi>
+       <mi>
+        T
+       </mi>
+      </msubsup><mrow>
+       <msub>
+        <mi>
+         u
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo stretchy="false">
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0005" class="disp-formula-label">(5) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>Solving <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0018.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mfrac>
+       <mrow>
+        <mi mathvariant="normal">
+         ∂
+        </mi>
+        <mi>
+         F
+        </mi>
+       </mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         ∂
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           u
+          </mi>
+          <mi>
+           j
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfrac>
+     </mrow><mo>
+      =
+     </mo><mn>
+      0
+     </mn>
+    </math></span> can get <a href="#m0006">Equation (6)</a>: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0006.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0006" class="disp-formula-label">(6) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mn>
+       2
+      </mn><mi>
+       S
+      </mi><mo>
+       ⋅
+      </mo><mrow>
+       <msub>
+        <mi>
+         u
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo>
+       −
+      </mo><mn>
+       2
+      </mn><mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo>
+       ⋅
+      </mo><mrow>
+       <msub>
+        <mi>
+         u
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><mn>
+       0
+      </mn><mo stretchy="false">
+       ⇒
+      </mo><mi>
+       S
+      </mi><mrow>
+       <msub>
+        <mi>
+         u
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mrow>
+       <msub>
+        <mi>
+         u
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0006" class="disp-formula-label">(6) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>When <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0019.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        u
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0020.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        λ
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> are the eigenvectors and eigenvalues of S matrix, respectively, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0021.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        J
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> has an extreme value, and then <a href="#m0007">Equation (7)</a> can be obtained: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0007.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0007" class="disp-formula-label">(7) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         J
+        </mi>
+        <mrow>
+         <mi>
+          j
+         </mi>
+         <mi>
+          m
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><msubsup>
+       <mi>
+        u
+       </mi>
+       <mi>
+        j
+       </mi>
+       <mi>
+        T
+       </mi>
+      </msubsup><mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mrow>
+       <msub>
+        <mi>
+         u
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0007" class="disp-formula-label">(7) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>Therefore, for any orthogonal basis satisfying the conditions, the variance value of the corresponding data projected above is the eigenvector of S matrix; thus, <a href="#m0008">Equation (8)</a> is obtained: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0008.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0008.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0008" class="disp-formula-label">(8) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         J
+        </mi>
+        <mrow>
+         <mo form="prefix">
+          max
+         </mo>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><mrow>
+       <munderover>
+        <mo movablelimits="false">
+         ∑
+        </mo>
+        <mrow>
+         <mi>
+          j
+         </mi>
+         <mo>
+          =
+         </mo>
+         <mn>
+          1
+         </mn>
+        </mrow>
+        <mi>
+         k
+        </mi>
+       </munderover>
+      </mrow><mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msub>
+      </mrow><mo stretchy="false">
+       (
+      </mo><mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mi>
+         k
+        </mi>
+       </msub>
+      </mrow><mo>
+       &gt;
+      </mo><mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mrow>
+         <mi>
+          k
+         </mi>
+         <mo>
+          −
+         </mo>
+         <mn>
+          1
+         </mn>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       &gt;
+      </mo><mo>
+       ⋯
+      </mo><mo>
+       &gt;
+      </mo><mrow>
+       <msub>
+        <mi>
+         λ
+        </mi>
+        <mn>
+         1
+        </mn>
+       </msub>
+      </mrow><mo stretchy="false">
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0008" class="disp-formula-label">(8) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>So the projection orthogonal basis is the eigenvectors corresponding to the first k maximum eigenvalues in the eigenvectors of S.</p>
+  <p>Next, the eigenvector set of S is decomposed. Based on the relationship between the eigenvector and Singular Value Decomposition (SVD), the eigenvector set of S is <a href="#m0009">Equation (9)</a>: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0009.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0009.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0009" class="disp-formula-label">(9) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         U
+        </mi>
+       </mrow>
+      </mrow><mo>
+       =
+      </mo><mi>
+       U
+      </mi><mo>
+       ⊂
+      </mo><mi>
+       s
+      </mi><mi>
+       v
+      </mi><mi>
+       d
+      </mi><mo stretchy="false">
+       (
+      </mo><mi>
+       S
+      </mi><mo stretchy="false">
+       )
+      </mo><mo>
+       =
+      </mo><mi>
+       U
+      </mi><mo>
+       ⊂
+      </mo><mi>
+       s
+      </mi><mi>
+       v
+      </mi><mi>
+       d
+      </mi><mfenced open="(" close=")">
+       <mrow>
+        <mrow>
+         <mfrac>
+          <mn>
+           1
+          </mn>
+          <mi>
+           m
+          </mi>
+         </mfrac>
+        </mrow>
+        <mi>
+         X
+        </mi>
+        <mrow>
+         <msup>
+          <mi>
+           X
+          </mi>
+          <mi>
+           T
+          </mi>
+         </msup>
+        </mrow>
+       </mrow>
+      </mfenced>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0009" class="disp-formula-label">(9) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>In addition, since the mean value of X in <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0022.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      S
+     </mi><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mn>
+        1
+       </mn>
+       <mi>
+        m
+       </mi>
+      </mfrac>
+     </mrow><mi>
+      X
+     </mi><mrow>
+      <msup>
+       <mi>
+        X
+       </mi>
+       <mi>
+        T
+       </mi>
+      </msup>
+     </mrow>
+    </math></span> has been processed to 0, according to the definition of the covariance matrix: S is the covariance matrix of data set X.</p>
+  <p>In summary, a new orthogonal basis <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0023.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mfenced open="{" close="}">
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          u
+         </mi>
+         <mn>
+          1
+         </mn>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          u
+         </mi>
+         <mn>
+          2
+         </mn>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mo>
+        ⋯
+       </mo>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          u
+         </mi>
+         <mi>
+          k
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+     </mfenced>
+    </math></span> that satisfies the largest data distance after projection can be obtained.</p>
+ </div>
+ <div id="s0004-s2002" class="NLM_sec NLM_sec-type_intro NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i24">Introduction of T-SNE</h3>
+  <p>T-SNE is a machine learning algorithm for dimension reduction, which was proposed by Laurens van der Maaten and Geoffrey Hinton in 2008 (Linderman and Steinerberger <span class="ref-lnk lazy-ref"><a data-rid="cit0041" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>). In addition, T-SNE is a nonlinear dimensionality reduction algorithm, which is very suitable for high-dimensional data reduction to obtain 2 or 3 dimensions for visualization. Compared with PCA, T-SNE is a more advanced and more effective method (Van D, Pankratius, and Chang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0070" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p>
+  <p>T-SNE is a dimensionality reduction algorithm that converts X (raw high-dimensional data) to Z (specified low-dimensional data). T-SNE first converts the distance into conditional probability to express the similarity between points, and the distance is calculated by Euclidean distance, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0024.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      S
+     </mi><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msup>
+       <mi>
+        x
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msup>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msup>
+       <mi>
+        x
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msup>
+     </mrow><mo stretchy="false">
+      )
+     </mo>
+    </math></span> indicating the Euclidean distance between points (Drusvyatskiy et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>). The formula for calculating the original high-dimensional data X and the converted low-dimensional data Z is shown in <a href="#m0010">Equations (10)</a> and (<a href="#m0011">11</a>). <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0010.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0010.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0010" class="disp-formula-label">(10) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       P
+      </mi><mo stretchy="false">
+       (
+      </mo><mrow>
+       <msup>
+        <mi>
+         x
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msup>
+      </mrow><mrow>
+       <mo>
+        |
+       </mo>
+      </mrow><mrow>
+       <msup>
+        <mi>
+         x
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msup>
+      </mrow><mo stretchy="false">
+       )
+      </mo><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            S
+           </mi>
+           <mo stretchy="false">
+            (
+           </mo>
+          </mrow>
+         </mrow>
+         <mrow>
+          <msup>
+           <mi>
+            x
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msup>
+         </mrow>
+         <mo>
+          ,
+         </mo>
+         <mrow>
+          <msup>
+           <mi>
+            x
+           </mi>
+           <mi>
+            j
+           </mi>
+          </msup>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            )
+           </mo>
+          </mrow>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <msub>
+           <mrow>
+            <mo>
+             ∑
+            </mo>
+           </mrow>
+           <mrow>
+            <mi>
+             k
+            </mi>
+            <mo>
+             ≠
+            </mo>
+            <mi>
+             i
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            S
+           </mi>
+           <mo stretchy="false">
+            (
+           </mo>
+          </mrow>
+         </mrow>
+         <mrow>
+          <msup>
+           <mi>
+            x
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msup>
+         </mrow>
+         <mo>
+          ,
+         </mo>
+         <mrow>
+          <msup>
+           <mi>
+            x
+           </mi>
+           <mi>
+            k
+           </mi>
+          </msup>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            )
+           </mo>
+          </mrow>
+         </mrow>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0010" class="disp-formula-label">(10) </span></span></span></span>
+   </disp-formula-group> <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0011.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0011.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0011" class="disp-formula-label">(11) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         Q
+        </mi>
+       </mrow>
+      </mrow><mo stretchy="false">
+       (
+      </mo><mrow>
+       <msup>
+        <mi>
+         z
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msup>
+      </mrow><mrow>
+       <mo>
+        |
+       </mo>
+      </mrow><mrow>
+       <msup>
+        <mi>
+         z
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msup>
+      </mrow><mo stretchy="false">
+       )
+      </mo><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <msup>
+          <mrow>
+           <mrow>
+            <mi mathvariant="normal">
+             S
+            </mi>
+           </mrow>
+          </mrow>
+          <mo>
+           ′
+          </mo>
+         </msup>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            (
+           </mo>
+          </mrow>
+         </mrow>
+         <mrow>
+          <msup>
+           <mi>
+            z
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msup>
+         </mrow>
+         <mo>
+          ,
+         </mo>
+         <mrow>
+          <msup>
+           <mi>
+            z
+           </mi>
+           <mi>
+            j
+           </mi>
+          </msup>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            )
+           </mo>
+          </mrow>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <msub>
+           <mrow>
+            <mo>
+             ∑
+            </mo>
+           </mrow>
+           <mrow>
+            <mi>
+             k
+            </mi>
+            <mo>
+             ≠
+            </mo>
+            <mi>
+             i
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+         <msup>
+          <mrow>
+           <mrow>
+            <mi mathvariant="normal">
+             S
+            </mi>
+           </mrow>
+          </mrow>
+          <mo>
+           ′
+          </mo>
+         </msup>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            (
+           </mo>
+          </mrow>
+         </mrow>
+         <mrow>
+          <msup>
+           <mi>
+            z
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msup>
+         </mrow>
+         <mo>
+          ,
+         </mo>
+         <mrow>
+          <msup>
+           <mi>
+            z
+           </mi>
+           <mi>
+            k
+           </mi>
+          </msup>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            )
+           </mo>
+          </mrow>
+         </mrow>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0011" class="disp-formula-label">(11) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>After calculating the probability between the matrix X and the probability between the matrix Z, the next step is to connect P and Q to a distribution as close as possible, so that, the KL divergence of <a href="#m0012">Equation (12)</a> is as small as possible (Kapoor et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2018</a></span>). <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0012.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/ueso_a_1869867_m0012.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0012" class="disp-formula-label">(12) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       L
+      </mi><mo>
+       =
+      </mo><mrow>
+       <munder>
+        <mo movablelimits="false">
+         ∑
+        </mo>
+        <mi>
+         i
+        </mi>
+       </munder>
+      </mrow><mi>
+       K
+      </mi><mi>
+       L
+      </mi><mfenced open="(" close=")">
+       <mrow>
+        <mi>
+         P
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mo>
+         ∗
+        </mo>
+        <mrow>
+         <mo>
+          |
+         </mo>
+        </mrow>
+        <mrow>
+         <msup>
+          <mi>
+           x
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msup>
+        </mrow>
+        <mo stretchy="false">
+         )
+        </mo>
+        <mrow>
+         <mo>
+          |
+         </mo>
+        </mrow>
+        <mrow>
+         <mo>
+          |
+         </mo>
+        </mrow>
+        <mi>
+         Q
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mo>
+         ∗
+        </mo>
+        <mrow>
+         <mo>
+          |
+         </mo>
+        </mrow>
+        <mrow>
+         <msup>
+          <mi>
+           z
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msup>
+        </mrow>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mrow>
+      </mfenced><mo>
+       =
+      </mo><mrow>
+       <munder>
+        <mo movablelimits="false">
+         ∑
+        </mo>
+        <mi>
+         i
+        </mi>
+       </munder>
+      </mrow><mrow>
+       <munder>
+        <mo movablelimits="false">
+         ∑
+        </mo>
+        <mi>
+         j
+        </mi>
+       </munder>
+      </mrow><mi>
+       P
+      </mi><mo stretchy="false">
+       (
+      </mo><mrow>
+       <msup>
+        <mi>
+         x
+        </mi>
+        <mi>
+         j
+        </mi>
+       </msup>
+      </mrow><mrow>
+       <mo>
+        |
+       </mo>
+      </mrow><mrow>
+       <msup>
+        <mi>
+         x
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msup>
+      </mrow><mo stretchy="false">
+       )
+      </mo><mo form="prefix">
+       log
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <mi>
+          P
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <mrow>
+          <msup>
+           <mi>
+            x
+           </mi>
+           <mi>
+            j
+           </mi>
+          </msup>
+         </mrow>
+         <mrow>
+          <mo>
+           |
+          </mo>
+         </mrow>
+         <mrow>
+          <msup>
+           <mi>
+            x
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msup>
+         </mrow>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mrow>
+        <mrow>
+         <mi>
+          Q
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <mrow>
+          <msup>
+           <mi>
+            z
+           </mi>
+           <mi>
+            j
+           </mi>
+          </msup>
+         </mrow>
+         <mrow>
+          <mo>
+           |
+          </mo>
+         </mrow>
+         <mrow>
+          <msup>
+           <mi>
+            z
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msup>
+         </mrow>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0012" class="disp-formula-label">(12) </span></span></span></span>
+   </disp-formula-group></p>
+ </div>
+ <div id="s0004-s2003" class="NLM_sec NLM_sec-type_intro NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i28">Introduction of auto-encoder (AE)</h3>
+  <p>AE is a type of Artificial Neural Network (ANN) used in semi-supervised and unsupervised learning (Kuipers <span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2014</a></span>). Its function is to realize representational learning by taking its input as the learning target.</p>
+  <p>The network structure diagram of the AE is shown in <a href="#f0005">Figure 5</a>.</p>
+  <div class="figure figureViewer" id="f0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> The illustration of AE</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0005image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0005_b.gif" loading="lazy" height="108" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> The illustration of AE</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0005">
+   <div class="figureFootNote-f0005"></div>
+  </div>
+  <p></p>
+  <p>In <a href="#f0005">Figure 5</a>, the process from the input to the intermediate state is called encoding, and the process from the intermediate state to the output is called decoding. In this way, the AE can obtain the most important factors representing the input data and find the main components representing the original information. Its network structure is shown in <a href="#f0006">Figure 6</a>.</p>
+  <div class="figure figureViewer" id="f0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 6. </span> Network structure of AE</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0006image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0006_b.gif" loading="lazy" height="268" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0006">
+   <p class="captionText"><span class="captionLabel">Figure 6. </span> Network structure of AE</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0006">
+   <div class="figureFootNote-f0006"></div>
+  </div>
+  <p></p>
+  <p>Stack AE is composed of a multilayer trained AE. Because each layer of network is obtained through individual training, equivalent to initialize a reasonable value, the network effectively avoids the gradient lost in neural network and gradient explosions (Wang, Wang, and Fang <span class="ref-lnk lazy-ref"><a data-rid="cit0072" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2015</a></span>).</p>
+ </div>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i31" class="section-heading-2">Result and discussion</h2>
+ <p>All processing in this paper is based on the Windows system and based on Python. Due to the significant number of papers on wind power, we considered WoSCC and CNKI as the main data sources. Finally, we obtained 50,579 papers from WoSCC between 2012–2019 and 785 Chinese doctoral dissertations from CNKI between 2012–2019. The process of data processing and data visualization results are described below.</p>
+ <div id="s0005-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i32">Data processing</h3>
+  <p>Papers were obtained from WoSCC and CNKI (Chinese search topic: wind power) included the title of the paper, author, address of the corresponding author, keywords, abstract, publishing journal, publication year, paper category and other information. The data obtained from WOSCC were HTML files, containing various pieces of information (including unnecessary information). Firstly, the downloaded files were processed by Python regular expressions, and the downloaded HTML files were analyzed line by line through regular expressions to obtain the required information (Huayong, Yuan, and Guo et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0043" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>). Thereafter, the acquired information was filtered to eliminate punctuation and other information. Owing to the absence of certain information in some papers, it was necessary to screen the collected papers and remove those with incomplete information. The same method was applied to the doctoral dissertations in CNKI, and the final theses used for analysis included 50,381 papers from WoSCC and 727 Chinese doctoral dissertations.</p>
+  <div id="s0005-s2001-s3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i33">Process of word segmentation</h4>
+   <p>To analyze trends in papers in the field of wind power, we focused on the keywords and abstracts. We first split the keywords. Because the keywords of the paper are separated, all keywords can be directly obtained based on the separator. When the abstract of the paper is processed, the abstracts of the papers are divided into words to facilitate analysis.</p>
+   <p>In English abstracts, space is a natural delimiter, so there is no need for word segmentation; only the stop words need to be eliminated. The English processing tool (Kadriu <span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2013</a></span>) used in this paper is Natural Language Toolkit (NLTK) (Khin and Aung <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2015</a></span>), which is a Python package commonly used in the research field of NLP. The package was developed by Steven Bird and Edward Loper of the University of Pennsylvania based on Python, is powerful and easy to use, and has more than 100,000 lines of code. In the Chinese abstracts, the jieba segmentation is used for processing.</p>
+  </div>
+  <div id="s0005-s2001-s3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i34">Acquisition of word vector</h4>
+   <p>The abstracts of 50,381 papers of WoSCC were used as a corpus, and word2vec model in genism was used for training. The dimension of the word vector was set as 300 dimensions and the context window was set as 4. After the trained model was obtained, the words in the abstract were screened; some words such as <i>about</i> and <i>an</i> were eliminated which are called stop words. Then PCA, T-SNE, and AE were used for data dimensionality reduction, data visualization, and relationship diagram representation.</p>
+  </div>
+ </div>
+ <div id="s0005-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i35">Data visualization results and discussion</h3>
+  <div id="s0005-s2002-s3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i36">Word cloud</h4>
+   <p>We took abstracts as the object of study and created word clouds as the main form of analysis. Firstly, we filtered the list after the word segmentation of the abstracts to remove the stop words and then presented them in the form of a word cloud. <i>Word cloud</i> was proposed in 2006 by Rich Gordon, associate professor of journalism and director of new media at Northwestern University (Tessem et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0066" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2015</a></span>). <i>Word cloud</i> gives a visual prominence to the <i>keywords</i> that appear frequently in the web text, form <i>keyword cloud</i> or <i>keyword rendering</i>, thus filtering out a large amount of text information, so that web users can understand the main idea of the text when they scan the text.</p>
+   <p>We conducted a word cloud analysis on keywords, the names of authors, and other information. However, due to the problem of name repetition, our method had limitations. Please refer to <a href="#f0007">Figure 7</a> for the specific effect picture.</p>
+   <div class="figure figureViewer" id="f0007">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>08 February 2021
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 7. </span> Word cloud of authors of WoSCC-related wind power papers (a)2012–2015;(b)2016–2019;(c)2012–2019</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0007image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0007_oc.jpg" loading="lazy" height="190" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0007">
+    <p class="captionText"><span class="captionLabel">Figure 7. </span> Word cloud of authors of WoSCC-related wind power papers (a)2012–2015;(b)2016–2019;(c)2012–2019</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0007">
+    <div class="figureFootNote-f0007"></div>
+   </div>
+   <p></p>
+   <p>While visualizing the word cloud of the abstract, we extracted the word frequency comparison between the WoSCC and CNKI-related papers on wind power, as shown in <button class="ref showTableEventRef" data-id="t0001 t0002">Tables 1 and 2</button>. In the word cloud shown in <a href="#f0008 f0009">Figures 8 and 9</a>, it can be seen that in the WoSCC, <i>energy, system</i>, and <i>model</i> have been mentioned a lot of times, and in CNKI, the terms such as <i>model, method, research, system, analysis</i> appear more often. It shows that in the wind power-related papers, the research hotspots in the Chinese and English paper databases are wind power systems and models.</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Frequency of abstracts of papers related to wind power in WoSCC</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F15567036.2020.1869867&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Frequency of abstracts of papers related to wind power in CNKI</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F15567036.2020.1869867&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <div class="figure figureViewer" id="f0008">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>08 February 2021
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 8. </span> Word cloud of abstracts of WoSCC-related wind power papers (a)2012–2015;(b)2016–2019;(c)2012–2019</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0008image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0008_oc.jpg" loading="lazy" height="207" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0008">
+    <p class="captionText"><span class="captionLabel">Figure 8. </span> Word cloud of abstracts of WoSCC-related wind power papers (a)2012–2015;(b)2016–2019;(c)2012–2019</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0008">
+    <div class="figureFootNote-f0008"></div>
+   </div>
+   <div class="figure figureViewer" id="f0009">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>08 February 2021
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 9. </span> Word cloud of abstracts of CNKI-related wind power papers (a)2012–2015;(b)2016–2019;(c)2012–2019</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0009image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0009_oc.jpg" loading="lazy" height="190" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0009">
+    <p class="captionText"><span class="captionLabel">Figure 9. </span> Word cloud of abstracts of CNKI-related wind power papers (a)2012–2015;(b)2016–2019;(c)2012–2019</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0009">
+    <div class="figureFootNote-f0009"></div>
+   </div>
+   <p></p>
+   <p>Taking wind power-related papers of WoSCC as an example. As we can see, <i>energy, system, model, optimization, pv</i> and <i>algorithm</i> are the most common words. Reference (Chen, Li, and Sun et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0075" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2018</a></span>) proposed a DC/AC converter steady-state model about wind power and other renewable energy sources, applied power flow algorithm to DC distribution, and improved their original algorithm. In (Macedo, Franco, and Romero et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>) focused on the spill of renewable energy, particularly photovoltaic systems, and introduced a method for the optimal allocation to avoid the waste of renewable energy. Reference (Eseye, Zhang, and Zheng et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>) proposed a model based on an artificial neural network for short-term wind power prediction. Word about <i>cost</i>, from (Jannati, Hosseinian, and Vahidi <span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2016</a></span>) and (Kiymaz and Yavuz <span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2016</a></span>) focused on the cost of wind power, the former focusing on the reduction of the investment cost of Battery Energy Storage System (BESS), and the latter aiming to design wind power systems with maximum renewable fraction and lowest cost. As we can see from papers, the same as <button class="ref showTableEventRef" data-id="t0001">Table 1</button>, most of papers pay attention to wind power, renewable energy, including the use of algorithms to build models and systems, and some papers discuss about cost optimizations.</p>
+   <p>Finally, we presented the keyword cloud in WoSCC, as shown in <a href="#f0010">Figure 10</a>. For further analysis, please refer to the next section about the ThemeRiver.</p>
+   <div class="figure figureViewer" id="f0010">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>08 February 2021
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 10. </span> Keywords word cloud of WoSCC-related wind power papers (a)2012–2015;(b)2016–2019;(c)2012–2019</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0010image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0010_oc.jpg" loading="lazy" height="192" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0010">
+    <p class="captionText"><span class="captionLabel">Figure 10. </span> Keywords word cloud of WoSCC-related wind power papers (a)2012–2015;(b)2016–2019;(c)2012–2019</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0010">
+    <div class="figureFootNote-f0010"></div>
+   </div>
+   <p></p>
+  </div>
+  <div id="s0005-s2002-s3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i41">ThemeRiver chart</h4>
+   <p>As we can see from <a href="#f0010">Figure 10</a>, in WoSCC, the main research keywords of the papers related to wind power are <i>renewable energy, wind energy</i>, and <i>wind turbines</i>. Through data comparison (<button class="ref showTableEventRef" data-id="t0003">Table 3</button>), it can be seen that there is an increase in the usage of keywords such as <i>renewable energy, wind energy, wind turbines</i>, and <i>optimization</i>. This reflects a similar trend as the analysis of the abstracts. The more frequent appearance of the following keywords is worthy of attention: <i>power generation control, power grids, wind power plants</i> and <i>wind turbines</i>. This means that change has taken place in the field of wind power. The trend of the change regarding the keywords is shown by the ThemeRiver chart in <a href="#f0011">Figure 11</a>.</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Frequency of keywords of papers related to wind power in WoSCC</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F15567036.2020.1869867&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <div class="figure figureViewer" id="f0011">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>08 February 2021
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 11. </span> The change trend of keywords</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0011image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0011_oc.jpg" loading="lazy" height="279" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0011">
+    <p class="captionText"><span class="captionLabel">Figure 11. </span> The change trend of keywords</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0011">
+    <div class="figureFootNote-f0011"></div>
+   </div>
+   <p></p>
+  </div>
+  <div id="s0005-s2002-s3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i43">Distribution map</h4>
+   <p>The corresponding author addresses are taken as the research object and their distributions are analyzed. For this, we adopted the Baidu open-source toolkit named pyecharts (Jia, Liu, and Wang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0040" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>). Firstly, the corresponding author addresses are obtained, and then, the longitude and latitude of each place are obtained through pyecharts, and then the data is presented in the form of map. The results are shown in <a href="#f0012 f0013">Figures 12 and 13</a>. It can be observed from these figures, in the WoSCC, that more studies have been published in <i>China, the United States, Iran, India</i>, and <i>Germany</i>. Based on the CNKI database, there are more doctoral dissertations on wind power in <i>Beijing, Hubei, Liaoning, Chongqing</i>, and <i>Zhejiang</i>.</p>
+   <div class="figure figureViewer" id="f0012">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>08 February 2021
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 12. </span> Distribution of papers related to wind power in WoSCC</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0012image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0012_oc.jpg" loading="lazy" height="310" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0012">
+    <p class="captionText"><span class="captionLabel">Figure 12. </span> Distribution of papers related to wind power in WoSCC</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0012">
+    <div class="figureFootNote-f0012"></div>
+   </div>
+   <div class="figure figureViewer" id="f0013">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>08 February 2021
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 13. </span> Distribution of papers related to wind power in CNKI</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0013image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0013_oc.jpg" loading="lazy" height="352" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0013">
+    <p class="captionText"><span class="captionLabel">Figure 13. </span> Distribution of papers related to wind power in CNKI</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0013">
+    <div class="figureFootNote-f0013"></div>
+   </div>
+   <p></p>
+  </div>
+ </div>
+ <div id="s0005-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i46">Diagram of relationship</h3>
+  <p>The word segmentation data are used to obtain the word vector through word2vec, and then the PCA dimension reduction, T-SNE dimension reduction, and AE dimension reduction are used to obtain the relationship between these words on a two-dimensional plane, as shown in <a href="#f0014 f0015 f0016">Figures 14–16</a>. In each figure, these words are divided into the following categories: forecasting, optimization, investment, energy and equipment. Among them, when using AE dimension reduction, we refer to the method of using AE for data dimensionality reduction proposed by reference (Hinton and Salakhutdinov <span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2006</a></span>). The AE consisted of an encoder with layers of sizes of 300–3000-2000-1000-500-2 and a symmetric decoder.</p>
+  <div class="figure figureViewer" id="f0014">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 14. </span> Diagram of PCA dimensionality reduction</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0014image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0014_oc.jpg" loading="lazy" height="394" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0014">
+   <p class="captionText"><span class="captionLabel">Figure 14. </span> Diagram of PCA dimensionality reduction</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0014">
+   <div class="figureFootNote-f0014"></div>
+  </div>
+  <div class="figure figureViewer" id="f0015">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 15. </span> Diagram of T-SNE dimensionality reduction</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0015image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0015_oc.jpg" loading="lazy" height="396" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0015">
+   <p class="captionText"><span class="captionLabel">Figure 15. </span> Diagram of T-SNE dimensionality reduction</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0015">
+   <div class="figureFootNote-f0015"></div>
+  </div>
+  <div class="figure figureViewer" id="f0016">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 16. </span> Diagram of AE dimensionality reduction</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0016image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0016_oc.jpg" loading="lazy" height="395" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0016">
+   <p class="captionText"><span class="captionLabel">Figure 16. </span> Diagram of AE dimensionality reduction</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0016">
+   <div class="figureFootNote-f0016"></div>
+  </div>
+  <p></p>
+  <p>Dimensionality reduction with AE has the best visualization result. There are 100 words in <a href="#f0017">Figure 17</a>, which are words with the highest frequency in abstracts. It is easy to find the relation between word and word in <a href="#f0017">Figure 17</a>, so it was adopted in the relevance of research hotspots in papers of wind power. For example, when researching <i>wind-power</i>, related research will have <i>electricity, turbine, renewable</i>, and <i>grid</i>. When the research point is <i>study</i>, it is accompanied by discussions of <i>analysis, compared, data</i> and <i>results</i>. While searching <i>equipment</i>, it may be correlated with <i>speed, voltage</i> and <i>frequency</i>. The words corresponding with <i>algorithm</i> are <i>simulation, method</i> and <i>models</i>. This is easy to understand, when an algorithm is proposed, it should be simulated and applied in some models according to the result of simulation.</p>
+  <div class="figure figureViewer" id="f0017">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Application of machine learning algorithms in wind power: a review</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Deng%2C+Yao-Chao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Deng%2C+Yao-Chao"><span class="NLM_given-names">Yao-Chao</span> Deng</a> <a href="https://orcid.org/0000-0002-3436-3403"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tang%2C+Xue-Hua"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tang%2C+Xue-Hua"><span class="NLM_given-names">Xue-Hua</span> Tang</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Zhou%2C+Zhi-Yong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhou%2C+Zhi-Yong"><span class="NLM_given-names">Zhi-Yong</span> Zhou</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Yang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Yang"><span class="NLM_given-names">Yang</span> Yang</a> <a href="https://orcid.org/0000-0001-8586-872X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Niu%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Niu%2C+Fan"><span class="NLM_given-names">Fan</span> Niu</a> <a href="https://orcid.org/0000-0003-0122-3786"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15567036.2020.1869867">https://doi.org/10.1080/15567036.2020.1869867</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 17. </span> Diagram of relationship by AE dimensionality reduction</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0017image" src="/na101/home/literatum/publisher/tandf/journals/content/ueso20/0/ueso20.ahead-of-print/15567036.2020.1869867/20210525/images/medium/ueso_a_1869867_f0017_oc.jpg" loading="lazy" height="465" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0017">
+   <p class="captionText"><span class="captionLabel">Figure 17. </span> Diagram of relationship by AE dimensionality reduction</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0017">
+   <div class="figureFootNote-f0017"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0005-s2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i51">Analysis of wind power</h3>
+  <p>In <a href="#f0014 f0015 f0016">Figures 14–16</a> above, the wind power-related papers selected in our research are shown, and they are divided into four categories through machine learning algorithms, namely: forecasting, optimization, investment, energy and equipment.</p>
+  <p>In the literature regarding forecasting, we found that the research done by reference (Gómez Munoz et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>) and reference (Qin, Zhang, and Ma et al.) is to reduce operating costs. Their work performs predictive maintenance on wind turbines and predicts the large amount of data obtained by the Supervisory Control and Data Acquisition (SCADA) system, and condition monitoring and fault detection. The study in (Asumadu-Sarkodie and Owusu <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2016</a></span>) assessed the potential and economic feasibility of wind farm projects in 11 locations in Ghana through predicting wind speed data, and reference (Cetinay, Kekec, and Kuipers et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>) used Markov random fields to predict and investigate geographical areas that are suitable for building wind farms. In both of the above-mentioned studies, the geographical location suitable for wind farms was found and the economic analysis was carried out using the existing data prediction. In (Jeon, Panagiotelis, and Petropoulos <span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>), they predicted the best decisions related to grid operation and bidding strategies, and reference (Lledo et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0042" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>) proposed a seasonal forecasting method that generates capacity factors for a series of turbine categories. In these papers, we can see that the predictive technical methods contributed to improving the operating efficiency of wind farms.</p>
+  <p>The category of optimization research is mainly divided into the design optimization of wind power generation, the optimization of power quality, and the study of economic impact. Reference (Lee and Lee <span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>) studied the influence of platform movement on the aerodynamic performance of offshore wind turbines. To optimize wind turbines and contribute to the optimization of floating offshore wind farms, in (Tielens and Van Hertem <span class="ref-lnk lazy-ref"><a data-rid="cit0068" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2016</a></span>), they focused on providing frequency adjustment through wind turbines to optimize the burden of generating sets. The study in (Wu et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0074" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>) proposed a new inertial control method based on torque limit control (TLC) to optimize the frequency regulation performance of the overall system. Reference (Mahdianpoor, Kiyoumarsi, and Ataei et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0045" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>) proposed the Distribution Static Compensator (DSTATCOM) robust control strategy to optimize the output power fluctuation of wind turbines caused by wind speed changes. Reference (Souza et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0063" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2018</a></span>) describe a strategy that allows adding active filtering to the doubly-fed induction generator (DFIG) wind power system in the study. In (Chen, Zeng, and Lu <span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>), the economic emission dispatch (EED) performance of renewable energy power generation based on constrained multi-target population extremum optimization was analyzed. Reference (Khatib et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2015</a></span>) studied the optimal capacity of photovoltaic arrays and wind turbines to optimize system costs. The optimal design and economic optimization of wind power generation were studied by reference (Cao et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>), the paper constructs an operating system, which combines wind turbines and battery energy storage system into a micro-grid with high wind penetration, to reduce the impact of wind power uncertainty, at the same time, a novel two-stage market rolling optimization framework is proposed to seek the best energy profit for the microgrid.</p>
+  <p>In the investment-related papers, there are some interesting findings. Reference (Shahbazi, Kouravand, and Hassan-Beygi <span class="ref-lnk lazy-ref"><a data-rid="cit0057" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>) investigated eight areas in Iran Tehran province, in Iran for wind energy potential, selected suitable wind farm sites, and improve the utilization rate of wind. In (Singh, Bhatti, and Kothari <span class="ref-lnk lazy-ref"><a data-rid="cit0062" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2004</a></span>) reviewed the status of wind power, India refers to the central and state agencies, private and public sector companies are considering investing in wind power projects. Reference (Demírbasa <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2005</a></span>) and reference (Georgiou, Polatidis, and Haralambopoulos <span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2012</a></span>) both focused on finding suitable areas to invest in wind power generation.</p>
+  <p>In the articles about energy and equipment, there are two main aspects: wind energy and other renewable energy sources, and equipment, including the stators, rotors, wind turbines. In (Child et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>) mentioned in the study that in a 100% renewable energy system, cost savings are achieved through effective energy storage, departmental integration, and flexible power generation of dispatchable renewable energy resources. Reference (Dub and Pape <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>1982</a></span>) discussed the value analysis of wind energy as a power generation resource. The study in (Opan et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0051" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2019</a></span>) used a small-scale settlement center in the study to discuss the best energy production of wind power and hydropower plants. Tan F. (Tan <span class="ref-lnk lazy-ref"><a data-rid="cit0065" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2017</a></span>) found that the total profit of wind power was high, and proposed policies to promote the development of wind power in China. At the same time, in the study in (Shan, Liu, and Lee et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0080" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2016</a></span>), three direct-drive stator permanent magnet generators were quantitatively compared. For the application of variable speed wind power generation, reference (Kavousi et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0029" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2018</a></span>) proposed a dual-stator winding induction generator (DWIG) and boost converter topology. Reference (Mandal, Rana, and Tripathi <span class="ref-lnk lazy-ref"><a data-rid="cit0046" data-reflink="_i53 _i54" href="#"><span class="off-screen">Citation</span>2020</a></span>) developed, tested, and compared two improved Savonius wind turbines.</p>
+ </div>
+</div>
+<div id="s0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i52" class="section-heading-2">Conclusions and future directions</h2>
+ <p>Base on the research and analysis of wind power papers, it can be concluded that the existing machine learning algorithms, such as word2vec, PCA, T-SNE and AE, can play an important role in helping researchers to analyze research trends and hotspots. In this paper, the NLP technology was applied to analyze papers related to wind power, and data visualization tools such as data dimensionality reduction and visualization were used to display the changes of research hotspots and relevant data information. This study shows that machine learning algorithms can help researching literature reviews by analyzing a large number of papers, showing trends, and the regional distribution of researchers. With the help of the method used in this paper, word clouds, ThemeRiver charts, and the relationship diagram can easily obtain the research results of the literature and the changes in research trends, and the distribution diagram can observe the national or regional distribution of researchers.</p>
+ <p>In summary, machine learning algorithms were applied to literature research in the field of wind power. Finally, we obtained a variety of visualization charts. Our study also has some limitations.</p>
+ <p>In the future, our research direction in the field of wind power will focus on how to make the keywords into connect with each other, the authors also connect with each other. So that we can see the trend and direction of the keyword changes, and the relationship between the authors and keywords. Furthermore, we will also concentrate on information extraction from literature through Named Entity Recognition technology.</p>
+</div>

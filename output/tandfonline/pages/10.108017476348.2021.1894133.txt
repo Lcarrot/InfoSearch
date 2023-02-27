@@ -1,0 +1,1000 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">1. Introduction</h2>
+ <p>Asthma is a common chronic disorder which has long been recognized as a heterogeneous disease [<span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>1</a></span>]. It is characterized by the variable symptom expression, airway inflammation, and therapeutic responses, making the clinical diagnosis challenging and long-term prognosis uncertain [<span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>3</a></span>]. In the era of big data, technological advances and an ever-increasing quantity of available data in healthcare offer a unique opportunity to improve our understanding of this complex disease [<span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>4</a></span>]. Studies of asthma increasingly involve the collection of large and diverse datasets that include various sources of data (e.g. clinical, environmental, omics, imaging, electronic health records, etc.), and modern big data analytics offer a powerful tool to mine knowledge from them [<span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>5</a></span>]. In this context, classical hypothesis-driven approaches have in recent years been replaced by complex data-driven analytical techniques that interrogate the data in an unbiased fashion to discover hidden patterns and associations in a quest to mine knowledge from big data [<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span>]. Such hypothesis-generating techniques have been extensively applied to the discovery of asthma subtypes and their pathophysiological mechanism [<span class="ref-lnk lazy-ref"><a data-rid="cit0007 cit0008 cit0009 cit0010 cit0011 cit0012 cit0013 cit0014 cit0015 cit0016 cit0017 cit0018" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>7–18</a></span>], its relation with allergic sensitization [<span class="ref-lnk lazy-ref"><a data-rid="cit0019 cit0020 cit0021 cit0022 cit0023" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>19–23</a></span>] and environmental exposures [<span class="ref-lnk lazy-ref"><a data-rid="cit0024 cit0025 cit0026 cit0027 cit0028 cit0029" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>24–29</a></span>], the discovery of biomarkers [<span class="ref-lnk lazy-ref"><a data-rid="cit0030 cit0031 cit0032 cit0033 cit0034 cit0035 cit0036 cit0037 cit0038 cit0039 cit0040" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>30–40</a></span>] and asthma prediction [<span class="ref-lnk lazy-ref"><a data-rid="cit0041 cit0042 cit0043 cit0044 cit0045 cit0046" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>41–46</a></span>]. However, many challenges remain unmet, and very few research findings have been translated into clinical practice. For example, there is a lack of universally accepted diagnostic tools, especially in childhood asthma [<span class="ref-lnk lazy-ref"><a data-rid="cit0047" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>47</a></span>]. Moreover, the definition of asthma subtypes remains controversial [<span class="ref-lnk lazy-ref"><a data-rid="cit0048" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>48</a></span>]: while the existence of asthma endotypes is universally acknowledged, there is no consensus on how best to define them [<span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>3</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0049" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>49</a></span>].</p>
+ <p>In this review, we aim to analytically investigate the methodological shift toward data-driven analyses in asthma research and critically appraise the impact of modern analytical techniques. In particular, we wish to highlight the advantages and pitfalls of their application in the current literature and provide our interpretation on the difficulty in deriving clinically meaningful insights about the disease development and its pathophysiological mechanism. To this end, we conducted a bibliometric analysis highlighting the relevant characteristics such as publication trends and topics that influence the research in asthma. On the premise that their principal goals differ significantly, we distinguish between studies that adopted classical Multivariate Statistics (MS) and Bayesian Statistics (BS) versus more recent Machine Learning (ML) and Artificial Intelligence (AI) methodologies. In <a href="#s0002">Sections 2</a> and <a href="#s0003">3</a>, we briefly introduce the reader to different methodologies. In <a href="#s0004">Section 4</a> we describe the analytical approach adopted to perform the bibliometric analysis. The main results are discussed in <a href="#s0005">Section 5</a>, and our commentary and view on the current status of the field are presented in <a href="#s0006">Section 6</a>.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">2. Harnessing the power of statistics and machine learning</h2>
+ <p>According to the HACE theorem [<span class="ref-lnk lazy-ref"><a data-rid="cit0050" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>50</a></span>], ‘big data starts with large-volume, heterogeneous, autonomous sources with distributed and decentralized control, and seeks to explore complex and evolving relationships among data’. These characteristics make large complex medical ‘big data’ a challenging framework for discovering useful knowledge [<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span>]. Therefore, it is not surprising that, despite the extraordinary availability and accessibility, only a portion of the data is integrated, understood, and analyzed [<span class="ref-lnk lazy-ref"><a data-rid="cit0051" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>51</a></span>]. Modern statistics, ML and AI methodologies offer unique tools to harness high volumes of data, integrate them from various sources, and mine them to extract meaningful information.</p>
+ <p>AI and ML have become trendy terms in medicine and healthcare, and often they are used interchangeably. However, although they are closely related, there are important differences. AI is a computer science field that aims to produce computer systems and machines that can mimic human intelligence, thereby performing intellectual tasks such as decision-making and problem-solving. ML is a subfield of AI, where machines are trained to learn how to process and mine the data to identify features and relations to make predictions and identify patterns. Using mathematical, statistical and computational tools, ML enables machines to automatically learn and improve from past data and experiences without being explicitly programmed. It is of note that whilst ML as a discipline is fairly new, the statistical and mathematical foundations have been in existence for more than a century; the recent exponential growth in computational power enabled implementation of this statistical/mathematical groundwork [<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span>]. Most of the statistical concepts used in ML are drawn from the Multivariate statistics (MS) framework, a collection of statistical models that deal with the analysis of multivariate data, for which observations are measured on more than one variable and where there is an inherent interdependence between the variables [<span class="ref-lnk lazy-ref"><a data-rid="cit0052" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>52</a></span>]. Our perspective on the relationship between different methodologies/fields is depicted in (<a href="#f0001">Figure 1</a>).</p>
+ <div class="figure figureViewer" id="f0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Machine learning in asthma research: moving toward a more integrated approach</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fontanella%2C+Sara"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fontanella%2C+Sara"><span class="NLM_given-names">Sara</span> Fontanella</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Cucco%2C+Alex"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Cucco%2C+Alex"><span class="NLM_given-names">Alex</span> Cucco</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Custovic%2C+Adnan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Custovic%2C+Adnan"><span class="NLM_given-names">Adnan</span> Custovic</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/17476348.2021.1894133">https://doi.org/10.1080/17476348.2021.1894133</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>16 March 2021
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> The relationship between statistical and computer science disciplines</p>
+    </div><span class="NLM_attrib">MS – Multivariate statisticsML – Machine learningAI – Artificial intelligence</span>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/medium/ierx_a_1894133_f0001_oc.jpg" loading="lazy" height="306" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> The relationship between statistical and computer science disciplines</p><span class="NLM_attrib">MS – Multivariate statisticsML – Machine learningAI – Artificial intelligence</span>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0001">
+  <div class="figureFootNote-f0001"></div>
+ </div>
+ <p></p>
+ <p>One of the main differences between machine learning and traditional multivariate statistics techniques lies in their purpose. Machine learning focuses on prediction models and on making the prediction as accurate as possible. It uses algorithms to learn rules from available data and create models able to generalize to new unseen instances. For example, in medicine, extant data can be used to train models that can then be used to predict future disease states or development of symptoms in later life. Statistics and multivariate analysis, instead, primarily seek to infer the relationship between variables. They use present observations to build models that can enhance the understanding of the phenomena at hand. In medical research, their focus is on the investigation of causality and associations to explain the disease and understand uncertainty in the modeling assumptions [<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span>].</p>
+ <p>In medicine, traditional regression-based models often involve a small number of variables to predict the value of an outcome or the probability of an event, and are often used to infer association rather than to establish a prediction rule [<span class="ref-lnk lazy-ref"><a data-rid="cit0053" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>53</a></span>]. Their popularity is motivated by their high degree of interpretability: results are easy to understand, interpret and contextualize in a clinical setting, and underlying biological mechanisms can be discovered. In contrast, the interpretation of results from ML can be challenging. The lack of interpretability is apparent in artificial neural networks (ANNs), which are highly parameterized, non-linear models with sets of processing units called neurons [<span class="ref-lnk lazy-ref"><a data-rid="cit0054" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>54</a></span>] that can approximate and learn the relationship between predictors and outcomes in a complex system. Despite their remarkable predictive power, the fitted models do not provide insights into the relative importance of the predictors or covariates, their underlying relationships and structures, in relation to the modeled outcomes [<span class="ref-lnk lazy-ref"><a data-rid="cit0054" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>54</a></span>]. On the other hand, ML has many appealing properties. While the application of classical statistical models relies on the definition of several modeling assumptions, such as additivity, linearity and distributional assumptions, which are seldom met in clinical practice, ML models are free from prior distributional assumptions. These computational techniques can easily incorporate and model complex interactions between a high number of variables, which are difficult to assert in a statistical model. Moreover, while most multivariate statistics techniques incur computational issues in the presence of high-dimensional data – e.g., the number of predictors is often larger than the number of observations – ML can easily handle this large-scale data. Another critical advantage of ML lies in its ability to accommodate and combine different types of data: structured and unstructured data can be integrated into investigations of the prediction of disease diagnosis, prognosis and response to treatment.</p>
+ <p>Recently, the adoption of ML and AI models has been accelerated by the increasing availability and accessibility of Electronic Health Records (EHRs). Given that a great proportion of data are stored in textual format, the field of Natural Language Processing (NLP) is of particular relevance, and the correct use of NLP can help in many practical clinical purposes, from diagnosis to management [<span class="ref-lnk lazy-ref"><a data-rid="cit0055" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>55</a></span>]. NLP refers to a specific area of ML in which the input is represented by a written or spoken information. While in a classical framework, the researcher can work with ‘structured’ data characterized by a precise organization of the information, in the NLP context, the information is ‘unstructured’, i.e. there is no common structure in which the information is stored and presented (e.g. different length of the audio or text, different use of language, etc.). In this context, pre-processing of data is essential: the documents, words, phrases or letters need to be translated into numbers\vectors. Technically speaking, it means to project each document, word, phrase, or letter into a vector-space. With a numerical (vector) representation of text, researchers can rely on structured data sets that can be used as any other sources of information. Consequently, supervised or unsupervised ML or MS models can be applied. For an in-depth analysis of clinical applications of text mining, we refer the reader to a comprehensive review on the application of NLP in asthma [<span class="ref-lnk lazy-ref"><a data-rid="cit0055" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>55</a></span>] and an open access book on clinical text mining [<span class="ref-lnk lazy-ref"><a data-rid="cit0056" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>56</a></span>].</p>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i6" class="section-heading-2">3. A philosophical debate: Bayesian versus frequentist approach</h2>
+ <p>Without the intention of being exhaustive, the purpose of this section is to introduce two opposing philosophies of statistical analysis, namely the Bayesian and the frequentist. Both are valid, although they differ methodologically and perhaps philosophically [<span class="ref-lnk lazy-ref"><a data-rid="cit0057" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>57</a></span>].</p>
+ <p>In the frequentist approach, the scientist uses models that hold under specific assumptions and extract all the information from the data, without introducing any external information. The intention is to ‘let the data speak for themselves’, under the belief that the experimental design completely respects the assumptions needed to use a specific model. In this setting, the unknown population value, for example disease prevalence, is considered as a fixed, unvarying quantity, without a probability distribution [<span class="ref-lnk lazy-ref"><a data-rid="cit0058" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>58</a></span>]. The aim is to obtain point or confidence intervals estimates for such quantity from the available data or test hypotheses around these parameters.</p>
+ <p>In contrast, the Bayesian approach uses a probabilistic framework for obtaining such estimates. This approach is based on the Bayes’ theorem, which underpins the subjectivist approach to statistics and logic of evidential support, and allows for the use of some knowledge or belief that we already have (commonly referred to as the prior) to help us calculate the probability of a related event. Bayesian methods are formulated on the premise that unknown parameters have probability distributions that can be constructed using our prior knowledge, before adding the information which comes from the data. In this framework, prior knowledge can be incorporated explicitly in the analytic model and combined with the data at hand to formulate a posterior distribution over the parameters of interests. This is one of the most characterizing aspects of Bayesian statistics and the feature that clearly distinguishes it from the frequentist perspective, where the prior knowledge cannot be explicitly included, but only drawn from the available data and translated into the assumptions we make about the statistical models for the data. However, the key question is not which of the two approaches is ‘better’, but rather, which method is best suited for the scientific question being addressed [<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span>].</p>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i7" class="section-heading-2">4. Literature review</h2>
+ <div id="s0004-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i8">4.1. Search strategy</h3>
+  <p>We systematically searched the literature up to 2020 using Scopus database to capture papers relevant to the application of MS, BS and ML and AI in asthma research. Scopus is an online bibliometric database developed by Elsevier that boasts a broad coverage of scientific resources and high accuracy [<span class="ref-lnk lazy-ref"><a data-rid="cit0059" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>59</a></span>]. We built three separate queries to investigate the impact of each discipline in asthma research. The term ‘asthma’ was included in all searches combined with different search terms for the three individual categories:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline">Multivariate statistics (MS): ‘principal component’ OR ‘discriminant analysis’ OR ‘correspondence analysis’ OR ‘canonical correlation’ OR ‘Markov models’ OR ‘factor analysis’ OR ‘structural equation’ OR ‘latent variable’ OR ‘multidimensional scaling’ OR ‘clustering’ OR ‘latent class’ OR ‘cluster analysis’ OR ‘latent profile’ OR ‘profile regression’ OR ‘mixture models’.</p></li>
+   <li><p class="inline">Machine learning and artificial intelligence (ML&amp;AI): ‘artificial neural networks’ OR ‘deep learning’ OR ‘supervised learning’ OR ‘unsupervised learning’ OR ‘support vector machine’ OR ‘SVM’ OR ‘decision trees’ OR ‘classification trees’ OR ‘regression trees’ OR ‘random forest’ OR ‘machine learning’ OR ‘artificial Intelligence’.</p></li>
+   <li><p class="inline">Bayesian statistics (BS): ‘Bayesian’ OR ‘Bayes’.</p></li>
+  </ul>
+  <p></p>
+  <p>We wish to point out that although we appreciate that several of the listed methodologies are nowadays included in both MS and ML&amp;AI, we assigned them according to the field in which they were initially developed. However, to capture this overlap to some extent, we included in the ML query, broad terms such as ‘unsupervised’ and ‘supervised learning’. The description of the individual methodologies is beyond the scope of this review, and we refer the readers to well-known texts on MS [<span class="ref-lnk lazy-ref"><a data-rid="cit0052" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>52</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0060" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>60</a></span>], ML&amp;AI [<span class="ref-lnk lazy-ref"><a data-rid="cit0060 cit0061 cit0062 cit0063" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>60–63</a></span>] and BS [<span class="ref-lnk lazy-ref"><a data-rid="cit0064" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>64</a></span>]. We omitted the term ‘big data’ in the search as we wished to highlight both a ‘big-data’ context and a ‘small sample size’ scenario. Specifically, while some of the methodologies of interest for this review require a big data set, other models are also appropriate in a small sample context.</p>
+ </div>
+ <div id="s0004-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">4.2. Bibliometric analysis</h3>
+  <p>To understand the state of the literature and to investigate the possible differences among the considered methodologies – MS, BS and ML&amp;AI – we performed a bibliometric analysis on the set of articles returned from the search queries using the <i>bibliometrix</i> [<span class="ref-lnk lazy-ref"><a data-rid="cit0065" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>65</a></span>] package in R, which is a language and environment for statistical computing and graphics and provides readily available codes to implement a wide variety of statistical models. Bibliometrics is an analytical discipline that utilizes statistical, and ML approaches to analyze scientific production in a given research field. From bibliographic data (e.g. authors, words, journals, countries, keywords), descriptive statistics can be used to evaluate author and country production, journal sources, and co-word analysis to identify significant themes in asthma research. On the premise that article keywords provide a suitable description of documents’ content, the analysis of keywords co-occurrences can reveal possible links between the topics covered in the articles. This analysis can provide insights into the knowledge structure of a scientific field. Keyword co-occurrence network and strategic thematic map [<span class="ref-lnk lazy-ref"><a data-rid="cit0066" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>66</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0067" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>67</a></span>] were used to investigate patterns and themes in the research field of asthma. Networks provide a representation of the relationships occurring in a system. A graph is generated assuming keywords as a set of nodes and a set of links established using their co-occurrences. This approach provides a schematic representation of the research themes and their relations. More details can, then, be extrapolated in the thematic map, where themes are embedded in a two-dimensional representation defined by the centrality and density indices. The centrality index captures the degree of interaction among networks; in other words, it is ‘a measure of the importance of a theme in the development of the entire research field analysed’ [<span class="ref-lnk lazy-ref"><a data-rid="cit0066" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>66</a></span>]. Instead, the density measures the internal strength of the network, and it captures the level of development of a specific theme. The interpretability of the results relies on the definition of four quadrants in the two-dimensional embedding space, and the themes’ relevance can be interpreted based on their position with respect to the quadrants.</p>
+ </div>
+ <div id="s0004-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">4.3. Probabilistic topic modeling</h3>
+  <p>To further explore the knowledge structure of the asthma research field, we applied Latent Dirichlet Allocation (LDA) on title, keywords, and abstract [<span class="ref-lnk lazy-ref"><a data-rid="cit0068" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>68</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0069" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>69</a></span>]. LDA is an unsupervised ML approach that allows uncovering potentially hidden topic information in document sets by revealing recurring clusters of co-occurring words. LDA is a probabilistic topic model that represents each document as a random mixture over latent topics, and each topic is characterized by a distribution over words [<span class="ref-lnk lazy-ref"><a data-rid="cit0068" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>68</a></span>]. The topic distributions in all documents share a common Dirichlet prior, and the word distributions of topics share a common Dirichlet prior as well. LDA aims at inferring the latent structure that is likely to have generated the observed corpus [<span class="ref-lnk lazy-ref"><a data-rid="cit0070" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>70</a></span>].</p>
+  <p>Given a collection of documents, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        D
+       </mi>
+      </mrow>
+     </mrow>
+    </math></span>, where each document is considered as a sequence of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        N
+       </mi>
+      </mrow>
+     </mrow>
+    </math></span> words <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          w
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          d
+         </mi>
+        </mrow>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mrow>
+      <msub>
+       <mfenced open="{" close="}">
+        <mrow>
+         <mrow>
+          <msub>
+           <mrow>
+            <mrow>
+             <mi mathvariant="normal">
+              w
+             </mi>
+            </mrow>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mrow>
+              <mi mathvariant="normal">
+               d
+              </mi>
+             </mrow>
+            </mrow>
+            <mo>
+             ,
+            </mo>
+            <mrow>
+             <mrow>
+              <mi mathvariant="normal">
+               i
+              </mi>
+             </mrow>
+            </mrow>
+           </mrow>
+          </msub>
+         </mrow>
+        </mrow>
+       </mfenced>
+       <mrow>
+        <mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           i
+          </mi>
+         </mrow>
+        </mrow>
+        <mo>
+         =
+        </mo>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ,
+        </mo>
+        <mn>
+         2
+        </mn>
+        <mo>
+         ,
+        </mo>
+        <mrow>
+         <mtext>
+          &nbsp;
+         </mtext>
+        </mrow>
+        <mo>
+         …
+        </mo>
+        <mrow>
+         <mtext>
+          &nbsp;
+         </mtext>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+        <mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           N
+          </mi>
+         </mrow>
+        </mrow>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> and each word is an item from a vocabulary indexed by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mfenced open="{" close="}">
+      <mrow>
+       <mn>
+        1
+       </mn>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <mtext>
+         &nbsp;
+        </mtext>
+       </mrow>
+       <mo>
+        …
+       </mo>
+       <mrow>
+        <mtext>
+         &nbsp;
+        </mtext>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          V
+         </mi>
+        </mrow>
+       </mrow>
+      </mrow>
+     </mfenced>
+    </math></span>, we assume that there are <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        K
+       </mi>
+      </mrow>
+     </mrow>
+    </math></span> latent topics, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mrow>
+        <mrow>
+         <mi>
+          β
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         :
+        </mo>
+        <mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           K
+          </mi>
+         </mrow>
+        </mrow>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span>, defined as a distribution over the vocabulary. Then, the conditional distribution, known as the <i>posterior</i>, can be defined as [<span class="ref-lnk lazy-ref"><a data-rid="cit0069" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>69</a></span>]: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_um0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_um0001.gif&quot;}"><span class="mml-formula"></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         p
+        </mi>
+       </mrow>
+      </mrow><mfenced open="(" close=")">
+       <mrow>
+        <mrow>
+         <msub>
+          <mrow>
+           <mrow>
+            <mi>
+             β
+            </mi>
+           </mrow>
+          </mrow>
+          <mrow>
+           <mn>
+            1
+           </mn>
+           <mo>
+            :
+           </mo>
+           <mrow>
+            <mrow>
+             <mi mathvariant="normal">
+              K
+             </mi>
+            </mrow>
+           </mrow>
+          </mrow>
+         </msub>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+        <mrow>
+         <msub>
+          <mrow>
+           <mrow>
+            <mi>
+             θ
+            </mi>
+           </mrow>
+          </mrow>
+          <mrow>
+           <mn>
+            1
+           </mn>
+           <mo>
+            :
+           </mo>
+           <mrow>
+            <mrow>
+             <mi mathvariant="normal">
+              D
+             </mi>
+            </mrow>
+           </mrow>
+          </mrow>
+         </msub>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+        <mrow>
+         <msub>
+          <mrow>
+           <mrow>
+            <mi mathvariant="normal">
+             z
+            </mi>
+           </mrow>
+          </mrow>
+          <mrow>
+           <mn>
+            1
+           </mn>
+           <mo>
+            :
+           </mo>
+           <mrow>
+            <mrow>
+             <mi mathvariant="normal">
+              D
+             </mi>
+            </mrow>
+           </mrow>
+          </mrow>
+         </msub>
+        </mrow>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mo>
+            |
+           </mo>
+          </mrow>
+         </mrow>
+        </mrow>
+        <mrow>
+         <msub>
+          <mrow>
+           <mrow>
+            <mi mathvariant="normal">
+             w
+            </mi>
+           </mrow>
+          </mrow>
+          <mrow>
+           <mn>
+            1
+           </mn>
+           <mo>
+            :
+           </mo>
+           <mrow>
+            <mrow>
+             <mi mathvariant="normal">
+              K
+             </mi>
+            </mrow>
+           </mrow>
+          </mrow>
+         </msub>
+        </mrow>
+       </mrow>
+      </mfenced><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            p
+           </mi>
+          </mrow>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mrow>
+            <msub>
+             <mrow>
+              <mrow>
+               <mi>
+                β
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mn>
+               1
+              </mn>
+              <mo>
+               :
+              </mo>
+              <mrow>
+               <mrow>
+                <mi mathvariant="normal">
+                 K
+                </mi>
+               </mrow>
+              </mrow>
+             </mrow>
+            </msub>
+           </mrow>
+           <mo>
+            ,
+           </mo>
+           <mrow>
+            <msub>
+             <mrow>
+              <mrow>
+               <mi>
+                θ
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mn>
+               1
+              </mn>
+              <mo>
+               :
+              </mo>
+              <mrow>
+               <mrow>
+                <mi mathvariant="normal">
+                 D
+                </mi>
+               </mrow>
+              </mrow>
+             </mrow>
+            </msub>
+           </mrow>
+           <mo>
+            ,
+           </mo>
+           <mrow>
+            <msub>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                z
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mn>
+               1
+              </mn>
+              <mo>
+               :
+              </mo>
+              <mrow>
+               <mrow>
+                <mi mathvariant="normal">
+                 D
+                </mi>
+               </mrow>
+              </mrow>
+             </mrow>
+            </msub>
+           </mrow>
+           <mo>
+            ,
+           </mo>
+           <mrow>
+            <msub>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                w
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mn>
+               1
+              </mn>
+              <mo>
+               :
+              </mo>
+              <mrow>
+               <mrow>
+                <mi mathvariant="normal">
+                 D
+                </mi>
+               </mrow>
+              </mrow>
+             </mrow>
+            </msub>
+           </mrow>
+          </mrow>
+         </mfenced>
+        </mrow>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            p
+           </mi>
+          </mrow>
+         </mrow>
+         <mfenced open="(" close=")">
+          <mrow>
+           <mrow>
+            <msub>
+             <mrow>
+              <mrow>
+               <mi mathvariant="normal">
+                w
+               </mi>
+              </mrow>
+             </mrow>
+             <mrow>
+              <mn>
+               1
+              </mn>
+              <mo>
+               :
+              </mo>
+              <mrow>
+               <mrow>
+                <mi mathvariant="normal">
+                 D
+                </mi>
+               </mrow>
+              </mrow>
+             </mrow>
+            </msub>
+           </mrow>
+          </mrow>
+         </mfenced>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math></span>
+   </disp-formula-group></p>
+  <p>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mrow>
+        <mrow>
+         <mi>
+          θ
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         :
+        </mo>
+        <mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           D
+          </mi>
+         </mrow>
+        </mrow>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> are the per-corpus topic proportions, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          z
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         :
+        </mo>
+        <mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           D
+          </mi>
+         </mrow>
+        </mrow>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> the per-corpus topic assignments and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/ierx_a_1894133_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          w
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         :
+        </mo>
+        <mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           D
+          </mi>
+         </mrow>
+        </mrow>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> the set of observed words. Both the topic proportions and the topic distributions over the vocabulary follow a Dirichlet distribution. As the posterior distribution is intractable for exact inference, inference algorithms need to be used to approximate it. Hence, topic models rely on sampling-based algorithms or variational algorithms [<span class="ref-lnk lazy-ref"><a data-rid="cit0068" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>68</a></span>]. The analysis was performed with ad-hoc routines [<span class="ref-lnk lazy-ref"><a data-rid="cit0070" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>70</a></span>] and the <i>Text Analytics Toolbox</i> of MATLAB [<span class="ref-lnk lazy-ref"><a data-rid="cit0071" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>71</a></span>].</p>
+ </div>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i12" class="section-heading-2">5. Asthma research and themes</h2>
+ <p>Three separated searches, using the search strategy described above, were launched on Scopus and the bibliographic data were extracted by applying the queries to the contents of title, abstract and keywords. The search was limited to the subject area of Medicine, and erratum or undefined documents were excluded from the analysis. Articles were then manually downloaded in the BibTeX file format. All available information was retrieved. The searches resulted in 1922, 501 and 255 for MS, ML&amp;AI and BS, respectively. After combining these three lists and removing the articles without abstract, we found 2395 unique articles.</p>
+ <div id="s0005-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i13">5.1. The publication trends</h3>
+  <p>The retrieved studies were conducted between 1965 and 2020 and involved 12,607 authors, with 0.19 article per author and 5.26 authors per article, and a collaboration index of 5.46 (<button class="ref showTableEventRef" data-id="t0001">Table 1</button>). Only 95 authors produced single-authored articles, while the remaining 12,512 authors were involved in multi-author publications, and the average number of citations per article was 30.38. (<a href="#f0002">Figure 2a</a>) shows the evolution of the asthma research field and the impact of modern analytical approaches. To evaluate the changes in scientific production over time, and we adopted the three research stages defined in Aparicio et al. [<span class="ref-lnk lazy-ref"><a data-rid="cit0072" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>72</a></span>]. Accordingly, we identified i) the <i>initial stage</i>, from 1965 to 1988, with 56 articles published, with a rate of three articles per year; ii) the <i>development stage</i>, which spanned 1989–1999, with 179 articles and an average of 16 articles per year, and iii) the <i>expansive stage</i>, from 2000 to 2020, with 2160 articles published (with publication rate of almost 103 articles per year). In this bibliographic collection, MS techniques made their first appearance in 1965 and had remarkable growth throughout the whole period. Among the three disciplines, MS has the highest contribution to the scientific production of this field. The first paper utilizing BS methodologies dates back to 1982, while more modern ML techniques have seen their first application in asthma research in 1989 and have since gained increasing popularity. 1744 articles (72.8%) adopted MS techniques only, 355 articles (14.8%) utilized only ML&amp;AI techniques, while BS models were applied to 191 (8.0%), exclusively. In 95 articles, the three analytical methodologies were used in pairs, while 10 papers mentioned all three of them (<a href="#f0002">Figure 2b</a>). (<button class="ref showTableEventRef" data-id="t0002">Table 2</button>) shows the 10 most influential authors in the field. Research output for the top 10 most productive countries is shown in (<button class="ref showTableEventRef" data-id="t0003">Table 3</button>). Considering productivity in terms of the number of articles published, the USA ranked first (599, 34.9%), followed by the UK (163, 9.5%) and the Netherlands (82, 4.8%). The frequency of publication varied among the top countries, from 3.1% to 34.9%. With productivity defined as the number of citations, only the USA and the UK remained in the same positions. Other countries that made up the top 10 were Switzerland (2785) and Georgia (1537).</p>
+  <div class="figure figureViewer" id="f0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Machine learning in asthma research: moving toward a more integrated approach</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Fontanella%2C+Sara"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fontanella%2C+Sara"><span class="NLM_given-names">Sara</span> Fontanella</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Cucco%2C+Alex"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Cucco%2C+Alex"><span class="NLM_given-names">Alex</span> Cucco</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Custovic%2C+Adnan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Custovic%2C+Adnan"><span class="NLM_given-names">Adnan</span> Custovic</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17476348.2021.1894133">https://doi.org/10.1080/17476348.2021.1894133</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 March 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Annual publication production</p>
+     </div><span class="NLM_attrib">Number of publications on asthma per year for the three scientific disciplines are shown separately and jointly.MS – Multivariate statistics; ML&amp;AI – Machine learning and artificial intelligence; BS – Bayesian statistics</span>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0002image" src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/medium/ierx_a_1894133_f0002_oc.jpg" loading="lazy" height="262" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Annual publication production</p><span class="NLM_attrib">Number of publications on asthma per year for the three scientific disciplines are shown separately and jointly.MS – Multivariate statistics; ML&amp;AI – Machine learning and artificial intelligence; BS – Bayesian statistics</span>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0002">
+   <div class="figureFootNote-f0002"></div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Machine learning in asthma research: moving toward a more integrated approach</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fontanella%2C+Sara"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fontanella%2C+Sara"><span class="NLM_given-names">Sara</span> Fontanella</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Cucco%2C+Alex"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Cucco%2C+Alex"><span class="NLM_given-names">Alex</span> Cucco</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Custovic%2C+Adnan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Custovic%2C+Adnan"><span class="NLM_given-names">Adnan</span> Custovic</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/17476348.2021.1894133">https://doi.org/10.1080/17476348.2021.1894133</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>16 March 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Summary information on retrieved asthma studies, 1965–2020</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F17476348.2021.1894133&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Machine learning in asthma research: moving toward a more integrated approach</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fontanella%2C+Sara"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fontanella%2C+Sara"><span class="NLM_given-names">Sara</span> Fontanella</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Cucco%2C+Alex"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Cucco%2C+Alex"><span class="NLM_given-names">Alex</span> Cucco</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Custovic%2C+Adnan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Custovic%2C+Adnan"><span class="NLM_given-names">Adnan</span> Custovic</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/17476348.2021.1894133">https://doi.org/10.1080/17476348.2021.1894133</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>16 March 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> The 10 most productive authors in the application of Multivariate statistics (MS), Machine learning and artificial intelligence (ML&amp;AI) and Bayesian statistics (BS) to asthma research</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F17476348.2021.1894133&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Machine learning in asthma research: moving toward a more integrated approach</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fontanella%2C+Sara"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fontanella%2C+Sara"><span class="NLM_given-names">Sara</span> Fontanella</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Cucco%2C+Alex"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Cucco%2C+Alex"><span class="NLM_given-names">Alex</span> Cucco</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Custovic%2C+Adnan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Custovic%2C+Adnan"><span class="NLM_given-names">Adnan</span> Custovic</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/17476348.2021.1894133">https://doi.org/10.1080/17476348.2021.1894133</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>16 March 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> The 10 most productive countries in the application of Multivariate statistics (MS), Machine learning and artificial intelligence (ML&amp;AI) and Bayesian statistics (BS) to asthma research SCP: single country publications; MCP: multiple country publications</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F17476348.2021.1894133&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0005-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">5.2. Conceptual framework</h3>
+  <p>In the co-occurrence network (<a href="#f0003">Figure 3a</a>), the top 50 keywords are shown, and the Louvain community detection algorithm [<span class="ref-lnk lazy-ref"><a data-rid="cit0073" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>73</a></span>] identified 4 key research themes, that we qualitatively labeled as:</p>
+  <div class="figure figureViewer" id="f0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Machine learning in asthma research: moving toward a more integrated approach</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Fontanella%2C+Sara"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fontanella%2C+Sara"><span class="NLM_given-names">Sara</span> Fontanella</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Cucco%2C+Alex"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Cucco%2C+Alex"><span class="NLM_given-names">Alex</span> Cucco</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Custovic%2C+Adnan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Custovic%2C+Adnan"><span class="NLM_given-names">Adnan</span> Custovic</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17476348.2021.1894133">https://doi.org/10.1080/17476348.2021.1894133</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 March 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> Themes in asthma research fields</p>
+     </div><span class="NLM_attrib">Panel a) The network was generating using co-occurrence patterns among the 50 top keywords. The size of the nodes is proportional to the strength of the keyword and colors show the nodes’ cluster membership. Panel b) The map was generated considering 150 keywords with minimum frequency of 3. The size of the cluster is proportional to the number of occurrences of the keywords and, consequently, to the number of linked articles. Only the 4 most predominant keywords are displayed.</span>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0003image" src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/medium/ierx_a_1894133_f0003_oc.jpg" loading="lazy" height="500" width="477"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> Themes in asthma research fields</p><span class="NLM_attrib">Panel a) The network was generating using co-occurrence patterns among the 50 top keywords. The size of the nodes is proportional to the strength of the keyword and colors show the nodes’ cluster membership. Panel b) The map was generated considering 150 keywords with minimum frequency of 3. The size of the cluster is proportional to the number of occurrences of the keywords and, consequently, to the number of linked articles. Only the 4 most predominant keywords are displayed.</span>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0003">
+   <div class="figureFootNote-f0003"></div>
+  </div>
+  <p></p>
+  <p>1) <i>Asthma heterogeneity</i> (green); this theme comprised studies related to disentangling asthma heterogeneity using unsupervised data-driven approaches on clinical and biological data to uncover different ‘phenotypes’ of asthma and their underlying pathophysiological mechanisms.</p>
+  <p>2) <i>Atopic diseases</i> (red), which referred to the investigation of the relationship between asthma and atopic diseases and allergic sensitization.</p>
+  <p>3) <i>Respiratory diseases diagnosis</i> (blue). This theme is characterized by the use of unsupervised and supervised machine learning techniques to classify and predict respiratory diseases, evaluate novel diagnostic tools and identify risk factors.</p>
+  <p>4) <i>Environmental exposures and quality of life</i> (yellow), where we found references to the investigation of the effect of environmental exposure on asthma and the relationship between social and psychological factors and asthma.</p>
+  <p>These themes were further characterized on the thematic map (<a href="#f0003">Figure 3b</a>), which captures a more detailed definition of the knowledge structure, highlighting the importance of the themes in the research field. Themes appearing on the upper right panel have high centrality and high density and are known as <i>motor themes</i>; these are well-developed themes and play a central role in the conceptual structure of the scientific field. In this quadrant, we found themes related to unsupervised MS techniques applied to asthma and allergic diseases. This is not surprising, given that in the past decades, a large number of studies have adopted these data-driven approaches in an attempt to characterize the heterogeneity of asthma and allergic diseases. The upper left quadrant is characterized by high density and lower centrality; themes in this quadrant are well developed but present a high degree of specialization and are marginal in the overall field. The theme in this area concerns epidemiological studies that aim at investigating asthma diagnosis with a focus on the genetic component. Themes that appear on the lower left part are emerging or declining themes characterized by low density and centrality. The emerging themes here concerned the application of modern ML and deep learning methodologies to asthma research, with a focus on the prediction of the disease, and the study of multimorbidity. Finally, themes in the lower right quadrant have low density and high centrality, meaning that they are essential for the field’s scientific structure, but are not well-developed. Here, we found the theme related to the assessment of the relationship between respiratory diseases and COPD with quality of life.</p>
+ </div>
+ <div id="s0005-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i17">5.3. Research topics in asthma literature</h3>
+  <p>In LDA, the topics are assumed to be latent variables, which need to be meaningfully interpreted. To this end, we examined, for each topic, the top 50 keywords, depicted in (<a href="#f0004">Figure 4a</a>) where word relevance is measured normalizing the posterior word probabilities per topic by the geometric mean of the posterior probabilities for the word across all topics [<span class="ref-lnk lazy-ref"><a data-rid="cit0070" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>70</a></span>]. The eight identified topics reveal important areas of asthma research. Topics 1, 2, 3, 4, 5 and 7 confirmed the themes discovered in the previous analyses and provided additional insights into their structure. In particular, Topic 1, including terms such as ‘phenotypes’, ‘cluster’, ‘asthma’ ‘lung’, ‘COPD’, and Topic 4, with words ‘sensitization’, ‘allergic’, ‘wheeze’, ‘phenotypes’, ‘eczema’, ‘rhinitis’, dealt with the application of unsupervised statistical and ML methodologies to understand and characterize asthma heterogeneity and its relation to allergic sensitization, and to investigate the hypothesis related to the atopic march.</p>
+  <div class="figure figureViewer" id="f0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Machine learning in asthma research: moving toward a more integrated approach</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Fontanella%2C+Sara"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fontanella%2C+Sara"><span class="NLM_given-names">Sara</span> Fontanella</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Cucco%2C+Alex"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Cucco%2C+Alex"><span class="NLM_given-names">Alex</span> Cucco</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Custovic%2C+Adnan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Custovic%2C+Adnan"><span class="NLM_given-names">Adnan</span> Custovic</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17476348.2021.1894133">https://doi.org/10.1080/17476348.2021.1894133</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 March 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> Word-clouds for the eight topics in asthma research</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0004image" src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/medium/ierx_a_1894133_f0004_oc.jpg" loading="lazy" height="420" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> Word-clouds for the eight topics in asthma research</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0004">
+   <div class="figureFootNote-f0004"></div>
+  </div>
+  <p></p>
+  <p>Asthma diagnosis and prediction are considered in Topic 2, characterized by words like ‘machine’, ‘learning’, ‘accuracy’, ‘model’, ‘Bayesian’. Topic 3, with top words ‘prevalence’, ‘pollution’, ‘air’, ‘exposure’ and Topic 7, with terms ‘validity’, ‘questionnaire’, ‘quality’, ‘life’ further characterize the research aimed at understanding the relationship between environmental exposures and social and psychological factors with asthma. The latter emphasized the studies that looked at the definition and validation of suitable questionnaires to capture patients’ symptoms and perceived quality of life. Moreover, the LDA model highlighted the body of literature devoted to the investigation of multimorbidity of chronic diseases and its risk factors (Topic 5 with top words ‘health’, ‘chronic’, ‘condition’, ‘multimorbidity’), the studies aimed at the evaluation of asthma treatment through clinical trials (Topic 6) and the examination of possible pathophysiological mechanisms and discovery of genetics and biological markers for disease diagnosis and treatment (Topic 8 – ‘gene’, ‘expression’, ‘IgE’, ‘cell’, ‘immune’, ‘cytokine’).</p>
+  <p>To further analyze the impact of the big data analytics in asthma research, we focused on the distribution of application of MS, ML&amp;AI and BS methodologies for the retrieved topics (<a href="#f0005">Figure 5</a>). Interestingly, 50% of the studies involving ML&amp;AI are linked to Topic 2 (asthma diagnosis), compared to only 0.5% to studies aimed at questionnaires construction and validation. 42.4% of articles adopting Bayesian approaches were concerned with asthma diagnosis, 20.0% investigated environmental exposures, and 10.6% evaluated the efficacy of asthma treatments. Multivariate statistical techniques are evenly spread across the different topics, with higher prevalence in Topics 1, 4, 7 and 8. Clustering approaches and dimensionality reduction techniques, such as principal component analysis (PCA) and factor analysis (FA), were among the most commonly applied methods, followed by supervised machine learning algorithms and different Bayesian modeling approaches (<button class="ref showTableEventRef" data-id="t0004">Table 4</button>).</p>
+  <div class="figure figureViewer" id="f0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Machine learning in asthma research: moving toward a more integrated approach</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Fontanella%2C+Sara"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fontanella%2C+Sara"><span class="NLM_given-names">Sara</span> Fontanella</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Cucco%2C+Alex"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Cucco%2C+Alex"><span class="NLM_given-names">Alex</span> Cucco</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Custovic%2C+Adnan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Custovic%2C+Adnan"><span class="NLM_given-names">Adnan</span> Custovic</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17476348.2021.1894133">https://doi.org/10.1080/17476348.2021.1894133</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>16 March 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> Distribution of the big data analytics approaches in the eight topics</p>
+     </div><span class="NLM_attrib">MS – Multivariate statistics; ML – Machine learning; BS – Bayesian statistics</span>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0005image" src="/na101/home/literatum/publisher/tandf/journals/content/ierx20/2021/ierx20.v015.i05/17476348.2021.1894133/20210922/images/medium/ierx_a_1894133_f0005_oc.jpg" loading="lazy" height="381" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> Distribution of the big data analytics approaches in the eight topics</p><span class="NLM_attrib">MS – Multivariate statistics; ML – Machine learning; BS – Bayesian statistics</span>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0005">
+   <div class="figureFootNote-f0005"></div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Machine learning in asthma research: moving toward a more integrated approach</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fontanella%2C+Sara"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fontanella%2C+Sara"><span class="NLM_given-names">Sara</span> Fontanella</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Cucco%2C+Alex"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Cucco%2C+Alex"><span class="NLM_given-names">Alex</span> Cucco</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Custovic%2C+Adnan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Custovic%2C+Adnan"><span class="NLM_given-names">Adnan</span> Custovic</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/17476348.2021.1894133">https://doi.org/10.1080/17476348.2021.1894133</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>16 March 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 4. </span> Distribution of the major methodologies across the selected articles</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0004&amp;doi=10.1080%2F17476348.2021.1894133&amp;downloadType=CSV"> Download CSV</a><a data-id="t0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="s0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i20" class="section-heading-2">6. Expert opinion</h2>
+ <p>The exciting potential of modern analytical approaches has been welcomed across many different areas of medicine. They promise new opportunities to extract useful information from previously untapped and rapidly growing data sources that can be translated into a more refined disease diagnosis and prognosis, understanding of disease endotypes and etiology, and the development of personalized treatment plans.</p>
+ <p>Our analysis of 2935 academic publications offers potentially essential insights. The temporal evolution of academic production followed three significant stages. The initial and development stages were followed by the expansive stage, which started in 2000. In these past two decades, the number of articles using complex analytical techniques in asthma increased exponentially. The predominant themes concerned the investigation of disease subtyping and etiology, improving diagnostic accuracy, and targeting treatments.</p>
+ <p>From the year 2000, multivariate statistical models have appeared more and more frequently in asthma research and have covered all the main topics. By contrast, ML and AI techniques have become popular only in the last decade, and they have focused around a few key topics, such as disease diagnosis and treatment evaluation.</p>
+ <p>These findings offer evidence of a preference toward the inferential goal in asthma research. The popularity of MS methods draws attention to the long-lasting interest in precision medicine and disease subtyping. The extensive use of these techniques echoes the medical scientific community’s need to obtain, more than accurate predictions, interpretable solutions that can be used to derive useful insights for the definition of asthma endotypes and their underlying pathophysiological mechanisms. In this context, cluster analysis and unsupervised MS models that, by integrating different types of data, can explore different domains of the disease, represent a flexible and powerful analytical tool to identify homogeneous subpopulations of similar patients that can guide treatment decisions for a given individual.</p>
+ <p>By contrast, in recent years, the advent of modern large-scale experimentations (such as microarrays and advanced Omics technologies) and the accessibility of new data sources (such as electronic patients’ records) have provoked a surge of studies involving cutting-edge ML and AI prediction models in an attempt to obtain automated systems that can accurately diagnose asthma by modeling increasingly large datasets. The volume, velocity and variety of big data often demand complex analytical approaches to enable their analysis. This is particularly evident when dealing with unstructured data, such as images and textual data.</p>
+ <p>However, despite their potential, real-world implementations of machine learning and AI algorithms in clinical practice are rare. Furthermore, in recent years, there has been a growing concern around accuracy, reliability, security and privacy related to big data analytics in healthcare in general, and asthma specifically [<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0074 cit0075 cit0076 cit0077 cit0078 cit0079" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>74–79</a></span>]. In a similar fashion, we posit that, among others, there are two main aspects that can explain the growing distrust in big data analytical approaches. One factor is inherent to the methodological characteristics of ML algorithms, while the other can be considered as an extrinsic factor, related to how these models are adopted and contextualized in healthcare. The former aspect can be scrutinized in the context of the long-standing debate on the difference between machine learning and statistics and their effectiveness and applicability. In his seminal paper, Breiman identified two different cultures: the ‘data modeling’ (statistics), and the ‘algorithmic modeling’ (ML and AI) cultures, roughly analogous to the explanatory/predictive dichotomy [<span class="ref-lnk lazy-ref"><a data-rid="cit0080" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>80</a></span>]. In contrast to Breiman’s claim that algorithmic models are more flexible and accurate, especially when dealing with complex big data scenarios, many statisticians have contended that, even though these models accurately predict the outcome of interest, the lack of an explicit data-generating model can nullify their usefulness in scientific investigation [<span class="ref-lnk lazy-ref"><a data-rid="cit0080" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>80</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0081" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>81</a></span>]. In a recent article, Efron argues that ‘<i>Abandoning mathematical models comes close to abandoning the historic scientific goal of understanding nature</i>’ [<span class="ref-lnk lazy-ref"><a data-rid="cit0082" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>82</a></span>]. The lack of interpretability is, therefore, at the core of the debate. Although ML is the avant-garde of predictive big data analytics, it is prone to the identification of spurious and irrelevant patterns, especially if data are of poor quality [<span class="ref-lnk lazy-ref"><a data-rid="cit0078" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>78</a></span>]. The difficulties in understanding how the model processed the data can prevent the detection of such issues. Two streams of research ensued from these considerations. On the one hand, scientific efforts are being made to make black-box models more interpretable and suitable for explanatory purposes [<span class="ref-lnk lazy-ref"><a data-rid="cit0054" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>54</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0083" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>83</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0084" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>84</a></span>]. On the other hand, evidence has been gathered in favor of the adoption of more interpretable models [<span class="ref-lnk lazy-ref"><a data-rid="cit0085 cit0086 cit0087 cit0088" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>85–88</a></span>] (e.g. logistic regression, linear discriminant analysis, decision trees), showing how simple methods typically yield performance almost as good as more sophisticated methods [<span class="ref-lnk lazy-ref"><a data-rid="cit0086" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>86</a></span>]. For example, a recent study which reviewed current literature to compare the performance of logistic regression with ML for clinical prediction modeling found no evidence of the superior performance of ML over classical regression models [<span class="ref-lnk lazy-ref"><a data-rid="cit0089" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>89</a></span>].</p>
+ <p>We believe that the argument on the incompatibility of these two approaches to investigation is not helpful and could be detrimental to scientific progress. We would argue that different emphases pursued by the two ‘cultures’ can be an asset in the attempt to characterize multifaceted heterogeneous long-term conditions. There is no single best model that can address different research questions. Combination of predictive and explanatory models can offer insights on different domains and aspects of the disease that could not be gathered by a single approach, and can be more effective for identifying distinct disease subtypes and explain their etiology. Probabilistic approaches and Bayesian inference should not be regarded with suspicion but should be explored and considered a beneficial modeling framework in which valuable prior knowledge about likely causal mechanisms can be explicitly incorporated.</p>
+ <p>The ‘extrinsic’ aspect that affects the failure of modern ML and AI approaches in clinical practise, has been extensively discussed [<span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>3</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0079" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>79</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0090" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>90</a></span>] and relates to the practical use and implementation of these techniques. Modern computational and analytical methods can help identifying unexpected structure in data to generate hypotheses; however, these should not be accepted without a critical appraisal of the results and corroboration of the derived hypotheses [<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span>]. One of the dangers of ready accessibility of healthcare data, and analytical models for their analysis, is that the process of data mining can become uncoupled from the scientific process of interpretation, understanding the provenance of the data, and external validation [<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0090" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>90 </a></span>].</p>
+ <p>We wish to highlight the potential danger of ill-considered use of readily available computational software for data analysis. These have favored the application of complex methodologies without expressly demanding the knowledge of the methodological properties underpinning the models. Most statistical analyses have assumptions, which often involve properties of the sample, variables, and models. Analytical methodologies have been criticized for the lack of reproducibility and practical usefulness. However, too often, this is the consequence of the incorrect use of these methods: the modeling choices made by inexperienced researchers can be flawed and draw inconsistent conclusions.</p>
+ <p>To fully harness the potential of ML, AI and modern statistical approaches in shaping the future clinical decision-making system, technological and methodological advances will need to be coupled with clinical and data analytical expertise. There is a mounting necessity to define a unified framework to describe how to undertake effective and ethical research in ML and AI in healthcare [<span class="ref-lnk lazy-ref"><a data-rid="cit0073" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>73</a></span>]. Data scientists and medical professionals should engage in continuous collaboration and conversation to guarantee that the application of data analytics respects both the theoretical and methodological foundations, and the inherent characteristics of the data, the context and the research question under investigation. Not only findings but also methodological choices need to be carefully evaluated to assure relevant scientific discoveries. Bigger healthcare data need to be analyzed in ways that produce meaningful clinical interpretation to ensure that the findings can be translated into better diagnoses and properly personalized prevention and treatment plans [<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i21 _i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span>].</p>
+ <p>To achieve this, we need to accept that no single source of data or methodology can uncover the underlying complexity of human health and disease. To fully capitalize on the potential of ‘big data’, we will have to enhance the effectiveness of collaborative science and encourage the creation of integrated cross-disciplinary teams brought together around technological advances. Such teams are by necessity cross-institutional (and increasingly cross the geographical boundaries), and we need to develop and implement incentives for academic researchers engaged in team science, including clear pathways for a progression in their academic careers, including tenure and promotion, which currently favor ‘solo’ scientists.</p>
+</div>

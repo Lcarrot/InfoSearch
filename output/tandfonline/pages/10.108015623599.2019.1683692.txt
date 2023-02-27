@@ -1,0 +1,2702 @@
+<div id="S0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">Introduction</h2>
+ <p>According to the latest fatal work injury rates reported by the Bureau of Labors Statistics, construction industry contributed to the highest rate of fatal work injuries, 971 deaths out of 4685 in 2017. Construction accidents lead to fatalities, immense financial loss and harms the reputation of the firms involved. To enhance the construction site safety in the long run, investigating what went wrong in the past is essential. In the construction industry, a catastrophe investigation report is filed which describes of the accident in details, generally including events leading to the accident and causal factors as part of the enforcement inspection after each catastrophic construction accident. By analyzing such reports, construction engineers, project managers and regulatory bodies can identify issues in construction design, project management as well as management of field engineering changes. As a result, prevention strategies can be made accordingly to mitigate potential risks in the future.</p>
+ <p>Recently, deep neural networks have become popular among researchers due to the capabilities of solving complex problems such as time series forecasting, image analysis, etc. On the other hand, Word2Vec (Mikolov et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2013a</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2013b</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2013c</a></span>) techniques are proved to be more efficient in capturing semantic similarity of words and presenting them in a more scientific way than conventional words representation approaches. More importantly, labelling dataset requires huge manual effort while unlabelled data is easy to obtain. By utilizing Word2Vec algorithms, semantic information can be learned from massive unlabelled data which results in the augmented knowledge with minimal human effort.</p>
+ <p>However, studies of either deep neural networks or Word2Vec with respect to construction accidents causes classification are barely found in existing literature. The motivation of this paper is to fill this research gap and explore the state of art text mining techniques for automatic construction accident reports classification, which enables large text databases to be analyzed with minimized human labour effort. To be more specific, Word2Vec skip-gram algorithm is utilized to learn word embedding using the domain-specific dataset from the Occupational Safety and Health Administration (OSHA). Besides, a hybrid structured deep neural network which utilizes the learned word embedding as one of its main building blocks is proposed for construction accident reports classification. Neither Word2Vec skip-gram algorithm nor the hybrid structured deep neural network is found with respect to this field in any existing literature. Major contributions of this study are:</p>
+ <ul class="NLM_list NLM_list-list_type-bullet">
+  <li><p class="inline">A domain-specific corpus is composed and Word2Vec skip-gram algorithm is utilized to learn word embedding from the built corpus.</p></li>
+  <li><p class="inline">t-distributed Stochastic Neighbor Embedding (t-SNE) with Principal component analysis (PCA) initialization algorithm is utilized for dimension reduction and word embedding visualization.</p></li>
+  <li><p class="inline">A hybrid structured deep neural network is proposed and with following three main building blocks, the learned word embedding, conventional layer and Bidirectional Long short-term memory (BDLSTM) layer.</p></li>
+  <li><p class="inline">The numeric experiment is designed using OSHA dataset and the effectiveness of the proposed approaches is verified by the experiment results.</p></li>
+ </ul>
+ <p></p>
+ <p>Rest of the paper is organized as following: relevant past studies are reviewed in section ‘Literature review’, followed by the overview of methodologies involved in section ‘Methodology’. In section ‘Experiment and the proposed method’, the details of the proposed approach are discussed. Besides, development tools and the dataset employed in the experiment are described. Experiment results are presented and discussed in section ‘Experiment and the proposed method’ as well. The final section discusses possible solutions to the identified potential improving areas and summaries this study.</p>
+</div>
+<div id="S0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">Literature review</h2>
+ <p>In terms of the applications of text mining and NLP techniques for construction-related accidents analysis, Random Forest (RF) and Stochastic Gradient Tree Boosting (SGTB) algorithms were utilized by Tixier et&nbsp;al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2016</a></span>) to predict the injury type, body part affected and injury severity using construction injury reports. Tixier et&nbsp;al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2016</a></span>) proposed an NLP approach which is based on hand-crafted rules and keywords dictionary to extract outcomes and precursors from unstructured injury reports. Precision of the proposed method is 0.95. Goh and Ubeynarayana (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2017</a></span>) applied support vector machine (SVM), linear regression (LR), random forest (RF), K-nearest neighbor (KNN), decision tree (DT) and Naive Bayes (NB) algorithms for construction accident narrative classification. Among which, SVM achieved an F1 score ranged from 0.45 to 0.92 and outperformed the rest models. Chokor et&nbsp;al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2016</a></span>) applied a K-means based approach for injury reports classification. Four clusters with each representing a type of accident were identified. The identified accident types were ‘falls’, ‘struck by objects’, ‘electrocutions’ and ‘trenches collapse’. Text mining approach was compared with case-based reasoning approach for accidents documents retrieval by Fan and Li (<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2013</a></span>). It was reported that the text mining approach is superior in terms of recall and precision. Zou et&nbsp;al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2017</a></span>) proposed an NLP approach based on semantic query expansion and Vector Space Model (VSM) techniques to retrieve similar accident cases. Recall of the proposed method ranged from 0.5 to 1.</p>
+</div>
+<div id="S0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">Methodology</h2>
+ <div id="S0003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">Overview of Word2Vec</h3>
+  <p>Word2vec models proposed by Mikolov et&nbsp;al. are generally used for learning word embedding. While the conventional bag of word model represents each word in the corpus by large sparse vectors, word embedding approach adopts real-valued dense vectors representation, where each vector represents the projection of the word into a continuous vector space. The position of each word in the learned vector space is regarded as its corresponding embedding. The major advantage of Word2Vec is that contextual similarity and semantic relationship between words can be inferred from the learned vectors (Khatua et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2019</a></span>). There are two commonly adopted structures of Word2Vec. Namely, continuous bag-of-words (CBOW) and skip-gram. While CBOW predicts the target word based on its surrounding words, the objective of skip-gram is to predict the contexts of a given word. Applications of Word2Vec techniques can be found in (Zhang et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2015</a></span>; Alshari et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p>
+ </div>
+ <div id="S0003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">Conventional neural network (CNN) overview</h3>
+  <p>CNN is a type of deep neural network which has been successfully applied for image classification (Pinto et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2017</a></span>), speech recognition, feature extraction Scarpa et&nbsp;al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2018</a></span>), Kuo and Huang (<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2018</a></span>) and so forth. Similarly, a CNN layer is utilized in the proposed method for extracting features and modelling the spatial relationships of the text data. Details of the proposed method is discussed in section ‘Overview of the proposed method’.</p>
+  <p>A standard CNN architecture is presented in <a href="#F0001">Figure 1</a>.</p>
+  <div class="figure figureViewer" id="F0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 November 2019
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1. </span> CNN topology.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/medium/tjcm_a_1683692_f0001_c.jpg" loading="lazy" height="172" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0001">
+   <p class="captionText"><span class="captionLabel">Figure 1. </span> CNN topology.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0001">
+   <div class="figureFootNote-F0001"></div>
+  </div>
+  <p>Assume the input from <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mi>
+      l
+     </mi><mo>
+      −
+     </mo><mn>
+      1
+     </mn><mi>
+      t
+     </mi><mi>
+      h
+     </mi>
+    </math></span> layer connects to the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mi mathvariant="italic">
+      lth
+     </mi>
+    </math></span> convolution layer. Size of the input volume is <i>W</i> × <i>W</i> × <i>K</i> and there <i>M</i> spatial filters of size <i>H</i> × <i>H</i> × <i>K</i>, output <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <msub>
+      <mrow>
+       <mi>
+        u
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="italic">
+        ijm
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> is calculated by <a href="#M0001">Equation (1)</a>. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block">
+     <msub>
+      <mrow>
+       <mi>
+        u
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="italic">
+        ijm
+       </mi>
+      </mrow>
+     </msub><mo>
+      =
+     </mo><mi mathvariant="normal">
+      &nbsp;
+     </mi><mrow>
+      <munderover>
+       <mo stretchy="false">
+        ∑
+       </mo>
+       <mrow>
+        <mi>
+         k
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         0
+        </mn>
+       </mrow>
+       <mrow>
+        <mi>
+         K
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </munderover>
+      <mrow>
+       <mrow>
+        <munderover>
+         <mo stretchy="false">
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           p
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           0
+          </mn>
+         </mrow>
+         <mrow>
+          <mi>
+           H
+          </mi>
+          <mo>
+           −
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+        </munderover>
+        <mrow>
+         <mrow>
+          <munderover>
+           <mo stretchy="false">
+            ∑
+           </mo>
+           <mrow>
+            <mi>
+             q
+            </mi>
+            <mo>
+             =
+            </mo>
+            <mn>
+             0
+            </mn>
+           </mrow>
+           <mrow>
+            <mi>
+             H
+            </mi>
+            <mo>
+             −
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+          </munderover>
+          <mrow>
+           <msubsup>
+            <mrow>
+             <mi>
+              Z
+             </mi>
+            </mrow>
+            <mrow>
+             <mi>
+              i
+             </mi>
+             <mo>
+              +
+             </mo>
+             <mi>
+              p
+             </mi>
+             <mo>
+              ,
+             </mo>
+             <mi>
+              j
+             </mi>
+             <mo>
+              +
+             </mo>
+             <mi>
+              q
+             </mi>
+             <mo>
+              ,
+             </mo>
+             <mi>
+              k
+             </mi>
+            </mrow>
+            <mrow>
+             <mi>
+              l
+             </mi>
+             <mo>
+              −
+             </mo>
+             <mn>
+              1
+             </mn>
+            </mrow>
+           </msubsup>
+           <msub>
+            <mrow>
+             <mi>
+              h
+             </mi>
+            </mrow>
+            <mrow>
+             <mi mathvariant="italic">
+              pqkm
+             </mi>
+            </mrow>
+           </msub>
+           <mo>
+            +
+           </mo>
+           <msub>
+            <mrow>
+             <mi>
+              b
+             </mi>
+            </mrow>
+            <mrow>
+             <mi mathvariant="italic">
+              ijm
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+         </mrow>
+        </mrow>
+       </mrow>
+      </mrow>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span> Where <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block">
+     <msub>
+      <mrow>
+       <mi>
+        b
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="italic">
+        ijm
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> denotes the bias.</p>
+  <p>Output of the convolution layer <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <msubsup>
+      <mrow>
+       <mi>
+        Z
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="italic">
+        ijm
+       </mi>
+      </mrow>
+      <mrow>
+       <mo stretchy="false">
+        (
+       </mo>
+       <mi>
+        l
+       </mi>
+       <mo stretchy="false">
+        )
+       </mo>
+      </mrow>
+     </msubsup>
+    </math></span> is calculated by <a href="#M0003">Equation (2)</a>. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(2) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block">
+     <msubsup>
+      <mrow>
+       <mi>
+        Z
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="italic">
+        ijm
+       </mi>
+      </mrow>
+      <mrow>
+       <mo>
+        (
+       </mo>
+       <mi>
+        l
+       </mi>
+       <mo>
+        )
+       </mo>
+      </mrow>
+     </msubsup><mo>
+      =
+     </mo><mi>
+      f
+     </mi><mo>
+      (
+     </mo><msub>
+      <mrow>
+       <mi>
+        u
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="italic">
+        ijm
+       </mi>
+      </mrow>
+     </msub><mo>
+      )
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(2) </span></span></span></span></p>
+  <p>In terms of the pooling layer, the most commonly used pooling approach is max pooling. Assume output of convolution layer consists of <i>N</i> × 1 patches, output of max pooling is calculated by <a href="#M0004">Equation (3)</a>. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(3) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block">
+     <msub>
+      <mrow>
+       <mi>
+        a
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub><mo>
+      =
+     </mo><mmultiscripts>
+      <mrow>
+       <mo>
+        (
+       </mo>
+       <msubsup>
+        <mrow>
+         <mi>
+          a
+         </mi>
+        </mrow>
+        <mrow>
+         <mi>
+          i
+         </mi>
+        </mrow>
+        <mrow>
+         <mi>
+          n
+         </mi>
+         <mi mathvariant="normal">
+          *
+         </mi>
+         <mn>
+          1
+         </mn>
+        </mrow>
+       </msubsup>
+       <mi>
+        u
+       </mi>
+       <mo>
+        (
+       </mo>
+       <mi>
+        n
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mn>
+        1
+       </mn>
+       <mo>
+        )
+       </mo>
+       <mo>
+        )
+       </mo>
+      </mrow>
+      <mprescripts></mprescripts>
+      <mrow>
+       <mi>
+        N
+       </mi>
+       <mi mathvariant="normal">
+        *
+       </mi>
+       <mn>
+        1
+       </mn>
+      </mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        max
+       </mi>
+      </mrow>
+     </mmultiscripts>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(3) </span></span></span></span></p>
+  <p>Where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mi>
+      u
+     </mi><mo stretchy="false">
+      (
+     </mo><mi>
+      n
+     </mi><mo>
+      ,
+     </mo><mn>
+      1
+     </mn><mo stretchy="false">
+      )
+     </mo>
+    </math></span> is a window function to the patch of convolution layer output. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <msubsup>
+      <mrow>
+       <mi>
+        a
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        j
+       </mi>
+      </mrow>
+      <mrow></mrow>
+     </msubsup>
+    </math></span> is the maximum value in the neighbourhood.</p>
+ </div>
+ <div id="S0003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i13">Overview of long short-term memory (LSTM) and bidirectional long short-term memory (BDLSTM)</h3>
+  <div id="S0003-S2003-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i14">Overview of LSTM</h4>
+   <p>LSTM is a type of the recurrent neural network (RNN) (Sulehria and Zhang <span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2007</a></span>) proposed by Hochreiter and Schmidhuber (<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>1997</a></span>). A standard topology of LSTM is shown in <a href="#F0002">Figure 2</a>. At each iteration t, the input of LSTM cell is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0007.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         x
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0008.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         h
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> denotes its output, the current cell input, output state <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0009.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mover accent="true">
+         <mrow>
+          <mi>
+           C
+          </mi>
+         </mrow>
+         <mo>
+          ∼
+         </mo>
+        </mover>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0010.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         C
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo>
+     </math></span> cell output state of previous time step denoted by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0011.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         C
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </math></span> are incorporated by LSTM cell to update network parameters during the training process. Gates mechanisms are introduced to control cell states of LSTM by allowing information to pass through optionally. The input gate, forget gate and output gate are denoted by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0012.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo>
+     </math></span> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0013.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         f
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo>
+     </math></span> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0014.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         o
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> respectively. Values of the cell input state and gates are calculated by <a href="#M0005 M0006 M0007 M0008">Equations (4–7)</a>. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0005.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(4) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="block">
+      <msub>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><msub>
+       <mrow>
+        <mi>
+         σ
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         g
+        </mi>
+       </mrow>
+      </msub><mo>
+       (
+      </mo><msub>
+       <mrow>
+        <mi>
+         W
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub><msub>
+       <mrow>
+        <mi>
+         x
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       +
+      </mo><msub>
+       <mrow>
+        <mi>
+         U
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub><msub>
+       <mrow>
+        <mi>
+         h
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub><mo>
+       +
+      </mo><msub>
+       <mrow>
+        <mi>
+         b
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub><mo>
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(4) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0006.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(5) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="block">
+      <msub>
+       <mrow>
+        <mi>
+         f
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><msub>
+       <mrow>
+        <mi>
+         σ
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         g
+        </mi>
+       </mrow>
+      </msub><mo>
+       (
+      </mo><msub>
+       <mrow>
+        <mi>
+         W
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub><msub>
+       <mrow>
+        <mi>
+         x
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       +
+      </mo><msub>
+       <mrow>
+        <mi>
+         U
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub><msub>
+       <mrow>
+        <mi>
+         h
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub><mo>
+       +
+      </mo><msub>
+       <mrow>
+        <mi>
+         b
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub><mo>
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(5) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0007.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(6) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="block">
+      <msub>
+       <mrow>
+        <mi>
+         o
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><msub>
+       <mrow>
+        <mi>
+         σ
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         g
+        </mi>
+       </mrow>
+      </msub><mo>
+       (
+      </mo><msub>
+       <mrow>
+        <mi>
+         W
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub><msub>
+       <mrow>
+        <mi>
+         x
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       +
+      </mo><msub>
+       <mrow>
+        <mi>
+         U
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub><msub>
+       <mrow>
+        <mi>
+         h
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub><mo>
+       +
+      </mo><msub>
+       <mrow>
+        <mi>
+         b
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub><mo>
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(6) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0008.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0008.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0008" class="disp-formula-label">(7) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="block">
+      <msub>
+       <mrow>
+        <mover>
+         <mrow>
+          <mi>
+           C
+          </mi>
+         </mrow>
+         <mo>
+          ∼
+         </mo>
+        </mover>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><mi mathvariant="normal">
+       tanh
+      </mi><mo>
+       (
+      </mo><msub>
+       <mrow>
+        <mi>
+         W
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub><msub>
+       <mrow>
+        <mi>
+         x
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       +
+      </mo><msub>
+       <mrow>
+        <mi>
+         U
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub><msub>
+       <mrow>
+        <mi>
+         h
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub><mo>
+       +
+      </mo><msub>
+       <mrow>
+        <mi>
+         b
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub><mo>
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0008" class="disp-formula-label">(7) </span></span></span></span></p>
+   <div class="figure figureViewer" id="F0002">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>08 November 2019
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 2. </span> LSTM topology.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/medium/tjcm_a_1683692_f0002_c.jpg" loading="lazy" height="189" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0002">
+    <p class="captionText"><span class="captionLabel">Figure 2. </span> LSTM topology.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0002">
+    <div class="figureFootNote-F0002"></div>
+   </div>
+   <p>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0015.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         W
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo>
+     </math></span> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0016.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         W
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo>
+     </math></span> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0017.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         W
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo>
+     </math></span> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0018.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         W
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> denote the weight matrices between the input of hidden layer, input gate, forget gate, output gate and input cell state. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0019.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         U
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo>
+     </math></span> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0020.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         U
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo>
+     </math></span> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0021.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         U
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo>
+     </math></span> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0022.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         U
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> denote the weight matrices between previous cell output state, input gate, forget gate, output gate and input cell state. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0023.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         b
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo>
+     </math></span> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0024.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         b
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo>
+     </math></span> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0025.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         b
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         o
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo>
+     </math></span> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0026.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         b
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> denote the corresponding bias vectors.</p>
+  </div>
+  <div id="S0003-S2003-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i20">Overview of BDLSTM</h4>
+   <p>Bidirectional LSTM is a type of LSTM variation (Graves <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2005</a></span>). In bidirectional LSTM, sequence data is processed in both directions with forward LSTM and backward LSTM layer and these two hidden layers are connected to the same output layer. A standard topology (Yildirim <span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2018</a></span>) of bidirectional LSTM is shown in <a href="#F0003">Figure 3</a>.</p>
+   <div class="figure figureViewer" id="F0003">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>08 November 2019
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 3. </span> BDLSTM topology.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/medium/tjcm_a_1683692_f0003_c.jpg" loading="lazy" height="287" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0003">
+    <p class="captionText"><span class="captionLabel">Figure 3. </span> BDLSTM topology.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0003">
+    <div class="figureFootNote-F0003"></div>
+   </div>
+   <p>According to <a href="#M0005 M0006 M0007 M0008">Equations (4–7)</a>, at each iteration t, cell output state <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0027.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         C
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> and LSTM layer output <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0028.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="inline">
+      <msub>
+       <mrow>
+        <mi>
+         h
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> are calculated by <a href="#M0009">Equations (8</a> and <a href="#M0010">9)</a>. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0009.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0009.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0009" class="disp-formula-label">(8) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="block">
+      <msub>
+       <mrow>
+        <mi>
+         C
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><msub>
+       <mrow>
+        <mi>
+         f
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mi mathvariant="normal">
+       *
+      </mi><msub>
+       <mrow>
+        <mi>
+         C
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub><mo>
+       +
+      </mo><msub>
+       <mrow>
+        <msub>
+         <mrow>
+          <mover>
+           <mrow>
+            <mi>
+             C
+            </mi>
+           </mrow>
+           <mo>
+            ∼
+           </mo>
+          </mover>
+         </mrow>
+         <mrow>
+          <mi>
+           t
+          </mi>
+         </mrow>
+        </msub>
+        <mi mathvariant="normal">
+         *
+        </mi>
+        <mi>
+         i
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0009" class="disp-formula-label">(8) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0010.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0010.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0010" class="disp-formula-label">(9) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math display="block">
+      <msub>
+       <mrow>
+        <mi>
+         h
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><msub>
+       <mrow>
+        <mi>
+         o
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><msub>
+       <mrow>
+        <mi mathvariant="normal">
+         *
+        </mi>
+        <mi mathvariant="normal">
+         tanh
+        </mi>
+        <mo>
+         ⁡
+        </mo>
+        <mo>
+         (
+        </mo>
+        <mi>
+         C
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub><mo>
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0010" class="disp-formula-label">(9) </span></span></span></span></p>
+   <p>Bidirectional LSTMs have been successfully applied in the field of trajectory prediction (Xue et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2017</a></span>; Zhao et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2018</a></span>), speech recognition (Zheng et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2016</a></span>; Zeyer et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2017</a></span>), biomedical event analysis (Wang et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2017</a></span>), natural language processing (Xu et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2018</a></span>), etc. It is reported in the literature that bidirectional LSTM outperforms conventional LSTM in some areas such as frame wise phoneme classification, automatic speech recognition and understanding (Graves et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2013</a></span>).</p>
+  </div>
+ </div>
+</div>
+<div id="S0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i24" class="section-heading-2">Experiment and the proposed method</h2>
+ <div id="S0004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i25">Data description</h3>
+  <p>Two experiments are designed in this study. In the first experiment, Word2Vec skip-gram model is trained to learn word embedding using a domain-specific corpus while the second experiment is designed to classify causes of accidents by a hybrid structured deep neural network utilizing the learned word embedding in the first experiment. The original dataset adopted in this study can be downloaded from the Occupational Safety and Health Administration (OSHA) website for free. There are 16,323 archived text reports of construction site accidents happened between 1983 and 2014, causes of accidents are not annotated in the original dataset. Data pre-processing process for the aforementioned two experiments are different. To be more specific, accidents causes classification task requires labelled data, while to learn the word embedding, the dataset is not necessarily to be annotated. Details of the data pre-processing steps are discussed in the corresponding experiment sections separately.</p>
+ </div>
+ <div id="S0004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i26">Overview of the proposed method</h3>
+  <p>In this study, a hybrid structured deep neural network with Word2Vec approach is proposed. There are existing pre-trained word embeddings such as Word2Vec (contrived from Google News) or GloVe (of Stanford NLP group). However, the corpus used for the aforementioned pre-trained word embedding is generic while a relatively small amount of domain-specific corpus is utilized in this study. Due to the size of data, a skip-gram model of Word2Vec is employed. The overall process of proposed approach consists of two phases: training a skip-gram model using the domain-specific corpus, then build a hybrid structured neural network utilizing the learned word embedding in the previous step. To be more specific, in phase one, the first step is pre-processing the entire 16,323 text summaries of the dataset. Punkt tokenizer of NLTK is utilized to detect the end of a sentence and split each paragraph into a list of sentences. After that, each sentence in the list is split into a sequence of words, each word is normalized into lower case and non-English letters are removed. Different to the conventional text mining data pre-processing step, stopwords are not removed for Word2Vec training, as Word2Vec algorithms depend on the broader context of sentences to learn word vectors better.</p>
+  <p>Then, the pre-processed data is fed to Word2Vec skip-gram to learn word embedding. There are several hyperparameters of Word2Vec which influence the training time as well as the quality of the trained model. For example, word vector dimensionality parameter specifies the number of features, more features results in a better model in theory. However, the downside of including more features is a longer training time. The context parameter specifies the number of context words to be taken into account by the training algorithm. Besides, the minimum word count parameter is used for reducing the size of vocabulary to words which occur a certain number of times across all documents. More details of the hyperparameters of Word2Vec can be found in the Google document. The overall workflow of phase one is shown in <a href="#F0004">Figure 4</a>.</p>
+  <div class="figure figureViewer" id="F0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 November 2019
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> Overall workflow of building a Word2Vec skip-gram model to learn word embedding.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/medium/tjcm_a_1683692_f0004_c.jpg" loading="lazy" height="500" width="395"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> Overall workflow of building a Word2Vec skip-gram model to learn word embedding.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0004">
+   <div class="figureFootNote-F0004"></div>
+  </div>
+  <p>In phase two, a hybrid structured deep neural network is built for classification. Due to the fact that manual labelling the whole OSHA dataset is a labour intensive task, another dataset published by Goh and Ubeynarayana (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2017</a></span>) is utilized, which consists of 1000 labelled sample reports. A sample report is presented in <button class="ref showTableEventRef" data-id="t0001">Table 1</button>. Accidents are labelled according to the standard of Workplace Safety and Health Institute (2016). Besides, the label is assigned according to the first incident if multiple incidents are involved in one accident. Therefore, scenarios of one case with multiple labels are avoided. For instance, according to the case summary in <button class="ref showTableEventRef" data-id="t0001">Table 1</button>, the incident ‘second story collapsed’ comes first, followed by ‘Bricks struck Employee #1′s head and neck’. In such case, the cause is labelled as ‘Collapse of object’.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>08 November 2019
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Sample labelled case.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F15623599.2019.1683692&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p>As a result, the dataset is labelled with eleven different causes. Distribution of the causes is shown in <a href="#F0005">Figure 5</a>.</p>
+  <div class="figure figureViewer" id="F0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 November 2019
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> Distribution of accidents causes.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/medium/tjcm_a_1683692_f0005_c.jpg" loading="lazy" height="351" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> Distribution of accidents causes.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0005">
+   <div class="figureFootNote-F0005"></div>
+  </div>
+  <p>From <a href="#F0005">Figure 5</a>, it is noticed that the dataset is not balanced, numbers of cases for certain labels such as ‘exposure to extreme temperatures’, ‘exposure to chemical substances’, etc. are small. Therefore, more manually labelled cases are added for such causes. As a result, a relatively balanced dataset is obtained as shown in <a href="#F0006">Figure 6</a>. There are 280 more cases are added to the original dataset and results in a dataset consists of 1280 cases in total.</p>
+  <div class="figure figureViewer" id="F0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 November 2019
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 6. </span> Distribution of accidents causes after data balancing.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0006image" src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/medium/tjcm_a_1683692_f0006_c.jpg" loading="lazy" height="354" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0006">
+   <p class="captionText"><span class="captionLabel">Figure 6. </span> Distribution of accidents causes after data balancing.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0006">
+   <div class="figureFootNote-F0006"></div>
+  </div>
+  <p>After labelling and data balancing, tokenization is performed to break the long sentence into separated word and each word is normalized to lower case. However, common words across sentences with little lexical content, i.e. stop words are removed. Then, the tokens are tagged with POS tags. After that, lemmatization is applied to remove inflectional endings and return the base or dictionary form of a word.</p>
+  <p>After data pre-processing, each word is encoded into an integer, each document is represented by a sequence of integers and each sequence is padded to be of the same length.</p>
+  <p>The overall process of the model building and validation is: First, the pre-processed dataset is randomly shuffled and split into training and validation set by five folder cross-validation approach. The training set serves as an input to the proposed hybrid structured neural network. Meanwhile, the pre-trained word embedding from phase one is loaded into memory. After that, the embedding layer of the proposed neural network is seeded with pre-learned word embedding weights. After the embedding layer, a convolution layer with rectified linear unit (ReLu) activation function is stacked, followed by a max pooling layer. Purpose of CNN layers is to extract potential spatial features from its previous layer output. Then, a BDLSTM layer with Tanh activation function is stacked for sequence modelling, followed by a dropout layer to mitigate the risk of overfitting. After that, a fully connected layer with Softmax activation function is added for classification. Classification result is obtained in the last output layer. The validation set is utilized to evaluate the model performance and such a procedure is repeated for each cross-validation folder. The overall workflow of phase two is shown in <a href="#F0007">Figure 7</a>.</p>
+  <div class="figure figureViewer" id="F0007">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>08 November 2019
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 7. </span> Overall workflow of building a hybrid structured deep neural network.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0007image" src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/medium/tjcm_a_1683692_f0007_c.jpg" loading="lazy" height="500" width="358"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0007">
+   <p class="captionText"><span class="captionLabel">Figure 7. </span> Overall workflow of building a hybrid structured deep neural network.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0007">
+   <div class="figureFootNote-F0007"></div>
+  </div>
+ </div>
+</div>
+<div id="S0005" class="NLM_sec NLM_sec-type_results NLM_sec_level_1">
+ <h2 id="_i31" class="section-heading-2">Results and discussion</h2>
+ <p>In the first part of the experiment, a skip-gram model is trained by the aforementioned domain-specific corpus and a set of different hyperparameters are explored for training. To be more specific, word vector dimensionality is set to 35 and 55 for both unigrams and bigrams respectively. After training the skip-model, semantic description of words in a corpus are represented as numeric vectors which can be utilized to identify words that have similar semantics. Further, mathematic operations can be applied to the numeric vectors to reveal potential complex relationships between different words to some extent.</p>
+ <p>The result of mathematics adding and subtraction operators are shown in <button class="ref showTableEventRef" data-id="t0002">Table 2</button>.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 November 2019
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Mathematics operations of two-word vectors.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F15623599.2019.1683692&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p><button class="ref showTableEventRef" data-id="t0002">Table 2</button> shows that most calculation results are reasonable. For example, ‘fire’ + ‘water’ results in ‘water_heater’, ‘oil’ – ‘water’ leads to ‘parts’. Although vectors calculation results cannot be interpreted precisely due to the fact that inferencing the exact meaning of each vector dimension in the learned dimension space is not feasible.</p>
+ <p>Results of identifying most similar words by learned word vectors are shown in <button class="ref showTableEventRef" data-id="t0003">Table 3</button> for the aforementioned hyperparameter settings. The similarity scores are measured by cosine similarity given by <a href="#M0011">Equation (10)</a>. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0011.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0011.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0011" class="disp-formula-label">(10) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="block">
+    <msub>
+     <mrow>
+      <mtext>
+       cos
+      </mtext>
+     </mrow>
+     <mrow>
+      <mi>
+       θ
+      </mi>
+     </mrow>
+    </msub><mo>
+     =
+    </mo><mi mathvariant="normal">
+     &nbsp;
+    </mi><mfrac>
+     <mrow>
+      <mover>
+       <mrow>
+        <mi>
+         a
+        </mi>
+       </mrow>
+       <mo>
+        →
+       </mo>
+      </mover>
+      <mo>
+       .
+      </mo>
+      <mover>
+       <mrow>
+        <mi>
+         b
+        </mi>
+       </mrow>
+       <mo>
+        →
+       </mo>
+      </mover>
+     </mrow>
+     <mrow>
+      <mfenced open="‖" close="‖" separators="|">
+       <mrow>
+        <mover>
+         <mrow>
+          <mi>
+           a
+          </mi>
+         </mrow>
+         <mo>
+          →
+         </mo>
+        </mover>
+       </mrow>
+      </mfenced>
+      <mfenced open="‖" close="‖" separators="|">
+       <mrow>
+        <mover>
+         <mrow>
+          <mi>
+           b
+          </mi>
+         </mrow>
+         <mo>
+          →
+         </mo>
+        </mover>
+       </mrow>
+      </mfenced>
+     </mrow>
+    </mfrac><mo>
+     =
+    </mo><mfrac>
+     <mrow>
+      <mrow>
+       <munderover>
+        <mo stretchy="false">
+         ∑
+        </mo>
+        <mrow>
+         <mi>
+          i
+         </mi>
+         <mo>
+          =
+         </mo>
+         <mn>
+          1
+         </mn>
+        </mrow>
+        <mrow>
+         <mi>
+          n
+         </mi>
+        </mrow>
+       </munderover>
+       <mrow>
+        <msub>
+         <mrow>
+          <mi>
+           a
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           i
+          </mi>
+         </mrow>
+        </msub>
+        <msub>
+         <mrow>
+          <mi>
+           b
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           i
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+      </mrow>
+     </mrow>
+     <mrow>
+      <msqrt>
+       <mrow>
+        <munderover>
+         <mo stretchy="false">
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           i
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mrow>
+          <mi>
+           n
+          </mi>
+         </mrow>
+        </munderover>
+        <mrow>
+         <msubsup>
+          <mrow>
+           <mi>
+            a
+           </mi>
+          </mrow>
+          <mrow>
+           <mi>
+            i
+           </mi>
+          </mrow>
+          <mrow>
+           <mn>
+            2
+           </mn>
+          </mrow>
+         </msubsup>
+        </mrow>
+       </mrow>
+      </msqrt>
+      <msqrt>
+       <mi mathvariant="normal">
+        &nbsp;
+       </mi>
+       <mrow>
+        <munderover>
+         <mo stretchy="false">
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           i
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mrow>
+          <mi>
+           n
+          </mi>
+         </mrow>
+        </munderover>
+        <mrow>
+         <msubsup>
+          <mrow>
+           <mi>
+            b
+           </mi>
+          </mrow>
+          <mrow>
+           <mi>
+            i
+           </mi>
+          </mrow>
+          <mrow>
+           <mn>
+            2
+           </mn>
+          </mrow>
+         </msubsup>
+        </mrow>
+       </mrow>
+      </msqrt>
+     </mrow>
+    </mfrac>
+   </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0011" class="disp-formula-label">(10) </span></span></span></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0029.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0029.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="inline">
+    <mover>
+     <mrow>
+      <mi>
+       a
+      </mi>
+     </mrow>
+     <mo>
+      →
+     </mo>
+    </mover><mo>
+     .
+    </mo><mover>
+     <mrow>
+      <mi>
+       b
+      </mi>
+     </mrow>
+     <mo>
+      →
+     </mo>
+    </mover><mo>
+     =
+    </mo><mi mathvariant="normal">
+     &nbsp;
+    </mi><mrow>
+     <msubsup>
+      <mo stretchy="false">
+       ∑
+      </mo>
+      <mrow>
+       <mi>
+        i
+       </mi>
+       <mo>
+        =
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+      <mrow>
+       <mi>
+        n
+       </mi>
+      </mrow>
+     </msubsup>
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         a
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub>
+      <msub>
+       <mrow>
+        <mi>
+         b
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </mrow>
+   </math></span> denotes the dot product of two vectors.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 November 2019
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Identification of the most similar words using unigram models.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F15623599.2019.1683692&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p>The results show that similar words to a given word or a bigram word phrase along with the corresponding similarity scores vary slightly when specifying different hyperparameters of skip gram models. Moreover, the results of <button class="ref showTableEventRef" data-id="t0003 t0004 t0005">Tables 3–5</button> proves that semantic relationships of a single word or a word phrase are well captured by the trained models. To be more specific, a high similarity score is assigned to ‘scaffold’ and ‘ladder’ due to the similar semantic meaning although they are completely different words and not close to each other in text sentences. Similarly, the score for semantical close word phrases ‘arc flash’ and ‘electrical fault’ is high.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 November 2019
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 4. </span> Identification of the most similar words using bigram models.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0004-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0004&amp;doi=10.1080%2F15623599.2019.1683692&amp;downloadType=CSV"> Download CSV</a><a data-id="t0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 November 2019
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 5. </span> Identification of the most similar word phrases using both unigram and bigram models.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0005-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0005&amp;doi=10.1080%2F15623599.2019.1683692&amp;downloadType=CSV"> Download CSV</a><a data-id="t0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p>Since the learned vector space is high dimensional, it is impossible to visualize the similar words of a given word or word phrase in the learned vector space. Therefore, t-distributed Stochastic Neighbor Embedding (t-SNE) algorithm (Van Der Maaten and Hinton <span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2008</a></span>) is utilized to map the data from high dimensional vector space to a two dimensional embedded space. To be more specific, t-SNE converts similarities between data points to joint probabilities and tries to minimize the Kullback-Leibler divergence (Kullback <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>1987</a></span>) between the joint probabilities of the low dimensional embedding and the high dimensional data. One downside of t-SNE algorithm is that the corresponding cost function is not convex, namely, results of the algorithm depend on its initialization. To tackle this problem, Principal component analysis (PCA) (Pearson <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>1901</a></span>) is utilized to reduce the dimensionality of input to two by keeping first two major principal components, which speeds up the computation of pairwise distances between data points as well as suppresses noise without severely distorting the interpoint distances. In general, PCA initialization is more globally stable than random initialization according to Van Der Maaten and Hinton (<span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2008</a></span>).</p>
+ <p>Visualization result of the words which are semantically similar to ‘arc_flash’, ‘ladder’, ‘truck’, ‘oil’ and ‘log’ in two dimensional embedded vector space is displayed in <a href="#F0009">Figure 8</a>.</p>
+ <div class="figure figureViewer" id="F0008">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>08 November 2019
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 8. </span> Visualization of word clusters in the mapped vector space.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0008image" src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/medium/tjcm_a_1683692_f0008_c.jpg" loading="lazy" height="236" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0008">
+  <p class="captionText"><span class="captionLabel">Figure 8. </span> Visualization of word clusters in the mapped vector space.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0008">
+  <div class="figureFootNote-F0008"></div>
+ </div>
+ <p>There are five word clusters shown in <a href="#F0007">Figure 7</a>, boundaries between the five clusters are clear. Each cluster contains ten most similar words to the given word or word phrase which are marked by stars. The result also shows that, words with similar semantical meanings are located closer to each in the embedded vector space, such as ‘truck’ and ‘van’, on the contrary, words with different meanings such as ‘log’ and ‘electrical_shock’ deviate far from each other in the vector space, which proves the effectiveness of capturing semantical relationships by the trained skip-gram model.</p>
+ <p>In phase two, the proposed neural network is trained with four different embedding layer configurations. To be more specific, CNN, BDLSTM and other layers of the hybrid structure neural network are fixed while the embedding layer is seeded with the leaned word embedding from Word2Vec skip models using the aforementioned settings in phase one: 35 word vector dimensionality with unigram, 55 word vector dimensionality with unigram, 35 word vector Fig.</p>
+ <p>In the second part of the experiment, the proposed neural network is trained with four different embedding layer configurations. To be more specific, CNN, BDLSTM and other layers of the hybrid structure neural network are fixed while the embedding layer is seeded with the leaned word embedding from Word2Vec skip models using the aforementioned settings in phase one: 35 word vector dimensionality with unigram, 55 word vector dimensionality with unigram, 35 word vector dimensionality with bigram and 55 word vector dimensionality with bigram respectively.</p>
+ <p>To evaluate the model performance, F1 score proposed by Buckland and Gey (<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>1994</a></span>) has been widely employed in literature. However, number of true instances for each label is not considered by F1 score. Therefore, in this study, the average weighted F1 score given by <a href="#M0012">Equation (11)</a> is adopted. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0012.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_m0012.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0012" class="disp-formula-label">(11) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="block">
+    <msub>
+     <mrow>
+      <mi mathvariant="normal">
+       Avg
+      </mi>
+      <mi mathvariant="normal">
+       &nbsp;
+      </mi>
+      <mi>
+       F
+      </mi>
+      <mn>
+       1
+      </mn>
+     </mrow>
+     <mrow>
+      <mi mathvariant="normal">
+       weighted
+      </mi>
+     </mrow>
+    </msub><mo>
+     =
+    </mo><mrow>
+     <munderover>
+      <mo stretchy="false">
+       ∑
+      </mo>
+      <mrow>
+       <mi>
+        i
+       </mi>
+       <mo>
+        =
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+      <mrow>
+       <mi>
+        N
+       </mi>
+      </mrow>
+     </munderover>
+     <mrow>
+      <mo>
+       (
+      </mo>
+      <mfrac>
+       <mrow>
+        <msub>
+         <mrow>
+          <mi>
+           S
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           i
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mrow>
+        <mi>
+         T
+        </mi>
+       </mrow>
+      </mfrac>
+      <mi mathvariant="normal">
+       *
+      </mi>
+      <msub>
+       <mrow>
+        <mi>
+         F
+        </mi>
+        <mn>
+         1
+        </mn>
+       </mrow>
+       <mrow>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub>
+      <mo>
+       )
+      </mo>
+     </mrow>
+    </mrow>
+   </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0012" class="disp-formula-label">(11) </span></span></span></span> where <i>N</i> denotes the total number of labels, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0030.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0030.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="inline">
+    <msub>
+     <mrow>
+      <mi>
+       S
+      </mi>
+     </mrow>
+     <mrow>
+      <mi>
+       i
+      </mi>
+     </mrow>
+    </msub>
+   </math></span> denotes the support of label <i>i</i>, <i>T</i> denotes the support of all labels and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0031.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/tjcm_a_1683692_ilm0031.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="inline">
+    <msub>
+     <mrow>
+      <mi>
+       F
+      </mi>
+      <mn>
+       1
+      </mn>
+     </mrow>
+     <mrow>
+      <mi>
+       i
+      </mi>
+     </mrow>
+    </msub>
+   </math></span> denotes the F1 score of label <i>i</i>.</p>
+ <p>Apart from the average weighted F1 score, average weighted precision and recall are calculated in the similar fashion and reported. In addition, average AUC of models considered in the experiment is reported for each cause, ROC curves with the highest averaged AUC values in 5 folder cross validation results are presented in Appendix A for each classifier.</p>
+ <p>Experiment results of the proposed models are shown in <button class="ref showTableEventRef" data-id="t0006 t0007 t0013">Tables 6–8</button>. The overall f1 score, precision and recall of each classifier are highlighted in bold font in the tables.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 November 2019
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 7. </span> Five folder cross-validation results of the proposed models.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0006-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0006&amp;doi=10.1080%2F15623599.2019.1683692&amp;downloadType=CSV"> Download CSV</a><a data-id="t0006" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 November 2019
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 8. </span> Average AUC of the proposed models for each cause.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0007-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0007&amp;doi=10.1080%2F15623599.2019.1683692&amp;downloadType=CSV"> Download CSV</a><a data-id="t0007" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 November 2019
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 9. </span> Five folder cross-validation results of five baseline models.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0008-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0008&amp;doi=10.1080%2F15623599.2019.1683692&amp;downloadType=CSV"> Download CSV</a><a data-id="t0008" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p>Furthermore, five baseline classifiers: K-Nearest Neighbor (KNN) (Dasarathy <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>1991</a></span>), Naïve Bayesian (NB) (Russell et&nbsp;al. 2016), Decision Tree (DT) (Breiman et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>1984</a></span>), Logistic regression (LR) (Hosmer and Lemeshow <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>1989</a></span>) and Support Vector Machine (SVM) (Vapnik <span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>1995</a></span>) are employed in the experiment to compare with the proposed model. The number of neighbours of KNN is set to 11, RBF kernel is used for SVM and the Multinomial NB of Naïve Bayesian classifiers is employed in the experiment.</p>
+ <p>Results of the baseline classifiers are shown in <button class="ref showTableEventRef" data-id="t0008 t0009 t0010 t0011">Tables 9–12</button>. The overall f1 score, precision and recall of each classifier are highlighted in bold font in the tables.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 November 2019
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 10. </span> Five folder cross-validation results of five baseline models.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0009-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0009&amp;doi=10.1080%2F15623599.2019.1683692&amp;downloadType=CSV"> Download CSV</a><a data-id="t0009" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 November 2019
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 11. </span> Five folder cross-validation results of five baseline models.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0010-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0010&amp;doi=10.1080%2F15623599.2019.1683692&amp;downloadType=CSV"> Download CSV</a><a data-id="t0010" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 November 2019
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 12. </span> Average AUC of the baseline models for each cause.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0011-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0011&amp;doi=10.1080%2F15623599.2019.1683692&amp;downloadType=CSV"> Download CSV</a><a data-id="t0011" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 November 2019
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 13. </span> Time measures of each baseline model and the proposed approach.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0012-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0012&amp;doi=10.1080%2F15623599.2019.1683692&amp;downloadType=CSV"> Download CSV</a><a data-id="t0012" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p>From the results, the proposed neural networks outperform each baseline models in terms of weighted average f1 score. Among all models considered in the experiment, the highest weighted average f1 score is 0.723 achieved by the proposed model of embedding layer seeded with pre-trained word embedding using bigram and 55 word vector dimensionality setting. Moreover, among four proposed models, better performance is achieved by utilizing word embedding trained with a higher word vector dimensionality. In addition, it is noted that using bigram setting which includes more context for word embedding training leads to a relatively high weighted average f1 score than the unigram approach. In terms of the classifier performance with respect to each class label, the proposed classifiers achieve a satisfactory result for classifying most accident causes, except for ‘caught in/between objects’ and ‘collapse of object’. It is observed in <button class="ref showTableEventRef" data-id="t0004">Table 4</button> that support of ‘caught in/between objects’ is relatively low comparing with other labels, only 68 cases are due to ‘caught in/between objects’ and in such case, the proposed classifiers using bigram embeddings still outperform rest baseline models. The result further proves that in the case of lacking enough data, by utilizing word embedding, more semantic information can be learned than conventional approaches, and incorporating the augmented semantic information results in a more robust classifier. However, it is advised that for those labels with weighted average f1 scores, additional manual checks are necessary. Another common challenge is that some particular labels are difficult to be classified even by human. For example, ‘collapse of object’, ‘struck by falling object’ and ‘struck by moving object’ as reported by Goh and Ubeynarayana (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2017</a></span>). The major reason is the imprecise nature of languages, leading to diverse interpretations. One commonly mislabelled case type is that the actual label should be ‘struck by moving object’, however it is misclassified as ‘collapse of object’. Common objects involved in the cases are trees, beams and objects that sheared, bended, which are confused with structural collapse.</p>
+ <p>In terms of the performance of the baselines models, SVM achieves an overall satisfying f1 score for classifying most of labels, except ‘caught in/between objects’ which has a relatively low support. Though in case the case of low support, recall values of most baseline classifiers are low, DT and KNN classifiers results a more balanced precision and recall comparing with other baseline models.</p>
+ <p>Further evaluation of time cost for baseline models and the proposed models is performed and presented in <button class="ref showTableEventRef" data-id="t0012">Table 13</button>. The last four rows are the measure of the proposed approach. For example, ‘HANN_unigram_35dim’ denotes the proposed hybrid structured neural network with embedding layer seeded with word embedding trained using unigram and 35 word vector dimensionality setting and so forth. The experiment platform is a 64 bit Windows 10 Dell laptop with Intel core i5 vPro 8th generation processor and 16GB memory.</p>
+ <p>The result shows that setting a lower word vector dimensionality for Word2Vec training is slightly less time consuming while applying bigram setting results a higher time cost to learn the word embedding. Moreover, it is obvious that all baseline models are significantly more time efficient than the proposed approach. As time aspect is a crucial factor, especially for real-time systems which requires a prompt response. In such a case, SVM is regarded as a more optimal alternative which requires less computation time with a compromised weighted average f1 score.</p>
+ <p>Finally, the proposed classifier is applied to classify all 16,323 cases since year 1983. The distribution of cases for each cause is shown in <a href="#F0010">Figure 9</a>. Occurrences of each accident cause type over twenty years from 1994 to 2013 is plotted in <a href="#F0010">Figures 10</a> and <a href="#F0011">11</a>.</p>
+ <div class="figure figureViewer" id="F0009">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>08 November 2019
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 9. </span> Distribution of cases for each accident cause from 1983.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0009image" src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/medium/tjcm_a_1683692_f0009_c.jpg" loading="lazy" height="352" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0009">
+  <p class="captionText"><span class="captionLabel">Figure 9. </span> Distribution of cases for each accident cause from 1983.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0009">
+  <div class="figureFootNote-F0009"></div>
+ </div>
+ <div class="figure figureViewer" id="F0010">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>08 November 2019
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 10. </span> Occurrences of each accident cause type over twenty years from 1994 to 2003.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0010image" src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/medium/tjcm_a_1683692_f0010_c.jpg" loading="lazy" height="294" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0010">
+  <p class="captionText"><span class="captionLabel">Figure 10. </span> Occurrences of each accident cause type over twenty years from 1994 to 2003.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0010">
+  <div class="figureFootNote-F0010"></div>
+ </div>
+ <div class="figure figureViewer" id="F0011">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>08 November 2019
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 11. </span> Occurrences of each accident cause type over twenty years from 2004 to 2013.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0011image" src="/na101/home/literatum/publisher/tandf/journals/content/tjcm20/2022/tjcm20.v022.i06/15623599.2019.1683692/20220427/images/medium/tjcm_a_1683692_f0011_c.jpg" loading="lazy" height="312" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0011">
+  <p class="captionText"><span class="captionLabel">Figure 11. </span> Occurrences of each accident cause type over twenty years from 2004 to 2013.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0011">
+  <div class="figureFootNote-F0011"></div>
+ </div>
+ <p>From <a href="#F0009 F0010 F0011">Figures 9–11</a>, ‘collapse of object’ was the major cause of construction accidents in the past, while the number of incidents due to ‘struck by falling object’ and ‘exposure to chemical substances’ was relatively small. However, ‘falls’ has become the major cause of construction accidents in recent years. In addition, though the number of accidents slightly decreased in year 1996, 2003 and 2008, the total number of construction accidents kept an overall rising trend over the past twenty years. However, the corresponding study of similar trend analysis of OSHA dataset is not found in existing literature. Besides, there is a lack of labelled cases for each cause, which poses the challenge of results validation.</p>
+</div>
+<div id="S0006" class="NLM_sec NLM_sec-type_conclusions NLM_sec_level_1">
+ <h2 id="_i38" class="section-heading-2">Conclusions</h2>
+ <p>In this study, a two-stage text mining approach is proposed for construction accident causes classification. Firstly, Word2Vec skip-gram algorithm is utilized to learn the word embedding from a small domain-specific corpus. Then, the learned word embedding is utilized by a hybrid structured neural network. Experiment result of the first stage proves the effectiveness of modelling semantic meanings and relationships between different words by the proposed approach. Besides, without the need of an annotated corpus is another major advantage of Word2Vec skip-gram algorithm. Experiments results of stage two show that the proposed approach outperforms the rest baseline models considered in this study in terms of weighted average f1 score. However, there are several possible future improvements can be considered. First of all, the size of the corpus used in this study is relatively small, building a larger domain-specific corpus can be beneficial for improving the quality of learned word embedding. Besides, a large pre-trained corpus such as GloVe can be explored in future studies. Further, fine-tuning of Word2Vec hyperparameters, such as word vector dimensionality, downsampling and Context window size can be potentially helpful. Moreover, instead of the skip-gram model employed in this study, CBOW model with various settings such as unigram, bigram and trigram settings can be explored as well.</p>
+ <p>In terms of the proposed deep neural network, to tackle the time inefficiency issue, graphics processing units (GPU) and parallel computing techniques can be considered, other potential solutions to address this issue are, applying early stopping criteria instead of setting fixed number of epochs for training, increasing learning rate of the network, fine-tuning the network architecture such as adjusting the number of neurons so as to reduce the unnecessary parameters. Moreover, data balancing technique such as oversampling (Oqab et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2016</a></span>) can be applied when pre-processing the accident causes with low support values. Last but not the least, apart from the deep neural network, ensembling various weak classifiers with appropriate optimization algorithms such as GA, PSO, DE (Zhang et&nbsp;al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2016</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i39 _i40" href="#"><span class="off-screen">Citation</span>2019</a></span>) potentially lead to time efficient and strong classifier, such techniques are in the future scope.</p>
+ <p>Finally, although rigorous validation of the trend analysis in this study cannot be performed, the analysis results provide valuable insights to some extent and can be served as a reference for future researchers in the similar area.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A hybrid structured deep neural network with Word2Vec for construction accident causes classification</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zhang%2C+Fan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhang%2C+Fan"><span class="NLM_given-names">Fan</span> Zhang</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/15623599.2019.1683692">https://doi.org/10.1080/15623599.2019.1683692</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>08 November 2019
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 6. </span> Five folder cross-validation results of the proposed models.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0013-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0013&amp;doi=10.1080%2F15623599.2019.1683692&amp;downloadType=CSV"> Download CSV</a><a data-id="t0013" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+</div>

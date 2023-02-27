@@ -1,0 +1,2047 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">1. Introduction</h2>
+ <p>With the load of available research papers published continuously by materials scientists, it is desirable to maximize the absorbance of the extent of information that exists in these papers. The use of natural language processing is getting more attention to analyse scientific publications for knowledge discovery [<span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>1</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>2</a></span>]. For example, scientific publications clustering [<span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>3</a></span>]. Recently, topic extraction and visualization are being utilized to tackle this issue because of their intuitive display of information that facilitates information access. Additionally, topic visualisation allows to capture the research trend quickly without having to navigate an entire list of publications. Furthermore, it can support the link between researchers with similar research topics to find potential collaboration leading to the construction of a topic map. Such digital infrastructure systems are necessary to facilitate the accumulation and distribution of scientific data.</p>
+ <p>In this paper, we present an approach to create a research topic map for materials science researchers from a large collection of publications using natural language processing techniques and materials science knowledge resources such as dictionaries. We extract representative topic terms from research publications that are related to materials science and engineering. We use frequent term analysis and automatic extraction of material names in addition to domain knowledge resources. Noise reduction is implemented by removing stop words. A word cloud approach was used to visualize the extracted terms. Finally, a topic similarity analysis was conducted to find researchers who share similar topics, leading to a research topic map for each researcher.</p>
+ <p>Visualization of topics from an unstructured text has been previously studied using several different approaches. For example, Miller <i>et al</i>. applied wavelet transforms to a custom digital signal constructed from words within a document to create visualisation [<span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>4</a></span>]. Recently, word cloud visualization technique [<span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>5</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>6</a></span>] has been widely used to present the contents and themes in a text for summary and visualization. Examples include Gottron <i>et al</i>. work on visualizing web documents [<span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>7</a></span>] and ConceptCloud browser, which makes use of a combination of concept lattices and tag clouds, to visually present academic publication data by Dunaiski <i>et al</i>. that also used interactive word cloud visualization [<span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>8</a></span>]. Such a technique is a visual representation of word frequency using different font sizes and colors to represent terms with different levels of importance. Venetis <i>et al</i>. presented metrics to capture the structural properties of a tag cloud, and a set of tag selection algorithms [<span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>9</a></span>]. Some publishers have implemented a word cloud from research papers on a large scale. An example of this is Elsevier SciVal [<span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>10</a></span>]. Although these studies had a significant impact on the visualization of research content, there has been no focus on the materials science domain. It is necessary to use domain-aware resources to improve the processing for materials science research publications. A few attempts have been made to visualize the research content in materials science; however, they have been restricted to a limited research area such as quantum materials only [<span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>11</a></span>].</p>
+ <p>There is some work that has been conducted to provide collaborator suggestion such as on ‘ResearchGate’ or ‘Researchmap’; however, these functions are for general science community and do not focus on materials science. In addition, our proposed system provides a wider connected network of potential collaborators. A special feature of this system is that collaborator suggestion is focused on each topic of interest rather than on the general researcher output. For example, a materials scientist seeks to find a collaborator on developing a certain material or a specific measurement method.</p>
+ <p>A key task in the construction of a topic map is the extraction of key terms [<span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>12</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>13</a></span>] that represent the researchers’ topics from their publications. Frequent term analysis has been utilized for text mining applications. For example, Nagwani <i>et al</i>. designed a frequent term based text summarization algorithm [<span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>14</a></span>]. The term frequency can reflect the importance of this term in a text of a collection of texts. However, in scientific publications, term frequency analysis based on the general content of the paper is insufficient. It is necessary to study the term frequency for domain-specific terms. For example, in materials science, researchers are interested in searching for publications discussing the synthesis or characterization of certain materials. In this study, we utilized domain knowledge dictionaries and an automatic chemical formula extraction tool to extract materials names and other domain-specific terms from research publications. In addition, the importance of the term can be weighted depending on not only its frequency but also other factors such as its location in the text (title, keywords, abstract).</p>
+ <p>In this study, we validate the proposed approach on SAMURAI [<span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>15</a></span>], a researcher directory service maintained by the National Institute for Materials Science (NIMS), Japan for its researchers. Publications for each researcher are linked to the NIMS Digital Library [<span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>16</a></span>]. SAMURAI can synchronize the profile information of researchers and their publications self-archived in the NIMS institutional repository systems [<span class="ref-lnk lazy-ref"><a data-rid="cit0017 cit0018 cit0019 cit0020" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>17-20</a></span>]. This database has interoperable functions using the Open Researcher and Contributor ID (ORCID) [<span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>21</a></span>]. It identifies authors of journal articles from NIMS and research members of NIMS through the implementation of a global ID. Each researcher profile is attached to a unique ResearcherID linked to major global databases such as KAKEN (Database of Grants-in-Aid for Scientific Research by National Institute for Informatics (NII)). Through this directory, NIMS is promoting materials research, supporting the management of its researchers’ activities, and introducing NIMS researchers and their work to the public.</p>
+ <p>Even though we validated this approach on SAMURAI, it can be applied to visualize the content of research papers related to materials science domain in general as it integrates domain knowledge features and it is not dependent on the database itself.</p>
+ <p>The remainder of this paper is organized as follows. In <a href="#s0002">Sec. 2</a>, we introduce our approach for researcher output visualization and topic map construction. The details of the experiment and results are discussed in <a href="#s0003">Sec. 3</a>. <a href="#s0004">Sec. 4</a> then provides some concluding remarks and discusses areas of future study.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">2. Method</h2>
+ <div id="s0002-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">2.1. Outline</h3>
+  <p>The proposed approach consists of 6 main components: in the data collection, a set of materials science publications are collected in XML format for a group of researchers from a database. Next, these publications are preprocessed by extracting certain sections and removing noisy data. Additionally, domain knowledge terms are extracted in a separate step. After that, frequent term analysis is conducted for each extracted section. In the visualization component, a vector representing each researcher’s topics is constructed based on frequent term analysis from the researcher’s publications. This vector is visualized using word cloud technique. In the final step, similarity analysis between different researchers is conducted to construct topic map. <a href="#f0001">Figure 1</a> illustrates the outline of the system. Details of each component are discussed in the following subsections.</p>
+  <div class="figure figureViewer" id="f0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Creating research topic map for NIMS SAMURAI database using natural language processing approach</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Dieb%2C+Sae"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Dieb%2C+Sae"><span class="NLM_given-names">Sae</span> Dieb</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Amano%2C+Kou"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Amano%2C+Kou"><span class="NLM_given-names">Kou</span> Amano</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tanabe%2C+Kosuke"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanabe%2C+Kosuke"><span class="NLM_given-names">Kosuke</span> Tanabe</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Daitetsu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Daitetsu"><span class="NLM_given-names">Daitetsu</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ishii%2C+Masashi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ishii%2C+Masashi"><span class="NLM_given-names">Masashi</span> Ishii</a> <a href="https://orcid.org/0000-0003-0357-2832"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tanifuji%2C+Mikiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanifuji%2C+Mikiko"><span class="NLM_given-names">Mikiko</span> Tanifuji</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/27660400.2021.1899426">https://doi.org/10.1080/27660400.2021.1899426</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1. </span> System outline for materials science researchers topics map visualization.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/medium/tstm_a_1899426_f0001_oc.jpg" loading="lazy" height="128" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0001">
+   <p class="captionText"><span class="captionLabel">Figure 1. </span> System outline for materials science researchers topics map visualization.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0001">
+   <div class="figureFootNote-f0001"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0002-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i8">2.2. Data collection</h3>
+  <p>The SAMURAI database holds a list of publications for each researcher that is linked to the NIMS digital library and other data sources. A list of publication digital object identifiers (DOIs) [<span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>22</a></span>] for each researcher was constructed from the researcher’s profile in SAMURAI (in SAMURAI, the DOIs are stored in a PostgreSQL database). Using the DOIs, recent publications, mainly available beginning in 2004, were retrieved from the NIMS text and data mining platform (TDM-PF). The dataset used for this study consists of 8269 published articles by 1058 SAMURAI researchers in XML format. Publications are the sum of all retrieved publications for each author using the DOIs.</p>
+ </div>
+ <div id="s0002-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">2.3. Data preprocessing</h3>
+  <p>We extracted the plain text from the following sections of all the publications authored by each SAMURAI researcher:</p>
+  <p>• Title of the paper</p>
+  <p>• ‘Keywords’ section</p>
+  <p>• Abstract of the paper</p>
+  <p>We used the XML tag name for each section provided by the publisher to extract the section. Because the main body of the publication is not collected, the effect of including the ‘Keywords’ section is balanced. The text of each section is segmented into tokens using the NLTK word tokenizer. Natural Language Toolkit (NLTK) is an open-source Python package with data sets, supporting research and development in Natural Language Processing [<span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>23</a></span>]. The following processing steps are then conducted on the tokenized texts to remove noisy data:</p>
+  <div class="quote">
+   <p>□ Removing numeric values, punctuation marks (for example, “23.5”, “!”, “?”). Such data are not related to the topics discussed in the publications. Even though numerical values are important in some “grey area” topics such as when reporting catalysts with “high yield”, however, it is beyond the scope of this study to tackle these issues.</p>
+   <p>□ Filtering general English language stop-words such as “but”, “an”, “he”. These stop-words frequently occurring in English but do not carry a thematic component or significance themselves [<span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>24</a></span>].</p>
+   <p>□ Physical units such as “m” (meter) for length measurement, and “K” (Kelvin) for temperature measurement, among others, are frequently found in materials science research publications; however, for our objective in this study, they are not informative regarding the research output. The list was compiled using SI-based and derived units [<span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>25</a></span>].</p>
+  </div>
+  <p></p>
+  <p>Other terms can also be filtered out depending on the application. For example, too frequent terms in a certain sub-domain of materials science do not contribute to similarity metrics between researchers in this sub-domain.</p>
+ </div>
+ <div id="s0002-s2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">2.4. Utilization of domain knowledge resources</h3>
+  <div id="s0002-s2004-s3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i11">2.4.1. Motivation</h4>
+   <p>We aim to construct a topic map for materials science researchers, so they can find potential collaborators. Using general linguistic features only is not sufficient to compute the similarity between researchers’ topics that are focused on materials science. It is necessary to include domain related knowledge terms. It has been proven that utilization of domain knowledge features has leveraged the performance of text mining applications in materials science [<span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>26</a></span>]. In this study, we used two types of domain knowledge resources, one is the chemical compound extractor and the other is a dictionary for measurement related terms.</p>
+  </div>
+  <div id="s0002-s2004-s3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i12">2.4.2. Extraction of chemical compounds</h4>
+   <p>In materials science research, materials names play an extremely informative role in the content of the publication. Many publications are centered around the synthesis or characterization of a specific material. A segmentation of text using general language tokenization schema might miss the material names. For this reason, it is necessary to extract material names using a domain-specific tokenization schema [<span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>27</a></span>] to provide chemistry-aware tokenization. Because numerous material names are basically chemical compounds, we developed a chemical formula extraction tool to extract materials names from text. This tool uses regular expressions and element information from the periodical table to identify chemical compounds formula.</p>
+  </div>
+  <div id="s0002-s2004-s3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i13">2.4.3. Extraction of measurement related terms</h4>
+   <p>Measurements of material properties is a fundamental issue in materials science and engineering. Some materials scientists even specialize in measurement science. A significant number of materials science publications contain discussions on measurement and related issues. Identifying measurement related terms such as methods, results, and simulation, is necessary to characterize the researcher output. As discussed in <a href="#s0002-s2004-s3002">Section 2.4.2</a>, general English language-based tokenization schema might have a low matching ratio for domain-specific knowledge including measurement related terms. Domain-aware tokenization issue was reported in other domains such as bioinformatics [<span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>28</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0029" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>29</a></span>]. Domain-aware tokenizers were also developed [<span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>30</a></span>]. Matching ratio analysis for some domain-specific terms was conducted [<span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>27</a></span>]. We used a digitized version of the Japanese dictionary of physics and chemistry [<span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>31</a></span>] to extract several measurement related terms translated into English:</p>
+   <div class="quote">
+    <p>• Measurement method dictionary, for example, X-ray diffraction microscopy and Maxam-Gilbert method [<span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>32</a></span>].</p>
+   </div>
+   <p></p>
+   <p>• Simulation category such as the Monte Carlo method [<span class="ref-lnk lazy-ref"><a data-rid="cit0033" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>33</a></span>].</p>
+  </div>
+ </div>
+ <div id="s0002-s2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">2.5. Frequent term analysis</h3>
+  <p>We computed term frequency for the terms extracted in <a href="#s0002-s2003">Section 2.3</a> for each section (title, keywords, abstracts) separately. In addition, the term frequency was calculated for the terms extracted in <a href="#s0002-s2004-s3002">Sections 2.4.2</a> and <a href="#s0002-s2004-s3003">2.4.3</a>. Five sets of (term, frequency) were created and normalized based on the length of the extracted sections for each researcher as follows:</p>
+  <p>• <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        T
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> Title terms extracted from all publications.</p>
+  <p>• <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        K
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> Keywords terms extracted from all publications.</p>
+  <p>• <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        A
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> Abstract terms extracted from all publications.</p>
+  <p>• <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        M
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> Material formulas extracted from all three sections of all research publications.</p>
+  <p>• <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      M
+     </mi><mrow>
+      <msub>
+       <mi>
+        E
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> Measurement related terms extracted from all three sections of all research publications.</p>
+  <p>The research output for a researcher is represented as a set <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        R
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> resulting from the merging of five sets. In research publications, sections in the paper structure have different levels of influence on the publication topic [<span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>34</a></span>]. For example, an occurrence in the title is more topic representative than an occurrence in the body. Several studies have used a term weighting strategy for document processing applications [<span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>35</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>36</a></span>]. For this reason, occurrences of the terms should be wighted differently based on their location in the publication. We use a simple strategy by assigning a heavier weight for terms in the title and in the keywords section than those in the abstract. Because domain knowledge terms are extracted separately from other terms, the frequencies of domain knowledge terms are used in the case of double extraction to avoid double-counting. We denote <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        T
+       </mi>
+       <mi>
+        w
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        K
+       </mi>
+       <mi>
+        w
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        A
+       </mi>
+       <mi>
+        w
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        M
+       </mi>
+       <mi>
+        w
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      M
+     </mi><mrow>
+      <msub>
+       <mi>
+        E
+       </mi>
+       <mi>
+        w
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> as the weights for <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        T
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        K
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        A
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        M
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span>, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0016.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      M
+     </mi><mrow>
+      <msub>
+       <mi>
+        E
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span>, respectively. Here <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0017.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        R
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> is given by <a href="#m0001">Equation (1)</a> <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_m0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         R
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mi>
+          f
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><mrow>
+       <msub>
+        <mi>
+         T
+        </mi>
+        <mi>
+         w
+        </mi>
+       </msub>
+      </mrow><mo>
+       ∗
+      </mo><mrow>
+       <msub>
+        <mi>
+         T
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mi>
+          f
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ∪
+      </mo><mrow>
+       <msub>
+        <mi>
+         K
+        </mi>
+        <mi>
+         w
+        </mi>
+       </msub>
+      </mrow><mo>
+       ∗
+      </mo><mrow>
+       <msub>
+        <mi>
+         K
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mi>
+          f
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ∪
+      </mo><mrow>
+       <msub>
+        <mi>
+         A
+        </mi>
+        <mi>
+         w
+        </mi>
+       </msub>
+      </mrow><mo>
+       ∗
+      </mo><mrow>
+       <msub>
+        <mi>
+         A
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mi>
+          f
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ∪
+      </mo><mrow>
+       <msub>
+        <mi>
+         M
+        </mi>
+        <mi>
+         w
+        </mi>
+       </msub>
+      </mrow><mo>
+       ∗
+      </mo><mrow>
+       <msub>
+        <mi>
+         M
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mi>
+          f
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       ∪
+      </mo><mi>
+       M
+      </mi><mrow>
+       <msub>
+        <mi>
+         E
+        </mi>
+        <mi>
+         w
+        </mi>
+       </msub>
+      </mrow><mo>
+       ∗
+      </mo><mi>
+       M
+      </mi><mrow>
+       <msub>
+        <mi>
+         E
+        </mi>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mi>
+          f
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>where the values of the weights <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0018.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        T
+       </mi>
+       <mi>
+        w
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0019.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        K
+       </mi>
+       <mi>
+        w
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0020.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        A
+       </mi>
+       <mi>
+        w
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0021.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        M
+       </mi>
+       <mi>
+        w
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0022.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      M
+     </mi><mrow>
+      <msub>
+       <mi>
+        E
+       </mi>
+       <mi>
+        w
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> are determined by experimenting on a small subset of the data and using feedback from materials scientists in SAMURAI and are 1.2, 1.5, 1.0, 1.0 and 1.0 respectively.</p>
+ </div>
+ <div id="s0002-s2006" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i16">2.6. Word cloud generation</h3>
+  <p>The word cloud for each researcher is generated using the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0023.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        R
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> set of the researcher, i.e. terms and their frequencies multiplied by the designated weights. We use a word cloud generator package in Python language [<span class="ref-lnk lazy-ref"><a data-rid="cit0037" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>37</a></span>] with the following settings: the maximum number of words equals 200, and minimum number of letters for a word to be included is zero.</p>
+ </div>
+ <div id="s0002-s2007" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i17">2.7. Topic map construction</h3>
+  <p>Research collaborations are extremely beneficial to advance sciences. Collaborators can learn from each other by exchanging ideas and sharing skills. To find potential collaborators, we want to analyze researchers who share similar topics. Each researcher is represented by a vector <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0024.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      V
+     </mi>
+    </math></span> of discrete variables <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0025.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      v
+     </mi><mo>
+      ∈
+     </mo><mrow>
+      <mrow>
+       <mi mathvariant="double-struck">
+        N
+       </mi>
+      </mrow>
+     </mrow>
+    </math></span>, where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0026.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      v
+     </mi>
+    </math></span> indicates the frequencies from the set <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0027.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        R
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> discussed in <a href="#s0002-s2005">Section 2.5</a>. The similarity between the two given researchers are computed using the cosine similarity metric between the two vectors of these researchers, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0028.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        V
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        V
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+     </mrow>
+    </math></span>, as indicated in (2): <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_m0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       s
+      </mi><mi>
+       i
+      </mi><mi>
+       m
+      </mi><mi>
+       i
+      </mi><mi>
+       l
+      </mi><mi>
+       a
+      </mi><mi>
+       r
+      </mi><mi>
+       i
+      </mi><mi>
+       t
+      </mi><mi>
+       y
+      </mi><mo>
+       =
+      </mo><mo form="prefix">
+       cos
+      </mo><mo stretchy="false">
+       (
+      </mo><mi>
+       θ
+      </mi><mo stretchy="false">
+       )
+      </mo><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <mrow>
+          <msub>
+           <mi>
+            V
+           </mi>
+           <mn>
+            1
+           </mn>
+          </msub>
+         </mrow>
+         <mo>
+          ⋅
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            V
+           </mi>
+           <mn>
+            2
+           </mn>
+          </msub>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mfenced open="∥" close="∥">
+          <mrow>
+           <mrow>
+            <msub>
+             <mi>
+              V
+             </mi>
+             <mn>
+              1
+             </mn>
+            </msub>
+           </mrow>
+          </mrow>
+         </mfenced>
+         <mfenced open="∥" close="∥">
+          <mrow>
+           <mrow>
+            <msub>
+             <mi>
+              V
+             </mi>
+             <mn>
+              2
+             </mn>
+            </msub>
+           </mrow>
+          </mrow>
+         </mfenced>
+        </mrow>
+       </mfrac>
+      </mrow><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <mo>
+          ∑
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            v
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msub>
+         </mrow>
+         <mrow>
+          <msub>
+           <mi>
+            v
+           </mi>
+           <mi>
+            j
+           </mi>
+          </msub>
+         </mrow>
+        </mrow>
+        <mrow>
+         <msqrt>
+          <mo>
+           ∑
+          </mo>
+          <msup>
+           <mrow>
+            <msub>
+             <mi>
+              v
+             </mi>
+             <mi>
+              i
+             </mi>
+            </msub>
+           </mrow>
+           <mn>
+            2
+           </mn>
+          </msup>
+         </msqrt>
+         <msqrt>
+          <mo>
+           ∑
+          </mo>
+          <msup>
+           <mrow>
+            <msub>
+             <mi>
+              v
+             </mi>
+             <mi>
+              j
+             </mi>
+            </msub>
+           </mrow>
+           <mn>
+            2
+           </mn>
+          </msup>
+         </msqrt>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0029.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0029.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        v
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        v
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> are components of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0030.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0030.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        V
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        V
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+     </mrow>
+    </math></span> respectively. When two researchers have a high similarity, the most frequent common term is extracted by intersecting <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0031.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0031.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        R
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mi>
+         f
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> of both researchers. This approach was applied for each SAMURAI researcher in relation to all others to create a relationship based on frequent common terms between researchers. We visualize these relationship as links to create a topic map for the researchers.</p>
+ </div>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i19" class="section-heading-2">3. Experiment and results</h2>
+ <div id="s0003-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i20">3.1. Visualization of word cloud</h3>
+  <p>Using the approach discussed in <a href="#s0002">Section 2</a>, we created a word cloud and topics maps for all SAMURAI members. We demonstrate the results here using the three researchers below as examples. The number in the parentheses is the number of the author publications that could be retrieved from the NIMS repository. Coauthored publications by multiple SAMURAI members are counted for each author independently.</p>
+  <div class="quote">
+   <p>• Kazuhiro Hono [<span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>38</a></span>], affiliated with the Research Center for Magnetic and Spintronic Materials in NIMS (177).</p>
+  </div>
+  <div class="quote">
+   <p>• Yuya Sakuraba [<span class="ref-lnk lazy-ref"><a data-rid="cit0039" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>39</a></span>], also affiliated with the Research Center for Magnetic and Spintronic Materials in NIMS (22).</p>
+  </div>
+  <div class="quote">
+   <p>• Hideki Yoshikawa [<span class="ref-lnk lazy-ref"><a data-rid="cit0040" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>40</a></span>], affiliated with the Research and Services Division of Materials Data and the Integrated System, and Research Center for Advanced Measurement and Characterization in NIMS (51).</p>
+  </div>
+  <p></p>
+  <p>All the above mentioned researchers have explicitly agreed to have their names, photos, and related data published in this manuscript. Because Kazuhiro Hono and Yuya Sakuraba are affiliated with the same research center, it is expected that they would have similar research topics that differ from those of Hideki Yoshikawa. <a href="#f0002">Figure 2</a> shows a simplified word cloud visualization for each of these researchers’ topics.</p>
+  <div class="figure figureViewer" id="f0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Creating research topic map for NIMS SAMURAI database using natural language processing approach</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Dieb%2C+Sae"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Dieb%2C+Sae"><span class="NLM_given-names">Sae</span> Dieb</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Amano%2C+Kou"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Amano%2C+Kou"><span class="NLM_given-names">Kou</span> Amano</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tanabe%2C+Kosuke"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanabe%2C+Kosuke"><span class="NLM_given-names">Kosuke</span> Tanabe</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Daitetsu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Daitetsu"><span class="NLM_given-names">Daitetsu</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ishii%2C+Masashi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ishii%2C+Masashi"><span class="NLM_given-names">Masashi</span> Ishii</a> <a href="https://orcid.org/0000-0003-0357-2832"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tanifuji%2C+Mikiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanifuji%2C+Mikiko"><span class="NLM_given-names">Mikiko</span> Tanifuji</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/27660400.2021.1899426">https://doi.org/10.1080/27660400.2021.1899426</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Word cloud visualization for each researcher topics as extracted from publications in NIMS repository.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0002image" src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/medium/tstm_a_1899426_f0002_oc.jpg" loading="lazy" height="93" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Word cloud visualization for each researcher topics as extracted from publications in NIMS repository.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0002">
+   <div class="figureFootNote-f0002"></div>
+  </div>
+  <p></p>
+  <p>From <a href="#f0002">Figure 2</a>, it can be seen that both Kazuhiro Hono and Yuya Sakuraba have common terms with a large font size such as ‘spin’, ‘magnetics’, and ‘heusler’. This is correlated with the fact that they both belong to the same research center. By contrast, Yuya Sakuraba does not share any of his top terms (‘spin’, ‘Ag’, ‘magnetoresistance’, ‘heusler’) with Hideki Yoshikawa, who belongs to a different center. This indicates that researchers with different affiliations are less correlated with each other.</p>
+  <p>However, we can also see that there are some irrelevant terms owing to an insufficient tokenization, such as ‘investigated’. Morphological analysis and/or part-of-speech tagging could be used to further improve tokenization efficiency. Considering that our visualization based on an assuming model and limited data is qualitative and projective, a parallel use or model selection would be useful for the visualization of many facets. As pointed out above, the domain knowledge terms are very important aspects for characterizing the research field.</p>
+ </div>
+ <div id="s0003-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i22">3.2. Research topic map</h3>
+  <p>Using the word cloud generated in <a href="#s0003-s2001">Section 3.1</a>, a vector for each researcher was constructed using the method discussed in <a href="#s0002-s2007">Section 2.7</a>. Using cosine similarity, researcher vector similarity was checked against all other SAMURAI researchers. When the similarity is high between two researchers, word cloud sets of them were intersected to find the best common term and a link between them was created between their profiles. <a href="#f0003">Figure 3</a> shows the topic map for each researcher mentioned in <a href="#s0003-s2001">Section 3.1</a>. From <a href="#f0003">Figure 3</a>, we can observe the topic terms that a researcher shares with another or multiple researchers. This map can provide insights on potential collaboration on a specific topic.</p>
+  <div class="figure figureViewer" id="f0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Creating research topic map for NIMS SAMURAI database using natural language processing approach</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Dieb%2C+Sae"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Dieb%2C+Sae"><span class="NLM_given-names">Sae</span> Dieb</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Amano%2C+Kou"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Amano%2C+Kou"><span class="NLM_given-names">Kou</span> Amano</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tanabe%2C+Kosuke"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanabe%2C+Kosuke"><span class="NLM_given-names">Kosuke</span> Tanabe</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Daitetsu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Daitetsu"><span class="NLM_given-names">Daitetsu</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ishii%2C+Masashi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ishii%2C+Masashi"><span class="NLM_given-names">Masashi</span> Ishii</a> <a href="https://orcid.org/0000-0003-0357-2832"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tanifuji%2C+Mikiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanifuji%2C+Mikiko"><span class="NLM_given-names">Mikiko</span> Tanifuji</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/27660400.2021.1899426">https://doi.org/10.1080/27660400.2021.1899426</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> Topic map for each researcher based on available publications in NIMS repository.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0003image" src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/medium/tstm_a_1899426_f0003_oc.jpg" loading="lazy" height="158" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> Topic map for each researcher based on available publications in NIMS repository.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0003">
+   <div class="figureFootNote-f0003"></div>
+  </div>
+  <p></p>
+  <p>When publications are authored by multiple authors, the researcher position in the author list can affect his interest topics. For example, the topics from a publication where the researcher is the principal investigator (PI) are closer to his interest than those of a publication where he is not. To verify the differences in extracted topic terms when the researcher is the PI or not, we compare the word cloud visualization in both cases. We have collected the publications of Yuya Sakuraba from <a href="#s0003-s2001">Section 3.1</a>, where he is either the first author or the corresponding author, and created the word cloud. <a href="#f0004">Figure 4</a> shows Yuya Sakuraba topics terms for his publications as a PI. When comparing <a href="#f0002">Figure 2(b)</a> and <a href="#f0004">Figure 4</a>, we can notice that even though major terms are similar; however the frequency (importance) of the terms has changed. For example, ‘NiMnSb’ has gained more importance in publications where the researcher is the first or corresponding author. This approach could be extended to add a weighting factor based on the position of the researcher in the author list.</p>
+  <div class="figure figureViewer" id="f0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Creating research topic map for NIMS SAMURAI database using natural language processing approach</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Dieb%2C+Sae"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Dieb%2C+Sae"><span class="NLM_given-names">Sae</span> Dieb</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Amano%2C+Kou"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Amano%2C+Kou"><span class="NLM_given-names">Kou</span> Amano</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tanabe%2C+Kosuke"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanabe%2C+Kosuke"><span class="NLM_given-names">Kosuke</span> Tanabe</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Daitetsu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Daitetsu"><span class="NLM_given-names">Daitetsu</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ishii%2C+Masashi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ishii%2C+Masashi"><span class="NLM_given-names">Masashi</span> Ishii</a> <a href="https://orcid.org/0000-0003-0357-2832"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tanifuji%2C+Mikiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanifuji%2C+Mikiko"><span class="NLM_given-names">Mikiko</span> Tanifuji</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/27660400.2021.1899426">https://doi.org/10.1080/27660400.2021.1899426</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> Word cloud visualization for the researcher Yuya Sakuraba topics as extracted from publications where he is either the first or the corresponding author.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0004image" src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/medium/tstm_a_1899426_f0004_oc.jpg" loading="lazy" height="248" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> Word cloud visualization for the researcher Yuya Sakuraba topics as extracted from publications where he is either the first or the corresponding author.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0004">
+   <div class="figureFootNote-f0004"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0003-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i25">3.3. Effect of domain knowledge resources</h3>
+  <p>In this section, we study how the utilization of domain knowledge resources influence the word cloud visualization. <button class="ref showTableEventRef" data-id="t0001">Table 1</button> shows information about the extracted word cloud terms including terms of domain knowledge resources.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Creating research topic map for NIMS SAMURAI database using natural language processing approach</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Dieb%2C+Sae"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Dieb%2C+Sae"><span class="NLM_given-names">Sae</span> Dieb</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Amano%2C+Kou"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Amano%2C+Kou"><span class="NLM_given-names">Kou</span> Amano</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tanabe%2C+Kosuke"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanabe%2C+Kosuke"><span class="NLM_given-names">Kosuke</span> Tanabe</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Daitetsu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Daitetsu"><span class="NLM_given-names">Daitetsu</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ishii%2C+Masashi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ishii%2C+Masashi"><span class="NLM_given-names">Masashi</span> Ishii</a> <a href="https://orcid.org/0000-0003-0357-2832"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tanifuji%2C+Mikiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanifuji%2C+Mikiko"><span class="NLM_given-names">Mikiko</span> Tanifuji</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/27660400.2021.1899426">https://doi.org/10.1080/27660400.2021.1899426</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 April 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Terms extracted for word cloud visualization and topic map creation including domain knowledge terms. Publications are the sum of all retrieved publications for each author</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F27660400.2021.1899426&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>From <button class="ref showTableEventRef" data-id="t0001">Table 1</button>, domain knowledge terms make up approximately 5.7% of all the terms in the generated word clouds and 7.8% of the unique terms. Chemical compounds make up approximately 5.5% of all terms and 7.5% of the unique terms. This confirms the importance of the extraction of chemical compounds in representing materials science research because many material names exist in their chemical compounds form. By contrast, measurement related resources in this study did not contribute to representing the output of the researchers. Measurement terms make up less than 0.5% of the total and unique extracted terms. <button class="ref showTableEventRef" data-id="t0002">Table 2</button> shows the most frequent domain knowledge terms in the generated word cloud.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Creating research topic map for NIMS SAMURAI database using natural language processing approach</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Dieb%2C+Sae"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Dieb%2C+Sae"><span class="NLM_given-names">Sae</span> Dieb</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Amano%2C+Kou"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Amano%2C+Kou"><span class="NLM_given-names">Kou</span> Amano</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tanabe%2C+Kosuke"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanabe%2C+Kosuke"><span class="NLM_given-names">Kosuke</span> Tanabe</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Daitetsu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Daitetsu"><span class="NLM_given-names">Daitetsu</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ishii%2C+Masashi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ishii%2C+Masashi"><span class="NLM_given-names">Masashi</span> Ishii</a> <a href="https://orcid.org/0000-0003-0357-2832"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tanifuji%2C+Mikiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanifuji%2C+Mikiko"><span class="NLM_given-names">Mikiko</span> Tanifuji</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/27660400.2021.1899426">https://doi.org/10.1080/27660400.2021.1899426</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 April 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Top domain knowledge terms extracted for word cloud visualization and topic map creation</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F27660400.2021.1899426&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>To visualize how the utilization of domain knowledge resources affects the research output representation, we compare the word cloud visualization with and without using domain knowledge resources for the same SAMURAI researcher. <a href="#f0005">Figure 5</a> illustrates the differences.</p>
+  <div class="figure figureViewer" id="f0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Creating research topic map for NIMS SAMURAI database using natural language processing approach</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Dieb%2C+Sae"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Dieb%2C+Sae"><span class="NLM_given-names">Sae</span> Dieb</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Amano%2C+Kou"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Amano%2C+Kou"><span class="NLM_given-names">Kou</span> Amano</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tanabe%2C+Kosuke"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanabe%2C+Kosuke"><span class="NLM_given-names">Kosuke</span> Tanabe</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Daitetsu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Daitetsu"><span class="NLM_given-names">Daitetsu</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ishii%2C+Masashi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ishii%2C+Masashi"><span class="NLM_given-names">Masashi</span> Ishii</a> <a href="https://orcid.org/0000-0003-0357-2832"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tanifuji%2C+Mikiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanifuji%2C+Mikiko"><span class="NLM_given-names">Mikiko</span> Tanifuji</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/27660400.2021.1899426">https://doi.org/10.1080/27660400.2021.1899426</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> Comparison of word cloud visualization with and without using domain knowledge resources for the same researcher.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0005image" src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/medium/tstm_a_1899426_f0005_oc.jpg" loading="lazy" height="175" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> Comparison of word cloud visualization with and without using domain knowledge resources for the same researcher.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0005">
+   <div class="figureFootNote-f0005"></div>
+  </div>
+  <p></p>
+  <p>This presented researcher is currently affiliated with both the Electric and Electronic Materials Field, Nano Electronics Device Materials Group, Research Center for Functional Materials, and the Quantum Beam Field, Synchrotron X-ray Group, Research Center for Advanced Measurement and Characterization. From <a href="#f0005">Figure 5</a>, we confirmed that the use of domain knowledge resources generated terms that were unable to be found through a normal frequent terms analysis.</p>
+ </div>
+ <div id="s0003-s2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i27">3.4. Researcher correlation analysis</h3>
+  <p>In order to validate the word cloud results, we analyzed the correlation of SAMURAI researchers who belong to different research centers within NIMS using clustering techniques. Researchers who belong to the same center are expected to have a stronger correlation with each other and a weaker correlation with researchers in different centers. We selected two centers, namely, the Research Center for Magnetic and Spintronic Materials in NIMS, and the Research Center for Advanced Measurement and Characterization. SAMURAI members with no publications available in NIMS repositories are not included.</p>
+  <p>The word cloud for these researchers was generated using the proposed approach described in <a href="#s0002">Section 2</a>. Using these word cloud terms and their relative importance values, a vector for each researcher is created. We used two methods to perform clustering on these vectors. The first is the K-means algorithm [<span class="ref-lnk lazy-ref"><a data-rid="cit0041" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>41</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0042" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>42</a></span>], where a multidimensional dataset is grouped into K number of clusters using the concept in which a cluster center is the arithmetic mean of all its data points. We set K to 2 because we have two different research centers. The second method is the agglomerative clustering, which is a ‘bottom-up’ approach of hierarchical clustering [<span class="ref-lnk lazy-ref"><a data-rid="cit0043" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>43</a></span>], in which each data point starts as a cluster, and merged as it moves up the hierarchy. There are different ways to determine how clusters are merged. In our setting, we use the ward linkage that minimizes the variance of the clusters being merged using the euclidean metric. The number of clusters is also set to 2. <a href="#f0006">Figure 6</a> shows the clustering results using both methods. To produce a 2D plot, the high dimensionality of the dataset is reduced using the truncated singular value decomposition (T-SVD) method. T-SVD is a matrix decomposition method suitable for applications with a sparse dataset [<span class="ref-lnk lazy-ref"><a data-rid="cit0044" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>44</a></span>] such as our data.</p>
+  <div class="figure figureViewer" id="f0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Creating research topic map for NIMS SAMURAI database using natural language processing approach</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Dieb%2C+Sae"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Dieb%2C+Sae"><span class="NLM_given-names">Sae</span> Dieb</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Amano%2C+Kou"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Amano%2C+Kou"><span class="NLM_given-names">Kou</span> Amano</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tanabe%2C+Kosuke"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanabe%2C+Kosuke"><span class="NLM_given-names">Kosuke</span> Tanabe</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Daitetsu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Daitetsu"><span class="NLM_given-names">Daitetsu</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ishii%2C+Masashi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ishii%2C+Masashi"><span class="NLM_given-names">Masashi</span> Ishii</a> <a href="https://orcid.org/0000-0003-0357-2832"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tanifuji%2C+Mikiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanifuji%2C+Mikiko"><span class="NLM_given-names">Mikiko</span> Tanifuji</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/27660400.2021.1899426">https://doi.org/10.1080/27660400.2021.1899426</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 6. </span> Clustering results for researchers with two different affiliations in NIMS based on their word cloud. Data points are projected on 2D using truncated singular value decomposition.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0006image" src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/medium/tstm_a_1899426_f0006_oc.jpg" loading="lazy" height="203" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0006">
+   <p class="captionText"><span class="captionLabel">Figure 6. </span> Clustering results for researchers with two different affiliations in NIMS based on their word cloud. Data points are projected on 2D using truncated singular value decomposition.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0006">
+   <div class="figureFootNote-f0006"></div>
+  </div>
+  <p></p>
+  <p>We evaluate the quality of the clustering from internal and external perspectives. An internal evaluation is used to compare the performance of different algorithm on clustering the same dataset, whereas an external evaluation is used to evaluate the clustering results using known class labels for the data points. We use the three following metrics:</p>
+  <div class="quote">
+   <p>• Davies–Bouldin index [<span class="ref-lnk lazy-ref"><a data-rid="cit0045" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>45</a></span>] is used for the internal evaluation, which is given by <a href="#m0003">Equation (3)</a> as follows:</p>
+  </div> <disp-formula-group>
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_m0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      D
+     </mi><mi>
+      B
+     </mi><mi>
+      I
+     </mi><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mn>
+        1
+       </mn>
+       <mi>
+        n
+       </mi>
+      </mfrac>
+     </mrow><mrow>
+      <munderover>
+       <mo movablelimits="false">
+        ∑
+       </mo>
+       <mn>
+        1
+       </mn>
+       <mi>
+        n
+       </mi>
+      </munderover>
+     </mrow><mi>
+      m
+     </mi><mi>
+      a
+     </mi><mi>
+      x
+     </mi><mo stretchy="false">
+      (
+     </mo><mi>
+      j
+     </mi><mo>
+      ≠
+     </mo><mi>
+      i
+     </mi><mo stretchy="false">
+      )
+     </mo><mo stretchy="false">
+      (
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           σ
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msub>
+        </mrow>
+        <mo>
+         +
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           σ
+          </mi>
+          <mi>
+           j
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         s
+        </mi>
+        <mi>
+         t
+        </mi>
+        <mi>
+         a
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         c
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           c
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msub>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           c
+          </mi>
+          <mi>
+           j
+          </mi>
+         </msub>
+        </mrow>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mrow>
+      </mfrac>
+     </mrow><mo stretchy="false">
+      )
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+  </disp-formula-group>
+  <p></p>
+  <p>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0032.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0032.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      n
+     </mi>
+    </math></span> is the number of clusters, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0033.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0033.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        c
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> is the centroid of cluster <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0034.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0034.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      i
+     </mi>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0035.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0035.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        σ
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> is the average distance of all elements in cluster <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0036.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0036.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      i
+     </mi>
+    </math></span> to the centroid. Clustering algorithm that produces clusters with low intra-cluster distances and high inter-cluster distances will have a lower Davies–Bouldin index, so a smaller Davies–Bouldin index is better.</p>
+  <div class="quote">
+   <p>• The purity (external metric), which measures the extent to which clusters contain a single class [<span class="ref-lnk lazy-ref"><a data-rid="cit0046" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>46</a></span>], is given by <a href="#m0004">Equation (4)</a> as follows:</p>
+  </div> <disp-formula-group>
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_m0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      P
+     </mi><mi>
+      u
+     </mi><mi>
+      r
+     </mi><mi>
+      i
+     </mi><mi>
+      t
+     </mi><mi>
+      y
+     </mi><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mn>
+        1
+       </mn>
+       <mi>
+        N
+       </mi>
+      </mfrac>
+     </mrow><mrow>
+      <munder>
+       <mo movablelimits="false">
+        ∑
+       </mo>
+       <mrow>
+        <mi>
+         m
+        </mi>
+        <mo>
+         ∈
+        </mo>
+        <mi>
+         M
+        </mi>
+       </mrow>
+      </munder>
+     </mrow><mi>
+      m
+     </mi><mi>
+      a
+     </mi><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         ∈
+        </mo>
+        <mi>
+         D
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <mo>
+       |
+      </mo>
+     </mrow><mi>
+      m
+     </mi><mo>
+      ∩
+     </mo><mi>
+      d
+     </mi><mrow>
+      <mo>
+       |
+      </mo>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+  </disp-formula-group>
+  <p></p>
+  <p>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0037.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0037.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      N
+     </mi>
+    </math></span> is the number of data points, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0038.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0038.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      M
+     </mi>
+    </math></span> is the set of clusters, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0039.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_ilm0039.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      D
+     </mi>
+    </math></span> is a set of known classes for the data points.</p>
+  <p>• The Adjusted Rand index ARI (external metric) measures how similar the clusters are to the known class labels [<span class="ref-lnk lazy-ref"><a data-rid="cit0047" data-reflink="_i35 _i36" href="#"><span class="off-screen">Citation</span>47</a></span>]. It is adjusted from RI score for chance. RI is given by <a href="#m0005">Equation (5)</a>: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_m0005.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0005" class="disp-formula-label">(5) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       R
+      </mi><mi>
+       I
+      </mi><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mi>
+          r
+         </mi>
+         <mi>
+          u
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mspace width="thickmathspace"></mspace>
+         <mi>
+          p
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          v
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mo>
+          +
+         </mo>
+         <mi>
+          t
+         </mi>
+         <mi>
+          r
+         </mi>
+         <mi>
+          u
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mspace width="thickmathspace"></mspace>
+         <mi>
+          n
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          g
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          v
+         </mi>
+         <mi>
+          e
+         </mi>
+        </mrow>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mi>
+          r
+         </mi>
+         <mi>
+          u
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mspace width="thickmathspace"></mspace>
+         <mi>
+          p
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          v
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mo>
+          +
+         </mo>
+         <mi>
+          t
+         </mi>
+         <mi>
+          r
+         </mi>
+         <mi>
+          u
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mspace width="thickmathspace"></mspace>
+         <mi>
+          n
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          g
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          v
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mo>
+          +
+         </mo>
+         <mi>
+          f
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          l
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mspace width="thickmathspace"></mspace>
+         <mi>
+          p
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          v
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mo>
+          +
+         </mo>
+         <mi>
+          f
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          l
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mspace width="thickmathspace"></mspace>
+         <mi>
+          n
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          g
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          v
+         </mi>
+         <mi>
+          e
+         </mi>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0005" class="disp-formula-label">(5) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>Since the true labels are known, true positive, true negative, false positive, and false negative can be computed against the ground truth. Then ARI can be computed from RI using <a href="#m0006">Equation (6)</a> <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_m0006.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tstm20/2021/tstm20.v001.i01/27660400.2021.1899426/20220704/images/tstm_a_1899426_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0006" class="disp-formula-label">(6) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       A
+      </mi><mi>
+       R
+      </mi><mi>
+       I
+      </mi><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <mi>
+          R
+         </mi>
+         <mi>
+          I
+         </mi>
+         <mo>
+          −
+         </mo>
+         <mi>
+          E
+         </mi>
+         <mi>
+          x
+         </mi>
+         <mi>
+          p
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            d
+           </mi>
+           <mrow>
+            <mi>
+             R
+            </mi>
+            <mi>
+             I
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mi>
+          m
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          x
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <mi>
+          R
+         </mi>
+         <mi>
+          I
+         </mi>
+         <mo stretchy="false">
+          )
+         </mo>
+         <mo>
+          −
+         </mo>
+         <mi>
+          E
+         </mi>
+         <mi>
+          x
+         </mi>
+         <mi>
+          p
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            d
+           </mi>
+           <mrow>
+            <mi>
+             R
+            </mi>
+            <mi>
+             I
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0006" class="disp-formula-label">(6) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>ARI is then will have a value close to 0.0 for random labeling</p>
+  <p><button class="ref showTableEventRef" data-id="t0003">Table 3</button> contains the evaluation metric values for both clustering methods. We can confirm that agglomerative clustering performed better on our dataset from internal evaluation point of view; however, K-means had a better performance from the external evaluation perspective. The high purity in both methods showed a high correlation between researchers affiliated with the same center (same class). The adjusted Rand index of the K-means clustering showed a 70% accuracy, eliminating the possibility that the accuracy occurred simply by chance.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Creating research topic map for NIMS SAMURAI database using natural language processing approach</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Dieb%2C+Sae"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Dieb%2C+Sae"><span class="NLM_given-names">Sae</span> Dieb</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Amano%2C+Kou"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Amano%2C+Kou"><span class="NLM_given-names">Kou</span> Amano</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Tanabe%2C+Kosuke"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanabe%2C+Kosuke"><span class="NLM_given-names">Kosuke</span> Tanabe</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Daitetsu"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Daitetsu"><span class="NLM_given-names">Daitetsu</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ishii%2C+Masashi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ishii%2C+Masashi"><span class="NLM_given-names">Masashi</span> Ishii</a> <a href="https://orcid.org/0000-0003-0357-2832"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tanifuji%2C+Mikiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tanifuji%2C+Mikiko"><span class="NLM_given-names">Mikiko</span> Tanifuji</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/27660400.2021.1899426">https://doi.org/10.1080/27660400.2021.1899426</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 April 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Clustering evaluation metrics: internal and external for 2 groups of researchers in NIMS</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F27660400.2021.1899426&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i33" class="section-heading-2">4. Conclusion and future studies</h2>
+ <p>In this study, we presented an approach to create a topic map for the materials science researchers using natural language processing (NLP). Publications were collected and preprocessed to remove noisy data. Domain knowledge resources and frequent term analysis were utilized to extract the representative terms. We conducted similarity analysis to find links between researchers who share similar research topics leading to construct a topic map for each researcher. This approach was validated on SAMURAI, a researchers database at the National Institute for Materials Science (NIMS), Japan. We confirmed the stronger correlation between researchers with the same affiliation and a weaker correlation with researchers from different affiliations by performing a clustering experiment.</p>
+ <p>In the future, we plan to conduct morphological analysis to improve tokenization efficiency. Another extension is to consider a weighting factor for each researcher based on his position in the author list (for example, corresponding author, first author). In addition, we plan to collect and analyze other types of resources such as research notes. We are also implementing an interactive evaluation and adjustment system. Researchers will be allowed to adjust the level of importance of their own research topics or add new terms.</p>
+</div>

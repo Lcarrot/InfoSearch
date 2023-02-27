@@ -1,0 +1,419 @@
+<div id="S001" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">Introduction</h2>
+ <p>There is a conundrum regarding the diversity of news in the digital age: in spite of the larger variety of news publishers, there does not appear to be a larger variety of news (Boczkowski and De Santos <span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2007</a></span>). One of the explanations for this phenomenon is that a large part of the news across a wide range of news publishers can be traced back to the same news agencies, or wire services. These news agencies thereby act as powerful gatekeepers: their choices in gathering, filtering, and shaping news messages affect the information input of many news publishers, and thereby indirectly have a substantial impact on the information input of citizens (Shoemaker and Vos <span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>).</p>
+ <p>As professional news brokers, news agencies offer news publishers a relatively cheap, reliable, and fast supply of information. Although this can be a boon for the availability of affordable news content, it also restricts the diversity of news in society to the gatekeeping choices of one or several news agencies. This diversity is crucial in a democratic society and a core element in communications policy, because it helps distinguish facts from falsehoods, and ensures that the diversity of viewpoints in society is represented (Napoli <span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>1999</a></span>; Van Cuilenburg <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2007</a></span>). Accordingly, the prominent role of news agencies in the contemporary media landscape “raises issues for news diversity and free speech” (Johnston and Forde <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>, 195).</p>
+ <p>In this paper, we investigate whether the gatekeeping influence of news agencies has increased in the digital age. Specifically, we analyze to what extent print and online editions of five Dutch national newspapers rely on the Algemeen Nederlands Persbureau (ANP), which is the largest and currently only national news agency in the Netherlands. We focus on political news coverage, for which the diversity of information has the most direct implications for the democratic process. Our analysis consists of three parts.</p>
+ <p>First, we analyze whether ANP’s influence on print newspapers has increased over time. Studies suggest that newspapers are becoming more dependent on news agencies (Paterson <span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2005</a></span>; Lewis, Williams, and Franklin <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>), which has mainly been attributed to economic cutbacks in newspapers (Frijters and Velamuri <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2010</a></span>). However, more research is needed on the influence of individual news agencies within specific national contexts (see, e.g., Johnston and Forde <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>; Boyd-Barrett <span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2010</a></span>) and over time. We analyze the influence of ANP on the print newspapers in three disjoint years (1996, 2008, 2013) covering two periods of economic turmoil: the economic recession and financial crisis that emerged in 2000 and 2008, respectively.</p>
+ <p>Second, we compare the influence of ANP on the print and online editions of newspapers in the first half of 2013. Online news publishers seem to rely more on news agencies, mainly because of the difficulty of making profit from online news and the quick paced 24/7 news cycle (Klinenberg <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2005</a></span>; Johnston and Forde <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>). We could not find studies that compared print and online newspapers, which is an interesting comparison because it provides “a window into how new journalistic forms emerge in the context of existing ones” (Boczkowski and De Santos <span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2007</a></span>, 167–168). Furthermore, we found no figures on just how quickly paced this news cycle is. We address this gap by measuring the average time for an online newspaper to adopt a news agency article. If this time is indeed short, it puts additional weight to the argument that time pressure is an important reason for online newspapers to rely on news agencies. In addition, this information is relevant for studies that aim to model intermedia dynamics.</p>
+ <p>Finally, we investigate how the shared dependence of Dutch national newspapers on ANP affects the diversity of news content. This consequence is often assumed, but not analyzed empirically. Whether this is the case depends on the range of information offered by ANP, the extent to which newspapers rely on ANP, and the news selection choices of the newspapers. We measure how often different newspapers are influenced by the same ANP articles.</p>
+ <p>For our analyses we used a computational text analysis, based on techniques from the fields of information retrieval (IR) and natural language processing (NLP). This allows us to measure the cross-time similarity of news content across news organizations at the level of events. The use of IR and NLP techniques to measure document similarity is well established (Bagga and Baldwin <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>1998</a></span>; Salton and Harman <span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2003</a></span>), and similar techniques have on several occasions been used in communication research (e.g., Landauer and Dumais <span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>1997</a></span>; Van Atteveldt <span class="ref-lnk lazy-ref"><a data-rid="CIT0046" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>). Yet, the use of document similarity measures appears to have received little attention in communication studies as a tool to measure interactions between news organizations. We discuss the advantages of this approach compared to other approaches, and facilitate its application in communication studies by providing scripts and instructions to apply it using the open-source statistical package R.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">The Gatekeeping Role of News Agencies</h2>
+ <p>The influence of news agencies on society can be conceptualized in terms of gatekeeping. Shoemaker and Vos (<span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>1</a></span>) define gatekeeping broadly as “the process of culling and crafting countless bits of information into the limited number of messages that reach people each day.” The people that perform this culling and crafting are referred to as gatekeepers. By controlling society’s supply of news, gatekeepers have a strong influence on society’s perception of relevant developments and the interpretation of these developments.</p>
+ <p>The more news publishers rely on a news agency as a source of news, the more influence the news agency has as a gatekeeper (McNelly <span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>1959</a></span>). News publishers might filter, re-interpret, and add new elements to the messages they obtain from news agencies, but the news agencies largely determine the agenda. This raises several concerns. For one, it has been argued that this can harm the quality of news, because journalists often blindly rely on the facts presented in news agency messages, but news agencies do not always uphold journalistic standards for checking sources (Davies <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>; Forde and Johnston <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2013</a></span>). Another concern is that the shared reliance of newspapers on the same news agency can harm the diversity of news content. The importance of diversity in the news has been well established in the communication literature, and is a core element in communications policy (Napoli <span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>1999</a></span>; Van Cuilenburg <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2007</a></span>). In the Netherlands, where one news agency is dominant and used by almost all major newspapers, diversity could indeed be in peril.</p>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">Newspapers and News Agencies</h2>
+ <p>In 2008, Davies (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>) released the book <i>Flat Earth News</i>, in which he painted an alarming picture of the increased reliance of United Kingdom (UK) newspapers on news agencies. Based on a study by Lewis, Williams, and Franklin (<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>), he claimed that no less than 70 percent of the news stories in the five most prestigious Fleet Street titles (i.e., popular London newspapers) were direct copies (30 percent) or rewrites (19 percent) of news agency articles, or at least contained elements (21 percent) from them (Davies <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>, 74). The concern that newspapers have become too dependent on news agencies is also shared in other countries, for instance in Australia (Johnston and Forde <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>) and the Netherlands (Scholten and Ruigrok <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>).</p>
+ <p>The increased reliance on news agency copy has mainly been attributed to economic cutbacks (Frijters and Velamuri <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2010</a></span>). Journalists are pressured to spend less time gathering and investigating information, and instead just “take it off the wires and knock it into shape” (journalist quoted in Davies <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>, 75). A survey of UK journalists showed that they indeed “felt that the pressure to produce a high number of stories daily has intensified, and that this increased their reliance on recycling material rather than reporting independently” Lewis et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>, 4).</p>
+ <p>The reliance on news agencies appears to be even stronger for online editions of newspapers (Johnston and Forde <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>), which is alarming given the increasing popularity of online news consumption. The literature offers two main explanations for this difference. Firstly, economic constraints are higher for online newspapers due to the difficulty of making money from online news. Many users are not willing to pay for online content (Chyi <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2005</a></span>). Online newspapers therefore often rely solely on advertising, believing that “the revenue they could gain from content charging would be less than what they would lose in advertising” (Herbert and Thurman <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2007</a></span>, 213). Some newspapers have experimented with paywalls, but this was often not a viable business model (Arrese <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2015</a></span>)—though recently there have been more successful cases such as the <i>New York Times</i> (see, e.g., Cook and Attari <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2012</a></span>). Given these economic difficulties, the reliance on news agency copy is likely to be high to reduce expenses.</p>
+ <p>Secondly, the influence of news agencies on online newspapers is boosted by the speed of the online news cycle. Online news can be published 24/7, which has created “an informational environment in which there is always breaking news to produce, consume, and—for reporters and their subjects—react against” (Klinenberg <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2005</a></span>, 54). Johnston and Forde (<span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>195</a></span>–<span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>196</a></span>) argue that this acceleration leads to “an even greater reliance on news agency copy than perhaps at any other time in news media history.”</p>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">News Agencies in the Netherlands</h2>
+ <p>In this paper we focus on a single news agency, ANP. ANP was founded in 1934 by the Association of the Dutch Daily Press (De Nederlandse Dagbladpers) as a joint effort of the national newspapers to create a quick and independent source of news facts. Since it became a private limited company in 2001, newspaper publishers gradually divested ownership. Since 2010 ANP has been owned by the investment company V-Ventures (Rutten and Slot <span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>).</p>
+ <p>The disjunction of ANP and the newspaper publishers opened up the market for new competition. In 2001 the news agency Novum was founded. Together with GPD—which was founded in 1936, and mainly provided news for regional newspapers—there were now three national news agencies. This competition eventually proved fatal. GPD ended its long history of service in 2013 after it lost an important client. Novum was taken over by ANP in 2014.</p>
+ <p>This shows that, even if newspapers have become more dependent on external news gatherers, the digital age is certainly not a golden age for news agencies. One of the main problems is that digital technology has made it much easier for news publishers to monitor and use news agency content without paying for it, by monitoring other websites, possibly using Web crawlers and Rich Site Summary (RSS) feed (Rutten and Slot <span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>). Copyright law provides limited protection against this indirect use of news agency content due to the press exception—an exception in Dutch copyright law that allows news organizations to use each other’s news, at least in terms of bare facts (Guibault <span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2012</a></span>). This greatly harms the value of news agency subscriptions, which depend on the exclusivity of information.</p>
+ <p>Together with competition from Novum, this caused significant economic cutbacks for ANP, due to which a large part of the workforce was fired after 2009 (Rutten and Slot <span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>; Ebisch <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2012</a></span>). Despite these developments, ANP remained to be the largest news agency in the Netherlands during our study, and is currently the only national news agency. Except for the newspaper <i>NRC Handelsblad</i> in 2013, all national newspapers subscribed to ANP during the years analyzed in this paper.</p>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i6" class="section-heading-2">The Influence of ANP on Dutch Newspapers</h2>
+ <p>Studies that looked for traces of news agency copy in Dutch national newspapers confirmed that news agencies are an important source of information (Heijmans et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>; Scholten and Ruigrok <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>). Scholten and Ruigrok (<span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>) focused specifically on ANP, and found that for nine prominent Dutch newspapers in 2008, on average 27.6 percent of the articles were copies or rewrites of ANP content.</p>
+ <p>Scholten and Ruigrok (<span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>) also found some evidence that the influence of ANP increased between 2006 and 2008. Other than that, there have been no longitudinal studies that compare the influence of ANP over time. Based on the theory that the influence of news agencies has increased due to economic cutbacks, we expect that this influence has increased more over a longer period of time.</p>
+ <p>Newspaper companies in the Netherlands experienced two substantial economic cutbacks during the last two decades (Bakker and Scholten <span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>). One is the economic recession that started in 2000, and the other is the financial crisis of 2008. Bakker (<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2016</a></span>) reports that since 2000, newspapers’ circulation has decreased by 40 percent, harming both sales and advertising incomes. Bakker and Scholten (<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>) report that in all major newspaper concerns hundreds of job positions were eliminated, especially between 2008 and 2011. To analyze the impact of these developments, we compare the influence of ANP on print newspapers across these periods, focusing on three years: 1996, 2008, and 2013.</p>
+ <div class="quote">
+  <p><b>H1:</b> The influence of ANP on political news in the Dutch national print newspapers increased between 1996 and 2013.</p>
+ </div>
+ <p></p>
+ <p>Prior studies in the Netherlands did not measure the influence of ANP on the online editions of newspapers. In Australia, Johnston and Forde (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>) found that two online daily newspapers rely heavily on news agency copy. In the Breaking News section, all stories in newspaper <i>The Age</i> were news agency copy, and for the newspaper <i>The Daily Telegraph</i> this was the case for at least 80 percent of the news. In the United States, Paterson (<span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2005</a></span>) found that news from online content producers on average contained between 43 and 60 percent verbatim copy of news agency text. Overall, these indications of news agency influence are much higher compared to those for print newspapers.</p>
+ <p>In the Netherlands we expect to find similar results, mostly due to the difficult economic situation of Dutch online newspapers. In 2012, Christian van Thillo, CEO of media company De Persgroep, stated that the free model—generating income through advertising only—does not work (van Soest <span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2012</a></span>). Despite announcements of experiments with paywalls (Van der Laan <span class="ref-lnk lazy-ref"><a data-rid="CIT0049" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2013</a></span>), no lasting solutions appear to have been found, and during the period in which we analyzed the online newspapers (the first half of 2013) the free model was still used. This struggle to make online newspapers profitable, together with the theory that reliance on news agency copy is higher due to the 24/7 online news cycle (Johnston and Forde <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>), leads to the following hypothesis:</p>
+ <div class="quote">
+  <p><b>H2:</b> The influence of ANP on political news in online editions of Dutch national newspapers is stronger than the influence on the print editions.</p>
+ </div>
+ <p></p>
+ <p>To look closer into the influence of the 24/7 news cycle, we also measure the time it takes for online newspapers to respond to ANP publications. We did not find prior research that measured this, but the theory suggests that online newspapers will copy news agency items as quickly as possible. We pose the following research question:</p>
+ <div class="quote">
+  <p><b>RQ1:</b> What is the average time for online newspapers to adopt an ANP article?</p>
+ </div>
+ <p></p>
+ <p>If news publishers are influenced by the same news agency, this potentially affects the diversity of news content. Whether this is the case depends on the amount of news supplied by the news agency, the amount of news required by the newspaper, and the newspaper’s news selection criteria. Put simply, if the news agency publishes sufficient news items, and newspapers select different items to cover, then their shared reliance on the news agency does not affect the diversity of news. We thus pose the following research question:</p>
+ <div class="quote">
+  <p><b>RQ2:</b> To what extent are newspapers influenced by the same ANP articles?</p>
+ </div>
+ <p></p>
+</div>
+<div id="S006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i7" class="section-heading-2">Data</h2>
+ <p>We collected the news articles of the print and online editions of five national newspapers from the Netherlands: <i>De Telegraaf</i>, <i>Algemeen Dagblad</i>, <i>De Volkskrant</i>, <i>Trouw</i>, and <i>NRC Handelsblad</i>. For the news agency (ANP) and the print newspapers we gathered all articles from the LexisNexis database for three disjoint years: 1996, 2008, and 2013. LexisNexis contains a complete archive of the national newspapers used in this study back to 1996, which we therefore used as the starting point for our longitudinal analysis. Only <i>De Telegraaf</i> was not available this far back, which is therefore only used for the comparison between print and online news in 2013. For the online newspapers, we gathered all articles for the first half of 2013 using a Web-scraping algorithm. If articles were updated, we used the initial publication time, since we are interested in the time at which an event is first covered. For the news agency, updates were also filtered out.</p>
+ <p>To focus the analysis on political news, we used a search query to select only news articles that mention Dutch political parties. All types of newspaper articles were sampled, including columns and briefs. We also included ANP articles that did not match the search query, but that addressed the same event as a newspaper article that did, because we found that newspapers often added quotes or statements from politicians to add a political context to news agency items.</p>
+ <p>In total 848,479 news articles were collected, of which 59,687 were selected as political news and used in the analysis. The number of articles per medium is presented in <button class="ref showTableEventRef" data-id="T0001">Table 1</button>. There is a notable increase in ANP articles between 1996 and 2008. This is consistent with Rutten and Slot (<span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>), who mentioned that in the five years leading up to 2011, ANP produced about 40 percent more output than before. The decrease between 2008 and 2013 is likely related to economic cutbacks (Rutten and Slot <span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>; Ebisch <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2012</a></span>). Also notable is the low amount of news articles on the website of <i>NRC Handelsblad</i>. Unlike most online newspapers, <i>NRC Handelsblad</i> mainly provides longer background stories instead of short news updates.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A Gatekeeper among Gatekeepers</span>
+  <h2>
+   <div class="subtitle">
+    News agency influence in print and online newspapers in the Netherlands
+   </div></h2>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Welbers%2C+Kasper"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Welbers%2C+Kasper"><span class="NLM_given-names">Kasper</span> Welbers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=van+Atteveldt%2C+Wouter"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Atteveldt%2C+Wouter"><span class="NLM_given-names">Wouter</span> van Atteveldt</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kleinnijenhuis%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kleinnijenhuis%2C+Jan"><span class="NLM_given-names">Jan</span> Kleinnijenhuis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ruigrok%2C+Nel"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ruigrok%2C+Nel"><span class="NLM_given-names">Nel</span> Ruigrok</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/1461670X.2016.1190663">https://doi.org/10.1080/1461670X.2016.1190663</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>30 June 2016
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>TABLE 1 Total number of news articles per year</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F1461670X.2016.1190663&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+</div>
+<div id="S007" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i9" class="section-heading-2">Methodology</h2>
+ <p>Ideally, one would be able to learn about the influence of a news agency on a newspaper article from explicit source references, such as author information or hyperlinks (see, e.g., Johnston and Forde <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>; Meraz <span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>). The problem is that this information is often inaccurate. Lewis, Williams, and Franklin (<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>) studied five United Kingdom (UK) newspapers, and found that while only 1 percent of news articles mention news agencies as a source, more than half of the news could actually be traced back to news agencies, with about 30 percent being near exact copies. Print newspapers in particular are often reluctant to mention news agencies, presumably because this “dilutes the authority of a newspaper” (Matheson <span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2004</a></span>, 458). In the Netherlands, the number of articles in print newspapers that can be traced back to a news agency also appears to be higher than the number of articles that explicitly refers to ANP (Scholten and Ruigrok <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>).</p>
+ <p>Meraz (<span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>) used time-series analysis as an alternative to hyperlink analysis as a method to analyze the intermedia influence of blogs and newspapers (also see Hollanders and Vliegenthart <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>; Vliegenthart and Walgrave <span class="ref-lnk lazy-ref"><a data-rid="CIT0051" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>). Influence is then measured in terms of Granger (<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>1988</a></span>) causality, or predictive causality; as the extent to which the attention for a news item in one medium can be predicted based on the recent attention for this item in another medium.</p>
+ <p>Similarly, to analyze to what extent newspapers adopt stories from news agencies, we want to measure whether newspaper coverage of specific events can be traced back to prior news agency coverage of these events. This introduces two complications. The first is content analysis. To code all news items at the level of events would require an enormous effort. All news items would have to be coded inductively, and coders would need to be able to distinguish a huge number of codes (one for each event). The second complication is that this data cannot be analyzed with common time-series models. Time-series analysis requires repeated measurements over time, but media attention for specific events generally only lasts one or a few days.</p>
+ <p>We therefore use an alternative approach. Using a document similarity measure, we measure for each newspaper article how similar it is to recent news agency articles (the similarity measure is discussed in the next section). This type of approach was also used by Scholten and Ruigrok (<span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>) and Paterson (<span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2005</a></span>), who measured the similarity of news articles as the percentage of overlapping word <i>n</i>-grams (i.e., sets of <i>n</i> consecutive words). Influence is then measured based on the extent to which newspapers contain verbatim copy from news agencies, which is akin to scanning for plagiarism.</p>
+ <p>An important difference of our approach is that we used a different similarity measure, one that allows us to also account for the fact that news agency influence does not necessarily result in verbatim copy. Journalists can also use the information from a news agency article to write an entirely new article. Furthermore, news agencies can <i>set the agenda</i> of journalists: influencing only what journalists consider to be “the important issues for debate or consideration,” without determining specifically what to say (Boyle <span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2001</a></span>). To measure influence on this more subtle level, we calculated the similarity of news articles based on the most distinguishing nouns and proper names in the headline and lead of the article. The resulting similarity score indicates whether articles address the same event. We use this to measure the influence of ANP on a newspaper as the proportion of newspaper articles for which the event was earlier covered by ANP.</p>
+ <p>A general limitation of content analysis based approaches for measuring influence in news diffusion is that content similarities can also result from journalists using the same sources. Thus, even if traces of news agency copy are found in an article, this does not prove that the article would not have been published if the news agency rejected it. This is particularly the case for press releases and public relations material, which journalists can often easily obtain without relying on a news agency.</p>
+ <p>Nevertheless, previous studies show that journalists also often rely on news agencies for press releases and public relations material (Lewis, Williams, and Franklin <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>). Also, even if a news agency is not the only possible source of certain information for journalists, it does make this information more accessible and lends legitimacy to it (Forde and Johnston <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2013</a></span>). Accordingly, notwithstanding the aforementioned limitation, traces of news agency content in newspaper articles provide useful insight into the gatekeeping influence of news agencies, as also demonstrated below in our validity tests.</p>
+ <div id="S007-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">Measuring Document Similarity</h3>
+  <p>To measure the similarity of documents, we use the vector space model approach (Salton and Harman <span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2003</a></span>). The first step of this approach is to decide which elements of documents are used to represent them as vectors. We used a bag-of-words approach, which means that we only look at word occurrence. More specifically, we only look at the nouns and proper names, which we extracted using an NLP technique called part-of-speech tagging.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>1</sup></a></span> Proper names refer to unique, named entities, such as specific people, organizations, and locations, and thus contain much information to distinguish events in news content. We also used normal nouns, because news articles also often describe events using unnamed actors and things, such as in the sentence: “a young man stole a bicycle.” To ignore different word forms (e.g., singular versus plural) we used lemmatization to reduce words to their morphological root form.</p>
+  <p>To focus on the main event of a news article, we only used the headline and first five sentences, based on the domain knowledge that newspaper articles generally have an inverted pyramid structure—the who, what, and where are immediately introduced (Knobloch et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2004</a></span>). We did not delete low-frequency words because these can be very informative about specific events. Of the high-frequency words, that occurred in more than 1 percent of all articles, we manually deleted words that were not informative about events, such as temporal location expressions (e.g., yesterday) and author information.</p>
+  <p>Next, we weight the vectors. Turney and Pantel (<span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2010</a></span>, 156) explains that “The idea of weighting is to give more weight to surprising events and less weight to expected events,” which is important because “surprising events, if shared by two vectors, are more discriminative of the similarity between the vectors than less surprising events.” Thus, we want to give more weight to rare words than common words. For this we use the term-frequency inverse document frequency (tf.idf), which is a classic weighting scheme and recommended standard in information retrieval (Monroe, Colaresi, and Quinn <span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>).</p>
+  <p>The similarity of documents can now be measured based on how close they are together in the vector space. A common measure used in information retrieval is the cosine of the angle between vectors. Since there are no negative values in our document vectors, the cosine similarity measure ranges from 0 (zero similarity) to 1 (identical).</p>
+ </div>
+ <div id="S007-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">Measuring Influence</h3>
+  <p>We compared each political newspaper article to all news agency articles that were published within two days before the newspaper article. If this similarity score is higher than a certain threshold (determined in the validity section) then the news agency article is considered to likely have influenced the newspaper article.</p>
+  <p>The two-day time-frame was used because we assume that if a newspaper is influenced by a news agency article this happens in the short term—which we also demonstrate for online news. For print newspapers, we took into account that the ANP article had to be published before the newspaper is pressed, which is midnight for most newspapers, and in the morning for the afternoon newspaper <i>NRC Handelsblad</i>. For online newspapers, we did not impose a similar publication delay, because we also found exact copies of ANP articles that were published simultaneously by ANP and the online newspaper. Furthermore, we subtracted one hour from the ANP publication time because we found that some articles that are certainly ANP copies—they were identical, and some also credited ANP—were published before the ANP publication time in our data.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0002" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>2</sup></a></span></p>
+ </div>
+ <div id="S007-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">Validity and Similarity Threshold</h3>
+  <p>To determine whether documents address the same event, we need to decide on a threshold for the similarity score. There is no logical default for this threshold, and the most useful threshold—that is best at measuring what we want to measure—will differ depending on the data and research question. To determine the most useful threshold for our study, we performed two tests to measure the validity of our similarity measure at various thresholds.</p>
+  <p>By validity we mean the extent to which the results of the computational approach correspond to a gold standard (i.e. results that are assumed to be correct). For the first gold standard, we drew six samples of 75 pairs of newspaper and ANP documents with different levels of similarity. These document pairs were manually coded by a coder who did not see the similarity scores. The coder had to select from one of three options: the documents address unrelated events, different but related events, or the same event. If documents address the same event, the coder also coded whether the documents are (partial) copies, which was assisted by highlighting identical seven-word phrases. Although for this study we are not interested in articles with different but related events, we added this category for additional insight into the performance of the similarity measure.</p>
+  <p>The results are presented in <a href="#F0001">Figure 1</a>. We see that document pairs with similarity scores above 0.4 very often address the same event, and above 0.6 are often (partial) copies. Similarity scores below 0.2 generally indicate that documents address different events, and between 0.2 and 0.4 the results are more ambiguous, with many documents addressing different but related events.</p>
+  <div class="figure figureViewer" id="F0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A Gatekeeper among Gatekeepers</span>
+    <h2>
+     <div class="subtitle">
+      News agency influence in print and online newspapers in the Netherlands
+     </div></h2>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Welbers%2C+Kasper"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Welbers%2C+Kasper"><span class="NLM_given-names">Kasper</span> Welbers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=van+Atteveldt%2C+Wouter"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Atteveldt%2C+Wouter"><span class="NLM_given-names">Wouter</span> van Atteveldt</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kleinnijenhuis%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kleinnijenhuis%2C+Jan"><span class="NLM_given-names">Jan</span> Kleinnijenhuis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ruigrok%2C+Nel"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ruigrok%2C+Nel"><span class="NLM_given-names">Nel</span> Ruigrok</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/1461670X.2016.1190663">https://doi.org/10.1080/1461670X.2016.1190663</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>30 June 2016
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">FIGURE 1 </span> Document similarity scores versus manual codings of document similarity</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/rjos20/2018/rjos20.v019.i03/1461670x.2016.1190663/20171212/images/medium/rjos_a_1190663_f0001_b.gif" loading="lazy" height="131" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0001">
+   <p class="captionText"><span class="captionLabel">FIGURE 1 </span> Document similarity scores versus manual codings of document similarity</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0001">
+   <div class="figureFootNote-F0001"></div>
+  </div>
+  <p></p>
+  <p>To determine the most suitable threshold, we calculated the precision and recall scores at different levels of similarity. Precision is the proportion of pairs with a similarity score above the threshold that are actually similar (based on the gold standard). Recall is the proportion of actually similar pairs that have a similarity score above the threshold. For reference, we added Cohen’s Kappa, which is a common inter-coder reliability measure.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0003" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>3</sup></a></span> The performance of the computational approach is only good if both scores are high, which can be measured as their harmonic mean, called the F1 score. These results are presented in <a href="#F0002">Figure 2</a>. For events, the F1 score is highest at a threshold of 0.4 (F1 = 0.89, Kappa = 0.78). Both values indicate that the computational measurement of events is good. The measurement of (partial) copy is also good at a threshold of 0.7 (F1 = 0.87, Kappa = 0.82). For reference, a threshold of 0.2 would provide a good measurement of whether documents at least address related events (F1 = 0.86, F1 = 0.85).</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A Gatekeeper among Gatekeepers</span>
+    <h2>
+     <div class="subtitle">
+      News agency influence in print and online newspapers in the Netherlands
+     </div></h2>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Welbers%2C+Kasper"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Welbers%2C+Kasper"><span class="NLM_given-names">Kasper</span> Welbers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=van+Atteveldt%2C+Wouter"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Atteveldt%2C+Wouter"><span class="NLM_given-names">Wouter</span> van Atteveldt</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kleinnijenhuis%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kleinnijenhuis%2C+Jan"><span class="NLM_given-names">Jan</span> Kleinnijenhuis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ruigrok%2C+Nel"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ruigrok%2C+Nel"><span class="NLM_given-names">Nel</span> Ruigrok</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/1461670X.2016.1190663">https://doi.org/10.1080/1461670X.2016.1190663</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>30 June 2016
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">FIGURE 2 </span> Precision, recall, F1, and Cohen’s Kappa for two gold standards</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/rjos20/2018/rjos20.v019.i03/1461670x.2016.1190663/20171212/images/medium/rjos_a_1190663_f0002_b.gif" loading="lazy" height="247" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">FIGURE 2 </span> Precision, recall, F1, and Cohen’s Kappa for two gold standards</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <p></p>
+  <p>The first gold standard shows how the computational similarity score relates to a human interpretation of similarity, but does not show how well this enables us to measure whether a newspaper article is actually based on an ANP article. To test this, we used the data for the online newspaper <i>Trouw</i>. <i>Trouw</i> appears to be reliably consistent in crediting sources, and 66 percent of their articles explicitly credit ANP. Thus, we use this explicit reference to ANP as our second gold standard.</p>
+  <p>The results are presented in the right-hand panel of <a href="#F0002">Figure 2</a>. Here we see that the results are good when using a threshold of 0.4 (F1 = 0.90, Kappa = 0.67) and even better when using a threshold of 0.7 (F1 = 0.91, Kappa = 0.75). This indicates that <i>Trouw</i> articles that credit ANP as a source are often (partial) copies. Interestingly, precision is clearly lower when using a threshold of 0.4, which indicates that there are quite a few <i>Trouw</i> articles that address an event that was earlier covered by ANP, but do not explicitly credit ANP as a source. As discussed in the section on measuring news agency influence, it is still possible that in these cases ANP was a source, or at least a factor in the news selection process. We found some indication of this: <i>Trouw</i> often covered these articles very shortly after they were published by ANP, as we show in the Results section. In addition, we also found some articles that were (partial) copies of ANP articles but did not credit ANP, indicating that source references in <i>Trouw</i> are not 100 percent reliable—which also means that the precision of our measurement is in truth higher.</p>
+  <p>In summary, the first validity test verifies that the similarity score is a valid measurement of whether a newspaper article contains an event or textual passages that previously occurred in a news agency article. The second test verifies that, at least for one online newspaper, this measurement corresponds to the actual use of ANP as a source. The 0.4 threshold appears to be the best measure for whether articles address the same event, and the 0.7 threshold indicates that one article is the (partial) copy of the other. We report our results using both thresholds, as two complementing measures of influence.</p>
+ </div>
+</div>
+<div id="S008" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i15" class="section-heading-2">Results</h2>
+ <p>The results are presented in three parts. First, the influence of ANP on print newspapers over time is analysed. Second, the influence of ANP on print and online news is compared. Third, homogeneity as a result of newspapers adopting the same news agency items is measured.</p>
+ <div id="S008-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i16">Influence of ANP on Print Newspapers Over Time</h3>
+  <p>The left-hand panel in <a href="#F0003">Figure 3</a> presents the influence of ANP on the print newspapers in 1996, 2008, and 2013, measured as the proportion of newspaper articles in which the event can be traced back to a news agency article. Overall, we see that this lies around 31 percent, ranging from 29 to 36 percent. In comparison to Scholten and Ruigrok (<span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>), who found an average of 27.6 percent ANP-based articles across newspapers in 2008, our results are slightly higher for that year. This is likely because we look for similarity in terms of events, whereas Scholten and Ruigrok focused on verbatim quotes.</p>
+  <div class="figure figureViewer" id="F0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A Gatekeeper among Gatekeepers</span>
+    <h2>
+     <div class="subtitle">
+      News agency influence in print and online newspapers in the Netherlands
+     </div></h2>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Welbers%2C+Kasper"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Welbers%2C+Kasper"><span class="NLM_given-names">Kasper</span> Welbers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=van+Atteveldt%2C+Wouter"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Atteveldt%2C+Wouter"><span class="NLM_given-names">Wouter</span> van Atteveldt</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kleinnijenhuis%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kleinnijenhuis%2C+Jan"><span class="NLM_given-names">Jan</span> Kleinnijenhuis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ruigrok%2C+Nel"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ruigrok%2C+Nel"><span class="NLM_given-names">Nel</span> Ruigrok</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/1461670X.2016.1190663">https://doi.org/10.1080/1461670X.2016.1190663</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>30 June 2016
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">FIGURE 3 </span> Proportion of articles that can be traced back to ANP per newspaper per year</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/rjos20/2018/rjos20.v019.i03/1461670x.2016.1190663/20171212/images/medium/rjos_a_1190663_f0003_b.gif" loading="lazy" height="168" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0003">
+   <p class="captionText"><span class="captionLabel">FIGURE 3 </span> Proportion of articles that can be traced back to ANP per newspaper per year</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0003">
+   <div class="figureFootNote-F0003"></div>
+  </div>
+  <p></p>
+  <p>If we look at the results using a cosine threshold of 0.7, we zoom in on newspaper articles that are likely to be copies or rewrites of ANP articles. The average percentage drops to about 9 percent, and differs more strongly across newspapers. Most noticeable is a sharp decrease in influence on <i>NRC Handelsblad</i> in 2013. This makes sense, because in 2010 this newspaper broke their contract with ANP, meaning that it can no longer publish verbatim copies of ANP content. The articles that do match an ANP article at this level of similarity are mainly short articles that contain the same quotes from politicians as reported by ANP, meaning that its possible but not certain that ANP is an (indirect) source.</p>
+  <p>Interestingly, even though <i>NRC Handelsblad</i> was no longer subscribed to ANP in 2013, many of the events it covered can be traced back to ANP, as seen in the results using the 0.4 threshold. To some extent, this can simply be the result of coincidence: ANP publishes faster than <i>NRC Handelsblad</i>, so if they independently cover the same event then ANP is faster to report it. But, it should also be taken into account that <i>NRC Handelsblad</i> can indirectly rely on ANP by monitoring news publishers that do have a subscription (which, as discussed, is also legal to do due to the press exception in copyright law). Also, journalists tend to monitor the work of their colleagues to gather information and to confirm their own sense of news (Gans <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>1979</a></span>). Since <i>NRC Handelsblad</i> is an afternoon newspaper, this can include news from the morning newspapers.</p>
+  <p>Looking at the changes over time, there is a clear increase between 1993 and 2008 in all four newspapers in the proportion of articles traced back to ANP. Though essentially we analysed the whole population, we also calculated whether the differences between proportions are significant based on a binomial distribution. This is the case for both measurements of influence: in terms of events (<i>p</i> &lt; 0.001) and in terms of partial copy (<i>p</i> &lt; 0.01).</p>
+  <p>Between 2008 and 2013 we did not see an increase, and in some cases even a significant decrease. This could be related to economic cutbacks within ANP, as discussed in the section on news agencies in the Netherlands. Note, for instance, that the number of political ANP articles decreased during this period. In combination with many free online sources that depend almost exclusively on ANP for information, this harms the exclusivity of ANP. <i>NRC Handelsblad</i> stated this as a main reason for breaking off their contract with ANP (Van Vulpen <span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2010</a></span>). Other newspapers might have responded by looking for more alternative affordable sources of information. Studies show, for instance, that journalists increasingly use the internet for news gathering (Borden and Harvey <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2013</a></span>; Lecheler and Kruikemeier <span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2015</a></span>).</p>
+  <p>If we compare 1996 to 2013 for the measurement based on similar events, we still see a significant increase in all newspapers (<i>p</i> &lt; 0.01). For the measurement based on partial copy this is also the case for <i>Algemeen Dagblad</i> (<i>p</i> &lt; 0.001). Thus, we still find evidence of an increase in ANP influence between 1993 and 2013, based on which we accept H1.</p>
+ </div>
+ <div id="S008-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">Influence of ANP on Online Newspapers</h3>
+  <p><a href="#F0004">Figure 4</a> presents the influence of ANP on the print and online newspapers in the first half of 2013. Looking at the results for similarity scores above 0.7, we see that the websites often publish (near) exact copies of ANP articles. The only exception is <i>NRC Handelsblad</i>, but this makes sense since it was not subscribed to ANP in 2013. These results provide strong support for H2: news agency reliance is stronger for online newspapers.</p>
+  <div class="figure figureViewer" id="F0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A Gatekeeper among Gatekeepers</span>
+    <h2>
+     <div class="subtitle">
+      News agency influence in print and online newspapers in the Netherlands
+     </div></h2>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Welbers%2C+Kasper"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Welbers%2C+Kasper"><span class="NLM_given-names">Kasper</span> Welbers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=van+Atteveldt%2C+Wouter"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Atteveldt%2C+Wouter"><span class="NLM_given-names">Wouter</span> van Atteveldt</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kleinnijenhuis%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kleinnijenhuis%2C+Jan"><span class="NLM_given-names">Jan</span> Kleinnijenhuis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ruigrok%2C+Nel"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ruigrok%2C+Nel"><span class="NLM_given-names">Nel</span> Ruigrok</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/1461670X.2016.1190663">https://doi.org/10.1080/1461670X.2016.1190663</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>30 June 2016
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">FIGURE 4 </span> Proportion of print and online articles that can be traced back to ANP in the first half of 2013</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/rjos20/2018/rjos20.v019.i03/1461670x.2016.1190663/20171212/images/medium/rjos_a_1190663_f0004_b.gif" loading="lazy" height="166" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0004">
+   <p class="captionText"><span class="captionLabel">FIGURE 4 </span> Proportion of print and online articles that can be traced back to ANP in the first half of 2013</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0004">
+   <div class="figureFootNote-F0004"></div>
+  </div>
+  <p></p>
+  <p>Next, we investigate the time it takes for online newspapers to respond to ANP publications. The results are presented in <a href="#F0005">Figure 5</a>. If a newspaper article matched with multiple ANP articles—for instance, if multiple ANP articles cover the same event—then only the strongest match was used to calculate the time difference. As explained, we subtracted one hour from the ANP publication time in the previous analyses. For the current analysis we used the original publication times, and if the newspaper article was published within one hour before ANP, then the response time was set to 0.</p>
+  <div class="figure figureViewer" id="F0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A Gatekeeper among Gatekeepers</span>
+    <h2>
+     <div class="subtitle">
+      News agency influence in print and online newspapers in the Netherlands
+     </div></h2>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Welbers%2C+Kasper"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Welbers%2C+Kasper"><span class="NLM_given-names">Kasper</span> Welbers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=van+Atteveldt%2C+Wouter"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Atteveldt%2C+Wouter"><span class="NLM_given-names">Wouter</span> van Atteveldt</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kleinnijenhuis%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kleinnijenhuis%2C+Jan"><span class="NLM_given-names">Jan</span> Kleinnijenhuis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ruigrok%2C+Nel"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ruigrok%2C+Nel"><span class="NLM_given-names">Nel</span> Ruigrok</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/1461670X.2016.1190663">https://doi.org/10.1080/1461670X.2016.1190663</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>30 June 2016
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">FIGURE 5 </span> Time between an online newspaper article and the news agency article to which it can be traced back</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/rjos20/2018/rjos20.v019.i03/1461670x.2016.1190663/20171212/images/medium/rjos_a_1190663_f0005_b.gif" loading="lazy" height="165" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0005">
+   <p class="captionText"><span class="captionLabel">FIGURE 5 </span> Time between an online newspaper article and the news agency article to which it can be traced back</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0005">
+   <div class="figureFootNote-F0005"></div>
+  </div>
+  <p></p>
+  <p>The results clearly show that online newspapers most often adopt an ANP article within one hour—at least 75 percent, except for <i>NRC Handelsblad</i>. For partial copies this was even above 85 percent. For all newspapers combined, the average response time (RQ1), measured as the median,<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0004" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>4</sup></a></span> is 14 minutes for same-event articles and 12 minutes for partial copies. Overall, this supports the role of ANP in the quick-paced online news cycle in the Netherlands.</p>
+ </div>
+ <div id="S008-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i21">Homogeneity in Adopting ANP Articles</h3>
+  <p>To investigate the impact of ANP on content homogeneity, we analyzed what proportion of a newspaper’s articles can be traced back to the same ANP articles as another newspaper’s articles. For the sake of parsimony, we only report the results for the analysis at the level of events. The results are presented in <a href="#F0006">Figure 6</a>. Scores represent proportions for the newspapers in the rows. For example, the cell in the second row, first column indicates that 33 percent of the articles in the print edition of <i>De Volkskrant</i> can be traced back to ANP articles that also influenced the print edition of <i>Algemeen Dagblad</i>.</p>
+  <div class="figure figureViewer" id="F0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A Gatekeeper among Gatekeepers</span>
+    <h2>
+     <div class="subtitle">
+      News agency influence in print and online newspapers in the Netherlands
+     </div></h2>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Welbers%2C+Kasper"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Welbers%2C+Kasper"><span class="NLM_given-names">Kasper</span> Welbers</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=van+Atteveldt%2C+Wouter"><span class="hlFld-ContribAuthor"></span></a><a href="/author/van+Atteveldt%2C+Wouter"><span class="NLM_given-names">Wouter</span> van Atteveldt</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kleinnijenhuis%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kleinnijenhuis%2C+Jan"><span class="NLM_given-names">Jan</span> Kleinnijenhuis</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ruigrok%2C+Nel"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ruigrok%2C+Nel"><span class="NLM_given-names">Nel</span> Ruigrok</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/1461670X.2016.1190663">https://doi.org/10.1080/1461670X.2016.1190663</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>30 June 2016
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">FIGURE 6 </span> Proportions of a newspaper’s (rows) ANP-influenced articles that also influenced another newspaper (columns)</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0006image" src="/na101/home/literatum/publisher/tandf/journals/content/rjos20/2018/rjos20.v019.i03/1461670x.2016.1190663/20171212/images/medium/rjos_a_1190663_f0006_b.gif" loading="lazy" height="288" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0006">
+   <p class="captionText"><span class="captionLabel">FIGURE 6 </span> Proportions of a newspaper’s (rows) ANP-influenced articles that also influenced another newspaper (columns)</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0006">
+   <div class="figureFootNote-F0006"></div>
+  </div>
+  <p></p>
+  <p>These results contain our answer to RQ2, and several findings are particularly interesting. Firstly, we see a clear cluster of strong proportions between the online newspapers, in particular between <i>Algemeen Dagblad</i>, <i>De Volkskrant</i>, and <i>Trouw</i>. It is notable that these three newspapers are all owned by De Nederlandse Persgroep. In 2011, a central editorial board was formed that would manage the general news for their online editions (Nu <span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>). This largely explains why their similarity in the use of ANP articles is higher than 90 percent. Given that, except for <i>NRC Handelsblad</i>, all newspapers depend strongly on ANP, as seen in <a href="#F0004">Figure 4</a>, we conclude that their shared dependence on ANP indeed harms the diversity of their political news coverage.</p>
+  <p>Secondly, we see that among print newspapers these proportions are clearly lower. Most are below 30 percent, and the strongest proportions are found for <i>De Volkskrant</i> towards <i>Trouw</i> (41 percent) and <i>NRC Handelsblad</i> (42 percent). Overall, this signifies that print newspapers largely filter ANP news in different ways. Thus, the diversity of news in print newspapers does not appear to suffer much from their shared dependence on ANP.</p>
+ </div>
+</div>
+<div id="S009" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i23" class="section-heading-2">Conclusion</h2>
+ <p>In this paper we analyzed the influence of a single news agency, ANP, on political news coverage in print and online newspapers in the Netherlands. The first part of our analysis focused on changes in the influence of ANP on political news in print newspapers between 1996, 2008, and 2013. We observed an increase between 1996 and 2013, which can be explained by economic cutbacks that force newspapers to cut back on news-gathering expenses. But we also found that its influence decreased between 2008 and 2013, despite severe economic cutbacks for newspapers within this period. A potential explanation for this decrease is that newspapers have become less satisfied with the exclusivity offered by their ANP subscription (Van Vulpen <span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2010</a></span>; Rutten and Slot <span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2011</a></span>). In response, print newspapers might have turned more to alternative affordable sources, in particular using the internet (Borden and Harvey <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2013</a></span>; Lecheler and Kruikemeier <span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2015</a></span>). More research focusing on this period is required to find out whether this is the case, and could provide important insights in the seemingly fragile position of news agencies in the contemporary media landscape.</p>
+ <p>In the second part of our analysis we compared the influence of ANP on political news in print and online newspapers in the first half of 2013. Our results clearly verify that the online editions depend more on ANP than the print editions. For the four newspapers with ANP subscriptions, we found that between 50 and 75 percent of political news consisted of (partial) copies of ANP articles. Also, we found strong empirical support for a high-speed online news cycle: about 85 percent of (partial) copies were published within one hour after ANP. Note that in addition to theoretical implications, this finding has important methodological implications for time-series studies on the interactions of online news publishers. It underlines the need for models that are able to capture interactions at the level of minutes.</p>
+ <p>The third part of our analysis focused on how the shared dependence of newspapers on ANP affected the diversity of political news across newspapers. We found that print newspapers were often influenced by different ANP articles. Online newspapers, however, were often influenced by the same articles, which in combination with their strong dependence on ANP copy substantially harms the diversity of their political news coverage.</p>
+ <p>More generally, we believe that this signifies an important difference in the market logic for print and online news. Whereas diversity is an important area for competition between print newspapers, online diversity appears to be sacrificed for the sake of speed. Other studies already pointed out that in online newsrooms the pressure to be first suppresses the pressure to be right (Johnston and Forde <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>). Our study adds that it also suppresses the pressure to be diverse.</p>
+ <p>Based on these findings, we conclude that the news agency ANP has indeed become a more influential gatekeeper regarding political news in the Netherlands. In recent decades, its influence appears to have increased due to economic cutbacks in newspapers, and even more so as a result of the growing popularity of internet technology as a news medium. Notwithstanding the importance of ANP as a news gatherer, this raises concerns for the diversity of news.</p>
+ <p>It is important to note that we did not investigate the quality of journalistic work within ANP, nor did we investigate how well newspaper journalists check the reliability of news agency content. The harm to the the quality of news, as Davies (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2008</a></span>) claimed to observe in the United Kingdom, might not apply in the Netherlands. To conclude whether the strong influence of ANP also harms the quality of news content, additional studies are required that look into these journalistic practices.</p>
+ <p>In this paper, we used two complementary measures of influence, and each has an important limitation. Regarding the first measure: if an event is first covered by the news agency and later covered by a newspaper then there is not necessarily a causal relation. There can be alternative sources from which a news publisher could have learned about an event, and it is generally not possible to take all possible sources into account. Furthermore, if multiple sources covered the event, it is unclear which—if any—causes the news publisher to cover it. To some extent, we can address this problem with the second measure. That is, by looking for explicit traces of influence found in how the article is written, either by using higher levels of document similarity (as in this paper) or by looking for verbatim quotes (see, e.g., Paterson <span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2005</a></span>; Scholten and Ruigrok <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>). The limitation of this measure is that influence does not always leave these explicit traces. Also, even if explicit traces are found, it can still be the case that a journalist wrote the article independently, e.g., if the same quotes from politicians are used. To our best knowledge, these limitations cannot be overcome with only content-analysis data. Still, using both measures as complementary indications of influence appears to be a good way to address these limitations.</p>
+ <p>We found that the use of document similarity scores can be a powerful approach for tracing informational relations between news organizations on a large scale. In this line of research, we only encountered the use of this approach for the purpose of tracing verbatim quotes (Paterson <span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2005</a></span>; Scholten and Ruigrok <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i26" href="#"><span class="off-screen">Citation</span>2009</a></span>). We expanded on this approach by using techniques from the fields of IR and NLP. For future studies we will further explore and improve this approach. Our computer scripts and instructions are available online as the RNewsflow package for the open-source statistical software R.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0005" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>5</sup></a></span> We aim to keep developing this package as a free and accessible tool for the analysis of content homogeneity and news diffusion patterns.</p>
+</div>
+<div id="S010" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i24" class="section-heading-2">DISCLOSURE STATEMENT</h2>
+ <p>No potential conflict of interest was reported by the authors.</p>
+</div>

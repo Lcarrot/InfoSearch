@@ -1,0 +1,371 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">Introduction</h2>
+ <p>The application of artificial intelligence (AI) in libraries garnered much discussion in recent years. As AI applications are in development for libraries and as we learn more about them, AI compels us to reenvision e-resources workflows. For example, AI’s application in some areas of the e-resources lifecycle such as selection, acquisitions, and discovery are of current interest, but any discussion of AI’s role in e-resources license review remains absent.<a href="#en0001"><sup>1</sup></a> Perhaps this presentation can begin the conversation. This presentation focuses on the implementation of the proprietary contract review software, LegalSifter, by a large academic library consortium, Florida Virtual Campus (FLVC), and includes a detailed discussion of their experiences in the middle of a three-year pilot with the software.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">About the Florida Virtual Campus (FLVC)</h2>
+ <p>Established in 2014 by Florida Statute Law (F.S. 1006.73), FLVC provides a variety of services to twenty-eight state colleges and twelve state universities. The E-Resources Unit (Unit) oversees the statewide suite of e-resources funded by legislative allocation valued at $6.8 million. The Unit also manages the opt-in subscription program each year, and in the past two years members invested $2.1 million in 550 opt-in subscriptions from thirty-eight content providers. All subscriptions have a calendar year term, and therefore, many of our agreements have a December 31 termination date. Thus, most contract review and negotiation work is conducted within the same few months, instead of throughout the year.</p>
+ <p>In December 2020, FLVC transferred from the University of West Florida (UWF) to Florida State University (FSU) as their host institution. Now, opt-in subscriptions will all need be licensed as per FSU’s procurement rules and there will be a greater volume of contracts than in years’ past. Faced with the challenge of more contracts with the same number of personnel, FLVC needed a robust solution to ensure contracts were appropriately and consistently reviewed.</p>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">Defining AI</h2>
+ <p>The working definition we will use was proposed in 1955 by one of the founders of the AI discipline, John McCarthy:</p>
+ <div class="quote">
+  <p>It is the science and engineering of making intelligent machines, especially intelligent computer programs. It is related to the similar task of using computers to understand human intelligence, but AI does not have to confine itself to methods that are biologically observable.<a href="#en0002"><sup>2</sup></a></p>
+ </div>
+ <p></p>
+ <p>The definition proposed by McCarthy was crafted for the layperson – those who are unfamiliar with the technology that comprises AI applications. We can also consider a more distilled definition that has relevance for contract review software: AI is a group of technologies that assist computers in making decisions.</p>
+ <p>There are also AI applications that enable expert systems to perform complex tasks and interact with users of AI software. Machine learning (ML) systems “provides the systems’ ability to automatically learn and improve form experience without being explicitly programmed.”<a href="#en0003"><sup>3</sup></a> ML focuses on the development of computer programs that “can access data and us it to learn for themselves.”<a href="#en0004"><sup>4</sup></a> Natural language processing (NLP) is “broadly defined as the automatic manipulation of natural language” by software.<a href="#en0005"><sup>5</sup></a> Both ML and NLP AI applications synergistically work to enable the contract review software to read and interpret contracts. Specifics of this process will be addressed when we discuss the functionality of LegalSifter.</p>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i6" class="section-heading-2">Contract review software</h2>
+ <p>There have been many studies of AI technology and its broad application in the legal field that includes legal work processes once performed by professionals.<a href="#en0006"><sup>6</sup></a> One area of interest is contract review software and its impact on contract review by humans. The software’s ability to find ambiguous conditions, problematic provisions or terms, and the omission of key provisions or terms, is demonstrably more efficient than professionally trained humans.<a href="#en0007"><sup>7</sup></a> A current LegalSifter client aptly referred to complex clauses that are challenging to find in a document as “poison darts” and this person’s comment is a testament that some find this software beneficial. It is important to note that some contract software products also assist with interpretation and analysis that can include a prediction of the potential case outcome by referring to precedented cases. While LegalSifter offers an enhanced version that has these capabilities, these capabilities may not be necessary for either an organization or institution that has access to legal counsel.</p>
+ <p>There is some evidence that there is some interest in AI’s application in procurement and licensing work. Andrew Cox, Stephen Pinfield, and Sophie Rutter presented an analysis of empirical data regarding librarians’ perceptions of how AI may impact academic libraries and indicated that contract review may benefit from AI development.<a href="#en0008"><sup>8</sup></a> Specifically, the authors’ reference to “the procurement and licensing of e-content” appeared in a table that enumerated their recommendations for AI expansion in library functions.<a href="#en0009"><sup>9</sup></a> This is encouraging because contract review is presented as a problem to be solved, at least in part, by AI software.</p>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i7" class="section-heading-2">What problems were we trying to address with contract review software?</h2>
+ <p>The Unit sought a solution for contract review that would enable them to balance other duties while potentially ensuring a quick and precise review and redlining of licenses. Traditional methods of contract review either involving checklists or spreadsheets with the licensors’ terms mapped to FLVC’s preferred terms, were often time-consuming. Using either method would protract the review process; a database agreement could take up to three days to review and redline. Expedient turnaround for review is also critical because all contracts have a December 31 termination date, and therefore, all contracts are handled during the early-late fall as renewals.</p>
+ <p>Lastly, there is a need to train others in the Unit to review contracts. The software has potential to promote active learning as it enables the user to directly engage with the document. The user can view each legal concept in question that is flagged with relevant help text provided by LegalSifter and includes FLVC’s preferred language. In this respect, using the software to assist with contract review could be considered an ancillary benefit to its implementation.</p>
+</div>
+<div id="s0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i8" class="section-heading-2">Selection considerations</h2>
+ <p>While a request for proposal process was not required, FLVC investigated other AI software options, and determined they were more suited for legal professionals and had additional features that were not necessary for e-resources contract review. In short, LegalSifter’s initial development was borne out of a partnership with Carnegie Mellon University, and this relationship helped them gain traction in the higher education market. This, FLVC opted to license LegalSifter because the company has experience working with higher education institutions.</p>
+ <p>FLVC is the first library organization to work with LegalSifter and this bears relevance in the ensuing implementation narrative. The company was interested in partnering with FLVC and they understood the challenges non-legal professionals face with contract review. Most of LegalSifter’s experience is with software contracts, and because e-resources contracts are similar in some respects, the lack of a current e-resources contract document type available in the software was not a deterrent to moving forward with the project. The document type for e-resources contracts was derived from the software-as-a-service (SaaS) document type because there were enough common clause types that could be configured to perform e-resources contract review. Lastly, the subscription price and contract terms were favorable, so FLVC decided to pilot the software for three years.</p>
+</div>
+<div id="s0007" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i9" class="section-heading-2">What is a sifter?</h2>
+ <p>Sifters are AI algorithms that are trained to read text and look for a specific concept.<a href="#en0010"><sup>10</sup></a> They learn from experience and improve over time. The sifters use two types of AI to solve this problem: ML and NLP.<a href="#en0011"><sup>11</sup></a> NLP teaches computers to interpret human language as written, regardless of style. The sifters use NLP to convert text into meaning.<a href="#en0012"><sup>12</sup></a> Sifters are trained with ML to identify a specific concept, such as the American with Disabilities Act as captured in <a href="#f0001">Figure 1</a>.<a href="#en0013"><sup>13</sup></a> Each sifter is included in the e-resources document template.</p>
+ <div class="figure figureViewer" id="f0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Does Artificial Intelligence (AI) Have a Role in E-Resources Licensing?</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Erb%2C+Rachel+A"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Erb%2C+Rachel+A"><span class="NLM_given-names">Rachel A.</span> Erb</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0361526X.2022.2018240">https://doi.org/10.1080/0361526X.2022.2018240</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>05 April 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> Example of a sifter.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/wser20/2022/wser20.v082.i01-04/0361526x.2022.2018240/20220531/images/medium/wser_a_2018240_f0001_b.gif" loading="lazy" height="198" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> Example of a sifter.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0001">
+  <div class="figureFootNote-f0001"></div>
+ </div>
+ <p></p>
+ <p>Sifters are built by a team of attorneys and data scientists.<a href="#en0014"><sup>14</sup></a> LegalSifter’s attorneys find examples of a specific concept by reviewing countless contracts.<a href="#en0015"><sup>15</sup></a> This work enables the sifter to find concepts regardless of how they are expressed in the document. Then, LegalSifter’s Data Science team uses ML to locate concepts despite the variance in writing styles.<a href="#en0016"><sup>16</sup></a> Each sifter is built over a several week process and there are currently over 700 sifters in the software’s library that are available to subscribers.<a href="#en0017"><sup>17</sup></a></p>
+</div>
+<div id="s0008" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i11" class="section-heading-2">LegalSifter and e-resources contracts</h2>
+ <p>In addition to LegalSifter’s developers using the SaaS document type as a foundation for the e-resources document template, FLVC agreed to invest in the following five custom sifters associated with clauses that are required in most of their agreements: accessibility, interlibrary loan, usage statistics, Family Education Rights and Privacy Act (FERPA), and public records/confidentiality. FLVC needed to have a sifter built for public records/confidentiality clauses because all agreements must include language referring to Chapter 119 of the Florida Statutes, commonly known as the Florida Public Records Law. Chapter 119 of the Florida Statutes states that the contract, and any related documents and/or correspondence shall also become a public record subject to the Public Records Law, regardless of any confidentiality provision outlined in an agreement. This sifter will automate checking for the absence of this clause and prompt the reviewer to add this language to the contract.</p>
+ <p>There are, however, a few clauses that lack associated sifters and FLVC did not invest in them due to budgetary constraints. The following e-resources concepts do not have sifters configured: scholarly sharing, coursepacks/course reserves, text and data mining, perpetual access, and archival access. The decision to not have sifters created for scholarly sharing and coursepacks/course reserves was based on the universality of these concepts among librarians; therefore, they would be easy to either locate or include in a document. In the case of text and data mining, perpetual access, and archival access, these were not included because they are most frequently required in e-journal contracts and FLVC negotiates a few of this type of contract. FLVC mostly negotiates database agreements. FLVC developed a checklist for those concepts for which there was not a custom-built sifter. The checklist was placed in the General Advice sifter. General Advice can be used to add additional help text that are not provided by the current sifters. <a href="#f0002">Figure 2</a> shows a General Advice sifter that appears at the top of the sifted document.</p>
+ <div class="figure figureViewer" id="f0002">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Does Artificial Intelligence (AI) Have a Role in E-Resources Licensing?</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Erb%2C+Rachel+A"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Erb%2C+Rachel+A"><span class="NLM_given-names">Rachel A.</span> Erb</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0361526X.2022.2018240">https://doi.org/10.1080/0361526X.2022.2018240</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>05 April 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 2. </span> General advice sifter to serve as checklist.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0002image" src="/na101/home/literatum/publisher/tandf/journals/content/wser20/2022/wser20.v082.i01-04/0361526x.2022.2018240/20220531/images/medium/wser_a_2018240_f0002_b.gif" loading="lazy" height="232" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0002">
+  <p class="captionText"><span class="captionLabel">Figure 2. </span> General advice sifter to serve as checklist.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0002">
+  <div class="figureFootNote-f0002"></div>
+ </div>
+ <p></p>
+</div>
+<div id="s0009" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i13" class="section-heading-2">Sifter custom build example: Accessibility of information technology</h2>
+ <p>There is an existing sifter for the American with Disabilities Act (ADA) but relying on this sifter to catch the presence or absence of concepts related to accessibility poses some unique problems. To ensure that the presence and absence of concepts related to ADA were flagged, FLVC added another sifter, Accessibility of Information Technology. This is because the ADA sifter would ignore sentences that contain the following key words and associated concepts: assistive software, assistive device, web accessibility, product accessibility, accessibility compliant, web content accessibility, Section 508 of the Rehabilitation Act, 29 USC § 794d, VPAT and the initialism of VPAT. Adding those terms to the ADA sifter would not solve this problem because the sifter would ignore sentences that contain these concepts because they would not be present alongside ADA language configured for this sifter. Therefore, FLVC would risk false negatives – the ADA sifter would not flag terms associated with accessibility. On the other hand, having a new sifter built that includes the accessibility concept list presents the possibility of sentences that contain one of the items in the list but in a context unrelated to ADA compliance. Thus, there would be the risk of false positives. FLVC decided to risk false positives if it significantly reduces the risk of false negatives, especially because accessibility is often absent from e-resources license agreements. The sifter with help text that reflects FLVC’s preferred language is illustrated below in <a href="#f0003">Figure 3</a>.</p>
+ <div class="figure figureViewer" id="f0003">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Does Artificial Intelligence (AI) Have a Role in E-Resources Licensing?</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Erb%2C+Rachel+A"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Erb%2C+Rachel+A"><span class="NLM_given-names">Rachel A.</span> Erb</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0361526X.2022.2018240">https://doi.org/10.1080/0361526X.2022.2018240</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>05 April 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 3. </span> Accessibility of information technology sifter.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0003image" src="/na101/home/literatum/publisher/tandf/journals/content/wser20/2022/wser20.v082.i01-04/0361526x.2022.2018240/20220531/images/medium/wser_a_2018240_f0003_b.gif" loading="lazy" height="126" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0003">
+  <p class="captionText"><span class="captionLabel">Figure 3. </span> Accessibility of information technology sifter.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0003">
+  <div class="figureFootNote-f0003"></div>
+ </div>
+ <p></p>
+</div>
+<div id="s0010" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i15" class="section-heading-2">LegalSifter: The sifted contract</h2>
+ <p>Sifting a contract using the software involves logging into the software and selecting the appropriate document type – E-Resources License Agreement – and then uploading the contract (PDF or Word document format) to review after selecting “Continue” as illustrated in <a href="#f0004">Figure 4</a>.</p>
+ <div class="figure figureViewer" id="f0004">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Does Artificial Intelligence (AI) Have a Role in E-Resources Licensing?</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Erb%2C+Rachel+A"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Erb%2C+Rachel+A"><span class="NLM_given-names">Rachel A.</span> Erb</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0361526X.2022.2018240">https://doi.org/10.1080/0361526X.2022.2018240</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>05 April 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 4. </span> Initiating the document review.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0004image" src="/na101/home/literatum/publisher/tandf/journals/content/wser20/2022/wser20.v082.i01-04/0361526x.2022.2018240/20220531/images/medium/wser_a_2018240_f0004_b.gif" loading="lazy" height="199" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0004">
+  <p class="captionText"><span class="captionLabel">Figure 4. </span> Initiating the document review.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0004">
+  <div class="figureFootNote-f0004"></div>
+ </div>
+ <p></p>
+ <p>The software conducts document review for two to five minutes, and once this is completed, the sifted document is ready for the user’s review and redlining as illustrated in <a href="#f0005">Figure 5</a>. The sifted contract used in this example was downloaded from the publisher’s website and is anonymized with a fictitious corporate name and location.</p>
+ <div class="figure figureViewer" id="f0005">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Does Artificial Intelligence (AI) Have a Role in E-Resources Licensing?</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Erb%2C+Rachel+A"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Erb%2C+Rachel+A"><span class="NLM_given-names">Rachel A.</span> Erb</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0361526X.2022.2018240">https://doi.org/10.1080/0361526X.2022.2018240</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>05 April 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 5. </span> Sifted contract.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0005image" src="/na101/home/literatum/publisher/tandf/journals/content/wser20/2022/wser20.v082.i01-04/0361526x.2022.2018240/20220531/images/medium/wser_a_2018240_f0005_b.gif" loading="lazy" height="257" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0005">
+  <p class="captionText"><span class="captionLabel">Figure 5. </span> Sifted contract.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0005">
+  <div class="figureFootNote-f0005"></div>
+ </div>
+ <p></p>
+ <p>Above the editing screen, there are concepts included in red that are not present in the agreement that will need to be checked. Also, note the sifter for “General Advice” can be expanded upon viewing so that the brief checklist of concepts not included in any sifters can display for the user. The user can review and redline the entire agreement using the software as illustrated in <a href="#f0005">Figure 5</a> or the user may export the agreement into Microsoft (MS) Word to perform these tasks. In either case, the user must review each flagged item one by one and either dismiss, accept, and/or modify language in the agreement as per the institution’s requirements. In <a href="#f0006">Figure 6</a>, language addressing accessibility is indicated as absent in the sifted agreement. This is noted at the top of the screen and the required language added in the agreement is noted to the right as “Added Content.” When this agreement is exported into MS Word, any changes made in the editing view of the software are retained.</p>
+ <div class="figure figureViewer" id="f0006">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Does Artificial Intelligence (AI) Have a Role in E-Resources Licensing?</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Erb%2C+Rachel+A"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Erb%2C+Rachel+A"><span class="NLM_given-names">Rachel A.</span> Erb</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0361526X.2022.2018240">https://doi.org/10.1080/0361526X.2022.2018240</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>05 April 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 6. </span> Including missing clause.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0006image" src="/na101/home/literatum/publisher/tandf/journals/content/wser20/2022/wser20.v082.i01-04/0361526x.2022.2018240/20220531/images/medium/wser_a_2018240_f0006_b.gif" loading="lazy" height="149" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0006">
+  <p class="captionText"><span class="captionLabel">Figure 6. </span> Including missing clause.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0006">
+  <div class="figureFootNote-f0006"></div>
+ </div>
+ <p></p>
+ <p>Another example of the sifted document illustrates the software’s ability to catch those “poison darts” that we alluded to earlier. In <a href="#f0007">Figure 7</a>, not only was the presence of “Governing Law” flagged in the review, but also “Jurisdiction.” The latter may not have been easily caught by someone performing a manual review of the document.</p>
+ <div class="figure figureViewer" id="f0007">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Does Artificial Intelligence (AI) Have a Role in E-Resources Licensing?</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Erb%2C+Rachel+A"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Erb%2C+Rachel+A"><span class="NLM_given-names">Rachel A.</span> Erb</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0361526X.2022.2018240">https://doi.org/10.1080/0361526X.2022.2018240</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>05 April 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 7. </span> Flagging of legal concepts.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0007image" src="/na101/home/literatum/publisher/tandf/journals/content/wser20/2022/wser20.v082.i01-04/0361526x.2022.2018240/20220531/images/medium/wser_a_2018240_f0007_b.gif" loading="lazy" height="56" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0007">
+  <p class="captionText"><span class="captionLabel">Figure 7. </span> Flagging of legal concepts.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0007">
+  <div class="figureFootNote-f0007"></div>
+ </div>
+ <p></p>
+ <p>By selecting the arrow pointing downward, we can display the help text as demonstrated in <a href="#f0008">Figure 8</a>. The help text area can be configured to explain concepts and provide sample language for redlining the agreement.</p>
+ <div class="figure figureViewer" id="f0008">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Does Artificial Intelligence (AI) Have a Role in E-Resources Licensing?</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Erb%2C+Rachel+A"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Erb%2C+Rachel+A"><span class="NLM_given-names">Rachel A.</span> Erb</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0361526X.2022.2018240">https://doi.org/10.1080/0361526X.2022.2018240</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>05 April 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 8. </span> Governing law with help text.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0008image" src="/na101/home/literatum/publisher/tandf/journals/content/wser20/2022/wser20.v082.i01-04/0361526x.2022.2018240/20220531/images/medium/wser_a_2018240_f0008_b.gif" loading="lazy" height="142" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0008">
+  <p class="captionText"><span class="captionLabel">Figure 8. </span> Governing law with help text.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0008">
+  <div class="figureFootNote-f0008"></div>
+ </div>
+ <p></p>
+</div>
+<div id="s0011" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i21" class="section-heading-2">LegalSifter performance observations</h2>
+ <p>Consistent with AI software, LegalSifter’s performance improves over time. There are a few minor terms that the software does not consistently flag that are necessary for review. For example, FLVC is currently working with the provider to resolve the software’s inability to consistently flag language associated with authorized users.</p>
+ <p>FLVC also noticed that the user should have some working knowledge of e-resources contracts. The software can be used as a teaching tool for contract review, but only after the user received some training in e-resources licensing review. The software shows great promise in this area.</p>
+ <p>Overall, the use of LegalSifter reduces contract review time. The combined manual review method of involving a checklist and spreadsheet to map concepts would typically require two to three working days for staff to review and redline a contract. The software’s ability to export the sifted document into MS Word enables staff to expediently redline the contract. Now, this process takes approximately two to three hours, depending on the length of the contract.</p>
+</div>
+<div id="s0012" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i22" class="section-heading-2">Conclusion</h2>
+ <p>FLVC is in the process of adding new positions to the Unit and they will need to build capacity for license review. FLVC will use LegalSifter as a training tool for new staff to learn how to review e-resources contracts. FLVC is also interested in time measured studies to gauge if review time is reduced for those with less contract review experience using the software as opposed to other means of reviewing contracts to determine the presence or absence of preferred clauses by using manual methods that include checklists or spreadsheets, or a combination of the two. Ideally, FLVC would like to continue investing in more sifters and not rely on any checklists, but this is dependent on funding and may not be possible in the next year or two. In the meantime, FLVC is looking forward to using the software in the upcoming fiscal year.</p>
+ <p>An audience member seeking to understand the capabilities of LegalSifter posed an important question regarding the system’s ability to interpret “legalese.” The system cannot automatically translate legal terms, but the help text can be modified to include any useful definitions or language needed for the agreement. One of the strengths of AI contract software, such as LegalSifter, is the system’s ability to wade through legal language and flag problematic terms. It is the presenter’s hope that this will begin the conversation about the potential of AI contract review software’s use in libraries.</p>
+</div>

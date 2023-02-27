@@ -1,0 +1,314 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i6" class="section-heading-2">1. Introduction</h2>
+ <p>Informatics techniques have been extensively utilized in the business and industrial fields [<span class="ref-lnk lazy-ref"><a data-rid="cit0001 cit0002 cit0003" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>1–3</a></span>]. In material science fields, machine learning of numerical data such as composition, electrical conductivity, reflective index, solubility, and friction coefficient, and that of processing data such as process temperature and pressure, have increasingly attracting attention [<span class="ref-lnk lazy-ref"><a data-rid="cit0004 cit0005 cit0006" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>4–6</a></span>]. In addition to numerical data, literature data, such as comments on SNS (Social Networking Service) and customer claims have been vigorously analysed with informatics techniques in business fields [<span class="ref-lnk lazy-ref"><a data-rid="cit0007 cit0008 cit0009 cit0010" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>7–10</a></span>]. Informatics techniques on such literature data given in natural languages are called natural language processing (NLP) techniques; they have explosively developed and are applied in social business fields because of the huge data available from websites and SNS. Here, to apply machine learning techniques to natural language, characters or words are converted to numerical data, usually to high-dimensional vectors; this is called embedding. Among the many ways of conversion, Word2Vec [<span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>11</a></span>] attracted sensational attention since it demonstrated that the embedding reflects the meaning of a word. Word2Vec is a simple 1-layer neural network, which does not require many computer resources. Many embeddings by Word2Vec method using corpora from different fields, such as Japanese language, materials science, and bioscience, were made. Embeddings using a corpus from materials science papers, especially focused on inorganic materials, have been made named Mat2Vec [<span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>12</a></span>]. Among scientific abstracts in materials science taken from Elsevier’s Scopus, Science Direct API, and the Springer Nature API, abstracts relevant to inorganic materials science were selected and used as a corpus in Mat2Vec. The successful embedding of meanings from materials science viewpoint was demonstrated [<span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>12</a></span>].</p>
+ <p>Natural language is data with sequence, and the sequence of words is highly important. Therefore, NLP techniques basically use recurrent neural networks (RNNs) with embedded words. Word2Vec is a technique for embedding, which uses words surrounding a target word so that the context is taken into consideration to some extent, but the sequence of words is not considered. Advanced RNN techniques suitable for NLP, such as bidirectional LSTM (Long Short Term Memory) [<span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>13</a></span>] have been developed, however, complicated RNN-based methods require excessive computational resources. Epoch-making methods to simplify the RNN network, transformer, attention, and BERT, have been developed [<span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>14</a></span>]. BERT model is revolutionary because after pre-training (predicting a randomly masked word in two sequential sentences), fine-tuning for many tasks such as given in General Language Understanding Evaluation (GLUE) [<span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>15</a></span>] can be trained with a small dataset. Examples of tasks in GLUE are Q&amp;A, paraphrasing, implicational relation between two sentences, grammatical correctness (CoLA), and sentiment judgment. Because of this feature of BERT, it can be used in various applications. The original BERT used a dictionary that contained 30 M token vocabulary and the pre-training corpus consisted of the BooksCorpus (800 M words) [<span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>16</a></span>] and English Wikipedia (2,500 M words). The corpus used contained general words that are not specified in a certain area. Therefore, many models using the BERT algorithm with a corpus from specific fields have been constructed such as BioBERT (bio-medical) [<span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>17</a></span>], MedBERT [<span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>18</a></span>], SciBERT (bio science 82% + computer science 18%) [<span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>19</a></span>], Japanese BERT [<span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>20</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>21</a></span>], FinBERT (financial) [<span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>22</a></span>], LeagalBERT [<span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>23</a></span>].</p>
+ <p>A BERT model specific to wide area of materials science (inorganic, organic, composite, metal-organic, etc.) was desired for our work to produce a kind of knowledge graph on material property relationships [<span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>24</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>25</a></span>]. Therefore, we started generating a BERT model specific to ‘wide area of materials science’ (MaterialBERT) and reported at a conference [<span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>26</a></span>]. At the moment, we pre-trained using an original BERT except a corpus, which were scientific articles in materials science journals. However, despite huge technical terms specific to a materials science filed, the original vocabulary list released with the original BERT (“vocab.txt” file) contains only very general ones because it was made from the corpus used to pre-train the original BERT. Therefore, we built a vocabulary list specific to materials science from scientific articles in materials science journals and started generating another MaterialBERT using the newly made vocabulary list. Meanwhile, MatSciBERT [<span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>27</a></span>], which is a kind of transfer learning of SciBERT using scientific papers in inorganic materials field (inorganic classes and ceramics, bulk metallic glasses, alloys, and cement and concrete) was posted. Then, MatBERT [<span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>28</a></span>] was posted, which is a variant pre-training BERT in inorganic materials field (both solid state dataset and doping dataset were taken from inorganic materials science and gold nanoparticle dataset). Both MatSciBERT and MatBERT are considered domain-specific to “inorganic materials science”.</p>
+ <p>It was reported [<span class="ref-lnk lazy-ref"><a data-rid="cit0029" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>29</a></span>] that there were no significant differences among BioBERT, SciBERT and MatSciBERT for their sentence classification task of polymer science texts, which is out of inorganic material science. Therefore, it would be useful to generate models specific to materials science in general, not limited to inorganic materials science. Moreover, recently, materials, which cannot be classified by traditional material classes such as inorganic or organic materials, have emerged (composite materials, perovskite solar cell materials, metal organic frameworks, etc.). Due to this situation, not only for our work on knowledge graph, a BERT model that is domain-specific to “wide materials science” could be useful for material-class-interdisciplinary works. If one focuses on phenomena such as fracture and refraction, the scientific principles of the phenomena is common among all classes of materials. In many materials R&amp;D, researchers search materials that satisfy a specific functional characteristic which is based on the corresponding phenomena. Especially in the era of SDGs (Sustainable Development Goals), the replacement of current functional materials with those better fit SDGs is required. Such replacement often occurs beyond the traditional material classes. Furthermore, our MaterialBERT could be used as a starting point for generating a narrower domain-specific BERT model in materials science field by transfer learning.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i7" class="section-heading-2">2. Method</h2>
+ <p>We downloaded and used the original BERT code to train MaterialBERT on our corpus with the same configuration and size as BERT-Base-uncased (12-layer, hidden layer dimension = 768, Total Parameters = 110 M) [<span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>14</a></span>]. Sentence lengths up to 512 tokens were used for pre-training. In addition to the difference of a corpus from the original BERT, a variation in vocabulary list was made. One vocabulary list is the same as that the original BERT used (“vocab.txt file in the github [<span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>30</a></span>], we refer to Original Vocab). The other vocabulary list was made in the following way: first, a vocabulary list was made in the same way as the authors of SciBERT [<span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>19</a></span>] did except the vocabulary size, where the vocabulary list was made during the training of a tokenizer with SentencePiece [<span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>31</a></span>] using our material science corpus. Then, this vocabulary list was added to the original BERT vocabulary list (vocab.txt) and used as a second vocabulary list (we refer to Sentence Vocab). Sentence Vocab contains material-specific words such as bond‐containing, radiation‐absorbed, isothermal, mesoporosity, chromatography, amide‐, acetate‐methanol, alkaline‐metal, α‐methyl‐α‐phenyl, etc. Two MaterialBERT were generated, one with Original Vocab and the other with Sentence Vocab, both with the architecture as the original BERT and with our materials science corpus. The Original Vocab contains about 30 K words and Sentence Vocab contains 140 K words. The embedded words vectors had 200 dimensions.</p>
+ <p>The corpus we used was taken from scientific articles our institute (NIMS) purchased in XML format from nine publishers (ACS, AIP, APS, ELSEVIER, IOP, JJAP, RSC, SPRINGER, WILEY), and most of them were published between 2005 and 2019. Our corpus contains scientific articles not only in inorganic materials but also in organic materials and composite materials. It also includes articles from journals that offer physical and/or chemical basis to phenomena in materials science (often cited in articles on a material papers). The list of the names of the journals, ISSNs and publication years used is provided in the appendix. Materials Science is a very broad field and expanding further year by year. Therefore, the authors did not feel reasonable to use established criteria for choosing articles. Rather, the authors rely on the decision of each journal (manuscripts that are not the criteria of the journal are not accepted). We confirmed that the journals listed in the appendix are materials science related and used all published articles within the specified journal, since BERT need huge corpus. We exclude articles that contained only abstracts (without the main body). Approximately 750,000 articles were included in this study. Only abstract and body sections from article texts were extracted as a cleansing process because parts such as affiliation, acknowledgement, and references become noise in the NLP in our case. Chemical formulae and mathematical expressions (they are not natural language) in the articles were eliminated from the article texts for pre-training. The estimated number of words for approximately 750,000 articles was roughly 3000 M, which is comparable to the original BERT. Each model was trained on two NVIDIA Tesla V100 GPUs and took about three months to complete.</p>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i8" class="section-heading-2">3. Results and discussion</h2>
+ <div id="s0003-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">3.1. Pre-training</h3>
+  <div id="s0003-s2001-s3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i10">3.1.1. Learning curves</h4>
+   <p><a href="#f0001">Figure 1</a> shows the learning curve during the pre-training. Learning using the original vocabulary list (Original Vocab) for the tokenizer is shown in (a), and that using the vocabulary list made from our corpus (Sentence Vocab) is shown in (b). Because the size of the Sentence Vocab (140 M words) is more than four times larger than the Original Vocab (30 M words), the time required for one iteration for (b) is much longer and the iteration end is taken for a much smaller iteration of 143,000 (b) instead of 410,000 (a). Because of the smaller number of iterations, the final loss was larger for (b). If the iterations continued until the numbers were similar to (a), the final loss for (b) would be similar to that of (a).</p>
+   <div class="figure figureViewer" id="f0001">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">MaterialBERT for natural language processing of materials science texts</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Yoshitake%2C+Michiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yoshitake%2C+Michiko"><span class="NLM_given-names">Michiko</span> Yoshitake</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Fumitaka"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Fumitaka"><span class="NLM_given-names">Fumitaka</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kawano%2C+Hiroyuki"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kawano%2C+Hiroyuki"><span class="NLM_given-names">Hiroyuki</span> Kawano</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Teraoka%2C+Hiroshi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Teraoka%2C+Hiroshi"><span class="NLM_given-names">Hiroshi</span> Teraoka</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/27660400.2022.2124831">https://doi.org/10.1080/27660400.2022.2124831</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 September 2022
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 1. </span> Learning curve for pre-training with the original dictionary (a) and the newly made dictionary from our corpus (b).</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2022/tstm20.v002.i01/27660400.2022.2124831/20221212/images/medium/tstm_a_2124831_f0001_b.gif" loading="lazy" height="500" width="302"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-f0001">
+    <p class="captionText"><span class="captionLabel">Figure 1. </span> Learning curve for pre-training with the original dictionary (a) and the newly made dictionary from our corpus (b).</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-f0001">
+    <div class="figureFootNote-f0001"></div>
+   </div>
+   <p></p>
+  </div>
+  <div id="s0003-s2001-s3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i12">3.1.2. Embedding of meaning</h4>
+   <p>The results of the evaluation of word embeddings are presented below. The 200-dimension word vectors of material names were subject of principal component analysis and projected onto a plane with two main components. The results of two sets of word vectors embedded using the two different dictionaries were compared.</p>
+   <div id="s0003-s2001-s3002-s4001" class="NLM_sec NLM_sec_level_4">
+    <h5 class="section-heading-5" id="_i13">3.1.2.1 Clustering of materials</h5>
+    <p>Names of materials such as iron, aluminum, silicon, zinc selenide, zinc oxide, boron nitride, polystyrene, polyvinyl chloride were used for the analysis. Material names such as micelle, supramolecule, which are not classified in usual material classes, were also included as “others”. Words used are listed in <button class="ref showTableEventRef" data-id="t0001">Table 1</button> with a class assigned by clustering. The clustering of word vectors of different types of material names is shown in <a href="#f0002">Figure 2</a>. The word vectors make well-separated clusters according to well-established material classes, such as metals, semiconductors, and polymers [<span class="ref-lnk lazy-ref"><a data-rid="cit0032 cit0033 cit0034" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>32–34</a></span>]. The positions of the clusters themselves do not have a meaning and depend on the vocabulary list used for the tokenizer. This shows that words are well embedded in both MaterialBERT models constructed using the Original Vocab (<a href="#f0002">Figure 2a</a>) and Sentence Vocab (<a href="#f0002">Figure 2b</a>).</p>
+    <div class="figure figureViewer" id="f0002">
+     <div class="hidden figureViewerArticleInfo">
+      <span class="figViewerTitle">MaterialBERT for natural language processing of materials science texts</span>
+      <div class="articleAuthors articleInfoSection">
+       <div class="authorsHeading">
+        All authors
+       </div>
+       <div class="authors">
+        <a class="entryAuthor" href="/action/doSearch?Contrib=Yoshitake%2C+Michiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yoshitake%2C+Michiko"><span class="NLM_given-names">Michiko</span> Yoshitake</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Fumitaka"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Fumitaka"><span class="NLM_given-names">Fumitaka</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kawano%2C+Hiroyuki"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kawano%2C+Hiroyuki"><span class="NLM_given-names">Hiroyuki</span> Kawano</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Teraoka%2C+Hiroshi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Teraoka%2C+Hiroshi"><span class="NLM_given-names">Hiroshi</span> Teraoka</a>
+       </div>
+      </div>
+      <div class="articleLowerInfo articleInfoSection">
+       <div class="articleLowerInfoSection articleInfoDOI">
+        <a href="https://doi.org/10.1080/27660400.2022.2124831">https://doi.org/10.1080/27660400.2022.2124831</a>
+       </div>
+       <div class="articleInfoPublicationDate articleLowerInfoSection border">
+        <h6>Published online:</h6>23 September 2022
+       </div>
+      </div>
+     </div>
+     <div class="figureThumbnailContainer">
+      <div class="figureInfo">
+       <div class="short-legend">
+        <p class="captionText"><span class="captionLabel">Figure 2. </span> Material class captured by word embeddings: two-dimensional projection of the word vectors in the plane with the first and second principal components for 79 materials from different material classes using the original dictionary (a) and the newly made dictionary from our corpus (b). Others are materials such as metal-organic framework and composite material.</p>
+       </div>
+      </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0002image" src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2022/tstm20.v002.i01/27660400.2022.2124831/20221212/images/medium/tstm_a_2124831_f0002_oc.jpg" loading="lazy" height="500" width="280"></a>
+      <div class="figureDownloadOptions">
+       <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+      </div>
+     </div>
+    </div>
+    <div class="hidden rs_skip" id="fig-description-f0002">
+     <p class="captionText"><span class="captionLabel">Figure 2. </span> Material class captured by word embeddings: two-dimensional projection of the word vectors in the plane with the first and second principal components for 79 materials from different material classes using the original dictionary (a) and the newly made dictionary from our corpus (b). Others are materials such as metal-organic framework and composite material.</p>
+    </div>
+    <div class="hidden rs_skip" id="figureFootNote-f0002">
+     <div class="figureFootNote-f0002"></div>
+    </div>
+    <div class="tableViewerArticleInfo hidden">
+     <span class="figViewerTitle">MaterialBERT for natural language processing of materials science texts</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Yoshitake%2C+Michiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yoshitake%2C+Michiko"><span class="NLM_given-names">Michiko</span> Yoshitake</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Fumitaka"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Fumitaka"><span class="NLM_given-names">Fumitaka</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kawano%2C+Hiroyuki"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kawano%2C+Hiroyuki"><span class="NLM_given-names">Hiroyuki</span> Kawano</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Teraoka%2C+Hiroshi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Teraoka%2C+Hiroshi"><span class="NLM_given-names">Hiroshi</span> Teraoka</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/27660400.2022.2124831">https://doi.org/10.1080/27660400.2022.2124831</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 September 2022
+      </div>
+     </div>
+    </div>
+    <div class="tableView">
+     <div class="tableCaption">
+      <div class="short-legend">
+       <h3><p class="captionText"><span class="captionLabel">Table 1. </span> List of words used for material class clustering with a class assigned by clustering.</p></h3>
+      </div>
+     </div>
+     <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+      <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F27660400.2022.2124831&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+     </div>
+    </div>
+    <p></p>
+   </div>
+   <div id="s0003-s2001-s3002-s4002" class="NLM_sec NLM_sec_level_4">
+    <h5 class="section-heading-5" id="_i15">3.1.2.2. Inorganic materials</h5>
+    <p>Word vectors for four typical elements, and their oxides, carbides, and chlorides were subject to principal component analysis, and the vectors were projected onto a plane with two main components. The results are shown in <a href="#f0003">Figure 3</a>. For both models using different dictionaries, elements, oxides, carbides, and chlorides formed clusters. Accordingly, the vectors of oxide formation (oxide of), carbide formation (carbide of), and chloride formation (chloride of) are similar for all four elements. There is a slight difference in the oxide formation vectors between (a) and (b). However, as the vectors are well separated, the difference is not meaningful.</p>
+    <div class="figure figureViewer" id="f0003">
+     <div class="hidden figureViewerArticleInfo">
+      <span class="figViewerTitle">MaterialBERT for natural language processing of materials science texts</span>
+      <div class="articleAuthors articleInfoSection">
+       <div class="authorsHeading">
+        All authors
+       </div>
+       <div class="authors">
+        <a class="entryAuthor" href="/action/doSearch?Contrib=Yoshitake%2C+Michiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yoshitake%2C+Michiko"><span class="NLM_given-names">Michiko</span> Yoshitake</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Fumitaka"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Fumitaka"><span class="NLM_given-names">Fumitaka</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kawano%2C+Hiroyuki"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kawano%2C+Hiroyuki"><span class="NLM_given-names">Hiroyuki</span> Kawano</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Teraoka%2C+Hiroshi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Teraoka%2C+Hiroshi"><span class="NLM_given-names">Hiroshi</span> Teraoka</a>
+       </div>
+      </div>
+      <div class="articleLowerInfo articleInfoSection">
+       <div class="articleLowerInfoSection articleInfoDOI">
+        <a href="https://doi.org/10.1080/27660400.2022.2124831">https://doi.org/10.1080/27660400.2022.2124831</a>
+       </div>
+       <div class="articleInfoPublicationDate articleLowerInfoSection border">
+        <h6>Published online:</h6>23 September 2022
+       </div>
+      </div>
+     </div>
+     <div class="figureThumbnailContainer">
+      <div class="figureInfo">
+       <div class="short-legend">
+        <p class="captionText"><span class="captionLabel">Figure 3. </span> Word embeddings for magnesium, aluminum, silicon, iron, their principal oxides, carbides and chlorides projected onto two dimensions using principal component analysis and represented as points in space. (a) is obtained using the original dictionary and (b) using the newly made dictionary from our corpus. The projected space between (a) and (b) is slightly different but in both space the relative positioning of the words encodes materials science relationships, such that there exist consistent vector operations between words that represent concepts such as ‘oxide of’, ‘carbide of’ and ‘chloride of’.</p>
+       </div>
+      </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0003image" src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2022/tstm20.v002.i01/27660400.2022.2124831/20221212/images/medium/tstm_a_2124831_f0003_oc.jpg" loading="lazy" height="500" width="324"></a>
+      <div class="figureDownloadOptions">
+       <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+      </div>
+     </div>
+    </div>
+    <div class="hidden rs_skip" id="fig-description-f0003">
+     <p class="captionText"><span class="captionLabel">Figure 3. </span> Word embeddings for magnesium, aluminum, silicon, iron, their principal oxides, carbides and chlorides projected onto two dimensions using principal component analysis and represented as points in space. (a) is obtained using the original dictionary and (b) using the newly made dictionary from our corpus. The projected space between (a) and (b) is slightly different but in both space the relative positioning of the words encodes materials science relationships, such that there exist consistent vector operations between words that represent concepts such as ‘oxide of’, ‘carbide of’ and ‘chloride of’.</p>
+    </div>
+    <div class="hidden rs_skip" id="figureFootNote-f0003">
+     <div class="figureFootNote-f0003"></div>
+    </div>
+    <p></p>
+    <p>To examine more elements, word vectors for aluminum, calcium, iron, lithium, magnesium, molybdenum, nickel, silicon, sodium, tantalum, titanium, zinc, and zirconium and their oxides, carbides, and chlorides were also analysed in the same way as described above and shown in <a href="#f0004">Figure 4</a>. For both MaterialBERT models, elements, oxides, carbides, and chlorides formed clusters, as shown in <a href="#f0003">Figure 3</a>.</p>
+    <div class="figure figureViewer" id="f0004">
+     <div class="hidden figureViewerArticleInfo">
+      <span class="figViewerTitle">MaterialBERT for natural language processing of materials science texts</span>
+      <div class="articleAuthors articleInfoSection">
+       <div class="authorsHeading">
+        All authors
+       </div>
+       <div class="authors">
+        <a class="entryAuthor" href="/action/doSearch?Contrib=Yoshitake%2C+Michiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yoshitake%2C+Michiko"><span class="NLM_given-names">Michiko</span> Yoshitake</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Fumitaka"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Fumitaka"><span class="NLM_given-names">Fumitaka</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kawano%2C+Hiroyuki"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kawano%2C+Hiroyuki"><span class="NLM_given-names">Hiroyuki</span> Kawano</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Teraoka%2C+Hiroshi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Teraoka%2C+Hiroshi"><span class="NLM_given-names">Hiroshi</span> Teraoka</a>
+       </div>
+      </div>
+      <div class="articleLowerInfo articleInfoSection">
+       <div class="articleLowerInfoSection articleInfoDOI">
+        <a href="https://doi.org/10.1080/27660400.2022.2124831">https://doi.org/10.1080/27660400.2022.2124831</a>
+       </div>
+       <div class="articleInfoPublicationDate articleLowerInfoSection border">
+        <h6>Published online:</h6>23 September 2022
+       </div>
+      </div>
+     </div>
+     <div class="figureThumbnailContainer">
+      <div class="figureInfo">
+       <div class="short-legend">
+        <p class="captionText"><span class="captionLabel">Figure 4. </span> Word embeddings for 13 elements (lithium, sodium, magnesium, aluminium, silicon, calcium, titanium, iron, nickel, zinc, zirconium, molybdenum, tantalum, and their principal oxides, carbides and chlorides projected onto two dimensions using principal component analysis and represented as points in space. (a) is obtained using the original dictionary and (b) using the newly made dictionary from our corpus.</p>
+       </div>
+      </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0004image" src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2022/tstm20.v002.i01/27660400.2022.2124831/20221212/images/medium/tstm_a_2124831_f0004_oc.jpg" loading="lazy" height="500" width="287"></a>
+      <div class="figureDownloadOptions">
+       <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+      </div>
+     </div>
+    </div>
+    <div class="hidden rs_skip" id="fig-description-f0004">
+     <p class="captionText"><span class="captionLabel">Figure 4. </span> Word embeddings for 13 elements (lithium, sodium, magnesium, aluminium, silicon, calcium, titanium, iron, nickel, zinc, zirconium, molybdenum, tantalum, and their principal oxides, carbides and chlorides projected onto two dimensions using principal component analysis and represented as points in space. (a) is obtained using the original dictionary and (b) using the newly made dictionary from our corpus.</p>
+    </div>
+    <div class="hidden rs_skip" id="figureFootNote-f0004">
+     <div class="figureFootNote-f0004"></div>
+    </div>
+    <p></p>
+   </div>
+   <div id="s0003-s2001-s3002-s4003" class="NLM_sec NLM_sec_level_4">
+    <h5 class="section-heading-5" id="_i18">3.1.2.3. Organic materials</h5>
+    <p>Word vectors of names of organic compounds were analysed using the principal component analysis method. The vectors of organic compounds with different functional groups, alkanes, carboxylic acids, and amines are plotted in <a href="#f0005">Figure 5</a>. The vectors of decane, ethane, heptane, hexane, octane, pentane, and propane, as well as their carboxylic acid derivatives and amine derivatives are plotted. Similar to inorganic compounds, different functional groups form a cluster with each other, and changes in the functional groups for the above seven alkanes can be represented as similar vectors, although the variance is larger than with inorganic materials, possibly because of a large number of similar names in organic compounds in various papers used as a corpus.</p>
+    <div class="figure figureViewer" id="f0005">
+     <div class="hidden figureViewerArticleInfo">
+      <span class="figViewerTitle">MaterialBERT for natural language processing of materials science texts</span>
+      <div class="articleAuthors articleInfoSection">
+       <div class="authorsHeading">
+        All authors
+       </div>
+       <div class="authors">
+        <a class="entryAuthor" href="/action/doSearch?Contrib=Yoshitake%2C+Michiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yoshitake%2C+Michiko"><span class="NLM_given-names">Michiko</span> Yoshitake</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Fumitaka"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Fumitaka"><span class="NLM_given-names">Fumitaka</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kawano%2C+Hiroyuki"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kawano%2C+Hiroyuki"><span class="NLM_given-names">Hiroyuki</span> Kawano</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Teraoka%2C+Hiroshi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Teraoka%2C+Hiroshi"><span class="NLM_given-names">Hiroshi</span> Teraoka</a>
+       </div>
+      </div>
+      <div class="articleLowerInfo articleInfoSection">
+       <div class="articleLowerInfoSection articleInfoDOI">
+        <a href="https://doi.org/10.1080/27660400.2022.2124831">https://doi.org/10.1080/27660400.2022.2124831</a>
+       </div>
+       <div class="articleInfoPublicationDate articleLowerInfoSection border">
+        <h6>Published online:</h6>23 September 2022
+       </div>
+      </div>
+     </div>
+     <div class="figureThumbnailContainer">
+      <div class="figureInfo">
+       <div class="short-legend">
+        <p class="captionText"><span class="captionLabel">Figure 5. </span> Word embeddings for 7 alkanes, and their carboxylic acid, and amine derivatives projected onto two dimensions using principal component analysis and represented as points in space. (a) is obtained using the original dictionary and (b) using the newly made dictionary from our corpus.</p>
+       </div>
+      </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0005image" src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2022/tstm20.v002.i01/27660400.2022.2124831/20221212/images/medium/tstm_a_2124831_f0005_oc.jpg" loading="lazy" height="500" width="279"></a>
+      <div class="figureDownloadOptions">
+       <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+      </div>
+     </div>
+    </div>
+    <div class="hidden rs_skip" id="fig-description-f0005">
+     <p class="captionText"><span class="captionLabel">Figure 5. </span> Word embeddings for 7 alkanes, and their carboxylic acid, and amine derivatives projected onto two dimensions using principal component analysis and represented as points in space. (a) is obtained using the original dictionary and (b) using the newly made dictionary from our corpus.</p>
+    </div>
+    <div class="hidden rs_skip" id="figureFootNote-f0005">
+     <div class="figureFootNote-f0005"></div>
+    </div>
+    <p></p>
+   </div>
+   <div id="s0003-s2001-s3002-s4004" class="NLM_sec NLM_sec_level_4">
+    <h5 class="section-heading-5" id="_i20">3.1.1.3 Organometallics</h5>
+    <p>In <a href="#f0006">Figure 6</a>, word vectors of organometallics are plotted after principal component analysis for <i>R</i>-metal-carbonyl (acetylcobalt tetracarbonyl, acetylmanganese pentacarbonyl, benzene chromium tricarbonyl, butadiene iron tricarbonyl, dicobalt octarbonyl, dimanganese decacarbonyl, ethyl cobalt tetracarbonyl, hexamethyl benzene chromium tricarbonyl, hexamethylborazine chromium tricarbonyl, methyl manganese pentacarbonyl), alkyl-metal (diethylmagnesium, diethylzinc, dimethyl cadmium, dimethyl mercury, dimethyl zinc, methylcopper, tetramethyltin, trimethylgallium, triphenylgallium), and <i>R</i>-lithium (benzyl-lithium, butyl-lithium, ethyl-lithium, methyl-lithium, phenyl-lithium, vinyl-lithium), where R is an abbreviation for any group in which a hydrocarbon chain is attached to the rest of the molecule. Here, for alkyl-metal, “metal” is not lithium but magnesium, cadmium, mercury, zinc, copper, tin, and gallium. The scattering of vectors is similar to that of organic materials in <a href="#f0005">Figure 5</a>, suggesting that the word embeddings with meanings as reasonable as in organic materials are achieved for inorganic-organic complex compounds. Despite a vast variety of materials in organometallics, various R and various metals are possible, listing the names of organometallics appearing in scientific papers (in the corpus) is difficult. Therefore, only a limited number of organometallic compounds were used for the evaluation.</p>
+    <div class="figure figureViewer" id="f0006">
+     <div class="hidden figureViewerArticleInfo">
+      <span class="figViewerTitle">MaterialBERT for natural language processing of materials science texts</span>
+      <div class="articleAuthors articleInfoSection">
+       <div class="authorsHeading">
+        All authors
+       </div>
+       <div class="authors">
+        <a class="entryAuthor" href="/action/doSearch?Contrib=Yoshitake%2C+Michiko"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yoshitake%2C+Michiko"><span class="NLM_given-names">Michiko</span> Yoshitake</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Sato%2C+Fumitaka"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sato%2C+Fumitaka"><span class="NLM_given-names">Fumitaka</span> Sato</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Kawano%2C+Hiroyuki"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kawano%2C+Hiroyuki"><span class="NLM_given-names">Hiroyuki</span> Kawano</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Teraoka%2C+Hiroshi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Teraoka%2C+Hiroshi"><span class="NLM_given-names">Hiroshi</span> Teraoka</a>
+       </div>
+      </div>
+      <div class="articleLowerInfo articleInfoSection">
+       <div class="articleLowerInfoSection articleInfoDOI">
+        <a href="https://doi.org/10.1080/27660400.2022.2124831">https://doi.org/10.1080/27660400.2022.2124831</a>
+       </div>
+       <div class="articleInfoPublicationDate articleLowerInfoSection border">
+        <h6>Published online:</h6>23 September 2022
+       </div>
+      </div>
+     </div>
+     <div class="figureThumbnailContainer">
+      <div class="figureInfo">
+       <div class="short-legend">
+        <p class="captionText"><span class="captionLabel">Figure 6. </span> Word embeddings for organometallics (<i>R</i>-metal-carbonyl, alkyl-metal, and R-lithium, where R means an abbreviation for any group in which a hydrocarbon chain is attached to the rest of the molecule) projected onto two dimensions using principal component analysis and represented as points in space. (a) is obtained using the original dictionary and (b) using the newly made dictionary from our corpus.</p>
+       </div>
+      </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0006image" src="/na101/home/literatum/publisher/tandf/journals/content/tstm20/2022/tstm20.v002.i01/27660400.2022.2124831/20221212/images/medium/tstm_a_2124831_f0006_oc.jpg" loading="lazy" height="500" width="298"></a>
+      <div class="figureDownloadOptions">
+       <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+      </div>
+     </div>
+    </div>
+    <div class="hidden rs_skip" id="fig-description-f0006">
+     <p class="captionText"><span class="captionLabel">Figure 6. </span> Word embeddings for organometallics (<i>R</i>-metal-carbonyl, alkyl-metal, and R-lithium, where R means an abbreviation for any group in which a hydrocarbon chain is attached to the rest of the molecule) projected onto two dimensions using principal component analysis and represented as points in space. (a) is obtained using the original dictionary and (b) using the newly made dictionary from our corpus.</p>
+    </div>
+    <div class="hidden rs_skip" id="figureFootNote-f0006">
+     <div class="figureFootNote-f0006"></div>
+    </div>
+    <p></p>
+   </div>
+  </div>
+ </div>
+ <div id="s0003-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i22">3.2. Fine-tuning</h3>
+  <p>Among GLUE, only CoLA [<span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>35</a></span>] (grammatical correctness of sentences) can be used for the evaluation of MaterialBERT fine-tuning, because grammar does not depend on a specific field but others do depend on fields of texts used for the evaluation. Therefore, fine-tuning was preformed using CoLA. The score of the MaterialBERT model with the original vocabulary list (Original Vocab) was 62.5%, and that with the newly made vocabulary list from our corpus (Sentence Vocab) was 66.2%, which is much higher than the score of the original BERT<sub>BASE</sub> (corresponding to our model) 52.1% [<span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>14</a></span>]. The score of the original BERT<sub>LARGE</sub> (deeper neural network used) was reported 60.5% [<span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>14</a></span>], which is still lower than both MaterialBERTs. It is unknown why MaterialBERTs showed higher score with CoLA, which is nothing to do with materials science. One speculation is that the quality of the corpus used for the pre-training in our corpus, scientific articles were collected from selected scientific journals, which means that the articles are English-corrected and peer-reviewed so that the grammatical correctness of the sentences is high. However, there is no method to characterize a corpus and a evaluation dataset and to measure a kind of distance between them. It is difficult to specify the reason of the higher score.</p>
+  <p>Various different domain-specific BERTs have been generated since fine-tuning results are supposedly related to the overlap of the domain of corpus used for pre-training and that of the evaluation dataset. Results of fine-tuning using datasets and tasks of author’s pick-up are often given as examples, but they do not logically indicate that users would obtain the similar score for their tasks with their datasets. Possibly due to this, FinBERT does not give the score of fine-tuning results of their tasks but offers web-based fine-tuning for sentiment predictions of uploaded users’ text [<span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>36</a></span>].</p>
+  <p>In materials science domain, MatSciBERT and MatBERT, both being pre-trained using corpuses that are domain-specific to materials (in close examination materials out of inorganic materials are not included), used inorganic materials datasets for evaluations [<span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>28</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0037" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>37</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>38</a></span>]. MatSciBERT [<span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>27</a></span>] reported approximately 8% better results on glass vs. non-glass topics classification task using in-house dataset (not disclosed) with their MatSciBERT than SciBERT. On the other hand, for sentence classification tasks of polymer science texts, no differences among BioBERT, SciBERT, and MatSciBERT was reported [<span class="ref-lnk lazy-ref"><a data-rid="cit0029" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>29</a></span>], although MatSciBERT having material texts as a corpus is expected to have some advantages over BioBERT and SciBERT. With the development of tools such as HuggingFace Transformer [<span class="ref-lnk lazy-ref"><a data-rid="cit0039" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>39</a></span>], pre-training models begin to be used by users who want to do some text-mining tasks of their interests but are familiar to neither NLP nor machine learning. In such new circumstances, there are risks that high scores in authors’ fine-tuning examples give misleading information to users that high scores should be obtained by the model for users’ tasks with users’ datasets, which is not guaranteed.</p>
+  <p>With the above reasons, the authors intend to let users assess the fine-tuning effects for their specific tasks by making the present MaterialBERT models publicly available upon the publication of this article. Since there is no logical way to select a proper domain-specific models for a user’s individual task, the authors would like to increase choices by offering the MaterialBERTs.</p>
+  <p>MaterialBERT is expected to be useful for material science domains out of inorganic materials, and especially for NLP tasks that handle items regardless of material types such as inorganic, organic, or composite. Furthermore, MaterialBERT could be used as a starting point for transfer learning to generate a narrower domain-specific BERT model in materials science field such as “phase diagram,” “fracture,” “liquid crystal,” “plasma,” etc.</p>
+ </div>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i23" class="section-heading-2">4. Conclusions</h2>
+ <p>Pre-trained BERT models with wide range of materials science corpus have been successfully developed using the architecture of the original BERT. A new vocabulary list has been made from materials science corpus. Two MaterialBERT models were generated: one with the vocabulary list that the original BERT used and the other with the newly made vocabulary list. It was shown for both MaterialBERT models that word vectors embedded during the pre-training reasonably reflect the meanings of materials names in material-class clustering and in the relationship between base materials and their compounds or derivatives for not only inorganic materials but also organic materials and organometallic compounds. Fine-tuning using CoLA (sentence classification by grammatical correctness) marked a score much higher than the original BERT, which would reflect the grammatical quality of the corpus used for MaterialBERT models.</p>
+ <p>The developed MaterialBERT models cover wide range of materials science, not only inorganic materials. Because of this wideness, an appropriate evaluation of fine-tuning from a viewpoint of material science is impossible due to the lack of suitable evaluation datasets. However, there is no comparable pre-trained BERT model for widely covered materials science. Furthermore, MaterialBERT models can be used as a starting point for transfer learning to generate a narrower domain-specific BERT model in materials science field such as “phase diagram,” “resin,” “liquid crystal,” etc.</p>
+ <p>Because results on fine-tuning are strongly depend on the similarity between a corpus used for the pre-training and that for fine-tuning, where the definition of the similarity would be dependent on user’s each task, the authors intend to let users assess the fine-tuning effects for their specific tasks by making the present MaterialBERT models publicly available upon the publication of this article. The models and the newly developed vocabulary list will be uploaded to the material data repository at NIMS [<span class="ref-lnk lazy-ref"><a data-rid="cit0040" data-reflink="_i25 _i26 _i27" href="#"><span class="off-screen">Citation</span>40</a></span>] upon the publication of this article so that all users can use it freely.</p>
+</div>
