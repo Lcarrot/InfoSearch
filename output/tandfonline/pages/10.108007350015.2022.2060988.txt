@@ -1,0 +1,1727 @@
+<div id="S0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">1 Introduction</h2>
+ <p>Economic forecasts are an essential input to design fiscal and monetary policies, and improving their accuracy is a continued challenge for economists. A reason for the often disappointing performance of economic forecasts is that any individual indicator provides a very noisy measure of the state of the economy. In the last 20 years, several methods have been proposed to extract a robust signal from large panels of macroeconomic variables (see Stock and Watson <span class="ref-lnk lazy-ref"><a data-rid="CIT0054" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2016</a></span>, for a comprehensive review). In addition, many economic variables are available only monthly or quarterly and are released with considerable delay, which complicates the monitoring and forecasting of the economy in real-time. This has led to the development of nowcasting methods that capitalize on the continuous flow of economic information released by statistical agencies (see Bańbura et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2013</a></span>). Bok et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2018</a></span>) provide a recent and updated discussion of the state of economic forecasting.</p>
+ <p>A promising path to increase both the accuracy and the timeliness of economic forecasts is to use alternative datasets to complement the information provided by the statistical agencies. By “alternative” we refer to datasets collected as the outcome of a business transaction (e.g., credit card or online purchases), tracking the media (e.g., news or twitter), or internet searches (e.g., google trends) among others. What these datasets have in common is that, in most cases, they are collected in real-time by companies rather than being produced by government agencies through surveys. The researcher is then able to aggregate the granular information in these datasets to build indicators that can be used in forecasting models. Realistically, these alternative indicators should be expected to complement, rather than replace, the macroeconomic variables provided by the government agencies.</p>
+ <p>On the one hand, the official statistics are very accurate measures of an economic concept of interest (e.g., industrial production or inflation) and the outcome of a well-designed and time-tested sampling strategy. Nevertheless, the fact that these variables are obtained from business and consumer surveys entails an infrequent sampling period (typically, monthly or quarterly), and publication delays deriving from the collection and processing of the answers. On the other hand, indicators based on alternative datasets, in most cases, provide a biased sample of the population and might not measure accurately a specific economic variable. However, they might be available in real-time which makes them very appealing to monitor the state of the economy. Hence, the tradeoff between accuracy of the predictors and their real-time availability summarizes the potential added-value of alternative indicators relative to the official statistics provided by government agencies. A recent example is Lewis, Mertens, and Stock (<span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2020</a></span>), who construct a weekly indicator of economic activity pooling information from raw steel production, fuel sales, road traffic, and electricity output among others. Other alternative datasets used for nowcasting and forecasting macroeconomic variables are credit card transactions (see Galbraith and Tkacz <span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2018</a></span>; Aprigliano, Ardizzi, and Monteforte <span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2019</a></span>), google trends (Choi and Varian <span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2012</a></span>), road tolls (Askitas and Zimmermann <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2013</a></span>) or firm-level data (Fornaro <span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2016</a></span>).</p>
+ <p>In this article we use news from six major U.S. outlets as our alternative dataset and construct predictors that measure sentiment about different aspects of economic activity. More specifically, we identify the text in the articles published in a certain day that contains a token (i.e., term) of interest (e.g., <i>economy</i> or <i>inflation</i>). We then consider the words that are semantically dependent on the token of interest and use only those words to calculate the sentiment measure. Our sentiment analysis is thus local in nature, in the sense that it considers only the text related to a term of interest, as opposed to a global approach that evaluates the whole article. The benefit of our methodology is that it provides a more accurate measure of the sentiment associated to an economic concept, instead of measuring sentiment on a large body of text that might involve and mix different economic concepts. In addition, even when topic analysis is used to cluster articles, sentiment is typically calculated by pooling the text of all the articles in the cluster, which might involve the discussion of different economic variables. Another contribution of this article is that we develop a dictionary that we specifically construct having in mind applications in the economic and financial domains. Similarly to Loughran and McDonald (<span class="ref-lnk lazy-ref"><a data-rid="CIT0046" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2011</a></span>), the dictionary contains words that are frequently used in economics and finance and we assign a sentiment value between ±1 rather than categorizing the terms in positive and negative. Then, we use this dictionary to assign a sentiment value to the words related to the term of interest. We refer to our approach as Fine-Grained Aspect-based Sentiment (FiGAS) which highlights the two main ingredients of the approach: a value between ±1 for the sentiment carried by a word based on our dictionary (fine-grained) and the sentiment calculated in a neighborhood of a token of interest and only on semantically related words (aspect-based).</p>
+ <p>As an illustration, consider the situation in which we are interested to measure the sentiment in the news about the overall state of the economy. In this case we could specify <i>economy</i> as our token of interest and identify the following sentence<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="FN0004" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>1</sup></a></span>: <i>Her comments played into the concern that after years of uneven growth, the U.S. economy is becoming more vulnerable to the global slowdown</i>. The term of interest <i>economy</i> is related to the verb <i>become</i> whose meaning is modified by the adjective <i>vulnerable</i> which is further modified by the adverb <i>more</i>.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="FN0005" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>2</sup></a></span> In terms of sentiment, our dictionary assigns a negative value to <i>vulnerable</i> and a positive one to <i>more</i>. Hence, the sentiment associated with the term <i>economy</i> in this sentence will be negative and larger (in absolute value) relative to the sentiment of <i>vulnerable</i> due to the contribution of the adverb <i>more</i>. This example also shows that the approach is interpretable in the sense that it provides the researcher with the information determining the sentiment value relative to alternative approaches, for instance based on machine learning models, that do not provide a narrative (Thorsrud <span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2020</a></span>).</p>
+ <p>The interest of economists in using text, such as news, is growing. An early application is Baker, Bloom, and Davis (<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2016</a></span>), who construct a measure of economic and political uncertainty based on counting the number of articles that contain tokens of interest. Other articles aim at measuring economic sentiment conveyed by news to explain output and inflation measures for the Unites States (Shapiro, Sudhof, and Wilson in press; Kelly, Manela, and Moreira <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2018</a></span>; Bybee et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2019</a></span>), the United Kingdom (Kalamara et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2018</a></span>), and Norway (Thorsrud <span class="ref-lnk lazy-ref"><a data-rid="CIT0056" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2016</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2020</a></span>). More generally, economists are interested in analyzing text as an alternative source of data to answer long standing questions (Gentzkow, Kelly, and Taddy <span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2019</a></span>), such as the role of central bank communication (Hansen and McMahon <span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2016</a></span>; Hansen, McMahon, and Prat <span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2017</a></span>), asset pricing (Calomiris and Mamaysky <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2019</a></span>), economic expectations (Lamla and Maag <span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2012</a></span>; Sharpe, Sinha, and Hollrah <span class="ref-lnk lazy-ref"><a data-rid="CIT0052" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2017</a></span>; Ke, Kelly, and Xiu <span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2019</a></span>), stock market volatility (Baker et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2019</a></span>), and media bias (Gentzkow and Shapiro <span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2010</a></span>) among others. Overall, these articles show that news provide information relevant to a wide range of applications, although a relevant question is why that is the case. Blinder and Krueger (<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2004</a></span>) argue that the media is an important source of information for consumers about the state of the economy. News reported by television and newspapers are an essential input in the formation of expectations and in consumption and investment decisions. In addition, news provide information about a dispersed set of events, such as recently released data, monetary and fiscal decisions, domestic and international economic events, but also provide views about the past, current, and future economic conditions formulated by economists, policy-makers, and financial analysts.</p>
+ <p>In our empirical application we construct sentiment measures based on over 6.6 million news articles that we use as predictors to forecast the quarterly real GDP growth rate and three monthly variables, namely the growth rate of the Industrial Production Index and the Consumer Price Index, and the change in nonfarm payroll employment. All variables enter the model in real-time, that is, we use all available information up to the date at which we produce the pseudo forecasts. The indicators are designed to capture the sentiment related to a single token of interest (<i>economy</i>, <i>unemployment</i>, <i>inflation</i>) or to a group of tokens of interest, such as <i>monetary policy</i> (e.g., central bank, federal funds, etc), <i>financial sector</i> (e.g., banks, lending, etc), and <i>manufacturing</i> (e.g., manufacturing, industrial production, etc). In addition, we refine the FiGAS approach discussed earlier along two dimensions. First, we identify the prevalent geographic location, if any, of the article. Given our goal of forecasting U.S. macroeconomic variables we exclude from the calculation of sentiment the articles that refer to the rest of the world. Second, we detect the verbal tense of the text related to the token of interest.</p>
+ <p>Our results are as follows. First, we find that our economic sentiment measures have a strong correlation with the business cycle, in particular for the <i>economy</i>, <i>unemployment</i> and <i>manufacturing</i> measures. In addition, the sentiment about the <i>financial sector</i> and <i>monetary policy</i> shows pessimism during recessions and optimism during expansions, although they tend to fluctuate also in response to other events. In particular, we find that the tendency of the <i>financial sector</i> indicator to be negative during recessions reached dramatic lows during the Great Recession and was followed by a very slow recovery. So, it is encouraging to see that, qualitatively, the proposed measures seem to capture the different phases of the cycle and provide an explanation for the relevance of each variable to the business fluctuations. Second, augmenting a factor-based model with economic sentiment measures delivers higher forecast accuracy. The predictive advantage of sentiment is present also at the longer horizons considered when the macro-factors are less relevant. Instead, at the nowcasting and backcasting horizons the flow of macroeconomic information carries most of the predictive power for nearly all variables. An encouraging result of the analysis is that some of the sentiment measures provide systematically higher accuracy, even in the case of a difficult variable to forecast, such as CPI inflation. In particular, we find that the sentiment about the <i>economy</i> is very very often the most relevant predictor for GDP and nonfarm payroll, the indicators about <i>unemployment</i> and <i>monetary policy</i> helps predicting industrial production, while the <i>financial sector</i> sentiment is important in forecasting the growth rate of CPI.</p>
+ <p>We also consider the effect of economic sentiment at the tails of the distribution by extending the regression models to the quantile settings. Our results show that sentiment indicators become more powerful predictors when considering the tails of the distribution. In particular, for the monthly variables, we find that indicators related to <i>economy</i>, <i>financial sector</i> and <i>monetary policy</i> contribute significantly to increase forecast accuracy relative to the available macroeconomic information. This is a favorable result that could provide more accurate measures of Growth-at-Risk (see Adrian et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2018</a></span> and Brownlees and Souza <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2021</a></span> for further discussion about Growth-at-Risk applications).</p>
+ <p>Concluding, there is encouraging evidence to suggest that economic sentiment obtained from news using the FiGAS approach captures useful information in forecasting macroeconomic variables such as quarterly GDP and monthly indicators. These results show that analyzing text from news can be a successful strategy to complement the macroeconomic information deriving from official releases. In addition, the availability of news in real-time allows the high-frequency monitoring of the macroeconomic variables of interest. The article is organized as follows: in Section 2 we introduce the FiGAS approach, the measures of economic sentiment, and the forecasting models. Section 3 describes the dataset. We then continue in Sections 4 and 5 with the discussion of the in-sample and out-of-sample results, respectively. Finally, Section 6 concludes.</p>
+</div>
+<div id="S0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">2 Methodology</h2>
+ <p>The application of text analysis in economics and finance has, in most cases, the goal of creating an indicator that measures the sentiment or the intensity of a certain topic in the news. Despite this common goal, the literature presents a wide and diverse range of techniques used in the analysis. The first difference among the approaches relates to the way news are selected to compute the indicator. An early approach followed by Tetlock (<span class="ref-lnk lazy-ref"><a data-rid="CIT0055" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2007</a></span>) is to use a column of the Wall Street Journal as the relevant text source, while discarding the rest of the news. An alternative approach is followed by Baker, Bloom, and Davis (<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2016</a></span>), who select a subset of articles that contain tokens of interest related to economic and political uncertainty. Several recent articles (see Kelly, Manela, and Moreira <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2018</a></span>; Thorsrud <span class="ref-lnk lazy-ref"><a data-rid="CIT0056" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2016</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2020</a></span>, among others) rely on topic analysis, such as the Latent Dirichlet Allocation (LDA), which represents an unsupervised modeling approach to clustering articles based on their linguistic similarity. The analysis of the most frequent words within each cluster provides then insights on the topic.</p>
+ <p>The second difference regards the measure used to compute sentiment or intensity in the selected text. One simple measure that has been used is to count the number of articles that contain the tokens of interest (see Baker, Bloom, and Davis <span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2016</a></span>) or the number of articles belonging to a certain topic (see Kelly, Manela, and Moreira <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2018</a></span>). The goal of such measure is to capture the time-varying attention in the media for a certain topic, although it does not take into account the tone with which the news talk about the topic. An alternative approach is to compute a measure of sentiment which accounts for the positive/negative tone of a word. This is typically done by counting the words that are positive and negative in the text based on a dictionary (see Tetlock <span class="ref-lnk lazy-ref"><a data-rid="CIT0055" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2007</a></span>, for an early application in finance). A sentiment measure is then given by the difference between the number of positive and negative words, standardized by the total number of words in the article. The advantage of this approach is that it measures the strength and the direction of the message reported by the news on a certain topic which is likely to have an impact on the economic decisions of agents. Algaba et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2020</a></span>) is an extensive survey that reviews the recent developments in the application of sentiment analysis to economics and finance. In the following section we describe in general terms our approach to sentiment analysis and how we use these measures to forecast four main macroeconomic indicators. More details on the methodology are provided in Appendix A in the <a class="ext-link" href="https://doi.org/10.1080/07350015.2022.2060988" target="_blank">supplementary materials</a>.</p>
+ <div id="S0002-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">2.1 Fine-Grained Aspect-Based Sentiment Analysis</h3>
+  <p>Our FiGAS approach leverages on recent advances in sentiment analysis (Baccianella, Esuli, and Sebastiani <span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2010</a></span>; Cambria and Hussain <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2015</a></span>; Xing, Cambria, and Welsch <span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2018</a></span>; Cambria et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2020</a></span>). It is based on two key elements. The first is that it is <i>fine-grained</i> in the sense that words are assigned a polarity score that ranges between ±1 based on a dictionary. The second feature is that it is <i>aspect-based</i>, that is, it identifies chunks of text in the articles that relate to a certain concept and calculates sentiment only on that text, rather than the full article. To relate this approach to the existing literature, similarly to Baker, Bloom, and Davis (<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2016</a></span>) we identify a subset of the text that relates to the aspect or token of interest. In addition, similarly to Tetlock (<span class="ref-lnk lazy-ref"><a data-rid="CIT0055" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2007</a></span>) the sentiment is based on assigning a value or a category (positive/negative) based on a dictionary instead of simply counting the number of articles. A novel aspect of our analysis is that we use a fine-grained dictionary that has not been used previously for applications in economics and finance.</p>
+  <p>The first step of the analysis consists of creating a list of tokens of interest (ToI)<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="FN0006" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>3</sup></a></span> that collects the terms that express a certain economic concept and for which we want to measure sentiment. In our application, we construct six economic indicators based on the following ToI:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline"><i>economy</i>: economy;</p></li>
+   <li><p class="inline"><i>financial sector</i>: bank, derivative, lending, borrowing, real estate, equity market, stock market, bond, insurance rate, exchange rate and combinations of [banking, financial] with [sector, commercial, and investment];</p></li>
+   <li><p class="inline"><i>inflation</i>: inflation;</p></li>
+   <li><p class="inline"><i>manufacturing</i>: manufacturing and combinations of [industrial, manufacturing, construction, factory, auto] with [sector, production, output, and activity];</p></li>
+   <li><p class="inline"><i>monetary policy</i>: central bank, federal reserve, money supply, monetary policy, federal funds, base rate, and interest rate;</p></li>
+   <li><p class="inline"><i>unemployment</i>: unemployment.</p></li>
+  </ul>
+  <p></p>
+  <p>The selection of topics and ToI is made by the researcher based on the application at hand. In making the choice of ToIs, we were driven by the goal of measuring news sentiment that would be predictive of economic activity. Hence, we designed the ToIs in order to capture text that discusses various aspects of the overall state of the <i>economy</i>, the <i>inflation</i> rate, the <i>unemployment</i> rate, the banking and <i>financial sector</i>, <i>manufacturing</i>, and <i>monetary policy</i>. Given that our application is focused on forecasting U.S. macroeconomic variables, we only selects articles that do not explicitly mention a nation other than the United States.</p>
+  <p>After selecting a chunk of text that contains one of our ToIs, we continue with the typical Natural Language Processing (NLP) workflow to process and analyze the text<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="FN0007" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>4</sup></a></span>:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline"><i>Tokenization and lemmatization</i>: the text is split into meaningful segments (<i>tokens</i>) and words are transformed to their noninflected form (<i>lemmas</i>);</p></li>
+   <li><p class="inline"><i>Location detection</i>: we detect the most frequent location that has been identified in the text, if any;</p></li>
+   <li><p class="inline"><i>Part-of-Speech (POS) tagging</i>: the text is parsed and tagged (see the <a class="ext-link" href="https://doi.org/10.1080/07350015.2022.2060988" target="_blank">supplementary materials</a> for details on the POS);</p></li>
+   <li><p class="inline"><i>Dependency Parsing</i>: after a ToI is found in the text, we examine the syntactic dependence of the neighboring tokens with a rule-based approach (see the <a class="ext-link" href="https://doi.org/10.1080/07350015.2022.2060988" target="_blank">supplementary materials</a> for more details);</p></li>
+   <li><p class="inline"><i>Tense detection</i>: we detect the tense of the verb, if any, related to the ToI;</p></li>
+   <li><p class="inline"><i>Negation handling</i>: the sentiment score is multiplied by –1 when a negation term is detected in the text.</p></li>
+  </ul>
+  <p></p>
+  <p>The core of the FiGAS approach are the semantic rules that are used to parse the dependence between the ToI and the dependent terms in the neighboring text. Once these words are identified, we assign them a sentiment score which we then aggregate to obtain a sentiment value for the sentence. These sentiment scores are obtained from a fine-grained dictionary that we developed based on the dictionary of Loughran and McDonald (<span class="ref-lnk lazy-ref"><a data-rid="CIT0046" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2011</a></span>) and additional details are provided in the <a class="ext-link" href="https://doi.org/10.1080/07350015.2022.2060988" target="_blank">supplementary materials</a>. Each score is defined over [–1, 1] and sentiment is propagated to the other tokens such that the overall tone of the sentence remains defined on the same interval. We then obtain a daily sentiment indicator for the topic by summing the scores assigned to the selected sentences for that day. Hence, our sentiment indicator accounts both for the volume of articles in each day as well as for the sentiment. The resulting sentiment indicator is thus <i>aspect-based</i>, since it refers to a certain topic of interest, and <i>fine-grained</i>, since it is computed using sentiment scores defined on [–1, 1].</p>
+  <p>An additional feature of the proposed algorithm is the possibility of detecting the verbal tense of a sentence. To shorten the presentation we build our sentiment indicators aggregating over all tenses and report the results for the sentiment of the individual verbal tenses in Appendix B in the <a class="ext-link" href="https://doi.org/10.1080/07350015.2022.2060988" target="_blank">supplementary materials</a>. We refer to Consoli, Barbaglia, and Manzan (in press) for a detailed technical presentation of the proposed algorithm and for a comparison with other sentiment analysis methods that have been presented in the literature. Finally, Python and R packages that perform the FiGAS analysis are available on the authors’ personal websites.</p>
+ </div>
+ <div id="S0002-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">2.2 Forecasting Models</h3>
+  <p>The goal of our analysis is to produce forecasts for the value of a macroeconomic variable in period <i>t</i> released in day <i>d</i>, which we denote by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msubsup>
+       <mrow>
+        <mi>
+         Y
+        </mi>
+       </mrow>
+       <mi>
+        t
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msubsup>
+     </mrow>
+    </math></span>. We introduce the index <i>d</i> to track the real-time information flow available to forecasters, and to separate it from the index <i>t</i> that represents the reference period of the variable (e.g., at the monthly or quarterly frequency). As we discuss in Section 3, in the empirical application we keep track of the release dates of all the macroeconomic variables included in the analysis. This allows us to mimic the information set that is available to forecasters on the day the forecast was produced. We indicate by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         X
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> the vector of predictors and lags of the dependent variable that are available to the forecaster on day <i>d</i> – <i>h</i>, that is, <i>h</i> days before the official release day <i>d</i> of the variable. Since in our application the vector <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         X
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> includes variables at different frequencies, we use the Unrestricted MIDAS (U-MIDAS) approach proposed by Marcellino and Schumacher (<span class="ref-lnk lazy-ref"><a data-rid="CIT0049" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2010</a></span>) and Foroni, Marcellino, and Schumacher (<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2015</a></span>), that consists of including the weekly and monthly predictors and their lags as regressors. Hence, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         X
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> includes an intercept, lagged values of the variable being forecast, and current and past values of weekly and monthly macroeconomic and financial indicators. The forecasting model that we consider is given by:<span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_m0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block">
+     <mrow>
+      <msubsup>
+       <mrow>
+        <mi>
+         Y
+        </mi>
+       </mrow>
+       <mi>
+        t
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msubsup>
+      <mo>
+       =
+      </mo>
+      <msub>
+       <mrow>
+        <mi>
+         η
+        </mi>
+       </mrow>
+       <mi>
+        h
+       </mi>
+      </msub>
+      <msub>
+       <mrow>
+        <mi>
+         S
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msubsup>
+       <mrow>
+        <mi>
+         X
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+       <mo>
+        ′
+       </mo>
+      </msubsup>
+      <msub>
+       <mrow>
+        <mi>
+         β
+        </mi>
+       </mrow>
+       <mi>
+        h
+       </mi>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mrow>
+        <mi>
+         ϵ
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+      <mo>
+       ,
+      </mo>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         X
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> is defined above, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         S
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> is a scalar representing a sentiment measure available in day <i>d</i> – <i>h</i>, <i>η<sub>h</sub></i> and <i>β<sub>h</sub></i> are parameters to be estimated, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         ϵ
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> is an error term. The parameter <i>η<sub>h</sub></i> represents the effect of a current change in the sentiment measure on the future realization of the macroeconomic variable, conditional on a set of control variables. Notice that the model in <a href="#M0001">Equation (1)</a> can also be interpreted in terms of the local projection method of Jordà (<span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2005</a></span>).</p>
+  <p>In our application, we include a large number of predictors that might negatively affect the accuracy of the estimate due to the limited sample size available for quarterly and monthly variables. In order to reduce the number of regressors to a smaller set of relevant predictors, we use the <i>lasso</i> penalization approach proposed by Tibshirani (<span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>1996</a></span>). The selected predictors are then used to estimate <a href="#M0001">Equation (1)</a> in a post-lasso step that corrects the bias introduced by the shrinkage procedure and allows to assess the statistical significance of the sentiment measures. Unfortunately, this post-single lasso procedure produces inconsistent estimates due to the likelihood of omitting some relevant predictors from the final model. To account for this issue, we select the most important regressors relying on the data-driven <i>double lasso</i> approach proposed in Belloni, Chernozhukov, and Hansen (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2014</a></span>). This approach delivers consistent estimates of the parameters and is likely to have better finite sample properties which is especially important given the moderate sample size in the current application. The post double lasso procedure is implemented in the following two steps. First, variables are selected using lasso selection in <a href="#M0001">Equation (1)</a>, but also from a regression of the target variable, in our case the sentiment measure <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         S
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> on <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         X
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span>, that is<span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_m0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         S
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+      <mo>
+       =
+      </mo>
+      <msubsup>
+       <mrow>
+        <mi>
+         X
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+       <mo>
+        ′
+       </mo>
+      </msubsup>
+      <msub>
+       <mrow>
+        <mi>
+         δ
+        </mi>
+       </mrow>
+       <mi>
+        h
+       </mi>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msub>
+       <mrow>
+        <mi>
+         ξ
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+      <mo>
+       .
+      </mo>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span></p>
+  <p>In the second step, the union of the variables selected in the two lasso first stage regressions are used to estimates <a href="#M0001">Equation (1)</a> by OLS. Belloni, Chernozhukov, and Hansen (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2014</a></span>) shows the consistency and the asymptotic normality of the estimator of <i>η<sub>h</sub></i>.</p>
+  <p>The focus on the conditional mean disregards the fact that predictability could be heterogeneous at different parts of the conditional distribution. This situation could arise when a sentiment indicator might be relevant to forecast, for instance, low quantiles rather than the central or high quantiles. There is evidence in the literature to support the asymmetric effects of macroeconomic and financial variables in forecasting economic activity, and in particular at low quantiles (see Manzan and Zerom <span class="ref-lnk lazy-ref"><a data-rid="CIT0048" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2013</a></span>; Manzan <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2015</a></span>; Adrian, Boyarchenko, and Giannone <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2019</a></span>, among others). To investigate this issue we extend the model in <a href="#M0001">Equation (1)</a> to a quantile framework:<span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_m0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="block">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         Q
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         τ
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+      <mo stretchy="false">
+       (
+      </mo>
+      <msubsup>
+       <mrow>
+        <mi>
+         Y
+        </mi>
+       </mrow>
+       <mi>
+        t
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msubsup>
+      <mo stretchy="false">
+       )
+      </mo>
+      <mo>
+       =
+      </mo>
+      <msub>
+       <mrow>
+        <mi>
+         η
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         τ
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+      <msub>
+       <mrow>
+        <mi>
+         S
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+      <mo>
+       +
+      </mo>
+      <msubsup>
+       <mrow>
+        <mi>
+         X
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+       <mo>
+        ′
+       </mo>
+      </msubsup>
+      <msub>
+       <mrow>
+        <mi>
+         β
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         τ
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+      <mo>
+       ,
+      </mo>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         Q
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         τ
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+      <mo stretchy="false">
+       (
+      </mo>
+      <msubsup>
+       <mrow>
+        <mi>
+         Y
+        </mi>
+       </mrow>
+       <mi>
+        t
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msubsup>
+      <mo stretchy="false">
+       )
+      </mo>
+     </mrow>
+    </math></span> is the <i>τ</i>-level quantile forecast of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msubsup>
+       <mrow>
+        <mi>
+         Y
+        </mi>
+       </mrow>
+       <mi>
+        t
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msubsup>
+     </mrow>
+    </math></span> at horizon <i>h</i>. The lasso penalized quantile regression proposed by Koenker (<span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2011</a></span>) can be used for variable selection in <a href="#M0003">Equation (3)</a>, followed by a post-lasso step to eliminate the shrinkage bias. Similarly to the conditional mean case, the post-lasso estimator of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         η
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         τ
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> could be inconsistent due to the possible elimination of relevant variables during the selection step. Following Belloni, Chernozhukov, and Kato (<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2019</a></span>), we implement the <i>weighted double selection</i> procedure to perform robust inference in the quantile setting. In the first step the method estimates <a href="#M0003">Equation (3)</a> using the lasso penalized quantile regression estimator. The fitted quantiles are then used to estimate the conditional density of the error at zero which provides the weights for a penalized lasso weighted mean regression of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         S
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> on <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         X
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span>. In the second step, the union of the variables selected in the first stage regressions are used to estimate the model in <a href="#M0003">Equation (3)</a> weighted by the density mentioned earlier. The resulting <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mi>
+         η
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         τ
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         h
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> represents the post double lasso estimate at quantile <i>τ</i> and it is asymptotically normally distributed. More details are available in Belloni, Chernozhukov, and Kato (<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2019</a></span>).</p>
+  <p>In the empirical application, the baseline specification includes lags of the dependent variable and three macroeconomic factors that summarize the variation across large panels of macroeconomic and financial variables. We denote this specification as <i>ARX</i>, and by <i>ARXS</i> the ARX specification augmented by the sentiment measures.</p>
+ </div>
+</div>
+<div id="S0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i11" class="section-heading-2">3 Data</h2>
+ <p>Our news dataset is extracted from the Dow Jones Data, News and Analytics (DNA) platform.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="FN0008" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>5</sup></a></span> We obtain articles for six newspapers<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="FN0009" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>6</sup></a></span> from the beginning of January 1980 until the end of December 2019 and select articles in all categories excluding sport news.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="FN0010" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>7</sup></a></span> The dataset thus includes 6.6 million articles and 4.2 billion words. The information provided for each article consists of the date of publication, the title, the body of the article, the author(s), and the category. As concerns the macroeconomic dataset, we obtain real-time data from the Philadelphia Fed and from the Saint Louis Fed ALFRED repository,<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="FN0011" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>8</sup></a></span> that provides the historical vintages of the variables, including the date of each macroeconomic release. The variables that we include in our analysis are: real GDP (GDPC1), Industrial Production Index (INDPRO), total Nonfarm Payroll Employment (PAYEMS), Consumer Price Index (CPIAUCSL), the Chicago Fed National Activity Index (CFNAI), and the National Financial Conditions Index (NFCI). The first four variables represent the object of our forecasting exercise and are available at the monthly frequency, except for GDPC1 that is available quarterly. The CFNAI is available monthly and represents a diffusion index produced by the Chicago Fed that summarizes the information on 85 monthly variables (see Brave and Butters <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2014</a></span>). Instead, the NFCI is a weekly indicator of the state of financial markets in the United States and is constructed using 105 financial variables with a methodology similar to CFNAI (see Brave <span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2009</a></span>). In addition, we also include in the analysis the ADS Index proposed by Aruoba, Diebold, and Scotti (<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2009</a></span>) that is maintained by the Philadelphia Fed. ADS is updated at the daily frequency and it is constructed based on a small set of macroeconomic variables available at the weekly, monthly and quarterly frequency. In the empirical application we aggregate to the weekly frequency by averaging the values within the week. We will use these three macroeconomic and financial indicators as our predictors of the four target variables. The ADS, CFNAI, and NFCI indicators provide a parsimonious way to include information about a wide array of economic and financial variables that proxy well for the state of the economy.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="FN0012" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>9</sup></a></span> To induce stationarity in the target variables, we take the first difference of PAYEMS, and the percentage growth rate for INDPRO, GDPC1, and CPIAUCSL.</p>
+ <p>The release dates provided by ALFRED are available since the beginning of our sample in 1980 with two exceptions. For GDPC1, vintages are available since December 1991 and for CFNAI only starting with the May 2011 release. <a href="#F0001">Figure 1</a> shows the publication lag for the first release of the four variables that we forecast. The monthly flow of macroeconomic information begins with the Bureau of Labor Statistics employment report that includes PAYEMS, typically in the first week of the month. During the second and third week of the month, CPIAUCSL and INDPRO are announced. Finally, the advance estimate of real GDP is released toward the end of the month following the reference quarter. We verified the dates of the outliers that appear in the figure and they correspond to governmental shutdowns that delayed the release beyond the typical period. Based on the vintages available since May 2011, the release of CFNAI typically happens between 19 and 28 days after the end of the reference period, with a median delay of 23 days. For the sample period before May 2011, we assign the 23rd day of the month as the release date of the CFNAI. This assumption is obviously inaccurate as it does not take into account that the release date could happen during the weekend and other possible patterns (e.g., the Friday of the third week of the month). In our empirical exercise the release date is an important element since it keeps track of the information flow and it is used to synchronize the macroeconomic releases and the news arrival. However, we do not expect that the assumption on the CFNAI release date could create significant problems in the empirical exercise. This is because the release of CFNAI is adjusted to the release calendar of the 85 monthly constituent variables so that no major releases in monthly macroeconomic variables should occur after the 23rd of the month.</p>
+ <div class="figure figureViewer" id="F0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Forecasting with Economic News</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Barbaglia%2C+Luca"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Barbaglia%2C+Luca"><span class="NLM_given-names">Luca</span> Barbaglia</a> <a href="https://orcid.org/0000-0001-5930-5392"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Consoli%2C+Sergio"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Consoli%2C+Sergio"><span class="NLM_given-names">Sergio</span> Consoli</a> <a href="https://orcid.org/0000-0001-7357-5858"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Manzan%2C+Sebastiano"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Manzan%2C+Sebastiano"><span class="NLM_given-names">Sebastiano</span> Manzan</a> <a href="https://orcid.org/0000-0002-0931-9769"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/07350015.2022.2060988">https://doi.org/10.1080/07350015.2022.2060988</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>09 May 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Fig. 1 </span> Histogram of the number of days between the end of the reference period and the date of the first release of the dependent variables, namely CPIAUCSL, GDPC1, INDPRO and PAYEMS.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/medium/ubes_a_2060988_f0001_c.jpg" loading="lazy" height="209" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0001">
+  <p class="captionText"><span class="captionLabel">Fig. 1 </span> Histogram of the number of days between the end of the reference period and the date of the first release of the dependent variables, namely CPIAUCSL, GDPC1, INDPRO and PAYEMS.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0001">
+  <div class="figureFootNote-F0001"></div>
+ </div>
+ <div id="S0003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i13">3.1 Economic Sentiment Measures</h3>
+  <p><a href="#F0002">Figure 2</a> shows the six time series of the economic sentiment sampled at the monthly frequency when we consider all verbal tenses, together with the NBER recessions. The sentiment measures for <i>economy</i> and <i>manufacturing</i> seem to broadly vary with the business cycle fluctuations and becoming more pessimistic during recessions. The <i>unemployment</i> indicator follows a similar pattern, although the 2008–2009 recession represented a more extreme event with a slow recovery in sentiment. The measure for the <i>financial sector</i> indicates that during the Great Recession of 2008–2009 there was large and negative sentiment about the banking sector. As mentioned earlier, our sentiment measure depends both on the volume of news as well as on its tone. The financial crisis was characterized by a high volume of text related to the financial sector which was mostly negative in sentiment. The uniqueness of the Great Recession as a crisis arising from the financial sector is evident when comparing the level of sentiment relative to the values in earlier recessionary periods. The sentiment for <i>monetary policy</i> and <i>inflation</i> seems to co-vary to a lesser extent with the business cycle. In particular, negative values of the indicator of monetary policy seem to be associated with the decline in rates as it happens during recessionary periods, while positive values seems to be associated with expansionary phases.</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Forecasting with Economic News</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Barbaglia%2C+Luca"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Barbaglia%2C+Luca"><span class="NLM_given-names">Luca</span> Barbaglia</a> <a href="https://orcid.org/0000-0001-5930-5392"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Consoli%2C+Sergio"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Consoli%2C+Sergio"><span class="NLM_given-names">Sergio</span> Consoli</a> <a href="https://orcid.org/0000-0001-7357-5858"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Manzan%2C+Sebastiano"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Manzan%2C+Sebastiano"><span class="NLM_given-names">Sebastiano</span> Manzan</a> <a href="https://orcid.org/0000-0002-0931-9769"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/07350015.2022.2060988">https://doi.org/10.1080/07350015.2022.2060988</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>09 May 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Fig. 2 </span> Time series of the sentiment measures for all verbal tenses. The daily series is smoothed by taking a moving-average of 30 days and then subsampled at monthly frequencies. The gray areas denote the NBER recessionary periods.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/medium/ubes_a_2060988_f0002_c.jpg" loading="lazy" height="208" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Fig. 2 </span> Time series of the sentiment measures for all verbal tenses. The daily series is smoothed by taking a moving-average of 30 days and then subsampled at monthly frequencies. The gray areas denote the NBER recessionary periods.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <p>In <a href="#F0003">Figure 3</a> we calculate the smoothed distribution of the sentiment measures separately for expansions and recessions. For all measures, except unemployment, the density during recessions looks shifted to the left and shows a long left tail relative to the distribution during expansionary periods. Hence, the news sentiment about economic activity seems to capture the overall state of the economy and its transition between expansions and recessions. These graphs show also some interesting facts. One is the bimodality of the <i>economy</i> sentiment during recessions. Based on the time series graph in <a href="#F0002">Figure 2</a>, the bimodality does not seem to arise because of recessions of different severity, as in the last three recessions the indicator reached a minimum smaller than –2. Rather, the bimodality seems to reflect different phases of a contraction, one state with sentiment slowly deteriorating followed by a jump to a state around the trough of the recession with rapidly deteriorating sentiment. Another interesting finding is that sentiment about <i>inflation</i> does not seem to vary significantly over the stages of the cycle. For <i>manufacturing</i> and <i>unemployment</i> the distribution of sentiment during recessions seems consistent with a shift of the mean of the distribution, while the variance appears to be similar in the two phases.</p>
+  <div class="figure figureViewer" id="F0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Forecasting with Economic News</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Barbaglia%2C+Luca"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Barbaglia%2C+Luca"><span class="NLM_given-names">Luca</span> Barbaglia</a> <a href="https://orcid.org/0000-0001-5930-5392"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Consoli%2C+Sergio"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Consoli%2C+Sergio"><span class="NLM_given-names">Sergio</span> Consoli</a> <a href="https://orcid.org/0000-0001-7357-5858"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Manzan%2C+Sebastiano"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Manzan%2C+Sebastiano"><span class="NLM_given-names">Sebastiano</span> Manzan</a> <a href="https://orcid.org/0000-0002-0931-9769"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/07350015.2022.2060988">https://doi.org/10.1080/07350015.2022.2060988</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>09 May 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Fig. 3 </span> Kernel density of the economic sentiment measures for all verbal tenses separately for periods of expansion (red) and recession (green) as defined by the NBER business cycle committee. The density is calculated on the monthly series.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/medium/ubes_a_2060988_f0003_c.jpg" loading="lazy" height="205" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0003">
+   <p class="captionText"><span class="captionLabel">Fig. 3 </span> Kernel density of the economic sentiment measures for all verbal tenses separately for periods of expansion (red) and recession (green) as defined by the NBER business cycle committee. The density is calculated on the monthly series.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0003">
+   <div class="figureFootNote-F0003"></div>
+  </div>
+ </div>
+</div>
+<div id="S0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i16" class="section-heading-2">4 In-Sample Analysis</h2>
+ <p>In this section we evaluate the statistical significance of the sentiment measures as predictors of economic activity on the full sample period that ranges from the beginning of 1980 to the end of 2019.</p>
+ <div id="S0004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i17">4.1 Significance of the Economic Sentiment Measures</h3>
+  <p><a href="#F0004">Figure 4</a> shows the statistical significance of the coefficient estimate associated to a sentiment measure, that is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0016.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mover accent="true">
+         <mi>
+          η
+         </mi>
+         <mo>
+          ̂
+         </mo>
+        </mover>
+       </mrow>
+       <mi>
+        h
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> in <a href="#M0001">Equation (1)</a>, based on the double lasso procedure discussed in Section 2. A tile at a given horizon <i>h</i> indicates that the sentiment measure has a <i>p</i>-value smaller than 10% and darker shades indicate smaller <i>p</i>-values. The fact that we are testing simultaneously many hypotheses might lead to spurious evidence of significance (see James et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2021</a></span> for a recent discussion). To account for the multiple testing nature of our exercise, we adjust the <i>p</i>-values associated to each sentiment reported in <a href="#F0004">Figure 4</a> for multiple testing based on the approach proposed by Benjamini and Hochberg (<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>1995</a></span>) and Benjamini, Krieger, and Yekutieli (<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2006</a></span>). The goal of the method is to control the False Discovery Rate that represents the expected rejection rate of a null hypothesis that is true. If we denote by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0017.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msub>
+       <mrow>
+        <mover accent="true">
+         <mi>
+          p
+         </mi>
+         <mo>
+          ̂
+         </mo>
+        </mover>
+       </mrow>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> (for <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0018.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <mi>
+       j
+      </mi>
+      <mo>
+       =
+      </mo>
+      <mn>
+       1
+      </mn>
+      <mo>
+       ,
+      </mo>
+      <mo>
+       …
+      </mo>
+      <mo>
+       ,
+      </mo>
+      <mi>
+       S
+      </mi>
+     </mrow>
+    </math></span>) the <i>p</i>-value of hypothesis <i>j</i> sorted from smallest to largest, the adjusted <i>p</i>-value is given by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0019.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msubsup>
+       <mrow>
+        <mover accent="true">
+         <mi>
+          p
+         </mi>
+         <mo>
+          ̂
+         </mo>
+        </mover>
+       </mrow>
+       <mi>
+        j
+       </mi>
+       <mrow>
+        <mtext>
+         adj
+        </mtext>
+       </mrow>
+      </msubsup>
+      <mo>
+       =
+      </mo>
+      <mtext>
+       min
+      </mtext>
+      <mrow>
+       <mo stretchy="true">
+        (
+       </mo>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ,
+        </mo>
+        <msub>
+         <mrow>
+          <mover accent="true">
+           <mi>
+            p
+           </mi>
+           <mo>
+            ̂
+           </mo>
+          </mover>
+         </mrow>
+         <mi>
+          j
+         </mi>
+        </msub>
+        <mfrac>
+         <mi>
+          S
+         </mi>
+         <mi>
+          j
+         </mi>
+        </mfrac>
+       </mrow>
+       <mo stretchy="true">
+        )
+       </mo>
+      </mrow>
+     </mrow>
+    </math></span>. The power of the test can be improved if we assume that the number of null hypothesis that are true (<i>S</i><sub>0</sub>) is smaller relative to the number of hypotheses being tested (<i>S</i>). In this case the adjusted <i>p</i>-value is given by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0020.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math display="inline">
+     <mrow>
+      <msubsup>
+       <mrow>
+        <mover accent="true">
+         <mi>
+          p
+         </mi>
+         <mo>
+          ̂
+         </mo>
+        </mover>
+       </mrow>
+       <mi>
+        j
+       </mi>
+       <mrow>
+        <mtext>
+         adj
+        </mtext>
+       </mrow>
+      </msubsup>
+      <mo>
+       =
+      </mo>
+      <mtext>
+       min
+      </mtext>
+      <mrow>
+       <mo stretchy="true">
+        (
+       </mo>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ,
+        </mo>
+        <msub>
+         <mrow>
+          <mover accent="true">
+           <mi>
+            p
+           </mi>
+           <mo>
+            ̂
+           </mo>
+          </mover>
+         </mrow>
+         <mi>
+          j
+         </mi>
+        </msub>
+        <mfrac>
+         <mrow>
+          <msub>
+           <mrow>
+            <mi>
+             S
+            </mi>
+           </mrow>
+           <mn>
+            0
+           </mn>
+          </msub>
+         </mrow>
+         <mi>
+          j
+         </mi>
+        </mfrac>
+       </mrow>
+       <mo stretchy="true">
+        )
+       </mo>
+      </mrow>
+     </mrow>
+    </math></span>, where <i>S</i><sub>0</sub> can be estimated following the two-step approach proposed by Benjamini, Krieger, and Yekutieli (<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2006</a></span>). The first step of the procedure is to determine the number of rejected hypothesis (<i>R</i>) based on the Benjamini and Hochberg (<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>1995</a></span>) adjusted <i>p</i>-values. <i>S</i><sub>0</sub> is then set equal to <i>S</i> – <i>R</i> and used to adjust the <i>p</i>-values as explained above.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="FN0013" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>10</sup></a></span></p>
+  <div class="figure figureViewer" id="F0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Forecasting with Economic News</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Barbaglia%2C+Luca"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Barbaglia%2C+Luca"><span class="NLM_given-names">Luca</span> Barbaglia</a> <a href="https://orcid.org/0000-0001-5930-5392"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Consoli%2C+Sergio"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Consoli%2C+Sergio"><span class="NLM_given-names">Sergio</span> Consoli</a> <a href="https://orcid.org/0000-0001-7357-5858"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Manzan%2C+Sebastiano"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Manzan%2C+Sebastiano"><span class="NLM_given-names">Sebastiano</span> Manzan</a> <a href="https://orcid.org/0000-0002-0931-9769"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/07350015.2022.2060988">https://doi.org/10.1080/07350015.2022.2060988</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>09 May 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Fig. 4 </span> Statistical significance of the sentiment measures based on the double lasso penalized regression in <a href="#M0001">Equation (1)</a> at each horizon <i>h</i>. The statistic reported is the <i>p</i>-value of the sentiment coefficient <i>η<sub>h</sub></i> corrected for multiple testing. The colors depend on the <i>p</i>-value for those variables that are significant at least at 10%: the darker the tile’s color, the smaller the <i>p</i>-value. The gray-shaded area corresponds to the reference period.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/medium/ubes_a_2060988_f0004_c.jpg" loading="lazy" height="211" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0004">
+   <p class="captionText"><span class="captionLabel">Fig. 4 </span> Statistical significance of the sentiment measures based on the double lasso penalized regression in <a href="#M0001">Equation (1)</a> at each horizon <i>h</i>. The statistic reported is the <i>p</i>-value of the sentiment coefficient <i>η<sub>h</sub></i> corrected for multiple testing. The colors depend on the <i>p</i>-value for those variables that are significant at least at 10%: the darker the tile’s color, the smaller the <i>p</i>-value. The gray-shaded area corresponds to the reference period.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0004">
+   <div class="figureFootNote-F0004"></div>
+  </div>
+  <p>The top-left plot in <a href="#F0004">Figure 4</a> reports the significance results for GDPC1. We find that the most significant indicators are the <i>financial sector</i> and <i>economy</i> sentiments that are consistently selected at several horizons between quarter <i>t</i> – 4 and <i>t</i> – 2. This suggests that news sentiment at longer horizons is relevant to predict GDP growth, while at shorter horizons hard macroeconomic indicators become more relevant. The results for the monthly indicators also show that the predictability is concentrated on a few sentiment measures. In particular, sentiment about <i>unemployment</i> is significant at most horizons when forecasting INDP, while the <i>monetary policy</i> measure is significant at the nowcasting horizons. However, when predicting nonfarm payroll employment (PAYEMS) we find that only the <i>economy</i> indicator is a strongly significant predictor at all horizons. The <i>financial sector</i> sentiment measure is also significant for CPI inflation starting from month <i>t</i> – 2. Overall, our in-sample analysis suggests that predictability embedded in these news sentiment indicators is concentrated in one or two of the sentiment measures, depending on the variable being forecast. In addition, the horizons at which news sentiment matters seems also different across variables. While for the GPDC1 and INDP we find that the indicators are mostly relevant at long horizons, for CPIAUCSL the significance is mostly at the shortest horizons. Only in the case of PAYEMS we find that a sentiment indicators is significant at all horizons considered.</p>
+ </div>
+ <div id="S0004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i19">4.2 Quantile Analysis</h3>
+  <p>In <a href="#F0005">Figure 5</a> we report the adjusted <i>p</i>-values smaller than 0.10 at each quantile level using the double lasso estimation procedure (Belloni, Chernozhukov, and Kato <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2019</a></span>). The evidence suggests that some sentiment measures are significant in forecasting GDPC1 at 0.1 and 0.9 quantiles. In particular, the <i>economy</i> and <i>inflation</i> sentiment indicators are significant on the left tail of the distribution at some nowcasting horizons that correspond to the release of the previous quarter figures. Instead, sentiment about the <i>financial sector</i> is the most significant indicator at the highest quantile between quarter <i>t</i> – 3 and <i>t</i> – 1. Interestingly, no indicator is significant at the median, although we find that the <i>financial sector</i> and the <i>economy</i> measures are significant in predicting the mean. A possible explanation for this result is that the conditional mean is more influenced, relative to the median, by the extreme events that occurred during the financial crises of 2008–2009. This is particularly true in the case of GDP given the relative short time series available. Similarly to the case of GDPC1, the results for INDPRO show that the significance of the sentiment measures is concentrated at low and high quantiles. The sentiment about <i>monetary policy</i> is selected at several horizons while the <i>inflation</i> indicator is selected mostly during month <i>t</i> – 2 on the left tail of the distribution. Instead, at the top quantile of the INDPRO distribution we find that the <i>economy</i> sentiment measure is strongly significant at horizons between <i>t</i> – 3 and <i>t</i>. The <i>economy</i> indicator confirms to be a useful predictor for PAYEMS with strong significance across all quantiles and horizons considered. In addition, the <i>unemployment</i>, <i>manufacturing</i> and <i>monetary policy</i> measures provide forecasting power at short horizons on the left tail of the distribution. With respect to CPIAUCSL, the <i>financial sector</i> indicator is statistically significant for horizons starting from <i>t</i> – 2 to month <i>r</i> at all quantiles confirming the results of <a href="#F0004">Figure 4</a>. In addition, the sentiment about <i>inflation</i> is a relevant predictor at the lowest quantile for horizons from <i>t</i> – 3, <i>t</i>, and <i>t</i> – 4, and sporadically at shorter horizons.</p>
+  <div class="figure figureViewer" id="F0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Forecasting with Economic News</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Barbaglia%2C+Luca"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Barbaglia%2C+Luca"><span class="NLM_given-names">Luca</span> Barbaglia</a> <a href="https://orcid.org/0000-0001-5930-5392"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Consoli%2C+Sergio"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Consoli%2C+Sergio"><span class="NLM_given-names">Sergio</span> Consoli</a> <a href="https://orcid.org/0000-0001-7357-5858"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Manzan%2C+Sebastiano"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Manzan%2C+Sebastiano"><span class="NLM_given-names">Sebastiano</span> Manzan</a> <a href="https://orcid.org/0000-0002-0931-9769"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/07350015.2022.2060988">https://doi.org/10.1080/07350015.2022.2060988</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>09 May 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Fig. 5 </span> Significance of the sentiment measures based on the double lasso penalized quantile regression at each horizon <i>h</i> for quantiles 0.1 (left column), 0.5 (center) and 0.9 (right). The colors depend on the <i>p</i>-value corrected for multiple testing for those variables that are significant at least at 10%: the darker the tile’s color, the smaller the <i>p</i>-value. The gray-shaded area corresponds to the reference period.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/medium/ubes_a_2060988_f0005_c.jpg" loading="lazy" height="432" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0005">
+   <p class="captionText"><span class="captionLabel">Fig. 5 </span> Significance of the sentiment measures based on the double lasso penalized quantile regression at each horizon <i>h</i> for quantiles 0.1 (left column), 0.5 (center) and 0.9 (right). The colors depend on the <i>p</i>-value corrected for multiple testing for those variables that are significant at least at 10%: the darker the tile’s color, the smaller the <i>p</i>-value. The gray-shaded area corresponds to the reference period.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0005">
+   <div class="figureFootNote-F0005"></div>
+  </div>
+ </div>
+</div>
+<div id="S0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i21" class="section-heading-2">5 Out-of-Sample Analysis</h2>
+ <p>In this section we evaluate the robustness of the previous results to an out-of-sample test. We forecast the economic indicators from the beginning of 2002 until the end of 2019, a period that includes the Great Recession of 2008–2009. In our application, the benchmark for the relative accuracy test is the ARX specification while the alternative model augments the macroeconomic and financial information set with the sentiment indicators. In addition, we also consider an <i>Average</i> forecast obtained by averaging the ARXS forecasts and a <i>LASSO</i> forecast that is obtained by lasso selection among a set of regressors that includes lagged values of the dependent variable, the three macroeconomic indicators, and the six sentiment indicators. We compare the forecast accuracy of the sentiment-augmented specifications at each individual horizon as well as jointly at all horizons using the average Superior Predictive Ability (aSPA) test proposed by Quaedvlieg (<span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2021</a></span>).<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="FN0014" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>11</sup></a></span> The evaluation of the point forecasts is performed using the square loss function that is defined as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0021.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="inline">
+    <mrow>
+     <mi>
+      f
+     </mi>
+     <mo stretchy="false">
+      (
+     </mo>
+     <msub>
+      <mrow>
+       <mi>
+        e
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        d
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        h
+       </mi>
+      </mrow>
+     </msub>
+     <mo stretchy="false">
+      )
+     </mo>
+     <mo>
+      =
+     </mo>
+     <msubsup>
+      <mrow>
+       <mi>
+        e
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        d
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        h
+       </mi>
+      </mrow>
+      <mn>
+       2
+      </mn>
+     </msubsup>
+    </mrow>
+   </math></span>, where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0022.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="inline">
+    <mrow>
+     <mi>
+      f
+     </mi>
+     <mo stretchy="false">
+      (
+     </mo>
+     <mo>
+      ·
+     </mo>
+     <mo stretchy="false">
+      )
+     </mo>
+    </mrow>
+   </math></span> represents the loss function and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0023.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="inline">
+    <mrow>
+     <msub>
+      <mrow>
+       <mi>
+        e
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        d
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        h
+       </mi>
+      </mrow>
+     </msub>
+    </mrow>
+   </math></span> is the error in forecasting the period <i>t</i> release based on the information available on day <i>d</i> – <i>h</i>. Instead, the evaluation of the quantile forecasts is based on the check loss function defined as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0024.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="inline">
+    <mrow>
+     <mi>
+      f
+     </mi>
+     <mo stretchy="false">
+      (
+     </mo>
+     <msubsup>
+      <mrow>
+       <mi>
+        e
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        d
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        h
+       </mi>
+      </mrow>
+      <mi>
+       τ
+      </mi>
+     </msubsup>
+     <mo stretchy="false">
+      )
+     </mo>
+     <mo>
+      =
+     </mo>
+     <msubsup>
+      <mrow>
+       <mi>
+        e
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        d
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        h
+       </mi>
+      </mrow>
+      <mi>
+       τ
+      </mi>
+     </msubsup>
+     <mrow>
+      <mo stretchy="false">
+       (
+      </mo>
+      <mrow>
+       <mi>
+        τ
+       </mi>
+       <mo>
+        −
+       </mo>
+       <msub>
+        <mrow>
+         <mn>
+          1
+         </mn>
+        </mrow>
+        <mrow>
+         <msubsup>
+          <mrow>
+           <mi>
+            e
+           </mi>
+          </mrow>
+          <mrow>
+           <mi>
+            t
+           </mi>
+           <mo>
+            ,
+           </mo>
+           <mi>
+            d
+           </mi>
+           <mo>
+            −
+           </mo>
+           <mi>
+            h
+           </mi>
+          </mrow>
+          <mi>
+           τ
+          </mi>
+         </msubsup>
+         <mo>
+          &lt;
+         </mo>
+         <mn>
+          0
+         </mn>
+        </mrow>
+       </msub>
+      </mrow>
+      <mo stretchy="false">
+       )
+      </mo>
+     </mrow>
+    </mrow>
+   </math></span>, where <i>τ</i> represents the quantile level and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0025.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="inline">
+    <mrow>
+     <msubsup>
+      <mrow>
+       <mi>
+        e
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        d
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        h
+       </mi>
+      </mrow>
+      <mi>
+       τ
+      </mi>
+     </msubsup>
+     <mo>
+      =
+     </mo>
+     <msubsup>
+      <mrow>
+       <mi>
+        Y
+       </mi>
+      </mrow>
+      <mi>
+       t
+      </mi>
+      <mi>
+       d
+      </mi>
+     </msubsup>
+     <mo>
+      −
+     </mo>
+     <msub>
+      <mrow>
+       <mi>
+        Q
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        τ
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        h
+       </mi>
+      </mrow>
+     </msub>
+     <mo stretchy="false">
+      (
+     </mo>
+     <msubsup>
+      <mrow>
+       <mi>
+        Y
+       </mi>
+      </mrow>
+      <mi>
+       t
+      </mi>
+      <mi>
+       d
+      </mi>
+     </msubsup>
+     <mo stretchy="false">
+      )
+     </mo>
+    </mrow>
+   </math></span>. The choice of this loss function to evaluate quantiles is similar to Giacomini and Komunjer (<span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2005</a></span>) and is guided by the objective of aligning the loss used in estimation and in evaluation, as discussed in Gneiting (<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2011</a></span>). In addition, we also consider the loss function <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0026.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ubes20/0/ubes20.ahead-of-print/07350015.2022.2060988/20220509/images/ubes_a_2060988_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math display="inline">
+    <mrow>
+     <mi>
+      f
+     </mi>
+     <mo stretchy="false">
+      (
+     </mo>
+     <msubsup>
+      <mrow>
+       <mi>
+        e
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        d
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mi>
+        h
+       </mi>
+      </mrow>
+      <mi>
+       τ
+      </mi>
+     </msubsup>
+     <mo stretchy="false">
+      )
+     </mo>
+     <mo>
+      =
+     </mo>
+     <msup>
+      <mrow>
+       <mrow>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         τ
+        </mi>
+        <mo>
+         −
+        </mo>
+        <msub>
+         <mrow>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mrow>
+          <msubsup>
+           <mrow>
+            <mi>
+             e
+            </mi>
+           </mrow>
+           <mrow>
+            <mi>
+             t
+            </mi>
+            <mo>
+             ,
+            </mo>
+            <mi>
+             d
+            </mi>
+            <mo>
+             −
+            </mo>
+            <mi>
+             h
+            </mi>
+           </mrow>
+           <mi>
+            τ
+           </mi>
+          </msubsup>
+          <mo>
+           &lt;
+          </mo>
+          <mn>
+           0
+          </mn>
+         </mrow>
+        </msub>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mrow>
+      </mrow>
+      <mn>
+       2
+      </mn>
+     </msup>
+    </mrow>
+   </math></span> that evaluates the conditional coverage of the one-sided interval at level <i>τ</i>. This loss function is relevant when the goal is to evaluate the coverage of an interval as in the applications to Growth-at-Risk at quantile levels 0.05 and 0.10 (see Adrian, Boyarchenko, and Giannone <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2019</a></span> and Corradi, Fosten, and Gutknecht <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2020</a></span>). Finally, the out-of-sample exercise is performed in real-time by providing the forecasting models with the vintage of macroeconomic information that was available at the time the forecast was made. We report results for the evaluation of the forecasts with respect to the second release, and results for the preliminary estimate are qualitatively similar.</p>
+ <div id="S0005-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i22">5.1 Performance of Point Forecasts</h3>
+  <p><button class="ref showTableEventRef" data-id="t0001">Table 1</button> reports the <i>p</i>-values of the <i>aSPA</i> test for the null hypothesis that the forecasts from the alternative models do not outperform the benchmark forecasts at any horizons. The results for GDP indicate that the average forecasts have the lowest <i>p</i>-value at 0.143, although it is not statistically significant at 10%. For INDP we find that sentiment about <i>manufacturing</i>, <i>monetary policy</i>, and <i>unemployment</i> significantly improves the forecast accuracy relative to the ARX forecasts across all horizons. Instead, the sentiment about the <i>economy</i> delivers significantly more accurate forecasts for PAYEMS, while sentiment about the <i>financial sector</i> is useful when forecasting CPI inflation. The six sentiment indicators were designed to capture different aspects of economic activity, such as the real economy (<i>manufacturing</i> and <i>economy</i>), the price level (<i>inflation</i>), the labor market (<i>unemployment</i>), and the financial sector (<i>financial sector</i> and <i>monetary policy</i>). It is thus not surprising that only few of them are relevant to predict these different macroeconomic variables. Furthermore, the out-of-sample significance of the sentiment indicators confirms, to a large extent, the in-sample results provided in <a href="#F0004">Figure 4</a>.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="FN0015" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>12</sup></a></span>. As concerns the average forecasts, we find that they are significantly better for all the monthly variables while the <i>LASSO</i> is significant only in the case of PAYEMS.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="FN0016" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>13</sup></a></span>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Forecasting with Economic News</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Barbaglia%2C+Luca"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Barbaglia%2C+Luca"><span class="NLM_given-names">Luca</span> Barbaglia</a> <a href="https://orcid.org/0000-0001-5930-5392"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Consoli%2C+Sergio"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Consoli%2C+Sergio"><span class="NLM_given-names">Sergio</span> Consoli</a> <a href="https://orcid.org/0000-0001-7357-5858"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Manzan%2C+Sebastiano"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Manzan%2C+Sebastiano"><span class="NLM_given-names">Sebastiano</span> Manzan</a> <a href="https://orcid.org/0000-0002-0931-9769"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/07350015.2022.2060988">https://doi.org/10.1080/07350015.2022.2060988</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>09 May 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1 </span> One-sided <i>p</i>-values of the aSPA multi-horizon test proposed by Quaedvlieg (<span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2021</a></span>).</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F07350015.2022.2060988&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+ </div>
+ <div id="S0005-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i23">5.2 Performance of Quantile Forecasts</h3>
+  <p><button class="ref showTableEventRef" data-id="t0002">Table 2</button> shows the results of the multi-horizon accuracy test applied to the quantile forecasts. The results for the individual quantile evaluation in the first three columns of the table indicate that the sentiment measures do not improve significantly when forecasting quarterly GDP, with only the average achieving <i>p</i>-values of 0.115 and 0.237 at the 0.5 and 0.9 quantiles, respectively. However, when predicting the monthly indicators we find that the average forecasts are significantly more accurate for all variables and for most quantile levels. The LASSO forecasting model outperforms the benchmark at the lowest quantile for PAYEMS, and at the median and lowest quantiles when forecasting CPI inflation. In terms of the ARXS specification, we find that the sentiment about the <i>economy</i> is useful to predict the tail quantiles of PAYEMS, while <i>financial sector</i> and <i>manufacturing</i> contribute to more accurate forecasts at the lowest quantile. Interestingly, we find that sentiment about <i>inflation</i> is a powerful predictor of future CPI inflation both at the lowest and median quantiles, while <i>financial sector</i> is only relevant at the median and <i>monetary policy</i> on the right-tail of the distribution.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Forecasting with Economic News</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Barbaglia%2C+Luca"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Barbaglia%2C+Luca"><span class="NLM_given-names">Luca</span> Barbaglia</a> <a href="https://orcid.org/0000-0001-5930-5392"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Consoli%2C+Sergio"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Consoli%2C+Sergio"><span class="NLM_given-names">Sergio</span> Consoli</a> <a href="https://orcid.org/0000-0001-7357-5858"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Manzan%2C+Sebastiano"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Manzan%2C+Sebastiano"><span class="NLM_given-names">Sebastiano</span> Manzan</a> <a href="https://orcid.org/0000-0002-0931-9769"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/07350015.2022.2060988">https://doi.org/10.1080/07350015.2022.2060988</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>09 May 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2 </span> One-sided <i>p</i>-values of the <i>aSPA</i> multi-horizon test proposed by Quaedvlieg (<span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i25 _i28" href="#"><span class="off-screen">Citation</span>2021</a></span>).</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="false" id="t0002-table-wrapper">
+    <a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p>The last column of <button class="ref showTableEventRef" data-id="t0002">Table 2</button> shows the <i>p</i>-value of the multi-horizon test for the pairwise comparison of the conditional coverage of the left open interval at 10%. We find that the <i>financial sector</i> sentiment delivers significantly more accurate interval forecasts for INDP and PAYEMS, while sentiment about the <i>economy</i> and <i>monetary policy</i> have more accurate coverage, relative to the benchmark, for CPI. Testing conditional coverage on the left tail of the distribution entails periods with large negative errors which, in our out-of-sample period, occurred to a large extent during the Great Recession of 2008–2009. It is not thus surprising that sentiment deriving from news about the financial sector, the state of the economy and the conduct of monetary policy contributed to produce more accurate coverage on the left tail. Also, the table shows that in some cases the sentiment measures might be a significant predictor for a certain quantile but not for the interval. This result is consistent with the fact that different loss functions evaluate different aspects of the density forecast and thus might lead to contrasting conclusions regarding the significance of the sentiment measures.</p>
+ </div>
+</div>
+<div id="S0006" class="NLM_sec NLM_sec-type_conclusions NLM_sec_level_1">
+ <h2 id="_i24" class="section-heading-2">6 Conclusion</h2>
+ <p>Macroeconomic forecasting has long relied on building increasingly complex econometric models to optimally use the information provided by statistical agencies. The recent availability of alternative datasets is leading the way for macroeconomists to create their own macroeconomic indicators to use along with the official statistics, thus, enriching their information set. In this article we provide an example of this new approach that uses over four billion words from newspaper articles over 40 years to create proxies for different aspects of economic sentiment. Our findings show the potential for using the sentiment measures in economic forecasting applications, providing reliable measures to use together with official macroeconomic statistics. An important advantage of using alternative datasets is that measures of economic activity can be constructed by the researcher at the daily frequency and in real-time, such as in the case of our sentiment indicators. In addition, the availability of the granular data opens the possibility for the researcher to investigate ways to produce more powerful indicators. Our encouraging results indicate that sentiment extracted from text, and in particular news, is a promising route to follow, which could lead to significant improvements in macro-economic forecasting accuracy. However, the application of text analysis in economics and finance is still in its infancy and more work is needed to understand its potential and relevance in different fields of economics and finance.</p>
+</div>

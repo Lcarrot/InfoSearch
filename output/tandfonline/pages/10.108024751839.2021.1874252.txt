@@ -1,0 +1,795 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">1. Introduction</h2>
+ <p>A popular goal is to develop and/or use a model to sentiment prediction by looking for connections between words and marking them with positive or negative sentiments. There are many opportunities these days to perform sentiment analyses, for example external services that are almost completely ready to use it in a given context where it is needed like TextBlob. In addition, there are options that allow us to create our own models, train them based on our own data. Sentiment analysis with BERT is one of the most powerful tool that we can use, but we can also create a Recurrent Neural Network (RNN) as well or use the NLTK tool with VADER Lexicon with SentimentIntensityAnalyzer.</p>
+ <p>The stock market is one of the most important economic participants. Many people try to interpret and define the different stock market movements in many ways. In this article, we use different tools to the sentiment analysis, especially focussing on the economic news, but in terms of economic news, focussing only on the headlines of economic news. In today's communications and news consumption, the headlines of various articles play an even more important role than before. Now, we use sentiment analysis on these headlines on a particular company or companies to determine the effects of the headlines to the stock market. The question arises how much effect has the economic headline without the economic news whole context, if it has any measurable effect at all. We have found that it really has. Thus, we define the different impacts and their perceived significance with a very specific and unique new approach.</p>
+ <p>Data is an important pillar of analysis. Primarily the headlines of economic news are needed, what we use for sentiment analysis. Secondary, different stock market data are also needed based on companies. There are many possibilities for data collection and analysis, from ‘traditional’ dictionary-based performed by humans to ‘more serious’ neural networks that determine the polarity of the headlines of each economic news and label with appropriate emotional polarity. In the case of stock market data, numerous tools are available to obtain stock market data which can be even company-specific which is important to us. In both cases, we work with the most up-to-date data as possible, based on the information provided by the companies. Both, the headlines of the economic news and stock value data are related to the time period which specified by the news. Thus, the results of the given emotional analysis and the range of stock market data will be appropriate.</p>
+ <p>The analysis can be separated to the next sections. Collect headlines of economic news based on companies and collect stock market data according to the timestamps of the given economic news headlines.</p>
+ <p>Then prepare these data and apply different sentiment analysis tools like RNN or NLTK with VADER Lexicon ect. The RNN model was built and taught using the libraries and capabilities provided by Tensorflow. Manage these data and compare the stock market data and emotional data with visualization and explanation. Present how the headlines of economic news can affect different stock market changes and the public.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">2. Related works</h2>
+ <p>Devlin et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2018</a></span>) introduce a new language representation model called BERT, which stands for Bidirectional Encoder Representations from Transformers, that was designed to pretrain deep bidirectional representations from unlabelled text by jointly conditioning on both left and right context in all layers. The new possibilities and results of this model enable even low-resource tasks to benefit from deep unidirectional architectures. This model became one of the most significant tool of the natural language processing.</p>
+ <p>Wang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2020</a></span>) introduces a public sentiment analysis during the outbreak which is able to provides insightful information in making appropriate public health responses. They analyze the Sina Weibo popular Chinese social media site posts, where the unsupervised BERT model is adopted to classify sentiment categories (positive, neutral, and negative) and TF-IDF (term frequency-inverse document frequency) model is used to summarize the topics of posts. Analyzing posts with negative sentiment from social media could contribute to understanding the experiences and offers examples for other countries. The analyses provide insights on the evolution of social sentiment over time and the topic themes connected to negative sentiment on the social media sites. BERT classification model and TF-IDF topic extraction model results were delivered with considerable accuracy.</p>
+ <p>The big data is a very popular and powerful tool nowadays. Lee (<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2020</a></span>) explores the initial impact of COVID-19 sentiment on US stock market using big data notedly Daily News Sentiment Index (DNSI) and Google Trends data on coronavirus-related searches. The goal is to investigate a correlation between COVID-19 sentiment and 11 selected sector indices of the Unites States (US) stock market in a declared time period. Any positive or negative sentiment of public related to stock market crisis can have a ripple effect on decision making by investors in stock markets. The results reveal the distinct effects of the COVID-19 sentiment across in various industries and separate them to different correlation groups.</p>
+ <p>Khedr and Yaseen (<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2017</a></span>) aims at constructing an effective model to predict stock market future trends with small error ratio and improve the accuracy of prediction. Where this prediction model is based on sentiment analysis and historical stock market prices, worked with K-NN and naïve Bayes algorithm to earn the final results. We can separate the model for two stages. The first stage is to determine the news polarity is positive or negative using naïve Bayes algorithm, the second stage incorporates the output of the first stage as input with the processed historical numeric data to predict the future stock trend using K-NN algorithm.</p>
+ <p>Streaming data prove to be a rich source of data analysis where data are collected in real-time. The major characteristics of such data being its accessibility and availability, help in proper analysis and prediction. Das et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2018</a></span>) show an analysis that has been made for making financial decisions such as stock market prediction, to predict the potential prices of a company's stock using twitter data.</p>
+ <p>Kalyani et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2016</a></span>)'s project takes data such as financial news articles about a company and predict its future stock trend with news sentiment classification, assuming that news articles have impact on stock market. This is an attempt to study relationship between news and stock trend. For this, they used dictionary based approach. The dictionaries for positive and negative words are created using general and finance specific sentiment carrying words. Based on this data, they implemented classification models. The results show that Random Forest (RF) and Suport Vector Machine (SVM) perform well in all testing.</p>
+ <p>Mikolov et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2011</a></span>) presents some modifications of the original recurrent neural network language model (RNN LM). This model has been shown to significantly outperform many competitive language modelling techniques in terms of accuracy, but the remaining problem is the computational complexity. Their result is more than 15 times faster in both training and testing phases. The resulting RNN model can be smaller, faster and more accurate than the base.</p>
+ <p>In another paper we can get to know the SummaRuNNer model, which is a Recurrent Neural Network (RNN) based sequence model. Nallapati et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2016</a></span>) proposes a very interpretable neural sequence model for extractive document summarization that allows intuitive visualization, and shows that it is better performing than the state-of-the art deep learning models and it is comparable to this learning models as well.</p>
+ <p>Following this line, Liu et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2016</a></span>) shows the multitask learning framework to jointly learn across multiple related tasks which based on recurrent neural network. They propose three different mechanisms of sharing information to model text with task-specific and shared layers where the differences among them are the mechanisms of sharing information between the tasks.</p>
+ <p>Let's look at other approaches. Balahur (<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2013</a></span>) presents a method for sentiment analysis specifically designed to work with Twitter data, focussing their structure, length and specific language. They show that the use of generalized features significantly improves the results of the sentiment classification. They apply unigram and bigram (n-gram) and supervised learning with simple Support Vector Machines. Based on the results we can conclude that, the best properties to use emotional analysis is the unigram and the bigram together. We can also see that generalizations, using unique tags, emotive words and modifiers are strongly improve the performance rating of emotions.</p>
+ <p>SmartSA is a lexicon-based sentiment classification system for social media genres by Muhammad et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2016</a></span>). It integrates strategies to capture contextual polarity from two ways, the interaction of terms with their textual neighbourhood and text genre like local and global context. They also introduce an approach to hybridise a general purpose lexicon, with genre-specific vocabulary and sentiment. The results from diverse social media show that this strategies of local and global contexts significantly improve sentiment classification, and are complementary in combination.</p>
+ <p>Arras et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2017</a></span>) have introduced a simple yet effective strategy for extending the LRP procedure to recurrent architectures (LSTM) by proposing a rule to backpropagate the relevance through multiplicative interactions. They applied the extended LRP version to a bi-directional LSTM model for the sentiment prediction of sentences.</p>
+ <p>To study the influence of market characteristics on stock prices, traditional neural network algorithms may incorrectly predict the stock market, since the initial weight of the random selection problem can be easily prone to incorrect predictions. Based on the development of word vector in deep learning, Pang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2020</a></span>) demonstrates the concept of ‘stock vector.’ The input is not only a single index or single stock index, but multi-stock high-dimensional historical data. They propose the deep long short-term memory neural network (LSTM) with embedded layer and the long short-term memory neural network with automatic encoder to predict the stock market.</p>
+ <p>Billah et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i34 _i35" href="#"><span class="off-screen">Citation</span>2016</a></span>) presented an improved Levenberg Marquardt (LM) training algorithm. Improved Levenberg Marquardt algorithm of neural network can predict the possible day-end closing stock price with less memory and time needed, provided previous historical stock market data of Dhaka Stock Exchange. such as the opening, highest, lowest prices and total share traded data.</p>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">3. DataFrame building</h2>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">3.1. Options to build DataFrame of the news headlines and stock values</h3>
+  <p>There are several ways to approach data structure building. Primarily we consider the headlines of economic news. Of course, there is the possibility to compile a collection of data by human effort according to specific conditions, such as gathering economic news titles filtered by a given company name from the collection built from a start time (which is the oldest possible economic news titles) until to reach a certain limit. There is the possibility of approaching the analysis using data from a previous archive collection of data, but the main goal is to use the most up-to-date data as possible. There is also the possibility of using human effort in the case of data collection from the stock market values of companies, but today many economic portals and other libraries and frameworks are available to fully automate the process. In this case, automation plays a more important role than in the previous economic news title data collecting. The error factor can be significantly reduced when compiling companies' economic data. In addition, the source and the values of the stock data are easier to manage this way than in the economic news title data collecting.</p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">3.2. DataFrame of the headlines of economic news</h3>
+  <p>As mentioned earlier, the main goal in the headlines of economic news is to use the most up-to-date data possible. All data collection and management is automated. There is an option to the user to specify the portal as a source to manage the news. We used data from ‘finviz.com’ for our analyses. Before collecting the data, it is possible to enter the stock exchange names of the companies where we would like to collect the data of recent economic news for analysis. It is possible to specify more than one company by listing as parameter. The function takes care of managing the appropriate timestamps (news publication time) and separating the news based on the companies and create a backup into a file as csv. This freshly compiled data is used by the application for further analysis (as part of sentiment analysis, comparisons, and other possibilities.) It is important to mention that news timestamps play a role in compiling additional stock market data so the analyses take place in the same time period. Thus, these economic news headlines define the interval for subsequent stock market data collection separated for companies.</p><statement content-type="algorithm">
+   <p><span class="monospace">website_url = ‘https://finviz.com/quote.ashx?t=’</span></p>
+   <p><span class="monospace">company_tikcers = [‘AMD’, ‘AMZN’, ‘FB’, ‘GOOG’]</span></p>
+   <p><span class="monospace">news_tables = {}</span></p>
+   <p><span class="monospace">parsed_data = []</span></p>
+   <p><span class="monospace">for ticker in company_tikcers:</span></p>
+   <p><span class="monospace"> url = website_url + ticker</span></p>
+   <p><span class="monospace"> req = Request(url=url, headers={‘user-agent’: ‘my-scrape’})</span></p>
+   <p><span class="monospace"> response = urlopen(req)</span></p>
+   <p><span class="monospace"> html = BeautifulSoup(response, ‘html’)</span></p>
+   <p><span class="monospace"> news_data = html.find(id=‘news-table’)</span></p>
+   <p><span class="monospace"> news_tables[ticker] = news_data</span></p>
+   <p><span class="monospace">for ticker, news_table in news_tables.items():</span></p>
+   <p><span class="monospace"> for row in news_table.findAll(‘tr’):</span></p>
+   <p><span class="monospace">  title = row.a.text</span></p>
+   <p><span class="monospace">  date_data = row.td.text.split(‘ ’)</span></p>
+   <p><span class="monospace">  if len(date_data) == 1:</span></p>
+   <p><span class="monospace">   time = date_data[0][0:7]</span></p>
+   <p><span class="monospace">  else:</span></p>
+   <p><span class="monospace">   date = datetime.datetime.strptime(date_data[0], ‘%b-%d-%y’).strftime(‘%Y/%m/%d’)</span></p>
+   <p><span class="monospace">   time = date_data[1][0:7]</span></p>
+   <p><span class="monospace">  parsed_data.append([ticker, date, time, title])</span></p>
+   <p><span class="monospace">dataset = pd.DataFrame(parsed_data, columns=[“Company”, “Date”, “Time”, “News Headline”])</span></p>
+  </statement>
+  <p><b>Listing 1.</b> Part of the Economic news headlines dataframe builder</p>
+  <p>The code snippet shown by Listing 1 implements a part of data collection for economic news headlines. Where the ‘weblite url’ is the portal from where we process the news, and the ‘company tickets’ are the company names on the stock market in a list from which we would like to compile data. The data processing shown by the code snippet use the ‘BeautifulSoup’, ‘urlopen’ and ‘Request’ tools to perform scraping. For other source pages we have to make changes in this processing stage to scrape data from this specified page (<a href="#F0001">Figure 1</a>).</p>
+  <div class="figure figureViewer" id="F0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>01 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1. </span> Part from the economic news headlines dataframe.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0001_oc.jpg" loading="lazy" height="150" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0001">
+   <p class="captionText"><span class="captionLabel">Figure 1. </span> Part from the economic news headlines dataframe.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0001">
+   <div class="figureFootNote-F0001"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">3.3. DataFrame of the company specific stock values</h3>
+  <p>‘Yahoo fin’ tool was used to collecting stock values for companies. This data is separated by companies into the intervals of previously compiled economic news headlines. Based on this, it will be possible to analyze and compare economic news headlines and stock market data for a given period. This data collection and management also provides the opportunity to perform individual and aggregate analyses (<a href="#F0002">Figure 2</a>).</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>01 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Part from the AMD Stock Values DataFrame.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0002_oc.jpg" loading="lazy" height="97" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Part from the AMD Stock Values DataFrame.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i11" class="section-heading-2">4. Sentiment analysis with different tools</h2>
+ <p>As mentioned earlier, there are many possibilities for sentiment analysis from human-labelled data to various deep learning methods. In the present case, we compare the possibilities offered by TextBlob, NLTK -- VADER Lexicon, RNN and BERT. The main goal is to analyze the headlines of economic news about different companies and determine their sentiment values to be positive or negative possibly neutral. A key factor is to minimize neutral values. It should be noted that we do not have as much influence over external third-party devices as we do about our own models, such as RNN.</p>
+ <p>In the case of sentiment analysis, the headline of the economic news from each company is labelled to what sentiment value it carries, and the polarity value is also indicated. With the help of these data, we can make a number of further analyses and comparisons. The main direction is to compare the specific companies with their stock market values in the period of time which determined by the economic news. Thus assessing and presenting the emotional impact of economic news headlines on stock market changes and see how powerful the headlines can be alone without full content.</p>
+ <p>In addition, our goal is to determine the strength and accuracy of different sentiment analysis tools by the given context. The BERT tool is used as a kind of comparative tool to see how close the results of the other tools are to the results of BERT. More detailed analysis of stock market values and sentiment values (polarity and sentiment label) is done using the results of TextBlob, NLTK -- VADER Lexicon and RNN.</p>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">4.1. TextBlob</h3>
+  <p>TextBlob is a powerful NLP library for Python, which is built upon NLTK and provides an easy to use interface to the NLTK library. This tool can be used to perform a variety of NLP tasks ranging from parts-of-speech tagging to sentiment analysis, and language translation to text classification, but we focus on the sentiment analysis. If we do a sentiment analysis, we actually determine a polarity value of the sentences, where this value can be between −1 and 1. Then we label the data with the right sentiment value (positive, negative or neutral). For other tools, the polarity value may move on a different scale, so the labelling needs to adjust for these differences for further analysis.</p>
+  <p>The <a href="#F0003">Figure 3</a> shows that sentiment values separated by companies. No other value can approach the neutral section, it can be concluded that the analysis of the given economic news headlines and its outcome is very uncertain. In the case of AMD, it can be noted that in <a href="#F0003">Figure 3</a>(a), in addition to the 63 news headlines rated as neutral, 31 are positive and 5 are negative. In the case of FB -- Facebook, in addition to the 80 news headlines rated as neutral, there are 13 positive and 6 negative values as well.</p>
+  <div class="figure figureViewer" id="F0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>01 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> Company specific results of the sentiment analysis using TextBlob. The time period stands between 2020-10-27 and 2020-11-14. (a) Results by Companies and (b) Aggregate Sentiment Result.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0003_oc.jpg" loading="lazy" height="190" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> Company specific results of the sentiment analysis using TextBlob. The time period stands between 2020-10-27 and 2020-11-14. (a) Results by Companies and (b) Aggregate Sentiment Result.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0003">
+   <div class="figureFootNote-F0003"></div>
+  </div>
+  <p></p>
+  <p>In the case of the total result, 75.25 percent in <a href="#F0003">Figure 3</a>(b) is neutral besides to this 20.25 percent is positive and only 4.50 percent is negative.</p>
+  <p>The goal is to minimize neutral values by using a more accurate analysis to reduce the inaccuracy increased by its neutral values in stock market comparisons.</p>
+  <p>The following figure (<a href="#F0004">Figure 4</a>) shows the results divided into days in the interval. The results are aggregated and this gives us a normalized value of how positive or negative the overall day was for the company. Due to the significant neutral value of more than 75 percent, the days are visibly shifting in a positive direction, which can greatly distort real results. Where a company does not have a coloured column for a given day, there was no economic news headline about those company. The following figure is formed on the interval, where above zero means the positive section and below means the negative section.</p>
+  <div class="figure figureViewer" id="F0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>01 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> TextBlob Analysis results separated by days. The time period stands between 2020-10-27 and 2020-11-14.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0004_oc.jpg" loading="lazy" height="232" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> TextBlob Analysis results separated by days. The time period stands between 2020-10-27 and 2020-11-14.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0004">
+   <div class="figureFootNote-F0004"></div>
+  </div>
+  <p></p>
+  <p>It should be noted that there were a large amount of news during the period, about AMD will launch new CPUs and GPUs in October, which was also significantly positive. This may be explained by recent period in the end of October CPU and GPU events and this is the effect of these events.</p>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">4.2. NLTK -- VADER lexicon</h3>
+  <p>NLTK stands for Natural Language Toolkit. This toolkit is one of the most powerful NLP libraries which contains packages to make machines understand human language and reply to it with an appropriate response. Again, we focus on sentiment analysis with the SentimentIntensityAnalyzer. The polarity value of the sentences scales between -1 and 1 just like in the TextBlob. The data labelling process (positive, negative or neutral) is similar to the previous tool. We use VADER Lexicon in this section. VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and rule-based sentiment analysis tool that is specifically attuned to sentiments expressed in social media, and works well on texts from other domains.</p>
+  <p>As shown in <a href="#F0005">Figure 5</a> below, the neutral value (a) dominates in all cases among the sentiment results separated by companies. In the figure next to it (b), the aggregate sentiment result shows the economic news headlines significant neutral values. This level of neutral values has impact on comparisons and analyses to the subsequent stock market changes. Compared to the results of TextBlob, the neutral values have been significantly reduced and we expect that has significant effect in further analysis to obtain more accurate and realistic results with fewer neutral values. In <a href="#F0005">Figure 5</a>(b), 51.50 percent of the total result is neutral in addition to 31.50 percent positive and 17 percent negative. Of the positive or negative categories, the positive strongly dominates, but this huge neutral value still makes the result little bit uncertain.</p>
+  <div class="figure figureViewer" id="F0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>01 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> Company specific results of the sentiment analysis using NLTK -- VADER Lexicon. The time period stands between 2020-10-27 and 2020-11-14. (a) Results by Companies and (b) Aggregate Sentiment Result.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0005_oc.jpg" loading="lazy" height="187" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> Company specific results of the sentiment analysis using NLTK -- VADER Lexicon. The time period stands between 2020-10-27 and 2020-11-14. (a) Results by Companies and (b) Aggregate Sentiment Result.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0005">
+   <div class="figureFootNote-F0005"></div>
+  </div>
+  <p></p>
+  <p>The following figure (<a href="#F0006">Figure 6</a>) shows the results divided into days in the interval. The results are aggregated and this gives us a normalized value of how positive or negative the overall day was for the company. One day in total cannot be neutral because of the other news headlines have to move it in some direction and the neutral values according to the polarity also try to move the result in some direction too. Thus, the following figure is formed on the interval, where above zero means the positive section and below means the negative section.</p>
+  <div class="figure figureViewer" id="F0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>01 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 6. </span> NLTK -- VADER Lexicon Analysis results separated by days. The time period stands between 2020-10-27 and 2020-11-14.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0006image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0006_oc.jpg" loading="lazy" height="232" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0006">
+   <p class="captionText"><span class="captionLabel">Figure 6. </span> NLTK -- VADER Lexicon Analysis results separated by days. The time period stands between 2020-10-27 and 2020-11-14.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0006">
+   <div class="figureFootNote-F0006"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S004-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">4.3. Recurrent neural network (RNN)</h3>
+  <p>When we talk about traditional neural networks, all the outputs and inputs are independent of each other. But in the case of recurrent neural networks, the output from the previous steps is fed into the input of the current state.</p>
+  <p>All in all the Recurrent Neural Network is a neural network that is intentionally run multiple times, where parts of each run feed into the next run. Specifically, hidden layers from the previous run provide part of the input to the same hidden layer in the next run. Recurrent neural networks are particularly useful for evaluating sequences, so that the hidden layers can learn from previous runs of the neural network on earlier parts of the sequence.</p>
+  <p>For example, the following figure of Google shows a recurrent neural network that runs four times (<a href="#F0007">Figure 7</a>). Notice that the values learned in the hidden layers from the first run become part of the input to the same hidden layers in the second run. Similarly, the values learned in the hidden layer on the second run become part of the input to the same hidden layer in the third run. In this way, the recurrent neural network gradually trains and predicts the meaning of the entire sequence rather than just the meaning of individual words.</p>
+  <div class="figure figureViewer" id="F0007">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>01 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 7. </span> A recurrent neural network.<span class="NLM_disp-formula-image inline-formula rs_preserve">
+        <noscript>
+         <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/tjit_a_1874252_ilm0001.gif" alt="">
+        </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/tjit_a_1874252_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+        <math>
+         <msup>
+          <mi></mi>
+          <mrow>
+           <mn>
+            1
+           </mn>
+          </mrow>
+         </msup>
+        </math></span></p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0007image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0007_oc.jpg" loading="lazy" height="460" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0007">
+   <p class="captionText"><span class="captionLabel">Figure 7. </span> A recurrent neural network.<span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/tjit_a_1874252_ilm0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/tjit_a_1874252_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msup>
+       <mi></mi>
+       <mrow>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msup>
+     </math></span></p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0007">
+   <div class="figureFootNote-F0007"></div>
+  </div>
+  <p></p>
+  <p>An advantages of the RNN model: RNN can process inputs of any length. An RNN model is modelled to remember each information throughout the time which is very helpful in any time series predictor. Even if the input size is larger, the model size does not increase. But there some disadvantages: Due to its recurrent nature, the computation is slow. Training of RNN models can be difficult.</p>
+  <p>We have to mention that the polarity value of the sentences scales between 0 and 1 here. In contrast to the models what mentioned earlier.</p>
+  <p>The <a href="#F0008">Figure 8</a> shows the results of RNN separated by companies and the aggregating result as before. A significant difference from the previous results of TextBlob and NLTK -- Vader Lexicon is that the neutral section was completely eliminated, all news headlines were categorized as either positive or negative. This is a significant difference from previous models, although there was a kind of downward trend in the models. The neutral category of the TextBlob was huge, it was significantly reduced by the NLTK -- Vader Lexicon, and then the RNN model was managed to avoid a neutral category.</p>
+  <div class="figure figureViewer" id="F0008">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>01 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 8. </span> Company specific results of the sentiment analysis using RNN. The time period stands between 2020-10-27 and 2020-11-14. (a) Results by Companies and (b) Aggregate Sentiment Result.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0008image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0008_oc.jpg" loading="lazy" height="186" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0008">
+   <p class="captionText"><span class="captionLabel">Figure 8. </span> Company specific results of the sentiment analysis using RNN. The time period stands between 2020-10-27 and 2020-11-14. (a) Results by Companies and (b) Aggregate Sentiment Result.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0008">
+   <div class="figureFootNote-F0008"></div>
+  </div>
+  <p></p>
+  <p><a href="#F0008">Figure 8</a>(a) shows how the positive and negative news headlines are distributed among the companies. In the case of AMD, it can be noted that the result is quite ‘balanced’ with 51 positive and 48 negative values. In part (b) of the figure, the total result is 58.50 percent positive and 41.50 percent negative and the neutral value is 0 percent which is now the key.</p>
+  <p>In <a href="#F0009">Figure 9</a>, the positive negative day categorization is totally different than the previous ones, because in the case of the RNN model, the polarity values scale between 0 and 1. Therefore, here is a ‘traditional’ bar chart showing the aggregation of polarity values for each day.</p>
+  <div class="figure figureViewer" id="F0009">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>01 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 9. </span> RNN Analysis results separated by days. The time period stands between 2020-10-27 and 2020-11-14.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0009image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0009_oc.jpg" loading="lazy" height="234" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0009">
+   <p class="captionText"><span class="captionLabel">Figure 9. </span> RNN Analysis results separated by days. The time period stands between 2020-10-27 and 2020-11-14.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0009">
+   <div class="figureFootNote-F0009"></div>
+  </div>
+  <p></p>
+  <p>Note: The RNN model was trained based on an IMDB review dataset<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>2</sup></a></span> (In the test and train dataset sections we used shuffle method as well. Then we use the fresh scraped dataset as test dataset with this trained model.)</p>
+ </div>
+ <div id="S004-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i22">4.4. Bidirectional encoder representations from transformers (BERT)</h3>
+  <p>Unlike the traditional NLP models that follow a unidirectional approach, that is, reading the text either from left to right or right to left, BERT reads the entire sequence of words at once. BERT makes use of a Transformer which is essentially a mechanism to build relationships between the words in the dataset. In its simplest form, a BERT consists of two processing models -- an encoder and a decoder. The encoder reads the input text and the decoder produces the predictions. But, because the main goal of BERT is to create pre-trained model, the encoder takes priority over decoder. BERT is a remarkable breakthrough in the field of NLP.</p>
+  <p>As mentioned earlier, BERT is used as a kind of comparative result. <a href="#F0010">Figure 10</a> shows the results obtained by BERT. Of course, without a neutral category, it managed to categorize each economic news headline and labelled it as a positive or negative value. In part (a) of the figure, it can be mentioned that the result of our previous RNN model is quite encouraging, as there is no neutral category either and the values of certain companies are quite close to the result of BERT. Part (b) of the figure shows the overall result where 50.50 percent is positive and 49.50 percent is negative compared to the result of the RNN model where 58.50 is positive and 41.50 is negative, neutral is 0 percent in both cases.</p>
+  <div class="figure figureViewer" id="F0010">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>01 February 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 10. </span> Company specific results of the sentiment analysis using BERT. The time period stands between 2020-10-27 and 2020-11-14. (a) Results by Companies and (b) Aggregate Sentiment Result.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0010image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0010_oc.jpg" loading="lazy" height="187" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0010">
+   <p class="captionText"><span class="captionLabel">Figure 10. </span> Company specific results of the sentiment analysis using BERT. The time period stands between 2020-10-27 and 2020-11-14. (a) Results by Companies and (b) Aggregate Sentiment Result.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0010">
+   <div class="figureFootNote-F0010"></div>
+  </div>
+  <p></p>
+  <p>We expected that the model we trained and taught would give more accurate and more reliable results than other tools on the same data set. More specifically, the result from the RNN model determines emotional values and labels with a more accurate and smaller error rate than NLTK with VADER Lexicon or TextBlob. This expectation was also confirmed by the results. It should be emphasized that the result of NLTK was much more encouraging than initially expected and in later analyses, despite the existing neutral values, it gave a much ‘finer’ result than TextBlob where we get a ‘raw’ result due to the significant neutral value. For the RNN model, no headline is placed in the neutral category. Regarding the results of BERT and the results of the other tools, we expect more accurate results from the RNN and NLTK tools when analyzing with stock market values.</p>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i24" class="section-heading-2">5. Sentiment and stock value analysis</h2>
+ <p>Following the sentiment analyses at a given interval, we can start the comparison with stock market changes at the same interval. During the sentiment analysis, the ‘realistic’ word was mentioned, which refers to the smaller neutral category, less neutral value in the solution of the analysis. It refers to a better and ‘stronger’ analytical model that was able to give positive and negative tags to news headlines which were categorized as neutral by the previous analytical model. Thus we reduced the potential of error and possible skew results.</p>
+ <p>We can say that economic news do have an impact on stock market shifts, there are times when certain news items have effect to the later movements, and there are times when the news describe a particular shift, which enhances change too.</p>
+ <p>Our main study in the present case focuses on the headlines of economic news about the various companies which was given as parameters previously, without their full article context. The headline itself, which aims to draw people's attention and generate clicks on full content, is worded in this ‘sometimes sharp, eye-catching’ way. How much impact do these economic news headlines have on stock market changes, if it has any effect. In our results we found that it really has.</p>
+ <p><a href="#F0011">Figure 11</a> shows the AMD stock market changes during the given study period, where the date and the daily closing (adjusted closing price) value are displayed.</p>
+ <div class="figure figureViewer" id="F0011">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>01 February 2021
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 11. </span> AMD stock value changes.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0011image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0011_oc.jpg" loading="lazy" height="238" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0011">
+  <p class="captionText"><span class="captionLabel">Figure 11. </span> AMD stock value changes.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0011">
+  <div class="figureFootNote-F0011"></div>
+ </div>
+ <p></p>
+ <p>The following (<a href="#F0012">Figure 12</a>) shows the results of different sentiment models (TextBlob, NLTK -- Vader Lexicon and RNN) for the given period, broken down by day.</p>
+ <div class="figure figureViewer" id="F0012">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>01 February 2021
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 12. </span> Sentiment analysis of different models by daily separation. (a) TextBlob. (b) NLTK -Vader Lexicon and (c) RNN.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0012image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0012_oc.jpg" loading="lazy" height="246" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0012">
+  <p class="captionText"><span class="captionLabel">Figure 12. </span> Sentiment analysis of different models by daily separation. (a) TextBlob. (b) NLTK -Vader Lexicon and (c) RNN.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0012">
+  <div class="figureFootNote-F0012"></div>
+ </div>
+ <p></p>
+ <p>Here, the results are the same of the previous sentiment analyses, but now they are displayed on a different diagram for the purpose of being comparable with the stock market data. Significant differences can be observed in the results of the different models especially in some parts of the result. One of the most striking may be the negative news stream around 2020-11-11. In all three cases, a negative trend can be detected, but the differences in the extent are significant. These results, in comparison with stock market changes, help us to see a kind of effect on whether stock market movements are reflected in the diagram of sentiment results. The amount of neutral values plays a significant role in the accuracy of the models. It was mentioned earlier that when calculating daily results (this day is positive or negative all in all), the polarity values of the neutral values also count, so that these values also play a role in the positive or negative shift of a day as they belong to that day, but this values distort the result. In contrast, in a model where there is no neutral value, much higher accuracy can be expected.</p>
+ <p><a href="#F0013">Figure 13</a> shows the normalized results, where the different models show how the stock market value changed in the period and how the daily results obtained by the economic news headlines of the given period relate to stock market movements. The graph still process data from AMD. The first figure (a) shows the summary of the results obtained by the TextBlob and the stock market result. In the case of TextBlob, the ratio of neutral values was 75.25 percent, which is also reflected in the large ‘vibration’ of emotional results. On the normalization graph in this case with the economic news headlines and stock values we can read as fundamental changes, with the trend of decreasing or increasing. In the period between 2020-11-04 and 2020-11-06, a strong decrease in emotional values can be observed, in addition to with a smaller ‘break’ or a correction in the stock market values as well. In the phases of 2020-11-09 and 2020-11-10, a significant break point can be observed in both stock market developments and emotional results. Overall, we can see the impact and the major growth declines can be traced from the chart, but its detail is questionable. In the case of figure (b) we can see the results of the NLTK -- Vader lexicon normalization. The ratio of neutral values in this case was reduced to 51.50 percent. It can be said that the result is surprising at first. It is clear that a more detailed ‘co-movement’ of stock and emotional values is shown in the figure. Changes between 2020-11-09 and 2020-11-11 will be tracked ‘fully in sync’. Regarding the results of RNN in figure (c), where the ratio of neutral values was 0 percent, significant differences can be observed compared to the previous ones. Here, it may appear primarily that the two results do not follow each other in ‘synchrony’ and in some cases there is a significant difference between emotional and stock market results. It can be assumed that in this case, the effect of emotional values on the results of the current days may not be as great and perhaps a kind of ‘periodic prediction’ can be observed. The significant positive result between 2020-11-04 and 2020-11-06 is one of the most striking results. Until the subsequent correlation matrix results, all that can be stated is that there is a significant decrease in the influence of emotional values in the given stock market period. A kind of emotional decrease or increase and a following stock shift can be observed, but in fact the influence has decreased significantly, which can be explained by neutral values and ‘realism,’ when examining the influence of news headlines we cannot expect as much impact as full economic articles and analyses. In all three cases, these effects are also analyzed by correlation matrices.</p>
+ <div class="figure figureViewer" id="F0013">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>01 February 2021
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 13. </span> Normalized results of the sentiment and stock values. (a) TextBlob. (b) NLTK -Vader Lexicon and (c) RNN.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0013image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0013_oc.jpg" loading="lazy" height="273" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0013">
+  <p class="captionText"><span class="captionLabel">Figure 13. </span> Normalized results of the sentiment and stock values. (a) TextBlob. (b) NLTK -Vader Lexicon and (c) RNN.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0013">
+  <div class="figureFootNote-F0013"></div>
+ </div>
+ <p></p>
+ <p>In the case of <a href="#F0014">Figure 14</a>, we can see that Compound (sentiment results) has a huge impact on both the opening, closing, lowest and highest values of the stock market, which is a very distorted result. It's almost unthinkable to have such a big impact. As mentioned earlier, the significant neutral value can be traced back to this situation as well.</p>
+ <div class="figure figureViewer" id="F0014">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>01 February 2021
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 14. </span> Correlation matrix of TextBlob.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0014image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0014_oc.jpg" loading="lazy" height="336" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0014">
+  <p class="captionText"><span class="captionLabel">Figure 14. </span> Correlation matrix of TextBlob.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0014">
+  <div class="figureFootNote-F0014"></div>
+ </div>
+ <p></p>
+ <p>The following <a href="#F0015">Figure 15</a> shows the result of the NLTK -- Vader Lexicon correlation matrix, where there are decreases in Compound values in almost all values compared to the results of the previous (TextBlob) correlation matrix. In addition to a kind of ‘synchronized result’ seen on previous diagrams, a significant effect was ‘expected’ in the matrix as well, but perhaps these results may also seem excessive as a result obtained, considering that we examine economic news headlines on a company-specific basis.</p>
+ <div class="figure figureViewer" id="F0015">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>01 February 2021
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 15. </span> Correlation matrix of NLTK -- Vader Lexicon.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0015image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0015_oc.jpg" loading="lazy" height="336" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0015">
+  <p class="captionText"><span class="captionLabel">Figure 15. </span> Correlation matrix of NLTK -- Vader Lexicon.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0015">
+  <div class="figureFootNote-F0015"></div>
+ </div>
+ <p></p>
+ <p>In the <a href="#F0016">Figure 16</a>, the correlation matrix of RNN is completely different and surprising in this case as well. The value of the Compound has decreased significantly compared to its previous models to the opening, closing, lowest and highest values, and unlike before, its effect on another value has increased drastically. The value of the volume is the amount of an asset or security that changes hands over some period of time, often over the course of a day.</p>
+ <div class="figure figureViewer" id="F0016">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>01 February 2021
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 16. </span> Correlation matrix of RNN.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0016image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0016_oc.jpg" loading="lazy" height="336" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0016">
+  <p class="captionText"><span class="captionLabel">Figure 16. </span> Correlation matrix of RNN.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0016">
+  <div class="figureFootNote-F0016"></div>
+ </div>
+ <p></p>
+ <p>The correlation matrix of RNN and the values of Compound provide a kind of explanation for the diagrams seen earlier. The previous models had a significant effect on the opening, closing, lowest and highest values, in contrast, the RNN shows a completely different result. Overall, we can say that the headlines themselves have a significant effect on the change in stock market values, in addition to highlighting the volume value, which alone received a significant value in the RNN model, unexpectedly high. It should be noted that the data from the study period may also play a role in this. But the result is thought-provoking. The result is not unique. We obtained a similar result for the measurements between 2020-10-27 and 2020-11-16 for another company, which was the Google (GOOG). As we can see in the <a href="#F0017">Figure 17</a>.</p>
+ <div class="figure figureViewer" id="F0017">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Prediction of stock values changes using sentiment analysis of stock news headlines</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Nemes%2C+L%C3%A1szl%C3%B3"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Nemes%2C+L%C3%A1szl%C3%B3"><span class="NLM_given-names">László</span> Nemes</a> <a href="https://orcid.org/0000-0001-6167-9369"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kiss%2C+Attila"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiss%2C+Attila"><span class="NLM_given-names">Attila</span> Kiss</a> <a href="https://orcid.org/0000-0001-8174-6194"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2021.1874252">https://doi.org/10.1080/24751839.2021.1874252</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>01 February 2021
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 17. </span> Correlation matrix of RNN with another company (GOOG).</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0017image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i03/24751839.2021.1874252/20210811/images/medium/tjit_a_1874252_f0017_oc.jpg" loading="lazy" height="336" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0017">
+  <p class="captionText"><span class="captionLabel">Figure 17. </span> Correlation matrix of RNN with another company (GOOG).</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0017">
+  <div class="figureFootNote-F0017"></div>
+ </div>
+ <p></p>
+</div>
+<div id="S006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i32" class="section-heading-2">6. Conclusion and future work</h2>
+ <p>In this work, we used different sentiment analysis tools to emotionally analyze and classify different economic news headlines and examine their impact on different stock market value changes even without their full context. Emotions were classified into the usual positive negative and neutral categories. Neutral categories appeared for TextBlob and NLTK-VADER Lexicon tools, but not for Recurrent Neural Network (RNN). The various sentiment analyses results were compared with the result of BERT as a benchmark. As we expected, the results of the RNN model what we developed and taught outperformed the other sentiment analysis tools and gave a result quite close to BERT, emphasizing that there was no neutral emotional value in this case either. In the analysis of emotional results and stock market changes, we compared the daily results of emotional values and the results of stock market values for the given period. We obtained appropriate diagrams for the reading of the emotional results and the stock market movements and corrections, but we could detect differences according to the ratio and effect of the neutral values of the different models. In the field of further analysis, we detected significant differences in the correlation matrices. In the case of TextBlob, the Compound (emotional results) had a significant effect on the opening, closing, highest and lowest values of the stock exchange, the NLTK -- Vader Lexicon gave similar results, but reducing the results of the previous model significantly. The RNN model brought a completely different value. The emotional values and stock market change diagram also showed a kind of smaller effect, which was also confirmed by the correlation matrix, and also had a significant effect on the Volume value compared to the other models. Overall, economic news headlines have an impact on stock market values even without their textual context, and significant differences can be observed between different sentiment analytical tools. But the stock market impact also depends on how the data in the current study period was affected.</p>
+ <p>Future work could include further expansion of the analyses, possible additions of a new features. In addition, the inclusion of other tools to compare stock market predictions with different sentiment analysis tools. That can be built into an easy-to-use format by developing a platform incorporating various future changes of tensorflow into the current model.</p>
+</div>

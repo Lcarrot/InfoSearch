@@ -1,0 +1,4227 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">1. Introduction</h2>
+ <p>The fast advancement of Internet technology has resulted in a massive influx of data. Text is the most essential tangible carrier of information, and it is split into intangible and tangible carriers of information. Therefore, it is important to further explore the deeper meaning of textual information for people to access the required content quickly and accurately. Text classification and text clustering (Wang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2021</a></span>; Zhang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2019</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2022</a></span>) are two information retrieval techniques that use text similarity computation. Additionally, there are positions available in the field of artificial intelligence, including those in automated scoring systems (Li et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2022</a></span>) and plagiarism detection (Malandrino et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2022</a></span>) in the area of natural language processing, where text similarity computation is crucial. Text similarity computation is a type of text matching task that yields a numerical number for the degree of similarity between two texts (Kenter &amp; De Rijke, <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2015</a></span>; Pu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2017</a></span>). The efficacy of similarity determination in textual information processing is heavily influenced by the approach used. As a result, it’s crucial to research and enhance text similarity computation algorithms.</p>
+ <p>A specific similarity value is the result of the text-similarity calculation. The smaller the value, the less semantic resemblance there is, and the greater the value, the more semantic similarity there is. Text similarity calculations are more challenging in complicated human language texts because of the abundance of synonyms and abbreviations as well as the highly varied grammatical structure. To solve these problems, both academia and industry have conducted a lot of research and practice and proposed a series of text similarity calculation models and methods.</p>
+ <p>Because the computation of text similarity has become a hot topic in natural language processing, various researchers both at home and abroad have thoroughly combed through the available semantic text similarity computation approaches, resulting in some great thesis. There are three primary ways of calculating text similarity at the moment. One is corpus-based approaches such as VSM (Zhang et al., 2014), LSA (Kaur &amp; Maini, <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2019</a></span>), and LDA (David et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2003</a></span>; Liu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2019</a></span>), which ignore key elements such as word order and syntactic structure to calculate similarity. Second, there are classical string statistics-based modelling methods such as N-gram (Maipradit et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2019</a></span>) and Jaccard (Ayub et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2018</a></span>) algorithms. They determine the similarity by comparing the number of words in the text, and the algorithms are concise but ignore the extraction of deep semantic information. The third is a deep learning-based calculation method. This method abstracts a feature representation of the word after extracting the local content of the article and fits similarity labels using a multi-layer perceptron. Some of the more common models include the Siamese network structural framework proposed by Mueller and Thyagarajan (<span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2016</a></span>) and the twin neural network combining CNN and Bi-LSTM proposed by Wan et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2016</a></span>). Some scholars have also designed new depth models, such as the Xlnet model proposed by Yang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2019</a></span>).</p>
+ <p>Although many scholars have used neural networks to improve the text-similarity algorithm to varying degrees, they have not improved the neurons of the LSTM. As a result, there are still problems such as computational complexity, inadequate extraction of word representation features, and inter-textual dependencies.</p>
+ <p>Most of the related research on text similarity calculation only considers a single text feature for similarity calculation. Sundermeyer et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2012</a></span>) applied long short-term memory networks (LSTM) to the field of literary NLP. The traditional recurrent neural network’s long-distance information dependence on input sequences was solved. Devi and Saharia (<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2022</a></span>) was able to effectively improve tweet classification accuracy using a TF-IDF weighting scheme. A Bi-LSTM model (Li &amp; He, <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2022</a></span>) with an integrated attention mechanism was proposed to improve translation quality. Hui-Fang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2019</a></span>) fused the term co-occurrence distance correlation and category feature to calculate short text similarity. Deng et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2017</a></span>) performed analytical computations on syntax and dependencies from the perspective of sentence structure. Yang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2016</a></span>) used a dependency tree representation for shallow syntactic structural features to calculate similarity, but this method cannot analyze the deep semantic information of sentences. Zhang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2018</a></span>) provided a brief text similarity computation technique based on LDA and a topic similarity factor. This method did not consider multiple text features and could not better evaluate factors such as text semantics, word order, and topic importance. It still has problems such as high computational complexity and low accuracy. An improved LSTM cell architecture was proposed by Sepas-Moghaddam et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2021</a></span>). This method is a novel recurrent joint learning strategy that uses additional gates and memory units at the cellular level. Inspired by it, improving neurons and integrating algorithms from other disciplines will also help to improve accuracy.</p>
+ <p>A Re-LSTM-based method for calculating text similarity is proposed. Re-LSTM takes into account various feature factors of the text, such as word frequency, category, and semantic information, as far as possible while reducing the computational effort. A new neuronal Re-LSTM was designed based on the traditional LSTM to reduce the parameters and simplify the computation. It has been designed as a two-gate mechanism (update gate and selection gate), both taking into account state information and hidden features from the previous layer, with increased feature extraction. Re-LSTM combines the TF-IDF algorithm with the statistical computing method <i>χ</i>²-C algorithm, which can better extract contextual information. The attention mechanism enhances text dependency extraction. The combination of weighted feature factors and Re-LSTM was used to calculate text similarity to reduce the time complexity and improve the accuracy of the results.</p>
+ <p>The main work of this paper is as follows:</p>
+ <ol class="NLM_list NLM_list-list_type-order">
+  <li><p class="inline">Inspired by the neural network layer setting, a new neuronal Re-LSTM is designed based on the traditional LSTM. The double-gate mechanism used in Re-LSTM reduces the parameters and simplified the computation.</p></li>
+  <li><p class="inline">Based on the Re-LSTM, the TF-IDF algorithm combined with the statistical <i>χ</i>² test is proposed for feature selection, which increases the extraction of implied features. The attention mechanism used considers global-local connectivity and captures contextual dependencies to produce more nuanced semantics.</p></li>
+  <li><p class="inline">Experiments are designed on real datasets to verify the superiority of the algorithm.</p></li>
+ </ol>
+ <p></p>
+ <p>The following is how the rest of the paper is organised. Section 2 describes work related to the calculation of weighted text similarity. Section 3 describes in detail the Re-LSTM model proposed in this paper. Section 4 explains the word weighting calculation method used in this paper. Section 5 explains the experimental setup and the analysis of the experimental results. Section 6 presents the conclusion.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">2. Related work</h2>
+ <p>Text similarity computation is one of the research hotspots in the field of NLP, and therefore the study of text similarity algorithms helps to drive the flow of scholarship in this field. This section analyses and discusses models that have been relevant to the computation of text similarity in recent years.</p>
+ <p>Text similarity calculation based on strings and corpora is a more traditional approach. Che et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2004</a></span>) developed a method for calculating edit distances that is more accurate. The basic idea is to use a large knowledge base to assign various weights to different editing operations. To improve the edit distance performance of this algorithm, it took into account both word order and partial semantic information. The study (Kaur &amp; Maini, <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2019</a></span>) proposed and analyzed distance metrics for different strings for similarity metrics between text libraries. The study (Wu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2021</a></span>) proposed a short text similarity calculation method based on Jaccard and semantic blending, which improved the accuracy of short text similarity calculation to some extent. Zhang et al. (2014) and others used an improved vector space model (VSM) for document representation, which solved the problem of high dimensionality and lack of semantic similarity. The string-based approach is theoretically simple and easy to implement, and is mostly used for fast fuzzy text matching. The biggest drawback is that synonyms are not sufficiently considered. The corpus-based strategy takes into account semantic information between words to a certain extent, but it has some drawbacks. For example, the cost is high, the lexicon needs to be constantly updated and maintained, and the syntactic structure information is not taken into account, so the accuracy of computing long text similarity is low.</p>
+ <p>In recent years, the continuous development of deep learning techniques has helped to achieve many breakthroughs in the field of NLP. Fan et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2018</a></span>) proposed a neural feedback algorithm combining bi-directional long and short-term memory (BiLSTM) and convolutional neural networks (CNN) with k-means methods for text clustering and similarity calculation. Experiments showed that the algorithm has some noise robustness. This study (Luo et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2021</a></span>) used a deep bidirectional long and short-term memory (BiLSTM) network to capture the contextual information of words and mapped sentences into low-dimensional numerical vectors, solving the problem of the high dimensionality of TCM text features and validating the engineering value of text similarity computation in TCM. Farouk (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2020</a></span>) used discourse representation structure (DRS) to compute the structural similarity, taking into account the effect of the order of words on the results. Experiments have shown that the method can achieve better results. Many studies have shown that the use of attentional mechanisms will increase the impact of key features that can be used to measure sentences. This study (Ji &amp; Zhang, <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2022</a></span>) obtained an enhanced semantic representation between sentences by introducing the headword attention mechanism, which effectively enhanced the accuracy of similarity computation. Yu et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2020</a></span>) proposed an attention mechanism and a multi-granularity-based Bi-LSTM model (AM-Bi-LSTM) for dealing with complex NLP in question-and-answer systems. systems in complex NLP. Jang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2020</a></span>) proposed a hybrid Bi-LSTM-CNN model based on an attention mechanism, which appropriately blends the advantages of LSTM and CNN. The study (Qin, <span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2022</a></span>) proposed the GCN-Attention English recognition method to make the output words match the predicted words as closely as possible, and the testing results revealed that the model has excellent recognition accuracy. The study (Zhang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2022</a></span>) proposed the CL-ECPE model to solve the problem of low extraction accuracy caused by the inability to fully use the original information in the data. Through contrastive learning, it enhances extraction accuracy, and experimental findings demonstrate that the model is resilient. The study (Viji &amp; Revathy, <span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2022</a></span>) proposed a hybrid approach that combined an improved BERT model with the Siamese Bi-LSTM model, resulting in higher efficiency in semantic text similarity. The study (Singh et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2022</a></span>) proposed the idea of combining the TF-IDF algorithm with word embedding techniques to further dimensionality reduction of the features to improve the performance of the classifier. The study (Huan et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2022</a></span>) proposes a text classification method based on CBM (Convolutional and Bi-LSTM models) model, which can extract both shallow local semantic features and deep global semantic features, significantly improving the classification accuracy. However, most of the methods are improvements to the model and still suffer from computational complexity and insufficient extraction of dependencies between texts.</p>
+ <p>In recent years, there has been a gradual increase in research on the weighting of feature representations. To address the problem of feature sparsity, the study (Shi et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2021</a></span>) proposed a multiple test weighted fusion method for short text similarity calculation. A linear fusion of weighted factors was applied to the texts, making the calculation results more accurate and reasonable. The study (Bao et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2018</a></span>) proposed an Attentive Siamese Long Short-Term Memory (LSTM) network for measuring semantic text similarity, which requires original sentence pairs and pre-trained word embeddings as input, rather than external resources and manual features. In particular, an attention mechanism is added to the LSTM network to capture high-level semantic information. This study (Wang &amp; Huang, <span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2019</a></span>) proposes a text classification model (CTMWT) based on a combination of Word2vec, improved TF-IDF, and convolutional neural networks to address the problems of weak semantic feature representation, the high dimensionality of text representation, word order loss and matrix sparsity of traditional machine learning text classification algorithms. It is experimentally validated that it has better classification results than traditional machine learning text classification algorithms. The study (Alshubaily, <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2021</a></span>; Karim et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2018</a></span>; Yao et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2019</a></span>) introduced an attention mechanism to further improve the classification results. The study (Lin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2022</a></span>) proposed a light gradient lifter regression model based on Indonesian texts, which used lexical strategies from Indonesian to enhance sentence score computation. Zhao et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i47 _i48" href="#"><span class="off-screen">Citation</span>2022</a></span>) proposed a method combining word2vec, a topic-based TF-IDF algorithm, and an improved convolutional neural network for news text classification, which effectively improved the classification accuracy.</p>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">3. Proposed method</h2>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">3.1. TF-IDF</h3>
+  <p>The TF-IDF algorithm, a statistical method commonly used in text processing to assess the importance of a word in a document, is used to calculate the initial weight of each feature word in the test sample.</p>
+  <p>According to the TF-IDF algorithm, the more the feature word appears in the text and the less it appears in the corpus, the more representative it is. TF represents the word frequency index and IDF represents the inverse text frequency index. The weight <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> of feature word d in document t is calculated as in formula (1). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mfrac>
+      <mrow>
+       <mi>
+        T
+       </mi>
+       <mrow>
+        <msub>
+         <mi>
+          F
+         </mi>
+         <mrow>
+          <mi>
+           d
+          </mi>
+          <mi>
+           t
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mrow>
+        <mo>
+         (
+        </mo>
+        <mrow>
+         <mfrac>
+          <mrow>
+           <mrow>
+            <msub>
+             <mi>
+              m
+             </mi>
+             <mi>
+              d
+             </mi>
+            </msub>
+           </mrow>
+          </mrow>
+          <mi>
+           S
+          </mi>
+         </mfrac>
+        </mrow>
+        <mo>
+         )
+        </mo>
+       </mrow>
+       <mo>
+        ×
+       </mo>
+       <mi>
+        I
+       </mi>
+       <mi>
+        D
+       </mi>
+       <mrow>
+        <msub>
+         <mi>
+          F
+         </mi>
+         <mrow>
+          <mi>
+           d
+          </mi>
+          <mi>
+           t
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mrow>
+        <mo>
+         (
+        </mo>
+        <mrow>
+         <mi>
+          lg
+         </mi>
+         <mo>
+          ⁡
+         </mo>
+         <mrow>
+          <mo>
+           (
+          </mo>
+          <mrow>
+           <mfrac>
+            <mi>
+             N
+            </mi>
+            <mrow>
+             <mrow>
+              <msub>
+               <mi>
+                n
+               </mi>
+               <mi>
+                d
+               </mi>
+              </msub>
+             </mrow>
+             <mo>
+              +
+             </mo>
+             <mn>
+              0.01
+             </mn>
+            </mrow>
+           </mfrac>
+          </mrow>
+          <mo>
+           )
+          </mo>
+         </mrow>
+        </mrow>
+        <mo>
+         )
+        </mo>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mi>
+        n
+       </mi>
+       <mi>
+        f
+       </mi>
+      </mrow>
+     </mfrac>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span>Among them, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      T
+     </mi><mrow>
+      <msub>
+       <mi>
+        F
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> represents the word frequency of the feature word <i>d</i> in the document <i>t</i>. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        m
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the number of occurrences of feature word d in document t, and S represents the total number of document <i>t</i> feature words. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      I
+     </mi><mi>
+      D
+     </mi><mrow>
+      <msub>
+       <mi>
+        F
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> represents the inverse text frequency index of the feature word <i>d</i>. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        n
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the number of texts in the corpus that contain feature words. <i>N</i> represents the total number of documents in the corpus. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      n
+     </mi><mi>
+      f
+     </mi><mo>
+      =
+     </mo><msqrt>
+      <munderover>
+       <mo movablelimits="false">
+        ∑
+       </mo>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+       <mi>
+        s
+       </mi>
+      </munderover>
+      <mrow>
+       <mi>
+        T
+       </mi>
+       <mrow>
+        <msub>
+         <mi>
+          F
+         </mi>
+         <mrow>
+          <mi>
+           d
+          </mi>
+          <mi>
+           t
+          </mi>
+         </mrow>
+        </msub>
+       </mrow>
+       <mrow>
+        <mo>
+         [
+        </mo>
+        <mrow>
+         <mrow>
+          <mo>
+           (
+          </mo>
+          <mrow>
+           <mfrac>
+            <mrow>
+             <mrow>
+              <msub>
+               <mi>
+                m
+               </mi>
+               <mi>
+                d
+               </mi>
+              </msub>
+             </mrow>
+            </mrow>
+            <mi>
+             S
+            </mi>
+           </mfrac>
+          </mrow>
+          <mo>
+           )
+          </mo>
+         </mrow>
+         <mo>
+          ×
+         </mo>
+         <mi>
+          I
+         </mi>
+         <mi>
+          D
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            F
+           </mi>
+           <mrow>
+            <mi>
+             d
+            </mi>
+            <mi>
+             t
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+         <mrow>
+          <mo>
+           (
+          </mo>
+          <mrow>
+           <mi>
+            lg
+           </mi>
+           <mo>
+            ⁡
+           </mo>
+           <mrow>
+            <mo>
+             (
+            </mo>
+            <mrow>
+             <mfrac>
+              <mi>
+               N
+              </mi>
+              <mrow>
+               <mrow>
+                <msub>
+                 <mi>
+                  n
+                 </mi>
+                 <mi>
+                  d
+                 </mi>
+                </msub>
+               </mrow>
+               <mo>
+                +
+               </mo>
+               <mn>
+                0.01
+               </mn>
+              </mrow>
+             </mfrac>
+            </mrow>
+            <mo>
+             )
+            </mo>
+           </mrow>
+          </mrow>
+          <mo>
+           )
+          </mo>
+         </mrow>
+        </mrow>
+        <mo>
+         ]
+        </mo>
+       </mrow>
+      </mrow>
+     </msqrt>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span>Where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      n
+     </mi><mi>
+      f
+     </mi>
+    </math></span> represents the normalisation factor and is calculated as in formula (2). Feature selection may be carried out effectively using the TF-IDF method.</p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i8">3.2. χ² Test</h3>
+  <p>The <i>χ</i>² test is derived from the list test, and the basic idea is to determine the theoretical correctness by observing the difference between the actual and theoretical values. According to the <i>χ</i>² test, the relationship between feature words and categories obeys a one-dimensional degree of freedom <i>χ</i>² distribution. The higher the value of the <i>χ</i>² statistic, the less independence between vocabulary and category. Therefore, it can be used to calculate the statistical correlation between feature words and categories.</p>
+  <p>Assuming that the domain relationship obeys a one-dimensional <i>χ</i>² distribution of degrees of freedom, the value of the <i>χ</i>² statistic is inversely proportional to the independence between feature word d and domain c. Formula (3) is the calculation method of the chi-square test of the feature word d against domain c. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        χ
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msup>
+     </mrow><mo>
+      (
+     </mo><mi>
+      d
+     </mi><mo>
+      ,
+     </mo><mi>
+      c
+     </mi><mo>
+      )
+     </mo><mo>
+      =
+     </mo><mfrac>
+      <mrow>
+       <mi>
+        N
+       </mi>
+       <mrow>
+        <msup>
+         <mrow>
+          <mo>
+           (
+          </mo>
+          <mi>
+           A
+          </mi>
+          <mi>
+           D
+          </mi>
+          <mo>
+           −
+          </mo>
+          <mi>
+           B
+          </mi>
+          <mi>
+           C
+          </mi>
+          <mo>
+           )
+          </mo>
+         </mrow>
+         <mn>
+          2
+         </mn>
+        </msup>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mo>
+        (
+       </mo>
+       <mi>
+        A
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi>
+        C
+       </mi>
+       <mo>
+        )
+       </mo>
+       <mo>
+        (
+       </mo>
+       <mi>
+        B
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi>
+        D
+       </mi>
+       <mo>
+        )
+       </mo>
+       <mo>
+        (
+       </mo>
+       <mi>
+        A
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi>
+        B
+       </mi>
+       <mo>
+        )
+       </mo>
+       <mo>
+        (
+       </mo>
+       <mi>
+        C
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi>
+        D
+       </mi>
+       <mo>
+        )
+       </mo>
+      </mrow>
+     </mfrac>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span>Where <i>A</i> represents the number of documents belonging to <i>c</i> and containing <i>d</i>, <i>B</i> represents the number of documents not belonging to c but containing <i>d</i>. <i>C</i> represents the number of documents belonging to <i>c</i> but not containing <i>d</i>, and <i>D</i> represents the number of documents belonging to neither <i>c</i> nor containing <i>d</i>. <i>N</i> represents the total number of documents. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        χ
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msup>
+     </mrow><mrow>
+      <mo>
+       (
+      </mo>
+      <mi>
+       d
+      </mi>
+      <mo>
+       ,
+      </mo>
+      <mi>
+       c
+      </mi>
+      <msup>
+       <mo>
+        )
+       </mo>
+       <mrow>
+        <mi mathvariant="normal">
+         ′
+        </mi>
+       </mrow>
+      </msup>
+     </mrow><mo>
+      =
+     </mo><mfrac>
+      <mrow>
+       <mrow>
+        <msup>
+         <mi>
+          χ
+         </mi>
+         <mn>
+          2
+         </mn>
+        </msup>
+       </mrow>
+       <mo>
+        (
+       </mo>
+       <mi>
+        d
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        c
+       </mi>
+       <mo>
+        )
+       </mo>
+      </mrow>
+      <mrow>
+       <msubsup>
+        <mo movablelimits="false">
+         ∑
+        </mo>
+        <mrow>
+         <mi>
+          i
+         </mi>
+         <mo>
+          =
+         </mo>
+         <mn>
+          1
+         </mn>
+        </mrow>
+        <mi>
+         N
+        </mi>
+       </msubsup>
+       <mrow>
+        <mrow>
+         <msup>
+          <mi>
+           χ
+          </mi>
+          <mn>
+           2
+          </mn>
+         </msup>
+        </mrow>
+        <mo>
+         (
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           d
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msub>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         c
+        </mi>
+        <mo>
+         )
+        </mo>
+       </mrow>
+      </mrow>
+     </mfrac>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span>As the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        χ
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msup>
+     </mrow><mo>
+      (
+     </mo><mi>
+      d
+     </mi><mo>
+      ,
+     </mo><mi>
+      c
+     </mi><mo>
+      )
+     </mo>
+    </math></span> values calculated for certain feature words are relatively large, they can have a large impact on the later calculations and lead to inaccurate final results. Therefore the normalisation process was carried out using formula (4).</p>
+ </div>
+ <div id="S003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">3.3. Category Association algorithm</h3>
+  <p>In the domain association algorithm, the domain in which the feature word is located is set as the positive class and the other domains as the negative class. The basic idea is to calculate the relevance of the feature word to the category based on the number of feature words in the positive and negative classes. If the number of documents in the positive class that contain the feature word d is greater than the number of documents in the negative class that contain d, it means that d is more related to the positive class. Conversely, d is more related to the negative class. The domain association factor Ca is calculated by formulas (5–7). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        q
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mfrac>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          e
+         </mi>
+         <mi>
+          d
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          E
+         </mi>
+         <mi>
+          d
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+     </mfrac><mo>
+      ,
+     </mo><mspace width="thinmathspace"></mspace><mrow>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mfrac>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          n
+         </mi>
+         <mi>
+          d
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          N
+         </mi>
+         <mi>
+          d
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+     </mfrac>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span>Among them, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        q
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the number of documents in the positive class containing the feature <i>d</i> as a proportion of the total documents in the positive class. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        E
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the total number of documents in the positive class. Similarly, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        P
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the number of documents in the negative class that contain the feature <i>d</i> as a proportion of the total documents in the negative class. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        N
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the total number of documents in the negative class. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mfrac>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          e
+         </mi>
+         <mi>
+          d
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          e
+         </mi>
+         <mi>
+          d
+         </mi>
+        </msub>
+       </mrow>
+       <mo>
+        +
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          n
+         </mi>
+         <mi>
+          d
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+     </mfrac>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6) </span></span></span></span>Where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> denotes the relevance of d to the domain in which it is located. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        e
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the number of documents in the positive class containing the feature d. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        n
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the number of documents in the negative class that contain the feature <i>d</i>. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(7) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      C
+     </mi><mrow>
+      <msub>
+       <mrow>
+        <mtext>
+         a
+        </mtext>
+       </mrow>
+       <mrow>
+        <mo>
+         (
+        </mo>
+        <mi>
+         d
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         c
+        </mi>
+        <mo>
+         )
+        </mo>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mrow>
+      <mo>
+       {
+      </mo>
+      <mrow>
+       <mtable rowspacing="4pt" columnspacing="1em">
+        <mtr>
+         <mtd>
+          <mo>
+           (
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             w
+            </mi>
+            <mi>
+             d
+            </mi>
+           </msub>
+          </mrow>
+          <mo>
+           +
+          </mo>
+          <mn>
+           1
+          </mn>
+          <mo>
+           )
+          </mo>
+          <mo>
+           ×
+          </mo>
+          <mrow>
+           <msup>
+            <mi>
+             χ
+            </mi>
+            <mn>
+             2
+            </mn>
+           </msup>
+          </mrow>
+          <mo>
+           (
+          </mo>
+          <mi>
+           d
+          </mi>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           c
+          </mi>
+          <msup>
+           <mo>
+            )
+           </mo>
+           <mrow>
+            <mi mathvariant="normal">
+             ′
+            </mi>
+           </mrow>
+          </msup>
+          <mrow>
+           <msub>
+            <mi>
+             q
+            </mi>
+            <mi>
+             d
+            </mi>
+           </msub>
+          </mrow>
+          <mo>
+           &gt;
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             p
+            </mi>
+            <mi>
+             d
+            </mi>
+           </msub>
+          </mrow>
+         </mtd>
+        </mtr>
+        <mtr>
+         <mtd>
+          <mrow>
+           <mrow>
+            <msup>
+             <mi>
+              χ
+             </mi>
+             <mn>
+              2
+             </mn>
+            </msup>
+           </mrow>
+           <mo>
+            (
+           </mo>
+           <mi>
+            d
+           </mi>
+           <mo>
+            ,
+           </mo>
+           <mi>
+            c
+           </mi>
+           <msup>
+            <mo>
+             )
+            </mo>
+            <mrow>
+             <mi mathvariant="normal">
+              ′
+             </mi>
+            </mrow>
+           </msup>
+           <mrow>
+            <msub>
+             <mi>
+              q
+             </mi>
+             <mi>
+              d
+             </mi>
+            </msub>
+           </mrow>
+           <mo>
+            ≤
+           </mo>
+           <mrow>
+            <msub>
+             <mi>
+              p
+             </mi>
+             <mi>
+              d
+             </mi>
+            </msub>
+           </mrow>
+          </mrow>
+         </mtd>
+        </mtr>
+       </mtable>
+      </mrow>
+      <mo fence="true" symmetric="true"></mo>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(7) </span></span></span></span>The domain association factor Ca is calculated by the formula (17). According to formula (17), <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      C
+     </mi><mrow>
+      <msub>
+       <mrow>
+        <mtext>
+         a
+        </mtext>
+       </mrow>
+       <mrow>
+        <mo>
+         (
+        </mo>
+        <mi>
+         d
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         c
+        </mi>
+        <mo>
+         )
+        </mo>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> equals <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0016.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo>
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mn>
+      1
+     </mn><mo>
+      )
+     </mo><mo>
+      ×
+     </mo><mrow>
+      <msup>
+       <mi>
+        χ
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msup>
+     </mrow><mo>
+      (
+     </mo><mi>
+      d
+     </mi><mo>
+      ,
+     </mo><mi>
+      c
+     </mi><msup>
+      <mo>
+       )
+      </mo>
+      <mrow>
+       <mi mathvariant="normal">
+        ′
+       </mi>
+      </mrow>
+     </msup>
+    </math></span> if <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0017.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        q
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> is greater than <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0018.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        P
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0019.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        χ
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msup>
+     </mrow><mo>
+      (
+     </mo><mi>
+      d
+     </mi><mo>
+      ,
+     </mo><mi>
+      c
+     </mi><msup>
+      <mo>
+       )
+      </mo>
+      <mrow>
+       <mi mathvariant="normal">
+        ′
+       </mi>
+      </mrow>
+     </msup>
+    </math></span> if <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0020.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        q
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> is less than or equal to <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0021.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        P
+       </mi>
+       <mi>
+        d
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>.</p>
+ </div>
+ <div id="S003-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">3.4. Improved weighting method for feature representation</h3>
+  <p>The influence of different feature word lengths on the text is also different. For example, the expression of long feature words on the topic is generally greater than that of short ones. Therefore, when calculating the text feature weights, the length of the special testimony, the initial weight, and the domain association factor are combined to calculate the special testimony weights. Such as formula (8). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0008.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0008" class="disp-formula-label">(8) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msup>
+      <mrow>
+       <msub>
+        <mi>
+         W
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          t
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        ′
+       </mi>
+      </mrow>
+     </msup><mo>
+      =
+     </mo><mi>
+      lg
+     </mi><mo>
+      ⁡
+     </mo><mrow>
+      <mo>
+       (
+      </mo>
+      <mrow>
+       <mfrac>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          l
+         </mi>
+        </mrow>
+        <mrow>
+         <mo movablelimits="true" form="prefix">
+          max
+         </mo>
+         <mo>
+          (
+         </mo>
+         <mi>
+          d
+         </mi>
+         <mi>
+          l
+         </mi>
+         <mo>
+          )
+         </mo>
+        </mrow>
+       </mfrac>
+       <mo>
+        +
+       </mo>
+       <mn>
+        10
+       </mn>
+      </mrow>
+      <mo>
+       )
+      </mo>
+     </mrow><mo>
+      ×
+     </mo><mrow>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ×
+     </mo><mi>
+      C
+     </mi><mrow>
+      <mtext>
+       a
+      </mtext>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0008" class="disp-formula-label">(8) </span></span></span></span>Where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0022.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      d
+     </mi><mi>
+      l
+     </mi>
+    </math></span> represents the length of the feature word, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0023.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> represents the initial weight of the feature word, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0024.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msup>
+      <mrow>
+       <msub>
+        <mi>
+         W
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          t
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        ′
+       </mi>
+      </mrow>
+     </msup>
+    </math></span> represents the final weight of the feature word.</p>
+  <p>The TF-IDF algorithm uses the number of occurrences of feature words in the text and corpus to efficiently calculate the importance of feature words. The <i>χ</i>²-C algorithm is a fusion of the <i>χ</i>² test and the domain association algorithm, with the aim of calculating the domain association factor Ca and obtaining category information. Firstly, a <i>χ</i>² test is used to calculate the <i>χ</i>² statistic for each word. Secondly, the <i>χ</i>² statistic is combined with the domain association algorithm to derive the domain association factor Ca. Finally, the final feature word weights are derived from the word frequency and category information. The algorithm takes into account both word frequency and word category information, enhancing the ability of the weights to represent words and solving the problem that traditional feature engineering usually only analyses word frequency and ignores other information when determining feature word weights.</p>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i17" class="section-heading-2">4. Re-LSTM text similarity computation model based on weighted word embedding</h2>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">4.1. Model overview</h3>
+  <p>A Re-LSTM model for text similarity computation is proposed to improve the problem of inadequate extraction of word representation features and dependencies in current text similarity computation models. The weighted word embedding-based Re-LSTM text similarity calculation model is shown in Figure <a href="#F0001">1</a> of this research. The model consists of six main parts: the input layer, the <i>χ</i>²-Attention layer, the Re-LSTM layer, the aggregation layer, the Dropout layer, and the fully connected layer.</p>
+  <div class="figure figureViewer" id="F0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Re-LSTM: A long short-term memory network text similarity algorithm based on weighted word embedding</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Weidong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Weidong"><span class="NLM_given-names">Weidong</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Liu%2C+Xiaotong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Liu%2C+Xiaotong"><span class="NLM_given-names">Xiaotong</span> Liu</a> <a href="https://orcid.org/0000-0002-3618-0168"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Jing%2C+Jun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jing%2C+Jun"><span class="NLM_given-names">Jun</span> Jing</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Xi%2C+Rongchang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xi%2C+Rongchang"><span class="NLM_given-names">Rongchang</span> Xi</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2140122">https://doi.org/10.1080/09540091.2022.2140122</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>02 November 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1. </span> Re-LSTM model structure diagram.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/medium/ccos_a_2140122_f0001_ob.jpg" loading="lazy" height="374" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0001">
+   <p class="captionText"><span class="captionLabel">Figure 1. </span> Re-LSTM model structure diagram.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0001">
+   <div class="figureFootNote-F0001"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i20">4.2. Input Layer</h3>
+  <p>Each feature word in the text corresponds to a point on the vector space following word2vec model training. N-dimensional vectors can be used to represent points in a vector space. As in the formula (9). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0009.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0009" class="disp-formula-label">(9) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        v
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mrow>
+      <mo>
+       〈
+      </mo>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          v
+         </mi>
+         <mn>
+          1
+         </mn>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          v
+         </mi>
+         <mn>
+          2
+         </mn>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          v
+         </mi>
+         <mn>
+          3
+         </mn>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          v
+         </mi>
+         <mn>
+          4
+         </mn>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          v
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mo>
+        …
+       </mo>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          v
+         </mi>
+         <mi>
+          n
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+      <mo>
+       〉
+      </mo>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0009" class="disp-formula-label">(9) </span></span></span></span>Among them, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0025.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        v
+       </mi>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         i
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> represents a single <i>n</i>-dimensional word vector, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0026.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        v
+       </mi>
+       <mi>
+        n
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the feature word, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0027.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      d
+     </mi><mi>
+      i
+     </mi>
+    </math></span> represents the corresponding dimension. The set of word vectors is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0028.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        S
+       </mi>
+       <mi>
+        s
+       </mi>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mo fence="false">
+      {
+     </mo><mrow>
+      <mrow>
+       <msub>
+        <mi>
+         v
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mn>
+          1
+         </mn>
+        </mrow>
+       </msub>
+      </mrow>
+      <mo>
+       ,
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         v
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mn>
+          2
+         </mn>
+        </mrow>
+       </msub>
+      </mrow>
+      <mo>
+       ,
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         v
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mn>
+          3
+         </mn>
+        </mrow>
+       </msub>
+      </mrow>
+      <mo>
+       ,
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         v
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mn>
+          4
+         </mn>
+        </mrow>
+       </msub>
+      </mrow>
+      <mo>
+       ,
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         v
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          i
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mo>
+       ,
+      </mo>
+      <mo>
+       …
+      </mo>
+      <mo>
+       ,
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         v
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          n
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+     </mrow><mo fence="false">
+      }
+     </mo>
+    </math></span>, and the feature word weight set is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0029.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0029.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        S
+       </mi>
+       <mrow>
+        <mi>
+         w
+        </mi>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mo fence="false">
+      {
+     </mo><mrow>
+      <mrow>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mn>
+          1
+         </mn>
+        </mrow>
+       </msub>
+      </mrow>
+      <mo>
+       ,
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mn>
+          2
+         </mn>
+        </mrow>
+       </msub>
+      </mrow>
+      <mo>
+       ,
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mn>
+          3
+         </mn>
+        </mrow>
+       </msub>
+      </mrow>
+      <mo>
+       ,
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mn>
+          4
+         </mn>
+        </mrow>
+       </msub>
+      </mrow>
+      <mo>
+       ,
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          i
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mo>
+       ,
+      </mo>
+      <mo>
+       …
+      </mo>
+      <mo>
+       ,
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          n
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+     </mrow><mo fence="false">
+      }
+     </mo>
+    </math></span>.</p>
+  <p>The text can be represented as a set of feature words as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0030.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0030.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mo>
+       〈
+      </mo>
+      <mrow>
+       <mrow>
+        <msub>
+         <mi>
+          d
+         </mi>
+         <mn>
+          1
+         </mn>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          d
+         </mi>
+         <mn>
+          2
+         </mn>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          d
+         </mi>
+         <mn>
+          3
+         </mn>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          d
+         </mi>
+         <mn>
+          4
+         </mn>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          d
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+       </mrow>
+       <mo>
+        ,
+       </mo>
+       <mo>
+        …
+       </mo>
+       <mo>
+        ,
+       </mo>
+       <mrow>
+        <msub>
+         <mi>
+          d
+         </mi>
+         <mi>
+          N
+         </mi>
+        </msub>
+       </mrow>
+      </mrow>
+      <mo>
+       〉
+      </mo>
+     </mrow>
+    </math></span>. Since each feature word corresponds to a word vector, the text can be expressed as a word vector matrix <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0031.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0031.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mo>
+       〈
+      </mo>
+      <mrow>
+       <msubsup>
+        <mi>
+         v
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mn>
+          1
+         </mn>
+        </mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          T
+         </mi>
+        </mrow>
+       </msubsup>
+       <mo>
+        ,
+       </mo>
+       <msubsup>
+        <mi>
+         v
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mn>
+          2
+         </mn>
+        </mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          T
+         </mi>
+        </mrow>
+       </msubsup>
+       <mo>
+        ,
+       </mo>
+       <msubsup>
+        <mi>
+         v
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mn>
+          3
+         </mn>
+        </mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          T
+         </mi>
+        </mrow>
+       </msubsup>
+       <mo>
+        ,
+       </mo>
+       <msubsup>
+        <mi>
+         v
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mn>
+          4
+         </mn>
+        </mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          T
+         </mi>
+        </mrow>
+       </msubsup>
+       <mo>
+        ,
+       </mo>
+       <msubsup>
+        <mi>
+         v
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          i
+         </mi>
+        </mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          T
+         </mi>
+        </mrow>
+       </msubsup>
+       <mo>
+        ,
+       </mo>
+       <mo>
+        …
+       </mo>
+       <mo>
+        ,
+       </mo>
+       <msubsup>
+        <mi>
+         v
+        </mi>
+        <mrow>
+         <mi>
+          d
+         </mi>
+         <mi>
+          N
+         </mi>
+        </mrow>
+        <mrow>
+         <mi mathvariant="normal">
+          T
+         </mi>
+        </mrow>
+       </msubsup>
+      </mrow>
+      <mo>
+       〉
+      </mo>
+     </mrow>
+    </math></span>. <i>N</i> is the total number of document feature words.</p>
+ </div>
+ <div id="S004-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i22">4.3. χ²- Attention Layer</h3>
+  <p>From a great amount of data, the Attention mechanism picks out the information that is more relevant and ignores the more minor elements. It follows a basic formula where you compute the output in relation to each input, normalise it, and then add the results together. The computation follows formula (10). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0010.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0010" class="disp-formula-label">(10) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      a
+     </mi><mi>
+      t
+     </mi><mi>
+      t
+     </mi><mi>
+      e
+     </mi><mi>
+      n
+     </mi><mi>
+      t
+     </mi><mi>
+      i
+     </mi><mi>
+      o
+     </mi><mi>
+      n
+     </mi><mo>
+      (
+     </mo><mi>
+      i
+     </mi><mi>
+      n
+     </mi><mo>
+      ,
+     </mo><mi>
+      o
+     </mi><mi>
+      u
+     </mi><mi>
+      t
+     </mi><mo>
+      )
+     </mo><mo>
+      =
+     </mo><munderover>
+      <mo movablelimits="false">
+       ∑
+      </mo>
+      <mrow>
+       <mi>
+        i
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+      <mi>
+       l
+      </mi>
+     </munderover><mrow>
+      <mi>
+       s
+      </mi>
+      <mi>
+       o
+      </mi>
+      <mi>
+       f
+      </mi>
+      <mi>
+       t
+      </mi>
+      <mo movablelimits="true" form="prefix">
+       max
+      </mo>
+      <mo>
+       (
+      </mo>
+      <mi>
+       s
+      </mi>
+      <mi>
+       i
+      </mi>
+      <mi>
+       m
+      </mi>
+      <mo>
+       (
+      </mo>
+      <mi>
+       o
+      </mi>
+      <mi>
+       u
+      </mi>
+      <mi>
+       t
+      </mi>
+      <mo>
+       ,
+      </mo>
+      <mrow>
+       <msub>
+        <mi>
+         k
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msub>
+      </mrow>
+     </mrow><mo>
+      )
+     </mo><mo>
+      )
+     </mo><mo>
+      ×
+     </mo><mi>
+      v
+     </mi><mi>
+      a
+     </mi><mi>
+      l
+     </mi><mi>
+      u
+     </mi><mrow>
+      <msub>
+       <mi>
+        e
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0010" class="disp-formula-label">(10) </span></span></span></span>Where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0032.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0032.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      i
+     </mi><mi>
+      n
+     </mi>
+    </math></span> represents the input information, which is of the form &lt;key, value&gt;. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0033.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0033.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      o
+     </mi><mi>
+      u
+     </mi><mi>
+      t
+     </mi>
+    </math></span> represents the output. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0034.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0034.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      l
+     </mi>
+    </math></span> represents the size of the text. The Re-LSTM neuron model, where the input is the current text and the output is the comparative text, fuses the Attention mechanism. The computation follows formula (11). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0011.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0011" class="disp-formula-label">(11) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        a
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><munderover>
+      <mo movablelimits="false">
+       ∑
+      </mo>
+      <mrow>
+       <mi>
+        i
+       </mi>
+       <mo>
+        =
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+      <mi>
+       l
+      </mi>
+     </munderover><mrow>
+      <mfrac>
+       <mrow>
+        <mrow>
+         <msup>
+          <mi>
+           e
+          </mi>
+          <mrow>
+           <mi>
+            cos
+           </mi>
+           <mo>
+            ⁡
+           </mo>
+           <mo>
+            (
+           </mo>
+           <mrow>
+            <msub>
+             <mi>
+              d
+             </mi>
+             <mi>
+              i
+             </mi>
+            </msub>
+           </mrow>
+           <mo>
+            ,
+           </mo>
+           <mrow>
+            <msub>
+             <mi>
+              d
+             </mi>
+             <mi>
+              j
+             </mi>
+            </msub>
+           </mrow>
+           <mo>
+            )
+           </mo>
+          </mrow>
+         </msup>
+        </mrow>
+        <mo>
+         ×
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           h
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+       <mrow>
+        <msubsup>
+         <mo movablelimits="false">
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           j
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mi>
+          l
+         </mi>
+        </msubsup>
+        <mrow>
+         <mrow>
+          <msup>
+           <mi>
+            e
+           </mi>
+           <mrow>
+            <mi>
+             cos
+            </mi>
+            <mo>
+             ⁡
+            </mo>
+            <mo>
+             (
+            </mo>
+            <mrow>
+             <msub>
+              <mi>
+               d
+              </mi>
+              <mi>
+               i
+              </mi>
+             </msub>
+            </mrow>
+            <mo>
+             ,
+            </mo>
+            <mrow>
+             <msub>
+              <mi>
+               d
+              </mi>
+              <mi>
+               j
+              </mi>
+             </msub>
+            </mrow>
+            <mo>
+             )
+            </mo>
+           </mrow>
+          </msup>
+         </mrow>
+        </mrow>
+       </mrow>
+      </mfrac>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0011" class="disp-formula-label">(11) </span></span></span></span>Among them, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0035.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0035.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        a
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the Attention value of the <i>i</i>-th feature word in the text. Finally, the output <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0036.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0036.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        a
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> produced for the current layer and the feature word weights <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0037.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0037.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mi>
+       W
+      </mi>
+      <mrow>
+       <mi>
+        d
+       </mi>
+       <mi>
+        i
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        ′
+       </mi>
+      </mrow>
+     </msubsup>
+    </math></span> computed by the <i>χ</i>²-C algorithm are concatenated and used as input to the following layer.</p>
+ </div>
+ <div id="S004-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i25">4.4. Re-LSTM Layer</h3>
+  <p>An input gate, a forget gate, and an output gate make up the classic LSTM’s three gates. A layer of the sigmoid neural network filters each gate. The output of the sigmoid is a number between 0 and 1, where 0 indicates that no data is permitted to pass, 1 indicates that all data passes, and the other values indicate that some data may pass. However, the number of doors is too large, resulting in too many parameters, which makes calculations more complex and time-consuming. Moreover, each gate only considers the upper layer’s hidden feature <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0038.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0038.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        O
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> and does not consider the upper layer state <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0039.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0039.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        C
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span>, so the extraction of hidden features is insufficient. For this type of problem, a new neuron is designed based on the traditional LSTM. As shown in Figure <a href="#F0002">2</a>.</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Re-LSTM: A long short-term memory network text similarity algorithm based on weighted word embedding</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Weidong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Weidong"><span class="NLM_given-names">Weidong</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Liu%2C+Xiaotong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Liu%2C+Xiaotong"><span class="NLM_given-names">Xiaotong</span> Liu</a> <a href="https://orcid.org/0000-0002-3618-0168"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Jing%2C+Jun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jing%2C+Jun"><span class="NLM_given-names">Jun</span> Jing</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Xi%2C+Rongchang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xi%2C+Rongchang"><span class="NLM_given-names">Rongchang</span> Xi</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2140122">https://doi.org/10.1080/09540091.2022.2140122</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>02 November 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Structure of a single Re-LSTM neuron.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/medium/ccos_a_2140122_f0002_ob.jpg" loading="lazy" height="254" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Structure of a single Re-LSTM neuron.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <p></p>
+  <p>Similar to the traditional LSTM, Re-LSTM is also composed of gates. Re-LSTM is designed with two gates, namely the update gate and the selection gate. Each gate is filtered by a sigmoid function. The update gate state is calculated as in formula (12). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0012.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0012" class="disp-formula-label">(12) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        r
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mi>
+      σ
+     </mi><mo>
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        r
+       </mi>
+      </msub>
+     </mrow><mo>
+      ⋅
+     </mo><mo>
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        O
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        I
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        C
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ]
+     </mo><mo>
+      +
+     </mo><mrow>
+      <msub>
+       <mi>
+        b
+       </mi>
+       <mi>
+        r
+       </mi>
+      </msub>
+     </mrow><mo>
+      )
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0012" class="disp-formula-label">(12) </span></span></span></span>Where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0040.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0040.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        r
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the value of the update gate at time <i>t</i>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0041.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0041.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        O
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> represents the output of the upper Re-LSTM unit. <i>σ</i> represents the sigmoid function, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0042.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0042.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        r
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the weight matrix in the update gate. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0043.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0043.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        I
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the current input and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0044.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0044.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        b
+       </mi>
+       <mi>
+        r
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the bias term of the update gate. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0045.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0045.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        C
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> represents the state of the previous layer. The select gate state is calculated as in formula (13). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0013.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0013" class="disp-formula-label">(13) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        u
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mi>
+      σ
+     </mi><mo>
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        u
+       </mi>
+      </msub>
+     </mrow><mo>
+      ⋅
+     </mo><mo>
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        O
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        I
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        C
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ]
+     </mo><mo>
+      +
+     </mo><mrow>
+      <msub>
+       <mi>
+        b
+       </mi>
+       <mi>
+        u
+       </mi>
+      </msub>
+     </mrow><mo>
+      )
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0013" class="disp-formula-label">(13) </span></span></span></span>Where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0046.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0046.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        u
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the value of the select gate at time <i>t</i>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0047.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0047.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        u
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the weight matrix of the select gate, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0048.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0048.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        b
+       </mi>
+       <mi>
+        u
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the bias term of the select gate. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0014.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0014" class="disp-formula-label">(14) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        C
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mi>
+      tanh
+     </mi><mo>
+      ⁡
+     </mo><mo>
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        c
+       </mi>
+      </msub>
+     </mrow><mo>
+      ⋅
+     </mo><mo>
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        m
+       </mi>
+       <mi>
+        c
+       </mi>
+      </msub>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        I
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mrow>
+      <msub>
+       <mi>
+        r
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow><mo>
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        O
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        C
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ]
+     </mo><mo>
+      )
+     </mo><mo>
+      +
+     </mo><mi>
+      b
+     </mi><msub>
+      <mrow></mrow>
+      <mi>
+       c
+      </mi>
+     </msub><mo>
+      )
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0014" class="disp-formula-label">(14) </span></span></span></span>As in formula (14), <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0049.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0049.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        C
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the unit input at time t, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0050.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0050.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      tanh
+     </mi>
+    </math></span> is the hyperbolic tangent function representing the activation function. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0051.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0051.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        c
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the weight matrix in the cell state, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0052.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0052.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        m
+       </mi>
+       <mi>
+        c
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the weight of the current input <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0053.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0053.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        I
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> in the cell state and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0054.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0054.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        b
+       </mi>
+       <mi>
+        c
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents a unit status bias item. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0015.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0015" class="disp-formula-label">(15) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        O
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mo>
+      (
+     </mo><mn>
+      1
+     </mn><mo>
+      −
+     </mo><mi>
+      u
+     </mi><mo>
+      )
+     </mo><mo>
+      ×
+     </mo><mrow>
+      <msub>
+       <mi>
+        O
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      +
+     </mo><mrow>
+      <msub>
+       <mi>
+        u
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow><mo>
+      ×
+     </mo><mrow>
+      <msub>
+       <mi>
+        C
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0015" class="disp-formula-label">(15) </span></span></span></span></p>
+  <p>As in formula (15), <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0055.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0055.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        O
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the unit at time <i>t</i>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0056.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0056.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        O
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> represents the unit of the upper layer Re-LSTM. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0016.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0016.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0016" class="disp-formula-label">(16) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mi>
+       O
+      </mi>
+      <mi>
+       t
+      </mi>
+      <mi>
+       l
+      </mi>
+     </msubsup><mo>
+      =
+     </mo><mrow>
+      <msup>
+       <mi>
+        H
+       </mi>
+       <mi>
+        l
+       </mi>
+      </msup>
+     </mrow><mo>
+      (
+     </mo><msubsup>
+      <mi>
+       I
+      </mi>
+      <mi>
+       t
+      </mi>
+      <mi>
+       l
+      </mi>
+     </msubsup><mo>
+      ,
+     </mo><msubsup>
+      <mi>
+       O
+      </mi>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+      <mi>
+       l
+      </mi>
+     </msubsup><mo>
+      )
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0016" class="disp-formula-label">(16) </span></span></span></span>Where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0057.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0057.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        H
+       </mi>
+       <mi>
+        l
+       </mi>
+      </msup>
+     </mrow>
+    </math></span> represents the current Re-LSTM layer. The Re-LSTM has fewer parameters than the traditional LSTM, which is also more efficient, and both gates of the Re-LSTM consider the state and hidden characteristics of the preceding layer. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0017.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0017.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0017" class="disp-formula-label">(17) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mi>
+       I
+      </mi>
+      <mi>
+       t
+      </mi>
+      <mi>
+       l
+      </mi>
+     </msubsup><mo>
+      =
+     </mo><mo>
+      [
+     </mo><msubsup>
+      <mi>
+       O
+      </mi>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+      <mi>
+       l
+      </mi>
+     </msubsup><mo>
+      ,
+     </mo><msubsup>
+      <mi>
+       I
+      </mi>
+      <mi>
+       t
+      </mi>
+      <mrow>
+       <mi>
+        l
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+     </msubsup><mo>
+      ,
+     </mo><msubsup>
+      <mi>
+       a
+      </mi>
+      <mi>
+       t
+      </mi>
+      <mrow>
+       <mi>
+        l
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+     </msubsup><mo>
+      ,
+     </mo><msubsup>
+      <mi>
+       W
+      </mi>
+      <mi>
+       t
+      </mi>
+      <mrow>
+       <mi>
+        l
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+     </msubsup><mo>
+      ]
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0017" class="disp-formula-label">(17) </span></span></span></span>The original data is used directly as input to the following layer, maximising textual information retention while adequately capturing the contextual information of each word. As in formulas (16) and (17) above. In response to the issue of excessively large inputs and numerous parameters leading to excessive dimensionality, the autoencoder was developed for dimensionality reduction.</p>
+ </div>
+ <div id="S004-S2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i33">4.5. Aggregation Layer and fully connected layer</h3>
+  <p>The forward propagation output vector and the backward propagation output vector of the Re-LSTM are sewn together by the aggregation layer to create a new vector. As in formula (18). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0018.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0018.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0018" class="disp-formula-label">(18) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        V
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mrow>
+      <mo>
+       〈
+      </mo>
+      <mrow>
+       <mover>
+        <mrow>
+         <msub>
+          <mi>
+           V
+          </mi>
+          <mi>
+           L
+          </mi>
+         </msub>
+        </mrow>
+        <mo>
+         ←
+        </mo>
+       </mover>
+       <mo>
+        ,
+       </mo>
+       <mover>
+        <mrow>
+         <msub>
+          <mi>
+           V
+          </mi>
+          <mi>
+           L
+          </mi>
+         </msub>
+        </mrow>
+        <mo>
+         →
+        </mo>
+       </mover>
+      </mrow>
+      <mo>
+       〉
+      </mo>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0018" class="disp-formula-label">(18) </span></span></span></span>Where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0058.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0058.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        V
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> represents the output vector of the aggregation layer, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0059.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0059.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mover>
+      <mrow>
+       <msub>
+        <mi>
+         V
+        </mi>
+        <mi>
+         L
+        </mi>
+       </msub>
+      </mrow>
+      <mo>
+       ←
+      </mo>
+     </mover>
+    </math></span> represents the output vector of backward propagation, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0060.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0060.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mover>
+      <mrow>
+       <msub>
+        <mi>
+         V
+        </mi>
+        <mi>
+         L
+        </mi>
+       </msub>
+      </mrow>
+      <mo>
+       →
+      </mo>
+     </mover>
+    </math></span> represents the output vector of forwarding propagation.</p>
+  <p>In the neural network, the fully connected layer serves as a classifier. The two-layer fully-connected layer receives the text feature vectors <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0061.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_ilm0061.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        V
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> that the neural network has extracted, and the final binary classification is performed using the softmax activation function.</p>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i35" class="section-heading-2">5. Experiment verification and result analysis</h2>
+ <div id="S005-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i36">5.1. Experimental datasets</h3>
+  <p>Two datasets were utilised to assess the performance of the Re-LSTM model in calculating text similarity. The first dataset (<a class="ext-link" href="https://www.kaggle.com/c/quora-question-pairs/data" target="_blank">https://www.kaggle.com/c/quora-question-pairs/data</a>) contains 404,290 data elements and was used in the Quora Question Pairs Competition (QQPC). The QQPC dataset is provided by quora question and answer, all of which are real questions from users. As shown in Table <button class="ref showTableEventRef" data-id="T0001">1</button>. Id, question1, question2, and is_duplicate are the four data items that each entry includes. When two questions are semantically similar, the value of is_duplicate is 1, otherwise, it is 0.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Re-LSTM: A long short-term memory network text similarity algorithm based on weighted word embedding</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Weidong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Weidong"><span class="NLM_given-names">Weidong</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Liu%2C+Xiaotong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Liu%2C+Xiaotong"><span class="NLM_given-names">Xiaotong</span> Liu</a> <a href="https://orcid.org/0000-0002-3618-0168"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Jing%2C+Jun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jing%2C+Jun"><span class="NLM_given-names">Jun</span> Jing</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Xi%2C+Rongchang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xi%2C+Rongchang"><span class="NLM_given-names">Rongchang</span> Xi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2140122">https://doi.org/10.1080/09540091.2022.2140122</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 November 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> QQPC dataset information.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F09540091.2022.2140122&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The ATEC Ant Huabei dataset, which has 71730 data in total, is used as the second dataset (<a class="ext-link" href="https://dc.cloud.alipay.com/index#/topic/intro?id=3" target="_blank">https://dc.cloud.alipay.com/index#/topic/intro?id=3</a>). The ATEC dataset is provided by Alibaba Ant Financial, and the samples come from real application scenarios. Ant Financial has opened it as the competition data of the ATEC Developer Competition. As shown in Table <button class="ref showTableEventRef" data-id="T0002">2</button>, the format of each piece of data after sorting is the same as that in Table <button class="ref showTableEventRef" data-id="T0001">1</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Re-LSTM: A long short-term memory network text similarity algorithm based on weighted word embedding</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Weidong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Weidong"><span class="NLM_given-names">Weidong</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Liu%2C+Xiaotong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Liu%2C+Xiaotong"><span class="NLM_given-names">Xiaotong</span> Liu</a> <a href="https://orcid.org/0000-0002-3618-0168"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Jing%2C+Jun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jing%2C+Jun"><span class="NLM_given-names">Jun</span> Jing</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Xi%2C+Rongchang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xi%2C+Rongchang"><span class="NLM_given-names">Rongchang</span> Xi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2140122">https://doi.org/10.1080/09540091.2022.2140122</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 November 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> ATEC dataset information.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F09540091.2022.2140122&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The text was clustered using the <i>K</i>-means algorithm, and the <i>k</i>-value was adjusted to 4 in accordance with the control variables technique. This allowed us to compute the domain association factor Ca in the <i>χ</i>²-C algorithm. To be used in weighting calculations later, the text was annotated with categories. The experiments all use real data sets with actual application scenarios so that the experimental results can more objectively reflect the effectiveness and realism of the Re-LSTM model.</p>
+ </div>
+ <div id="S005-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i37">5.2. Experimental parameter settings</h3>
+  <p>The experimental environment for model training is TensorFlow 1.9. The final neural network parameters were established as indicated in Figure <a href="#F0003">3</a> in accordance with the performance of the Re-LSTM model following parameter adjustments in the experiment (Table&nbsp;<button class="ref showTableEventRef" data-id="T0003">3</button>).</p>
+  <div class="figure figureViewer" id="F0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Re-LSTM: A long short-term memory network text similarity algorithm based on weighted word embedding</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Weidong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Weidong"><span class="NLM_given-names">Weidong</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Liu%2C+Xiaotong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Liu%2C+Xiaotong"><span class="NLM_given-names">Xiaotong</span> Liu</a> <a href="https://orcid.org/0000-0002-3618-0168"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Jing%2C+Jun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jing%2C+Jun"><span class="NLM_given-names">Jun</span> Jing</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Xi%2C+Rongchang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xi%2C+Rongchang"><span class="NLM_given-names">Rongchang</span> Xi</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2140122">https://doi.org/10.1080/09540091.2022.2140122</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>02 November 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> Comparative graphs for each model.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/medium/ccos_a_2140122_f0003_oc.jpg" loading="lazy" height="332" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> Comparative graphs for each model.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0003">
+   <div class="figureFootNote-F0003"></div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Re-LSTM: A long short-term memory network text similarity algorithm based on weighted word embedding</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Weidong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Weidong"><span class="NLM_given-names">Weidong</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Liu%2C+Xiaotong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Liu%2C+Xiaotong"><span class="NLM_given-names">Xiaotong</span> Liu</a> <a href="https://orcid.org/0000-0002-3618-0168"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Jing%2C+Jun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jing%2C+Jun"><span class="NLM_given-names">Jun</span> Jing</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Xi%2C+Rongchang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xi%2C+Rongchang"><span class="NLM_given-names">Rongchang</span> Xi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2140122">https://doi.org/10.1080/09540091.2022.2140122</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 November 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Neural network parameter setting.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0003&amp;doi=10.1080%2F09540091.2022.2140122&amp;downloadType=CSV"> Download CSV</a><a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>To better appropriately present the test results due to the dataset’s relatively short content, the maximum sentence length is set to 90. This article sets the sample percentage to 0.3. The meaning of the term cannot be accurately conveyed if the dimension is too small, while a dimension that is too large will complicate computations. As a result, at the word embedding layer, the feature representation of the word is set to be a 100-dimensional vector. Set dropout keep prob to 1 in the word embedding dropout layer to maintain each word’s meaning. This experiment uses two Re-LSTMs to extract text features. Each layer has 270 hidden layers, and the dropout keep prob parameter of the associated dropout layer is set to 1.</p>
+  <p>A higher batch size and a lower epoch can be chosen while training the model because this model will ultimately perform binary classification, with a batch size of 300 and an epoch of 15. Every 15 iterations, the training results are shown to highlight the results’ trend, and every 100 iterations, the model is assessed and the evaluation findings are displayed. The learning rate shows how much a parameter is updated in each iteration, and the bigger the decay rate, the quicker the learning rate falls. In this experiment, the learning rate is set to 0.01 and the decay rate is set to 0.009 to make sure that the loss function oscillates in a zone nearer to the ideal value.</p>
+ </div>
+ <div id="S005-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i39">5.3. Model evaluation criteria</h3>
+  <p>In the tests, the Re-LSTM model evaluates the model using Accuracy (A), Precision (P), Recall (R), and F1 value.</p>
+  <p>Accuracy (A) represents the proportion of all samples in the dataset for which the model successfully finds similarities. It stands for the number of samples for which this is true. It is determined using the formula (19). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0019.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0019.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0019" class="disp-formula-label">(19) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      A
+     </mi><mi>
+      c
+     </mi><mi>
+      c
+     </mi><mi>
+      u
+     </mi><mi>
+      r
+     </mi><mi>
+      a
+     </mi><mi>
+      c
+     </mi><mi>
+      y
+     </mi><mo>
+      =
+     </mo><mfrac>
+      <mrow>
+       <mi>
+        T
+       </mi>
+       <mi>
+        N
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi>
+        T
+       </mi>
+       <mi>
+        P
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        T
+       </mi>
+       <mi>
+        N
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi>
+        T
+       </mi>
+       <mi>
+        P
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi>
+        F
+       </mi>
+       <mi>
+        P
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi>
+        F
+       </mi>
+       <mi>
+        N
+       </mi>
+      </mrow>
+     </mfrac>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0019" class="disp-formula-label">(19) </span></span></span></span>Precision (P) is the proportion of samples that match all of the expected samples with a similarity of 1, calculated using the formula (20). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0020.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0020.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0020" class="disp-formula-label">(20) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo movablelimits="true" form="prefix">
+      Pr
+     </mo><mi>
+      e
+     </mi><mi>
+      c
+     </mi><mi>
+      i
+     </mi><mi>
+      s
+     </mi><mi>
+      i
+     </mi><mi>
+      o
+     </mi><mi>
+      n
+     </mi><mo>
+      =
+     </mo><mfrac>
+      <mrow>
+       <mi>
+        T
+       </mi>
+       <mi>
+        P
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        T
+       </mi>
+       <mi>
+        P
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi>
+        F
+       </mi>
+       <mi>
+        P
+       </mi>
+      </mrow>
+     </mfrac>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0020" class="disp-formula-label">(20) </span></span></span></span>Recall (R), determined using formula (21), is the proportion of samples having a predicted similarity of 1 to the total number of samples. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0021.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0021.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0021" class="disp-formula-label">(21) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      R
+     </mi><mi>
+      e
+     </mi><mi>
+      c
+     </mi><mi>
+      a
+     </mi><mi>
+      l
+     </mi><mi>
+      l
+     </mi><mo>
+      =
+     </mo><mfrac>
+      <mrow>
+       <mi>
+        T
+       </mi>
+       <mi>
+        P
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        T
+       </mi>
+       <mi>
+        P
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi>
+        F
+       </mi>
+       <mi>
+        N
+       </mi>
+      </mrow>
+     </mfrac>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0021" class="disp-formula-label">(21) </span></span></span></span>The F1 value is determined by summing the means of the precision and recall variables according to the formula (22). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0022.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/ccos_a_2140122_m0022.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0022" class="disp-formula-label">(22) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      F
+     </mi><mn>
+      1
+     </mn><mo>
+      =
+     </mo><mn>
+      2
+     </mn><mo>
+      ⋅
+     </mo><mfrac>
+      <mrow>
+       <mi>
+        A
+       </mi>
+       <mi>
+        c
+       </mi>
+       <mi>
+        c
+       </mi>
+       <mi>
+        u
+       </mi>
+       <mi>
+        r
+       </mi>
+       <mi>
+        a
+       </mi>
+       <mi>
+        c
+       </mi>
+       <mi>
+        y
+       </mi>
+       <mo>
+        ⋅
+       </mo>
+       <mi>
+        R
+       </mi>
+       <mi>
+        e
+       </mi>
+       <mi>
+        c
+       </mi>
+       <mi>
+        a
+       </mi>
+       <mi>
+        l
+       </mi>
+       <mi>
+        l
+       </mi>
+      </mrow>
+      <mrow>
+       <mi>
+        A
+       </mi>
+       <mi>
+        c
+       </mi>
+       <mi>
+        c
+       </mi>
+       <mi>
+        u
+       </mi>
+       <mi>
+        r
+       </mi>
+       <mi>
+        a
+       </mi>
+       <mi>
+        c
+       </mi>
+       <mi>
+        y
+       </mi>
+       <mo>
+        +
+       </mo>
+       <mi>
+        R
+       </mi>
+       <mi>
+        e
+       </mi>
+       <mi>
+        c
+       </mi>
+       <mi>
+        a
+       </mi>
+       <mi>
+        l
+       </mi>
+       <mi>
+        l
+       </mi>
+      </mrow>
+     </mfrac>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0022" class="disp-formula-label">(22) </span></span></span></span>When training the model, Table <button class="ref showTableEventRef" data-id="T0004">4</button> shows that TP: prediction is_duplicate is 1, the actual result is 1, indicating that the prediction is correct; FP: prediction is_duplicate is 1, the actual result is 0, indicating a prediction error; FN: prediction is_duplicate is 0, the actual result is 1, indicating a prediction error; TN: prediction is_duplicate is 0, the actual result is 0, indicating the prediction is correct.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Re-LSTM: A long short-term memory network text similarity algorithm based on weighted word embedding</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Weidong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Weidong"><span class="NLM_given-names">Weidong</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Liu%2C+Xiaotong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Liu%2C+Xiaotong"><span class="NLM_given-names">Xiaotong</span> Liu</a> <a href="https://orcid.org/0000-0002-3618-0168"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Jing%2C+Jun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jing%2C+Jun"><span class="NLM_given-names">Jun</span> Jing</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Xi%2C+Rongchang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xi%2C+Rongchang"><span class="NLM_given-names">Rongchang</span> Xi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2140122">https://doi.org/10.1080/09540091.2022.2140122</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 November 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 4. </span> Confusion matrix.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0004&amp;doi=10.1080%2F09540091.2022.2140122&amp;downloadType=CSV"> Download CSV</a><a data-id="T0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S005-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i44">5.4. Analysis of experimental results</h3>
+  <p>This section shows the experimental results in detail and compares and analyses them. Four comparison model algorithms, CNN, Bi-LSTM, Siamese-LSTM, and Multi-perspective-LSTM, were employed to test the efficacy of various models in computing text similarity.</p>
+  <p>In the beginning, simply CNN and Bi-LSTM models were used to extract text features. The binary categorisation of the two texts was performed in the fully connected layer using a sigmoid function. Second, LSTM was integrated into the Siamese Network architecture to assess the similarity of the input samples. The input vector is quantised and the distance between the two output vectors is calculated using a distance metric to assess text similarity because the Siamese Network consists of two sub-networks with the same structure and weights. The Multi-perspective-LSTM model, once again, employs a multi-perspective mechanism to match each text with another sentence from a variety of angles. The LSTM is then used to combine the matched results into a fixed-length vector. Based on this vector, a fully connected layer (connected Sigmoid or Softmax) is utilised for classification and the construction of a loss function. Finally, the Re-LSTM is included in the neural network alongside the text information, combining the <i>χ</i>²-C algorithm with the Attention mechanism to compute the two text interaction attenuation and feature word weights. Two dropout layers were added to the Re-LSTM to prevent it from overfitting. To evaluate the degree of similarity between the two texts, classification was lastly performed in the fully connected layer.</p>
+  <p>The experimental results on the QQPC dataset and the ATEC dataset are shown in Tables <button class="ref showTableEventRef" data-id="T0005">5</button> and <button class="ref showTableEventRef" data-id="T0006">6</button> respectively. The results show that the Re-LSTM model achieves precision, recall, accuracy and F1 values of 86.21%, 85.6%, 85.57% and 84.7%, respectively, on the QQPC dataset. The precision, recall, accuracy and F1 values on the ATEC dataset reached 86.89%, 86.5%, 85.65% and 84.5%, respectively. The CNN model was the least effective compared to the remaining four models. The reason for this analysis was that the text of the dataset in the experiment was not long enough and therefore the information extracted using CNN alone was insufficient. Bi-LSTM was slightly less effective than Siamese-LSTM because Siamese-LSTM took into account the distance metric of the text vector, which was more advantageous in this experiment. Comparing the first three models, the Multi-perspective-LSTM was able to extract more accurate information and evaluate similarity from various viewpoints, but it still had the issue of not extracting enough contextual dependencies. To make the best use of the limited textual information, Re-LSTM took more factors into account and worked best experimentally. The results in Tables <button class="ref showTableEventRef" data-id="T0005">5</button> and <button class="ref showTableEventRef" data-id="T0006">6</button> indicate the usefulness and practicality of the Re-LSTM model.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Re-LSTM: A long short-term memory network text similarity algorithm based on weighted word embedding</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Weidong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Weidong"><span class="NLM_given-names">Weidong</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Liu%2C+Xiaotong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Liu%2C+Xiaotong"><span class="NLM_given-names">Xiaotong</span> Liu</a> <a href="https://orcid.org/0000-0002-3618-0168"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Jing%2C+Jun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jing%2C+Jun"><span class="NLM_given-names">Jun</span> Jing</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Xi%2C+Rongchang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xi%2C+Rongchang"><span class="NLM_given-names">Rongchang</span> Xi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2140122">https://doi.org/10.1080/09540091.2022.2140122</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 November 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 5. </span> Comparison of experimental results of models based on QQPC dataset.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0005-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0005&amp;doi=10.1080%2F09540091.2022.2140122&amp;downloadType=CSV"> Download CSV</a><a data-id="T0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Re-LSTM: A long short-term memory network text similarity algorithm based on weighted word embedding</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Weidong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Weidong"><span class="NLM_given-names">Weidong</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Liu%2C+Xiaotong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Liu%2C+Xiaotong"><span class="NLM_given-names">Xiaotong</span> Liu</a> <a href="https://orcid.org/0000-0002-3618-0168"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Jing%2C+Jun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jing%2C+Jun"><span class="NLM_given-names">Jun</span> Jing</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Xi%2C+Rongchang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xi%2C+Rongchang"><span class="NLM_given-names">Rongchang</span> Xi</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2140122">https://doi.org/10.1080/09540091.2022.2140122</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 November 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 6. </span> Comparison of experimental results of models based on ATEC dataset.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0006-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0006&amp;doi=10.1080%2F09540091.2022.2140122&amp;downloadType=CSV"> Download CSV</a><a data-id="T0006" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The F1 value accounts for both precision and recall and provides a reliable assessment of each model’s performance. The comparison of the F1 value of each model is shown in Figure <a href="#F0003">3</a>. The Re-LSTM model performs much better than the other models in terms of accuracy and performance when calculating text similarity, as seen by its somewhat higher F1 values overall.</p>
+  <p>Ablation experiments were created to further show the Re-LSTM model’s efficacy. In the parts that follow, this is explained in more depth, and the findings are compared and evaluated. A comparison of the results of the ablation experiments is shown in Figure <a href="#F0004">4</a>.</p>
+  <div class="figure figureViewer" id="F0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Re-LSTM: A long short-term memory network text similarity algorithm based on weighted word embedding</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zhao%2C+Weidong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zhao%2C+Weidong"><span class="NLM_given-names">Weidong</span> Zhao</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Liu%2C+Xiaotong"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Liu%2C+Xiaotong"><span class="NLM_given-names">Xiaotong</span> Liu</a> <a href="https://orcid.org/0000-0002-3618-0168"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Jing%2C+Jun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jing%2C+Jun"><span class="NLM_given-names">Jun</span> Jing</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Xi%2C+Rongchang"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xi%2C+Rongchang"><span class="NLM_given-names">Rongchang</span> Xi</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2140122">https://doi.org/10.1080/09540091.2022.2140122</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>02 November 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> Comparison of ablation experiment results.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2140122/20230104/images/medium/ccos_a_2140122_f0004_oc.jpg" loading="lazy" height="282" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> Comparison of ablation experiment results.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0004">
+   <div class="figureFootNote-F0004"></div>
+  </div>
+  <p></p>
+  <p>On the QQPC dataset and the ATEC dataset, Figure <a href="#F0004">4</a> compares the Re-LSTM model with the Re-LSTM model without the <i>χ</i>²-C algorithm and without the Attention mechanism.</p>
+  <p>The Re-LSTM model without the <i>χ</i>²-C algorithm has poorer precision, recall, accuracy, and F1 value than the Re-LSTM, according to the QQPC dataset and the ATEC dataset. It implies that it is beneficial to compute the feature word weights more fully using the statistical calculation <i>χ</i>²-C algorithm, boosting the calculation’s accuracy of text similarity. The fundamental reason for this is that the <i>χ</i>²-C algorithm considers word frequency, word location, word length, and association data with the category of the feature words. The Re-LSTM layer receives the feature word weights as input, obtaining richer semantic information and enhancing the neural network’s capacity to compute text similarity. This enables more accurate classification in the fully connected layer and boosts the Re-LSTM model’s accuracy and overall performance.</p>
+  <p>Precision, recall, accuracy, and F1 value showed a greater improvement in the Re-LSTM model than in the Re-LSTM model without the Attention mechanism. This demonstrates that the Re-LSTM model outperforms other models on the whole and that the use of the Attention mechanism may completely capture the connections between contexts and give more semantic information, which is more useful in computing text similarity.</p>
+ </div>
+</div>
+<div id="S006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i46" class="section-heading-2">6. Conclusion</h2>
+ <p>A word embedding-based text similarity computation model called Re-LSTM is suggested by fusing statistical computing techniques with deep neural networks to increase the performance and accuracy of text similarity calculation. The Re-LSTM neuron, a novel neuron designed based on the conventional three-gate LSTM model, employs a two-gate mechanism. Each layer of the neural network receives the feature word weights produced by combining the TF-IDF algorithm, the <i>χ</i>²-C algorithm, and the Attention mechanism, and the fully connected layer then classifies the results. Each layer can obtain richer semantic information based on the feature information of the words as well as the dependency information of the sentences because the model based on Re-LSTM text similarity calculation takes into account the hidden features and state information of the preceding and following layers in the temporal dimension. It overcomes the problem of high computational and temporal costs of traditional LSTM. The Re-LSTM model now has greater precision, recall, accuracy, and F1 value, according to the testing results. The single-layer Re-LSTM still has limitations in terms of retrieving textual material, and the many parameters might be a factor in the gradient expansion and disappearance problems. The next step will concentrate on developing more sophisticated neural networks and solving the gradient vanishing problem.</p>
+</div>

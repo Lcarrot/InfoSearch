@@ -1,0 +1,1737 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">1. Introduction</h2>
+ <p>Public opinion drives many decisions in politics, governance, business, marketing, and many other areas. The internet has become the most dominant source of opinion, especially since the birth of social media [<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>1</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>2</a></span>]. Massive amount of opinions in text have given rise to natural language processing (NLP) techniques such as opinion mining and sentiment analysis [<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>3</a></span>], which aim to automatically classify opinions in text as being either positive or negative towards an attitudinal target (e.g. a person or a product). A related approach is that of <i>stance detection</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>4</a></span>], in which the opinion is framed as a bipolar stance that is either in favour (<span class="monospace">PRO</span>) or against (<span class="monospace">CON</span>) a particular (often controversial) topic [<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>5</a></span>]. While both techniques have a number of practical applications, the analysis they offer is shallow in that they typically do not provide any insights into the <i>reasons</i> underlying an opinion.</p>
+ <p>The question of how different reasons combine to form opinions falls within the purview of the field of <i>argumentation</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>6</a></span>]. From an argumentative point of view, each stance is typically supported by <i>arguments</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>7</a></span>], consisting of a network of linked <i>claims</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>6</a></span>], i.e. statements one wants others to accept and act upon [<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>8</a></span>]. For instance, a comment on social media on the topic of <i>marijuana legalization</i> might look as follows:</p>
+ <div class="quote">
+  <p><i>Smoking pot is bad for your health. Therefore, we should criminalize marijuana. Disallowing marijuana will improve public health.</i></p>
+ </div>
+ <p>This argument may be broken down into three claims:</p>
+ <ol class="NLM_list NLM_list-list_type-order">
+  <li><p class="inline"><i>Smoking pot is bad for your health.</i></p></li>
+  <li><p class="inline"><i>Therefore, we should criminalize marijuana.</i></p></li>
+  <li><p class="inline"><i>Disallowing marijuana will improve public health.</i></p></li>
+ </ol>
+ <p></p>
+ <p>The claim “<i>therefore, we should criminalize marijuana</i>” expresses a <span class="monospace">CON</span> stance towards <i>marijuana legalization</i>, while the two other claims serve to back up that stance. Thus, to determine the arguments (i.e. reasons) behind a stance, one needs to determine the argumentation structure of the comment. Each claim, however – being a natural language statement – does have an internal semantic structure. In fact, most argument-relevant claims express semantic relations between semantic concepts, representing a proposition about the world that the opinion holder believes or desires to be true. By uncovering this internal structure, we can analyse in more detail the beliefs and values of the opinion holders. For instance, we can investigate whether people who think that marijuana has no harmful health effects also think that it should be legalized, analyse how many people support marijuana legalization based on the argument that it could generate revenues if taxed, or determine the specific points on which two opinion holders disagree. Furthermore, by considering semantic and logic relations between claim structures, we could infer claims that are implicitly entailed from the opinion holder's claim, e.g. the claim <i>Not smoking pot improves public health</i> in the example above. In sum, an analysis of the semantic structure of claims allows for a more detailed and insightful of opinions expressed in text.</p>
+ <p>Aiming to address this need, in this article, we consider a novel NLP task of <i>argumentative claim parsing (ACP)</i>. We define ACP as a task of automatic extraction of semantic structures of claims from argumentative text. The task can conceptually be broken down into two subtasks: (1) <i>claim segmentation</i>, in which the text is segmented into fragments that correspond to individual claims, and (2) <i>claim structuring</i>, in which the segmented fragments are mapped to structures representing the semantic meaning of the claims. We frame the two subtasks as sequence labeling and structured prediction tasks, respectively, and experiment with several machine learning approaches. We also present a manually annotated dataset, featuring two discussion topics and designed specifically for this task, on which we train and evaluate our models. Our best-performing preliminary models achieve macro-averaged F1-score of 0.37 and 0.08 on claim segmentation and claim structuring problems, respectively. The contribution of our work are (1) the definition of ACP task, (2) an annotated dataset of claim segments and structures, and (3) preliminary structured prediction models for the ACP task.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">2. Related work</h2>
+ <p>The ACP task is closely related to the area of argumentation mining. We next review related work from argumentation mining.</p>
+ <p><i>Argumentation mining</i> is a subfield of NLP dealing with the automatic identification and extraction of the structure of inference and reasoning expressed as arguments presented in natural language [<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>9</a></span>]. The transformation of text into argumentation structures is typically accomplished with a pipelined NLP architecture consisting of two steps: argument component extraction and argument component structuring [<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>10</a></span>], where the latter relies on some theoretical argumentation model, such as the Freeman's model [<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>11</a></span>]. While we adopt the same pipelined approach, our models work at the level of claims rather than the level of argumentation structures. Thus, from a functional perspective, the subtask of claim segmentation corresponds to argument component extraction, while claim structuring corresponds to argumentation structuring.</p>
+ <p>In general, <i>argument component extraction</i> divides the text into so-called Argumentative Discourse Units (ADU), which are minimal units of discourse [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>12</a></span>]. One of two basic approaches are typically applied: a sentence-level approach or a token-level approach. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>13</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>14</a></span>], claim segmentation is done simply by assuming that each sentence is an argumentative claim. In contrast, in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>15</a></span>], the authors apply token-level segmentation using a conditional random field (CRF) model to identify the boundaries of argument components. A claim annotation study in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>16</a></span>] revealed that the majority of argument components span beyond single sentences, suggesting that token-level segmentation is more adequate than sentence-level segmentation. With this in mind, we adopt the token-level approach and allow for overlapping and discontinuous claim segments for additional flexibility.</p>
+ <p><i>Argument structure prediction</i> maps extracted argument components into structures defined by an argumentation model. Most approaches adopt some variation of the Freeman's claim/premise model [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>12</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>13</a></span>]. For instance, in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>17</a></span>], Freeman's model is adopted and an SVM is used to predict links between claims and premises. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>18</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>19</a></span>], a model is defined based on binary excitatory and inhibitory relations between domain-specific concepts. We use these models as a starting point but define a different set of relations and use a hierarchical arrangement of concepts.</p>
+ <p>The tasks of argumentation mining involves the transformation of text into structured representations. These are typically solved using structured prediction, a supervised machine learning paradigm that predicts structured objects such as sequences, trees, and graphs [<span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>43</a></span>]. Conditional random fields (CRF) is a very powerful class of probabilistic modelling methods used for structured prediction [<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>20</a></span>]. Whereas a classifier predicts a label for an instance independently of other instances, a CRF can account for context. CRFs, particularly linear-chain CRFs, have been widely applied in NLP. Recent approaches to structured prediction rely on deep learning models. Long short-term memory network (LSTM) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>21</a></span>] is a recurrent neural network architecture with feedback connections that models sequences of data. LSTM networks modelling data in both forward and backward directions (BiLSTM) are often used to solve text classification problems [<span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>22</a></span>] or sequence labelling problems [<span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>23</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>24</a></span>]. Distributed word representations [<span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>25</a></span>] are often used as input features to solve such problems [<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>26</a></span>]. A popular alternative to probabilistic and deep learning models for structured prediction is <i>chain classification</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>27</a></span>]. Since the ordering of classifiers may significantly impact performance, ensembling of chain classifiers is often employed [<span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>28</a></span>].</p>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">3. Argumentative claim parsing</h2>
+ <p>We define argumentative claim parsing (ACP) as the task of taking a number of sentences text as input and producing a set of <i>claim structures</i> as output. As noted in the introduction, ACP can be broken down into two subtasks: claim segmentation and claim structuring. In this section we formally define the two subtasks.</p>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">3.1. Claims and claim types</h3>
+  <p>We begin with the definition of a claim. A claim is a statement that the opinion holder seeks to convince others to accept [<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>29</a></span>]. We adopt the typology of [<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>29</a></span>] and distinguish between claims of <i>fact</i>, <i>value</i>, and <i>policy</i>. A claim of fact is a potentially verifiable assertion as to the nature of things, which may be true or false, e.g.&nbsp;<i>marijuana is not a heavy drug</i>. A claim of value indicates a subjective preference or judgement, which can be positive or negative, e.g. <i>use of heavy drugs is bad</i>. Lastly, a claim of policy is an assertion that something should be done, often expressed with modal verbs such as “should” or “ought”. The three types act as a wrapper around the propositional content of the claim, effectively modulating what is being claimed. For instance, the claims <i>marijuana should be legalized</i> and <i>marijuana is legalized</i> differ only in type (fact vs.&nbsp;policy), but their propositional content is the same.</p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">3.2. Claim segmentation</h3>
+  <p>A single sentence may contain several claims and, vice versa, a single claim can span several sentences. For this reason we need to segment the text in claims. More formally, let <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      x
+     </mi><mo>
+      =
+     </mo><mo stretchy="false">
+      (
+     </mo><msub>
+      <mi>
+       x
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><msub>
+      <mi>
+       x
+      </mi>
+      <mi>
+       N
+      </mi>
+     </msub><mo stretchy="false">
+      )
+     </mo>
+    </math></span> represent text of length <i>N</i> as a vector of tokens where the subscript <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      i
+     </mi><mo>
+      ∈
+     </mo><mo fence="false" stretchy="false">
+      {
+     </mo><mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><mi>
+      N
+     </mi><mo fence="false" stretchy="false">
+      }
+     </mo>
+    </math></span> represents the position of the token in text. Then <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      Y
+     </mi><mo>
+      =
+     </mo><mo stretchy="false">
+      (
+     </mo><msub>
+      <mi>
+       Y
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><msub>
+      <mi>
+       Y
+      </mi>
+      <mi>
+       K
+      </mi>
+     </msub><mo stretchy="false">
+      )
+     </mo>
+    </math></span> is a vector where each element represents a tuple of <i>N</i> elements for <i>K</i> segments. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       Y
+      </mi>
+      <mi>
+       k
+      </mi>
+     </msub>
+    </math></span> is a tuple of <i>N</i> values <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       Y
+      </mi>
+      <mi>
+       k
+      </mi>
+     </msub><mo>
+      =
+     </mo><mo stretchy="false">
+      (
+     </mo><msub>
+      <mi>
+       Y
+      </mi>
+      <mrow>
+       <mi>
+        k
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+     </msub><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><msub>
+      <mi>
+       Y
+      </mi>
+      <mrow>
+       <mi>
+        k
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        N
+       </mi>
+      </mrow>
+     </msub><mo stretchy="false">
+      )
+     </mo><mo>
+      ,
+     </mo><mi>
+      k
+     </mi><mo>
+      ∈
+     </mo><mo fence="false" stretchy="false">
+      {
+     </mo><mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><mi>
+      K
+     </mi><mo fence="false" stretchy="false">
+      }
+     </mo>
+    </math></span>, where value <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       Y
+      </mi>
+      <mrow>
+       <mi>
+        k
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        i
+       </mi>
+      </mrow>
+     </msub><mo>
+      ∈
+     </mo><mo fence="false" stretchy="false">
+      {
+     </mo><mn>
+      0
+     </mn><mo>
+      ,
+     </mo><mn>
+      1
+     </mn><mo fence="false" stretchy="false">
+      }
+     </mo>
+    </math></span> indicates if token <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       x
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub>
+    </math></span> is a part of segment <i>k</i>. The <b>claim segmentation</b> problem is then defined as finding function <i>f</i> such that <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      f
+     </mi><mo>
+      :
+     </mo><mrow>
+      <mi mathvariant="bold">
+       x
+      </mi>
+     </mrow><mo stretchy="false">
+      →
+     </mo><mrow>
+      <mi mathvariant="bold">
+       Y
+      </mi>
+     </mrow>
+    </math></span>, where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mi mathvariant="bold">
+       x
+      </mi>
+     </mrow>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mi mathvariant="bold">
+       Y
+      </mi>
+     </mrow>
+    </math></span> represent the sets of texts and corresponding segments. The <i>k</i>th claim segment of <i>x</i> is then defined as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mrow>
+       <mrow>
+        <mi mathvariant="italic">
+         s
+        </mi>
+        <mi mathvariant="italic">
+         e
+        </mi>
+        <mi mathvariant="italic">
+         g
+        </mi>
+       </mrow>
+      </mrow>
+      <mrow>
+       <mi>
+        k
+       </mi>
+      </mrow>
+     </msub><mo>
+      =
+     </mo><mo stretchy="false">
+      (
+     </mo><msub>
+      <mi>
+       x
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mrow>
+      <mo stretchy="false">
+       |
+      </mo>
+     </mrow><mi>
+      f
+     </mi><mo stretchy="false">
+      (
+     </mo><mi>
+      x
+     </mi><msub>
+      <mo stretchy="false">
+       )
+      </mo>
+      <mrow>
+       <mi>
+        k
+       </mi>
+       <mo>
+        ,
+       </mo>
+       <mi>
+        i
+       </mi>
+      </mrow>
+     </msub><mo>
+      =
+     </mo><mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mi>
+      i
+     </mi><mo>
+      ∈
+     </mo><mo fence="false" stretchy="false">
+      {
+     </mo><mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><mi>
+      N
+     </mi><mo fence="false" stretchy="false">
+      }
+     </mo><mo stretchy="false">
+      )
+     </mo>
+    </math></span>.</p>
+ </div>
+ <div id="S003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">3.3. Claim structuring</h3>
+  <p>Claim structuring maps segmented claims to structures representing the semantics of these claims. A claim structure essentially represents claim's propositional content and claim's type. The claim's propositional content is represented as a <i>semantic relation</i> between <i>domain concepts</i>. For instance, the claim segment “<i>marijuana smoking causes cancer</i>” may be mapped to a structure <span class="monospace">causes(marijuana consumption, cancer)</span>.</p>
+  <p>In text, domain concepts are expressed as noun phrases or anaphoric references to noun phrases. The domain concepts may be arranged into a domain taxonomy. For instance “heavy drugs”, “heroin”, and “marijuana” all belong under the concept of “drug”. The taxonomic relations can be used for inference over claims, e.g. to infer that an opinion holder who thinks that Marijuna should be legalized also subscribes to the belief that some forms of drugs should be legalized. The set of concepts is obviously domain-dependent and needs to be defined for each new argumentation topic.</p>
+  <p>In this work, we consider four semantic relations between domain concepts:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline"><span class="monospace">promotes</span> (subtyped as <span class="monospace">causes</span> and <span class="monospace">implies</span>),</p></li>
+   <li><p class="inline"><span class="monospace">suppresses</span> (subtyped as <span class="monospace">does_not_cause</span> and <span class="monospace">contradicts</span>),</p></li>
+   <li><p class="inline"><span class="monospace">comparison</span>, and</p></li>
+   <li><p class="inline"><span class="monospace">declares</span>.</p></li>
+  </ul>
+  <p></p>
+  <p>The <span class="monospace">declares</span> is an unary relation that indicates the existence of a domain concept. E.g. the claim “<i>marijuana is legal</i>” can be represented with <span class="monospace">declares(legalized marijuana)</span>. Relations may be negated, e.g. the claim “<i>marijuana is not legal</i>” can be represented as <span class="monospace">¬declares(legalized marijuana)</span>. The <span class="monospace">promotes</span> and <span class="monospace">suppresses</span> relations are used to represent claims that express causal or implicative relations between concepts. The <span class="monospace">promotes</span> relation is subtyped with <span class="monospace">causes</span> and <span class="monospace">implies</span>, whereas the <span class="monospace">suppresses</span> relation is subtyped with <span class="monospace">contradicts</span> and <span class="monospace">does_not_cause</span>. The claim “<i>smoking marijuana hurts your lungs</i>” can then be represented as <span class="monospace">promotes(marijuana consumption, lung damage)</span>. The <span class="monospace">comparison</span> relation is used to formalize a comparison of two domain concepts according to a third concept as the criterion. For example, the claim “<i>alcohol is worse for your health than marijuana</i>” can be structured as: <span class="monospace">comparison(alcohol, marijuana, negative_health_effect)</span>. The <span class="monospace">declares</span> relation indicates an acknowledgement of existence of a domain concept. For example, the claim “<i>marijuana consumption is out there</i>” acknowledges the existence of the domain concept <i>marijuana consumption</i>.</p>
+  <p>Conceptually, claim structures are triplets consisting of an <i>n</i>-ary semantic relation and <i>n</i> domain concepts. For practical purposes, however, we decompose a claim structure representing an <i>n</i>-ary relation into a set of <i>n</i> + 1 triplets. The motivation for this is twofold. Firstly, this makes structured prediction with variable arity easier. Secondly, it makes the representation compatible with the well-established machine readable frameworks, such as the Resource Description Framework (RDF) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>30</a></span>], which could then be potentially used for inference over claim structures.</p>
+  <p>Each triplet is comprised of <span class="monospace">claim id,</span> <span class="monospace">relation, domain concept</span>, where the <span class="monospace">claim id</span> uniquely identifies the claim. For <span class="monospace">promotes</span> and <span class="monospace">suppresses</span> relations, we introduce an auxiliary relation <span class="monospace">has_antecedent</span> relation to denote the antecedent of the relation. The comparison relation is decomposed into a set of three triplets: <span class="monospace">comparison_greater</span>, <span class="monospace">comparison_less</span>, and <span class="monospace">comparison_criterion</span>.</p>
+  <p>Finally, we define the task of claim structuring as finding a function <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      g
+     </mi><mo>
+      :
+     </mo><mrow>
+      <mi mathvariant="bold">
+       s
+      </mi>
+      <mi mathvariant="bold">
+       e
+      </mi>
+      <mi mathvariant="bold">
+       g
+      </mi>
+     </mrow><mo stretchy="false">
+      →
+     </mo><mrow>
+      <mrow>
+       <mi mathvariant="script">
+        C
+       </mi>
+      </mrow>
+     </mrow>
+    </math></span>, where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mi mathvariant="bold">
+       s
+      </mi>
+      <mi mathvariant="bold">
+       e
+      </mi>
+      <mi mathvariant="bold">
+       g
+      </mi>
+     </mrow>
+    </math></span> represents claim segments and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mrow>
+       <mi mathvariant="script">
+        C
+       </mi>
+      </mrow>
+     </mrow>
+    </math></span> are the corresponding target structures, each consisting of a set of <i>n</i> + 1 triplets.</p>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i8" class="section-heading-2">4. Dataset annotation</h2>
+ <p>To train and evaluate structured prediction models for the ACP task, we introduce a novel dataset manually annotated with claim segments and claim structures. As a starting point, we adopt the dataset of Hasan and Ng [<span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>31</a></span>], which contains user comments from two-sided online debates on a number of topics. For our work we chose the “Marijuana Legalization” and “Gay Rights” topics, from which we sampled 100 comments per topic (50 pro and 50 con), for a total of 200 comments. The 200 comments comprise of 20921 tokens (104.61 per comment) and 1173 sentences (5.87 per comment).</p>
+ <p>Annotation was carried out by three trained annotators, near-native speakers of English. The process was split into two phases: claim segmentation and claim structuring. In the first phase, annotators were asked to first segment out claims from user comments. For the second phase, claim structuring, we first compiled a list of domain concepts based on the previously annotated claim segments. This list was then used by the annotators to produce claim structures from claim segments. Due to resource constraints, the second phase was carried out only for the “Marijuana Legalization” topic. We next describe the two phases in more detail.</p>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">4.1. Claim segmentation</h3>
+  <p>Annotating claim segments amounts to performing two tasks: (1) separating argumentative content from non-argumentative content and (2) combining overlapping and discontinuous text fragments into claims. From a linguistic point of view, this annotation is difficult and subjective, as there are many ways a comment can be segmented into claims. The ambiguity can be reduced by doing these two tasks jointly.</p>
+  <p>Unlike most previous token-based approaches to claim segmentation [<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>15</a></span>], we allow for both overlapping and discontinuous segments. For example, the claim “<i>marijuana is good for the economy and harmful for health</i>” is segmented to <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       s
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub><mo>
+      =
+     </mo>
+    </math></span> “<i>marijuana is good for the economy</i>” and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0016.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       s
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub><mo>
+      =
+     </mo>
+    </math></span>“<i>marijuana is harmful for health</i>”, where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0017.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       s
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0018.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       s
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub>
+    </math></span> overlap in tokens “<i>marijuana is</i>” and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0019.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       s
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub>
+    </math></span> is discontinuous. This design choice is motivated by increased coverage, as a fair number (19.1% in our dataset) of claims are overlapping or discontinuous.</p>
+  <p>The 200 users' comments yielded 1817 claim segments (an average of 9.1 claims per comment), of which 920 for the “Marijuana Legalization” and 897 for the “Gay Rights” topic. In total, 89.74% of text is covered by argumentative segments, while 10.26% was annotated as non-argumentative.</p>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">4.2. Claim structuring</h3>
+  <p>In the second annotation phase, the annotators were asked to map each claim segment into a claim structure, where the structure is defined as a set of triplets (cf.&nbsp;Section&nbsp;<a href="#S003-S2003">3.3</a>). Since claim structures have to refer to domain concepts, we first proposed a list of these concepts based on the claim segmentation annotation. The three annotators were provided this list, but they were also instructed to propose additional domain concepts if they felt these concepts will result in claim structures that more truthfully capture the semantics of the claim. Figure&nbsp;<a href="#F0001">1</a> shows a part of the taxonomy of domain concepts rooted in the <span class="monospace">drug</span> concept. We defined a total of 75 concepts, such as&nbsp;<span class="monospace">marijuana addicted consumer</span>, <span class="monospace">legalized marijuana</span>, <span class="monospace">legalized</span> <span class="monospace">alcohol</span>, and <span class="monospace">reduced mental capability</span>.</p>
+  <div class="figure figureViewer" id="F0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Structured prediction models for argumentative claim parsing from text</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Boltu%C5%BEi%C4%87%2C+Filip"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Boltu%C5%BEi%C4%87%2C+Filip"><span class="NLM_given-names">Filip</span> Boltužić</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=%C5%A0najder%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/%C5%A0najder%2C+Jan"><span class="NLM_given-names">Jan</span> Šnajder</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/00051144.2020.1761101">https://doi.org/10.1080/00051144.2020.1761101</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>12 May 2020
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1. </span> “Marijuana Legalization” domain concept hierarchy.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/medium/taut_a_1761101_f0001_c.jpg" loading="lazy" height="500" width="486"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0001">
+   <p class="captionText"><span class="captionLabel">Figure 1. </span> “Marijuana Legalization” domain concept hierarchy.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0001">
+   <div class="figureFootNote-F0001"></div>
+  </div>
+  <p></p>
+  <p>Having defined a list of domain concepts, we proceeded with annotating claim structures for the “Marijuana Legalization” topic. The three annotators, each working independently, produced claim structures for 920 claims. Some of the obtained structures are shown in Table&nbsp;<button class="ref showTableEventRef" data-id="T0001">1</button>. The three annotators failed to produce a claim structure for 56, 53, and 60 claims, respectively, which makes about 6% of the claims. There are a number of reasons why a claim cannot be adequately represented as a claim structure (defined in the way we defined it). For one, the claim may be lacking appropriate domain concepts, such as in the claim “<i>tobacco odours dissipate quickly</i>”, where <i>tobacco odour</i> was not included in the domain concept list. The rest of failures pertains to claims deemed too abstract in meaning, an example being “<i>nothing can bring world peace</i>”. For 243 out of 920 claims, the same claim structure was produced by all three annotators, while for 325 claims two out of three annotators agreed. Upon manually inspecting the structures, we observe that, although some solutions were different across annotators, they all seemed equally plausible.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Structured prediction models for argumentative claim parsing from text</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Boltu%C5%BEi%C4%87%2C+Filip"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Boltu%C5%BEi%C4%87%2C+Filip"><span class="NLM_given-names">Filip</span> Boltužić</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=%C5%A0najder%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/%C5%A0najder%2C+Jan"><span class="NLM_given-names">Jan</span> Šnajder</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/00051144.2020.1761101">https://doi.org/10.1080/00051144.2020.1761101</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>12 May 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 1. Claim structure annotation examples: the original and structured claims.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F00051144.2020.1761101&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i13" class="section-heading-2">5. Models</h2>
+ <div id="S005-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">5.1. Claim segmentation</h3>
+  <p>We propose two ways of framing the claim segmentation problem (as defined in Section&nbsp;<a href="#S003-S2002">3.2</a>). In the first, we frame the problem as multi-label classification and train a binary relevance (<span class="monospace">BR</span>) classifier that assigns a segment identifier to each token. The second approach is an alternative to inefficient <span class="monospace">BR</span> labelling, where we ignore the overlapping and discontinuous segments and apply the well-established <span class="monospace">BIO</span> tagging setup. <span class="monospace">BIO</span> labels indicate whether the word is outside a segment (<span class="monospace">O</span>), starts a segment (<span class="monospace">B</span>), or continues a segment (<span class="monospace">I</span>). Table&nbsp;<button class="ref showTableEventRef" data-id="T0002">2</button> shows a comparison of the <span class="monospace">BR</span> and <span class="monospace">BIO</span> setups.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Structured prediction models for argumentative claim parsing from text</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Boltu%C5%BEi%C4%87%2C+Filip"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Boltu%C5%BEi%C4%87%2C+Filip"><span class="NLM_given-names">Filip</span> Boltužić</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=%C5%A0najder%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/%C5%A0najder%2C+Jan"><span class="NLM_given-names">Jan</span> Šnajder</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/00051144.2020.1761101">https://doi.org/10.1080/00051144.2020.1761101</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>12 May 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 2. Binary relevance multi-label (BR) and <span class="monospace">BIO</span> labelling of comment with two segments: “Nothing can bring peace to this world”, “Its a great idea”, and one non-argumentative token.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F00051144.2020.1761101&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>We propose three claim segmentation models. The first model, dubbed the naïve heuristics and used as the baseline, adopts a sentence splitting approach, commonly seen in argumentation mining [<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>13</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>14</a></span>]. The second model is a support vector machine (SVM) with tf-idf features as input. The third model combines deep learning with structured prediction. Below we describe the two models in more detail.</p>
+  <div id="S005-S2001-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i16">5.1.1. Support vector machine</h4>
+   <p>For the second approach, we use a weighted support vector machine (SVM) model [<span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>32</a></span>]. To represent tokens as features, we use tf-idf and distributed word representations (fastText<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>1</sup></a></span> and word2vec<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0002" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>2</sup></a></span> pretrained vectors). Finally, to train the model, we use <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0020.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mn>
+       5
+      </mn><mo>
+       ×
+      </mo><mn>
+       3
+      </mn>
+     </math></span> nested-cross validation optimizing hyperparameters <i>C</i> and <i>γ</i> using grid search implemented in the libSVM framework [<span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>33</a></span>].</p>
+  </div>
+  <div id="S005-S2001-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i17">5.1.2. BiLSTM-CRF</h4>
+   <p>The third model combines a deep learning recurrent model (BiLSTM) and conditional random fields (CRF). The reason we opt for this model is two fold. First, BiLSTMs have previously been successfully used in argumentation mining [<span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>34</a></span>] and text classification in general [<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>35</a></span>]. Second, the combination of a BiLSTM with a CRF is considered extremely effective for sequence tagging problems [<span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>36</a></span>]. Our model works in two stages. In the first stage, a BiLSTM is used to encode a sequence of tokens of the comment. The BiLSTM produces pairs of hidden states and outputs. The outputs of the BiLSTM are then fed into a feed-forward linear layer, which maps the BiLSTM outputs to the label probability space. In the second stage, the output of the BiLSTM is used as features for the CRF. The CRF combines the BiLSTM outputs with a state transition table of possible tags to efficiently use past and future tags to predict the current tag. The Viterbi algorithm [<span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>37</a></span>] is used to efficiently compute optimal tag sequences.</p>
+   <p>The trainable model parameters include the BiLSTM parameters, the linear layer weights, and the state transition matrix of the CRF. We empirically fix the hyperparameters of the model. We use 200 feed forward units, set the word embedding size to 300, and use a single layer bi-directional LSTM to encode sequences. To see if training time can be reduced, we consider using pretrained word embeddings and training embeddings from scratch. Furthermore, we experiment by enabling and disabling fine-tuning of input embeddings when using pretrained word embeddings. We use negative log-likelihood as the loss function. We train and evaluate the model using 5-fold cross-validation.</p>
+  </div>
+ </div>
+ <div id="S005-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">5.2. Claim structuring</h3>
+  <p>For claim structuring, we consider two basic approaches: (1) predicting components of the structure and then putting them together to form a claim structure (binary relevance, <span class="monospace">BR</span>) and (2) predicting the entire claim structure at once (label powerset, <span class="monospace">LP</span>). Using components corresponds to a more realistic scenario, as it more faithfully reflects the process of manually annotating claims. Following the <span class="monospace">BR</span> approach, a claim structure can be broken down into four components: approach, a claim structure can be broken down into four components:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline"><i>type</i> (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0021.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mrow>
+        <mi mathvariant="italic">
+         T
+        </mi>
+        <mi mathvariant="italic">
+         Y
+        </mi>
+        <mi mathvariant="italic">
+         P
+        </mi>
+       </mrow><mo>
+        ∈
+       </mo><mo fence="false" stretchy="false">
+        {
+       </mo><mrow>
+        <mi mathvariant="italic">
+         f
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         c
+        </mi>
+        <mi mathvariant="italic">
+         t
+        </mi>
+       </mrow><mo>
+        ,
+       </mo><mrow>
+        <mi mathvariant="italic">
+         g
+        </mi>
+        <mi mathvariant="italic">
+         o
+        </mi>
+        <mi mathvariant="italic">
+         o
+        </mi>
+        <mi mathvariant="italic">
+         d
+        </mi>
+        <mi mathvariant="italic">
+         _
+        </mi>
+        <mi mathvariant="italic">
+         v
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         l
+        </mi>
+        <mi mathvariant="italic">
+         u
+        </mi>
+        <mi mathvariant="italic">
+         e
+        </mi>
+       </mrow><mo>
+        ,
+       </mo><mrow>
+        <mi mathvariant="italic">
+         b
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         d
+        </mi>
+        <mi mathvariant="italic">
+         _
+        </mi>
+        <mi mathvariant="italic">
+         v
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         l
+        </mi>
+        <mi mathvariant="italic">
+         u
+        </mi>
+        <mi mathvariant="italic">
+         e
+        </mi>
+       </mrow><mo>
+        ,
+       </mo><mrow>
+        <mi mathvariant="italic">
+         p
+        </mi>
+        <mi mathvariant="italic">
+         o
+        </mi>
+        <mi mathvariant="italic">
+         l
+        </mi>
+        <mi mathvariant="italic">
+         i
+        </mi>
+        <mi mathvariant="italic">
+         c
+        </mi>
+        <mi mathvariant="italic">
+         y
+        </mi>
+       </mrow><mo fence="false" stretchy="false">
+        }
+       </mo>
+      </math></span>)</p></li>
+   <li><p class="inline"><i>arity</i> (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0022.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mrow>
+        <mi mathvariant="italic">
+         A
+        </mi>
+        <mi mathvariant="italic">
+         R
+        </mi>
+       </mrow><mo>
+        ∈
+       </mo><mo fence="false" stretchy="false">
+        {
+       </mo><mrow>
+        <mi mathvariant="italic">
+         u
+        </mi>
+        <mi mathvariant="italic">
+         n
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         r
+        </mi>
+        <mi mathvariant="italic">
+         y
+        </mi>
+       </mrow><mo>
+        ,
+       </mo><mrow>
+        <mi mathvariant="italic">
+         b
+        </mi>
+        <mi mathvariant="italic">
+         i
+        </mi>
+        <mi mathvariant="italic">
+         n
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         r
+        </mi>
+        <mi mathvariant="italic">
+         y
+        </mi>
+       </mrow><mo>
+        ,
+       </mo><mrow>
+        <mi mathvariant="italic">
+         t
+        </mi>
+        <mi mathvariant="italic">
+         e
+        </mi>
+        <mi mathvariant="italic">
+         r
+        </mi>
+        <mi mathvariant="italic">
+         n
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         r
+        </mi>
+        <mi mathvariant="italic">
+         y
+        </mi>
+       </mrow><mo fence="false" stretchy="false">
+        }
+       </mo>
+      </math></span>)</p></li>
+   <li><p class="inline"><i>relations</i> (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0023.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mrow>
+        <mi mathvariant="italic">
+         R
+        </mi>
+        <mi mathvariant="italic">
+         E
+        </mi>
+       </mrow><mo>
+        ∈
+       </mo><mo fence="false" stretchy="false">
+        {
+       </mo><mrow>
+        <mi mathvariant="italic">
+         h
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         s
+        </mi>
+        <mi mathvariant="italic">
+         _
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         n
+        </mi>
+        <mi mathvariant="italic">
+         t
+        </mi>
+        <mi mathvariant="italic">
+         e
+        </mi>
+        <mi mathvariant="italic">
+         c
+        </mi>
+        <mi mathvariant="italic">
+         e
+        </mi>
+        <mi mathvariant="italic">
+         d
+        </mi>
+        <mi mathvariant="italic">
+         e
+        </mi>
+        <mi mathvariant="italic">
+         n
+        </mi>
+        <mi mathvariant="italic">
+         t
+        </mi>
+       </mrow><mo>
+        ,
+       </mo><mrow>
+        <mi mathvariant="italic">
+         h
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         s
+        </mi>
+        <mi mathvariant="italic">
+         _
+        </mi>
+        <mi mathvariant="italic">
+         d
+        </mi>
+        <mi mathvariant="italic">
+         e
+        </mi>
+        <mi mathvariant="italic">
+         c
+        </mi>
+        <mi mathvariant="italic">
+         l
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         r
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         t
+        </mi>
+        <mi mathvariant="italic">
+         i
+        </mi>
+        <mi mathvariant="italic">
+         o
+        </mi>
+        <mi mathvariant="italic">
+         n
+        </mi>
+       </mrow><mo>
+        ,
+       </mo><mrow>
+        <mi mathvariant="italic">
+         i
+        </mi>
+        <mi mathvariant="italic">
+         m
+        </mi>
+        <mi mathvariant="italic">
+         p
+        </mi>
+        <mi mathvariant="italic">
+         l
+        </mi>
+        <mi mathvariant="italic">
+         i
+        </mi>
+        <mi mathvariant="italic">
+         e
+        </mi>
+        <mi mathvariant="italic">
+         s
+        </mi>
+       </mrow><mo>
+        ,
+       </mo><mo>
+        …
+       </mo><mo fence="false" stretchy="false">
+        }
+       </mo>
+      </math></span>)</p></li>
+   <li><p class="inline"><i>domain concepts</i> (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0024.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mrow>
+        <mi mathvariant="italic">
+         D
+        </mi>
+        <mi mathvariant="italic">
+         C
+        </mi>
+       </mrow><mo>
+        ∈
+       </mo><mo fence="false" stretchy="false">
+        {
+       </mo><mrow>
+        <mi mathvariant="italic">
+         m
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         r
+        </mi>
+        <mi mathvariant="italic">
+         i
+        </mi>
+        <mi mathvariant="italic">
+         j
+        </mi>
+        <mi mathvariant="italic">
+         u
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         n
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+       </mrow><mo>
+        ,
+       </mo><mrow>
+        <mi mathvariant="italic">
+         l
+        </mi>
+        <mi mathvariant="italic">
+         e
+        </mi>
+        <mi mathvariant="italic">
+         g
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         l
+        </mi>
+        <mi mathvariant="italic">
+         i
+        </mi>
+        <mi mathvariant="italic">
+         z
+        </mi>
+        <mi mathvariant="italic">
+         e
+        </mi>
+        <mi mathvariant="italic">
+         d
+        </mi>
+        <mi mathvariant="italic">
+         _
+        </mi>
+        <mi mathvariant="italic">
+         m
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         r
+        </mi>
+        <mi mathvariant="italic">
+         i
+        </mi>
+        <mi mathvariant="italic">
+         j
+        </mi>
+        <mi mathvariant="italic">
+         u
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         n
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+       </mrow><mo>
+        ,
+       </mo><mrow>
+        <mi mathvariant="italic">
+         m
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         f
+        </mi>
+        <mi mathvariant="italic">
+         i
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         _
+        </mi>
+        <mi mathvariant="italic">
+         b
+        </mi>
+        <mi mathvariant="italic">
+         a
+        </mi>
+        <mi mathvariant="italic">
+         n
+        </mi>
+        <mi mathvariant="italic">
+         k
+        </mi>
+        <mi mathvariant="italic">
+         r
+        </mi>
+        <mi mathvariant="italic">
+         u
+        </mi>
+        <mi mathvariant="italic">
+         p
+        </mi>
+        <mi mathvariant="italic">
+         t
+        </mi>
+       </mrow><mo>
+        ,
+       </mo><mo>
+        …
+       </mo><mo fence="false" stretchy="false">
+        }
+       </mo>
+      </math></span>)</p></li>
+  </ul>
+  <p></p>
+  <p>To construct a claim structure, we use a exactly one (out of four options) <i>type</i>, exactly one (out of three options) <i>arity</i>, one or more (up to three, out of 22 possible) <i>relations</i>, and one or more (one for each relation, out of 82 possible) <i>domain concepts</i>. We could have had negation as an extra component of the claim structure, but since only relations may be negated, we construct the relation set <i>RE</i> as a union of relations and their respective negations: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_um0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_um0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mi>
+         R
+        </mi>
+        <mi>
+         E
+        </mi>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mo fence="false" stretchy="false">
+         {
+        </mo>
+        <mrow>
+         <mi mathvariant="italic">
+          h
+         </mi>
+         <mi mathvariant="italic">
+          a
+         </mi>
+         <mi mathvariant="italic">
+          s
+         </mi>
+         <mi mathvariant="italic">
+          _
+         </mi>
+         <mi mathvariant="italic">
+          a
+         </mi>
+         <mi mathvariant="italic">
+          n
+         </mi>
+         <mi mathvariant="italic">
+          t
+         </mi>
+         <mi mathvariant="italic">
+          e
+         </mi>
+         <mi mathvariant="italic">
+          c
+         </mi>
+         <mi mathvariant="italic">
+          e
+         </mi>
+         <mi mathvariant="italic">
+          d
+         </mi>
+         <mi mathvariant="italic">
+          e
+         </mi>
+         <mi mathvariant="italic">
+          n
+         </mi>
+         <mi mathvariant="italic">
+          t
+         </mi>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+        <mrow>
+         <mi mathvariant="italic">
+          n
+         </mi>
+         <mi mathvariant="italic">
+          e
+         </mi>
+         <mi mathvariant="italic">
+          g
+         </mi>
+         <mi mathvariant="italic">
+          a
+         </mi>
+         <mi mathvariant="italic">
+          t
+         </mi>
+         <mi mathvariant="italic">
+          e
+         </mi>
+         <mi mathvariant="italic">
+          d
+         </mi>
+         <mi mathvariant="italic">
+          _
+         </mi>
+         <mi mathvariant="italic">
+          h
+         </mi>
+         <mi mathvariant="italic">
+          a
+         </mi>
+         <mi mathvariant="italic">
+          s
+         </mi>
+         <mi mathvariant="italic">
+          _
+         </mi>
+         <mi mathvariant="italic">
+          a
+         </mi>
+         <mi mathvariant="italic">
+          n
+         </mi>
+         <mi mathvariant="italic">
+          t
+         </mi>
+         <mi mathvariant="italic">
+          e
+         </mi>
+         <mi mathvariant="italic">
+          c
+         </mi>
+         <mi mathvariant="italic">
+          e
+         </mi>
+         <mi mathvariant="italic">
+          d
+         </mi>
+         <mi mathvariant="italic">
+          e
+         </mi>
+         <mi mathvariant="italic">
+          n
+         </mi>
+         <mi mathvariant="italic">
+          t
+         </mi>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+       </mtd>
+      </mtr>
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <mspace width="1em"></mspace>
+        <mrow>
+         <mi mathvariant="italic">
+          i
+         </mi>
+         <mi mathvariant="italic">
+          m
+         </mi>
+         <mi mathvariant="italic">
+          p
+         </mi>
+         <mi mathvariant="italic">
+          l
+         </mi>
+         <mi mathvariant="italic">
+          i
+         </mi>
+         <mi mathvariant="italic">
+          e
+         </mi>
+         <mi mathvariant="italic">
+          s
+         </mi>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+        <mrow>
+         <mi mathvariant="italic">
+          n
+         </mi>
+         <mi mathvariant="italic">
+          e
+         </mi>
+         <mi mathvariant="italic">
+          g
+         </mi>
+         <mi mathvariant="italic">
+          a
+         </mi>
+         <mi mathvariant="italic">
+          t
+         </mi>
+         <mi mathvariant="italic">
+          e
+         </mi>
+         <mi mathvariant="italic">
+          d
+         </mi>
+         <mi mathvariant="italic">
+          _
+         </mi>
+         <mi mathvariant="italic">
+          i
+         </mi>
+         <mi mathvariant="italic">
+          m
+         </mi>
+         <mi mathvariant="italic">
+          p
+         </mi>
+         <mi mathvariant="italic">
+          l
+         </mi>
+         <mi mathvariant="italic">
+          i
+         </mi>
+         <mi mathvariant="italic">
+          e
+         </mi>
+         <mi mathvariant="italic">
+          s
+         </mi>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+        <mo>
+         …
+        </mo>
+        <mo fence="false" stretchy="false">
+         }
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math></span> Taking into consideration all possible combinations of components from annotator A1, 107 binary labels (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0025.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mn>
+      82
+     </mn><mo>
+      ×
+     </mo><mrow>
+      <mi mathvariant="italic">
+       D
+      </mi>
+      <mi mathvariant="italic">
+       C
+      </mi>
+     </mrow><mo>
+      +
+     </mo><mn>
+      17
+     </mn><mo>
+      ×
+     </mo><mrow>
+      <mi mathvariant="italic">
+       R
+      </mi>
+      <mi mathvariant="italic">
+       E
+      </mi>
+     </mrow><mo>
+      +
+     </mo><mn>
+      4
+     </mn><mo>
+      ×
+     </mo><mrow>
+      <mi mathvariant="italic">
+       A
+      </mi>
+      <mi mathvariant="italic">
+       R
+      </mi>
+     </mrow><mo>
+      +
+     </mo><mn>
+      7
+     </mn><mo>
+      ×
+     </mo><mrow>
+      <mi mathvariant="italic">
+       T
+      </mi>
+      <mi mathvariant="italic">
+       Y
+      </mi>
+      <mi mathvariant="italic">
+       P
+      </mi>
+     </mrow>
+    </math></span>) can be assigned to a claim, from which a claim structure can be constructed. This entails an exponential (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0026.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msup>
+      <mn>
+       2
+      </mn>
+      <mrow>
+       <mn>
+        107
+       </mn>
+      </mrow>
+     </msup>
+    </math></span>) number of possible structures, a large number of which is invalid. An invalid structure would involve both the <span class="monospace">has_declaration</span> and <span class="monospace">has_antecedent</span> relation which is not allowed, since <span class="monospace">has_declaration</span> can only be assigned to a <span class="monospace">unary</span> claim, whereas <span class="monospace">has_antecedent</span> can only be assigned to <span class="monospace">binary</span> claim.</p>
+  <p>We consider three claim structuring models: a set of independent SVM classifiers (which we use as a baseline), chain classification, and ensemble chain classifiers.</p>
+  <div id="S005-S2002-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i20">5.2.1. Independent SVMs</h4>
+   <p>As a baseline approach, we use a set of independent SVMs (IND) with distributed word representations as features. To train each independent model, we use <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0027.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mn>
+       5
+      </mn><mo>
+       ×
+      </mo><mn>
+       3
+      </mn>
+     </math></span> nested-cross-validation and optimize hyperparameters <i>C</i> and <i>γ</i> using grid search. We experiment with both the <span class="monospace">BR</span> and <span class="monospace">LP</span> approach.</p>
+  </div>
+  <div id="S005-S2002-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i21">5.2.2. Chain classification</h4>
+   <p>The chain classification (CC) model leverages dependencies among structure components. To first verify the label dependency assumption, we build a chain classifier which uses gold labels as input in each prediction. This yields an overall performance of 0.23 averaged F1-score. The domain concepts proved the hardest to predict, and removing them yields an averaged F1-score of 0.71. We deem this performance to be promising.</p>
+   <p>We frame all component classifications as either multiclass or multi-label classification. We prefer to use multiclass classification where possible (for type and arity prediction), since generalizing multiclass to multi-label classification usually degrades performance due to loss of information across classes. SVMs models are then chained so that the prediction of one SVM is added as input to the following SVM model, until all labels are predicted. We randomize the ordering of labels which are predicted. Additionally, to alleviate the influence of randomization, we ensemble chain classifiers (ECC) using a majority vote. To train the model, we use <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0028.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mn>
+       5
+      </mn><mo>
+       ×
+      </mo><mn>
+       3
+      </mn>
+     </math></span> nested-cross-validation and optimize hyperparameters <i>C</i> and <i>γ</i> using grid search. It is sensible to use the chain classification model only in the <span class="monospace">BR</span> setup.</p>
+  </div>
+ </div>
+ <div id="S005-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i22">5.3. End-to-End argumentative claim parsing</h3>
+  <p>The last model we consider is an end-to-end model that jointly performs claim segmentation and clustering. We draw inspiration from [<span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>38</a></span>], where they use consecutive LSTM cells to predict multiple outputs. We adopt a similar approach, where we use two sets of BiLSTM layers: the first layer (<span class="monospace">BiLSTM-seg</span>) to predict segments and the second layer (<span class="monospace">BiLSTM-struc</span>) to infer claim structures of the predicted segments.</p>
+  <p>The input of the <span class="monospace">BiLSTM-seg</span> layer is a sequence of tokens and their respective part-of-speech (POS) tags [<span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>39</a></span>] paired with <span class="monospace">BIO</span> tags. The <span class="monospace">BiLSTM-seg</span> layer produces <span class="monospace">BIO</span> tags, which are then converted to textual claims. Next, the <span class="monospace">BiLSTM-struc</span> part predicts the claim structures corresponding to these claims. Both the <span class="monospace">BiLSTM-seg</span> and <span class="monospace">BiLSTM-struc</span> employ one BiLSTM and one hidden layer. Softmax is applied to the multiclass type and arity classifiers, whereas the sigmoid function is applied to the multi-label to the domain individual and relation classifiers in order to obtain label probabilities. The output of the <span class="monospace">BiLSTM-struc</span> are class probabilities for all four claim structure components. The model architecture is illustrated in Figure&nbsp;<a href="#F0002">2</a>. We use three sets of embeddings: word, POS embeddings, and <span class="monospace">BIO</span> tag embeddings. We optimize using the stochastic gradient descent algorithm with a learning rate of 0.01 and use L2 penalty for regularization. Negative log-likelihood loss is used to calculate the loss for <span class="monospace">BIO</span> tags, type, and arity. Binary cross-entropy is used on a per-label basis to calculate loss for relations and domain concepts, since they are predicted in a multi-label fashion. The loss of the joint model is simply the sum of all individual losses. We experiment with and without pretrained word embeddings. In the <span class="monospace">LP</span> setup, we encode each structure as a separate class and then calculate negative log-likelihood.</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Structured prediction models for argumentative claim parsing from text</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Boltu%C5%BEi%C4%87%2C+Filip"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Boltu%C5%BEi%C4%87%2C+Filip"><span class="NLM_given-names">Filip</span> Boltužić</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=%C5%A0najder%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/%C5%A0najder%2C+Jan"><span class="NLM_given-names">Jan</span> Šnajder</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/00051144.2020.1761101">https://doi.org/10.1080/00051144.2020.1761101</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>12 May 2020
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Joint BiLSTM model for both claim segmentation and claim structuring.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/medium/taut_a_1761101_f0002_c.jpg" loading="lazy" height="277" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Joint BiLSTM model for both claim segmentation and claim structuring.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="S006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i24" class="section-heading-2">6. Experiments</h2>
+ <div id="S006-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i25">6.1. Claim segmentation</h3>
+  <p>For the evaluation, we adopt two sets of metrics: exact and lenient. The first are standard information retrieval metrics of precision (P), recall (R), and F1-score (F1) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>40</a></span>], in which the extracted segment has to match perfectly the annotated segment to be considered a match. The second set of metrics is designed to allow for imperfect matches between extracted and gold segments: lenient precision (l-P), lenient recall (l-R), and lenient F1-score (l-F1). We allow the difference from extracted to gold segments to be up to two tokens in the lenient case. The lenient evaluation metrics are motivated by the assumption that having even imperfectly segmented claims may be sufficient for some ACP applications.</p>
+  <p>First, we wish to compare the three proposed approaches: the naïve heuristics, the SVM, and the BiLSTM-CRF. For both the SVM and BiLSTM-CRF approach, we use the <span class="monospace">BR</span> encoding. In the CRF, we do not share the tag transition table across claim segments and train embeddings from scratch. Results are shown in Table&nbsp;<button class="ref showTableEventRef" data-id="T0003">3</button>, with the best results in boldface. The naïve heuristics considerably outperforms both the BiLSTM-CRF and the SVM models that use <span class="monospace">BR</span> encoding. The heuristics achieves a high precision and low recall, as it favours longer claims segments (that map to sentences). Longer sentences contain more claims, on which the heuristics performed poorly. By inspecting the SVM and BiLSTM-CRF model outputs, we observe mostly majority class predictions, which means those models prefer short comments. The results clearly suggest that models using the <span class="monospace">BR</span> encoding struggle to predict claim segments.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Structured prediction models for argumentative claim parsing from text</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Boltu%C5%BEi%C4%87%2C+Filip"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Boltu%C5%BEi%C4%87%2C+Filip"><span class="NLM_given-names">Filip</span> Boltužić</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=%C5%A0najder%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/%C5%A0najder%2C+Jan"><span class="NLM_given-names">Jan</span> Šnajder</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/00051144.2020.1761101">https://doi.org/10.1080/00051144.2020.1761101</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>12 May 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 3. Claim segmentation precision (P), recall (R), macro-averaged F1-score (F1), and their lenient counterparts (l-P, l-R, and l-F1) for the <span class="monospace">BR</span> and <span class="monospace">BIO</span> setups. The best performing models are in italics.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="false" id="T0003-table-wrapper">
+    <a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The lower half of the table shows the results of the models in <span class="monospace">BIO</span> setup. Since <span class="monospace">BIO</span> tags cannot be applied to discontinuous and overlapping segments, we remove those claims from the training set. This simplification lowers the upper bound on recall and macro-averaged F1-scores to 0.80 and 0.90, respectively (the upper bound on precision remains 1.0). The results are now more comparable to the naïve heuristics baseline. The BiLSTM-CRF showed the best performance, narrowly outperforming the naïve heuristics by 0.05 and 0.10 F1-score percentage points.</p>
+  <p>Looking at the results in general, we conclude that predicting the exact boundary of a claim segment is a difficult task, with the best-performing model achieving an F1-score of 0.37. However, the segments produced were often very close to the ones annotated: the lenient macro-averaged F1-score for the best-performing model is 0.79. Inspecting the predicted labels of all models, we observe that none of the models correctly label non-argumentative segments (<span class="monospace">O</span> labels). The most likely reason lies in the fact that non-argumentative content is greatly underrepresented in this dataset; a possible way to mitigate this would be to use weighted loss or oversampling. Overall, the results of claim segmentation are promising, especially when considering the lenient metrics.</p>
+ </div>
+ <div id="S006-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i27">6.2. Claim structuring</h3>
+  <p>Evaluation of claim structuring models is carried out in two sets of experiments: in the first, we evaluate models that predict the claim structure on a per-component basis (<span class="monospace">BR</span>), while in the second, we compare the per-component approach (<span class="monospace">BR</span>) to label powerset (<span class="monospace">LP</span>) approach (cf. Section&nbsp;<a href="#S005-S2002">5.2</a>). Our focus here is on the <span class="monospace">BR</span> approach, which we deem more realistic, especially in the scenario where the number of domain concepts increases in time.</p>
+  <p>Table&nbsp;<button class="ref showTableEventRef" data-id="T0004">4</button> shows macro-averaged F1-scores for the random classifier (RAND), independent SVM classifier (IND), chain classifier (CC), and ensemble chain classifier (ECC) approaches. Models are trained to predict structure components, with their predictions then assembled together to constitute a claim structure, which is compared against the annotated claim structure. The baseline is set using a randomized class picker for all individual components.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Structured prediction models for argumentative claim parsing from text</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Boltu%C5%BEi%C4%87%2C+Filip"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Boltu%C5%BEi%C4%87%2C+Filip"><span class="NLM_given-names">Filip</span> Boltužić</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=%C5%A0najder%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/%C5%A0najder%2C+Jan"><span class="NLM_given-names">Jan</span> Šnajder</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/00051144.2020.1761101">https://doi.org/10.1080/00051144.2020.1761101</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>12 May 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 4. Macro-averaged F1-score comparison between the independent SVM (IND), randomized classifier (RAND), chain classification (CC), ensemble chain classification (ECC), and joint model (BiLSTM-J) in the task of claim structuring.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0004&amp;doi=10.1080%2F00051144.2020.1761101&amp;downloadType=CSV"> Download CSV</a><a data-id="T0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>Based on the results obtained, we conclude that recognizing the entire claim structure is an extremely challenging task, as the best-performing model (ECC) manages to achieve only 0.03 majority F1-score. This is mainly due to the low performance of recognizing domain concepts in a claim. This is expectedly difficult, as there are 75 sparsely distributed domain concepts, and only 847 claims. Inspecting the component outputs of the independent classifier, we conclude that it mostly manages to correctly classify up to two components (mostly <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0031.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0031.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mi mathvariant="italic">
+       T
+      </mi>
+      <mi mathvariant="italic">
+       Y
+      </mi>
+      <mi mathvariant="italic">
+       P
+      </mi>
+     </mrow>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0032.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0032.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mi mathvariant="italic">
+       A
+      </mi>
+      <mi mathvariant="italic">
+       R
+      </mi>
+     </mrow>
+    </math></span> labels), but never manages to identify three or all four components correctly, hence it never outputs the correct claim structure. Unlike for the IND setup, the CC and ECC models managed to produce fully accurate structures, and correctly predict three out of four component parts for roughly 25% of cases. Even though the CC and ECC models exhibit performance drops in recognizing <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0033.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0033.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mi mathvariant="italic">
+       T
+      </mi>
+      <mi mathvariant="italic">
+       Y
+      </mi>
+      <mi mathvariant="italic">
+       P
+      </mi>
+     </mrow>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0034.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0034.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mi mathvariant="italic">
+       A
+      </mi>
+      <mi mathvariant="italic">
+       R
+      </mi>
+     </mrow>
+    </math></span> labels compared to individual classifiers, overall they seem like the most promising options to structure claims.</p>
+  <p>We next compare the more realistic <span class="monospace">BR</span> setup to the less realistic <span class="monospace">LP</span> setup. For the <span class="monospace">LP</span> setup, we map each claim structure to a label and employ a single multiclass classifier to predict the claim structure from the claim text. To obtain <span class="monospace">LP</span> classes, first we generate all possible combinations of structure components yielding <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0035.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0035.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msup>
+      <mn>
+       2
+      </mn>
+      <mrow>
+       <mn>
+        107
+       </mn>
+      </mrow>
+     </msup>
+    </math></span> possible combinations. Then we restrict the space of possible solutions to only feasible ones resulting in the final <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0036.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2020/taut20.v061.i03/00051144.2020.1761101/20210524/images/taut_a_1761101_ilm0036.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mn>
+      10
+     </mn><mspace width="thinmathspace"></mspace><mn>
+      652
+     </mn><mspace width="thinmathspace"></mspace><mn>
+      784
+     </mn>
+    </math></span> classes, with only 384 classes occurring in the dataset used. The IND-LP model outperforms all <span class="monospace">BR</span>-based models achieving 0.08 macro-averaged F1-score. We conclude that using the <span class="monospace">LP</span> setup gives better results than the <span class="monospace">BR</span> setup. However, due to the size of the dataset and the number of potential classes, we expect that model performance in the <span class="monospace">LP</span> setup would degenerate for larger and more diverse datasets.</p>
+ </div>
+ <div id="S006-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i29">6.3. Argumentative claim parsing</h3>
+  <p>Finally, we evaluate the joint approach to claim structuring and claim segmentation on the “Marijuana Legalization” topic. The joint model might not produce the same number of claim structures per comment, so we evaluate at comment level and average across all comments.</p>
+  <p>As shown in Table&nbsp;<button class="ref showTableEventRef" data-id="T0004">4</button>, the BiLSTM-J model performs worse than the IND, CC, and ECC models, but better than the random baseline in three out of four categories. This indicates that jointly extracting claims and structuring claims is an extremely difficult task. The joint model fails to successfully extract and structure a single claim. However, as results in Table&nbsp;<button class="ref showTableEventRef" data-id="T0003">3</button> suggest, the BiLSTM-J does relatively well in the claim segmentation task, achieving comparable results to the BiLSTM-CRF model.</p>
+  <p>In an attempt to improve the joint model, we experiment with setting lower learning rates for the shared BiLSTM-seg layer, but to no significant performance boost. We then inspect the biggest contributors to the loss during model training and manually assign weights to prevent a single component prediction from dominating the total loss score. By weighting the loss, we do obtain slightly better performance, but consider this to be a short-term workaround.</p>
+ </div>
+</div>
+<div id="S007" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i30" class="section-heading-2">7. Conclusion</h2>
+ <p>This article introduced <i>argumentative claim parsing</i> (ACP), a novel natural language processing task of automatically extracting semantic structures of claims from argumentative text. The task was broken down into two subtasks: claim segmentation and claim structuring. Claim segmentation was formulated as a supervised sequence classification problem, while claim structuring was framed as multi-label classification. We proposed models to tackle claim segmentation and claim structuring separately, and a joint model to solve them jointly. We also described a new dataset, manually annotated for claim segments and claim structures, which we hope will spur further research on this task.</p>
+ <p>Our experiments reveal that claim segmentation is a difficult, albeit solvable task, yielding 0.37 and 0.79 macro-averaged exact and lenient match F1-score for the best-performing model. Claim structuring proved a much more challenging task, and the best-performing model achieved only 0.03 of majority F1-score. Joint approaches did not yield satisfactory results, especially for the claim structuring problem.</p>
+ <p>While some of our results are promising, future work should focus on experimenting with alternative models. For claim segmentation, the naöve heuristics produced decent results, so one promising direction might be to expand on similar rule-based approaches. To improve on claim structuring, a sensible stating point would be to constrain the search space to valid structures only, e.g. using linear programming. Furthermore, to ensure reproducibility of our findings, the dataset would have to be extended to cover more topics and more comments per topic. Another promising research direction is the automatic induction of domain concepts from text, building on NLP work in concept extraction and taxonomy induction. Except improving on ACP, we wish to explore how ACP can be used to help solve other related argumentation mining tasks, such as stance classification [<span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>41</a></span>] and argument recognition [<span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i32 _i33" href="#"><span class="off-screen">Citation</span>42</a></span>].</p>
+</div>

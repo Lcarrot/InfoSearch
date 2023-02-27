@@ -1,0 +1,816 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">Introduction</h2>
+ <p>Social media has been used extensively for various purposes, such as advertising, business, news, etc. The idea of allowing users to post anything at any time on social media contributed to the existence of inappropriate content on social media. As a result, these platforms become a fertile environment for this type of content. Hate speech is the most common form of destructive content on social media, and it can come in the form of text, photographs, or video. It is defined as an insult directed at a person or group based on characteristics such as color, gender, race, sexual orientation, origin, nationality, religion, or other characteristics (Weber <span class="ref-lnk lazy-ref"><a data-rid="cit0052" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2009</a></span>). Hate speech poses a significant threat to communities, either by instilling hatred in young people against others or by instigating criminal activity or violence against others.</p>
+ <p>Hate speech on the internet is on the rise around the world, with approximately <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0001.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     60
+    </mn><mi mathvariant="normal">
+     %
+    </mi>
+   </math></span> of the global population (<span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0002.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     4.54
+    </mn>
+   </math></span> billion) using social media to communicate (Ltd, <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2020</a></span>). According to studies, approximately 53% of Americans have encountered online harassment and hatred (League <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2019</a></span>). This score is 12 points higher than the findings of a similar survey performed in 2017 (Duggan <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>). According to (Clement <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2019</a></span>), <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0003.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     21
+    </mn><mi mathvariant="normal">
+     %
+    </mi>
+   </math></span> of students frequently encounter hate speech on social media. Detection of hate content on social media is an essential and necessary requirement for social media platforms. Social media providers work hard to get rid of this content for a safer social environment, which motivates us to work on this problem. Automatic detection of hateful content is considered one of the challenging NLP tasks as the content might target/attack individuals or groups based on various characteristics using different hate terms and phrases (Badjatiya et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>). Through this work, we seek to provide an experimental-based solution to automatically detect all hate speech terms using real-world data from social media.</p>
+ <p>Social media users often employ abbreviations and ordinary words (not hateful) to express their hate intent implicitly that known as code words to evade being detected (e.g., using Google to refer to dark-skinned people), which adds extra difficulties in detecting hate speech. Many studies have proposed machine learning models to handle this problem by utilizing a wide range of feature sets and machine learning algorithms for classification (Agarwal and Sureka <span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2015</a></span>; Hartung et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>; Jaki and De Smedt <span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2019</a></span>; Magu, Joshi, and Luo <span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>). These methods often utilize features that require considerable effort and time to be extracted, such as text-based, profile-based, and community-based features. Other studies have worked on linguistic-based features (e.g., word frequency) and deep learning for classification (Gibert et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2018</a></span>), or distributional-based features (e.g., word embedding) and machine learning classifier (Badjatiya et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>; Djuric et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2015</a></span>; Gupta and Waseem <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>; Nobata et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>).</p>
+ <p>Several research studies have attempted to solve the problem of detecting hate speech in general by differentiating hate and non-hate speech (Djuric et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2015</a></span>; Ribeiro et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0041" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>). Others have tackled the issue of recognizing certain types of hate speech, such as anti-religious hate speech (Albadi, Kurdi, and Mishra <span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2018</a></span>; Zhang, Robinson, and Tepper <span class="ref-lnk lazy-ref"><a data-rid="cit0056" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2018</a></span>), jihadist (Ferrara et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>; Gialampoukidis et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>; Smedt, Tom, and Van Ostaeyen <span class="ref-lnk lazy-ref"><a data-rid="cit0044" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2018</a></span>; Wei, Singh, and Martin <span class="ref-lnk lazy-ref"><a data-rid="cit0053" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>), sexist, and racist (Badjatiya et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>; Gambäck and Kumar Sikdar <span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>; Pitsilis, Ramampiaro, and Langseth <span class="ref-lnk lazy-ref"><a data-rid="cit0039" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2018</a></span>). The problem has been addressed from different points of view seeking to achieve a state-of-the-art result which is not yet been achieved. This work also aims to achieve better results for hate speech problems.</p>
+ <p>Studies show that distributional features provide a promising result in NLP tasks such as sentiment analysis (Gupta and Waseem <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>). Recently, deep learning methods also show that it performs well on various NLP problems (Socher, Bengio, and Manning <span class="ref-lnk lazy-ref"><a data-rid="cit0045" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2012</a></span>). Accordingly, our proposed solution investigates the performance of employing domain-specific word embedding/distributional representation features as it is one of the distributional-based learning methods and deep learning classifiers which is bidirectional Long Short-Term Memory (BiLSTM) to detect hate speech. The word embedding in this research is built upon a hate speech corpus of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0004.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     1
+    </mn><mo>
+     ,
+    </mo><mn>
+     048
+    </mn><mo>
+     ,
+    </mo><mn>
+     563
+    </mn>
+   </math></span> sentences to reach the closest meaningful representation vector of hate words. Then, compare it with the domain-agnostic embedding model such as Google Word2Vec and GloVe under the same classifier. We also assess the performance of detecting hate speech using Google’s pre-trained BERT model, which has generally achieved state-of-the-art for many NLP tasks. The contributions of this research are highlighted as follows:</p>
+ <p>• An unsupervised domain-specific word embedding model was developed to extract the meaning of commonly used terminology, acronyms, and purposefully misspelled hate words.</p>
+ <p>• A comparison between the domain-specific and domain-agnostic embedding was provided. The findings show that domain-agnostic embedding performs slightly better (about <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0005.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     1
+    </mn><mi mathvariant="normal">
+     %
+    </mi>
+   </math></span>), despite the huge difference in the trained corpus size.</p>
+ <p>• The evaluation of a BiLSTM-based deep model with domain-specific embeddings shows an improvement ranging from 5 to 6 points on available datasets over the state-of-the-art techniques.</p>
+ <p>• The evaluation of the BERT language model on the hate speech binary classification task shows an improvement of about 2 points compared to the domain-specific word embedding model.</p>
+ <p>This study focuses on the detection of English language hate speech including all its types (e.g., race, sex, gender, etc.), and its levels (e.g., offensive and hate) as a binary classification task (hate or not hate).</p>
+ <p>The remaining of this paper is constructed as follows: the background section, which explains information about the applied methodologies; the review of literature section summarizes the most recent related studies; the methodology section provides detailed descriptions of proposed solution methods; the experiment and result section includes datasets, embedding models, and results of the experiments; the discussion section encompasses analysis and observation from the results, and finally the conclusion section summarizes all the findings.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">Background</h2>
+ <p>This section gives an overview of the used methodologies for both features and classifiers.</p>
+ <div id="s0002-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i4">Word Embedding</h3>
+  <p>Word embedding (Bengio et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2003</a></span>) is a prominent natural language processing (NLP) technique that seeks to convey the semantic meaning of a word. It provides a useful numerical description of the term based on its context. The words are represented by an N-dimensional dense vector that can be used in estimating the similarities between the words in a specific language (Liu <span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2018</a></span>; Mikolov et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0033" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2013</a></span>). The word embedding has been widely used in many recent NLP tasks due to its efficiency such as text classification (Gambäck and Kumar Sikdar <span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>; Lilleberg, Zhu, and Zhang <span class="ref-lnk lazy-ref"><a data-rid="cit0029" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2015</a></span>), document clustering (Ailem, Salah, and Nadif <span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>), part of speech tagging (P. Wang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0049" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2015</a></span>) named entity recognition (Sienčnik <span class="ref-lnk lazy-ref"><a data-rid="cit0043" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2015</a></span>), sentiment analysis (Al-Azani and El-Alfy <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>; Tang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0046" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2014</a></span>; J. Wang, Liang-Chih Yu, and Zhang <span class="ref-lnk lazy-ref"><a data-rid="cit0047" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>), and many other problems. The most common pretrained word embedding models are Google Word2Vec, and Stanford GloVe, which are described in the following subsections.</p>
+  <div id="s0002-s2001-s3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i5">Word2vec</h4>
+   <p>Word2Vec is one of the most-used word embedding models. It is provided by the Google research team (Mikolov et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0033" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2013</a></span>). Word2Vec associates each word with a vector based on its surrounding context from a large corpus. The training process for extracting the word vector has two types, the continuous bag of word model (CBOW), which predicts the target word from its context, and the Skip-Gram model (SG), which predicts the target context from a given word. The feature vector of the word is manipulated and updated according to each context the word appears in the corpus. Google has released a vector model called Google Word2Vec that has been trained on a massive corpus of over 100 billion words.</p>
+  </div>
+  <div id="s0002-s2001-s3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i6">GloVe</h4>
+   <p>GloVe (Global Vectors for Word Representation) is another popular word embedding model (Pennington, Socher, and Manning <span class="ref-lnk lazy-ref"><a data-rid="cit0037" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2014</a></span>). GloVe learns embeddings using an unsupervised learning algorithm that is trained on a corpus to create the distributional feature vectors. During the learning process, a statistics-based matrix is built to represent the word-to-word co-occurrence of the corpus. The main difference between GloVe and Word2Vec is in the learning process, Word2Vec is a prediction-based model, while GloVe is a count-based model. The GloVe is learned from Wikipedia, web data, and Twitter and it has models with different vector dimensions.</p>
+  </div>
+ </div>
+ <div id="s0002-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">Bidirectional Long Short-Term Memory (BiLstm)</h3>
+  <p>LSTM (Hochreiter and Schmidhuber <span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>1997</a></span>) is an enhanced version of the recurrent neural network, which is one of the deep learning models that is designed to capture information from a sequence of information. LSTM saves data for long sequences only from left to right. However, to save sequence data from both directions, a bidirectional LSTM (BiLSTM) is used. BiLSTM consists of two LSTMs, one processes the data from left to right and the other in opposite direction then concatenates and flattens both forward and backward LSTM to improve the knowledge of the surrounding context.</p>
+ </div>
+ <div id="s0002-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i8">BERT Pre-Trained Language Model</h3>
+  <p>Bidirectional Encoder Representations from Transformers (BERT) (Devlin et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2018</a></span>) is a language model trained on very huge data based on contextual representations. BERT consists of feature extraction layers, which consist of word embedding and layers for the model (e.g., Classification, Question Answering, and Named Entity Recognition). BERT is the most recent language model and provides state-of-the-art results in comparison to other language models for various NLP tasks. BERT differs from other word embedding models in the training procedure of word embedding as it creates a bidirectional representation of words that may be learned from both left and right directions. Word embedding approaches like Word2Vec and GloVe only examine one direction (either left to right or right to left), resulting in static word representation that does not change with context. BERT is also different from previous language models (e.g., ELMo stands for Embeddings from Language Models (Peters et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2018</a></span>)) in that it manipulates the context in all layers in both directions (left and right). Instead of shallow combining processes such as concatenating, it uses cooperative conditioning to combine both the left and right contexts. BERT is trained on Books Corpus (800 M words) and English Wikipedia (2,500 M words) devlin2018bert.</p>
+ </div>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i9" class="section-heading-2">Review of Literature</h2>
+ <p>Word embedding is an effective approach for different NLP issues. It has been used to extract bio-events from the scientific literature (Chen et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2015</a></span>). They used multiple sets of features such as word embedding, BOW + n-gram joint model, and word embedding BOW joint model with SVM classifier, and the overall performance of word embedding BOW is better than other models on different events, which achieved about <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0006.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     77.37
+    </mn><mi mathvariant="normal">
+     %
+    </mi>
+   </math></span> f1-score. The small dataset size influences negatively the performance of the word embedding model. Word embedding was employed in (Yonghui et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0055" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2015</a></span>) study for distinguishing clinical abbreviations as a special case of word sense disambiguation (WSD). The performance of SVM utilizing word embedding features increased with an average accuracy of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0007.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     93
+    </mn><mi mathvariant="normal">
+     %
+    </mi>
+   </math></span>.</p>
+ <p>Recently, researchers have been interested in detecting hate speech on social media more accurately. The study of (Liu <span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2018</a></span>) used a domain-specific word embedding model trained on the articles from hate speech websites and high centrality users’ tweets to reach to the semantics of code words used in hate speech. They experimented on CNN, and LSTM models and concluded that CNN performed better than LSTM on tweets due to the length of tweets. They achieved <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0008.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     78
+    </mn><mi mathvariant="normal">
+     %
+    </mi>
+   </math></span> f1-score but they experimented on the previous tweet length, which was limited to <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0009.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     180
+    </mn>
+   </math></span> characters. The performance of using the hate Word2Vec (i.e., domain-specific) model was also examined by (Gupta and Waseem <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>) experiments with Logistic Regression (LR) classifier on three different datasets. They achieved up to <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0010.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     91
+    </mn><mi mathvariant="normal">
+     %
+    </mi>
+   </math></span> f1-score and concluded that domain-specific word embedding has an acceptable performance and it is suitable for unbalanced datasets.</p>
+ <p>Nobata et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>) aimed to detect abusive language using pre-trained word embeddings on two domains (finance and news) and regression model classifier, they achieved <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0011.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     60.2
+    </mn><mi mathvariant="normal">
+     %
+    </mi>
+   </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0012.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     64.9
+    </mn><mi mathvariant="normal">
+     %
+    </mi>
+   </math></span> f1-score, respectively. The results showed that Google Word2Vec provides <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0013.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     5
+    </mn><mi mathvariant="normal">
+     %
+    </mi>
+   </math></span> better performance on both domains. While deep learning techniques were employed in (Badjatiya et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>) to extract embedding features from hate speech text and then used a decision tree model for classification. They accomplished <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0014.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     93
+    </mn><mi mathvariant="normal">
+     %
+    </mi>
+   </math></span> f1-score using random embedding initialization that is fed to LSTM to construct word embedding features. The results proved that domain-specific embedding can provide a better representation of hate words such as “racist” or “sexist” words because it can extract the meaning of frequently used terms by the hate community.</p>
+ <p>A systematic review of the up-to-date studies related to hate speech detection and fake news of Ethiopian languages summarized related research (Demilie and Olalekan Salau <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2022</a></span>). The authors make a comparative analysis of the contributions and methodologies. The used method varies for both feature extraction and classification stages. They concluded that deep learning outperforms machine learning classifiers. Furthermore, using a combination of deep learning and machine learning approaches provide a better result on a balanced dataset.</p>
+ <p>Previously mentioned studies confirmed that domain-specific-based detection is a promising feature extraction method in different domains. The hate speech domain is one of the domains that need deep studies and more effort to reach satisfactory results, which is the main goal of this study compared to the state-of-the-art solution. Furthermore, our proposed solution exploits the confirmed result of Demilie and Olalekan Salau (<span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2022</a></span>) examined the performance of using a deep learning model classifier with domain-specific word embedding features, which are not yet been explored in the literature on hate speech problems.</p>
+ <p>BERT language model is employed in different fields as it provides state-of-the-art solutions. The authors of (Devlin et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2018</a></span>) looked into the BERT model’s performance on a variety of NLP tasks. On 11 of these tasks, the model accomplished state-of-the-art results. It improved the performance by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0015.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     7.7
+    </mn>
+   </math></span> points in the General Language Understanding Evaluation (GLUE) benchmark (Wang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0048" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2018</a></span>), <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0016.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     4.6
+    </mn>
+   </math></span> points in Multi-Genre Natural Language Inference (MultiNLI) (Williams, Nangia, and Bowman <span class="ref-lnk lazy-ref"><a data-rid="cit0054" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>), and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0017.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     1.5
+    </mn>
+   </math></span> to <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0018.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     5.1
+    </mn>
+   </math></span> points in the SQuAD various versions of question answering tests (Rajpurkar et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0040" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>).</p>
+ <p>BERT is also used in a shared task to detect offensive language (Pelicon, Martinc, and Kralj Novak <span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2019</a></span>; Zhu, Tian, and Kübler <span class="ref-lnk lazy-ref"><a data-rid="cit0057" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2019</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="cit0057" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2019</a></span>). Zhu, Tian, and Kübler (<span class="ref-lnk lazy-ref"><a data-rid="cit0057" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2019</a></span>) fine-tuned BERT model for this task and came in third place among competitors. They used <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0019.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     13
+    </mn><mo>
+     ,
+    </mo><mn>
+     240
+    </mn>
+   </math></span> tweets to train the algorithm and achieved <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0020.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     83.88
+    </mn><mi mathvariant="normal">
+     %
+    </mi>
+   </math></span> f1-score in classifying each tweet as offensive or not. While Mozafari, Farahbakhsh, and Crespi (<span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2020</a></span>) investigated the performance of using the BERT language model on a multi-class hate speech problem. They utilized a BERT basis model and a variety of classifiers, including CNN, which provided the highest f1-score, which is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0021.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mn>
+     92
+    </mn><mi mathvariant="normal">
+     %
+    </mi>
+   </math></span>.</p>
+ <p>From the previous review, it has been clarified that the problem of hate speech has been addressed using different methodologies. The domain-specific-based features are not explored enough, and the literature still has this gap. BERT is also one of the recent techniques that is not experminted yet on the hate speech problem as a binary classification task.</p>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i10" class="section-heading-2">Methodologies</h2>
+ <p>This section describes the proposed methodologies to handle the detection of hate speech. Mainly, there are two approaches used in this study seeking to find the best classification performance and to compare the results with current solutions. <a href="#f0001">Figure 1</a> shows the block diagram of the steps of the experiment, which describes the flow of the proposed solutions and how we finally got their results.</p>
+ <div class="figure figureViewer" id="f0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Detection of Hate Speech using BERT and Hate Speech Word Embedding with Deep Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Saleh%2C+Hind"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saleh%2C+Hind"><span class="NLM_given-names">Hind</span> Saleh</a> <a href="https://orcid.org/0000-0002-8208-3510"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alhothali%2C+Areej"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alhothali%2C+Areej"><span class="NLM_given-names">Areej</span> Alhothali</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Moria%2C+Kawthar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moria%2C+Kawthar"><span class="NLM_given-names">Kawthar</span> Moria</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2166719">https://doi.org/10.1080/08839514.2023.2166719</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> Block diagram of the experiments.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/medium/uaai_a_2166719_f0001_b.gif" loading="lazy" height="385" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> Block diagram of the experiments.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0001">
+  <div class="figureFootNote-f0001"></div>
+ </div>
+ <p></p>
+ <div id="s0004-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">Approach 1: Domain-Specific Embedding Features with BiLstm Based Deep Model Classifier</h3>
+  <p>The reason for using domain-specific (hate domain) word embedding is to construct the vector that represents a closer meaning of hate terms and abbreviations (e.g., black). The classifier used in this approach is a deep model constructed from bidirectional LSTM to preserve long dependencies of the input text from both directions. The following steps describe the first approach in detail:</p>
+  <p><i>Data Collection</i>: The goal of this step is to build a large data corpus to be utilized for embedding extraction. The data collected consists of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0022.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mn>
+      048
+     </mn><mo>
+      ,
+     </mo><mn>
+      563
+     </mn>
+    </math></span> sentences from available hate speech datasets from (Davidson et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>; Founta et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2018</a></span>; Golbeck et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>; Waseem and Hovy <span class="ref-lnk lazy-ref"><a data-rid="cit0051" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>), and (Waseem <span class="ref-lnk lazy-ref"><a data-rid="cit0050" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>), in addition to a dataset we collected in this study from Twitter using commonly known hate keywords (e.g., n*gga, f*ck, and s*ave) from a pre-defined lexicon includes hate speech words and expressions, called (Inc, HateBase <span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2020</a></span>), also from accounts who have an explicit hate content in their tweets or usernames (e.g., @Na***e_and_Race), or share hate words or phrases in hate hashtags.</p>
+  <p><i>Pre-processing</i>: The pre-processing stage was performed to remove any non-meaningful words and symbols such as (stop words and punctuation), stop words are excluded because the presence or absence of these words is not important to extract the meaning of the word in case we are looking for the hate meaning as the stop words used in both contexts (hate, non-hate) and it never used by the hate community as a hate word. We normalized the textual data by lower casing the words, and handle negation by converting “can’t” to “cannot.” However, the misspelling is excluded from the data cleaning phase because most of the hate words (e.g., f*k) are misspelled or abbreviated in purpose to avoid detection. Stemming removes prefixes and suffixes of the word. The normalization phase is excluded from to comprise some hate code words such as “blacks” which mostly refer to a race while the word “black” refers to a color.</p>
+  <p><i>Feature Extraction</i>: from the literature, distributional-based features (e.g., word embedding) are recommended features of the words. A domain-specific embedding vector that represents the co-occurrence statistics of the word with its surrounding context is used to extract the word’s meaning. Genism provides a word2vec library for this purpose, the parameters of the training model are the type of the model, which is Continuous Bag of Word (CBOW) because it performs slightly better than the Skip-Gram model (SG), with a window size = 5 that represents the number of surrounding words, and vector size = 300. The output of this stage is the embeddings for each word in the vocabulary to be used as a feature in the classification model. We build our own domain-specific hate speech word2vec model from hate speech domains named HSW2 V by collecting about 1 Million corpus from hate domains on Twitter and compare it with General purpose models (e.g., Google Word2vec and Glove).</p>
+  <p><i>Classification</i>: A deep sequential model structured by three layers is used for classification. The first layer is the Bidirectional CuDNNLSTM, which is a fast LSTM implementation backed by a GPU-accelerated library of primitives for deep neural networks (CuDNN) (Abadi et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>; CUDA® <span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2020</a></span>). Using BiLSTM maintains both forward and backward data of the input sentence. This makes the bidirectional model more familiar in context, but it consumes more computation time, but we used CuDNNLSTM for accelerating the process on GPU. The second layer is a dense layer with a linear activation function chosen using grid search among other activation functions (relu, sigmoid, and none). The third layer is also a dense layer with a sigmoid activation function. The model compilation was performed with Binary Cross-Entropy Loss and optimization and Adam optimizer. The data is split into three categories: <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0023.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mn>
+      60
+     </mn><mi mathvariant="normal">
+      %
+     </mi>
+    </math></span> training, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0024.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mn>
+      20
+     </mn><mi mathvariant="normal">
+      %
+     </mi>
+    </math></span> testing, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0025.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mn>
+      20
+     </mn><mi mathvariant="normal">
+      %
+     </mi>
+    </math></span> validation. The batch size is 256, and the training was done across 10 epochs.</p>
+ </div>
+ <div id="s0004-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i13">Approach 2: BERT Language Model</h3>
+  <p>The second experiment was carried out using BERT, a pre-trained language model that had been fine-tuned for our objective. After a pre-trained model has been trained on a large generic text, fine-tuning is the process of training its on application-specific content. With the use of its embedding vectors, BERT encodes the input text. We used BERT for sequence classification model, which comprises a neural-network layer for classification.</p>
+  <p>The initial stages of the BERT model convert the input sentence to tokens. The token embedding vector is created by adding the token, segment, and position embeddings together. For sentence classification, BERT uses [CLS] short for classification, which is a unique token placed at the beginning of the sentence tokens to indicate the starting position of the classification task; in other words, the starting position of the fully connected layer to the last encoder layer, and finally to the softmax layer.</p>
+  <p>BERT released different versions that have different properties based on the used language (e.g., Chinese, English, and Multilingual), the alphabet (i.e., Cased and Uncased), and the size of the layer structure (i.e., BERT-Base and BERT-Large). The BERT-Base model has 12 Transformer layers, each with 12 self-attention heads, and a total of 768 hidden states. The BERT-Large model has 24 transformer layers, 16 self-attention heads, and a total of 1024 hidden layers. For training testing, the model parameters are LEARNING RATE = <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0026.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mn>
+      2
+     </mn><mi>
+      e
+     </mi><mo>
+      −
+     </mo><mn>
+      5
+     </mn>
+    </math></span>, NUM TRAIN EPOCHS = <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0027.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mn>
+      3.0
+     </mn>
+    </math></span>, and BATCH SIZE = <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0028.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mn>
+      16
+     </mn><mo>
+      ,
+     </mo><mn>
+      8
+     </mn>
+    </math></span> which are the parameter values recommended by the literature for sequence classification tasks.</p>
+ </div>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i14" class="section-heading-2">Experiment and Results</h2>
+ <p>This section includes a detailed description of the used datasets and technical details of each step in both approaches.</p>
+ <div id="s0005-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">Datasets</h3>
+  <p>We tested both approaches on three available datasets: Davidson-ICWSM (Davidson et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>) dataset, Waseem-EMNLP (Waseem <span class="ref-lnk lazy-ref"><a data-rid="cit0050" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>), and Waseem-NAACL (Waseem and Hovy <span class="ref-lnk lazy-ref"><a data-rid="cit0051" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>) datasets and compare it with (Gupta and Waseem <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>) results who used Hate Speech Word2Vec trained on <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0029.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/uaai_a_2166719_ilm0029.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mn>
+      1
+     </mn>
+    </math></span> billion corpus size and LR classifier. The details of the datasets are shown in <button class="ref showTableEventRef" data-id="t0001">Table 1</button>. Waseem and Hovy (<span class="ref-lnk lazy-ref"><a data-rid="cit0051" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>) listed a number of criteria for identifying hate speech, including using a sexist or racial slur, attacking a minority, or promoting but not explicitly using hate speech or violent crime, among others, while (Davidson et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>)‘s study defined it as a language that is used to express hatred to a specific group or is meant to be derogatory, to humiliate, or to insult an individual of the group. The authors excluded the offensive language from their definition, the reason attributed is that offensive language is less hateful and more frequent use by the users, thus it should not be considered as hate.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Detection of Hate Speech using BERT and Hate Speech Word Embedding with Deep Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Saleh%2C+Hind"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saleh%2C+Hind"><span class="NLM_given-names">Hind</span> Saleh</a> <a href="https://orcid.org/0000-0002-8208-3510"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alhothali%2C+Areej"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alhothali%2C+Areej"><span class="NLM_given-names">Areej</span> Alhothali</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Moria%2C+Kawthar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moria%2C+Kawthar"><span class="NLM_given-names">Kawthar</span> Moria</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2166719">https://doi.org/10.1080/08839514.2023.2166719</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Datasets description.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F08839514.2023.2166719&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>However, according to (Fortuna and Nunes <span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2018</a></span>), hate speech could use offensive language but not necessary, which we agree with because frequent use of hate words does not mean that it should be socially acceptable, and no need to detect them and for this reason, we combined hate and offensive classes in their dataset to be hate class. Both of (Waseem and Hovy <span class="ref-lnk lazy-ref"><a data-rid="cit0051" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>) and (Davidson et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>) definitions do not conflict with each other, and they agreed on the general hate speech definition. Thus, collapsing the labels and combining the datasets does not conflict with the general hate speech definition. Waseem’s datasets have different classes, mainly racism, sexism, and neither and since we are handling the hate speech detection from neutral as to the best of our knowledge, there is no yet the state-of-the-art solution for this problem as a binary classification task, and to compare it with (Gupta and Waseem <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>), we collapsed the classes into two classes because both of race and sex are types of hate speech as follows: nolistsep</p>
+  <p>• Racism and sexism as a hate class.</p>
+  <p>• Neither as a non-hate class.</p>
+  <p>For Davidson’s dataset, both offensive and hate are considered as different levels of hate so we collapsed them as offensive and hate as a hate class and neither as a non-hate class. We also combined all the previously mentioned datasets in one dataset to assess the model performance on the largest possible diverse dataset that is balanced according to the lowest class number by randomly selecting a similar number of examples for each class and the number of classes specified according to the lowest class in the combined dataset. The dataset combining offers us a hugely diverse set of data to assess the deep model performance as it is known that deep models perform better on large training data.</p>
+ </div>
+ <div id="s0005-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i16">HSW2 V and BiLstm Based Deep Model</h3>
+  <p>For the first experiment, we investigated the performance of using Hate Speech Word2Vec (HSW2 V) as features, and the bidirectional LSTM-based deep model as a classifier. We compared our domain-specific embedding features (HSW2 V) performance with domain-agnostic embedding models, which are GloVe, and Google Word2Vec word embeddings. We also compare results with domain-specific Hate Word2Vec (W2 V-Hate) by (Gupta and Waseem <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>) study. The details of each word embedding model are mentioned in <button class="ref showTableEventRef" data-id="t0002">Table 2</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Detection of Hate Speech using BERT and Hate Speech Word Embedding with Deep Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Saleh%2C+Hind"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saleh%2C+Hind"><span class="NLM_given-names">Hind</span> Saleh</a> <a href="https://orcid.org/0000-0002-8208-3510"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alhothali%2C+Areej"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alhothali%2C+Areej"><span class="NLM_given-names">Areej</span> Alhothali</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Moria%2C+Kawthar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moria%2C+Kawthar"><span class="NLM_given-names">Kawthar</span> Moria</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2166719">https://doi.org/10.1080/08839514.2023.2166719</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Details description of embedding models.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F08839514.2023.2166719&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The model performance is reported using weighted precision, recall, AUC, and f1-score to consider the class imbalance. The f1-score is also reported for each class separately to have a clear insight into the classifier performance on each class. The results are shown in <button class="ref showTableEventRef" data-id="t0003">Table 3</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Detection of Hate Speech using BERT and Hate Speech Word Embedding with Deep Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Saleh%2C+Hind"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saleh%2C+Hind"><span class="NLM_given-names">Hind</span> Saleh</a> <a href="https://orcid.org/0000-0002-8208-3510"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alhothali%2C+Areej"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alhothali%2C+Areej"><span class="NLM_given-names">Areej</span> Alhothali</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Moria%2C+Kawthar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moria%2C+Kawthar"><span class="NLM_given-names">Kawthar</span> Moria</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2166719">https://doi.org/10.1080/08839514.2023.2166719</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Results of bidirectional LSTM-based deep model on the datasets.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F08839514.2023.2166719&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>As shown in <button class="ref showTableEventRef" data-id="t0003">Table 3</button>, for each dataset, the maximum attained performance across different features is underlined, while the best performance among different classifiers is in <b>BOLD</b>. From a feature standpoint, we compare all of the embeddings for both domain-agnostic and domain-specific embeddings using the same classifier (BiLSTM deep model). HSW2 V, as shown in the table, outperforms all domain agnostic embedding models (Google Word2vec, GLoVe), considering the large range of corpus sizes (our corpus is 1 M, other models are at least 2B), HSW2 V could slightly outperforms domain agnostic approaches. The other variable that we consider in our comparison is the classification approach (LR by (Gupta and Waseem <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>), and BiLSTM-based deep model) and assess their performance with embedding features. The results show that the deep model surpasses the LR classifier. To show the deep model performance on a balanced dataset and to overcome the class imbalance influence on the deep model, we evaluate the proposed model on the combined dataset. This gives a decent sense of the performance, as well as the best result that our proposed approach can produce.</p>
+ </div>
+ <div id="s0005-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i17">BERT Language Model</h3>
+  <p>The BERT language model was used in the second experiment because it performs well across the board in NLP applications. BERT for sequence classification was implemented and fine-tuned using datasets. <button class="ref showTableEventRef" data-id="t0004">Table 4</button> summarizes the findings of the testing evaluation.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Detection of Hate Speech using BERT and Hate Speech Word Embedding with Deep Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Saleh%2C+Hind"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saleh%2C+Hind"><span class="NLM_given-names">Hind</span> Saleh</a> <a href="https://orcid.org/0000-0002-8208-3510"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alhothali%2C+Areej"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alhothali%2C+Areej"><span class="NLM_given-names">Areej</span> Alhothali</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Moria%2C+Kawthar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moria%2C+Kawthar"><span class="NLM_given-names">Kawthar</span> Moria</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2166719">https://doi.org/10.1080/08839514.2023.2166719</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 4. </span> BERT for sequence classification hate speech experiment results (base-large).</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0004&amp;doi=10.1080%2F08839514.2023.2166719&amp;downloadType=CSV"> Download CSV</a><a data-id="t0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The performance of the BERT classifier was highly acceptable and desirable. In addition, for datasets of greater size, BERT Large surpasses BERT Base with a pretty similar result to that of BERT Base. Due to the computational requirements for BERT large, most current research avoids utilizing it. However, the overall performance of BERT overcomes all of the embedding models with the deep model that we proposed as the first approach due to its large training corpus size during the training of the model.</p>
+ </div>
+</div>
+<div id="s0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i18" class="section-heading-2">Discussion</h2>
+ <p>For the feature extraction stage, we evaluate the influence of using domain-specific word embedding of hate speech, which helps the model expose the most used terms, abbreviations, and intentional spelling mistakes by the community who post in a given domain (Badjatiya et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>). This is the main reason to investigate domain-specific embedding with deep models. We applied word similarity, which finds the closest word to the input word according to the cosine distance between them. <button class="ref showTableEventRef" data-id="t0005">Table 5</button> shows the result of applying word similarity to an intentionally misspelled word that is commonly used by the hate community (fc*). As shown in the table, domain-agnostic embedding models failed to retrieve similar words, while our HSW2 V was able to retrieve other intentionally misspelled words that were close in meaning to the input word. Finally, this study was limited by the data size during the training stage, it is obvious that the corpus size was not enough for the first approach experiment to get a deeper sentiment for the word.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">Detection of Hate Speech using BERT and Hate Speech Word Embedding with Deep Model</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Saleh%2C+Hind"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saleh%2C+Hind"><span class="NLM_given-names">Hind</span> Saleh</a> <a href="https://orcid.org/0000-0002-8208-3510"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alhothali%2C+Areej"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alhothali%2C+Areej"><span class="NLM_given-names">Areej</span> Alhothali</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Moria%2C+Kawthar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moria%2C+Kawthar"><span class="NLM_given-names">Kawthar</span> Moria</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/08839514.2023.2166719">https://doi.org/10.1080/08839514.2023.2166719</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>02 February 2023
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 5. </span> Word similarity of misspelled hate word fc*.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0005-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0005&amp;doi=10.1080%2F08839514.2023.2166719&amp;downloadType=CSV"> Download CSV</a><a data-id="t0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <p>The results of the first experiment of using the first approach (<button class="ref showTableEventRef" data-id="t0003">Table 3</button>) showed that using a domain-specific embedding model (HSW2 V) was very competitive to the domain agnostic embedding models (Word2Vec, GloVe) although there is a huge difference between the corpus size, it is 1 M for HSW2 V and at least 2B for domain agnostic embedding models taking into consideration that the classifier is the same (BiLSTM deep model), which confirmed that domain-specific word embeddings outperform domain-agnostic word embedding models, because it is more knowledgeable about the hate domain, while domain-agnostic are trained on books and Wikipedia, which rarely have hate community context.</p>
+ <p>From the classifier perspective, we compared our BiLSTM deep model with LR experiments by (Gupta and Waseem <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2017</a></span>), the results showed that the BiLSTM-based deep model outperforms the LR classifier, and the BiLSTM-based deep model improves the performance with at least 5%.</p>
+ <p>In the second approach, we used BERT model on the hate speech binary classification task. <button class="ref showTableEventRef" data-id="t0004">Table 4</button>, reports the result of experiments on both Base and Large models. Because the BERT model is deeply bidirectional and trained on huge data sets, it outperforms all other distributional-based embeddings, including domain-agnostic (e.g., Google Word2Vec and GloVe) and domain-specific (e.g., HSW2 V). BERT also has an intuitive training procedure for its vocabulary as it includes sub-words instead of complete words. Although the simple training procedure of domain-specific embeddings, the performance was not too low in comparison with BERT. Domain-specific embeddings overcome BERT model embedding in that it includes intentional misspellings and commonly hate words that BERT fails to retrieve when we searched about specific words in Bert Base vocabulary as shown in <a href="#f0002">Figure 2</a>, and this is because BERT also trained on books and Wikipedia, which rarely includes these words.</p>
+ <div class="figure figureViewer" id="f0002">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Detection of Hate Speech using BERT and Hate Speech Word Embedding with Deep Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Saleh%2C+Hind"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saleh%2C+Hind"><span class="NLM_given-names">Hind</span> Saleh</a> <a href="https://orcid.org/0000-0002-8208-3510"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alhothali%2C+Areej"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alhothali%2C+Areej"><span class="NLM_given-names">Areej</span> Alhothali</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Moria%2C+Kawthar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moria%2C+Kawthar"><span class="NLM_given-names">Kawthar</span> Moria</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2166719">https://doi.org/10.1080/08839514.2023.2166719</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 2. </span> BERT Base vocabulary search for misspelling and hate term.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0002image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/medium/uaai_a_2166719_f0002_oc.jpg" loading="lazy" height="268" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0002">
+  <p class="captionText"><span class="captionLabel">Figure 2. </span> BERT Base vocabulary search for misspelling and hate term.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0002">
+  <div class="figureFootNote-f0002"></div>
+ </div>
+ <p></p>
+ <p>Finally, <button class="ref showTableEventRef" data-id="t0006">Table 6</button> shows the confusion matrix of HSW2 V(300), the Bidirectional LSTM deep model, which correctly classifies the most prevalent labels in the datasets. It also shows BERT language model performance graphically for each of the FP, FN, TP, and TN on the same datasets.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">Detection of Hate Speech using BERT and Hate Speech Word Embedding with Deep Model</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Saleh%2C+Hind"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saleh%2C+Hind"><span class="NLM_given-names">Hind</span> Saleh</a> <a href="https://orcid.org/0000-0002-8208-3510"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alhothali%2C+Areej"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alhothali%2C+Areej"><span class="NLM_given-names">Areej</span> Alhothali</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Moria%2C+Kawthar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moria%2C+Kawthar"><span class="NLM_given-names">Kawthar</span> Moria</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/08839514.2023.2166719">https://doi.org/10.1080/08839514.2023.2166719</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>02 February 2023
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 6. </span> Confusion matrix of HSW2 V and BERT.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="false" id="t0006-table-wrapper">
+   <a data-id="t0006" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+</div>
+<div id="s0007" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i20" class="section-heading-2">BERT Interpretation Using LIME</h2>
+ <p>To gain more knowledge about BERT model performance in the classification task of this study, we applied LIME (Ribeiro, Singh, and Guestrin <span class="ref-lnk lazy-ref"><a data-rid="cit0042" data-reflink="_i26 _i27" href="#"><span class="off-screen">Citation</span>2016</a></span>). LIME stands for Local Interpretable Model-agnostic Explanations, a strategy for understanding the model by modifying data samples and seeing how the predictions change by looking at internal properties and how they connect to specific predictions. We employed LIME on the Waseem-EMNLP dataset and BERT-based model. We reported different cases as follows:</p>
+ <p>• <b>Case 1: True Positive</b></p>
+ <p>LIME highlights the words that contributed more in classifying the sentence with a different color for each class, <a href="#f0003">Figure 3</a> shows the case in which the sentence’s actual and predicted class is hate, and which words contribute in classifying this sentence as hate. The color intensity increased according to the word more contributed to the predictions such as n*gga.</p>
+ <div class="figure figureViewer" id="f0003">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Detection of Hate Speech using BERT and Hate Speech Word Embedding with Deep Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Saleh%2C+Hind"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saleh%2C+Hind"><span class="NLM_given-names">Hind</span> Saleh</a> <a href="https://orcid.org/0000-0002-8208-3510"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alhothali%2C+Areej"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alhothali%2C+Areej"><span class="NLM_given-names">Areej</span> Alhothali</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Moria%2C+Kawthar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moria%2C+Kawthar"><span class="NLM_given-names">Kawthar</span> Moria</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2166719">https://doi.org/10.1080/08839514.2023.2166719</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 3. </span> Result of applying LIME on document actual label=1 and predicted=1.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0003image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/medium/uaai_a_2166719_f0003_oc.jpg" loading="lazy" height="180" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0003">
+  <p class="captionText"><span class="captionLabel">Figure 3. </span> Result of applying LIME on document actual label=1 and predicted=1.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0003">
+  <div class="figureFootNote-f0003"></div>
+ </div>
+ <p></p>
+ <p>• <b>Case 2: True Negative</b></p>
+ <p><a href="#f0004">Figure 4</a> shows the case in which the sentence actual and predicted class is not hate, and which words contribute to classify this sentence as not hate with darker blue colors such as announcement, while the words with orange color contributed more to classify the sentence to be hate; however, in this case, the weight of the blue-colored words is more than the orange-colored words, thus the classifier predict this sentence as not hate which agree with human sense.</p>
+ <div class="figure figureViewer" id="f0004">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Detection of Hate Speech using BERT and Hate Speech Word Embedding with Deep Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Saleh%2C+Hind"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saleh%2C+Hind"><span class="NLM_given-names">Hind</span> Saleh</a> <a href="https://orcid.org/0000-0002-8208-3510"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alhothali%2C+Areej"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alhothali%2C+Areej"><span class="NLM_given-names">Areej</span> Alhothali</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Moria%2C+Kawthar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moria%2C+Kawthar"><span class="NLM_given-names">Kawthar</span> Moria</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2166719">https://doi.org/10.1080/08839514.2023.2166719</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 4. </span> Result of applying LIME on document actual label=0 and predicted=0.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0004image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/medium/uaai_a_2166719_f0004_oc.jpg" loading="lazy" height="189" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0004">
+  <p class="captionText"><span class="captionLabel">Figure 4. </span> Result of applying LIME on document actual label=0 and predicted=0.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0004">
+  <div class="figureFootNote-f0004"></div>
+ </div>
+ <p></p>
+ <p>• <b>Case 3: False Positive</b></p>
+ <p>We also apply LIME to analyze error classifications. <a href="#f0005">Figure 5</a> shows the case in which the sentence actual class is not hate but the predicted class is hate, and which words contribute in classifying this sentence as hate, which is a feminazi word that influences on the classifier to predict it as hate.</p>
+ <div class="figure figureViewer" id="f0005">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Detection of Hate Speech using BERT and Hate Speech Word Embedding with Deep Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Saleh%2C+Hind"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saleh%2C+Hind"><span class="NLM_given-names">Hind</span> Saleh</a> <a href="https://orcid.org/0000-0002-8208-3510"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alhothali%2C+Areej"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alhothali%2C+Areej"><span class="NLM_given-names">Areej</span> Alhothali</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Moria%2C+Kawthar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moria%2C+Kawthar"><span class="NLM_given-names">Kawthar</span> Moria</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2166719">https://doi.org/10.1080/08839514.2023.2166719</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 5. </span> Result of applying LIME on document actual label=0 and predicted=1.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0005image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/medium/uaai_a_2166719_f0005_oc.jpg" loading="lazy" height="177" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0005">
+  <p class="captionText"><span class="captionLabel">Figure 5. </span> Result of applying LIME on document actual label=0 and predicted=1.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0005">
+  <div class="figureFootNote-f0005"></div>
+ </div>
+ <p></p>
+ <p>• <b>Case 4: False Negative</b></p>
+ <p><a href="#f0006">Figure 6</a> shows the case in which the sentence actual class is hate but predicted class is not hate, and which words contribute in classifying this sentence as not hate. It seems that in this situation, the classifier is more accurate than the human annotator as this sentence is not a hate sentence as it is obvious from the observed intent of the context writer.</p>
+ <div class="figure figureViewer" id="f0006">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Detection of Hate Speech using BERT and Hate Speech Word Embedding with Deep Model</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Saleh%2C+Hind"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Saleh%2C+Hind"><span class="NLM_given-names">Hind</span> Saleh</a> <a href="https://orcid.org/0000-0002-8208-3510"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Alhothali%2C+Areej"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alhothali%2C+Areej"><span class="NLM_given-names">Areej</span> Alhothali</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Moria%2C+Kawthar"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Moria%2C+Kawthar"><span class="NLM_given-names">Kawthar</span> Moria</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2166719">https://doi.org/10.1080/08839514.2023.2166719</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>02 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 6. </span> Result of applying LIME on document actual label=1 and predicted=0.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0006image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2166719/20230202/images/medium/uaai_a_2166719_f0006_oc.jpg" loading="lazy" height="178" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0006">
+  <p class="captionText"><span class="captionLabel">Figure 6. </span> Result of applying LIME on document actual label=1 and predicted=0.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0006">
+  <div class="figureFootNote-f0006"></div>
+ </div>
+ <p></p>
+</div>
+<div id="s0008" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i25" class="section-heading-2">Conclusion and Recommendation</h2>
+ <p>To conclude, BERT design provides an appropriate feature extraction and classification procedure for hate speech detection. BERT combines the benefits of domain-agnostic and domain-specific word embedding by training the model on vast data and then adding an extra layer to train on domain-specific data (fine-tuning). BERT also saves effort and time in building an embedding model from scratch. However, domain-specific word embedding overcomes the BERT model in that it can detect hate terms and abbreviations and intentionally misspell meanings. One of the challenges that we faced during the experiments is that identifying hate speech is a highly subjective task in which the machine may also encounter some difficulties in the detection. The impact of this paper is mainly proven by experiments that BERT Model provides acceptable performance in dealing with a hate speech problem. This paper could be used for comparison for future work studies, especially after changing hate speech policies on Twitter. This study can be extended to detect multi-class hate speech for future work.</p>
+</div>

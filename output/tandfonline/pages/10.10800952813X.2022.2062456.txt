@@ -1,0 +1,3651 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">Introduction</h2>
+ <p>Over the last years, Artificial Intelligence (AI) achieved results that were just unthinkable some decades ago. Sub-symbolical techniques were successfully applied to a plethora of contexts, like image recognition, Natural Language Processing (NLP) and many aspects of the problem-solving process, often achieving performance that equal or overcome the abilities of a human being. Nonetheless, there still exist some tasks that are rather easy for a person but extremely complex for a machine. From the point of view of cognitive science, these tasks involve different types of intelligence (e.g. mathematical, spatial, logical, or common-sense reasoning), which must be applied and combined in the correct way in order to accomplish the final goal (Schneider &amp; McGrew, <span class="ref-lnk lazy-ref"><a data-rid="cit0037" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2012</a></span>). In these tasks, computers cannot overcome human abilities because they still lack effective ways to automatically arrange together various techniques and the knowledge brought by each one. As also pointed out by Chesani et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2017</a></span>), the best method to perform this combination of techniques is unlikely to be fully sub-symbolical, because arranging different intelligences together is not a matter of pure perception, like image processing, or voice recognition. It is rather a <i>reasoning</i> operation.</p>
+ <p>Mathematical puzzles are a perfect example of tasks that are quite easy for humans but still impossible for a machine. Indeed, as described by Chesani et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2017</a></span>), one of the most interesting challenges of modern AI is the following. <i>‘By the middle of the 21<sup>st</sup> century, (a team of) fully autonomous agent(s) shall win a mathematical puzzle competition against primary school students, winners of the most recent competitions.’</i></p>
+ <p>In particular, those puzzles that require the interpretation of both a natural-language text and a diagram pose interesting questions to AI. Some of them can be solved by primary-school children, but no computer can autonomously provide a solution when only the textual and visual descriptions are given as input.</p>
+ <p>For example, consider the problem in <a href="#f0001">Figure 1</a>, assigned during an international competition between primary school students organised by PRISTEM Research Centre.<sup>1</sup> The puzzle requires to solve a simple map-colouring optimisation problem, which would be trivial for a computer, if only text and diagram were converted into a machine-oriented formulation of the problem beforehand.</p>
+ <div class="figure figureViewer" id="f0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">A Prolog application for reasoning on maths puzzles with diagrams</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Buscaroli%2C+Riccardo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Buscaroli%2C+Riccardo"><span class="NLM_given-names">Riccardo</span> Buscaroli</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chesani%2C+Federico"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chesani%2C+Federico"><span class="NLM_given-names">Federico</span> Chesani</a> <a href="https://orcid.org/0000-0003-1664-9632"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Giuliani%2C+Giulia"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Giuliani%2C+Giulia"><span class="NLM_given-names">Giulia</span> Giuliani</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Loreti%2C+Daniela"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Loreti%2C+Daniela"><span class="NLM_given-names">Daniela</span> Loreti</a> <a href="https://orcid.org/0000-0002-6507-7565"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Mello%2C+Paola"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mello%2C+Paola"><span class="NLM_given-names">Paola</span> Mello</a> <a href="https://orcid.org/0000-0002-5929-8193"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0952813X.2022.2062456">https://doi.org/10.1080/0952813X.2022.2062456</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>19 April 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> Example of maths puzzle with diagram. Translated from the Italian version available online<a href="#en0001"><sup>1</sup></a>.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/medium/teta_a_2062456_f0001_b.gif" loading="lazy" height="129" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> Example of maths puzzle with diagram. Translated from the Italian version available online<a href="#en0001"><sup>1</sup></a>.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0001">
+  <div class="figureFootNote-f0001"></div>
+ </div>
+ <p></p>
+ <p>Obviously, the key challenge for computers is not connected to the complexity of the calculation required – which is quite limited – but rather to the steps that should precede the actual resolution, i.e. (<i>i</i>) understanding the diagram; (<i>ii</i>) understanding the text; (<i>iii</i>) identify the best modelling and solving technique; (<i>iv</i>) possibly identify hidden knowledge . Moreover, these steps would not be necessarily performed in the mentioned order (Chesani et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2017</a></span>). Remarkably, the gaps of NLP techniques in understanding the data and the question of the problem from the text cannot account alone for the machine’s incapacities, because all sub-tasks must be investigated in a comprehensive <i>multimodal</i> approach. Sub-symbolical approaches are crucial to effectively grasp the content of image and text, but the information derived in this way must be processed altogether and – if need be – combined with common-sense knowledge. This assembly task is akin to what is required by Visual Common-sense Reasoning on an image (Zellers et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0041" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2019</a></span>): in order to grasp those contents that go beyond the recognition-level perception (i.e. beyond the ‘simple’ detection of objects and their attributes), a kind of cognition-level reasoning is required (e.g. to deduct the intents of the subjects in a scene). Analogously, a tool combining the textual and graphical description of a maths puzzle must be capable of – at least – inferring conclusions from given premises and rules. In our opinion, a suitable tool for this task is a <i>logic-based</i> framework.</p>
+ <p>Mathematical puzzles with diagrams are an excellent training scenario to explore how logic can act as glue between different symbolical and sub-symbolical techniques to properly realise a multimodal approach. The things we can understand from this field are much likely to be useful in more complex scenarios involving human–computer interaction like for example, the interpretation of textbooks and manuals devoted to query answering or automatic problem solving.</p>
+ <p>In this work, we focus on the challenging scenario of maths puzzles with diagrams, and we propose a Prolog library that interacts with image-processing software to extract information from the problem’s graphical representation. The library allows spatial analysis at different levels of complexity, from points to more elaborated puzzle-specific shapes, enabling the machine’s reasoning towards the identification of the puzzle’s solution.</p>
+ <p>Our proposal does not aim to fill all the gaps in autonomous puzzle resolution. In particular, it does not encompass techniques to discover hidden knowledge or understand the text, but assuming to have a convenient method to extract the relevant information from text, the library is able to integrate such a knowledge with the one extracted from the puzzle’s diagram. As a first training ground, the library was applied to a subset of the maths puzzles belonging to the PRISTEM Research Centre catalogue<sup>1</sup> of Bocconi University of Milan, Italy.</p>
+ <p>This study fills some of the gaps and underlines the shape of the obstacles that still stand in the way of the ambitious goal of a machine autonomously solving maths puzzles from their textual-graphical descriptions.</p>
+ <p>The contribution of this work can be summarised as follows:</p>
+ <div class="quote">
+  <p>• A brief analysis and classification of the math puzzles composing the considered case study in order to underline their most relevant characteristics from the solver point of view.</p>
+ </div>
+ <div class="quote">
+  <p>• The definition of the framework architecture of a system able to integrate the various modules that are necessary to address the different tasks required by puzzle resolution.</p>
+ </div>
+ <div class="quote">
+  <p>• A three-layer multimodal Prolog library devoted to puzzle resolution, addressing low-level diagram processing, high-level spatial reasoning and problem solving. The library also makes use of a Prolog notation specifically conceived to simplify the elicitation of the puzzle’s constraints, and express its query in a clear and concise way.</p>
+ </div>
+ <div class="quote">
+  <p>• An experimental evaluation of the library’s performance when solving different problems, coupled with a qualitative study of the framework’s strength and weaknesses.</p>
+ </div>
+ <div class="quote">
+  <p>• The open source code of the library, as well as an online demo to verify its working principles through a web interface.</p>
+ </div>
+ <p></p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">Related work</h2>
+ <p>Games have always been an important training ground for AI. The first remarkable result was obtained when DeepBlue from IBM (Campbell, Jr., &amp; Hsu, <span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2002</a></span>) was able to beat the chess champion Kasparov in 1996. More recently, AlphaGo from Google DeepMind defeated Fan Hui, one of the best players of Go in the world (Silver et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0039" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2016</a></span>).</p>
+ <p>Despite these successes, AI still lacks the ability to defeat a fourth grade student on a simple maths or logical puzzle provided in natural language text and/or graphical form. Several works addressed the resolution of maths world problems by means of a declarative logic-based language, like Prolog. This solution is particularly suitable for those logic puzzles – like the ones collected in (Smullyan, <span class="ref-lnk lazy-ref"><a data-rid="cit0040" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>1978</a></span>) – aiming at determining the truth value of a proposition, given some assertions known to be true (Alzboon &amp; Nagy, <span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2020</a></span>; Nagy, <span class="ref-lnk lazy-ref"><a data-rid="cit0033" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2003</a></span>; Ohlbach &amp; Schmidt-Schauß, <span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>1985</a></span>; Ramsey, <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>1986</a></span>).</p>
+ <p>Csenki (<span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2006</a></span>) focuses on a specific kind of puzzles connected to the numbers-in-diagram class, and proposes a logic-based solution employing a combination of discrete mathematics and Prolog. However, the approach was only devoted to exploit the power of first order logic to create an effective declarative solver, rather than an autonomous, multimodal one. In (Lev et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2004</a></span>), the authors propose a solver for logical puzzles expressed in an intermediate language. An automatic translation into first-order logic enable the resolution through a theorem prover. More recently, Dries et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2017</a></span>) adopt a two-step approach to solve probability word problems. In the first step, the text in natural language is analysed and converted into an ad-hoc declarative modelling language, which takes inspiration from the entities defined in (Hosseini et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2014</a></span>). Then, in the second step, Probabilistic Inductive Logic Programming (PILP; De Raedt et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2008</a></span>; De Raedt &amp; Kimmig, <span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2015</a></span>) is used to infer the solution. Akin to Statistical Relational Learning (SRL; Koller et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2007</a></span>; De Raedt et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2016</a></span>), PILP is particularly suitable for the domain of probability world problems because it allows to manage the complexity through logic, while uncertainty is addresses by probabilistic reasoning. A combination of logical inference and statistical approach is used also in (Liang et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2016</a></span>) to transform the text of maths world problems into an intermediate form, and then into a first-order logic program.</p>
+ <p>Answer Set Programming (ASP; Baral, <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2009</a></span>; Gelfond &amp; Lifschitz, <span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>1991</a></span>) is em- ployed by Mitra and Baral (<span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2015</a></span>) to solve ‘logical grid puzzles’, intended as maths problems expressed in natural language without diagrams, whose solution can be derived by building a table with the input data. The NLP task of converting each textual constraint of the problem into an ASP predicate is carried out by a Maximum Entropy classifier (Berger et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>1996</a></span>). Logical grid puzzles are also the subject of (Cheung, <span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2016b</a></span>), who focuses on the extraction of Prolog clauses instead of ASP constraints.</p>
+ <p>Similarly to our work, the goal of all these approaches is to make a step towards the definition of an autonomous puzzle solver. The main difference is in the type of problems considered, because none of the approaches described so far addresses the case of maths puzzles with diagrams.</p>
+ <p>The extraction of precious information from the puzzle’s diagram is a delicate operation which – we believe – cannot be carried out with the adoption of sub-symbolical techniques only. Spatial reasoning and logic are essential to correctly identify all important data in the figure. A logical expression is the output of the tool described in the work by Seo et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2015</a></span>), which was devoted to the resolution of multiple-choice geometry questions from high-school tests expressed in both natural language and diagrams. Cheung (<span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2016a</a></span>) gives a description of spatial reasoning puzzles, highlighting that the truth of some logical constraints depends on spatial relation which may or may not be described in the texts, but is certainly shown in diagram. The solving procedure is enabled by a manual conversion of the figure into Prolog atoms and terms.</p>
+ <p>Physics questions with texts and diagrams are the subject of the work by Forbus et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2009</a></span>), which employ analogy reasoning to create a system that is agnostic of the puzzle’s context in the beginning, but can create a parallelism between the given problem and a set of previously given solved examples.</p>
+ <p>Other related works (Bhatt &amp; Flanagan, <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2010</a></span>; Loreti et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0029" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2019</a></span>) focus on spatiotemporal reasoning in specific contexts. Bhatt and Flanagan (<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2010</a></span>) in particular, apply abduction to automatic cinematography in order to control the cameras and the perspectives given a graphical and textual description of the scene to be constructed.</p>
+ <p>Strongly connected to this work are the multimodal approaches in the field of Visual Question Answering (VQA), which aim to provide a natural language answer to an image-related question. Most of the works (Antol et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2015</a></span>; Fukui et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2016</a></span>; Krishnamurthy et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2017</a></span>; Lu et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2016</a></span>) on VQA have a strong sub-symbolical nature and mainly involve neural networks: the possible answers to a question are seen as categories, and the network can be trained to learn the mapping between the features of text and image, and the correct answer. Notably, the work by Andreas, Rohrbach, Darrell and Klein (<span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2015</a></span>) combines this strategy with a semantic analysis of the question. Being devoted to answer different kinds of questions, the system includes different neural networks in a modular way. The structure of the sentence and its words are used to guide the system through the right combination of modules to compose the neural network more suitable for the case.</p>
+ <p>The work by Kembhavi et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2017</a></span>) focuses on the interpretation of text and diagrams from primary school tests with a multimodal approach. The authors evaluate state-of-the art VQA approaches on a ‘textbook’ dataset of over 1,000 lessons and 26,000 multimodal questions, highlighting their strengths but also their poor performance on some tasks. For example, when the text shows a strong lexical variation w.r.t. the lesson, when the size of the network generated from the input lesson is so big that making it fit into a single memory becomes a non-trivial task, or – more interestingly from our point of view – when the question cannot be answered by simple lookup but requires reasoning.</p>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i6" class="section-heading-2">The mathematical puzzles case study</h2>
+ <p>The PRISTEM catalogue<sup>1</sup> is an archive of maths puzzles assigned to the participants of the ‘Giochi d’Autunno’ (literally ‘Autumn Games’) competition organised every year by the Bocconi University since 1994. The competition encompasses a sequence of matches from national to international level involving children of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0001.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msup>
+      <mn>
+       4
+      </mn>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mi>
+        h
+       </mi>
+      </mrow>
+     </msup>
+    </mrow>
+   </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0002.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msup>
+      <mn>
+       5
+      </mn>
+      <mrow>
+       <mi>
+        t
+       </mi>
+       <mi>
+        h
+       </mi>
+      </mrow>
+     </msup>
+    </mrow>
+   </math></span> grade of primary school. Hence, the given puzzles are not very complex and do not require advanced mathematical or logical skills. They can be abstract or maths-world problems and their answer can be a word, a number, or a graphical sketch. Some puzzles have more than one solution, but the participants are rarely required to provide them all. According to the Cattell-Horn-Carroll theory (Schneider &amp; McGrew, <span class="ref-lnk lazy-ref"><a data-rid="cit0037" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2012</a></span>), the human skills required to solve these puzzles are structured into <i>strata</i>, where the lower layers identify very simple concepts, which are put together and elaborated by the layers above.</p>
+ <p>A considerable portion of the catalogue is composed of puzzles with a diagram. In particular, 60% of puzzles with figure are ascribable to the following categories (Gambetti et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2020</a></span>).</p>
+ <div class="quote">
+  <p>• <i>Geometrical figures</i>; which usually require the identification and counting of polygons inside the diagram. The text explicates the kind of polygon and, possibly, some constraints. An example of these puzzles is given in <a href="#f0002">Figure 2a</a></p>
+ </div>
+ <div class="figure figureViewer" id="f0002">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">A Prolog application for reasoning on maths puzzles with diagrams</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Buscaroli%2C+Riccardo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Buscaroli%2C+Riccardo"><span class="NLM_given-names">Riccardo</span> Buscaroli</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chesani%2C+Federico"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chesani%2C+Federico"><span class="NLM_given-names">Federico</span> Chesani</a> <a href="https://orcid.org/0000-0003-1664-9632"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Giuliani%2C+Giulia"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Giuliani%2C+Giulia"><span class="NLM_given-names">Giulia</span> Giuliani</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Loreti%2C+Daniela"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Loreti%2C+Daniela"><span class="NLM_given-names">Daniela</span> Loreti</a> <a href="https://orcid.org/0000-0002-6507-7565"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Mello%2C+Paola"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mello%2C+Paola"><span class="NLM_given-names">Paola</span> Mello</a> <a href="https://orcid.org/0000-0002-5929-8193"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0952813X.2022.2062456">https://doi.org/10.1080/0952813X.2022.2062456</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>19 April 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 2. </span> Other maths puzzles with diagram form PRISTEM Research Centre catalogue<sup>1</sup> representing examples of the three categories: <i>numbers in a diagram</i> (Figure 2c and 2d), <i>geometrical figures</i> (Figure 2a) and <i>spatial logic</i> (Figure 2b).</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0002image" src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/medium/teta_a_2062456_f0002_b.gif" loading="lazy" height="194" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0002">
+  <p class="captionText"><span class="captionLabel">Figure 2. </span> Other maths puzzles with diagram form PRISTEM Research Centre catalogue<sup>1</sup> representing examples of the three categories: <i>numbers in a diagram</i> (Figure 2c and 2d), <i>geometrical figures</i> (Figure 2a) and <i>spatial logic</i> (Figure 2b).</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0002">
+  <div class="figureFootNote-f0002"></div>
+ </div>
+ <div class="quote">
+  <p>• <i>Spatial logic</i>; such as tiling puzzles, or games where a grid must be partitioned into a certain number of equal pieces (see the example in <a href="#f0002">Figure 2b</a>). Several variants are possible, where pieces can be rotated and/or overturned.</p>
+ </div>
+ <div class="quote">
+  <p>• <i>Numbers-in-diagram</i>; i.e., puzzles that require inserting numbers into the boxes of a diagram according to a certain logic explained in the text. For some puzzles, the proposed diagram has some boxes already filled with a number, which must be recognised to further constrain the solution. Examples of this category are <a href="#f0001 f0002">Figures 1, 2c and 2d</a>.</p>
+ </div>
+ <p></p>
+ <p>From the image processing point of view, the task of extracting relevant information from these diagrams can be seen as a VQA: the puzzle’s input data contained in the figure are retrieved through a set of queries to the image processing engine. This obviously entails the non-trivial ability to formulate the right image-related questions, which are helpful to complete the input. What is most relevant for the solver implementation is that some of these puzzles (around 18%, often ascribable to the category of geometrical figures) require only the image analysis and some basic concepts of geometry, whereas a significant part can be interpreted as a Constraint Satisfaction Problem (CSP; Russell &amp; Norvig, <span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2010</a></span>).</p>
+ <p>CSP can be modelled through a set <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0003.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mo fence="false" stretchy="false">
+     {
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mo>
+     …
+    </mo><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mi>
+       n
+      </mi>
+     </msub>
+    </mrow><mo fence="false" stretchy="false">
+     }
+    </mo>
+   </math></span> of variables, a set <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0004.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mo fence="false" stretchy="false">
+     {
+    </mo><mrow>
+     <msub>
+      <mi>
+       D
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mo>
+     …
+    </mo><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       D
+      </mi>
+      <mi>
+       n
+      </mi>
+     </msub>
+    </mrow><mo fence="false" stretchy="false">
+     }
+    </mo>
+   </math></span> of domains of each variable, and a set of constraints <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0005.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mo fence="false" stretchy="false">
+     {
+    </mo><mrow>
+     <msub>
+      <mi>
+       C
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mo>
+     …
+    </mo><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       C
+      </mi>
+      <mi>
+       m
+      </mi>
+     </msub>
+    </mrow><mo fence="false" stretchy="false">
+     }
+    </mo>
+   </math></span>, which may involve one or more variables thus limiting the values they can be assigned.</p>
+ <p>As an example, consider the puzzle of <a href="#f0002">Figure 2c</a>. Each empty cell of the grid can be seen as a variable, to which we can assign a value from 2 to 5. The cell already containing a digit is a variable bounded to the value 1. Therefore, the puzzle can be formalised through a CSP with variables <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0006.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mo fence="false" stretchy="false">
+     {
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mo>
+     …
+    </mo><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       5
+      </mn>
+     </msub>
+    </mrow><mo fence="false" stretchy="false">
+     }
+    </mo>
+   </math></span> and domains <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0007.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       D
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </mrow><mo>
+     =
+    </mo><mo fence="false" stretchy="false">
+     {
+    </mo><mn>
+     1
+    </mn><mo fence="false" stretchy="false">
+     }
+    </mo>
+   </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0008.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       D
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub>
+    </mrow><mo>
+     =
+    </mo><mrow>
+     <msub>
+      <mi>
+       D
+      </mi>
+      <mn>
+       3
+      </mn>
+     </msub>
+    </mrow><mo>
+     =
+    </mo><mrow>
+     <msub>
+      <mi>
+       D
+      </mi>
+      <mn>
+       4
+      </mn>
+     </msub>
+    </mrow><mo>
+     =
+    </mo><mrow>
+     <msub>
+      <mi>
+       D
+      </mi>
+      <mn>
+       5
+      </mn>
+     </msub>
+    </mrow><mo>
+     =
+    </mo><mo stretchy="false">
+     [
+    </mo><mn>
+     2
+    </mn><mo>
+     ,
+    </mo><mn>
+     5
+    </mn><mo stretchy="false">
+     ]
+    </mo>
+   </math></span>. The requirement ‘the sum of the digits on the horizontal line must be equal to the sum of those on the vertical line’ can be expressed through the constraint <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0009.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </mrow><mo>
+     +
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub>
+    </mrow><mo>
+     +
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       3
+      </mn>
+     </msub>
+    </mrow><mo>
+     =
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub>
+    </mrow><mo>
+     +
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       4
+      </mn>
+     </msub>
+    </mrow><mo>
+     +
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       5
+      </mn>
+     </msub>
+    </mrow>
+   </math></span>. Furthermore, the puzzle implies that all the values in the cells must be different to one another, i.e., <span class="NLM_disp-formula-image inline-formula rs_preserve">
+   <noscript>
+    <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0010.gif" alt="">
+   </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+   <math>
+    <mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </mrow><mo>
+     ≠
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </mrow><mo>
+     ≠
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       3
+      </mn>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </mrow><mo>
+     ≠
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       4
+      </mn>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </mrow><mo>
+     ≠
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       5
+      </mn>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub>
+    </mrow><mo>
+     ≠
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       3
+      </mn>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub>
+    </mrow><mo>
+     ≠
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       4
+      </mn>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub>
+    </mrow><mo>
+     ≠
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       5
+      </mn>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       3
+      </mn>
+     </msub>
+    </mrow><mo>
+     ≠
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       4
+      </mn>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       3
+      </mn>
+     </msub>
+    </mrow><mo>
+     ≠
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       5
+      </mn>
+     </msub>
+    </mrow><mo>
+     ,
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       4
+      </mn>
+     </msub>
+    </mrow><mo>
+     ≠
+    </mo><mrow>
+     <msub>
+      <mi>
+       X
+      </mi>
+      <mn>
+       5
+      </mn>
+     </msub>
+    </mrow><mo>
+     .
+    </mo>
+   </math></span></p>
+ <p>The approach to CSP resolution is a search of the solution inside a space of possible results: it starts by performing an initial assignment of each variable to one of the values in its domain. When the process is able to assign all the variables without violating any constraint, a solution of the problem is found. In the case of the puzzle of <a href="#f0002">Figure 2c</a>, there is more than one solution satisfying all the constraints: <disp-formula-group>
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0001.gif&quot;}"><span class="mml-formula"></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      3
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        3
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      5
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        4
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      2
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        5
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      4
+     </mn>
+    </math></span>
+  </disp-formula-group> <disp-formula-group>
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0002.gif&quot;}"><span class="mml-formula"></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      3
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        3
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      5
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        4
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      4
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        5
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      2
+     </mn>
+    </math></span>
+  </disp-formula-group> <disp-formula-group>
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0003.gif&quot;}"><span class="mml-formula"></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      5
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        3
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      4
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        4
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      2
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        5
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      3
+     </mn>
+    </math></span>
+  </disp-formula-group> <disp-formula-group>
+   <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0004.gif&quot;}"><span class="mml-formula"></span></span>
+   <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      5
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        3
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      4
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        4
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      3
+     </mn><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        X
+       </mi>
+       <mn>
+        5
+       </mn>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mn>
+      2
+     </mn>
+    </math></span>
+  </disp-formula-group></p>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i12" class="section-heading-2">Framework architecture</h2>
+ <p>The system we envisage takes as input a textual and a graphical description of the puzzle. Our framework is depicted in <a href="#f0003">Figure 3</a>.</p>
+ <div class="figure figureViewer" id="f0003">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">A Prolog application for reasoning on maths puzzles with diagrams</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Buscaroli%2C+Riccardo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Buscaroli%2C+Riccardo"><span class="NLM_given-names">Riccardo</span> Buscaroli</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chesani%2C+Federico"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chesani%2C+Federico"><span class="NLM_given-names">Federico</span> Chesani</a> <a href="https://orcid.org/0000-0003-1664-9632"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Giuliani%2C+Giulia"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Giuliani%2C+Giulia"><span class="NLM_given-names">Giulia</span> Giuliani</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Loreti%2C+Daniela"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Loreti%2C+Daniela"><span class="NLM_given-names">Daniela</span> Loreti</a> <a href="https://orcid.org/0000-0002-6507-7565"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Mello%2C+Paola"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mello%2C+Paola"><span class="NLM_given-names">Paola</span> Mello</a> <a href="https://orcid.org/0000-0002-5929-8193"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0952813X.2022.2062456">https://doi.org/10.1080/0952813X.2022.2062456</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>19 April 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 3. </span> Framework architecture of the puzzle solver.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0003image" src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/medium/teta_a_2062456_f0003_b.gif" loading="lazy" height="158" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0003">
+  <p class="captionText"><span class="captionLabel">Figure 3. </span> Framework architecture of the puzzle solver.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0003">
+  <div class="figureFootNote-f0003"></div>
+ </div>
+ <p></p>
+ <p>We imagine the input text and diagram processed by a dedicated Classification module, able to classify the type of the puzzle. The implementation of this component is a rather challenging task, which – in our vision – encompasses the ability to extract information through text and image analysis. To this end, this module should be able to perform a <i>multi-modal</i> analysis of the various input data.</p>
+ <p>Then, in order to extract the information needed to build a computer-understandable representation of the puzzle, the system analyses the diagram and the text, together with the puzzle type. In <a href="#f0003">Figure 3</a> this data extraction is performed by a component that exploits two different technologies dealing with different input formats. Part of the component is devoted to tackle the data within the diagram, while the other part is focused on the NLP task over the puzzle’s text. Notice that the Data Extraction module is guided by the puzzle’s type into the search of interesting data. Once data is extracted from diagram and text, the system constructs a logic-based (and Prolog-based, in particular) representation of each problem in a defined syntax.</p>
+ <p>The final step involves the Puzzle Reasoning Library, which takes as inputs the aforementioned representation and the diagram. If need be, the latter is inspected from different points of view, e.g., the reasoning component searches for the presence of polygons, or the possibility to divide the current diagram into sub-shapes. The solution is computed by exploiting the puzzle description in logical terms and the diagram, when needed.</p>
+ <p>The output of the whole system is the puzzle’s result, which can assume the form of a number, a word, or a graphical sketch, often drawn on top of the provided image.</p>
+ <div id="s0004-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">Puzzle classification and objective identification</h3>
+  <p>The Classification module attempts to answer two very close-related questions: firstly, to which category a certain puzzle belongs; and secondly, which is the general objective of the puzzle.</p>
+  <p>The task of identifying and understanding the general objective of the problem is still a very challenging task for machines. As described in <a href="#s0002">Section 2</a>, albeit NLP and image analysis techniques have done impressive progresses in the last years, no sub-symbolic approach alone is currently able to tackle this problem, to the best of our knowledge. We might notice, however, that the general objective is usually directly related to the puzzle’s type: correctly classifying the puzzle would provide then a strong hint about the right general objective. For example, once it is known that the puzzle belongs to the <i>number-in-diagrams</i> category, it is straightforward that the final goal will be to determine the values of a set of variables subjected to some constraints.</p>
+  <p>Regarding the identification of the puzzle’s type, we might notice that both the text and the diagram play a fundamental role in the recognition task. Considering the diagrams only, for example, could lead to ambiguities. It might be that the same diagram can be referred to different puzzles types; e.g. if we focus on the diagrams of <a href="#f0002">Figure 2b and 2a</a>, we might not be able to discriminate the puzzle type, since both the diagrams might be classified as a <i>geometrical figures</i> or a <i>spatial logic</i> problem. As an interesting side effect of such ambiguity, it happens that the diagram of <a href="#f0002">Figure 2b</a> can be paired with <a href="#f0002">Figure 2</a> a’s text, thus leading to a new maths puzzle.</p>
+  <p>A similar issue arises if we consider the text in isolation: the identification of the right puzzle type might lead to ambiguities. Indeed, it is the conjunction of text and diagram that usually leads to the proper identification of the puzzle type.<a href="#en0002"><sup>2</sup></a></p>
+  <p>In <a href="#f0003">Figure 3</a> the classification component is depicted with dashed edges. This is because we still consider that part of our framework as an open issue. We achieved very good results by exploiting a rather specific approach where simple NLP analysis is performed on the text (through Stanford CoreNLP<a href="#en0003"><sup>3</sup></a> Manning et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2014</a></span>), and WordNet<a href="#en0004"><sup>4</sup></a>). Indeed, given their primary aim of being recreational for humans, puzzle’s texts adopt a very limited vocabulary: as a consequence, solutions that looks for specific terms apparently provide very good results. However, the generality and adaptability of such solutions towards novel or unforeseen problem descriptions is highly questionable.</p>
+ </div>
+ <div id="s0004-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">Extraction of puzzle’s data</h3>
+  <p>Extracting data from the diagram and from the textual description of the puzzle is a difficult task as well. A first consideration is related to the extraction of the <i>relevant</i> data: for example, the structure of a sentence, or even some numbers in the text, might not be relevant at all for a certain puzzle. Hence, we focus on implementing Data Extraction Modules that extract the <i>relevant</i> information, rather than pursuing an accurate comprehension of every bit of information from the puzzle’s description.</p>
+  <p>A second consideration stems from the fact that knowing in advance the puzzle’s type might guide the search for relevant data. For example, if a puzzle is known to belong to the <i>geometrical figures</i> class, an immediate question is ‘which figure type should we look for in the diagram?’, whose possible answers might be ‘triangles’, ‘squares’, ‘hexagons’, etc. In other words, the puzzle type suggests which are the information we should look for.</p>
+  <p>Implementing such approach requires two steps. Firstly, it is necessary to analyse all the problems and precisely identify which parameters are actually relevant to solve them. This information can be organised into a sort of decision tree, which – starting from general questions, such as providing the class of the problem – deepens the knowledge about the problem’s request until the identification of all the necessary data. Secondly, a completely autonomous Data Extraction module would need the ability to follow the decision tree, answering every question from the root to the leaves by means of text and diagram analysis.</p>
+  <p>In this work, we mainly focus on the first of these steps, whereas for the second step we are investigating two alternative – possibly complementary – approaches: on one side we are exploiting the use of BERT (Devlin et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2019</a></span>), a renowned tool for NLP understanding and query answering. On the other side we are experimenting a query-answering system involving the final user, who is therefore requested to reply to every question following the path of the decision tree. Based on these answers (collected either from BERT or from the user), the system dynamically composes the problem description in logical terms.</p>
+  <p>As regards the first category of puzzles, i.e. geometrical figures, they require to count specific polygons. Therefore, the parameters that must be provided to the solver involve the kind of polygon and, if need be, some constraint on its characteristics (e.g. its area expressed in number of smaller pieces as in <a href="#f0002">Figure 2a</a>).</p>
+  <p>The second category, spatial logic puzzles, can be either jigsaws or games where a grid must be partitioned into a certain number of equal pieces. In both the cases, the possibility to rotate and overturn the pieces represent a parameter of the problem. As regards the jigsaws, the information regarding which are the pieces and which is the grid (as well as the presence of tiles already in place) is not reported in the text, but must be extracted from the diagram. Therefore, this information should not be requested to the user, but autonomously found by the Puzzle Reasoning Library module through image analysis. Similarly, the grid-partitioning puzzles require just the list of actions that can be performed on the pieces, as well as the number of same-shape tiles that must be employed.</p>
+  <p>Finally, numbers-in-diagram puzzles are characterised by the need to insert numbers into the boxes of a diagram according to a certain logic. The parameters that must be provided are:</p>
+  <div class="quote">
+   <p>• a list of constraints of various natures (expressing the domain in which the numbers must be picked, and the relation that must hold between the digits in certain boxes);</p>
+  </div>
+  <div class="quote">
+   <p>• an indication about the form of the wanted result, which can be either drawn on the diagram or provided through a numeric answer (e.g., “What is written on the left lower box?”).</p>
+  </div>
+  <p></p>
+  <p>As regards the number’s domain, it can be either explicitly elicited (e.g. ‘numbers 25, 29, 37, etc.’), or expressed through a starting and an ending number (e.g. ‘numbers from 2 to 5’). It can also be parametric as it is for example, in any map-colouring puzzle like the one in <a href="#f0001">Figure 1</a>. There, the implicit domain of the variables is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      [
+     </mo><mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mi>
+      N
+     </mi><mo stretchy="false">
+      ]
+     </mo>
+    </math></span> (and we need to minimise the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      N
+     </mi>
+    </math></span>).</p>
+  <p>About the relation between the numbers in certain boxes, it can be some simple requirement like providing all different values or ensuring adjacent boxes have different values; or it can be some more complicated constraint involving the relative or absolute position of the boxes and some operation on the numbers inside it (e.g. as in the puzzle of <a href="#f0002">Figure 2c</a>, whose request is ‘the sum of the digits on the horizontal line must be equal to the sum of those on the vertical line’).</p>
+  <p>It is important to underline that for some puzzles the diagram already contains numbers in some boxes, which must be recognised and included in the parameters. Nonetheless, in our vision of the resolution process the tasks of understanding <i>if</i> numbers are present and <i>which</i> are they are demanded to the Puzzle Reasoning Library, that deepens the analysis of the diagram with the Optical Character Recognition (OCR) feature.</p>
+  <p>The combination of all this information determines the form of the decision tree. Following such a structure, the system is able to compose the logic-based formulation of the puzzle’s request that feeds the Puzzle Reasoning Library. The current decision tree with the questions is available in the form of an excel file in the GitHub repository<a href="#en0005"><sup>5</sup></a> of this project.</p>
+ </div>
+ <div id="s0004-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i16">The puzzle reasoning library</h3>
+  <p>The Puzzle Reasoning Library performs image analysis and reasoning on the diagrams driven by the problem description in logical terms that is emitted by the previous Data Extraction module.</p>
+  <p>From the point of view of diagram analysis, if we consider the examples of puzzles provided in <a href="#s0003">Section 3</a>, it is easy to see that all the problems, regardless to the category they belong, need some low-level features, like the ability to identify points and segments. For this reason, the library provides a first low-level layer to identify the main building blocks of spatial reasoning. Indeed, like the human abilities to solve puzzles, our library – depicted in <a href="#f0004">Figure 4</a> – is made of overlapping layers.</p>
+  <div class="figure figureViewer" id="f0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A Prolog application for reasoning on maths puzzles with diagrams</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Buscaroli%2C+Riccardo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Buscaroli%2C+Riccardo"><span class="NLM_given-names">Riccardo</span> Buscaroli</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chesani%2C+Federico"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chesani%2C+Federico"><span class="NLM_given-names">Federico</span> Chesani</a> <a href="https://orcid.org/0000-0003-1664-9632"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Giuliani%2C+Giulia"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Giuliani%2C+Giulia"><span class="NLM_given-names">Giulia</span> Giuliani</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Loreti%2C+Daniela"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Loreti%2C+Daniela"><span class="NLM_given-names">Daniela</span> Loreti</a> <a href="https://orcid.org/0000-0002-6507-7565"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Mello%2C+Paola"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mello%2C+Paola"><span class="NLM_given-names">Paola</span> Mello</a> <a href="https://orcid.org/0000-0002-5929-8193"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/0952813X.2022.2062456">https://doi.org/10.1080/0952813X.2022.2062456</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>19 April 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> Architecture of the spatial reasoning library.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0004image" src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/medium/teta_a_2062456_f0004_b.gif" loading="lazy" height="200" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> Architecture of the spatial reasoning library.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0004">
+   <div class="figureFootNote-f0004"></div>
+  </div>
+  <p></p>
+  <p>At the lowest level, the <i>primitives</i> module is composed of functions written in C++, making use of the OpenCV<a href="#en0006"><sup>6</sup></a> library to identify points, segments, shapes, and text/numbers. The choice of OpenCV is motivated by the fact that it is one of the most famous open source libraries for computer vision. Originally written in C++, this library was progressively applied in several fields, from video surveillance to autonomous driving. Thanks to its portability on different operating systems, its interfaces towards various programming languages, and the integration with CUDA and OpenCL to take advantage of graphical hardware, the current implementation has reached outstanding levels of efficiency and performance. OpenCV offers over 2,500 computer vision algorithms for automated learning, and a series of additional modules which can be compiled from source to provide advanced or experimental features – e.g. object recognition from images, action recognition or object tracing from video streams, etc.</p>
+  <p>For the purposes of this project, we used an additional module for scene’s text detection and recognition. In particular, we employed the module which directly interact with Tesseract OCR,<a href="#en0007"><sup>7</sup></a> a widely-adopted open source software, initially conceived for the digital acquisition of text from scanned documents. Given its initial goal, Tesseract makes a series of hypothesis on the text under analysis. For example, it usually searches for a text spatially organised into lines, with all letters having more or less the same dimension. Those letters that are too small, too big or not aligned with the average of the others are considered as diacritics, punctuation or noise. If, as in the case of puzzle’s diagrams, the text going to be recognised does not fit these initial assumptions, a proper segmentation strategy must be adopted, to subdivide the image into parts where text is searched and recognised. Tesseract offers the possibility to segment the image looking for a single word, a line, or a text with multiple lines, possibly organised into multiple columns. The choice of the segmentation technique must be driven by the kind of spatial organisation of the text that is more often found in the images.</p>
+  <p>As puzzle’s diagrams may contain text spread all over the figure without a uniform organisation in lines and columns, none of the three segmentation techniques offered by Tesseract is enough to guarantee good recognition performance. Our choice was therefore to repeatedly segment the image as if its content was a text with multiple lines organised into a single column. At each segmentation attempt, we impose to look for text of increasing size. This strategy allows to find letters and numbers scattered across the whole figure (even if they are not aligned), and overcomes the issues deriving from text with different dimensions.</p>
+  <p>It is nonetheless important to underline that this technique is not sufficient to recognise all possible kinds of text that can be included into a diagram. Letters and numbers that are represented with heavy distortions cannot be identified in this way. Fortunately, as the aim of the puzzles we consider is not to assess the visual abilities of the participant, the number of diagrams with distorted text is very little.</p>
+  <p>After the segmentation step, which allows to identify portions of the image that are likely to contain text, the recognition process is necessary to assess the actual nature of the found letters and numbers. Tesseract offers the possibility to perform this step by means of a statistical classifier, a neural network-based approach, or a combination of these two. For the considered diagrams we verified that the best results can be obtained with a pure neural network. In particular, we adopted the Tesseract’s strategy that involve a Long Short Term Memory (LSTM) network (Hochreiter &amp; Schmidhuber, <span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>1997</a></span>) pre-trained on documents of a specific language.</p>
+  <p>The C++ primitives of the lower level are made available to the Prolog layers above thanks to a C++ interface to SWI-Prolog.<a href="#en0008"><sup>8</sup></a> By means of this interface, the middle layer extracts and combines together the basic data from the diagram, turning them into more complex information useful to solve the puzzle. This layer includes several modules:</p>
+  <div class="quote">
+   <p>• <i>geometry</i>, defines fundamental concepts of plane geometry, such as segments and polygons, based on the most elementary geometrical element: the point;</p>
+  </div>
+  <div class="quote">
+   <p>• <i>shapes</i>, contains functions to determine the type of polygons and extract their segments;</p>
+  </div>
+  <div class="quote">
+   <p>• <i>color</i>, encompasses colour-related operation, like the identification of the image colour scheme, or the precise colour in a certain point;</p>
+  </div>
+  <div class="quote">
+   <p>• <i>image</i>, defines functions to load/release images, and a basic interface to lower-level primitives to draw and cancel objects on the image;</p>
+  </div>
+  <div class="quote">
+   <p>• <i>debug</i>, contains basic functions to check the execution flow and show intermediate graphical results of the reasoning process;</p>
+  </div>
+  <p></p>
+  <p>• <i>text</i>, provides an interface to lower-level primitives to read letters or numbers.</p>
+  <p>On top of these modules, the third layer is responsible for initiating the solving process by combing the Prolog formalisation of the text with the data that can be extracted from the image. Indeed, the image processing task realises a VQA guided by the puzzle’s goal. It is therefore fundamental to establish what the right questions about the diagram are, i.e. the questions whose answers allow to complete the set of puzzle’s input data. Considering the categories described in <a href="#s0003">Section 3</a> it is easy to see that puzzles belonging to the same category require answering very similar questions. For example, finding the correct partitioning of a grid into equal parts, or composing a tiling puzzle with predefined pieces on a grid, both require to know the form and dimension of the grid. On the other hand, puzzles from different categories pose very different questions about the diagram (e.g., geometrical figures puzzles require counting polygons, hence they do not need the concept of grid at all). For this reason, the top layer of the library is composed of a solver module for each considered type of problem.</p>
+  <p>The <i>diagram solver</i> is devoted to the resolution of numbers-in-diagram puzzles. It makes use of the underlying shape and geometry modules to assess the presence of boxes containing numbers and lines connecting those boxes, whereas the actual shape of such boxes (circles, squares, etc.) is obviously irrelevant for solving the puzzle.</p>
+  <p>The <i>polygon solver</i> deals with the recognition of specific polygons in the diagram given some constraint, e.g. on their area or number of edges. To this end, this solver provides functionalities to explore all the possible ways to construct polygons by progressively combining together the diagram’s segments.</p>
+  <p>The <i>grid solver</i> deals with spatial logic tasks involving pieces on a grid, and therefore makes use concepts such as the shape and the area of a portion of the figure (irrespectively to the kind of polygon), the possibility to rotate and overturn pieces, and that of filling a part of the grid with a certain piece.</p>
+  <p>The external interface of the library is realised by the generic <i>solver</i>, which loads the puzzle’s type and constraints from the Data Extraction module, and dynamically calls the correct solver.</p>
+  <p>As most puzzles can be interpreted as a CSP, orthogonally to the three layers, the library makes use of Constraint Logic Programming over Finite Domains (CLP(FD)),<a href="#en0009"><sup>9</sup></a> which extends SWI-Prolog with reasoning over finite domains of integers. Constraint Logic Programming over a theory <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mrow>
+       <mi mathvariant="script">
+        X
+       </mi>
+      </mrow>
+     </mrow>
+    </math></span> (CLP(<span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mrow>
+       <mi mathvariant="script">
+        X
+       </mi>
+      </mrow>
+     </mrow>
+    </math></span>); Jaffar and Maher (<span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>1994</a></span>)) is an extension of Logic Programming that provides the capability of expressing constraints over variables, which are then treated not as ‘normal’ logic variables, but rather subjected to the constraint theory specified for the type <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mrow>
+       <mi mathvariant="script">
+        X
+       </mi>
+      </mrow>
+     </mrow>
+    </math></span>. CLP(FD) allows to consider variables whose range is over a finite domain, and that can be subjected to arithmetic constraints (such as equalities, disequalities and inequalities), but also global constraints such as <i>all_different</i>.</p>
+  <p>Given these features, the CLP(FD) library seems the best candidate to simplify the declarative elicitation of arithmetic, domain, and combinatorial constraints – involving sets of variable and reification predicates – and perform the problem solving task.</p>
+ </div>
+ <div id="s0004-s2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">Puzzle resolution process</h3>
+  <p>The resolution process, the extraction of input parameters from the diagram, and the nature of the output we must provide, are all strictly influenced by the puzzle’s category. A specific Prolog notation is therefore necessary to specify different puzzle’s information (input data and constraints) depending on the problem’s type. Our library represents each puzzle through a Prolog term in the form <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       C
+      </mi><mi>
+       a
+      </mi><mi>
+       t
+      </mi><mi>
+       e
+      </mi><mi>
+       g
+      </mi><mi>
+       o
+      </mi><mi>
+       r
+      </mi><mi>
+       y
+      </mi><mo stretchy="false">
+       (
+      </mo><mi>
+       P
+      </mi><mi>
+       a
+      </mi><mi>
+       r
+      </mi><mi>
+       a
+      </mi><mi>
+       m
+      </mi><mi>
+       e
+      </mi><mi>
+       t
+      </mi><mi>
+       e
+      </mi><mi>
+       r
+      </mi><mn>
+       1
+      </mn><mo>
+       ,
+      </mo><mi>
+       P
+      </mi><mi>
+       a
+      </mi><mi>
+       r
+      </mi><mi>
+       a
+      </mi><mi>
+       m
+      </mi><mi>
+       e
+      </mi><mi>
+       t
+      </mi><mi>
+       e
+      </mi><mi>
+       r
+      </mi><mn>
+       2
+      </mn><mo>
+       ,
+      </mo><mo>
+       …
+      </mo><mo stretchy="false">
+       )
+      </mo><mo>
+       .
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>where the term’s name is used to identify the solver of the problem, and the parameters report the input data and constraints derived from the Classification&amp;NLP module.</p>
+  <p>Parameters expressing constraints must be specified in the form <i>constr(Constraint)</i>, where <i>Constraint</i> can be either a single or a set of Prolog predicates. In order to simplify the specification of constraints involving collections of objects, the following syntax can be used.. <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       c
+      </mi><mi>
+       o
+      </mi><mi>
+       n
+      </mi><mi>
+       s
+      </mi><mi>
+       t
+      </mi><mi>
+       r
+      </mi><mo stretchy="false">
+       (
+      </mo><mi>
+       X
+      </mi><mrow>
+       <mo>
+        /
+       </mo>
+      </mrow><mi>
+       C
+      </mi><mi>
+       o
+      </mi><mi>
+       n
+      </mi><mi>
+       d
+      </mi><mi>
+       i
+      </mi><mi>
+       t
+      </mi><mi>
+       i
+      </mi><mi>
+       o
+      </mi><mi>
+       n
+      </mi><mo>
+       −
+      </mo><mo>
+       &gt;
+      </mo><mi>
+       C
+      </mi><mi>
+       o
+      </mi><mi>
+       n
+      </mi><mi>
+       s
+      </mi><mi>
+       t
+      </mi><mi>
+       r
+      </mi><mi>
+       a
+      </mi><mi>
+       i
+      </mi><mi>
+       n
+      </mi><mi>
+       t
+      </mi><mo stretchy="false">
+       )
+      </mo><mo>
+       .
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>The system will apply the <i>Constraint</i> to all and only the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0016.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      X
+     </mi>
+    </math></span> for which <i>Condition</i> is true. Notice that, to the best of our knowledge, the notation proposed in <a href="#m0002">Eq. (2)</a> is new w.r.t. the application domain, but is rather similar to many other notations used to apply constraint on a restricted set of elements, selected from a larger set through the specification of a condition.</p>
+  <p>The top level solver declares a generic predicate <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0003.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       s
+      </mi><mi>
+       o
+      </mi><mi>
+       l
+      </mi><mi>
+       v
+      </mi><mi>
+       e
+      </mi><mo stretchy="false">
+       (
+      </mo><mo>
+       +
+      </mo><mi>
+       P
+      </mi><mi>
+       r
+      </mi><mi>
+       o
+      </mi><mi>
+       b
+      </mi><mi>
+       l
+      </mi><mi>
+       e
+      </mi><mi>
+       m
+      </mi><mo>
+       ,
+      </mo><mo>
+       +
+      </mo><mi>
+       I
+      </mi><mi>
+       m
+      </mi><mi>
+       g
+      </mi><mo>
+       ,
+      </mo><mo>
+       −
+      </mo><mi>
+       R
+      </mi><mi>
+       e
+      </mi><mi>
+       s
+      </mi><mi>
+       u
+      </mi><mi>
+       l
+      </mi><mi>
+       t
+      </mi><mo stretchy="false">
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>where <i>Problem</i> contains the puzzle’s description through the Prolog term <i>Category(Parameter1, Parameter2, …)</i> presented before, <i>Img</i> is the OpenCV object representing the image, and <i>Result</i> may be unified with a word, a number, or a modified version of the input <i>Img</i> with the solution drawn on it. The actual implementation of the <i>solve</i> predicate is assigned to the category-specific solvers, which are examined in the following.</p>
+  <div id="s0004-s2004-s3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i22">Numbers diagram resolution</h4>
+   <p>In the <i>diagram solver</i>, the puzzle’s category and definition can be stated through the Prolog following term: <disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0004.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        n
+       </mi><mi>
+        u
+       </mi><mi>
+        m
+       </mi><mi>
+        b
+       </mi><mi>
+        e
+       </mi><mi>
+        r
+       </mi><mi>
+        s
+       </mi><mi mathvariant="normal">
+        _
+       </mi><mi>
+        d
+       </mi><mi>
+        i
+       </mi><mi>
+        a
+       </mi><mi>
+        g
+       </mi><mi>
+        r
+       </mi><mi>
+        a
+       </mi><mi>
+        m
+       </mi><mo stretchy="false">
+        (
+       </mo><mi>
+        C
+       </mi><mi>
+        o
+       </mi><mi>
+        n
+       </mi><mi>
+        s
+       </mi><mi>
+        t
+       </mi><mi>
+        r
+       </mi><mi>
+        a
+       </mi><mi>
+        i
+       </mi><mi>
+        n
+       </mi><mi>
+        t
+       </mi><mi>
+        s
+       </mi><mi>
+        L
+       </mi><mi>
+        i
+       </mi><mi>
+        s
+       </mi><mi>
+        t
+       </mi><mo>
+        ,
+       </mo><mi>
+        R
+       </mi><mi>
+        e
+       </mi><mi>
+        s
+       </mi><mi>
+        u
+       </mi><mi>
+        l
+       </mi><mi>
+        t
+       </mi><mo stretchy="false">
+        )
+       </mo><mo>
+        .
+       </mo>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+    </disp-formula-group></p>
+   <p>where the first parameter (<i>ConstraintsList</i>) is a list of constraints on the puzzle’s variables and <i>Result</i> is another <i>constr</i> term that the solver will unify with the solution of the problem. The constraints in the <i>ConstraintsList</i> can be expressed by either CLP(FD) or other predicates defined by the library for convenience’s sake.</p>
+   <p>For example, the puzzle of <a href="#f0002">Figure 2d</a> can be described by the following logic form. <disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0005.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0005" class="disp-formula-label">(5) </span></span></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mtable columnalign="right left" rowspacing=".5em" columnspacing="thickmathspace">
+        <mtr>
+         <mtd></mtd>
+         <mtd>
+          <mi>
+           n
+          </mi>
+          <mi>
+           u
+          </mi>
+          <mi>
+           m
+          </mi>
+          <mi>
+           b
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mi>
+           d
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           g
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           m
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mo stretchy="false">
+           [
+          </mo>
+          <mi>
+           c
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mrow>
+           <mo>
+            /
+           </mo>
+          </mrow>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           b
+          </mi>
+          <mi>
+           l
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi>
+           h
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           p
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           c
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi>
+           c
+          </mi>
+          <mi>
+           l
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           −
+          </mo>
+          <mo>
+           &gt;
+          </mo>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           l
+          </mi>
+          <mi>
+           u
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           X
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           X
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mn>
+           3..8
+          </mn>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+         </mtd>
+        </mtr>
+        <mtr>
+         <mtd></mtd>
+         <mtd>
+          <mi>
+           c
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           L
+          </mi>
+          <mrow>
+           <mo>
+            /
+           </mo>
+          </mrow>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           l
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           L
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           l
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           g
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           h
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           L
+          </mi>
+          <mo>
+           ,
+          </mo>
+          <mn>
+           3
+          </mn>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           −
+          </mo>
+          <mo>
+           &gt;
+          </mo>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           l
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           l
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           L
+          </mi>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           L
+          </mi>
+          <mi>
+           X
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           s
+          </mi>
+          <mi>
+           u
+          </mi>
+          <mi>
+           m
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           L
+          </mi>
+          <mi>
+           X
+          </mi>
+          <mo>
+           ,
+          </mo>
+          <mi mathvariant="normal">
+           #
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mn>
+           18
+          </mn>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           ]
+          </mo>
+          <mo>
+           ,
+          </mo>
+         </mtd>
+        </mtr>
+        <mtr>
+         <mtd></mtd>
+         <mtd>
+          <mi>
+           c
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           R
+          </mi>
+          <mo>
+           ,
+          </mo>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mi>
+           b
+          </mi>
+          <mi>
+           y
+          </mi>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mi>
+           p
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mo stretchy="false">
+           [
+          </mo>
+          <mi>
+           b
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           m
+          </mi>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           l
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           f
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mo stretchy="false">
+           ]
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mo stretchy="false">
+           [
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mrow>
+           <mo>
+            |
+           </mo>
+          </mrow>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mo stretchy="false">
+           ]
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           l
+          </mi>
+          <mi>
+           u
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           R
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           .
+          </mo>
+         </mtd>
+        </mtr>
+       </mtable>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0005" class="disp-formula-label">(5) </span></span></span></span>
+    </disp-formula-group></p>
+   <p>The first <i>constr</i> term in the <i>ConstraintsList</i> states that “For any variable <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0017.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       I
+      </mi>
+     </math></span> such that it is associated to a circle shape in the figure, its value must be constrained in <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0018.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mo stretchy="false">
+       [
+      </mo><mn>
+       3
+      </mn><mo>
+       ,
+      </mo><mn>
+       8
+      </mn><mo stretchy="false">
+       ]
+      </mo>
+     </math></span>“. The second <i>constr</i> term expresses the requirement that the sum of the numbers on the same line of boxes must be 18. To state this constraint, the <i>line</i> and <i>line_vals</i> predicates are employed to address the aligned boxes and the values inside them, respectively. Finally, the last <i>constr</i> term is related to the result <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0019.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       R
+      </mi>
+     </math></span> and specifies we want to extract the value of the variable located in the bottom left box.</p>
+   <p>The term in <a href="#m0005">Eq. (5)</a> is passed as first parameter to the <i>solve</i> predicate of <a href="#m0003">Eq. (3)</a> in order to trigger the image analysis and the resolution process. In particular, for numbers-in-diagram puzzles, the goal is to insert numbers in the boxes of the diagram according to a certain logic. Therefore the image analysis must first focus on extracting information about the presence and disposition of the boxes in the diagram. This information is represented in the form <i>diag(BoxList, LineList)</i>. As the variable’s name suggest, <i>BoxList</i> is a list of boxes, each represented by a specific <i>box(Poly, Colour, Txt)</i> predicate, where the parameters clearly report the type of polygon realising the box, its colour, and its possibly enclosed text. <i>LineList</i> is the list of spatial relations between the boxes. Such relations are represented through <i>line(LineElements, Orientation)</i> predicates, where <i>Orientation</i> specifies the <i>horizontal, vertical</i>, or <i>oblique</i> spatial relation between the set of boxes in <i>LineElements</i>.</p>
+   <p>Whereas these definitions have a rather simple semantics, from the image processing point of view, the identification of what is a box, and the process of distinguish it from other closed forms in the diagram is less straightforward. The human brain usually classifies as boxes all those closed spaces corresponding to geometric figures or characterised by relevant symmetries. For this reason, we currently identify circles, rectangles and equilateral polygons as boxes, but this criterion can be extended by declaring additional shapes accepted as boxes. This operation can be easily performed by changing of the <i>true_box(Box)</i> predicate .</p>
+   <p>The search of spatial relations between the boxes have similar issues. In some diagrams, adjacent boxes are polygons with common borders or vertex as in <a href="#f0002">Figure 2c</a>. In some others, the spatial relation is defined by straight, curve, continuous or dashed lines connecting the boxes as shown in <a href="#f0002">Figure 2d</a>. Two different kinds of image analysis are therefore needed. To this end, the library first identifies relations of the first type (polygons with common vertex and borders), then considers all the segments that do not belong to any box and performs the second type of search (boxes connected by segments).</p>
+   <p>Once the image features are extracted, the CSP model of the problem must be defined. As these puzzles require writing numbers inside the boxes, a variable is associated to each box. If the box already contains a number in the original image, the variable is obviously associated with such number.</p>
+   <p>The number recognition is the most expensive task of the diagram solving process. When the problem does not actually require to recognise numbers (as it is, e.g. in the puzzle of <a href="#f0001">Figure 1</a>), that task can be skipped by employing the term <i>diagram(ConstraintsList,Result)</i>. The puzzle in <a href="#f0001">Figure 1</a> can be formulated as follows. <disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0005.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0005.gif&quot;}"><span class="mml-formula"></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mtable columnalign="right left" rowspacing=".5em" columnspacing="thickmathspace">
+        <mtr>
+         <mtd></mtd>
+         <mtd>
+          <mi>
+           d
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           g
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           m
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mo stretchy="false">
+           [
+          </mo>
+          <mi>
+           c
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mrow>
+           <mo>
+            /
+           </mo>
+          </mrow>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           b
+          </mi>
+          <mi>
+           l
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           −
+          </mo>
+          <mo>
+           &gt;
+          </mo>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           l
+          </mi>
+          <mi>
+           u
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           X
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           c
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           u
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           N
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           X
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mn>
+           1..
+          </mn>
+          <mi>
+           N
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+         </mtd>
+        </mtr>
+        <mtr>
+         <mtd></mtd>
+         <mtd>
+          <mi>
+           c
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mn>
+           1
+          </mn>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mn>
+           2
+          </mn>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mrow>
+           <mo>
+            /
+           </mo>
+          </mrow>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           b
+          </mi>
+          <mi>
+           l
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mn>
+           1
+          </mn>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           b
+          </mi>
+          <mi>
+           l
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mn>
+           2
+          </mn>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mn>
+           1
+          </mn>
+          <mo>
+           =
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mn>
+           2
+          </mn>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           a
+          </mi>
+          <mi>
+           d
+          </mi>
+          <mi>
+           j
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           c
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mn>
+           1
+          </mn>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mn>
+           2
+          </mn>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           −
+          </mo>
+          <mo>
+           &gt;
+          </mo>
+         </mtd>
+        </mtr>
+        <mtr>
+         <mtd></mtd>
+         <mtd>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           l
+          </mi>
+          <mi>
+           u
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mn>
+           1
+          </mn>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           X
+          </mi>
+          <mn>
+           1
+          </mn>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           l
+          </mi>
+          <mi>
+           u
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           I
+          </mi>
+          <mn>
+           2
+          </mn>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           X
+          </mi>
+          <mn>
+           2
+          </mn>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           X
+          </mi>
+          <mn>
+           1
+          </mn>
+          <mi mathvariant="normal">
+           #
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mi>
+           X
+          </mi>
+          <mn>
+           2
+          </mn>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+         </mtd>
+        </mtr>
+        <mtr>
+         <mtd></mtd>
+         <mtd>
+          <mi>
+           c
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           m
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           m
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           z
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mi>
+           m
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           x
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           ]
+          </mo>
+          <mo>
+           ,
+          </mo>
+         </mtd>
+        </mtr>
+        <mtr>
+         <mtd></mtd>
+         <mtd>
+          <mi>
+           c
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           R
+          </mi>
+          <mo>
+           ,
+          </mo>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           v
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           l
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           L
+          </mi>
+          <mi>
+           X
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           m
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           x
+          </mi>
+          <mi mathvariant="normal">
+           _
+          </mi>
+          <mi>
+           l
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           L
+          </mi>
+          <mi>
+           X
+          </mi>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           R
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           .
+          </mo>
+         </mtd>
+        </mtr>
+       </mtable>
+      </math></span>
+    </disp-formula-group></p>
+   <p>where the first <i>constr</i> term states that any variable <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0020.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       I
+      </mi>
+     </math></span> associated with a box must be an integer in the range between 1 and the total number of employed variables; the second <i>constr</i> term enforce to assign different values to those variables that are associated with adjacent boxes; and the third <i>constr</i> term minimises the total number of employed variables. Finally, the <i>Result</i> parameter is again a <i>constr</i> term which states to return the maximum value associated to a variable in the solution. The problem can be formulated in the same way by using <i>numbers_diagram</i> instead of <i>diagram</i>, but in that case the image processing task would be triggered before any reasoning to look for numbers in the boxes (in vain).</p>
+  </div>
+  <div id="s0004-s2004-s3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i26">Geometrical figures resolution</h4>
+   <p>When the puzzle requires to identify and enumerate certain shapes in the diagram, the <i>polygon solver</i> must be called. In this solver, the problem type can be specified by two predicates.. <disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0006.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0006" class="disp-formula-label">(6) </span></span></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        c
+       </mi><mi>
+        o
+       </mi><mi>
+        u
+       </mi><mi>
+        n
+       </mi><mi>
+        t
+       </mi><mi mathvariant="normal">
+        _
+       </mi><mi>
+        p
+       </mi><mi>
+        o
+       </mi><mi>
+        l
+       </mi><mi>
+        y
+       </mi><mi>
+        g
+       </mi><mi>
+        o
+       </mi><mi>
+        n
+       </mi><mi>
+        s
+       </mi><mo stretchy="false">
+        (
+       </mo><mi>
+        S
+       </mi><mi>
+        h
+       </mi><mi>
+        a
+       </mi><mi>
+        p
+       </mi><mi>
+        e
+       </mi><mo stretchy="false">
+        )
+       </mo>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0006" class="disp-formula-label">(6) </span></span></span></span>
+    </disp-formula-group> <disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0007.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0007" class="disp-formula-label">(7) </span></span></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        c
+       </mi><mi>
+        o
+       </mi><mi>
+        u
+       </mi><mi>
+        n
+       </mi><mi>
+        t
+       </mi><mi mathvariant="normal">
+        _
+       </mi><mi>
+        p
+       </mi><mi>
+        o
+       </mi><mi>
+        l
+       </mi><mi>
+        y
+       </mi><mi>
+        g
+       </mi><mi>
+        o
+       </mi><mi>
+        n
+       </mi><mi>
+        s
+       </mi><mo stretchy="false">
+        (
+       </mo><mi>
+        S
+       </mi><mi>
+        h
+       </mi><mi>
+        a
+       </mi><mi>
+        p
+       </mi><mi>
+        e
+       </mi><mo>
+        ,
+       </mo><mi>
+        c
+       </mi><mi>
+        o
+       </mi><mi>
+        n
+       </mi><mi>
+        s
+       </mi><mi>
+        t
+       </mi><mi>
+        r
+       </mi><mo stretchy="false">
+        (
+       </mo><mi>
+        X
+       </mi><mo>
+        ,
+       </mo><mi>
+        F
+       </mi><mi>
+        i
+       </mi><mi>
+        l
+       </mi><mi>
+        t
+       </mi><mi>
+        e
+       </mi><mi>
+        r
+       </mi><mo stretchy="false">
+        )
+       </mo><mo stretchy="false">
+        )
+       </mo>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0007" class="disp-formula-label">(7) </span></span></span></span>
+    </disp-formula-group></p>
+   <p>where <i>constr(X,Filter)</i> allows to specify if some additional constraint must be fulfilled besides the congruence with the specified <i>Shape</i>. For example, we could require the polygon to be equilateral or have a certain area (as in <a href="#f0002">Figure 2a</a>). Since in these puzzles the area is usually defined in terms of the number of base polygons composing a grid (e.g. in <a href="#f0002">Figure 2a</a> we look for squares composed of 4 pieces), a <i>min</i> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0021.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi mathvariant="normal">
+       _
+      </mi>
+     </math></span> <i>area(-Area)</i> predicate is defined to extract the area of the smaller polygon in figure (i.e., the piece). This polygon can be of any kind, not necessarily a square. Another predicate, <i>grid</i> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0022.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi mathvariant="normal">
+       _
+      </mi>
+     </math></span> <i>area(+Poly,-N)</i>, unifies the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0023.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       N
+      </mi>
+     </math></span> variable with the number of minimal polygons needed to cover the area of the input polygon <i>Poly</i>. As an example, the logic programming description of <a href="#f0002">Figure 2a</a> is simply.. <disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0006.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0006.gif&quot;}"><span class="mml-formula"></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        c
+       </mi><mi>
+        o
+       </mi><mi>
+        u
+       </mi><mi>
+        n
+       </mi><mi>
+        t
+       </mi><mi mathvariant="normal">
+        _
+       </mi><mi>
+        p
+       </mi><mi>
+        o
+       </mi><mi>
+        l
+       </mi><mi>
+        y
+       </mi><mi>
+        g
+       </mi><mi>
+        o
+       </mi><mi>
+        n
+       </mi><mi>
+        s
+       </mi><mo stretchy="false">
+        (
+       </mo><mi>
+        s
+       </mi><mi>
+        q
+       </mi><mi>
+        u
+       </mi><mi>
+        a
+       </mi><mi>
+        r
+       </mi><mi>
+        e
+       </mi><mo>
+        ,
+       </mo><mi>
+        c
+       </mi><mi>
+        o
+       </mi><mi>
+        n
+       </mi><mi>
+        s
+       </mi><mi>
+        t
+       </mi><mi>
+        r
+       </mi><mo stretchy="false">
+        (
+       </mo><mi>
+        X
+       </mi><mo>
+        ,
+       </mo><mi>
+        g
+       </mi><mi>
+        r
+       </mi><mi>
+        i
+       </mi><mi>
+        d
+       </mi><mi mathvariant="normal">
+        _
+       </mi><mi>
+        a
+       </mi><mi>
+        r
+       </mi><mi>
+        e
+       </mi><mi>
+        a
+       </mi><mo stretchy="false">
+        (
+       </mo><mi>
+        X
+       </mi><mo>
+        ,
+       </mo><mn>
+        4
+       </mn><mo stretchy="false">
+        )
+       </mo><mo stretchy="false">
+        )
+       </mo><mo stretchy="false">
+        )
+       </mo><mo>
+        .
+       </mo>
+      </math></span>
+    </disp-formula-group></p>
+   <p>which instructs the solver to identify and count the number of squares whose area is equal to 4 grid elements.</p>
+   <p>Despite the short logic-oriented description of the problem, the shape recognition task underneath is not trivial. Instead of looking for all possible polygons in figure, and discard the ones not fulfiling the requirements – a strategy which can be time consuming – our algorithm starts from an image segment, and compose a polygonal chain by progressively adding a segment at a time until the desired number is reached. A line cannot be added if it intersects the chain in a point different from the initial one, and if two segments are aligned, they are obviously considered as a single segment. If the required number of sides is reached without closing the chain, the algorithm backtracks on other image segments. In this way, no time is wasted on searching polygons with more edges than required.</p>
+  </div>
+  <div id="s0004-s2004-s3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i30">Grid resolution</h4>
+   <p>In case of spatial logic problems, such as tiling puzzles, or games where a grid must be partitioned into a certain number of equal pieces, the <i>grid solver</i> module is employed. Similarly to the polygon solver, for this solver the puzzle’s logic description is again rather synthetic. It can be represented by two alternative predicates: <disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0008.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0008.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0008" class="disp-formula-label">(8) </span></span></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        p
+       </mi><mi>
+        u
+       </mi><mi>
+        z
+       </mi><mi>
+        z
+       </mi><mi>
+        l
+       </mi><mi>
+        e
+       </mi><mo stretchy="false">
+        (
+       </mo><mi>
+        O
+       </mi><mi>
+        p
+       </mi><mi>
+        t
+       </mi><mi>
+        i
+       </mi><mi>
+        o
+       </mi><mi>
+        n
+       </mi><mi>
+        s
+       </mi><mo stretchy="false">
+        )
+       </mo>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0008" class="disp-formula-label">(8) </span></span></span></span>
+    </disp-formula-group> <disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0009.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_m0009.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0009" class="disp-formula-label">(9) </span></span></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        d
+       </mi><mi>
+        i
+       </mi><mi>
+        v
+       </mi><mi>
+        i
+       </mi><mi>
+        d
+       </mi><mi>
+        e
+       </mi><mi mathvariant="normal">
+        _
+       </mi><mi>
+        s
+       </mi><mi>
+        a
+       </mi><mi>
+        m
+       </mi><mi>
+        e
+       </mi><mi mathvariant="normal">
+        _
+       </mi><mi>
+        s
+       </mi><mi>
+        h
+       </mi><mi>
+        a
+       </mi><mi>
+        p
+       </mi><mi>
+        e
+       </mi><mo stretchy="false">
+        (
+       </mo><mi>
+        N
+       </mi><mo>
+        ,
+       </mo><mi>
+        O
+       </mi><mi>
+        p
+       </mi><mi>
+        t
+       </mi><mi>
+        i
+       </mi><mi>
+        o
+       </mi><mi>
+        n
+       </mi><mi>
+        s
+       </mi><mo stretchy="false">
+        )
+       </mo>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0009" class="disp-formula-label">(9) </span></span></span></span>
+    </disp-formula-group></p>
+   <p>where the <i>puzzle</i> predicate is used to address tiling puzzles (where a set of given pieces must be put on a grid); whereas <i>divide_same_shape</i> is devoted to situations where only the grid is provided in the figure, and the text requires to divide it into a certain number of equal pieces. The <i>Options</i> parameter is provided because often the puzzle allows to perform spatial operations on the pieces, such as <i>rotate</i> or <i>overturn</i>. The parameter <i>N</i> of <i>divide_same_shape</i> instead expresses the number of pieces in which the grid should be divided.</p>
+   <p>As an example, the puzzle in <a href="#f0002">Figure 2b</a> can be described by the following. <disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0007.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_um0007.gif&quot;}"><span class="mml-formula"></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        d
+       </mi><mi>
+        i
+       </mi><mi>
+        v
+       </mi><mi>
+        i
+       </mi><mi>
+        d
+       </mi><mi>
+        e
+       </mi><mi mathvariant="normal">
+        _
+       </mi><mi>
+        s
+       </mi><mi>
+        a
+       </mi><mi>
+        m
+       </mi><mi>
+        e
+       </mi><mi mathvariant="normal">
+        _
+       </mi><mi>
+        s
+       </mi><mi>
+        h
+       </mi><mi>
+        a
+       </mi><mi>
+        p
+       </mi><mi>
+        e
+       </mi><mo stretchy="false">
+        (
+       </mo><mn>
+        2
+       </mn><mo>
+        ,
+       </mo><mo stretchy="false">
+        [
+       </mo><mi>
+        r
+       </mi><mi>
+        o
+       </mi><mi>
+        t
+       </mi><mi>
+        a
+       </mi><mi>
+        t
+       </mi><mi>
+        e
+       </mi><mo>
+        ,
+       </mo><mi>
+        o
+       </mi><mi>
+        v
+       </mi><mi>
+        e
+       </mi><mi>
+        r
+       </mi><mi>
+        t
+       </mi><mi>
+        u
+       </mi><mi>
+        r
+       </mi><mi>
+        n
+       </mi><mo stretchy="false">
+        ]
+       </mo><mo stretchy="false">
+        )
+       </mo><mo>
+        .
+       </mo>
+      </math></span>
+    </disp-formula-group></p>
+   <p>In case of <i>puzzle(Options)</i> problems, the diagram reports both the grid and the pieces to be scattered on it. So, all the external borders of the picture’s elements are considered and the bigger one is found to be the grid (which is reasonable because it has to contain all the others). For both <i>puzzle</i> and <i>divide</i> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0024.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi mathvariant="normal">
+       _
+      </mi>
+     </math></span> <i>same</i> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0025.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi mathvariant="normal">
+       _
+      </mi>
+     </math></span> <i>shape</i>, the grid analysis starts by identifying its shape in terms of all its minimal building blocks: the smallest square of the grid, which the solver will represent through the position of its upper left vertex. The grid is therefore rendered as if it was on a Cartesian plane: a predicate <i>grid_diag(LX,LY,Grid)</i> serve the purpose. <i>LX</i> and <i>LY</i> are the lists of axis coordinates corresponding to the upper left vertices, and <i>Grid</i> is a matrix (a list of lists with the same length) where each element is either 0 or −1, to signify that a square was found or not found on the corresponding coordinates. Indeed grids might not always be convex forms, such as squares or rectangles. The strategy of representing the grid through two lists of coordinates and a matrix of 0/-1 allows to easily represent grids with various forms.</p>
+   <p>The solving strategy searches the first uncovered grid’s square and tries to cover the connected space around it with one of the pieces, possibly rotating and overturning it if such options are allowed. If the solver cannot cover the connected space, it backtracks by reconsidering the latest added piece. In case of <i>divide</i> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0026.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi mathvariant="normal">
+       _
+      </mi>
+     </math></span> <i>same</i> <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0027.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi mathvariant="normal">
+       _
+      </mi>
+     </math></span> <i>shape</i>, the algorithm does not know the shape of the pieces, but only that their area must be the total area of the grid divided by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0028.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       N
+      </mi>
+     </math></span>. So, the algorithm makes a first attempt to define a possible shape and generates <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0029.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/teta_a_2062456_ilm0029.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       N
+      </mi>
+     </math></span> identical pieces to occupy the grid.</p>
+   <p>Since for a machine the challenges in solving one of these puzzles is clearly not in the dimension of the problem, we do not investigate the performance of the library for increasing number of variables and constraints. However, we underline that the most time-consuming task is text detection and recognition, whereas the executions of the grid, polygon or diagram solvers (once the numbers are recognised) all require a very limited amount of time, in the order of milliseconds. This was indeed expected, because the dimensions of the considered problems are extremely small with respect to the computing capabilities of modern hardware.</p>
+   <p>The whole source code of our spatial reasoning library can be found on GitHub<sup>5</sup>.</p>
+  </div>
+ </div>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i34" class="section-heading-2">Experimental evaluation</h2>
+ <p>In our framework, the puzzle resolution process involves several different tasks, from the extraction/definition of the logic-based description of the puzzle, to the resolution of the problem specified in a computer-understandable form. The latter in particular is of less interest: as we discussed in <a href="#s0001">Section 1</a>, in the AI research field many successes have been obtained when tackling with specific problems. With this respect, the mathematical puzzles are indeed toy problems w.r.t. the currently available resolution techniques. For example, let us consider the numbers-in-diagram category games: when properly mapped, the puzzles become CSP problems of some ten variables and twenty constraints at most (remember that puzzles are aimed to human recreation). The performance of Constraint Programming solvers is usually measured against problem instances with tenth of thousands of variables, and hundred thousand constraints. As a consequence, the computational time required to solve a properly represented puzzle is usually in the order of nanoseconds, thus making any measurement meaningless. For this reason, in <a href="#s0005-s2001">subsection 5.1</a> we briefly discuss the computational performances of the solving process from the final user perspective, by simply exploiting the demo website.<a href="#en0010"><sup>10</sup></a></p>
+ <p>Of the greatest interest instead is the evaluation of the quality of the solving process. As previously discussed, the ‘hard’ part of solving the puzzles is getting a correct computer-understandable representation of the puzzle. In <a href="#s0005-s2002">subsection 5.2</a> we discuss a more qualitative evaluation of our approach, trying to highlight achievements but also weaknesses of the current framework. We do not introduce any metric on the quality of the obtained puzzle’s model, but rather we investigate if and when our framework manage to achieve a puzzle model that will in turn lead to a correct solution.</p>
+ <div id="s0005-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i35">The demo website and its performance</h3>
+  <p>A demo of our framework is available online<sup>10</sup>, and interested users can freely experiment with part of the presented tools.</p>
+  <p>As shown in <a href="#f0005">Figure 5</a>, the web-based application presents four areas: the ‘Human readable’ area is devoted to show the puzzle in its original aspect, while the ‘Prolog translation’ area shows the prolog query whose parameters are indeed the problem description in logical terms. The user is also invited to freely change the parameters and experiment with the reasoning library: tips are provided suggesting parameters that indeed will make the puzzle feasible, thus leading to a solution.</p>
+  <div class="figure figureViewer" id="f0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A Prolog application for reasoning on maths puzzles with diagrams</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Buscaroli%2C+Riccardo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Buscaroli%2C+Riccardo"><span class="NLM_given-names">Riccardo</span> Buscaroli</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chesani%2C+Federico"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chesani%2C+Federico"><span class="NLM_given-names">Federico</span> Chesani</a> <a href="https://orcid.org/0000-0003-1664-9632"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Giuliani%2C+Giulia"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Giuliani%2C+Giulia"><span class="NLM_given-names">Giulia</span> Giuliani</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Loreti%2C+Daniela"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Loreti%2C+Daniela"><span class="NLM_given-names">Daniela</span> Loreti</a> <a href="https://orcid.org/0000-0002-6507-7565"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Mello%2C+Paola"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mello%2C+Paola"><span class="NLM_given-names">Paola</span> Mello</a> <a href="https://orcid.org/0000-0002-5929-8193"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/0952813X.2022.2062456">https://doi.org/10.1080/0952813X.2022.2062456</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>19 April 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> Web interface of the demo application.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0005image" src="/na101/home/literatum/publisher/tandf/journals/content/teta20/0/teta20.ahead-of-print/0952813x.2022.2062456/20220419/images/medium/teta_a_2062456_f0005_oc.jpg" loading="lazy" height="409" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> Web interface of the demo application.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0005">
+   <div class="figureFootNote-f0005"></div>
+  </div>
+  <p></p>
+  <p>The user can freely choose among fifteen puzzles: upon the selection of a puzzle, its image and textual description are shown, together with the problem translation into a Prolog data structure. By pressing the button ‘Solve’, the selected image with its text, and the Prolog query, are processed to the server, which start a Prolog interpreter.<a href="#en0011"><sup>11</sup></a> The ‘SWIPL Console’ area reports the output of the Prolog interpreter running on the server, while the‘’Output image” shows those solutions that are required to be drawn on top of the original image (such as, e.g. the geometrical puzzles). At every pressing of the ‘Solve’ button the time to execute the SWIPL invocation is reported below the ‘SWIPL Console’ area.</p>
+  <p>In <button class="ref showTableEventRef" data-id="t0001">Table 1</button> we report the execution time (in sec.) requested to solve each of the puzzles available in the demo web application. The reported times are not comprehensive of the network overload. For each puzzle, resolution times are taken for ten consecutive tests, and the average time is reported.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A Prolog application for reasoning on maths puzzles with diagrams</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Buscaroli%2C+Riccardo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Buscaroli%2C+Riccardo"><span class="NLM_given-names">Riccardo</span> Buscaroli</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Chesani%2C+Federico"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Chesani%2C+Federico"><span class="NLM_given-names">Federico</span> Chesani</a> <a href="https://orcid.org/0000-0003-1664-9632"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Giuliani%2C+Giulia"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Giuliani%2C+Giulia"><span class="NLM_given-names">Giulia</span> Giuliani</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Loreti%2C+Daniela"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Loreti%2C+Daniela"><span class="NLM_given-names">Daniela</span> Loreti</a> <a href="https://orcid.org/0000-0002-6507-7565"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Mello%2C+Paola"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Mello%2C+Paola"><span class="NLM_given-names">Paola</span> Mello</a> <a href="https://orcid.org/0000-0002-5929-8193"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0952813X.2022.2062456">https://doi.org/10.1080/0952813X.2022.2062456</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>19 April 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Execution times of the demo web application. Average over ten runs for each puzzle</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F0952813X.2022.2062456&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The demo web application currently suffers some limits, partly because of security reasons, and partly as a consequence of some limits of our framework (see, <a href="#s0006">Section 6</a> for a discussion): (<i>i</i>) it is not possible to upload a puzzle: the user can experiment only with the proposed fifteen examples; (<i>ii</i>) the puzzles are already classified into the right problem type; (<i>iii</i>) the problem description in logical terms is already provided, instead of being generated on the fly: the user can however modify it before starting the reasoning.</p>
+ </div>
+ <div id="s0005-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i37">Qualitative assessment of the approach</h3>
+  <p>Several different aspects have a great influence on the quality of the system outcomes. Regarding the diagram-related part, there is of course the quality of the image: jpeg artefacts or a too much low resolution might lead the OpenCV library to detect false edges, or to miss existing ones. For example, the recognition of polygons is based on the assumption that edges indeed meet each other in some vertex: the presence or absence of some pixel around such vertex might induce the library to false conclusions. Even, the font adopted for indicating some number directly in the diagram might impact the performances of the OCR component. Scanned images in particular might present distortions of the characters, thus leading to recognition mistakes.</p>
+  <p>Regarding the text-related part, we might stress that the variability in describing the puzzles heavily affects the data extraction module. Such problem is exacerbated from the fact that the available dataset is in Italian language only. We worked on an English-translation of the problems, but we can’t exclude that we involuntary introduced some language bias during the translation step. Resorting to translation software lead to poor results, given that the puzzle’s texts are usually very short sentences. Alternatively, we investigated the adoption of NLP tools for the Italian language, but when confronted with analogous tools for the English language, the maturity level of the former appears to be lower. A further difficulty relates to the length of the puzzle’s texts, combined with (sometime useless) references to a real-life context. While such references help the human to better understand the problem, they might result as misguiding information when dealing with NLP tools.</p>
+  <p>The use of Deep Learning-based approaches might appear as the perfect answer to the problems highlighted above. However, the total number of available mathematical puzzles counts up to around a hundred of examples, a number far insufficient for any Machine Learning training algorithm. Fine tuning of pre-trained neural networks might not be feasible as well, given the small dimension of the training data.</p>
+ </div>
+</div>
+<div id="s0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i38" class="section-heading-2">Conclusion</h2>
+ <p>Maths puzzles with diagrams, even the most simple, are a perfect training field for AI. Indeed, despite the impressive progresses made so far, a lot of work is still needed to reach the ambitious goal of a machine autonomously solving a maths puzzle from its original textual and graphical formulation. No sub-symbolical technique can reach this goal alone. The case study of maths puzzles with diagrams inevitably requires a multimodal approach to problem solving, which combines sub-symbolical techniques to extract relevant information from text and diagram into a unique framework. We claim that such task must be guided by reasoning. Logic and its symbolical approach are therefore essential in this scenario.</p>
+ <p>Focusing on maths puzzles with diagrams, we propose a framework to allow knowledge integration of concepts expressed by the text with what can be extracted from the diagram. In particular, we propose a Data Extraction module, which follows a decision tree of questions from the most general to the most specific in order to deepen the knowledge about the puzzle’s request; and a set of primitives, which interact with image processing software to extract and reason upon spatial information about the elements in the figure. Similarly to the human cognitive skills needed to reason on maths puzzles, the functionalities offered by the proposed software are organised into overlapping layers, from the basic to the most complex ones.</p>
+ <p>The result is interesting not only for the wide set of puzzles that can be solved with our library but, more notably, because allows to verify that logic programming is the right tool to manage the complexity of the solving process, even when a multimodal approach is needed. Indeed, thanks to Prolog and the CLP(FD) library, we can easily express the knowledge extracted from the image and combine it with a logical description of the natural language text, leaving the burden of finding the best solving strategy for the puzzle to the underlying theorem prover.</p>
+ <p>Furthermore, we believe that the proposed decision tree of questions useful to data extraction represents itself a relevant contribution of our work, because it can be used by human beings to support the resolution process. For example, it can represent a guide to solve the puzzle for those children experiencing some difficulties in the identification of the correct resolution method; or it can have a didactical value if followed by the children looking for the relevant data in the text – thus helping the teacher to explain the crucial points of the problem description.</p>
+ <p>Our work also helps to highlight the limits of current approaches and the next steps required. As already discussed, the image processing and OCR software may show some shortcomings when recognising distorted letters and numbers. Besides that, an additional effort is needed to enrich the concepts that the library can manage. For example, the current version of the software can recognise geometrical figures, numbers, letters, and some more general concepts, like for example, the notion of ‘box’, which in the puzzle’s context can be a shape with a variety of forms. However, if the puzzle required to identify different real-world concepts (e.g. arrows, card’s suits, etc.), the integration of other, more sophisticated image recognition techniques into the library would be required.</p>
+ <p>The spatial reasoning library can manage puzzles that falls into the categories of numbers-in-diagram, geometrical figures, and spatial reasoning. These classes together cover the majority of puzzles from the considered source<sup>1</sup>, but another important part is represented by crypto-arithmetic games. This category could be integrated with a relatively contained effort because most of the spatial reasoning tools required for solving such puzzles is already provided by the library.</p>
+ <p>In our opinion, the biggest limit of our approach (and also the toughest problem so far) is related to the integration of NLP techniques to properly recognise the puzzle’s type and to convert the problem’s textual description into a set of logic facts and clauses. As mentioned earlier, we investigated different techniques, but none of them provided good results and at the same time proved to be robust enough against unforeseen examples. Other solutions might be inspired by some previous works on this topic (Berger et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>1996</a></span>; Mitra &amp; Baral, <span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i41 _i42" href="#"><span class="off-screen">Citation</span>2015</a></span>): we plan to investigate these techniques as well in the near future.</p>
+ <p>Finally, in the long run a challenging task would be to widen the application scope to contexts other than maths puzzles, where a problem-solving-oriented reasoning is required. An ambitious example of future work is the automated reasoning on technical problems after having understood the content of a related manual (with natural language descriptions and graphical schemas) without human intervention. In this regard, our proposal to integrate sub-symbolical techniques to account for perceptive tasks (like image processing) and symbolical techniques for higher-level reasoning reflects a widespread trend in model AI. In the broad range of scenarios that can benefit from a simplified human–machine interaction, the lesson learned from the multimodal approach to puzzle resolution can be extremely useful.</p>
+</div>

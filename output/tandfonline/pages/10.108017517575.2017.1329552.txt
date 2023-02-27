@@ -1,0 +1,765 @@
+<div id="S0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">1. Introduction</h2>
+ <p>Benchmarking, as a systematic process for improving organizational performance, has considerably increased in popularity worldwide since the 1980s. This process is based on the insight that by observing organizations and analyzing their performance, an organization can transform the way that it conducts business. In the context of benchmarking, such a transformation is generally achieved by applying the lessons learned from benchmarking results to one’s own organization (Camp <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>1989</a></span>; Peters <span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>1994</a></span>). Moreover, such performance measurements (or benchmarking) can often assist in explaining value or cost aspects to stakeholders (Spendolini <span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>1992</a></span>). Thus, the analysis and evaluation of this type of performance measurement approach have been the subject of various studies (e.g., Smith and McKeen <span class="ref-lnk lazy-ref"><a data-rid="CIT0056" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>1996</a></span>; Gacenga et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2011</a></span>).</p>
+ <p>In fact, research in the field of IT benchmarking (ITBM) is typically focused on the structuring, standardizing and generalizing of IT service catalogs and on their implementation within companies (e.g., Dattakumar and Jagadeesh <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2003</a></span>; Kütz <span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2006</a></span>; Nissen et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2014</a></span>) to model internally provided IT services in a standardized manner. Since IT service catalogs are commonly designed for internal or individual purposes only, they are often not directly comparable, particularly across different organizations. The information collected in a benchmark exercise is generally obtained using questionnaires on a broad range of topics, such as employee costs, software licensing costs, quantities of hardware and so forth. All of these approaches have one commonality: a concept for a uniform data management is not considered although it is strongly recommended (Wollersheim, Pfaff, and Krcmar <span class="ref-lnk lazy-ref"><a data-rid="CIT0066" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2014</a></span>; Pfaff and Krcmar <span class="ref-lnk lazy-ref"><a data-rid="CIT0048" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>). Moreover, little work published to date in the IS literature addresses this challenge of data integration across different types of IT benchmarks. Thus, most literature sources omit facts related to data quality and data integration. The lack of a uniform description of any arbitrary parameter that is measured and the relationships between parameters, limit the comparability of different types of benchmarks. In general, a domain-specific ontology may be a solution to ensure that the collected data are meaningful and to overcome these limitations of data comparability (Horkoff et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2012</a></span>; Pfaff and Krcmar <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2014</a></span>).</p>
+ <p>An ontology can either be constructed with assistance from domain experts or be discovered from domain-specific data. The first approach in ontology construction is performed manually and has high time and energy demands. If the ontology is to be developed for a more complex application area, then it tends to become increasingly subjective. An ontology may differ in numerous aspects depending on the recipient of the ontology, even when the ontology is constructed by domain experts. This is in contrast to the idea of a universal, common description of domain-specific knowledge. The second method of developing an ontology using the support of automated or semi-automated methods reduces the manual effort required for ontology construction and enhances the quality of the obtained ontology. Therefore, this paper is based on the results of the development of a domain-specific ontology in the ITBM domain supported by the use of natural language processing (NLP) techniques, as presented in (Pfaff and Krcmar <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2014</a></span>). This ontology was initially constructed based on already existing IT service descriptions and catalogs of numerous small- to medium-sized enterprises and on several questionnaires from different ITBM approaches. The data presented here were collected over the past seven years; they were supervised and evaluated within different benchmarking approaches and they encompass data from strategic and consortial IT benchmarks. Subsequently, as a result of the different acquisition channels through which the data were collected (i.e., on-line web platforms, Excel questionnaires and other sources), various different distributed data sources could be integrated using this domain ontology. In this paper, this ontology is used as the basis for a uniform data description in the domain of IT service management (ITSM) in general and ITBM in particular. To foster reuse of the benchmarking ontology the linkage to concepts provided by the DOLCE UltraLite (DUL) ontology (<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2010</a></span>) is also implemented. The benchmarking ontology in version 1.1 is available at <a class="ext-link" href="https://w3id.org/bmontology" target="_blank">https://w3id.org/bmontology</a>. In addition to this domain ontology, a system architecture for the integration of existing distributed data sources is presented in this paper. Thus, this work addresses the following questions: How can a system be designed to integrate existing distributed data sources using a domain-specific ontology? How can the administrator be supported to keep all the system components (mappings) up to date? To provide users with simple access to these distributed data sources NLP techniques are used to translate natural language requests into SPARQL (W3C <span class="ref-lnk lazy-ref"><a data-rid="CIT0064" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2008</a></span>) queries. The system architecture follows a service-oriented design, encapsulating client (user)-side functionalities in a browser application and server-side funcionalities in replaceable (service) components. Because ontologies are not static entities but evolve over time, the system is able to handle version changes of the ontology to safeguard data accessibility to the attached data sources.</p>
+ <p>The remainder of this paper is organized as follows: <a href="#S0002">Section 2</a> provides an overview of the relevant literature on the domain of ITBM, the ITBM ontology and on ontology-based applications. <a href="#S0003">Section 3</a> addresses methods for data integration in ITBM and describes the proposed system architecture for the ontology-based data integration of various distributed data sources in this domain. <a href="#S0004">Section 4</a> summarizes the results and metrics used for the data integration and presents the prototypical implementation of the proposed system architecture. Finally, <a href="#S0005">Section 5</a> offers conclusions and perspectives for future work and extension possibilities of the proposed system.</p>
+</div>
+<div id="S0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">2. Background</h2>
+ <div id="S0002-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">2.1. The domain of IT benchmarking</h3>
+  <p>As a systematic process for improving organizational performance, benchmarks can be classified according to the type of study (e.g., processes, products, strategies or generic objects) (Carpinetti and Oiko <span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2008</a></span>). Benchmarking partners may be units of the same organization, competitors in the same or different geographical markets, or organizations in related or unrelated industries. Thus, a distinction is drawn between internal and external comparisons of these performance measurements. Whereas an internal performance measurement focuses on the operation of a single company, an external performance measurement focuses on different companies. A benchmark can be subdivided into several process phases, beginning that the initial conception which describes the object of investigation and ending with optimizing and re-organizing internal (business) processes. In each of these phases of a benchmark, numerous data are collected in various data formats. These data consists of both qualitative and quantitative statements and are collected throughout the entire benchmarking cycle for every benchmark. Furthermore, these data are collected for every benchmarking participant. As previously stated by Ziaie et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0068" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2012</a></span>) and described in a structural form by Riempp, Müller, and Ahlemann (<span class="ref-lnk lazy-ref"><a data-rid="CIT0052" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2008</a></span>), tool-based data collection is quite common in the ITBM domain.</p>
+  <p>The representation of business knowledge using ontologies has become popular in recent years, with a particular focus on the representation of business processes (Thomas and Fellmann <span class="ref-lnk lazy-ref"><a data-rid="CIT0061" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2009</a></span>; Garcia-Crespo et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2011</a></span>; Aldin and Cesare <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2011</a></span>; Jung et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>; Hachicha et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2016</a></span>). By nature, when an ontology is constructed with a focus on business processes, it lacks the information needed to shift the focus to financial aspects, which are of crucial importance in the ITBM domain. The same holds true for ontologies used for business modelling, system configuration and execution management systems, as presented by Cai et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2016</a></span>), as well as for typologies in the context of business process management (BPM), as introduced by Müller et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2016</a></span>). On the one hand, this also applies for ontologies in the context of ITSM (Freitas, Correia, and E Abreu <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2008</a></span>; Valiente, Garcia-Barriocanal, and Sicilia <span class="ref-lnk lazy-ref"><a data-rid="CIT0062" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2012</a></span>), IT governance frameworks in the context of the Information Technology Infrastructure Library (ITIL) (Office <span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2011</a></span>) and for related ontologies, such as the GoodRelations ontology (Hepp <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2008</a></span>) or the Financial Industry Business Ontology (FIBO) (Council <span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2016</a></span>). On the other hand, ontologies such as the Business Model Ontology (BMO) (Osterwald, Pigneur, and Tucci <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2005</a></span>) and the e3-value ontology (Gordijn and Akkermans <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2001</a></span>) only focus on the conceptualization of economic aspects within a single enterprise or economic aspects within a network of enterprises. To the best of our knowledge, the only existing approach for measuring the impact of IT infrastructure changes on business processes and vice versa by an ontology was introduced by Vom Brocke et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0063" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2014</a></span>). However, the focus of this study is in linking (inner) organizational processes to their corresponding IT resources. However, (semi) automatically compare IT-related and business-related performance indicators across company boundaries, a more fine-grained conceptualization of such information is needed, especially if linking external data sources (i.e., map ontology concepts to IT business-related KPIs) to concepts within an ontology.</p>
+ </div>
+ <div id="S0002-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">2.2. The IT benchmarking ontology</h3>
+  <p>The basis for the development of the ITBM ontology is IT service descriptions in the form of IT service catalogs from different (IT) companies. Moreover, ITBM questionnaires (based on Riempp, Müller, and Ahlemann (<span class="ref-lnk lazy-ref"><a data-rid="CIT0052" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2008</a></span>); Rudolph and Krcmar (<span class="ref-lnk lazy-ref"><a data-rid="CIT0054" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2009</a></span>)) are used to construct the ontology. The structural layout of an IT service catalog can be generalized to (i) basic organizational information (such as the number of employees and revenue), subsequently referred to as basic data service, and (ii) 19 additional IT services, describing more specific aspects of IT offerings (see <a href="#F0001">Figure 1</a>). These IT services provide some general information about the purpose of the service offering (for example providing a mailbox or a virtual machine/server) and detailed information about the performance and cost indicators that are used to measure the performance of this service. Note that calculations of indicators may be dependent on different services. For example, the storage service contains all costs associated with disk storage in a data center; however, some of these storage-specific costs are also required within a more general IT service, such as in the context of server costs (as disk storage is associated with servers in general). Additionally, costs originally related to the database service are based on both the general server costs as part of the infrastructure component and the more specific disk storage costs. Again, some cost indicators of the database service depend on the performance indicators of the server and data storage service. It is also possible that IT services inherit indicators or values from the basic organizational information (such as the total number of employees of an organization) to perform further calculations within a specific service based on such a basic indicator.</p>
+  <div class="figure figureViewer" id="F0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>29 May 2017
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1. </span> Structural overview of the IT service catalogs used to construct the ontology.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_f0001_b.gif" loading="lazy" height="283" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0001">
+   <p class="captionText"><span class="captionLabel">Figure 1. </span> Structural overview of the IT service catalogs used to construct the ontology.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0001">
+   <div class="figureFootNote-F0001"></div>
+  </div>
+  <p></p>
+  <p>The structural layout of the IT service catalogs and IT service descriptions used to construct the ontology is presented in <a href="#F0001">Figure 1</a>. In short, IT services are mono-hierarchically structured. Each top-level service consists of a set of subordinated service segments and optionally additional indicator groups. As shown in <a href="#F0001">Figure 1</a>, the basic data service’s segments correspond to general organizational information (i.e., organizational structure, IT costs, and so forth), and the remaining IT services are segmented based on whether they are cost or performance indicators and optionally grouped into smaller logical units (for example, the host or guest systems in the context of the virtual server service). Services may also include the costs of other services (e.g., a database service also includes the cost specified in a virtual server service). The core concepts of the benchmarking ontology are described in <a href="#S0003-S2001-S3002">Section 3.1.2</a>.</p>
+  <p>To allow ontologies to be machine processable, their modeling is often implemented in the Web Ontology Language (OWL) because it is part of the World Wide Web Consortium (W3C) languages (Calvanese, De Giacomo, and Lenzerini <span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2001</a></span>; McGuinness and Van Harmelen <span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2004</a></span>). Technically, OWL is an extension of the <i>Resource Description Framework</i> (RDF) and the <i>RDF Schema</i> (RDF-S), which are based on XML as an interchange syntax. As an extension of RDF and RDF-S, OWL ensures the smooth technical exchange of information among applications within the context of the Semantic Web and business modeling frameworks (e.g., BPMN framework), which are also based on XML as their interchange syntax. An OWL ontology consists of: (i) classes as sets of individuals, (ii) individuals as instances of classes (i.e., real-world objects in the domain), and (iii) properties as binary relations between individuals. In addition to the implementation of domain knowledge, it is possible to define cardinality ranges and reasoning rules within an ontology. Several reasoning engines (e.g., Pellet <span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>) exist that can be used to infer additional knowledge explicitly included in an OWL ontology (e.g., class equivalence checks). An OWL ontology can be modeled using open-source ontology editors such as Protégé (<span class="ref-lnk lazy-ref"><a data-rid="CIT0051" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2014</a></span>), which is one of the most common tools for ontology development (Khondoker and Mueller <span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2010</a></span>).</p>
+  <p>To develop the ITBM ontology, we implemented a customized process based on the NeOn framework for ontology engineering Suárez-Figueroa, Gómez-Pérez, and Fernández-López (<span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2012</a></span>). The ITBM ontology is the result of a number of iterations of the overall ontology engineering process, which is based on an iterative-incremental life cycle model. Thus far, both the NeOn core scenario and the NeOn scenario for the reuse of ontological resources have been used. In addition, some of the NeOn activities were adapted to keep the engineering process as lightweight as possible. According to the NeOn specification for <i>knowledge acquisition</i> ontology learning was conducted to support the domain experts in performing the ontology elicitation activity; here, existing service catalogs and databases were analyzed using NLP techniques to extract the most important concepts, as described in detail in (Pfaff and Krcmar <span class="ref-lnk lazy-ref"><a data-rid="CIT0048" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>). Following the NeOn guidelines for the specification activity, competency questions were formulated, categorized and prioritized (see <button class="ref showTableEventRef" data-id="T0001">Table 1</button>). Moreover, the ITBM ontology is grounded in the upper ontology DUL to set the semantic foundation of the ITBM ontology (for details on the relevant concepts that are linked in DUL and the ITBM, see <a href="#S0003-S2001-S3002">Section 3.1.2</a>). The ITBM ontology was modeled using the open-source ontology editor Protégé.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>29 May 2017
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Extract of competency questions created during the <i>specification</i> activity grouped by pre-established categories as suggested by NeOn: (i) indicator structure, (ii) individual benchmarks, and (iii) participants and values. The square brackets indicate lists of values (Pfaff, Neubig, and Krcmar <span class="ref-lnk lazy-ref"><a data-rid="CIT0049" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F17517575.2017.1329552&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S0002-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i8">2.3. Ontology-based applications</h3>
+  <p>Storing information in ontology-based knowledge bases or systems is becoming increasingly popular across various areas of research. Lehmann et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>) introduced an approach to extract knowledge from Wikipedia using the Semantic Web and linked data technologies, called DBpedia. DBpedia serves as a linked data source on the Web since it covers RDF links pointing to various external data sources and vice versa. This linkage (mapping) is performed manually by the community. For DBpedia, Paredes-Valverde et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>) developed ONLI (ontology-based natural language interface) for querying DBpedia using natural language techniques. Rodríguez-García et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0053" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2014</a></span>) proposed a semantically enhanced platform based on an ontology for annotating cloud services to assist in the process of discovering the cloud services. This annotation for the cloud services semantic repository is generated automatically, but no further external data sources are directly attached by the semantic structure of an ontology. Ong et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2017</a></span>) introduced Ontobee as a linked ontology data server that stores ontology information using RDF triple-store technology that supports the query, visualization and linkage of ontology terms in the biomedical and biological domains. Ontobee primarily used for ontology term querying and result visualization, and it allows the execution manually written SPARQL code. In the healthcare domain, Lasierra et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2014</a></span>) introduced an ontology-based system to capture knowledge regarding item management and usage for hospitals and medical centers. The focus of this system is to align and unify dispersed health catalog modeling items and the structure of the organization related to their management rather than in data access of external sources by an ontology. Using Ontop, Calvanese et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2016</a></span>) presented an open-source ontology-based data access (OBDA) system that is used for querying relational data sources in terms of executing manually written end-users SPARQL queries. The mapping is of mappings to an existing ontology and by executing end-users SPARQL queries. The mapping of ontology concepts to data sources is performed manually using traditional mapping languages, such as the W3C RDB2RDF mapping-language (R2RML) (Souripriya, Seema, and Cyganiak <span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2012</a></span>). The advantages of an ontology-based data management approach were evaluated by Daraio et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2016</a></span>). Keeping all components of the system up to date, particularly the ontology and the mapping, is still the responsibility of the administrators of the system and is performed manually. Tatu et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0060" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2016</a></span>) presented an approach for converting users natural language questions into SPARQL for querying and retrieving answers from an RDF store. Because the focus of their research is in transforming semantic structures identified in unstructured data sources (documents) to an RDF store that is accessible via natural language questions, the mapping of ontological concepts to (external) data sources is beyond the scope of their proposed framework. The same constraint holds true for OntoNLQA (Asiaee et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>), which was introduced to query RDF data annotated using ontologies to allow posing questions in natural language. In the clinical and clinical research contexts, Mate et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>) introduced a system for linking information of different systems using declarative transformation rules for ontologies of the source system and the target system. Here, the mapping of the target ontology to the source ontology is also created manually. Focusing on specific technologies for the translation of RDB to RDF, Michel, Montagnat, and Faron-Zucker (<span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2014</a></span>) and Sahoo et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0055" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2009</a></span>) provided a brief overview on the individual technologies. As a symmetrization of the work, at present, domain-specific mappings for data semantics that lies outside an RDB schema are commonly performed manually.</p>
+ </div>
+</div>
+<div id="S0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i9" class="section-heading-2">3. Benchmarking data and knowledge integration</h2>
+ <p>A system for integrating various distributed data sources and documents must be able to not only handle various data sources but also integrate various data formats to serve as an effective tool for knowledge processing and knowledge representation (Nalepa <span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2010</a></span>; Pfaff and Krcmar <span class="ref-lnk lazy-ref"><a data-rid="CIT0048" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>). Therefore, this paper presents an ontology-based knowledge support system with a domain-specific ontology as a pivotal methodology for representing domain-specific conceptual knowledge, as proposed by Guo and Zhang (<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2009</a></span>) and Pfaff and Krcmar (<span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2014</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0048" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>). Because ontologies offer certain advantages over regular database schema, for example, they are highly flexible and enable modifications and extensions (Zhang, Hu, and Xu <span class="ref-lnk lazy-ref"><a data-rid="CIT0067" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2010</a></span>) in a straightforward manner, the presented system architecture addresses this unique capability through the use of a separate metadata repository. This repository is used to map the distributed data sources to the ontology (and its possible version changes over time) in a continuous update/integration interval.</p>
+ <div id="S0003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">3.1. System architecture</h3>
+  <p>The basic service-oriented architecture of the web-based system for ontology-based data integration is illustrated in <a href="#F0002">Figure 2</a>. The web application is implemented using the Play Framework (Play <span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2016</a></span>), offering stateless representational state transfer (REST) services (Fielding and Taylor <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2000</a></span>) for (client-side) interactions and encapsulating application logic in services with a uniformly defined interface (server-side). In this figure, <i>Client</i> represents the web browser-based user interface, allowing the user to interact with the server-side implementation. On the server side, the <i>Web Service Container</i> encapsulates web services (WS) for both user roles: the general user (User WS) and the administration user (Admin WS). The general user has only limited rights to modify the links between the attached data sources and the ontology: thus he is only allowed to formulate natural language requests, which are automatically translated into SPARQL queries using NLP techniques and the extract, transform, load (ETL) module. Conversely, the administration user is allowed to reconfigure the complete system, including the mapping configuration. At present, this type of user and access management is sufficient because all individuals using the system have the right to access all data attached to the system. For future implementation possibilities in terms of more finde-graind user management and access controls, see <a href="#S0005">Section 5</a>.</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>29 May 2017
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> System architecture for ontology-based data integration.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_f0002_b.gif" loading="lazy" height="500" width="412"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> System architecture for ontology-based data integration.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <p></p>
+  <div id="S0003-S2001-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i12">3.1.1. Web service container</h4>
+   <p>As previously mentioned, the system is implemented in the REST paradigm and is therefore accessible via the Web, and the web service container provides functionalities for two different user roles. The <i>user web service</i> (User WS) processes user requests in natural language form. These requests are analyzed using NLP techniques and are transformed and forwarded to the semantic database using SPARQL. By design, the NLP module, which can be executed by any user, focuses on a high rate of accuracy in its first iteration with the purpose of identifying as many domain-specific terms as possible within the data sets to be analyzed. In its second iteration, a high rate of <i>precision</i> is desired, identifying only results relevant to the (user or administration) queries (Pfaff and Krcmar <span class="ref-lnk lazy-ref"><a data-rid="CIT0048" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>). In addition to these search requests, users may also trigger the ETL module to reload the linkage between the ontology and the attached data sources. Note that through the user role, only the existing linkage between the attached database and the ontology can be reloaded. It is not possible for the user to update or modify links between concepts of the ontology and database objects.</p>
+   <p>The <i>admin web service</i> (admin WS) performs the following operations:</p>
+   <ul class="NLM_list NLM_list-list_type-bullet">
+    <li><p class="inline"><i>Ontology Update</i>: Through this operation, it is possible to either upload a new ontology or update an existing one. This ontology is stored in the semantic database. At this point, the new ontology is versioned, and the metadata repository is flagged as no longer valid due to possible mismatches between the data sources and the new ontology (see <a href="#S0003-S2001-S3003">Section 3.1.3</a> for details). Moreover, the dictionary that is part of the NLP module may be updated with new terms introduced by concepts or synonyms contained within the new version of the ontology.</p></li>
+    <li><p class="inline"><i>Data Source Management</i>: The attached data sources can be configured using the data source manager. It is also possible to connect structured and unstructured data sources. All necessary configurations for access to the data sources, such as internal database names or source folders, are stored in the metadata repository. Moreover, all attached sources (ontology and databases) are versioned to ensure that later mapping activities are linked with the correct version (for details see <a href="#S0003-S2001-S3003">Section 3.1.3</a>).</p></li>
+    <li><p class="inline"><i>Structure Mapping</i>: For a user with the administrator role, it is possible to specify the mapping of the attached databases to concepts contained within the ontology. Thus, this role possesses the right to read from the attached data sources and the right to write the mappings into the metadata repository. Using the NLP module, similar terms contained in the ontology and the attached data sources are first recommended as mapping candidates.</p></li>
+    <li><p class="inline"><i>Term Crawler Configuration</i>: It is possible to configure the term crawler to run periodically in addition to its manual execution by a user with the administrator role. The term crawler, which uses NLP techniques was previously introduced Pfaff and Krcmar (<span class="ref-lnk lazy-ref"><a data-rid="CIT0048" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>).</p></li>
+    <li><p class="inline"><i>Manual ETL Start</i>: In addition to the periodic execution of the ETL process, it is possible for this event to be triggered manually by a user or administrator.</p></li>
+   </ul>
+   <p></p>
+   <p>All operations are performed through a graphical user interface (GUI) with which administrators and users are able to trigger the previously mentioned operations stepwise guided by an operation wizard.</p>
+  </div>
+  <div id="S0003-S2001-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i13">3.1.2. SemDB and ontology</h4>
+   <p>The semantic database (SemDB) is implemented with Virtuoso Universal Server as a triple store (Erling and Mikhailov <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2010</a></span>; OpenLink <span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>). Because the database represents a SPARQL endpoint, it can be accessed through SPARQL queries. In addition to the semantically processed data provided by the attached external databases, SemDB also stores the ontology used for the mapping process.</p>
+   <p>The ontology can be divided into the three following sections: <i>individual benchmarks</i> (equivalent to one specific benchmark), <i>participants and values</i> and the <i>general indicator declaration</i>. Three concepts are used to describe the <i>individual benchmarks</i>, including a customizable structure of selectable indicators (measured within a benchmark), participants (viz., organizations) and the values that may be instantiated based on the concepts described in the <i>participants and values</i> section. The indicators themselves and their hierarchical and intermediate relationships are organized in the <i>general indicator declaration</i> section. An <i>indicator</i> itself is either a <i>PerformanceIndicator</i> or a <i>CostIndicator</i>. Indicators at the <i>PerformanceIndicator</i> level are non-cost indicators, such as quantity details or performance details. As indicated by the name, <i>CostIndicator</i> subsumes all indicators related to financial aspects that are compared in a benchmark. Because each indicator is included in at least one benchmark, this information is represented through by the indicator label. In this manner, it is possible to associate an indicator of one benchmark with an indicator of a different benchmark that has a different name but is identical from a semantic perspective (i.e., measure the same objective). A specific benchmark is specified by its label, represented by an arbitrary string and the year is represented by the standardized <i>gYear</i> literal type according to (Peterson et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0046" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2012</a></span>) within the concept of <i>individual benchmarks</i>. Here, the type property refers to the set of benchmark types (such as a process, product, strategic or generic benchmark (cf. Carpinetti and Oiko <span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2008</a></span>) and is limited to those values. For the connection to DOLCE, the <i>benchmark</i> class has been defined as a sub class of the <i>DUL:Event</i> class of the DUL ontology.</p>
+   <p>The components property facilitates the assignment of multiple <i>BMComponents</i>. Each BMComponent is either an instance of an indicator or a collection <i>(BMCategory)</i> of indicators. Consequently, it is possible to instantiate any arbitrary hierarchical structure of <i>BMCategories</i> and indicators. A <i>participation</i> in a benchmark is represented for each participating <i>organization</i> and its associated responses to an indicator by the intermediate concept <i>IndicatorDeclaration</i>. Thus, it is possible to associate an organization with a benchmark even without the existence of any specific indicator values (e.g., no responses have yet been given but the organization is participating in the benchmark) using the concept of <i>participants and values</i>. To foster reuse, an <i>organization</i> refers to the <i>DUL:Organization</i> concept provided by the DUL ontology Gangemi (<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2010</a></span>).</p>
+   <p><a href="#F0003">Figure 3</a> provides a conceptual overview of these three ontology sections and the relations in between. Grey nodes indicate DUL concepts and properties. The nodes of the graph illustrated in <a href="#F0003">Figure 3</a> refer to <i>concepts</i> (i.e., classes) or <i>datatypes</i> (cf. Motik, Patel-Schneider, and Parsia <span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2012</a></span>) of the ontology, whereas the edges refer to <i>properties</i> provided by the ontology. A class can also be considered as a set of instances, and a subclass can be considered as a subset of those instances (Motik, Patel-Schneider, and Parsia <span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2012</a></span>). A property can either establish a direct link between instances of two classes or link an instance to a literal (i.e., a value of a certain data type).</p>
+   <div class="figure figureViewer" id="F0003">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>29 May 2017
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 3. </span> Benchmarking ontology. Source: Pfaff, Neubig, and Krcmar (<span class="ref-lnk lazy-ref"><a data-rid="CIT0049" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_f0003_b.gif" loading="lazy" height="250" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0003">
+    <p class="captionText"><span class="captionLabel">Figure 3. </span> Benchmarking ontology. Source: Pfaff, Neubig, and Krcmar (<span class="ref-lnk lazy-ref"><a data-rid="CIT0049" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0003">
+    <div class="figureFootNote-F0003"></div>
+   </div>
+   <p></p>
+  </div>
+  <div id="S0003-S2001-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i15">3.1.3. Extract, transform, load module and metadata repository</h4>
+   <p>The ETL module is implemented as an independent single thread with a continuous execution interval in addition to being a triggered event (executed on demand by the user). The main tasks of the ETL process are (i) loading the external data into the semantic database by generating a virtual table based on the database structure of the external data base, and (ii) resolving redundancies that may occur during the loading process by the entity resolution (ER) step (see <a href="#S0003-S2001-S3004">Section 3.1.4</a> for details on ER).</p>
+   <p>Prior to the execution of the ETL module, the versions of the currently used ontology and its attached databases are identified. The versioning of the ontology is assured because an uploaded ontology is always annotated with its version number (using the OWL <i>versionInfo</i> tag). The data source manager is used to ensure the correct mapping of the relational structure of the attached databases to the corresponding ontology version. These steps are crucial to ensuring compatibility between the metadata and the ontology/databases and thus to guarantee that the mapping is performed on a sound basis.</p>
+   <p>The mapping of metadata that are stored in the metadata repository is two-fold. The first part specifies a set of transformation rules that transform the relational models of the connected databases into virtual models (i.e., nested SQL queries rather than physically transformed tables) and where each table of a connected database corresponds to a concept within the ontology. The second part specifies mappings from this virtual model to the target ontology itself. These mappings consist of the assignment between the entities and attributes from the data sources and their corresponding concepts and properties of the ontology. According to these mappings, the data integration process is performed stepwise as follows:</p>
+   <ol class="NLM_list NLM_list-list_type-roman-lower">
+    <li><p class="inline">Load the mapping entries from the metadata repository in accordance with the selected versions of both the ontology and the connected databases.</p></li>
+    <li><p class="inline">Apply transformation rules to the relational models of the connected databases to create an intermediate model with bidirectional links between tables; this is realized creating a set of SQL statements wrapped around the original tables.</p></li>
+    <li><p class="inline">Load data from the attached databases via the data source manager using the generated SQL statements.</p></li>
+    <li><p class="inline">According to the second part of the mapping specifications, map tables to concepts by converting their rows into instances of the ontology using the triple-store format.</p></li>
+    <li><p class="inline">Use the Virtuoso bulk loader to load the data into a new graph within the semantic database; old data are retained in the old graph.</p></li>
+    <li><p class="inline">Check whether the new graph differs from the data loaded in previous ETL iterations and log changes.</p></li>
+   </ol>
+   <p></p>
+   <p>The following example illustrates the result of the ETL process (i.e., the <i>mapping</i> between the ontology) based on <a href="#F0003">Figure 3</a> and two external data sources. The name space used for the uniform resource identifiers (URIs) for the concepts and properties of the ontology is represented in shortened form by the prefix <i>bm</i>. The instances of benchmarking values depending on which data source is mapped are indicated by the prefixes <i>v</i> and (i). In this example, two indicators (Indicator1a and Indicator2a) of a data set <i>a</i> from the first data source <i>v</i> and one indicator (Indicator 2b) of a different data set <i>b</i> from the second data source <i>v</i> are linked to each other using the benchmarking ontology. As previously noted and shown in <a href="#F0003">Figure 3</a>, a data set is always linked to an organization that is a participant in a specific benchmark. Thus, these three indicators are associated with two organizations (organizations A and B, where organization A is a participant in two benchmarks). The linkage between these three indicators and the ontology is shown below. In this example, <i>OrganizationA</i> is a participant in <i>benchmarkA</i>, providing <i>indicator1</i> and <i>indicator2</i>, and it is also a participant in <i>benchmarkB</i>, providing only <i>indicator2. OrganizationB</i> is a participant only in <i>benchmarkB</i>, providing <i>indicator1</i>.</p>
+   <div class="figure figureViewer" id="UF0001">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>29 May 2017
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo"></div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="UF0001image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_uf0001_b.gif" loading="lazy" height="500" width="371"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-UF0001"></div>
+   <div class="hidden rs_skip" id="figureFootNote-UF0001">
+    <div class="figureFootNote-UF0001"></div>
+   </div>
+   <p></p>
+  </div>
+  <div id="S0003-S2001-S3004" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i17">3.1.4. Entity resolution</h4>
+   <p>After data from multiple databases have been loaded using the ETL module, multiple instances resolved from different data sources may exist that actually refer to the same thing; in the above example, <i>organization A</i> exists in both connected databases (i.e., <i>v</i> and <i>i</i>). Thus, from the SemDB’s point of view, they are considered as two distinct instances; consequently, associated properties are not considered as belonging to the same organization (e.g., organization <i>v:OrganizationA</i> participates in benchmark A, and a different organization <i>i:OrganizationA</i> with the same name participates in benchmark B).</p>
+   <p>To consider both instances equally and thus integrate all associated data sets, ER has to be performed. In contrast to the mapping metadata, the ER metadata are only bound to the ontology’s version. For all concepts with instances to be resolved, the ER metadata specify criteria on how to compare such instances, i.e., (i) transformations to be conducted to ease comparison and (ii) criteria about the comparison itself. Considering organizations, transformations involve crossing out common suffixes (e.g., <i>Inc</i>), and comparison criteria may include the calculation of string distance metrics (e.g., Levenshtein distance). If two instances are considered equal with respect to the specified comparison criteria, then they are resolved by adding an <i>owl:sameAs</i> definition. In the current version of the system, only organizations are considered for ER. Data contributions within a benchmark are not integrated, even if the same indicator is requested within the scope of two different benchmarks running at the same time period. This is because each contribution refers to a distinct benchmark instance and we want to keep that knowledge.</p>
+  </div>
+ </div>
+ <div id="S0003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">3.2. Semi-automatic mapping recommender</h3>
+  <p>To support the mapping of database contents to ontology concepts, a semi-automatic mapping recommender is developed. Here, 'semi-automatic' refers to the fact that mappings are recommended in the first place and not applied automatically; thus, human interaction is needed to confirm recommended mappings for the purpose of quality assurance. The system supports two different types of mapping recommendations. The first type assumes that an entire database table corresponds to an existing ontology concept, and the second type assumes that each database table record is mapped to a different ontology concept. In both cases, mappings are only recommended if a certain level of confidence is reached (see also <a href="#S0004-S2002">Section 4.2</a>).</p>
+  <p><i>Mapping (virtual) tables to ontology concepts</i>: Often, a (physical) table from the original database schema directly corresponds to a concept defined in the ontology. In this case, all records of this table are converted into instances of this concept. Note that if concepts in the ontology are specified on a more fine- or coarse-grained level of abstraction, such a table may still be constructed virtually using appropriate SQL statements (e.g., JOINs); within the scope of the system, these types of tables have been referred to as <i>generators</i>. For this type of mapping, the implementation in pseudocode is shown in Listing 2.</p>
+  <p>Listing 1 Type-1-Generator-Mapping in pseudo-code</p>
+  <div class="figure figureViewer" id="UF0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>29 May 2017
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo"></div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="UF0002image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_uf0002_b.gif" loading="lazy" height="113" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-UF0002"></div>
+  <div class="hidden rs_skip" id="figureFootNote-UF0002">
+   <div class="figureFootNote-UF0002"></div>
+  </div>
+  <div class="figure figureViewer" id="UF0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>29 May 2017
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo"></div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="UF0003image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_uf0003_b.gif" loading="lazy" height="165" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-UF0003"></div>
+  <div class="hidden rs_skip" id="figureFootNote-UF0003">
+   <div class="figureFootNote-UF0003"></div>
+  </div>
+  <p></p>
+  <p><i>Mapping (virtual) table records to ontology concepts</i>: Occasionally records are not meant to be converted to instances of the same concept but are rather partitioned to different concepts. In this case, a specific table is chosen, and each of its records is converted into one instance of a specific concept of the ontology. For this second type of mapping, the implementation in pseudocode is shown in Listing 2.</p>
+  <p>Listing 2&nbsp;=&nbsp;Type-2-Generator-Mapping in pseudo-code</p>
+  <div class="figure figureViewer" id="UF0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>29 May 2017
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo"></div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="UF0004image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_uf0004_b.gif" loading="lazy" height="387" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-UF0004"></div>
+  <div class="hidden rs_skip" id="figureFootNote-UF0004">
+   <div class="figureFootNote-UF0004"></div>
+  </div>
+  <p></p>
+  <p>Both of these mapping cases are implemented using the same underlying bipartite matching algorithm (based on (Kuhn and Yaw <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>1955</a></span>)) while differing in terms of its run-time configuration. In the first case (i.e., mapping (virtual) tables to ontology concepts), the total set of virtual and physical table names and the names of the ontology concepts are used as the input configuration. In the second case (i.e., mapping (virtual) table records to ontology concepts), the total set of rows of a specified table and the names of ontology concepts are used as the input configuration for the mapping algorithm. The respective configurations of the algorithms are described in the following.</p>
+  <div id="S0003-S2002-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i22">3.2.1. Bipartite matching algorithm</h4>
+   <p>Both of the scenarios explained above are based on a highly configurable bipartite matching algorithm. Starting with two sets of items, this algorithm assigns each item of the first set to an item of the other set such that the total difference of pairwise matched items is as minimal as possible. Moreover, items are only matched if a certain confidence threshold of confidence is exceeded, meaning that the resulting set of matched items is not necessarily complete. As input, the bipartite matching algorithm requires two parameters, namely, a metric to be used to calculate the distance between two items and a minimum confidence threshold.</p>
+   <p>The implementation of the bipartite matching algorithm is based on an execution of the Hungarian method (Kuhn and Yaw <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>1955</a></span>). In the first step, a cost metric is calculated by assigning each pair of items from the two different sets a specific distance, which is expressed as a floating point number between 0 and 1. Here, 0 refers to the equality of items, and 1 refers to a maximum difference. The derived cost matrix is passed to the Hungarian method, which assigns each item of the first set an item of the second set. After the Hungarian method has completed, the similarity of the items within each matched item pair is derived by subtracting the beforehand calculated cost from 1. If the resulting similarity is below the specified minimum (i.e., the passed confidence threshold), then this match is removed from the result set.</p>
+   <p>Two different groups of metrics are used within the mapping recommendation system based on the metric class of the SimMetrics<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>1</sup></a></span> Java library. The first group of metrics compares strings and consists of the Levenshtein distance (Levenshtein <span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>1966</a></span>), and the Jaro-Winkler distance (Winkler <span class="ref-lnk lazy-ref"><a data-rid="CIT0065" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>1990</a></span>) is used to compare single words. The second is more coarse grained and compares complete groups of words. It is based on the Jaccard index (Jaccard <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>1901</a></span>) (i.e., comparing two sets by dividing the number of common items by the number of (distinct) total items), which additionally makes use of the previously calculated distances of the first group of metrics. Assuming equality between items, even if they slightly differ, these metrics are denoted as fuzzy Jaccard metrics. Thus, in our case, this <i>FuzzyJaccardJaroWinkler metric</i> calculates the Jaccard index while assuming equality between two items if their Jaro-Winkler similarity is greater than 0.94. For further details see <a href="#S0004-S2002">Section 4.2</a> .</p>
+  </div>
+ </div>
+</div>
+<div id="S0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i23" class="section-heading-2">4. Results and evaluation</h2>
+ <div id="S0004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i24">4.1. Ontology</h3>
+  <p>At present, the ITBM ontology (version 1.1) consists of a number of statements which are summarized in <button class="ref showTableEventRef" data-id="T0002">Table 2</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>29 May 2017
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Number of classes, properties, axioms and annotations in the ITBM ontology.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F17517575.2017.1329552&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The number of classes corresponds to the concepts described in the previous sections, including the 20 top-level service classes (one of which is the basic data service), corresponding to IT services that are commonly measured within an IT benchmark. The 1,250 indicator classes correspond to key performance indicators that are measured during an IT benchmark. Entities of the indicator taxonomy do not have their own properties defined because they only inherit them from the BMComponent class. Therefore, only a small set of object and data properties need to be additionally defined, and they are shown in <a href="#F0003">Figure 3</a>. Currently, the majority of axioms refer to the number of <i>SubClassOf</i> definitions. However, axioms on the domain and range of object properties and statements relevant to the characterization of disjoint classes also exist. The number of annotations includes bilingual (viz., English and German) <i>rdfs:label</i> for all classes. The description logic expressiveness for the benchmarking ontology itself is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0001.gif&quot;}"><span class="no-mml-formula"></span></span>, and in combination with the DUL ontology the logic expressiveness is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0002.gif&quot;}"><span class="no-mml-formula"></span></span>.</p>
+ </div>
+ <div id="S0004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i25">4.2. Metrics and minimum confidences of the mapping recommender</h3>
+  <p>Both the previously described metrics (see <a href="#S0003-S2002-S3001">Section 3.2.1</a>) and the best minimum matching confidences have been derived and proven in various experiments. Regarding the mapping within the <i>virtual</i> table layer (case one in <a href="#S0003-S2002">Section 3.2</a>), a simple Levenshtein metric with a minimum confidence of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0003.gif&quot;}"><span class="no-mml-formula"></span></span> is applied; in the instance mapping scenario (case two in <a href="#S0003-S2002">Section 3.2</a>), a fuzzy Jaccard metric using the Jaro-Winkler metric is used. The internal threshold of equality has been set to <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0004.gif&quot;}"><span class="no-mml-formula"></span></span> as already mentioned; the minimum confidence threshold necessary for accepting a match resulting from the Jaccard index has been set to <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0005.gif&quot;}"><span class="no-mml-formula"></span></span>. The computational complexity is of square, for calculating the cost matrix and calculating the distances for each pair of items. If the fuzzy Jaccard metric is used for the similarity check, then the computational complexity increases to <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0006.gif&quot;}"><span class="no-mml-formula"></span></span>, where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0007.gif&quot;}"><span class="no-mml-formula"></span></span> is the (largest) number of words contained in each item. Regarding to the Hungarian method, we utalize its optimized version, reducing its complexity from <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0008.gif&quot;}"><span class="no-mml-formula"></span></span> to <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0009.gif&quot;}"><span class="no-mml-formula"></span></span>. Removing the items with a distance that is worse than the minimum confidence threshold is performed linearly. Thus, the overall computational complexity of the bipartite matching algorithm is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="no-mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/teis_a_1329552_ilm0010.gif&quot;}"><span class="no-mml-formula"></span></span> (Edmonds and Karp <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>1972</a></span>).</p>
+ </div>
+ <div id="S0004-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i26">4.3. Prototypical implementation</h3>
+  <div id="S0004-S2003-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i27">4.3.1. User interface for natural language text to SPARQL queries</h4>
+   <p>A web interface can be used to access the attached data sources via natural language text (text-to-sparql). This client-side user interface is implemented using AngularJS (Google <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2016</a></span>) and is shown in <a href="#F0004">Figure 4</a>. As a result of the German data sets, the outputs of the user search (‘Show all participations of organisation ORG1 in year 2016’) are presented in the German language.The search tree within the ontology is presented directly underneath the automatically generated SPARQL query. Blue nodes represent the corresponding concepts in the ontology that the user was searching for data sets.</p>
+   <div class="figure figureViewer" id="F0004">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>29 May 2017
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 4. </span> Client-side user interface for ontology-based data access.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_f0004_oc.jpg" loading="lazy" height="235" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0004">
+    <p class="captionText"><span class="captionLabel">Figure 4. </span> Client-side user interface for ontology-based data access.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0004">
+    <div class="figureFootNote-F0004"></div>
+   </div>
+   <p></p>
+   <p>In this previous example, the search string ‘Show all participations of organisation ORG1 in year 2016’ is parsed and processed by the NLP module. In the first step, concepts that the user searched for are identified by comparing all words within the search string with the <i>label</i> description of all concepts. Note that all already specified concepts of the system are already lemmatized within a <i>CachingDictionary</i> as lemmatization of all concepts for every single user search would be very time consuming.</p>
+   <p>As shown in <a href="#F0005">Figure 5</a>, the Levinshtein distance of each lemmatized word within the search string and the implemented concepts is calculated. In the next step, these distances are evaluated against the operations needed to transform the lemmatized word into a concept. Only if this is possible by less than three NLP operations is the entered word identified as a concept. In <a href="#F0005">Figure 5</a> all identified concepts are highlighted using yellow background color. Analogous to the concept identification, the remaining words are analyzed to identify literals that are specified within the ontology. Consequently, the identified literals are transformed into filter parameters such as <i>subject, predicate, and object</i>. The <i>subject</i> specifies the concept for which the filter is set, the <i>predicate</i> specifies the <i>rdfs:type</i>, and the <i>object</i> is set by the literal itself. The following example shows the filter results for the identified literal ‘ORG1’. In the last step, all identified literals are marked as ‘processed’ (indicated by the green background color in figure 4.3.1).</p>
+   <div class="figure figureViewer" id="UF0005">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>29 May 2017
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo"></div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="UF0005image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_uf0005_b.gif" loading="lazy" height="102" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-UF0005"></div>
+   <div class="hidden rs_skip" id="figureFootNote-UF0005">
+    <div class="figureFootNote-UF0005"></div>
+   </div>
+   <div class="figure figureViewer" id="F0005">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>29 May 2017
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 5. </span> Stepwise identification and assignment of identified tokens.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_f0005_oc.jpg" loading="lazy" height="106" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0005">
+    <p class="captionText"><span class="captionLabel">Figure 5. </span> Stepwise identification and assignment of identified tokens.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0005">
+    <div class="figureFootNote-F0005"></div>
+   </div>
+   <p></p>
+  </div>
+  <div id="S0004-S2003-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i31">4.3.2. Data source configuration and mapping recommender</h4>
+   <p>The configuration of the mapping between an ontology and corresponding data sources is supported by an administrator user interface (see <a href="#F0006">Figure 6</a>). For each data source this configuration needs to be performed before the mapping of concepts to generators can be conducted. For consistency and data loss prevention reasons, all changes of the mapping between data sources and the ontology are stored temporarily and need to be confirmed separately after the configuration procedure. The mapping is performed stepwise, following the workflow shown in <a href="#F0007">Figure 7</a>.</p>
+   <div class="figure figureViewer" id="F0006">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>29 May 2017
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 6. </span> Admin: mapping configuration.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0006image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_f0006_oc.jpg" loading="lazy" height="170" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0006">
+    <p class="captionText"><span class="captionLabel">Figure 6. </span> Admin: mapping configuration.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0006">
+    <div class="figureFootNote-F0006"></div>
+   </div>
+   <div class="figure figureViewer" id="F0007">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>29 May 2017
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 7. </span> Workflow of the administration wizard.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0007image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_f0007_b.gif" loading="lazy" height="165" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0007">
+    <p class="captionText"><span class="captionLabel">Figure 7. </span> Workflow of the administration wizard.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0007">
+    <div class="figureFootNote-F0007"></div>
+   </div>
+   <p></p>
+   <p>(A) An external data source needs to be selected first. In this step, all already configured data connections are available for selection</p>
+   <p>(B) Based on the selected data source, different editing options for the mapping are available, depending on the different work-flow states.</p>
+   <ul class="NLM_list NLM_list-list_type-bullet">
+    <li><p class="inline">A new mapping can be started by ‘Start Editing’, or an active mapping can by modified by ‘Start Editing With Active Mapping’. In both of these cases, the active mappings between ontology concepts and generators are overwritten by a new configuration.</p></li>
+    <li><p class="inline">If not already finished and stored, an existing mapping configuration can be edited and locked or unlocked to prevent data loss.</p></li>
+   </ul>
+   <p></p>
+   <p>Once the configuration of the mapping is finished, the user is forwarded to the actual mapping web interface (see <a href="#F0008">Figure 8</a>. This interface can basically be divided into four sections.</p>
+   <ul class="NLM_list NLM_list-list_type-bullet">
+    <li><p class="inline">The first <a href="#S0001">section (1)</a> contains all of the actions that are available, such as saving the manually generated mappings; replotting the graph, which is shown in (2); and starting the semi-automatic mapping recommender (see <a href="#S0003-S2002">Section 3.2</a>).</p></li>
+    <li><p class="inline">The second <a href="#S0002">section (2)</a> shows the graph and all connections of the generators for the previously selected data source.</p></li>
+    <li><p class="inline">The third <a href="#S0003">section (3)</a> shows all concepts within the ontology that can be mapped to generators.</p></li>
+    <li><p class="inline">The fourth <a href="#S0004">section (4)</a> provides the details for a selected entity (concept, connection or generator) and configuration options to implement the mapping.</p></li>
+   </ul>
+   <div class="figure figureViewer" id="F0008">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>29 May 2017
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 8. </span> Client-side administration wizard for the configuration of mappings.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0008image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_f0008_oc.jpg" loading="lazy" height="260" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0008">
+    <p class="captionText"><span class="captionLabel">Figure 8. </span> Client-side administration wizard for the configuration of mappings.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0008">
+    <div class="figureFootNote-F0008"></div>
+   </div>
+   <p></p>
+   <p>The mapping of a selected entity can be displayed and configured using the linkage button (highlighted by a red ‘one’ in <a href="#F0008">Figure 8</a>. The number represents how many mappings already exist for this selected entity. If a generator and one or more concepts are selected in combination, the number indicates all mappings that exist for the selected pairings. Because various possibilities exist for mapping configurations depending on the selected concepts or generators, <a href="#F0009">Figure 9</a> shows the different mapping options based on different pairing possibilities.</p>
+   <div class="figure figureViewer" id="F0009">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>29 May 2017
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 9. </span> Mapping options based on different pairing possibilities.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0009image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_f0009_b.gif" loading="lazy" height="163" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0009">
+    <p class="captionText"><span class="captionLabel">Figure 9. </span> Mapping options based on different pairing possibilities.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0009">
+    <div class="figureFootNote-F0009"></div>
+   </div>
+   <p></p>
+   <p>After an entity is mapped manually or as a result from the mapping recommender, <a href="#F0010">Figure 10</a> shows the user interface for a detailed overview on the mapping parameters. In this assignment interface for each mapping, the header (A) and the detailed mapping configuration (B) for this entity are shown. In this example, the header consists of the generator name and its mapped ontology concept. In the scope of this header interface, it is also possible to show/hide the details for the mapping; to copy the current mapping, which is use full if only ‘Required Attributes’ differ for a selected entity; and to mark this mapping for deletion. The deleting process is performed during the save operation of the entire mapping process. Within the detailed view, attributes are separated according to their allocation. On the left side, the generator is shown together with its ‘Required Attributes’. On the right side of the detailed view, all mapped concepts are shown, together with their associated properties. The red overlay (1) indicates a previously performed deletion operation on this generator. Note that for all ‘Required Attributes’, only one value can be specified, whereas for the ‘DataTypeProperties’ (2), columns of the linked data sources can be specified (using,''#{..}'' notation) as well as a free text. For ‘ObjectProperties’ (3), only the specification of corresponding generators is possible. Note that although it might be possible that a very large number of nearly similar mappings need to be configured for a concept, it is possible to copy ‘Data- and ObjectProperties’ to reduce the configuration effort.</p>
+   <div class="figure figureViewer" id="F0010">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">A web-based system architecture for ontology-based data integration in the domain of IT benchmarking</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Pfaff%2C+Matthias"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Pfaff%2C+Matthias"><span class="NLM_given-names">Matthias</span> Pfaff</a> <a href="http://orcid.org/0000-0002-6231-9020" class="extLink">http://orcid.org/0000-0002-6231-9020</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Krcmar%2C+Helmut"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Krcmar%2C+Helmut"><span class="NLM_given-names">Helmut</span> Krcmar</a> <a href="http://orcid.org/0000-0002-2754-8493" class="extLink">http://orcid.org/0000-0002-2754-8493</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17517575.2017.1329552">https://doi.org/10.1080/17517575.2017.1329552</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>29 May 2017
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 10. </span> Admin: interface for the mapping configuration of entities.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0010image" src="/na101/home/literatum/publisher/tandf/journals/content/teis20/2018/teis20.v012.i03/17517575.2017.1329552/20180205/images/medium/teis_a_1329552_f0010_oc.jpg" loading="lazy" height="184" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0010">
+    <p class="captionText"><span class="captionLabel">Figure 10. </span> Admin: interface for the mapping configuration of entities.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0010">
+    <div class="figureFootNote-F0010"></div>
+   </div>
+   <p></p>
+  </div>
+ </div>
+</div>
+<div id="S0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i37" class="section-heading-2">5. Conclusion and future work</h2>
+ <p>Because there are numerous challenges related to data integration in the domain of ITBM and the related field of ITSM, this paper introduced an architecture for the (semi-)automatic and ontology-based integration of data from distributed data sources. To the best of our knowledge, the proposed system architecture and software prototype constitute the first approach to bridge the gap between a systematic characterization of IT services and their data-based valuation based on an ontology. Moreover, because the mapping of databases to ontology concepts is a very complex and time-consuming task, a semi-automatic mapping recommender was developed to support the user in this process. This recommender semi-automatically identifies similarities of possible mapping candidates and visualizes them in a graph to reduce the complexity of the mapping process for the system administrators. On the user side, the complexity for the use of such a system could also be reduced as it provides an easy way of to access data by using NLP techniques to translate natural language questions into SPARQL queries. This translation process is also implemented in a transparent manner by showing the generated SPARQL query and by visualizing the resulting search graph.</p>
+ <p>The proposed web-based system architecture for data integration allows numerous external data sources to be linked through the use of the domain ontology, which is a flexible way to link data sources without knowing the structures of already attached data sources. The separation of structural information provided by the ontology on the one hand and the data sources on the other hand addresses the need for flexibility in the case that the linkage must adapt to changes on both sides. In this way, already existing data sets from various data sources, such as MySQL databases, could be interlinked in terms of their semantic equivalence. At present, all non-administrator users are allowed to access all attached data sources. By using this client-/server-side implementation, based on web technologies, a more fine-grained access control could be implemented in the future. This would address possible security needs that could occur if the system is used beyond company boundaries. Moreover, it is conceivable that restrictions for the use of specific data sources and specific data points within a single data source could also be implemented to ensure that the attached data sources are only allowed to be used within a special context (benchmark) or by special users/organizations.</p>
+ <p>The ITBM ontology was developed on a large collection of ITBM documents and data set and covers various types of IT benchmarks and (IT) service descriptions from numerous organizations. Thus the developed ontology covers all aspects relevant for using it as universal link for the integration of different types of external benchmarking data. Because the quality of an ontology, in terms of its expressiveness and consistency, is highly dependent on domain knowledge, a broad range of different data are needed as a basis for the development process. Thus, the analysis of such an enormous amount of data, is generally extremely time consuming. This issue in the ontology construction process was already addressed by Pfaff and Krcmar (<span class="ref-lnk lazy-ref"><a data-rid="CIT0048" data-reflink="_i40 _i41" href="#"><span class="off-screen">Citation</span>2015</a></span>) using NLP techniques to populate the domain ontology and in this paper re-used to identify similar indicators in data sets across different IT benchmarks. In addition, the use of NLP also grounds the development process of an ontology and reduces the variations of an ontology that may occur if it is constructed manually by different domain experts. However, since an ontology is generally discontinuously changing over time, a periodic consistency check of the ontology and the linked data sources was also implemented. In the future, this already implemented consistency check could be developed further to automatically recognize changes upon their occurrence. Additionally, the mapping process for the ontology could also be extended to support and automatically resolve relations across different indicators that characterize the same concept. For now, the structural description of a benchmark within the ontology is limited to a hierarchical structure; this limitation could also be addressed in future research to enable the modeling of more complex coherence. Developing the capability of (semi-)automatic linkage with additional ontologies will be the next step in this research for the purpose of propagating a uniform description of domain knowledge in ITBM.</p>
+</div>

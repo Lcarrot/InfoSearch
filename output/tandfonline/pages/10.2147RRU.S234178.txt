@@ -1,0 +1,205 @@
+<div id="S0005" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i6" class="section-heading-2">Introduction</h2>
+ <p>Prostate cancer is diagnosed in 180,000 men every year, and one in seven men is affected in his lifetime.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>1</a></span></sup> Potentially curative interventions such as surgery may have significant treatment-related morbidity that negatively impacts quality of life. Urinary incontinence (UI) is common, and up to 71% of all men may require the use of absorbent pads following radical prostatectomy.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>2</a></span></sup> Because ten-year survival rates in prostate cancer exceed 99%, reduction in treatment-related morbidity can have profound and long-lasting effects. Recent efforts to identify risk factors for UI following treatment aim to facilitate informed treatment decisions and increase patient engagement in medical decision-making.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>2</a></span></sup><sup>–</sup><sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>5</a></span></sup></p>
+ <p>Prior work has found that factors associated with UI following treatment include treatment modality and pre-treatment urinary function.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>4</a></span></sup><sup>–</sup><sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span></sup> Much of this research was conducted using validated health-related quality of life instruments such as the EPIC-26,<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>7</a></span></sup> which can be time-consuming and costly to administer, are difficult to scale and administer in routine clinic workflow, can lack generalizability due to limited sample size, and can be subject to ascertainment bias.</p>
+ <p>The increased adoption of electronic health records (EHR) offers new opportunities to examine risk factors for UI following prostate cancer treatment.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>8</a></span></sup> Previous studies have shown that detail regarding a patient’s experience of UI is often documented in free-text, unstructured EHR elements such as clinician notes, which can be parsed with data mining methods such as natural language processing (NLP) to extract the incidence of the outcome.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>9</a></span></sup> As structured data (e.g., billing codes) analysis alone may not sufficiently capture outcomes like UI that are not routinely coded, data mining methods may improve the robustness of research on these patient-centered outcomes (PCOs) and on larger patient populations, which could yield more generalizable findings.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>10</a></span></sup></p>
+ <p>Previously, we have described an NLP approach for identifying UI following prostatectomy that showed high concordance with patient-reported outcomes captured using EPIC-26.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>11</a></span></sup> In this study, we use the developed NLP pipeline to evaluate rates of UI following prostatectomy for prostate cancer and to explore risk factors for postoperative UI, including preoperative urinary function. This evidence and approach can be used to guide shared decision-making and advance patient-reported outcomes research.</p>
+</div>
+<div id="S0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i7" class="section-heading-2">Methods</h2>
+ <div id="S0006-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i8">Data Sources</h3>
+  <p>Data were extracted from a prostate cancer clinical data warehouse described elsewhere.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>12</a></span></sup> In brief, prostate cancer patients were identified using diagnosis codes (ICD-9: 185, 233.4; and ICD-10: C61) from EPIC Clarity, which was installed in 2008. Patients were linked to the California Cancer Registry (CCR), a state-wide population-based cancer surveillance program that provides tumor characteristics and additional information on treatments outside of our cancer center. Captured variables included patient demographics, diagnoses, procedures, cancer-specific characteristics, and all clinical narrative text.</p>
+ </div>
+ <div id="S0006-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">Ethics Statement</h3>
+  <p>This study was reviewed and approved by Stanford University’s Institutional Review Board. No patients were involved in setting the research question, study design, or outcome measures. Protected Health Information is not reported in this study and we confirm patient data confidentiality.</p>
+ </div>
+ <div id="S0006-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">Study Population</h3>
+  <p>We conducted a retrospective analysis of patients undergoing prostatectomy between January 2008 and August 2018. Patients were included if they had been previously diagnosed with prostate cancer and had undergone prostatectomy as identified by CPT and by ICD-9 and -10 procedure codes (<u class="uu"><a class="ext-link" href="https://www.dovepress.com/get_supplementary_file.php?f=234178.docx" target="_blank">Supplement Table 1</a></u>). Procedure codes were inclusive of subtotal and radical procedures, perineal and retropubic techniques, and open and percutaneous approaches. To prevent confounding, patients were excluded if they underwent radiation therapy in addition to surgery.</p>
+ </div>
+ <div id="S0006-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">Electronic Health Record Processing</h3>
+  <p>We assessed UI for each patient using an NLP pipeline that annotates EHR free-text notes as previously reported.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>13</a></span></sup> This open-source pipeline cleans EHR free-text notes and extracts sentences containing at least one of 61 unique terms indicative of urinary incontinence, a dictionary that was created by a group of urology professionals at our institution (<u class="uu"><a class="ext-link" href="https://www.dovepress.com/get_supplementary_file.php?f=234178.docx" target="_blank">Supplement Table 2</a></u>). The pipeline does not require manually labeled text for training the NLP model. We created the training data heuristically by exploiting the preexisting domain knowledge (dictionary) to address the issue of inter-rater variability (as low as 0.62) observed during the annotation procedure. In order to learn the language space for context-aware vectorization of the words, the pipeline uses a neural word embedding model that was trained on 528,362 clinical notes including progress notes, discharge summaries, telephone call notes, and radiology reports. The final note classification model achieved an average f1-score of 0.86 on hold-out test data (117 notes). A more detailed analysis of NLP performance can be found elsewhere.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>13</a></span></sup></p>
+ </div>
+ <div id="S0006-S2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">Explanatory Variables</h3>
+  <p>Preoperative UI symptoms in the 4 months prior to the date of the surgery were studied as a primary explanatory variable given previous findings connecting pre-treatment urinary function with postoperative UI. Other covariates of interest were chosen based on previous association with PCOs following surgery for prostate cancer. Demographic variables such as age at diagnosis, race, and preoperative BMI have been found to affect urinary function and quality of life after treatment for prostate cancer.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>14</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>15</a></span></sup> Relative comorbidity burden was expressed using the Charlson Comorbidity Index, which encompasses 19 categories of comorbidity with a single score that reflects association with mortality.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>16</a></span></sup> Comorbidities such as coronary artery disease, hypertension, and diabetes mellitus have also been associated with anatomic factors that increase the risk of postoperative UI, such as stricture of the anastomosis between the bladder neck and the urethra.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>17</a></span></sup> Additional covariates included insurance type and tumor characteristics such as stage and Gleason grade group.</p>
+ </div>
+ <div id="S0006-S2006" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i13">Outcome Variable</h3>
+  <p>Using the NLP pipeline, we assessed whether UI was present at three-month timepoints within the first 2 years following surgery. The presence of UI was defined as NLP-identified documentation of symptoms within 45 days on either side of each time point. Using the pipeline, UI can be affirmed, negated, or inconclusive. Composite time points were additionally created for the first and second years after treatment. Missing or inconclusive values were handled using a modified last-observation-carried-forward approach that is executed only if the last observation negates UI. This imputation method assumes that clinicians do not document the absence of UI following a prior denial of symptoms.</p>
+ </div>
+ <div id="S0006-S2007" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">Statistical Analyses</h3>
+  <p>Summary statistics for the cohort are reported as frequencies for categorical variables and medians and interquartile ranges for continuous variables. Univariable analyses assessed UI frequency among evaluable patients at each time point, stratified by baseline UI status. The number of evaluable patients at each time point consists of those with affirmed or negated UI and does not include patients for whom symptoms cannot be determined. Error was expressed as a 95% confidence interval at each time point. Logistic regression was used to evaluate the effect of factors such as baseline UI status on UI risk in the first and the second years following surgery to account for effect on early and late symptoms. The strength of association between covariates and outcome was represented as an odds ratio (OR) with 95% confidence intervals (CI) and a significance level of p = 0.05. All analyses were conducted using R (version 3.4.1; R Foundation for Statistical Computing, Vienna, Austria).</p>
+ </div>
+</div>
+<div id="S0007" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i15" class="section-heading-2">Results</h2>
+ <div id="S0007-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i16">Cohort Characteristics</h3>
+  <p>We identified 4367 patients in our prostate cancer cohort who were diagnosed with prostate cancer and underwent surgery between January 2008 and August 2018. Of these 4367 individuals, 565 (12.9%) were deemed ineligible as they had received multiple modalities of treatment, and 10 (0.2%) were excluded due to ambiguous source data. Overall, 3792 (86.8%) of 4367 patients were included in the final study cohort (<button class="ref showTableEventRef" data-id="T0001">Table 1</button>). At diagnosis, 71.6% of patients in the final study cohort had stage I or II disease, 22.1% of patients had stage III or IV disease, and remaining patients had disease of unknown stage. Preoperative diagnosis and staging approach were performed per provider preference and were not captured in the database.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Clinical Documentation to Predict Factors Associated with Urinary Incontinence Following Prostatectomy for Prostate Cancer</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Kevin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Kevin"><span class="NLM_given-names">Kevin</span> Li</a> <a href="https://orcid.org/0000-0003-0425-2363"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Banerjee%2C+Imon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Banerjee%2C+Imon"><span class="NLM_given-names">Imon</span> Banerjee</a> <a href="https://orcid.org/0000-0002-3327-8004"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Magnani%2C+Christopher+J"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Magnani%2C+Christopher+J"><span class="NLM_given-names">Christopher J</span> Magnani</a> <a href="https://orcid.org/0000-0001-5757-9832"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Blayney%2C+Douglas+W"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Blayney%2C+Douglas+W"><span class="NLM_given-names">Douglas W</span> Blayney</a> <a href="https://orcid.org/0000-0002-7931-4533"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Brooks%2C+James+D"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Brooks%2C+James+D"><span class="NLM_given-names">James D</span> Brooks</a> <a href="https://orcid.org/0000-0003-4521-7505"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Hernandez-Boussard%2C+Tina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Hernandez-Boussard%2C+Tina"><span class="NLM_given-names">Tina</span> Hernandez-Boussard</a> <a href="https://orcid.org/0000-0001-6553-3455"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.2147/RRU.S234178">https://doi.org/10.2147/RRU.S234178</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>24 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1 </span> Characteristics of the Final Cohort of Patients Undergoing Surgery as Primary Treatment for Prostate Cancer</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.2147%2FRRU.S234178&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>In the 4 months prior to treatment, 154 of 474 (32.5%) evaluable surgery patients had documented UI (<a href="#F0001">Figure 1</a>). Relative to the baseline period, UI frequency at 3 months following treatment increased to 250 of 424 evaluable (59.0%) surgery patients (p &lt; 0.001 vs baseline).</p>
+  <div class="figure figureViewer" id="F0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Clinical Documentation to Predict Factors Associated with Urinary Incontinence Following Prostatectomy for Prostate Cancer</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Kevin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Kevin"><span class="NLM_given-names">Kevin</span> Li</a> <a href="https://orcid.org/0000-0003-0425-2363"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Banerjee%2C+Imon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Banerjee%2C+Imon"><span class="NLM_given-names">Imon</span> Banerjee</a> <a href="https://orcid.org/0000-0002-3327-8004"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Magnani%2C+Christopher+J"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Magnani%2C+Christopher+J"><span class="NLM_given-names">Christopher J</span> Magnani</a> <a href="https://orcid.org/0000-0001-5757-9832"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Blayney%2C+Douglas+W"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Blayney%2C+Douglas+W"><span class="NLM_given-names">Douglas W</span> Blayney</a> <a href="https://orcid.org/0000-0002-7931-4533"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Brooks%2C+James+D"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Brooks%2C+James+D"><span class="NLM_given-names">James D</span> Brooks</a> <a href="https://orcid.org/0000-0003-4521-7505"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Hernandez-Boussard%2C+Tina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Hernandez-Boussard%2C+Tina"><span class="NLM_given-names">Tina</span> Hernandez-Boussard</a> <a href="https://orcid.org/0000-0001-6553-3455"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.2147/RRU.S234178">https://doi.org/10.2147/RRU.S234178</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>24 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1 </span> Prevalence of urinary incontinence: at baseline (pre); at 3, 6, 9, 12, 15, 18, 21, and 24 months following surgery; and at composite time points for the first year (YR1, 3- through 12-month time points) and second year (15- through 24-month time points) following surgery.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/drru20/2020/drru20.v012.i00/rru.s234178/20221224/images/medium/drru_a_234178_f0001_b.jpg" loading="lazy" height="357" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0001">
+   <p class="captionText"><span class="captionLabel">Figure 1 </span> Prevalence of urinary incontinence: at baseline (pre); at 3, 6, 9, 12, 15, 18, 21, and 24 months following surgery; and at composite time points for the first year (YR1, 3- through 12-month time points) and second year (15- through 24-month time points) following surgery.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0001">
+   <div class="figureFootNote-F0001"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S0007-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">UI and Pre-Treatment Function</h3>
+  <p>82 of 113 evaluable surgery patients (72.6%) with baseline UI symptoms had documented UI in the first year following treatment, compared to 91 of 178 (51.1%) evaluable surgery patients with no baseline UI symptoms (p &lt; 0.001) (<a href="#F0002">Figure 2</a>). In the second year following treatment, UI was noted for 28 of 69 (40.6%) evaluable surgery patients with preoperative UI compared to 35 of 134 (26.1%) evaluable surgery patients without baseline UI (p = 0.051). Univariable logistic regression demonstrated a statistically significant association between preoperative UI status and UI in the first year (OR 2.53, 95% CI 1.52–4.20, p &lt; 0.001) and second year (OR 1.93, 95% CI 1.04–3.58, p = 0.036) following surgery.</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Clinical Documentation to Predict Factors Associated with Urinary Incontinence Following Prostatectomy for Prostate Cancer</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Kevin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Kevin"><span class="NLM_given-names">Kevin</span> Li</a> <a href="https://orcid.org/0000-0003-0425-2363"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Banerjee%2C+Imon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Banerjee%2C+Imon"><span class="NLM_given-names">Imon</span> Banerjee</a> <a href="https://orcid.org/0000-0002-3327-8004"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Magnani%2C+Christopher+J"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Magnani%2C+Christopher+J"><span class="NLM_given-names">Christopher J</span> Magnani</a> <a href="https://orcid.org/0000-0001-5757-9832"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Blayney%2C+Douglas+W"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Blayney%2C+Douglas+W"><span class="NLM_given-names">Douglas W</span> Blayney</a> <a href="https://orcid.org/0000-0002-7931-4533"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Brooks%2C+James+D"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Brooks%2C+James+D"><span class="NLM_given-names">James D</span> Brooks</a> <a href="https://orcid.org/0000-0003-4521-7505"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Hernandez-Boussard%2C+Tina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Hernandez-Boussard%2C+Tina"><span class="NLM_given-names">Tina</span> Hernandez-Boussard</a> <a href="https://orcid.org/0000-0001-6553-3455"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.2147/RRU.S234178">https://doi.org/10.2147/RRU.S234178</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>24 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2 </span> Prevalence of urinary incontinence (UI), stratified by pre-treatment/baseline UI symptoms: at 3, 6, 9, 12, 15, 18, 21, and 24 months following surgery; and at composite time points for the first year (YR1, 3- through 12-month time points) and second year (15- through 24-month time points) following surgery.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/drru20/2020/drru20.v012.i00/rru.s234178/20221224/images/medium/drru_a_234178_f0002_c.jpg" loading="lazy" height="350" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Figure 2 </span> Prevalence of urinary incontinence (UI), stratified by pre-treatment/baseline UI symptoms: at 3, 6, 9, 12, 15, 18, 21, and 24 months following surgery; and at composite time points for the first year (YR1, 3- through 12-month time points) and second year (15- through 24-month time points) following surgery.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S0007-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i20">Risk Factors for Post-Treatment UI</h3>
+  <p>Multivariable logistic regression was performed to assess the association between UI in the first and second years following treatment with explanatory variables including age, ethnicity, BMI, insurance type, disease stage and grade, Charlson Comorbidity Index, and baseline UI status (<button class="ref showTableEventRef" data-id="T0002">Table 2</button>).</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Clinical Documentation to Predict Factors Associated with Urinary Incontinence Following Prostatectomy for Prostate Cancer</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Kevin"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Kevin"><span class="NLM_given-names">Kevin</span> Li</a> <a href="https://orcid.org/0000-0003-0425-2363"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Banerjee%2C+Imon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Banerjee%2C+Imon"><span class="NLM_given-names">Imon</span> Banerjee</a> <a href="https://orcid.org/0000-0002-3327-8004"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Magnani%2C+Christopher+J"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Magnani%2C+Christopher+J"><span class="NLM_given-names">Christopher J</span> Magnani</a> <a href="https://orcid.org/0000-0001-5757-9832"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Blayney%2C+Douglas+W"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Blayney%2C+Douglas+W"><span class="NLM_given-names">Douglas W</span> Blayney</a> <a href="https://orcid.org/0000-0002-7931-4533"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Brooks%2C+James+D"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Brooks%2C+James+D"><span class="NLM_given-names">James D</span> Brooks</a> <a href="https://orcid.org/0000-0003-4521-7505"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Hernandez-Boussard%2C+Tina"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Hernandez-Boussard%2C+Tina"><span class="NLM_given-names">Tina</span> Hernandez-Boussard</a> <a href="https://orcid.org/0000-0001-6553-3455"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.2147/RRU.S234178">https://doi.org/10.2147/RRU.S234178</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>24 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2 </span> Multivariable Regression of Risk Factors for UI in the First and Second Years Following Treatment</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.2147%2FRRU.S234178&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>After controlling for these variables, we found a statistically significant association between UI in the first year following treatment with baseline UI (OR 2.30, 95% CI 1.24–4.28, p = 0.008). We also found a statistically significant association between UI in the second year following treatment with baseline UI (OR 2.24, 95% CI 1.04–4.83, p = 0.039) and BMI (OR 1.11, 95% CI 1.02–1.21, p = 0.019). We did not find statistically significant independent associations between UI in the first or second year following treatment with age at treatment, race, insurance type, higher disease stage, Gleason grade group, or Charlson score.</p>
+ </div>
+</div>
+<div id="S0008" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i21" class="section-heading-2">Discussion</h2>
+ <p>In this analysis of patients who underwent prostatectomy for prostate cancer, we found that the presence of UI prior to surgery is an independent predictor of increased risk of UI in both the first and the second years following surgery. Our measured prevalence of UI is similar to that reported in studies that have assessed UI prevalence using instruments such as the EPIC-26 and the Prostate Cancer Symptom Indices.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>18</a></span></sup> Our work complements these results using a different data source and suggests that use of novel EHR data mining approaches produces findings consistent with those obtained from survey instruments.</p>
+ <p>In previous work, Chen et al found that, among patients undergoing radical prostatectomy, patients with better urinary functioning at baseline were less likely to have problematic UI in the years following treatment.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>6</a></span></sup> The study investigators—who classified the severity of UI as normal (no symptoms), intermediate (symptoms are present but not distressful), and poor (symptoms are distressful)—reported that a higher percentage of the 72 patients with intermediate baseline urinary function had intermediate or poor UI at 24 months (84.7%) compared to the 288 patients with normal baseline urinary function (65.7%). The prevalence of poor UI was similar among patients with normal (15.8%) and intermediate (17.3%) baseline function, however. We report prevalence of UI at 24 months as 25.0% and 17.2% at 24 months for patients with and without baseline UI, which is more in line with “poor” UI as defined by Chen et al and may suggest that symptoms captured in our data mining approach—and perhaps, by extension, free-text clinical notes—are more severe or distressing to the patient. Barocas et al similarly found using EPIC-26 among a sample of 1523 postoperative patients that those with excellent baseline UI domain scores had a higher mean domain score at 3 years following radical prostatectomy compared to patients with poor baseline domain scores.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>18</a></span></sup></p>
+ <p>We also found a statistically significant association between increasing BMI and UI in the second year following treatment. The role of BMI in urinary continence is controversial. Wiltz et al reported that men with a BMI &gt; 30 more frequently had perioperative complications, including prolonged operative time and increased blood loss, and were more likely to have worse urinary symptom scores at 3 and 9 months following robotic prostatectomy.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>19</a></span></sup> On the other hand, Nilsson et al found no association of BMI with UI prevalence in a series of 1411 men following radical prostatectomy.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>20</a></span></sup> We found a relatively weak association between BMI and UI risk in the second year following surgery, and it is possible that differences in patient populations, surgical techniques, or chance might explain differences in findings between studies.</p>
+ <p>We notably did not find a statistically significant association between UI and age at the time of surgery, despite previous reports demonstrating age to be a strong predictor for return of continence following radical prostatectomy.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>17</a></span></sup> Nilsson et al have described an exponential relationship between age at surgery and UI prevalence after prostatectomy, although only showed a statistically higher risk in the ≥70 age group compared to the ≤54 age group.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>20</a></span></sup> Black race has similarly been associated with worse quality-of-life following treatment for prostate cancer,<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>15</a></span></sup> and we detected a trend, albeit not significant, suggesting a positive association with postoperative UI.</p>
+ <p>One explanation for the different results produced by our analysis is data missingness. Many patients in our cohort lacked documentation of UI-related symptoms during the 2-year postoperative follow-up period, decreasing the robustness with which we could assess UI frequency, conduct multivariable analyses, and identify novel risk factors for postoperative UI. This highlights the inherent challenge of using the EHR as a data source, as outcomes can be assessed only insofar as they are sufficiently documented in the medical record. While we have previously shown concordance of UI reporting between patients and clinicians for postoperative UI,<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>11</a></span></sup> other studies have suggested that urologist and patient assessment of symptoms can often disagree.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>21</a></span></sup> Continued efforts to incorporate machine learning approaches in outcomes analyses will, therefore, require concurrent focus on ensuring appropriate input data quality.</p>
+ <p>An additional limitation is the accuracy with which UI was identified among the EHR unstructured text by the construction of the NLP pipeline itself. Banerjee et al showed that this NLP pipeline had 89% precision and 84% recall in a validation data set, with f1-score of 0.86. Imperfect precision may lead to non-differential misclassification of exposure that could bias association analyses toward the null hypothesis. Imperfect recall may contribute to data missingness. Regardless of performance, the model will understate the true prevalence of UI if either clinicians or patients do not report all symptoms, or if the manner in which UI is documented is not captured by the design of the pipeline.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>13</a></span></sup> Second, this study was performed at a single institution, which limits the generalizability and the power of this analysis. Future studies in other healthcare settings and institutions could allow us to assess the reproducibility of NLP-derived findings given potential variability in physician documentation and patient population. Regardless, our algorithm was able to identify associations of UI with preoperative urinary status and BMI that have been reported using surveys and manual chart reviews.</p>
+ <p>Our results highlight the opportunity to generate both real-time and large-scale outcomes analysis from routinely collected EHR data.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>22</a></span></sup> Even with potential limitations of mining the EHR, our methods assess patient-centered outcomes previously measurable only through time- and resource-intensive approaches&nbsp;such as EPIC-26 or chart review.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>7</a></span></sup> Electronic patient-reported outcomes systems can allow for continuous monitoring and integration of PCO data into clinical practice and may ultimately facilitate the creation of decision tools to communicate individualized postoperative UI risk with patients.<sup><span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i23 _i24" href="#"><span class="off-screen">Citation</span>23</a></span></sup> NLP and related approaches, therefore, have the potential to supplement existing instruments such as the EPIC-26 in assessing the risk of UI and other PCOs following prostate cancer treatment and could be used in large EHR systems to estimate PCOs at the population level.</p>
+</div>
+<div id="S0009" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i22" class="section-heading-2">Conclusion</h2>
+ <p>Mining clinical narrative text of an EHR can provide population-level information on important patient-centered outcomes such as urinary incontinence after prostate surgery. By linking mined and structured data, we can produce rich datasets that are useful in assessing risk factors for outcomes such as urinary incontinence in prostate cancer care, which ultimately may help in evaluating and improving the quality of care in urologic oncology as well as other clinical settings.</p>
+</div>

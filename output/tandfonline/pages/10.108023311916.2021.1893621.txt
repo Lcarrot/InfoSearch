@@ -1,0 +1,3966 @@
+<div id="s0001" class="NLM_sec NLM_sec_level_1"></div>
+<div id="s0002" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">1. Introduction</h2>
+ <p>Sentiment analysis (SA) is a demanding research topic of natural language processing (NLP). It has a substantial potential impact on from academia’s various areas to commercial applications since processing of different data sources from social media, movie reviews, and product reviews provides a strategical understanding of human feelings and opinions.</p>
+ <p>Sentiment analysis is based on detecting the polarity of a given text, which is generally classified as a positive, objective or negative thinking about specific domains, subjects or items (Pang &amp; Lee, <span class="ref-lnk lazy-ref"><a data-rid="cit0029" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2008</a></span>). Research on sentiment analysis growing very fast with the increased interest and available resources in this field. English is the richest language in terms of availability of resources. Most sentiment analysis methods and algorithms have been first implemented for English, and{ and NLP resources, such as polarity lexicons (Cambria et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2012</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2014</a></span>) and sentiment treebank datasets (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>), parsers and other NLP tools are also essentially available for English (Oflazer, <span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2014</a></span>). However, the accuracy level for the sentiment analysis tasks for morphologically rich languages (MRLs) is not well enough for commonly studied languages like English due to the data and source sparsity drawbacks. Hence, non-English languages should gain momentum in NLP studies, especially complementing their resources’ deficiencies to reach state-of-the-art results.</p>
+ <p>Recently, sentiment analysis studies have focused on the compositional architectures for learning syntactic and semantic context since current semantic vector space models cannot capture the meaning of longer phrases (Oflazer, <span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2014</a></span>). The recursive deep learning models have been used widely used in many NLP applications to employ composite functions over an annotated parse trees. They are tree-based (i.e. hierarchical) neural networks, which are inspired by human understanding and can learn the compositional semantics of sentence meaning by recursive compositional functions that combine the meanings of words of sub-phrases (Iyyer et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2014</a></span>; Liu et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2014</a></span>; Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2012</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="cit0033" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2010</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2011</a></span>). The proposed architectures have been applied successfully for sentiment analysis task (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>), language parsing (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2011</a></span>), and political ideology detection (Iyyer et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2014</a></span>).</p>
+ <p>Although many studies have been done for sentiment analysis in English, the research focusing on compositional models for morphologically rich languages (MRLs) is still developing. For example, current studies for Turkish have not gone far beyond the conventional machine learning approaches, and lexicon-based approaches since statistical methods cannot perform well enough for MRLs (Kaya et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2012</a></span>). In addition, the conventional approaches have a performance bottleneck due to representing words as independent atomic units, that causes the loss of explicit information among words and reduces the accuracy.</p>
+ <p>In this work, we seek to address three main issues for Turkish SA; (i) to investigate the effectiveness of the recursive compositional models for Turkish sentiment analysis, (ii) to construct a Turkish Sentiment Treebank (a hierarchical representation of the sentences, i.e. fully labelled parse trees) to capture the semantic compositionality in a given sentence, and (iii) to contribute to the lack of sentiment analysis resources that also can be used for the other recursive deep models for future studies.</p>
+ <p>To this end, we introduced our contributions and efforts to develop a novel Morphologically Enriched Turkish Sentiment Treebank (MS-TR), which is annotated according to each word’s morphological information. To the best of our knowledge, MS-TR is the first sentiment treebank that is fully labelled according to morphological structures of the Turkish words. It has been constructed to employ compositional effects of the sentiment analysis for two different subtasks: binary classification and fine-grained classification. MS-TR is constructed by using different domains, including movie reviews and multi-domain product reviews, which were annotated by Demirtas and Pechenizky (Demirtas &amp; Pechenizkiy, <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>). The fine-grained MS-TR is constructed based on the latest updated version of BOUN Treebank (Turk et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2019</a></span>). It was constructed by phrase-level annotation based on the morphological information of each word. The aim is investigating whether recursive neural networks can improve the classification accuracy of MRL using fully labelled parse trees of different domain dataset, which are annotated based on the morphological information. Specifically, we employ Recursive Neural Tensor Networks (RNTN) for binary and fine-grained sentiment classification over the MS-TR, since RNTN has been performed better compared to the other recursive models such as semi-supervised recursive autoencoders (RAE), matrix-vector recursive neural networks (MV-RNN) both for English (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>) and for Arabic, that is also MRL like Turkish (Baly et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p>
+ <p>The source code for the sentiment analysis and the Turkish Sentiment Treebank dataset are available at <a class="ext-link" href="https://tinyurl.com/y7pk4pwj" target="_blank">https://tinyurl.com/y7pk4pwj</a>. MS-TR can also be downloaded from <a class="ext-link" href="https://data.mendeley.com/datasets/nz7vm5rchd/1" target="_blank">https://data.mendeley.com/datasets/nz7vm5rchd/1</a> (Zeybek, <span class="ref-lnk lazy-ref"><a data-rid="cit0042" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2020</a></span>). The rest of the paper is organized as follows. Section 2 reviews the related work focused on Turkish sentiment analysis studies and tree-based learning models. Section 3 introducescharacteristics of Turkish language in terms of MRL, and Section 4 describes the annotation strategies for the proposed MS-TR. In Section5, RNTN architecture has been represented, and Section 6 reports the experiments employed by RNTN over MS-TR. The discussion part and conclusions have ended the proposed study.</p>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">2. Related work</h2>
+ <p>Research on sentiment analysis is growingvery fast with the increased interest and available resources in this field. The accuracy level for the sentiment analysis tasks has mainly related to the availability of sentiment analysis resources and NLP tools. English is the richest language in terms of availability of resources, such as polarity lexicons (Cambria et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2012</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2014</a></span>) and sentiment treebank datasets (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>). So far, many studies have been done with the highest level of accuracy results for English sentiment analysis. However, research for morphological rich languages (MRLs) is still developing.</p>
+ <p>Recursive Neural Networks are powerful models for sentiment analysis that have already performed well in many languages for sentiment classification task, as they can capture the semantic compositionality in a given sentence (Baly et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2017</a></span>; Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>). The standard version of the Recursive Neural Networks (Tree-RNNs), namely Recursive Autoencoders (RAE) was introduced by Socher et al. (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2011</a></span>) using autoencoders in a recursive manner. A semi-supervised version of the RAE can learn phrase representations to predict sentiment distributions of the sentences with good accuracy levels; however, it is not able to capture long-phrases meanings and all types of compositions. Hence Recursive Neural Tensor Networks (RNTN) has been developed (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>) to model the meaning of long-phrases by a recursive combination functions in a neural tensor network’s architecture. RNTN employs fully labelled treebank, i.e. specialised tree structures to combine semantics in a bottom-up manner. Stanford Sentiment Treebank (SST) has been developed from the English classification dataset (Pang &amp; Lee, <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2005</a></span>) for the binary and the fine-grained sentiment analysis. RNTN have been achieved impressive successes for sentiment analysis in English by using SST.</p>
+ <p>Dong et al. proposed an adaptive Recursive Neural Network (AdaRNN) for target-dependent sentiment analysis (Dong et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2014</a></span>). They have been created a manually labelled twitter dataset to detect the sentiment of the given target by employing AdaRNN layer. The recursive structures were built based on the dependency parsing by employing multiple compositional functions. In terms of morphologically rich languages (MRLs), the Arabic language have been tested with Arabic Sentiment Treebank (ARSenTB) (Baly et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p>
+ <p>Even though compositional models and deep learning methods have been popular recently, most studies in the field of the Turkish sentiment analysis have particularly followed the two leading pathways, such as the lexicon-based (rule-based) approaches, machine learning-based approaches.</p>
+ <p>The majority of machine-learning-based studies have been used Naïve Bayes (NB), Support Vector Machines (SVM), Maximum Entropy (ME) classifiers combined with conventional feature representation methods. Erogul’s thesis is the earliest Turkish sentiment analysis work based on the machine learning approach that was done in 2009 (Erogul, <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2009</a></span>). He built the tagged movie review dataset from the Beyazperde.com and classified them by using SVM. He investigated the effect of the stemming process and part-of-speech (POS) tags to the Turkish sentiment model performance. As a baseline, he used bag-of-words features with spellchecking and elimination process and achieved 85% F1-score. As a particular case, he focused on the different features, including using only roots of the words, parts-of-speech (POS) tags, n-grams. Using only the roots of the words as a feature decreased performance to the 83.99% F1-score. Noun + Adjective features performed better compared to the other part-of-speech tags features and achieved 83.34% F1-score. The best accuracy has been achieved as 86.16% F1-score, which has been obtained by the combination of the unigram, bigram, trigram and 4 gram.</p>
+ <p>Another remarkable study was done to classify Turkish political news by Kaya et al. (Kaya et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2012</a></span>). They used Naïve-Bayes (NB), Support Vector Machines (SVM), Maximum Entropy (ME), and Character-based N-gram Language Model (<i>n</i>-gram LM) based on the <i>n</i>-grams, root words, adjectives and polar words features. The features are combined to represent political news in the bag-of-words (BOW) framework. Maximum Entropy and n-gram LM achieved better accuracy levels compared to the SVM and NB with the 76–77% accuracy level.</p>
+ <p>A model has been proposed for assigning polarities of the Turkish blog posts about products and services by Aytekin (Aytekin, <span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>), that uses Naïve Bayes Algorithm to classify 350 positive and 350 negative comments which were collected by We Feel Fine website. A sentiment dictionary, including 4,744 synsets, was used to assign probability scores of each word in a comment. The positive and negative precision scores were measured as 72.28% and 73.14%, respectively.</p>
+ <p>Although machine learningalgorithms have reached high success rate, lexicon-based approaches are widely preferred because they are practical. These methods are simply applied by attaching a sentiment polarity score to the words or phrases based on the lexicon information. As an earlier lexicon-based work, Vural et al. proposed to use SentiStrenght as a polarity lexicon (Thelwall et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0037" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2012</a></span>) to classify movie review dataset with unsupervised learning. They translated the SentiStrenght’s polar words from English to Turkish (Vural et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0040" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>) and calculated the total polarity score of the original input text to detect positive and negative polarity score. In terms of the accuracy result, their framework has reached up to 75.90% for the binary classification task.</p>
+ <p>Over the last few years, some additional efforts have been made to built Turkish polarity lexicons. Dehkharghani et al. built a polarity lexicon, namely SentiTurknet, which contains 14,795 synsets each has three-level (positive, negative, neutral) polarity score (Dehkharghani et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2016</a></span>). The polarity scores are evaluated by complementary usage of various NLP resources, such as English Wordnet (Miller et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>1990</a></span>), Turkish Wordnet (Bilgin et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2004</a></span>) lexicons, English SentiWordNet (Baccianella et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2010</a></span>), English SenticNet (Cambria et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2012</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2014</a></span>), Polar Word Set (PWS), and polarity words with Pairwise Mutual Information (PMI) polarity scores. The proposed algorithm combined manual labelling and feature extraction steps to detect the polarity of a given synset. Additional polarity features were extracted from polarity lexicons, and they classified by logistic regression (LR), neural networks, and SVM. The final estimation of the label was predicted by the combination of these three classifiers. SentiTurkNet was tested on the Turkish movie reviews from beyazperde.com and achieved between 61.3% and 66.7% accuracy for ternary sentiment classification.</p>
+ <p>In addition to the rule-based approaches based on the lexicons and polarity scores, Bag of Words (BoW) and <i>N</i>-Gram based features have become the most preferred feature modelling methods. Coban et al. (Coban et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2015</a></span>) constructed a Twitter dataset for binary sentiment classification, and they used BOW and N-grams to extract features. The dataset annotated according to the positive and negative emoticons. Naïve Bayes, Multinom Naïve Bayes, SVM and K-Nearest Neighbourhood (k-NN) algorithms were used to classify weighted features. For all case studies, N-gram features performed better than the BOW and achieved between 62%and 66% accuracy. Similarly, the Extreme Learning Machine (ELM) was used to predict the sentiment of the tweets and customer reviews of the telecom company based on the BOW, and N-gram features compared to SVM. SVM performed better with the highest accuracy level 74%, which is not good enough again for the datasets, which has lower than 3000 entries (Ozyildirim &amp; Coban, <span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+ <p>Few studies have taken into account the morphological features of Turkish to detect sentiment. Yıldırım et al. (Yıldırım et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0041" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2014</a></span>) investigated the effects of several NLP modules on the sentiment analysis of Turkish social media text. They proposed using normalisation, negation handling, morphological analysis and stemming modules, and adjectives to classify polarity into positive, negative and neutral classes by using SVM. The experiments achieved up to 79% accuracy level using normalisation and stemming features, which means that additional morphological information improved the system performance. Similarly, Turkmenoglu and Tantug (Turkmenoglu &amp; Tantug, <span class="ref-lnk lazy-ref"><a data-rid="cit0039" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2014</a></span>) suggested comparing machine learning methods and lexicon-based methods for binary classification taking into account morphological features of Turkish, i.e. taking into account absence/presence suffixes to detect kind of negation in Turkish words. The SentiStreght was used as a baseline lexicon, and the sentiment score of each word is changed to the negative if the word contains negation suffixes. Additionally, the booster list was used to detect adjectives polarity score. Machine learning approach followed a similar way like the studies above, and TF-IDF was used with unigrams and bigrams features. As a classification algorithm SVM, Naïve Bayes, and Decision Trees were tested by using Twitter and Movie dataset. The lexicon-based approach combined with all modules including normalisation, negation handling, multi-word expressisons, and booster word list achieved 75.2% and 79% and accuracy levels for the Twitter and Movie dataset. Machine learning approaches reached up to 85% accuracy level by using TF-IDF and unigram and bigram features of tweets classified by SVM. SVM and Naïve Bayes achieved 89.5% accuracy level on Movie dataset with same features.</p>
+ <p>Despite the time-consuming feature engineering efforts, the accuracy level of the proposed models are still not good enough and it is necessary to improve more efficient ways. Notably, for the Turkish language, many methodologies which are successfully applied to the English language are waiting to be explored to handle the challenging nature of Turkish sentiment analysis.</p>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i6" class="section-heading-2">3. Turkish and its challenges for sentiment analysis and solutions</h2>
+ <p>In this section, we first explain the difficulties of sensitivity analysis of Turkish language from the view of morphologic richness. Additionally, we introduce the Morphologically Enriched Turkish Sentiment Treebank (MS-TR) as a first fully labelled Turkish sentiment treebank, including the binary labelled and the fine-grained labelled parse trees to employ compositional models for Turkish sentiment analysis.</p>
+ <div id="s0004-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">3.1. Turkish as a morphologically rich language</h3>
+  <p>Turkish is an agglutinative, morphologically rich language (MRL) from the Turkic family of Altaic languages. Due to its linguistic structure, Turkish has various additional difficulties in sentiment analysis. According to the world atlas of language database (Haspelmath et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2005</a></span>), Turkish is presented as an outlier language in terms of Eurasia language’s standard synthesis level. According to this, Turkish has high synthesis level, up to eight or nine categories per word on average, while other Eurasia languages have relatively low synthesis degrees (between four and five) (Bickel &amp; Nichols, <span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2005</a></span>). It means that one word in Turkish can take over 30 inflexions (Cotterell et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2016</a></span>) and words are formed by adding many inflectional and derivational suffixes to the morphemes (roots) like “beads-one-a-string”. These inflectional groups can completely change meaning and polarity of the word, and sometimes one word can correspond to almost a sentence in English such as in <button class="ref showTableEventRef" data-id="t0001">Table 1</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 April 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Examples of Turkish verb “gel” with derivational and inflectional suffixes construct different sentences in English</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F23311916.2021.1893621&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>In an earlier work, Dehkharghani et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2017</a></span>) pointed out the additive structure of the Turkish words, and mentioned the challenging points of the Turkish sentiment analysis. The morphological analysis of the Turkish word Turkish words is essential since it may provide sentiment information of word. For example, the polarity of the word “sabır” (patience) is changed with particular derivational suffixes, such as “-lı” and “-sız”. The word “sabır-lı” (patient) has positive polarity, and “sabır-sız” (impatient) has negative polarity.</p>
+  <p>Morphological features of the Turkish words are very important for accurate sentiment analysis since even suffixes of the Turkish words can have the polarity information. Particularly, negation suffixes, that are embedded within the word are crucial for the detection of the negative meaning of the word. In this study, we propose to annotate MS-TR by using the morphological features of the words to explore sentiment that hides behind Inflectional Groups (IG) of words. We parse words to the root of the word and the possible suffixes to find morphological features. We consider the following cases for a binary level annotation:</p>
+  <p><b>Case 1</b>: In Turkish, the suffix -mA and its versions are used to negate the verbs. For example, the suffix -me changes the sentiment of word from positive meaning such as “sevdim” (I like it) to the negative such as “sevmedim” (I did not like it). In addition, Turkish auxiliary verbs “etmek” (to do, to make) and “olmak” (to be, to become) are used with the suffix -mA to negate the verb phrases. As it can be seen in <button class="ref showTableEventRef" data-id="t0002">Table 2(a</button>), the verb “sabretmemek” was annotated as negative since it has morphological features sabret+Verb+<b>Neg</b>^DB+Noun+Inf1+&nbsp;A3sg contains “Neg” keyword.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 April 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Examples of the morphological analysis of words and detecting negation within words (a). Polar words which don’t have polar suffixes (b)</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F23311916.2021.1893621&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p><b>Case 2</b>: Besides verbal negation, the adjectives, which are transformed from the noun using absence suffixes (-lı/-li) and presence suffixes (-sız/siz) can give polarity information. The suffix -lı and its versions transform names into positive adjectives, and the suffix -sız and its versions transform names into negative adjectives. For example, the name “sabır” transforms to the positive adjective with the suffix -lı, such as “sabırlı” (patient). The suffix -sız (without) negates adjectives and converts its positive meaning to the negative meaning, such as “sabırsız” (impatient). We detect the absence and presence by considering the keywords (Without/With) in the morphological analysis of the words. Since one of the morphological analysis of “sabırlı” (sabır+Noun+A3sg^DB+Adj+With) contains the keyword “With”, sabırlı annotated as positive. Similarly, “sabırsız” is annotated as negative since its morphological analysis contains “Without” (sabır+Noun+A3sgDB+Adj+Without).</p>
+  <p><b>Case 3</b>: The conjunction “değil” (is/are not) is used with adjectives as a negation marker. For example, “uzun değil” means “not long” gives a negative meaning to the “uzun” (long) as an adjective. Similarly, “var” (there is) and “yok” (there is not) are also used as a presence and absence indicator for nouns. For example, “sabrı yok” (have no patience) has negative polarity, and “sabrı var” (have patience) has a positive polarity. We annotated “değil and “yok” with as a negative; and “var” as a positive.</p>
+  <p>In addition to Turkish linguistics difficulties, sentiment analysis has syntactic and semantic issues, that are encountered in almost any language. Even sentiment analysis is considered as a binary classification problem; it is hard to understand compositional meanings, rhetorical questions, negations, or ironic phrases regardless of the language (Dehkharghani et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2017</a></span>). Additionally, when a user-generated dataset is considered, i.e., when noisy dataset from social media is used, domain-dependent issues occur. Hence, it is needed to be done time-consuming specialised pre-processing steps for cleaning a dataset. Moreover, understanding of the polarity of the domain-specific reviews requires the use of domain-specific (Dehkharghani et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2017</a></span>) polarity lexicons, enhanced feature extraction rules, and annotation strategies. These are generally done by time-consuming manual processes, also humans can have additional bias while annotating words, and they can add additional subjectivity to the classification.</p>
+  <p>The main difficulty in terms of the semantics is capturing the meaning of longer phrases. This study mainly focused on combining morph level, stem level, word-phrase level, and sentence (review) level sentiment information, with the implementations of various datasets from different domains, including movie reviews and various product reviews. Most previous studies have been done based on a binary prediction of a given sentence due to the limited resources of a fine-grained labelled large dataset. Hence, we introduce a novel fine-grained sentiment classification dataset to contribute to the lack of Turkish NLP resources.</p>
+ </div>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i8" class="section-heading-2">4. Morphologically enriched sentiment Treebank for Turkish (MS-TR)</h2>
+ <p>MS-TR has been constructed as a new sentiment analysis resource to work with tree-structured Recursive Deep Learning models. The main drawback for the data-driven classification systems is that they have task-dependent well-constructed annotated data. Researchers have proposed to use emoticons, and emojis (Read, <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2005</a></span>; Suttles &amp; Ide, <span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>) or hashtags (Park et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2018</a></span>) as classification labels inferring polarity of a given task as an extension of distant supervision (Mintz et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2009</a></span>) to overcome this issue. Similar to those approaches, we propose using morphological features of each word to infer the polarity of the inner nodes of the MS-TR, which contains annotated binary-structured parse trees. Parsed trees were labelled according to fine-grained (multi-class) and binary sentiment class. The details of the proposed model are given in this section.</p>
+ <div id="s0005-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">4.1. System architecture, resources and tools used in building MS-TR</h3>
+  <p>MS-TR was constructed based on the combination of several NLP modules. Each module had been used to achieve a specified task with the combination of a series of data preparation steps. This section contains detailed information about the used dataset and NLP resources to build MS-TR.</p>
+  <p><b>Datasets</b> Two different dataset formats have been used for the construction of the MS-TR. Binary-labelled MS-TR was constructed using movie reviews and multi-domain product reviews with a raw text format. A fully-labelled fine-grained MS-TR was constructed using the latest updated version of BOUN Treebank (Turk et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2019</a></span>). BOUN Treebank includes 9,757 sentences from different application domains, such as newspapers, magazines, and essays of Turkish Natural Corpus (Aksan et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2012</a></span>). Each sentence in BOUN Treebank was encoded in ConLL-U format, designed for Universal Dependencies (UD) framework. Movie reviews contain 5331 positive and 5330 negative reviews collected by Demirtas and Pechenizkiy (Demirtas &amp; Pechenizkiy, <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>) from beyazperde.com. The reviews have star ratings of 0 to 5 scale. In this study, 4-star or 5-star movie reviews used as positive labelled movie reviews and 0-star or 1-star movie reviews used as negative labelled movie reviews. Multi-domain product reviews including reviews about the books, DVD, electronics and kitchen appliances. Each of the products has 700 positive and 700 negative reviews collected from Turkish commercial website hepsiburada.com. The average and maximum N-grams lengths of reviews are given in <button class="ref showTableEventRef" data-id="t0003">Table 3</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 April 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Maximum and average <i>N</i>-grams length of the products datasets of MS-TR</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F23311916.2021.1893621&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p><a href="#f0001">Figure 1</a><a href="#f0002">Figure 2</a> represents the system architecture of the proposed MS-TR model’s annotation and binarization process. The proposed pipeline starts with pre-processing steps and sentence boundary detection. Before the annotation and morphological analysis, each review in the dataset is parsed at the sentence boundary detection phase and then cleaned by Turkish spell checking. Zemberek was used (Akın &amp; Akın, <span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2007</a></span>) for pre-processing steps, including sentence boundary detection and morphological parser. Turkish spell checking has also been done since Turkish has additional letters such as (“ç”, “ğ”, “ı”, “ö”, “ş”, “ü”), that is missing in English, the raw text from the dataset usually contains non-Turkish characters because of the non-Turkish keyboards. Each word morphologically analyzed and labelled according to the negation cases, as discussed in the previous section, case 1, case 2, and case 3. In addition to the negation handling strategies, we also used a polar word list to detect sentiment-specific adjectives and nouns in an unsupervised manner. Zemberek is only used for the movie reviews, and product reviews as a morphological analyzer since CoNLL-U format dataset has already contained FEATS field that contains morphological features for words.</p>
+  <div class="figure figureViewer" id="f0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1. </span> <b>A constituency parse tree of two different sentences from the BOUN Treebank</b> (Turk et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2019</a></span>)</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/medium/oaen_a_1893621_f0001_oc.jpg" loading="lazy" height="202" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0001">
+   <p class="captionText"><span class="captionLabel">Figure 1. </span> <b>A constituency parse tree of two different sentences from the BOUN Treebank</b> (Turk et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2019</a></span>)</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0001">
+   <div class="figureFootNote-f0001"></div>
+  </div>
+  <div class="figure figureViewer" id="f0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> The pipeline of the binarization framework to construct MS-TR</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0002image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/medium/oaen_a_1893621_f0002_b.gif" loading="lazy" height="321" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> The pipeline of the binarization framework to construct MS-TR</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0002">
+   <div class="figureFootNote-f0002"></div>
+  </div>
+  <p></p>
+  <p>In <a href="#f0001">Figure 1</a>, it can be seen the parse tree of two different sentences: “Bu bağlamda inceleyeceğimiz iki gök haritası somut örnekler sunacak.” and “Zeki Müren, Müzeyyen Senar, Safiye Ayla çocukluğumdan beri tanış olduğum isimler.” from the CoNNL-U dataset. The word “sunacak” is a root of the parse tree, and it can be seen POS tags (i.e. NOUN, ADJ, PUNCT) of the leaf words and root word of the parse tree. These parse trees (graphs) are examples of structural representation of the sentences that can be processed in Recursive Neural Models (Tree-RNNs).</p>
+  <p>Tree-RNNs have been proposed for learning from the arbitrary shape structures like trees and graphs; hence it is needed to implement a binary parse tree to train Recursive Neural Tensor Networks (RNTNs). The Stanford Core NLP tool has been used to build the binarized dataset, i.e. fully labelled parse trees at the final step of the MS-TR construction. This is a tool to set the class labels on a sentence tree dataset using the user default annotations. The expected input file for the Stanford Core NLP should contain one sentence per line. The reviews are separated by blank lines and each review is labelled with their sentiments. Before the blank line, sub-phrases of the current review can also be labelled with their own label. Consequently, all the labels on a tree are set to agiven default value. The annotation strategy of the MS-TR is different from the Stanford Sentiment Treebank (STS), which was developed by Socher et al. (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>) for English. We propose to annotate MS-TR in a semi-supervised manner to construct fully labelled parse trees. The following section gives the details and pseudo-codes of the proposed annotation phase of the MS-TR.</p>
+ </div>
+ <div id="s0005-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">4.2. Semi-supervised annotation strategies of the Turkish sentiment Treebank</h3>
+  <p>We present two pathways as an automatic semi-supervised annotation approach for binary classification datasets. The first pathway is based on the combination of morphological features of words, and the second pathway is based on the polarity lexicon and the polar word embedding models. By following two pathways, we have constructed four different treebanks, namely morph-level (stems+suffixes) annotated MS-TR, stem-level annotated MS-TR, token-level annotated MS-TR, and review-level annotated MS-TR. Each model has been constructed for each dataset to figure out the compositional effects of the morphologically rich structure of Turkish. Each annotation level has been tested to compare the efficiency of the proposed models by feeding them into the Recursive Neural Tensor Networks.</p>
+  <p><i>1) Morph-Level Annotated MS-TR</i>: In this model, the annotation has been done at morph-level, aiming to retrieve the hidden polarity of the suffixes in the morphologically rich word. We propose to construct a fully-labelled morphologically enriched treebank (Morph-Level MS-TR) with the morphological features of the words, which are used as a distant supervision method similar to the (Mintz et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2009</a></span>; Park et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2018</a></span>; Read, <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2005</a></span>; Suttles &amp; Ide, <span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>). To this end, tokens are morphologically analyzed, and they are parsed to their possible stem and suffixes. All the possible morphological results for a given input word were used for the word-level annotation. If the word contain negation suffixes as given in Section 3.1, the parsed stem, and suffixes (ending) of the word labelled with 0, if it contains positive suffixes the parsed stem and suffixes (ending) of the word have been annotated with 1. For example, sabırsız (sabır+sız) “impatient” is represented as ((0 sabır) (0 sız)) in the proposed Morph-Level Annotated MS-TR. Similarly, sabırlı (sabır+lı) “patient” is represented as ((1 sabır)(1 lı)) as a morph-level annotated tree in the MS-TR.</p>
+  <p>In addition to the morphological annotation, we propose to use polarity lexicon to capture polar words, which are rooted and do not have any morphological information. Words in <button class="ref showTableEventRef" data-id="t0002">Table 2(b</button>) have been used as a case examples to elaborate on this point. Using only a morphological analysis of the word cannot provide the correct polarity information for each case. For example, the sentence “Seni yeniden görmek için sabırsızlanıyorum” (I can’t wait to see you again/looking forward to seeing you again) has a positive meaning, but the morphological information of the “sabırsızlanıyorum” contain negation suffix -sız (sabır+sızlanıyorum). To handle this issue, we proposed to use sentiment polarity lexicon, SentiTurkNet (Dehkharghani et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2016</a></span>), and we combine morphological features and polarity lexicon information to annotate each word of the review. After the tokenization step, the polarity words are controlled by the hybrid usage of morphological analysis and SentiTurkNet lexicon. This approach is used for binary annotation of the MS-TR. The detailed steps of the annotation algorithm are given in <a href="#f0003">Figure 3</a><a href="#f0004">Figure 4</a>.</p>
+  <div class="figure figureViewer" id="f0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> An example for the morph-level annotated tree structure of phrase çok eğlenceli bulamadığımız bir film, “a movie that we could not find much enjoyable” from MS-TR</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0003image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/medium/oaen_a_1893621_f0003_oc.jpg" loading="lazy" height="244" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> An example for the morph-level annotated tree structure of phrase çok eğlenceli bulamadığımız bir film, “a movie that we could not find much enjoyable” from MS-TR</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0003">
+   <div class="figureFootNote-f0003"></div>
+  </div>
+  <div class="figure figureViewer" id="f0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> Pseudo-code of the semi-supervised morph-level annotation</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0004image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/medium/oaen_a_1893621_f0004_b.gif" loading="lazy" height="500" width="300"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> Pseudo-code of the semi-supervised morph-level annotation</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0004">
+   <div class="figureFootNote-f0004"></div>
+  </div>
+  <p></p>
+  <p><a href="#f0003">Figure 3</a> represents the hierarchical structure of the phrase <i>çok eğlenceli bulamadığımız bir film</i>, “a movie that we could not find much enjoyable”. Each token of the phrase has been parsed and annotated to learn review level sentiment recursively in a bottom-up manner. As it can be seen at the morph-level, suffix—li “with” and root word eğlence “enjoy” are composed as a distributional word vectors of left child <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        c
+       </mi>
+       <mrow>
+        <mi>
+         l
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         r
+        </mi>
+        <mi>
+         o
+        </mi>
+        <mi>
+         o
+        </mi>
+        <mi>
+         t
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo>
+    </math></span> and right child <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        c
+       </mi>
+       <mrow>
+        <mi>
+         r
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         s
+        </mi>
+        <mi>
+         u
+        </mi>
+        <mi>
+         f
+        </mi>
+        <mi>
+         f
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         x
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo>
+    </math></span> to calculate parent representation of the word eğlenceli “enjoyable”. This combination combines the positive sentiments from child nodes to the parent node. The second morph-level composition is a clear example of the handling negation of the morphologically rich word. The word bulamadığımız “that we could not find”, contains a negation suffix -ma ”without”, hence the right child <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        c
+       </mi>
+       <mrow>
+        <mi>
+         r
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         s
+        </mi>
+        <mi>
+         u
+        </mi>
+        <mi>
+         f
+        </mi>
+        <mi>
+         f
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         x
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo>
+    </math></span> is negative. As a result the compositional parent node bulamadığımız “that we did not find” is also negative. The longest phrase <i>çok eğlenceli bulamadığımız bir film</i>, “a movie that we could not find much enjoyable” is produced recursively at the same dimension in a bottom-up manner and annotated as a negative.</p>
+  <p><i>2) Stem-Level Annotated MS-TR</i>: Stem-Level Annotated MS-TR was constructed similar to morph-level annotated MS-TR. The only difference is using only stems of the words, and the suffixes (ending) of the words are eliminated from word after morphological parsing. The aim of constructing stem-level MS-TR is to investigate the efficiency of the using stem+suffix structure by comparing to using the only stem of the words. The flowchart of the annotation algorithm is similar to <a href="#f0004">Figure 4</a> and the example tree structure of the stem-level annotated MS-TR is given in <a href="#f0005">Figure 5</a>.</p>
+  <div class="figure figureViewer" id="f0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> An example representation for the stem-level annotated tree structure of phrase <i>çok eğlenceli bulamadığımız bir film</i>, “a movie that we could not find much enjoyable” from MS-TR</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0005image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/medium/oaen_a_1893621_f0005_oc.jpg" loading="lazy" height="188" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> An example representation for the stem-level annotated tree structure of phrase <i>çok eğlenceli bulamadığımız bir film</i>, “a movie that we could not find much enjoyable” from MS-TR</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0005">
+   <div class="figureFootNote-f0005"></div>
+  </div>
+  <div class="figure figureViewer" id="uf0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo"></div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="uf0001image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/medium/oaen_a_1893621_uf0001_b.gif" loading="lazy" height="500" width="282"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-uf0001"></div>
+  <div class="hidden rs_skip" id="figureFootNote-uf0001">
+   <div class="figureFootNote-uf0001"></div>
+  </div>
+  <p></p>
+  <p><i>3) Token-Level (Surface Level) Annotated MS-TR</i>: As a third level, we propose to annotate each token of the reviews using polar embedding spaces, which are constructed by using positive and negative datasets. Related word vectors have been produced for each polarity level using the word embeddings model. FastText (Grave et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2019</a></span>) model has been used to take its advantage of representing out-of-vocabulary word vectors for MRLs. To this end, the positive embedding model has been constructed by using positive reviews dataset and positive polar words that are taken from SentiTurkNet. Similarly, negative word embedding space has been constructed using negative reviews dataset and negative polar words taken from SentiTurkNet. The most similar word of the token has been found by using positive word vector space and negative word vector space.</p>
+  <p>After tokenization step of each review, the cosine similarity measure has been used to find the token-level label. If the cosine similarity of the positive most similar word and the target token is bigger than the cosine similarity of the negative most similarity word and the target token, the token is labelled as positive; else it is labelled as negative. The flowchart of the proposed algorithm is given in <a href="#f0006">Figure 6</a><a href="#f0007">Figure 7</a>, and the example tree structure of the token-level annotated MS-TR is given in <a href="#f0006">Figure 6</a>.</p>
+  <div class="figure figureViewer" id="f0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 6. </span> An example representation for the token-level annotated tree structure of phrase çok eğlenceli bulamadığımız bir film, “a movie that we could not find much enjoyable” from MS-TR</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0006image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/medium/oaen_a_1893621_f0006_oc.jpg" loading="lazy" height="187" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0006">
+   <p class="captionText"><span class="captionLabel">Figure 6. </span> An example representation for the token-level annotated tree structure of phrase çok eğlenceli bulamadığımız bir film, “a movie that we could not find much enjoyable” from MS-TR</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0006">
+   <div class="figureFootNote-f0006"></div>
+  </div>
+  <div class="figure figureViewer" id="f0007">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 7. </span> Pseudo-code of the semi-supervised token-level annotation</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0007image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/medium/oaen_a_1893621_f0007_b.gif" loading="lazy" height="395" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0007">
+   <p class="captionText"><span class="captionLabel">Figure 7. </span> Pseudo-code of the semi-supervised token-level annotation</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0007">
+   <div class="figureFootNote-f0007"></div>
+  </div>
+  <p></p>
+  <p><i>4) Review-Level Annotated MS-TR</i>: As the last annotation level, we proposed using only review-level annotated tree structures to construct MS-TR for comparing each annotation level’s performance. After the annotation process has been done, the annotated files are fed into the Standford Core NLP module to construct the binarized tree structure by parsing each review of the datasets.</p>
+  <p>In addition to the binary-labelled MS-TRs, fine-grained MS-TR has been annotated by taking into account the morphological information of the words. 1003 of BOUN Treebank sentences have been selected randomly as an initial step. Parsing the 1003 sentences has produced 63,782 nodes, including very positive, somewhat positive, neutral, somewhat negative, negative and very negative combinations of the tokens. The polarity distribution of the phrases, i.e. phrase-level to review-level labelling was realized in two stages. The first stage is labelling words according to their polarity features which are detected from the morphological analysis of the words. The morphological feature of the word was detected from the FEATS field of the CoNLL-U data format, which provides the lemma and morphological analysis of the word, including Polarity feature as proposed in the previous section. In addition to the binary annotation, we have scored words whether they are booster words. If the word is contained by positive booster words list, it was annotated with 5 for very positive class. Similarly, if the negative booster words list contains the word, it was annotated with 1 for very negative class. The total sentence-level score was calculated as follows: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable rowspacing="4pt" columnspacing="1em">
+       <mtr>
+        <mtd>
+         <mrow>
+          <mi>
+           s
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mrow>
+           <msub>
+            <mi>
+             i
+            </mi>
+            <mrow>
+             <mi>
+              S
+             </mi>
+             <mi>
+              c
+             </mi>
+             <mi>
+              o
+             </mi>
+             <mi>
+              r
+             </mi>
+             <mi>
+              e
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mo>
+           =
+          </mo>
+          <mo>
+           −
+          </mo>
+          <mn>
+           10
+          </mn>
+          <mi>
+           a
+          </mi>
+          <mo>
+           −
+          </mo>
+          <mn>
+           5
+          </mn>
+          <mi>
+           b
+          </mi>
+          <mo>
+           +
+          </mo>
+          <mn>
+           5
+          </mn>
+          <mi>
+           c
+          </mi>
+          <mo>
+           +
+          </mo>
+          <mn>
+           10
+          </mn>
+          <mi>
+           d
+          </mi>
+         </mrow>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>Here <i>a, b, c</i>, and <i>d</i> represents the total number of the very negative, negative, positive, and very positive word in a given sentence, respectively. Booster words were taken from polarity lexicon, which are used for morph-level and stem-level annotation. After calculating the total sentiment score of the sentence, scores of −15 and less are labelled as very negative (1), those with −10 labelled as negative (2), 0 is labelled as neutral (3), 10 is labelled as positive (4), and those above 15 and 15 are labelled as very positive (5). <button class="ref showTableEventRef" data-id="t0004">Table 4</button> represents the total number of the fine-grained n-grams for each sentiment class. Somewhat positive and somewhat negative n-grams got emotion scores of 5 and −5, respectively; hence, we considered them in positive and negative, respectively. After semi-supervised annotation process, 188 reviews were labelled as class 5 (very positive), 215 reviews were labelled as positive, 230 reviews were labelled as neutral, 207 reviews labelled as negative, and 163 reviews labelled as very negative <a href="#f0008">Figure 8</a>.</p>
+  <div class="figure figureViewer" id="uf0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo"></div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="uf0002image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/medium/oaen_a_1893621_uf0002_b.gif" loading="lazy" height="500" width="389"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-uf0002"></div>
+  <div class="hidden rs_skip" id="figureFootNote-uf0002">
+   <div class="figureFootNote-uf0002"></div>
+  </div>
+  <div class="figure figureViewer" id="f0008">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>26 April 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 8. </span> Normalized histogram of the annotated <i>n</i>-grams in fine-grained MS-TR. Many of the shorter <i>n</i>-grams are neutral, and many longer phrases are positive. Somewhat positive distributions are added to the positive sentiment class, and somewhat negative distributions are added to the negative sentiment class for 5 class sentiment classification</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0008image" src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/medium/oaen_a_1893621_f0008_oc.jpg" loading="lazy" height="142" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0008">
+   <p class="captionText"><span class="captionLabel">Figure 8. </span> Normalized histogram of the annotated <i>n</i>-grams in fine-grained MS-TR. Many of the shorter <i>n</i>-grams are neutral, and many longer phrases are positive. Somewhat positive distributions are added to the positive sentiment class, and somewhat negative distributions are added to the negative sentiment class for 5 class sentiment classification</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0008">
+   <div class="figureFootNote-f0008"></div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 April 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 4. </span> Total numbers of fine-grained <i>n</i>-grams</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0004&amp;doi=10.1080%2F23311916.2021.1893621&amp;downloadType=CSV"> Download CSV</a><a data-id="t0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>We used the Stanford Core NLP (Manning et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2015</a></span>) module to build a binarized tree structure similar to the Stanford Sentiment Treebank (STS) (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>). The total inner nodes of the annotated MS-TR that have been produced by binarized parsing have been given in 6.</p>
+ </div>
+</div>
+<div id="s0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i22" class="section-heading-2">5. Recursive Deep Models over MS-TR for Compositional Semantics</h2>
+ <p>The compositional power of the Tree-RNNs is still waiting to be explored for Turkish sentiment analysis task. With this motivation, we employ MS-TR with Recursive Neural Tensor Networks (RNTN) to handle Turkish’s agglutinative morphology and catch the freedom of its constituent structure for compositional sentiment analysis. The proposed model also contributes to the lack of data sources for improving understanding of semantics in Turkish.</p>
+ <div id="s0006-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i23">5.1. Recursive Neural Tensor Networks with Morphologically Enriched Treebank</h3>
+  <p>Recursive Neural Network (Tree-RNN) is a tree-structured model based on composing words over nested hierarchical structure in sentences. The neural network function recursively merges words to construct noun phrases until representing the entire sentence. Tree-RNNs have an extraordinary ability for mapping of phrases in a semantic space (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0033" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2010</a></span>).</p>
+  <p>Recursive Neural Tensor Networks (RNTN) achieved good results both for English (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>) and morphologically rich languages (MRL) such as Arabic (Baly et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2017</a></span>). RNTN reached state-of-art accuracy results compare to the previous versions of the Recursive Neural Networks, such as Tree-RNNs and Matrix-Vector Recursive Neural Networks (MV-RNN). Hence we used RNTN over a morphologically enriched Turkish sentiment treebank.</p>
+  <p>The proposed model learns the distributional representations to construct not only phrases to but also morphologically rich words from their root and suffixes. Our main motivation is to learn suffixes that contain sentiment polarity, as described in the previous section. To this end, we first described the shallow versions of the Tree-RNNs, and then the applied Recursive Neural Tensor Network over MS-TR for the sentiment classification task.</p>
+  <p><i>1) Recursive Neural Networks (Tree-RNNs</i>): Tree-RNNs are the simplest version of the Recursive Deep Models. In essence, they are designed to process tree-structured datasets, and they generalize the sequential models from chain-structures to the tree-structures. Assume that <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        x
+       </mi>
+       <mrow>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         s
+        </mi>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mrow>
+      </msup>
+     </mrow><mo>
+      =
+     </mo><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        k
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo>
+    </math></span>, is the sequence of d-dimensional word vectors of a given sentence for <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="normal">
+      ∀
+     </mi><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mi>
+        d
+       </mi>
+      </msup>
+     </mrow><mspace width="thickmathspace"></mspace><mo>
+      ,
+     </mo><mn>
+      1
+     </mn><mo>
+      ≤
+     </mo><mi>
+      i
+     </mi><mo>
+      ≤
+     </mo><mi>
+      k
+     </mi>
+    </math></span> . <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        x
+       </mi>
+       <mrow>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         s
+        </mi>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mrow>
+      </msup>
+     </mrow><mo>
+      =
+     </mo><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mn>
+        1
+       </mn>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mn>
+        2
+       </mn>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        k
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo>
+    </math></span> has been learned using binary tree structure by evaluating parent word vectors with following recursive function: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable rowspacing="4pt" columnspacing="1em">
+       <mtr>
+        <mtd>
+         <mrow>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             p
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mo>
+           =
+          </mo>
+          <mi>
+           φ
+          </mi>
+          <mspace width="thickmathspace"></mspace>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             W
+            </mi>
+            <mrow>
+             <mi>
+              e
+             </mi>
+             <mi>
+              m
+             </mi>
+             <mi>
+              b
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mspace width="thickmathspace"></mspace>
+          <mo stretchy="false">
+           [
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             l
+            </mi>
+           </msub>
+          </mrow>
+          <mo>
+           ;
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             r
+            </mi>
+           </msub>
+          </mrow>
+          <mo stretchy="false">
+           ]
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mspace width="thickmathspace"></mspace>
+          <mrow>
+           <msub>
+            <mi>
+             b
+            </mi>
+            <mrow>
+             <mi>
+              e
+             </mi>
+             <mi>
+              m
+             </mi>
+             <mi>
+              b
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mo stretchy="false">
+           )
+          </mo>
+         </mrow>
+        </mtd>
+       </mtr>
+       <mtr>
+        <mtd>
+         <mrow>
+          <mi>
+            
+          </mi>
+         </mrow>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mo>
+           =
+          </mo>
+          <mi>
+           φ
+          </mi>
+          <mspace width="thickmathspace"></mspace>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             W
+            </mi>
+            <mrow>
+             <mi>
+              e
+             </mi>
+             <mi>
+              m
+             </mi>
+             <mi>
+              b
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mfenced open="[" close="]">
+           <mrow>
+            <mtable rowspacing="4pt" columnspacing="1em">
+             <mtr>
+              <mtd>
+               <mrow>
+                <mrow>
+                 <msub>
+                  <mi>
+                   x
+                  </mi>
+                  <mi>
+                   l
+                  </mi>
+                 </msub>
+                </mrow>
+               </mrow>
+              </mtd>
+             </mtr>
+             <mtr>
+              <mtd>
+               <mrow>
+                <mrow>
+                 <msub>
+                  <mi>
+                   x
+                  </mi>
+                  <mi>
+                   r
+                  </mi>
+                 </msub>
+                </mrow>
+               </mrow>
+              </mtd>
+             </mtr>
+            </mtable>
+           </mrow>
+          </mfenced>
+          <mo>
+           ,
+          </mo>
+          <mspace width="thickmathspace"></mspace>
+          <mrow>
+           <msub>
+            <mi>
+             b
+            </mi>
+            <mrow>
+             <mi>
+              e
+             </mi>
+             <mi>
+              m
+             </mi>
+             <mi>
+              b
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mo stretchy="false">
+           )
+          </mo>
+         </mrow>
+        </mtd>
+       </mtr>
+       <mtr>
+        <mtd>
+         <mrow>
+          <mi>
+            
+          </mi>
+         </mrow>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mi>
+            
+          </mi>
+         </mrow>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>Here <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      φ
+     </mi>
+    </math></span> represents the tanh function, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        l
+       </mi>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        r
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        p
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> are <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span> dimensional word vectors of left child word, right child word, and parent word, respectively. The concatenation of the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        l
+       </mi>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        r
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> is represented by <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        l
+       </mi>
+      </msub>
+     </mrow><mo>
+      ;
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        r
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      ]
+     </mo><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msup>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         e
+        </mi>
+        <mi>
+         m
+        </mi>
+        <mi>
+         b
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span>, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        b
+       </mi>
+       <mrow>
+        <mi>
+         e
+        </mi>
+        <mi>
+         m
+        </mi>
+        <mi>
+         b
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span>.</p>
+  <p><i>2) Recursive Neural Tensor Networks (RNTN</i>): Recursive Neural Tensor Networks (RNTN) is the enhanced version of the tree-based recursive deep learning models, aiming to aggregate the polarity of child nodes to the parent root node using one direct composing relation by tensor algebra (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>). The learning architecture of the model is the same as the Tree-RNN. The modification has been done using the following aggregation: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0003.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         h
+        </mi>
+        <mrow>
+         <mi>
+          p
+         </mi>
+         <mi>
+          i
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><mrow>
+       <msup>
+        <mfenced open="[" close="]">
+         <mtable rowspacing="4pt" columnspacing="1em">
+          <mtr>
+           <mtd>
+            <mrow>
+             <msub>
+              <mi>
+               x
+              </mi>
+              <mi>
+               l
+              </mi>
+             </msub>
+            </mrow>
+           </mtd>
+          </mtr>
+          <mtr>
+           <mtd>
+            <mrow>
+             <msub>
+              <mi>
+               x
+              </mi>
+              <mi>
+               r
+              </mi>
+             </msub>
+            </mrow>
+           </mtd>
+          </mtr>
+         </mtable>
+        </mfenced>
+        <mrow>
+         <mi mathvariant="normal">
+          T
+         </mi>
+        </mrow>
+       </msup>
+      </mrow><mrow>
+       <msup>
+        <mrow>
+         <mi mathvariant="normal">
+          T
+         </mi>
+        </mrow>
+        <mrow>
+         <mo stretchy="false">
+          [
+         </mo>
+         <mi>
+          i
+         </mi>
+         <mo stretchy="false">
+          ]
+         </mo>
+        </mrow>
+       </msup>
+      </mrow><mfenced open="[" close="]">
+       <mtable rowspacing="4pt" columnspacing="1em">
+        <mtr>
+         <mtd>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             l
+            </mi>
+           </msub>
+          </mrow>
+         </mtd>
+        </mtr>
+        <mtr>
+         <mtd>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             r
+            </mi>
+           </msub>
+          </mrow>
+         </mtd>
+        </mtr>
+       </mtable>
+      </mfenced>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+   </disp-formula-group> <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0004.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         h
+        </mi>
+        <mi>
+         p
+        </mi>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><mrow>
+       <msup>
+        <mfenced open="[" close="]">
+         <mtable rowspacing="4pt" columnspacing="1em">
+          <mtr>
+           <mtd>
+            <mrow>
+             <msub>
+              <mi>
+               x
+              </mi>
+              <mi>
+               l
+              </mi>
+             </msub>
+            </mrow>
+           </mtd>
+          </mtr>
+          <mtr>
+           <mtd>
+            <mrow>
+             <msub>
+              <mi>
+               x
+              </mi>
+              <mi>
+               r
+              </mi>
+             </msub>
+            </mrow>
+           </mtd>
+          </mtr>
+         </mtable>
+        </mfenced>
+        <mrow>
+         <mi mathvariant="normal">
+          T
+         </mi>
+        </mrow>
+       </msup>
+      </mrow><mrow>
+       <msup>
+        <mrow>
+         <mi mathvariant="normal">
+          T
+         </mi>
+        </mrow>
+        <mrow>
+         <mo stretchy="false">
+          [
+         </mo>
+         <mn>
+          1
+         </mn>
+         <mo>
+          :
+         </mo>
+         <mi>
+          d
+         </mi>
+         <mo stretchy="false">
+          ]
+         </mo>
+        </mrow>
+       </msup>
+      </mrow><mfenced open="[" close="]">
+       <mtable rowspacing="4pt" columnspacing="1em">
+        <mtr>
+         <mtd>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             l
+            </mi>
+           </msub>
+          </mrow>
+         </mtd>
+        </mtr>
+        <mtr>
+         <mtd>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             r
+            </mi>
+           </msub>
+          </mrow>
+         </mtd>
+        </mtr>
+       </mtable>
+      </mfenced><mo>
+       +
+      </mo><mrow>
+       <msub>
+        <mi>
+         W
+        </mi>
+        <mrow>
+         <mi>
+          e
+         </mi>
+         <mi>
+          m
+         </mi>
+         <mi>
+          b
+         </mi>
+        </mrow>
+       </msub>
+      </mrow><mfenced open="[" close="]">
+       <mtable rowspacing="4pt" columnspacing="1em">
+        <mtr>
+         <mtd>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             l
+            </mi>
+           </msub>
+          </mrow>
+         </mtd>
+        </mtr>
+        <mtr>
+         <mtd>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             r
+            </mi>
+           </msub>
+          </mrow>
+         </mtd>
+        </mtr>
+       </mtable>
+      </mfenced>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+   </disp-formula-group> <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0005.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0005" class="disp-formula-label">(5) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <msub>
+        <mi>
+         x
+        </mi>
+        <mi>
+         p
+        </mi>
+       </msub>
+      </mrow><mo>
+       =
+      </mo><mi>
+       φ
+      </mi><mfenced open="(" close=")">
+       <mrow>
+        <mrow>
+         <msup>
+          <mrow>
+           <mfenced open="[" close="]">
+            <mtable rowspacing="4pt" columnspacing="1em">
+             <mtr>
+              <mtd>
+               <mrow>
+                <msub>
+                 <mi>
+                  x
+                 </mi>
+                 <mi>
+                  l
+                 </mi>
+                </msub>
+               </mrow>
+              </mtd>
+             </mtr>
+             <mtr>
+              <mtd>
+               <mrow>
+                <msub>
+                 <mi>
+                  x
+                 </mi>
+                 <mi>
+                  r
+                 </mi>
+                </msub>
+               </mrow>
+              </mtd>
+             </mtr>
+            </mtable>
+           </mfenced>
+          </mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            T
+           </mi>
+          </mrow>
+         </msup>
+        </mrow>
+        <mrow>
+         <msup>
+          <mrow>
+           <mi mathvariant="normal">
+            T
+           </mi>
+          </mrow>
+          <mrow>
+           <mo stretchy="false">
+            [
+           </mo>
+           <mn>
+            1
+           </mn>
+           <mo>
+            :
+           </mo>
+           <mi>
+            d
+           </mi>
+           <mo stretchy="false">
+            ]
+           </mo>
+          </mrow>
+         </msup>
+        </mrow>
+        <mfenced open="[" close="]">
+         <mtable rowspacing="4pt" columnspacing="1em">
+          <mtr>
+           <mtd>
+            <mrow>
+             <msub>
+              <mi>
+               x
+              </mi>
+              <mi>
+               l
+              </mi>
+             </msub>
+            </mrow>
+           </mtd>
+          </mtr>
+          <mtr>
+           <mtd>
+            <mrow>
+             <msub>
+              <mi>
+               x
+              </mi>
+              <mi>
+               r
+              </mi>
+             </msub>
+            </mrow>
+           </mtd>
+          </mtr>
+         </mtable>
+        </mfenced>
+        <mo>
+         +
+        </mo>
+        <mrow>
+         <msub>
+          <mi>
+           W
+          </mi>
+          <mrow>
+           <mi>
+            e
+           </mi>
+           <mi>
+            m
+           </mi>
+           <mi>
+            b
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+        <mfenced open="[" close="]">
+         <mtable rowspacing="4pt" columnspacing="1em">
+          <mtr>
+           <mtd>
+            <mrow>
+             <msub>
+              <mi>
+               x
+              </mi>
+              <mi>
+               l
+              </mi>
+             </msub>
+            </mrow>
+           </mtd>
+          </mtr>
+          <mtr>
+           <mtd>
+            <mrow>
+             <msub>
+              <mi>
+               x
+              </mi>
+              <mi>
+               r
+              </mi>
+             </msub>
+            </mrow>
+           </mtd>
+          </mtr>
+         </mtable>
+        </mfenced>
+       </mrow>
+      </mfenced>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0005" class="disp-formula-label">(5) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>Tensor defined as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        T
+       </mi>
+       <mrow>
+        <mo stretchy="false">
+         [
+        </mo>
+        <mn>
+         1
+        </mn>
+        <mo>
+         :
+        </mo>
+        <mi>
+         d
+        </mi>
+        <mo stretchy="false">
+         ]
+        </mo>
+       </mrow>
+      </msup>
+     </mrow><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mfenced open="[" close="]">
+        <mrow>
+         <mrow>
+          <msub>
+           <mi>
+            x
+           </mi>
+           <mi>
+            l
+           </mi>
+          </msub>
+         </mrow>
+         <mo>
+          ;
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            x
+           </mi>
+           <mi>
+            r
+           </mi>
+          </msub>
+         </mrow>
+        </mrow>
+       </mfenced>
+       <mrow>
+        <mi mathvariant="normal">
+         T
+        </mi>
+       </mrow>
+      </msup>
+     </mrow><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mi>
+         x
+        </mi>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span>, where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0016.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        l
+       </mi>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        r
+       </mi>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msub>
+       <mi>
+        h
+       </mi>
+       <mi>
+        p
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> are <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0017.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span> dimensional word vectors of left child word, right child word and hidden parent word which is the output of the tensor-layer, respectively. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0018.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        T
+       </mi>
+       <mrow>
+        <mo stretchy="false">
+         [
+        </mo>
+        <mi>
+         i
+        </mi>
+        <mo stretchy="false">
+         ]
+        </mo>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span> is a slice of a tensor <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0019.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span>. This process is done recursively as defined in the Tree-RNN and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0020.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      φ
+     </mi>
+    </math></span> represents the same tanh function. The primary motivation to use RNTN is to satisfy the direct association between input vectors. The quality of the parent vector is calculated by reconstruction layer as follows: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0006.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0006" class="disp-formula-label">(6) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable rowspacing="4pt" columnspacing="1em">
+       <mtr>
+        <mtd>
+         <mrow>
+          <mo stretchy="false">
+           [
+          </mo>
+          <msup>
+           <mrow>
+            <msub>
+             <mi>
+              x
+             </mi>
+             <mi>
+              l
+             </mi>
+            </msub>
+           </mrow>
+           <mo>
+            ′
+           </mo>
+          </msup>
+          <mo>
+           ;
+          </mo>
+          <msup>
+           <mrow>
+            <msub>
+             <mi>
+              x
+             </mi>
+             <mi>
+              r
+             </mi>
+            </msub>
+           </mrow>
+           <mo>
+            ′
+           </mo>
+          </msup>
+          <mo stretchy="false">
+           ]
+          </mo>
+         </mrow>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mo>
+           =
+          </mo>
+          <mspace width="thickmathspace"></mspace>
+          <mrow>
+           <msub>
+            <mi>
+             W
+            </mi>
+            <mrow>
+             <mi>
+              r
+             </mi>
+             <mi>
+              e
+             </mi>
+             <mi>
+              c
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             p
+            </mi>
+           </msub>
+          </mrow>
+          <mo>
+           +
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             b
+            </mi>
+            <mrow>
+             <mi>
+              r
+             </mi>
+             <mi>
+              e
+             </mi>
+             <mi>
+              c
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+         </mrow>
+        </mtd>
+       </mtr>
+       <mtr>
+        <mtd>
+         <mrow>
+          <mi>
+            
+          </mi>
+         </mrow>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mi>
+            
+          </mi>
+         </mrow>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0006" class="disp-formula-label">(6) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>Here <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0021.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         r
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mn>
+         2
+        </mn>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0022.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        b
+       </mi>
+       <mrow>
+        <mi>
+         r
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         d
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span>. The aim is minimizing the reconstruction error, which is defined as follows: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0007.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0007" class="disp-formula-label">(7) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable rowspacing="4pt" columnspacing="1em">
+       <mtr>
+        <mtd>
+         <mrow>
+          <mrow>
+           <msub>
+            <mi>
+             E
+            </mi>
+            <mrow>
+             <mi>
+              E
+             </mi>
+             <mi>
+              M
+             </mi>
+             <mi>
+              B
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+         </mrow>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mo>
+           =
+          </mo>
+          <mi>
+           L
+          </mi>
+          <mspace width="thickmathspace"></mspace>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mo stretchy="false">
+           [
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             l
+            </mi>
+           </msub>
+          </mrow>
+          <mo>
+           ;
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             r
+            </mi>
+           </msub>
+          </mrow>
+          <mo stretchy="false">
+           ]
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <mspace width="thickmathspace"></mspace>
+          <mo stretchy="false">
+           [
+          </mo>
+          <msup>
+           <mrow>
+            <msub>
+             <mi>
+              x
+             </mi>
+             <mi>
+              l
+             </mi>
+            </msub>
+           </mrow>
+           <mo>
+            ′
+           </mo>
+          </msup>
+          <mo>
+           ;
+          </mo>
+          <msup>
+           <mrow>
+            <msub>
+             <mi>
+              x
+             </mi>
+             <mi>
+              r
+             </mi>
+            </msub>
+           </mrow>
+           <mo>
+            ′
+           </mo>
+          </msup>
+          <mo stretchy="false">
+           ]
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+         </mrow>
+        </mtd>
+       </mtr>
+       <mtr>
+        <mtd>
+         <mrow>
+          <mi>
+            
+          </mi>
+         </mrow>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mo>
+           =
+          </mo>
+          <mi>
+           a
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi>
+           g
+          </mi>
+          <mi>
+           m
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mo>
+           ∥
+          </mo>
+          <mo stretchy="false">
+           [
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             l
+            </mi>
+           </msub>
+          </mrow>
+          <mo>
+           ;
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             r
+            </mi>
+           </msub>
+          </mrow>
+          <mo stretchy="false">
+           ]
+          </mo>
+          <mo>
+           −
+          </mo>
+          <mo stretchy="false">
+           [
+          </mo>
+          <msup>
+           <mrow>
+            <msub>
+             <mi>
+              x
+             </mi>
+             <mi>
+              l
+             </mi>
+            </msub>
+           </mrow>
+           <mo>
+            ′
+           </mo>
+          </msup>
+          <mo>
+           ;
+          </mo>
+          <msup>
+           <mrow>
+            <msub>
+             <mi>
+              x
+             </mi>
+             <mi>
+              r
+             </mi>
+            </msub>
+           </mrow>
+           <mo>
+            ′
+           </mo>
+          </msup>
+          <mo stretchy="false">
+           ]
+          </mo>
+          <mrow>
+           <mrow>
+            <msup>
+             <mo>
+              ∥
+             </mo>
+             <mn>
+              2
+             </mn>
+            </msup>
+           </mrow>
+          </mrow>
+         </mrow>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0007" class="disp-formula-label">(7) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>The parent word vector <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0023.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        p
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> scored positively or negatively at every internal, using softmax function for the binary classification task. The phrases are merged recursively to predict sentiment class of the root vector as follows: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0008.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0008.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0008" class="disp-formula-label">(8) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable rowspacing="4pt" columnspacing="1em">
+       <mtr>
+        <mtd>
+         <mrow>
+          <mrow>
+           <msup>
+            <mi>
+             y
+            </mi>
+            <mrow>
+             <mrow>
+              <msub>
+               <mi>
+                x
+               </mi>
+               <mi>
+                p
+               </mi>
+              </msub>
+             </mrow>
+            </mrow>
+           </msup>
+          </mrow>
+         </mrow>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mo>
+           =
+          </mo>
+          <mi>
+           s
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           f
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           m
+          </mi>
+          <mi>
+           a
+          </mi>
+          <mi>
+           x
+          </mi>
+          <mspace width="thickmathspace"></mspace>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             W
+            </mi>
+            <mrow>
+             <mi>
+              l
+             </mi>
+             <mi>
+              a
+             </mi>
+             <mi>
+              b
+             </mi>
+             <mi>
+              e
+             </mi>
+             <mi>
+              l
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             p
+            </mi>
+           </msub>
+          </mrow>
+          <mo stretchy="false">
+           )
+          </mo>
+         </mrow>
+        </mtd>
+       </mtr>
+       <mtr>
+        <mtd>
+         <mrow>
+          <mi>
+            
+          </mi>
+         </mrow>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mo>
+           =
+          </mo>
+          <mrow>
+           <mfrac>
+            <mrow>
+             <mi>
+              e
+             </mi>
+             <mi>
+              x
+             </mi>
+             <mi>
+              p
+             </mi>
+             <mo stretchy="false">
+              (
+             </mo>
+             <mrow>
+              <msub>
+               <mi>
+                W
+               </mi>
+               <mrow>
+                <mi>
+                 l
+                </mi>
+                <mi>
+                 a
+                </mi>
+                <mi>
+                 b
+                </mi>
+                <mi>
+                 e
+                </mi>
+                <mi>
+                 l
+                </mi>
+               </mrow>
+              </msub>
+             </mrow>
+             <mrow>
+              <msub>
+               <mi>
+                x
+               </mi>
+               <mi>
+                p
+               </mi>
+              </msub>
+             </mrow>
+             <mo stretchy="false">
+              )
+             </mo>
+            </mrow>
+            <mrow>
+             <mrow>
+              <msubsup>
+               <mo movablelimits="false">
+                ∑
+               </mo>
+               <mrow>
+                <mi>
+                 i
+                </mi>
+                <mo>
+                 =
+                </mo>
+                <mn>
+                 1
+                </mn>
+               </mrow>
+               <mi>
+                c
+               </mi>
+              </msubsup>
+             </mrow>
+             <mrow>
+              <mi>
+               e
+              </mi>
+              <mi>
+               x
+              </mi>
+              <mi>
+               p
+              </mi>
+              <mo stretchy="false">
+               (
+              </mo>
+              <mrow>
+               <msub>
+                <mi>
+                 W
+                </mi>
+                <mrow>
+                 <mi>
+                  l
+                 </mi>
+                 <mi>
+                  a
+                 </mi>
+                 <mi>
+                  b
+                 </mi>
+                 <mi>
+                  e
+                 </mi>
+                 <mi>
+                  l
+                 </mi>
+                </mrow>
+               </msub>
+              </mrow>
+              <mspace width="thickmathspace"></mspace>
+              <mrow>
+               <msub>
+                <mi>
+                 x
+                </mi>
+                <mrow>
+                 <mrow>
+                  <msub>
+                   <mi>
+                    p
+                   </mi>
+                   <mi>
+                    i
+                   </mi>
+                  </msub>
+                 </mrow>
+                </mrow>
+               </msub>
+              </mrow>
+              <mo stretchy="false">
+               )
+              </mo>
+             </mrow>
+            </mrow>
+           </mfrac>
+          </mrow>
+         </mrow>
+        </mtd>
+       </mtr>
+       <mtr>
+        <mtd>
+         <mrow>
+          <mi>
+            
+          </mi>
+         </mrow>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mi>
+            
+          </mi>
+         </mrow>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0008" class="disp-formula-label">(8) </span></span></span></span>
+   </disp-formula-group></p>
+  <p><span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0024.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        y
+       </mi>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mi>
+           p
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span> is the predicted sentiment, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0025.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         l
+        </mi>
+        <mi>
+         a
+        </mi>
+        <mi>
+         b
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         l
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         c
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span>, and c is the number of sentiment class. Here <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0026.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        y
+       </mi>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mi>
+           p
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </msup>
+     </mrow><mo>
+      =
+     </mo><mi>
+      s
+     </mi><mi>
+      o
+     </mi><mi>
+      f
+     </mi><mi>
+      t
+     </mi><mi>
+      m
+     </mi><mi>
+      a
+     </mi><mi>
+      x
+     </mi><mspace width="thickmathspace"></mspace><mo stretchy="false">
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         l
+        </mi>
+        <mi>
+         a
+        </mi>
+        <mi>
+         b
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         l
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        p
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      )
+     </mo>
+    </math></span> can be interpreted as a conditional probability <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0027.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        y
+       </mi>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mi>
+           p
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </msup>
+     </mrow><mo>
+      =
+     </mo><mi>
+      p
+     </mi><mo stretchy="false">
+      (
+     </mo><mi>
+      c
+     </mi><mrow>
+      <mo>
+       |
+      </mo>
+     </mrow><mo stretchy="false">
+      [
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        l
+       </mi>
+      </msub>
+     </mrow><mo>
+      ;
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        r
+       </mi>
+      </msub>
+     </mrow><mo stretchy="false">
+      ]
+     </mo><mo stretchy="false">
+      )
+     </mo>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0028.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msubsup>
+       <mo movablelimits="false">
+        ∑
+       </mo>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+       <mi>
+        c
+       </mi>
+      </msubsup>
+     </mrow><mrow>
+      <msup>
+       <mi>
+        y
+       </mi>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mrow>
+           <mi>
+            p
+           </mi>
+           <mi>
+            i
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+       </mrow>
+      </msup>
+     </mrow><mo>
+      =
+     </mo><mn>
+      1
+     </mn>
+    </math></span> and for a given target (true) label <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0029.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0029.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mi>
+        t
+       </mi>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mi>
+           p
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span> of the parent vector, the total cross-entropy loss is defined as follows: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0009.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0009.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0009" class="disp-formula-label">(9) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable rowspacing="4pt" columnspacing="1em">
+       <mtr>
+        <mtd>
+         <mrow>
+          <mrow>
+           <msub>
+            <mi>
+             E
+            </mi>
+            <mrow>
+             <mi>
+              C
+             </mi>
+             <mi>
+              E
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+         </mrow>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mo>
+           =
+          </mo>
+          <mo>
+           −
+          </mo>
+          <mrow>
+           <munderover>
+            <mo movablelimits="false">
+             ∑
+            </mo>
+            <mrow>
+             <mi>
+              i
+             </mi>
+             <mo>
+              =
+             </mo>
+             <mn>
+              1
+             </mn>
+            </mrow>
+            <mi>
+             c
+            </mi>
+           </munderover>
+          </mrow>
+          <mi>
+           E
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mrow>
+             <mi>
+              p
+             </mi>
+             <mi>
+              i
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mo>
+           ,
+          </mo>
+          <mrow>
+           <msup>
+            <mi>
+             t
+            </mi>
+            <mrow>
+             <mrow>
+              <msub>
+               <mi>
+                x
+               </mi>
+               <mrow>
+                <mi>
+                 p
+                </mi>
+                <mi>
+                 i
+                </mi>
+               </mrow>
+              </msub>
+             </mrow>
+            </mrow>
+           </msup>
+          </mrow>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           θ
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+         </mrow>
+        </mtd>
+       </mtr>
+       <mtr>
+        <mtd>
+         <mrow>
+          <mi>
+            
+          </mi>
+         </mrow>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mo>
+           =
+          </mo>
+          <mo>
+           −
+          </mo>
+          <mrow>
+           <munderover>
+            <mo movablelimits="false">
+             ∑
+            </mo>
+            <mrow>
+             <mi>
+              i
+             </mi>
+             <mo>
+              =
+             </mo>
+             <mn>
+              1
+             </mn>
+            </mrow>
+            <mi>
+             c
+            </mi>
+           </munderover>
+          </mrow>
+          <mrow>
+           <msup>
+            <mi>
+             t
+            </mi>
+            <mrow>
+             <mrow>
+              <msub>
+               <mi>
+                x
+               </mi>
+               <mrow>
+                <mi>
+                 p
+                </mi>
+                <mi>
+                 i
+                </mi>
+               </mrow>
+              </msub>
+             </mrow>
+            </mrow>
+           </msup>
+          </mrow>
+          <mo form="prefix">
+           log
+          </mo>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mrow>
+           <msup>
+            <mi>
+             y
+            </mi>
+            <mrow>
+             <mrow>
+              <msub>
+               <mi>
+                x
+               </mi>
+               <mrow>
+                <mi>
+                 p
+                </mi>
+                <mi>
+                 i
+                </mi>
+               </mrow>
+              </msub>
+             </mrow>
+            </mrow>
+           </msup>
+          </mrow>
+          <mo stretchy="false">
+           )
+          </mo>
+         </mrow>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0009" class="disp-formula-label">(9) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>The total objective function is defined by the weighted sum of the reconstruction error of the compositional embeddings is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0030.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0030.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        E
+       </mi>
+       <mrow>
+        <mi>
+         E
+        </mi>
+        <mi>
+         M
+        </mi>
+        <mi>
+         B
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span>, and the cross-entropy error of the sentiment labels <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0031.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0031.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        E
+       </mi>
+       <mrow>
+        <mi>
+         C
+        </mi>
+        <mi>
+         E
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> as follows for a given pair <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0032.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0032.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      (
+     </mo><mrow>
+      <msup>
+       <mi>
+        x
+       </mi>
+       <mi>
+        s
+       </mi>
+      </msup>
+     </mrow><mo>
+      ,
+     </mo><mrow>
+      <msup>
+       <mi>
+        t
+       </mi>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mi>
+           s
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </msup>
+     </mrow><mo stretchy="false">
+      )
+     </mo>
+    </math></span> from the dataset: <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0010.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_m0010.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0010" class="disp-formula-label">(10) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable rowspacing="4pt" columnspacing="1em">
+       <mtr>
+        <mtd>
+         <mrow>
+          <mrow>
+           <msub>
+            <mi>
+             L
+            </mi>
+            <mrow>
+             <mi>
+              t
+             </mi>
+             <mi>
+              o
+             </mi>
+             <mi>
+              t
+             </mi>
+             <mi>
+              a
+             </mi>
+             <mi>
+              l
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mo>
+           =
+          </mo>
+          <mo>
+           −
+          </mo>
+          <mrow>
+           <mfrac>
+            <mn>
+             1
+            </mn>
+            <mrow>
+             <mrow>
+              <msub>
+               <mi>
+                N
+               </mi>
+               <mrow>
+                <mi>
+                 o
+                </mi>
+                <mi>
+                 u
+                </mi>
+                <mi>
+                 t
+                </mi>
+               </mrow>
+              </msub>
+             </mrow>
+            </mrow>
+           </mfrac>
+          </mrow>
+          <mrow>
+           <munderover>
+            <mo movablelimits="false">
+             ∑
+            </mo>
+            <mrow>
+             <mi>
+              i
+             </mi>
+             <mo>
+              =
+             </mo>
+             <mn>
+              1
+             </mn>
+            </mrow>
+            <mrow>
+             <mrow>
+              <msub>
+               <mi>
+                N
+               </mi>
+               <mrow>
+                <mi>
+                 o
+                </mi>
+                <mi>
+                 u
+                </mi>
+                <mi>
+                 t
+                </mi>
+               </mrow>
+              </msub>
+             </mrow>
+            </mrow>
+           </munderover>
+          </mrow>
+          <mi>
+           E
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             x
+            </mi>
+            <mi>
+             i
+            </mi>
+           </msub>
+          </mrow>
+          <mo>
+           ,
+          </mo>
+          <mrow>
+           <msup>
+            <mi>
+             t
+            </mi>
+            <mrow>
+             <mrow>
+              <msub>
+               <mi>
+                x
+               </mi>
+               <mi>
+                i
+               </mi>
+              </msub>
+             </mrow>
+            </mrow>
+           </msup>
+          </mrow>
+          <mo>
+           ,
+          </mo>
+          <mi>
+           θ
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           +
+          </mo>
+          <mrow>
+           <mfrac>
+            <mi>
+             λ
+            </mi>
+            <mn>
+             2
+            </mn>
+           </mfrac>
+          </mrow>
+          <mo>
+           ∥
+          </mo>
+          <mi>
+           θ
+          </mi>
+          <mrow>
+           <mrow>
+            <msup>
+             <mo>
+              ∥
+             </mo>
+             <mn>
+              2
+             </mn>
+            </msup>
+           </mrow>
+          </mrow>
+         </mrow>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0010" class="disp-formula-label">(10) </span></span></span></span>
+   </disp-formula-group></p>
+  <p>Learning happens using backpropagation through structure with updating the learnable parameters of the model <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0033.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/oaen20/2021/oaen20.v008.i01/23311916.2021.1893621/20211227/images/oaen_a_1893621_ilm0033.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      θ
+     </mi><mo>
+      =
+     </mo><mo stretchy="false">
+      (
+     </mo><mi>
+      T
+     </mi><mo>
+      ,
+     </mo><mspace width="thickmathspace"></mspace><mrow>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         e
+        </mi>
+        <mi>
+         m
+        </mi>
+        <mi>
+         b
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mspace width="thickmathspace"></mspace><mrow>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         r
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mspace width="thickmathspace"></mspace><mrow>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         l
+        </mi>
+        <mi>
+         a
+        </mi>
+        <mi>
+         b
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         l
+        </mi>
+       </mrow>
+      </msub>
+     </mrow><mo>
+      ,
+     </mo><mspace width="thickmathspace"></mspace><mrow>
+      <msup>
+       <mi>
+        t
+       </mi>
+       <mrow>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mi>
+           s
+          </mi>
+         </msub>
+        </mrow>
+       </mrow>
+      </msup>
+     </mrow><mo stretchy="false">
+      )
+     </mo>
+    </math></span>.</p>
+ </div>
+</div>
+<div id="s0007" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i33" class="section-heading-2">6. Experiments</h2>
+ <div id="s0007-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i34">6.1. Experimental Setup</h3>
+  <p>The reviews are split into train set, dev set, and test set. Detailed information for each dataset is given at <button class="ref showTableEventRef" data-id="t0005">Table 5</button>. The hyper-parameters of the model were set following up from previous studies. Socher et al. pointed the RNTN model achieved promising results for English when the dimension of the word embeddings was set between 25 and 35. We chose 30 as a dimension of the word embeddings, which is also used as a dimension of the suffix embeddings (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>). Similarly, the recommended batch size was between 20 and 30. We used the train and dev set to set batch size, learning rate. We observed that the performance of the model was decreasing for larger batch size; hence we used 20 as batch size. The learning rate was set to 0.01, and AraGrad was used as an optimizer with 0.001 weight decay regularization. The model was trained over 100 epoch. The predictions were evaluated at the sentence-level and phrase-level and compared with the baseline methods that were described in the following section. The best accuracy results were obtained over cross-validation of dev set.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>26 April 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 5. </span> Root and inner node counts different level annotated MS-TR</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0005-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0005&amp;doi=10.1080%2F23311916.2021.1893621&amp;downloadType=CSV"> Download CSV</a><a data-id="t0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0007-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i35">6.2. Baselines</h3>
+  <p>For the sake of fair comparison, MS-TR is constructed over datasets that were classified by both machine-learning and lexicon-based approaches. The conventional machine learning algorithms including Naive Bayes (NB), Support Vector Machine (SVM) and Maximum Entropy (Max-Ent) were used as baseline methods to compare performances. Feature representation methods for each baseline models are as follows:</p>
+  <div class="quote">
+   <p>• <b>NB/SVM BoW</b>: BoW features combined with cross-lingual machine translation feature set from Turkish to English (Demirtas &amp; Pechenizkiy, <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>).</p>
+  </div>
+  <div class="quote">
+   <p>• <b>NB/SVM BA</b>: SentiTurkNet and polarity lexicon, to use the average of words as a feature, basic approach (BA) (Gezici &amp; Yanıkog˘lu, <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+  </div>
+  <p></p>
+  <p>• <b>NB/SVM BA-Neg</b>: Basic approach combined with handling negation (Gezici &amp; Yanıkoglu, <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+  <p>• <b>NB/SVM BA-Booster</b>: Basic approach combined with booster words (Gezici &amp; Yanıkoglu, <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+  <p>• <b>NB/SVM BA-Seed Words</b>: Basic approach combined with handling negation (Gezici &amp; Yanıkoglu, <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+  <div class="quote">
+   <p>• <b>Max-Ent BoW</b>: BoW features combined with cross-lingual machine translation feature set from Turkish to English (Demirtas &amp; Pechenizkiy, <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>).</p>
+  </div>
+  <p></p>
+  <p>Aforementioned baseline studies did not report the training and test splits ratio. Hence, in this study, we prefer to split train/dev/test dataset, as suggested in Socher et al.(<span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>) (Socher et&nbsp;al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>) for STS dataset.</p>
+ </div>
+</div>
+<div id="s0008" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i36" class="section-heading-2">7. Results and discussion</h2>
+ <p>In terms of the experimental results, RNTNs have sentence level (root) and total node accuracy. For the sake of fair comparison, we report the first experiments results in terms of the micro average of the sentence (root) level accuracies of the train set, since the previous baseline studies reported the train dataset results. <button class="ref showTableEventRef" data-id="t0006">Tables 6</button> and <button class="ref showTableEventRef" data-id="t0007">Table 7</button> present the binary classification accuracy results of the }product reviews, and <button class="ref showTableEventRef" data-id="t0008">Table 8</button> presents the binary classification accuracy results of the movie reviews.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>26 April 2021
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 6. </span> Performance comparisons of books and DVD dataset</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0006-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0006&amp;doi=10.1080%2F23311916.2021.1893621&amp;downloadType=CSV"> Download CSV</a><a data-id="t0006" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>26 April 2021
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 7. </span> Performance comparisons of electronics and kitchen appliances dataset</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0007-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0007&amp;doi=10.1080%2F23311916.2021.1893621&amp;downloadType=CSV"> Download CSV</a><a data-id="t0007" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>26 April 2021
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 8. </span> Performance comparisons for movie reviews dataset</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0008-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0008&amp;doi=10.1080%2F23311916.2021.1893621&amp;downloadType=CSV"> Download CSV</a><a data-id="t0008" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <p>Although Socher et al. (Socher et al., <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i39" href="#"><span class="off-screen">Citation</span>2013</a></span>) mentioned that RNTN performed better for shorter reviews, we observed that compared to the traditional methods RNTN performed better even for longer reviews of Turkish movie dataset. In addition to models comparison, we also investigated the effect of different annotation levels to the accuracy results. As it can be seen in <button class="ref showTableEventRef" data-id="t0006">Tables 6</button>, <button class="ref showTableEventRef" data-id="t0007">Table 7</button>, and <button class="ref showTableEventRef" data-id="t0008">Table 8</button>, we observed that there is not much difference between the accuracy rates of RNTN over morph-level annotated MS-TR, stem-level annotated MS-TR, token-level annotated MS-TR and review-level annotated MS-TR. However, as shown in <button class="ref showTableEventRef" data-id="t0009">Table 9</button>, in terms of the inner node accuracy, i.e. all node accuracy, we observed that RNTN performed better with the token-level annotated MS-TR.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">MS-TR: A Morphologically enriched sentiment Treebank and recursive deep models for compositional semantics in Turkish</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Zeybek%2C+Sultan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Zeybek%2C+Sultan"><span class="NLM_given-names">Sultan</span> Zeybek</a> <a href="https://orcid.org/0000-0002-1298-9499"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Ko%C3%A7%2C+Ebubekir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ko%C3%A7%2C+Ebubekir"><span class="NLM_given-names">Ebubekir</span> Koç</a> <a href="https://orcid.org/0000-0002-9069-715X"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Se%C3%A7er%2C+Ayd%C4%B1n"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Se%C3%A7er%2C+Ayd%C4%B1n"><span class="NLM_given-names">Aydın</span> Seçer</a> <a href="https://orcid.org/0000-0002-8372-2441"><img src="/templates/jsp/images/orcid.png"></a> |
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/23311916.2021.1893621">https://doi.org/10.1080/23311916.2021.1893621</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>26 April 2021
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 9. </span> Performance comparisons for the total node and sentence-level accuracies of the test dataset over RNTN</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0009-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0009&amp;doi=10.1080%2F23311916.2021.1893621&amp;downloadType=CSV"> Download CSV</a><a data-id="t0009" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+</div>
+<div id="s0009" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i37" class="section-heading-2">8. Conclusions</h2>
+ <p>This paper introduces a Morphologically Enriched Sentiment Treebank (MS-TR) for compositional semantics in Turkish. MS-TR was constructed based on the four different annotation levels, including morph level, stem level, token level, and review level using morphological features of the words as a semi-supervised annotation approach. Each annotation level of binary and fine-grained fully labeledparse trees has been constructed as a novel sentiment treebank. Experiments have been done using different domain datasets with Recursive Neural Tensor Networks (RNTN) and compared to conventional baseline methods, including Naïve Bayes(NB), Maximum Entropy (ME), and Support Vector Machines (SVM). The effect of using labeled stems and suffixes in MS-TR has also been investigated for each dataset. According to the experimental results, RNTN has outperformed conventional baseline methods for each MS-TR annotation level. It has been shown that our semi-supervised distant annotation approach can practically be used to construct a fully labeled sentiment treebank without the need for human labor while keeping sentiment information of words to construct structured input for Tree-RNNs. This study can be improved using enhanced tree-based deep learning architectures, including constituency or dependency parse trees. Particularly, the fine-grained train dataset for Turkish can be expanded for future studies.</p>
+</div>

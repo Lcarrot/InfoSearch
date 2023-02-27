@@ -1,0 +1,985 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">1. Introduction</h2>
+ <p>Information Extraction (IE) is one of the hottest areas of the active research in artificial intelligence. It was developed in the late 1980's and 1990's with the Message Understanding Conferences (MUC) (Grishman &amp; Sundheim, <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>1996</a></span>), in the latter, a set of evaluation campaigns have been suggested and have defined the different tasks of the IE systems. The core task of IE is named entity recognition (NER), which is based on the extraction of categorizable textual objects in classes such as names of people, names of organizations, etc.</p>
+ <p>The relation identification is also a worthy of mention task in the field of IE, which aims to find the mention of a binary relation between two entities in a text (Elloumi et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2013</a></span>). Another specific type of knowledge that can be extracted from the text is the event and can be considered as an object that admits an existence in the time space and depends on other objects (Elloumi et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2013</a></span>). The event extraction is domain dependent. It has been also studied for more than two decades through the MUC and the Automatic Content Extraction (ACE) programs. Each year of the MUC program focussed on a single type of event template, allowing for the study of complex structure and fillers within the event. Among the types of events studied in the MUC, Fleet operations, terrorist activities in Latin America, corporate joint ventures, microelectronic production, etc.</p>
+ <p>With the ACE program, researchers have switched focus to more general types of events, such as conflicts, transportation of people/items, and life events. This allows the program to capture a much wider range of event types than the MUC program but still remains domain dependant and requires expert's involvement.</p>
+ <p>In 2007, the open information extraction (OIE) has appeared and has allowed the task of extracting knowledge from texts without much supervision. OIE systems aim to obtain relation tuples with a highly scalable extraction by identifying a variety of relation phrases and their arguments in arbitrary sentences (Vo &amp; Bagheri, <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2017</a></span>).</p>
+ <p>In this paper, which is an extended version of our ICCCI 2019 conference paper, we propose an event extraction approach which reduces the expert intervention by using an OIE system for a relation extraction without supervision, an automatic NER, and an ontology applied for any management change event. We show some case application scenarios for a management change event domain followed by experimental result in terms of recognition rates.</p>
+ <p>The remainder of this paper is organized as follows. In Section <a href="#S002">2</a>, we present the related works of the IE domain and its different levels. Section <a href="#S003">3</a> thoroughly describes our new approach for IE. In Section <a href="#S004">4</a>, we present the experimental results we obtained for the management change event. In Section <a href="#S005">5</a>, we conclude and sketch issues of future work.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">2. Related work</h2>
+ <p>According to the type of information extracted, different levels are defined in the domain of IE. In the following section we provide a general overview of these levels and elaborate further in subsequent sections.</p>
+ <div id="S002-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">2.1. Named entity recognition</h3>
+  <p>A named entity (NE) is often a word or an expression that represents a specific object of the real world. The NEs generally correspond to the names of the person, organization, place and dates, monetary units, percentages, units of measurement, etc.</p>
+  <p>Therefore NER is defined as an important task among the tasks of IE, which has been satisfactorily carried out for well-formed texts such as news story for certain languages like english and french. NER consists of searching and identifying objects which are categorizable into two classes (Satoshi et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2002</a></span>):</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline"><i>Named entities</i> can be the name of people, name of organizations, name of places, etc. The name of people extractor aims to identify the first and the last name, the places extractor based on a list of files that contains the name of places and their types (cities, countries, governorate) and the organization extractor aims to identify the name of organization and its type (Association, society, Faculty, etc).</p></li>
+   <li><p class="inline"><i>Numeric entities</i> can be temporal expressions and numbers. The temporal expressions can be dates and any other temporal markers (period, date, etc). Numbers can be numerical expressions such as money and percentages.</p></li>
+  </ul>
+  <p></p>
+  <p>There are several NER systems that exist and are classified into three broad families: Systems based on <i>symbolic approaches</i>, systems based on <i>learning approaches</i> and <i>hybrid systems</i> (Talha et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2014</a></span>).</p>
+  <p><i>The symbolic approach</i> is based on the use of formal grammars built by hand and exploit syntactic labelling associated with words, such as the grammatical category of the word. It is also based on dictionaries of proper names, which usually include a list of the most common names, first names, place names, and names of organizations.</p>
+  <p>Shaalan and Raza (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2009</a></span>) developed their NERA system to extract ten types of NEs. This system relies on the use of a set of NE dictionaries and a grammar in the form of regular expressions.</p>
+  <p>To learn patterns that will recognize entities, <i>learning-based methods</i> use annotated data. The annotated data corresponds to documents in which the entities, with their types, are indicated. Subsequently, a learning algorithm will automatically develop a knowledge base using several numerical models such as Conditional Random Fields (CRF), Support Vector Machines (SVM), Hidden Markov Model (HMM), etc., which is not the case for symbolic approaches that only apply the previously injected rules. Benajiba et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2009</a></span>) developed an SVM learning technique for their NER system using a set of features of the Arabic language.</p>
+  <p>The combination of the two antecedent approaches represent the emergence of an <i>hybrid approach</i>. It uses rules written manually but also builds some of its rules based on syntactic information and information extracted from learning data. Abuleil (<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2006</a></span>) has adopted an hybrid approach for extraction of entities in arabic, taking advantage of symbolic and learning approaches.</p>
+  <p>As the recent advancement in the deep learning (DL), it produces huge differences in accuracy compared to traditional methods for Natural Language Processing (NLP) tasks. Entity extraction from text is a major Natural NLP task. According to Chiu and Nichols (<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2016</a></span>), the implementation has a bidirectional long short-term memory(BLSTM) at its core and a convolutional neural network (CNN) to identify character-level patterns.</p>
+ </div>
+ <div id="S002-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">2.2. Relation extraction</h3>
+  <p>Relation extraction (RE) is an important task for many applications and many studies. The RE task involves identifying relationships between named entities in each sentence of a given document. A relation usually indicates a well-defined relation (having a specific meaning) between two or more NEs.</p>
+  <p>The existing IE systems can be roughly categorized along two dimensions: The supervision required and the used models.</p>
+  <p>A system can be fully supervised, semi-supervised, or distantly supervised. The second dimension is that the model used can be pattern-based, not pattern-based (most of them are feature-based sequence classifiers), or an hybrid of pattern and feature-based.</p>
+  <p></p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline"><i>The pattern-based fully supervised approach</i></p><p>Systems differ in how they create patterns, learn patterns, and learn the entities they extract. It has been very successful at extracting richer relations using rules and NEs. The work by Hearst (<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>1992</a></span>) used hand written rules to automatically generate more rules that were manually evaluated to extract hypernym-hyponym pairs from text. Berland and Charniak (<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>1999</a></span>) used patterns to find all sentences in a corpus containing basement and building.</p></li>
+   <li><p class="inline"><i>The pattern-based distantly supervised</i></p><p>The matching of seed sets to text take word ambiguity into account when two different objects with the same lexicalization express two different relations by generating a training data automatically. For example, the DIPRE algorithm by Brin (<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>1998</a></span>) used string-based regular expressions in order to recognize relations such as author-book, while the SNOWBALL algorithm by Agichtein and Gravano (<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2000</a></span>) learned similar regular expression patterns over words and named entity tags.</p></li>
+   <li><p class="inline"><i>Distantly supervised Non-pattern-based systems</i></p><p>Many systems, such as CRFs-based systems, use a set of entities, dictionaries as features. Sarawagi and Cohen (<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2004</a></span>) worked on improving the matching of named entity segments to dictionaries and to use it as a feature for a sequence model.</p></li>
+   <li><p class="inline"><i>Distantly supervised hybrid systems</i></p><p>Individual components of a pattern-based learning system can use feature-based learning methods to learn good pattern and entity ranking functions. Niu (<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2012</a></span>) has shown promising results on distantly supervised relation extraction of Angeli et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2014</a></span>) by using fast inference in Markov logic networks. Angeli et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2014</a></span>) used learned dependency patterns.</p></li>
+   <li><p class="inline"><i>Deep learning models for relation extraction.</i></p><p>The word embeddings (Mikolov et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2013</a></span>) express each word as a vector and aim to capture the syntactic and semantic information about the word. They are learnt using unsupervised methods over large unlabelled text corpora which were adapted as standard in all subsequent RE deep learning models. Nguyen and Grishman (<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2015</a></span>), explore CNNs for Relation Extraction and Relation Classification tasks, the model completely gets rid of exterior lexical features to enrich the representation of the input sentence and lets the CNN learn the required features itself.</p></li>
+   <li><p class="inline"><i>Open information extraction</i></p><p>OIE, a popular task in recent years, it extracts relations from the web with no training data and no list of relations. ReVerb (Fader et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2011</a></span>) and OLLIE (Durme &amp; Schubert, <span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2008</a></span>) learn how to extract open-domain relation triples ( c.f., Subsection <a href="#S003-S2002-S3001">3.2.1</a> describes how we used OLLIE in our system).</p></li>
+  </ul>
+  <p></p>
+ </div>
+ <div id="S002-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">2.3. Event recognition</h3>
+  <p>Event extraction is intended to extract from the text a characterization of an event, defined by a set of entities associated with a specific role in the event.</p>
+  <p>Some techniques use <i>data-driven approaches</i>, others use <i>knowledge-driven approaches</i> and others use <i>hybrid approaches</i>.</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline"><i>Data-driven approaches</i> require a large text corpora in order to develop models that approximate linguistic phenomena. Data-driven methods require a lot of data and a little domain knowledge and expertize, while having a low interpretability. They don't deal with meaning explicitly, i.e. they discover relations in corpora without considering semantics.</p><p>For example, Conditional Random Field based (CRF) (Sarawagi &amp; Cohen, <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2004</a></span>) systems apply the classifier to a set of texts to produce a set of annotated texts. The interest and efficiency of CRFs come from taking into account the dependencies between labels related to each other in the graph.</p></li>
+   <li><p class="inline"><i>knowledge-driven approaches</i> is often based on models that express rules representing expert knowledge. It is intrinsically based on linguistic and lexicographical knowledge, as well as on existing human knowledge concerning the content of the text to be treated. This alleviates the problems with the statistical methods concerning the meaning of the text. For example, the GLAEE approach (Elloumi et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2013</a></span>) is based on the generation of annotation patterns that involves a list of keywords and cue words. Doing so, we identify events in the learning phase, afterwards the annotation phase is performed by an alignment between the pattern and the new text.</p></li>
+   <li><p class="inline"><i>hybrid approaches</i> seem to be a compromise between data and knowledge-based approaches, requiring an average amount of data and domain knowledge and having medium interpretability. However, it should be noted that the amount of expertize required is high, due to the fact that several techniques are combined. For example, the interest of Two-level approach (Elloumi, <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2019</a></span>) is to adapt the recognition of named entities level to the CRF tool based on learning techniques and a correspondence between level 1 learning (PERSON, ORG, DATE, NUMEX, PROFIL) as well as learning level 2 (NEW PERSON, COMING PERSON), which brings us back to a double generation of the classifier.</p></li>
+  </ul>
+  <p></p>
+  <p><button class="ref showTableEventRef" data-id="T0001">Table 1</button> summarizes the different approches. The diversity of approaches for IE witnesses the steady interest and usefulness of this domain. Several systems have been proposed in the context of event extraction. We have studied their functionality and, according to their limits, we have introduced our new approach. GLAEE (Elloumi et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2013</a></span>) is an approach based on the generation of annotation patterns which involves a list of keywords and cue words. It purposes to identify events by an alignment between the pattern and the new text. Here as stated before, the entities, the keywords and the cue words require human intervention.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>12 May 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 1. Summarizing table.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F24751839.2020.1763007&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The template filling through information extraction (Kodelja et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2017</a></span>) is an approach that aims to classify sentences according to a predefined event type. The event classification is then generally assimilated to the detection of triggers within the sentence. The trigger type indicates the type of the template form. Here the rules are written manually and require a lot of data. The A-CRF system uses CRFs (Sarawagi &amp; Cohen, <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2004</a></span>) which are based on a learning phase to manually prepare a set of corpora to train the model and an annotation phase to annotate a new text based on the learned texts and the probability distribution. Hence, the learning phase was applied to generate the level 1 classifier. The corpus is also prepared for deriving the level 2 classifier after an adaptive phase. It means replacing all annotated texts by their corresponding NEs.</p>
+  <p>We present below a summarizing table that glances all the work on event extraction from the approaches we studied. This study was carried out according to the methods used for event extraction, the language applied as well as the advantages and disadvantages of each of the approaches.</p>
+  <p>In general, the event extraction task is a dependent domain. It requires human intervention in order to construct manually the annotation rules or to prepare an annotated corpus as an input for the learning phase. In order to reduce the expert intervention, we suggest using ontologies as a knowledge source for describing any event. We suppose that an event-ontology describes the relations between named entities and their possible roles in an event. For instance, in the management change event, a person role might be the new-person, i.e. the hired one or the leaving person. To check whether a new text informs about a given event, in particular the roles of some named entities, a matching process is required between the new text and the ontology. To do that, we suggested the following steps : First, we applied the OIE in order to extract the most relevant relations within a text, then we applied the NER on these relations. And finally, we made a matching between results of the previous step and the ontology for deriving a possible event.</p>
+ </div>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i9" class="section-heading-2">3. Our approach: event detection based on open information extraction and ontology</h2>
+ <p>The main interest of our approach is how to extract a specific information from all existing relationships between all entities that can be found in a text.</p>
+ <p>Our goal is to reduce human intervention during event extraction. In particular, we present our approach which is based on two phases that depend on each other as shown in <a href="#F0001">Figure 1</a>. The first phase is the modelling of an event by an ontology and constructing a set of rules acquired manually. The second is the recognition phase which includes the RE, the NER and an automatic reasoning between learning rules and an input ontology adaptation. Our aim through these two phases is an efficient event extraction.</p>
+ <div class="figure figureViewer" id="F0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>12 May 2020
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> The overall architecture of the introduced approach at a glance.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/medium/tjit_a_1763007_f0001_oc.jpg" loading="lazy" height="378" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> The overall architecture of the introduced approach at a glance.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0001">
+  <div class="figureFootNote-F0001"></div>
+ </div>
+ <p></p>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">3.1. Learning phase</h3>
+  <p>An event is an object that admits an existence in the space of time and depends on other objects in relation. To cope with such constructs, we build an ontology manually to model these events in any domain. An ontology is a set of concepts, as well as relationships between these concepts<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>1</sup></a></span>. Algorithm 1 describes the mechanism of the learning phase on a list of named entities, relationships and roles to produce as an output, an ontology and a set of rules.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>12 May 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <p class="fulltext" align="left">Table</p>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="false" id="UN0001-table-wrapper">
+    <a data-id="UN0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div> In our case, the concepts stand for the named entities of the event (Person, Organization, etc.) and their roles (Coming_person, Leaving_person, IN_ORG) being in certain relationships.
+  <p></p>
+  <p>Figures <a href="#F0002">2</a> and <a href="#F0003">3</a> illustrate respectively the learning phase which is composed of event ontology (classes, subclasses and relations) and rules construction. In particular, we have:</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>12 May 2020
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Example of an Event ontology.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/medium/tjit_a_1763007_f0002_oc.jpg" loading="lazy" height="392" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Example of an Event ontology.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <div class="figure figureViewer" id="F0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>12 May 2020
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> Example of the built rules.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/medium/tjit_a_1763007_f0003_ob.jpg" loading="lazy" height="103" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> Example of the built rules.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0003">
+   <div class="figureFootNote-F0003"></div>
+  </div>
+  <p></p>
+  <p></p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline">The class Person has two subclasses: Coming_person and Leaving_person.</p></li>
+   <li><p class="inline">The class Organization has two subclasses: IN_ORG and OUT_ORG.</p></li>
+   <li><p class="inline">The class Position has four subclasses : CP_new_position, CP_previous_position, LP_previous_position, LP_new_position.</p></li>
+   <li><p class="inline">The class Date has two subclasses : Date_of_coming, Date of leaving.</p></li>
+  </ul>
+  <p></p>
+  <p>Our ontology contains a set of predefined relationships to connect two eventual instances such as appoint, resign, promote, etc.</p>
+  <p>Informally, a rule may be read as meaning that if the antecedent holds (is ‘true’), then the consequent must also hold. The rules construction is an important step in our approach which drives us, through the ontology and the result of the recognition phase to a possible event extraction. A set of rules are predefined to assign to every instance its role.</p>
+  <p>For instance the following rule:</p>
+  <p><i>Person(?x) ∧ appoint(?o,?x) ∧ Organization(?o)<span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/tjit_a_1763007_ilm0009.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/tjit_a_1763007_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mo>
+       →
+      </mo>
+     </math></span> IN_ORG(?o) ∧ Coming_Person(?x)</i> means that any instance ‘x’ of type Person is connected by an 'appoint' relation with any instance of type Organization ‘o’ gives us the result that the instance ‘x’ is a Coming_person and the instance ‘o’ is an IN_ORG. For the learning phase, we chose protég as an ontology modelling tool<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0002" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>2</sup></a></span>. For building this rule set, we used Semantic Web Rule Language (SWRL) tab. The later is a Protégé plugin that provides a development environment for working with SWRL rules.</p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">3.2. Recognition phase</h3>
+  <p>The recognition phase, as described by Algorithm 2, operates through four steps which are thoroughly explained in the remainder.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>12 May 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <p class="fulltext" align="left">Table</p>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="false" id="UN0002-table-wrapper">
+    <a data-id="UN0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <div id="S003-S2002-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i15">3.2.1. Step 1: open information extraction</h4>
+   <p>The input of the system is a text in natural language, the first step of recognition is generated by an OIE system which allows to extract textual relationship triplets existing in each sentence. The relationship triplets contain three textual components (Arg1, Rel, Arg2) where the first and the third, respectively, stand for the pair of arguments and the second indicates the relationship between them. However, the second OIE type handles triplets with attribution and conditions if they exist. It is in the form of <i>(Arg1; verb; Arg2) [attribution/condition]</i>. The aim of this step is to restrict the content of the text into relationships that are well defined and have a specific meaning for each sentence in the text. Through Example 3.1, we provide some illustrations of OLLIE extraction process.</p>
+   <p>The OLLIE tool produces a strong performance by extracting relationships not only mediated by verbs, but also mediated by nouns and adjectives<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0003" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>3</sup></a></span>. It can capture N-ary extractions where the relation phrase only differs by the preposition. In addition, OLLIE captures enabling conditions and attributions if they exist.</p><statement content-type="example" id="E0001">
+    Example 3.1 
+    <p>Here, we provide some examples of OLLIE extraction process modelling different outputs types.</p>
+    <ul class="NLM_list NLM_list-list_type-bullet">
+     <li><p class="inline"><i>Enabling conditions</i></p><p>Sentence: If I slept past noon, I'd be late for work.</p><p>Extraction: (I; 'd be late for; work)[enabler=If I slept past noon]</p></li>
+     <li><p class="inline"><i>Attribution</i></p><p>Sentence: Some people say Barack Obama was not born in the United States.</p><p>Extraction: (Barack Obama; was not born in; the United States)[attrib=Some people say].</p></li>
+     <li><p class="inline"><i>N-ary Extraction</i></p><p>Sentence: I learned that the 2012 Sasquatch music festival is scheduled for May 25th until May 28th.</p><p>Extraction: (the 2012 Sasquatch music festival; is scheduled for; May 25th)</p><p>Extraction: (the 2012 Sasquatch music festival; is scheduled until; May 28th)</p><p>N-ary: (the 2012 Sasquatch music festival; is scheduled; [for May 25th; to May 28th])</p></li>
+    </ul>
+    <p></p>
+   </statement>
+  </div>
+  <div id="S003-S2002-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i16">3.2.2. Step 2: named entity recognition</h4>
+   <p>The input of the NER tool is a triplet found in the previous step. The triplet will have an automatic recognition of named entities after a tokenization step. Hence, the system can detect person, organization, location, etc., in any part of the triplet. We used Python as one of the languages commonly used for Automatic Language Processing. Its particularity is to be open source and to solve common problems and especially its ‘libraries’ which contain different algorithms directly usable by data scientists. Among these libraries we can mention spaCy and nltk<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0004" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>4</sup></a></span>. We chose spaCy for NER and NLTK for lemmatisation and tokenization.</p>
+   <p>As illustration, we present in Figures <a href="#F0004">4</a> and <a href="#F0005">5</a> two cases of NER. In <a href="#F0004">Figure 4</a>, after recognizing QNB as an Organization, Mark as a person and president as a position the first condition is checked: The number of named entities is greater than or equal to 2 and the part between the delimiters ‘;’ presents the part that contains the relations. In this example, the verb ‘appoints’ after being lemmatized and the relation ‘as’ are compared to the list of relations in the ontology.</p>
+   <div class="figure figureViewer" id="F0004">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>12 May 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 4. </span> Example of recognition phase for the phrase ‘QNB appoints Mark as a president’.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/medium/tjit_a_1763007_f0004_oc.jpg" loading="lazy" height="376" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0004">
+    <p class="captionText"><span class="captionLabel">Figure 4. </span> Example of recognition phase for the phrase ‘QNB appoints Mark as a president’.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0004">
+    <div class="figureFootNote-F0004"></div>
+   </div>
+   <div class="figure figureViewer" id="F0005">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>12 May 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 5. </span> Example of recognition phase for the phrase ‘The Bank announced that Hang Zhihua will resign as non-executive directors’.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/medium/tjit_a_1763007_f0005_oc.jpg" loading="lazy" height="376" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0005">
+    <p class="captionText"><span class="captionLabel">Figure 5. </span> Example of recognition phase for the phrase ‘The Bank announced that Hang Zhihua will resign as non-executive directors’.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0005">
+    <div class="figureFootNote-F0005"></div>
+   </div>
+   <p></p>
+   <p>In <a href="#F0005">Figure 5</a>, the number of entities is greater than 2 and can be linked by a relationship. So input1, input2 and input3 should be entered to the ontology as instances under the classes Person, Position and Organization. In the case of there are triplets that share the same verbal part, then we work on the triplet which has the highest degree of certainty <i>d</i>.</p>
+  </div>
+  <div id="S003-S2002-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i19">3.2.3. Step 3: ontology input adaptation</h4>
+   <p>After recognizing the NEs, the verbs will be passed through a lemmatization layer that will convert conjugated verbs to their infinitive form. Every token recognized by a NE will be added as instance in the ontology. Algorithm 3 illustrates the adaptation step.</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>12 May 2020
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <p class="fulltext" align="left">Table</p>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="false" id="UN0003-table-wrapper">
+     <a data-id="UN0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <p></p>
+   <p>During the learning phase, we said that the concepts represent the NEs of the event and their roles. In this step, we operate as follows: Tokens are added as instances to the ontology and will be linked by relations whenever the following conditions are fulfilled :</p>
+   <ul class="NLM_list NLM_list-list_type-bullet">
+    <li><p class="inline">The number of named entities is greater than or equal to 2 to have a possible relationship among them. The NE can be found in the triplet or in the attribution/condition part (if it exists) as shown in Figures <a href="#F0006">6</a> and <a href="#F0007">7</a>.</p></li>
+    <li><p class="inline">The lemmatized verb and the other relations between delimiters ‘;’ should be included in the relation list of the ontology and NEs can be linked with these relations. As shown in Figures <a href="#F0008">8</a> and <a href="#F0009">9</a>, respectively, the relations appoint and resign were added to the ontolgy and the reasonning stage could be started.</p></li>
+   </ul>
+   <div class="figure figureViewer" id="F0006">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>12 May 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 6. </span> Ontology input adaptation for the second type of OIE system (phase1).</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0006image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/medium/tjit_a_1763007_f0006_oc.jpg" loading="lazy" height="319" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0006">
+    <p class="captionText"><span class="captionLabel">Figure 6. </span> Ontology input adaptation for the second type of OIE system (phase1).</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0006">
+    <div class="figureFootNote-F0006"></div>
+   </div>
+   <div class="figure figureViewer" id="F0007">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>12 May 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 7. </span> Ontology input adaptation for the second type of OIE system (phase2).</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0007image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/medium/tjit_a_1763007_f0007_oc.jpg" loading="lazy" height="207" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0007">
+    <p class="captionText"><span class="captionLabel">Figure 7. </span> Ontology input adaptation for the second type of OIE system (phase2).</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0007">
+    <div class="figureFootNote-F0007"></div>
+   </div>
+   <div class="figure figureViewer" id="F0008">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>12 May 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 8. </span> Example of the ontology after adaptation step for the sentence <i>‘QNB appoints Mark as a president’</i>.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0008image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/medium/tjit_a_1763007_f0008_oc.jpg" loading="lazy" height="399" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0008">
+    <p class="captionText"><span class="captionLabel">Figure 8. </span> Example of the ontology after adaptation step for the sentence <i>‘QNB appoints Mark as a president’</i>.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0008">
+    <div class="figureFootNote-F0008"></div>
+   </div>
+   <div class="figure figureViewer" id="F0009">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>12 May 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 9. </span> Example of the ontology after adaptation step for the sentence <i>‘The Bank announced that Hang Zhihua will resign as non-executive directors’</i>.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0009image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/medium/tjit_a_1763007_f0009_oc.jpg" loading="lazy" height="405" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0009">
+    <p class="captionText"><span class="captionLabel">Figure 9. </span> Example of the ontology after adaptation step for the sentence <i>‘The Bank announced that Hang Zhihua will resign as non-executive directors’</i>.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0009">
+    <div class="figureFootNote-F0009"></div>
+   </div>
+   <p></p>
+   <p>To automatically add the instances (individuals) to the ontology and to link them by their relationship, we used OWLAPI in a Java code for manipulating the elements that compose an ontology (i.e. classes, individuals, properties, annotations, restrictions, etc.) to the ontology and Owlready2 for the reasoning step as a module for ontology-oriented programming in Python. It can load OWL 2.0 ontologies as objects, edit them, save them, and perform reasoning via the HERMIT reasoner (included).</p>
+  </div>
+  <div id="S003-S2002-S3004" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i24">3.2.4. Step 4: reasoning</h4>
+   <p>The reasoning is a stage after entering the instances and linking them by their specific relations. The reasoner is a software which infers logical consequences from a set of rules to affect for each instance its role (event). Ontology Web Language (OWL) is based on description logics, and it supports automated reasoning. Protégé OWL provides direct access to reasoners such as HERMIT. The later can determine whether or not the ontology is consistent, identify subsumption relationships between classes, to say the least. The tokens that are recognized by named entities, i.e. QNB, Mark and president, will be entered as instances under the classes of the ontology and will be connected by their corresponding relationships, namely, appoint, as. This step is the matching phase who the process is explained by Algorithm 4.</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>12 May 2020
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <p class="fulltext" align="left">Table</p>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="false" id="UN0004-table-wrapper">
+     <a data-id="UN0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <p></p>
+   <p>As for example, in <a href="#F0010">Figure 10</a>, after reasoning, the entries (input1, input2, input3) are automatically linked by their roles (event). Hence, QNB has the role of IN_ORG, Mark has been assigned the role of Coming person and president has the role of CP_new_position as shown.</p>
+   <div class="figure figureViewer" id="F0010">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>12 May 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 10. </span> Example of the reasoning step and event extraction for the sentence <i>‘QNB appoints Mark as a president’</i>.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0010image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/medium/tjit_a_1763007_f0010_oc.jpg" loading="lazy" height="369" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0010">
+    <p class="captionText"><span class="captionLabel">Figure 10. </span> Example of the reasoning step and event extraction for the sentence <i>‘QNB appoints Mark as a president’</i>.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0010">
+    <div class="figureFootNote-F0010"></div>
+   </div>
+   <p></p>
+   <p>As a second example, as shown in <a href="#F0011">Figure 11</a>, the reasoner, through a set of rules, comes finally to the conclusion that ‘Hang Zhihua’ is a Leaving_person, ‘non-executive directors’ is a LP_previous_position and ‘Bank’ is an OUT_ORG.</p>
+   <div class="figure figureViewer" id="F0011">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>12 May 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 11. </span> Example of the reasoning step and event extraction for the sentence <i>‘The Bank announced that Hang Zhihua will resign as non-executive directors’</i>.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0011image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/medium/tjit_a_1763007_f0011_oc.jpg" loading="lazy" height="367" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0011">
+    <p class="captionText"><span class="captionLabel">Figure 11. </span> Example of the reasoning step and event extraction for the sentence <i>‘The Bank announced that Hang Zhihua will resign as non-executive directors’</i>.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0011">
+    <div class="figureFootNote-F0011"></div>
+   </div>
+   <p></p>
+  </div>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i27" class="section-heading-2">4. Experimental results</h2>
+ <p>The main objective of this work is to build a system for an automatic extraction of management change event from texts. We performed an evaluation to measure the application's quality for the event recognition on a set of a ‘management change’ corpora as described below.</p>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i28">4.1. Dataset description</h3>
+  <p>News about the management change event have been considered, as collected by RSS-Feed during the period from 15/08/2010 until 30/11/2011 from news providers in the scope of the Financial Watch Project (Jaoua et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2010</a></span>). The collected data were analyzed and, manually, annotated by experts in order to build a multilingual platform for knowledge discovery, information extraction and automatic translation in the financial domain.</p>
+  <p>Management change is usually a strategic decision for corporations. Therefore, their occurrences are limited. Hence, the experiment was limited to 50 files for training and 40 files for testing. The experts have manually processed 919 sentences containing 6995 words. In addition, the number of tags for the level 2 named entities is 338 as detailed in <button class="ref showTableEventRef" data-id="T0002">Table 2</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>12 May 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 2. Number of tags in management change dataset.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F24751839.2020.1763007&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i30">4.2. Test metrics</h3>
+  <p>In our evaluation, we chose the metrics that will allow us to evaluate the results of our work and measure the performance of the proposed system. When the system returns an answer to a text and a class, two alternatives are available:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline">The message belongs to the class.</p></li>
+   <li><p class="inline">The message does not belong to the class.</p></li>
+  </ul>
+  <p></p>
+  <p>This gives raise to four different possible cases:</p>
+  <p></p>
+  <ol class="NLM_list NLM_list-list_type-order">
+   <li><p class="inline"><i>True Positive (TP):</i> The system correctly finds the message as belonging to the class.</p></li>
+   <li><p class="inline"><i>False positive (FP):</i> The system mistakenly finds the message as belonging to the class.</p></li>
+   <li><p class="inline"><i>True negative (TN):</i> The system correctly finds the message as not belonging to the class.</p></li>
+   <li><p class="inline"><i>False negative (FN):</i> The system mistakenly finds the message as not belonging to the class.</p></li>
+  </ol>
+  <p></p>
+  <p>Precision is the measure of quality, recall is the measure of quantity and the F-measure is an aggregate of recall and precision. These three metrics were chosen for their frequent use in the field.</p>
+  <p><i>Precision:</i> Proportion of relevant solutions that are found. It asseses the ability of the system to provide all relevant solutions.<span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/tjit_a_1763007_um0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/tjit_a_1763007_um0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      P
+     </mi><mi>
+      r
+     </mi><mi>
+      e
+     </mi><mi>
+      c
+     </mi><mi>
+      i
+     </mi><mi>
+      s
+     </mi><mi>
+      i
+     </mi><mi>
+      o
+     </mi><mi>
+      n
+     </mi><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mi>
+         T
+        </mi>
+        <mi>
+         P
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         T
+        </mi>
+        <mi>
+         P
+        </mi>
+        <mo>
+         +
+        </mo>
+        <mi>
+         F
+        </mi>
+        <mi>
+         P
+        </mi>
+       </mrow>
+      </mfrac>
+     </mrow>
+    </math></span></p>
+  <p><i>Recall:</i> Proportion of solutions found that are relevant. It assesses the ability of the system to reject irrelevant solutions.<span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/tjit_a_1763007_um0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/tjit_a_1763007_um0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      R
+     </mi><mi>
+      e
+     </mi><mi>
+      c
+     </mi><mi>
+      a
+     </mi><mi>
+      l
+     </mi><mi>
+      l
+     </mi><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mi>
+         T
+        </mi>
+        <mi>
+         P
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         T
+        </mi>
+        <mi>
+         P
+        </mi>
+        <mo>
+         +
+        </mo>
+        <mi>
+         F
+        </mi>
+        <mi>
+         N
+        </mi>
+       </mrow>
+      </mfrac>
+     </mrow>
+    </math></span></p>
+  <p><i>F-measure:</i> Measures the ability of the system to provide all relevant solutions and to deny others.<span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/tjit_a_1763007_um0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2020/tjit20.v004.i03/24751839.2020.1763007/20210528/images/tjit_a_1763007_um0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      F
+     </mi><mrow>
+      <mrow>
+       <mo>
+        −
+       </mo>
+      </mrow>
+     </mrow><mi>
+      m
+     </mi><mi>
+      e
+     </mi><mi>
+      a
+     </mi><mi>
+      s
+     </mi><mi>
+      u
+     </mi><mi>
+      r
+     </mi><mi>
+      e
+     </mi><mo>
+      =
+     </mo><mrow>
+      <mfrac>
+       <mrow>
+        <mn>
+         2
+        </mn>
+        <mo>
+         ×
+        </mo>
+        <mi>
+         P
+        </mi>
+        <mo>
+         ×
+        </mo>
+        <mi>
+         R
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         R
+        </mi>
+        <mo>
+         +
+        </mo>
+        <mi>
+         P
+        </mi>
+       </mrow>
+      </mfrac>
+     </mrow>
+    </math></span></p>
+ </div>
+ <div id="S004-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i34">4.3. Results</h3>
+  <p>The evaluation of our approach is divided into two parts, described in more detail in the following. At first, the results of a general evaluation of the recognition rate of all the events as given in <button class="ref showTableEventRef" data-id="T0003">Table 3</button>. Next, the second part relates to the different types of events compared with two existing approaches.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>12 May 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 3. Evaluation results for the 40 files.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0003&amp;doi=10.1080%2F24751839.2020.1763007&amp;downloadType=CSV"> Download CSV</a><a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The results in <button class="ref showTableEventRef" data-id="T0003">Table 3</button> for the last three columns, i.e. precision, recall and F-measure respectively, stand within 0–100%. For 30 files over 40, i.e. 75% of cases, we obtained more than 80% of precision, which is a very promizing approach performance indicator. However, in 4 cases the precision is equal to 0%. The reason is related to the OIE output, since we remarked that the triplets related to the targeted event were not detected. In average, the recall is 65.45% and only 6 cases the recall is less than 50%. This is due to the fact that some parts of the event were not extracted. In addition, for some cases, the NER output fails to identify the correct named entity of a text which implies a missing or wrong event role.</p>
+  <p>Moreover, <button class="ref showTableEventRef" data-id="T0003">Table 3</button> presents in detail the level 2 NEs number, for the different files in an ascending order. We remark that the precision is sensitive to the number of the NEs it contains. For instance, in the last three files there are more than 15 NEs and the system fails to recognize them correctly. However, the precision rate is more than 88% when the NEs number is less than 4.</p>
+  <p>We compared our work to a previous applications A-CRF and GLAEE (Elloumi, <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2019</a></span>). A-CRF is based on a correspondence between NEs and events. This correspondence is based on a double generation of the classifier: A classifier for the first level's learning (PERSON, POSITION, ORG) and another classifier for the second level's learning (COMING PERSON, NEW POSITION, IN_ORG). GLAEE is based on a list of keywords and cue words to identify events. For the comparaison, we chose to compare our results against A-CRF and GLAEE by role as indicated in <button class="ref showTableEventRef" data-id="T0004">Table 4</button>. Precision is considered to be a comparative metric between these two approaches.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Event detection based on open information extraction and ontology</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Sahnoun%2C+Sihem"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Sahnoun%2C+Sihem"><span class="NLM_given-names">Sihem</span> Sahnoun</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Elloumi%2C+Samir"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Elloumi%2C+Samir"><span class="NLM_given-names">Samir</span> Elloumi</a> <a href="https://orcid.org/0000-0002-1822-5334"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Ben+Yahia%2C+Sadok"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ben+Yahia%2C+Sadok"><span class="NLM_given-names">Sadok</span> Ben Yahia</a> <a href="https://orcid.org/0000-0001-8939-8948"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1763007">https://doi.org/10.1080/24751839.2020.1763007</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>12 May 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 4. Comparative study.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0004&amp;doi=10.1080%2F24751839.2020.1763007&amp;downloadType=CSV"> Download CSV</a><a data-id="T0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>Form <button class="ref showTableEventRef" data-id="T0004">Table 4</button>, we underscore that our approach outperforms its competitors for the comingPerson and LeavingPerson event's roles. The presicion value for the DateOfComing is 33% is justified by OIE output which focus more on extacting verbs, and actors rather date related information. Nevertheless, the most important parts of a management change event were extracted.</p>
+  <p>Even though quite encouraging, we can deduce that we arrived with an acceptable rate to extract from the texts a set of events. The A-CRF approach based on CRF analysis that requires human and manual intervention at the classifiers generation and which take a long time. The GLAEE approach involves a list of keywords and cue words that are manually acquired to identify events by an alignment between the pattern and the new text. Our approach can be considered as an automatic one except the part of the rule construction and the ontology which are useful for any event in the management change domain.</p>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i37" class="section-heading-2">5. Conclusion</h2>
+ <p>In this paper, we introduced an event extraction system from textual documents which is mainly domain dependent. The originality of our approach is to avoid as much as possible this dependency since we proposed to apply the Open Information Extraction approach for modelling any event type ontology representation.</p>
+ <p>The matching between the OIE output and the ontology requires adaptation and reasoning phases. Our approach is generalized to any type of text in the management change event in particular for the modal of the ontology and the OIE context.</p>
+ <p>The exprimental results confirms the succefulness of our approach since it was able to extract events with an accuracy rate comparable to A-CRF and GLAEE approaches.</p>
+ <p>We consider as future work, by merging between OIE and open domain event extraction approach (Elloumi, <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i40 _i42" href="#"><span class="off-screen">Citation</span>2019</a></span>). Based on the idea of the open domain, it can give us more effective results. In addition, we plan to use conjugated verbs instead of the lemmatized ones and to assign higher importance to the attribution/condition part to resolve the problem of two different roles in the same sentence and to identify the temporal order of statements.</p>
+</div>

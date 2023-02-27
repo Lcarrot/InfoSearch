@@ -1,0 +1,2757 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">1. Introduction</h2>
+ <div id="S001-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">1.1. Growing utilization of MPC in legged and humanoid robotics</h3>
+  <p>Legged and humanoid robots have seen considerable technological advances in the past two decades. Two major factors have contributed to the development of legged robot research: hardware and control technology. For quadruped robots, hardware platforms such as LittleDog [<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>1</a></span>], have facilitated research on rough terrain locomotion. Recently, more advanced robots, such as HyQ [<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>2</a></span>], ANYmal [<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>3</a></span>], MIT Cheetah [<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>4</a></span>], and Mini Cheetah [<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>5</a></span>], have been developed by different research institutes. For bipedal and humanoid robots, many significant research achievements using hardware platforms, such as the HRP series [<span class="ref-lnk lazy-ref"><a data-rid="CIT0006 CIT0007 CIT0008" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>6–8</a></span>], TORO [<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>9</a></span>], Atlas [<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>10</a></span>], TALOS [<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>11</a></span>], E2-DR [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>12</a></span>], and Cassie [<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>13</a></span>], have been reported in the literature.</p>
+  <p>Advanced control technology is crucial for drawing maximum performance from robotic hardware. However, the traditional methodology based on offline motion planning and linear control is incapable of sufficiently harnessing hardware performance and responding swiftly to a dynamically changing environment. Model predictive control (MPC), on the other hand, enables trajectory generation in nonlinear domain and full utilization of kinematic movable range and torque limits. Moreover, frequent replanning of motion reflecting the current state makes the robot more robust against disturbances. Therefore, the application of MPC to legged robotic systems has been a subject of active research in the past decade. Notably, 19 out of 28 workshop papers presented during the legged robotics workshop in ICRA2022 included the keywords ‘model predictive’ or ‘receding horizon’, of which 9 were directly focused on MPC&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>14</a></span>].</p>
+  <p>Table&nbsp;<button class="ref showTableEventRef" data-id="T0001">1</button> summarizes legged robotic systems reported in the literature that use MPC to realize certain functions. The columns of the table detail, from left to right, the year of publication, the dynamical model, the problem formulation and/or the solution method, the parameter setting, and the name of the robot. Cells containing information that could not be found in the original paper are left empty. The definitions of abbreviations are listed at the bottom of the table. In early research of legged robotics, MPC was been used for online walking pattern generation of bipedal and humanoid robots to improve responsiveness to disturbances and user commands. Although not all methods proposed during this period are referred to as MPC, we included them in the table as they are based on a similar concept. Following the DARPA Robotics Challenge held from 2013 to 2015, more studies that attempt to use MPC for whole-body control have been published. In recent years, the application of MPC to both biped and quadruped robots has seen a dramatic increase, where MPC is used for online trajectory generation as well as for whole-body control. In a broad sense, the term ‘online’ means that the planned trajectory is updated at a certain frequency inside of a feedback loop. The actual update frequency for MPC varies considerably across robotic systems and ranges from 10 Hz to 1 kHz, as shown in Table&nbsp;<button class="ref showTableEventRef" data-id="T0001">1</button>. In exceptional cases, the update is synchronized with walking steps&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>20</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>24</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>42</a></span>].</p>
+ </div>
+ <div id="S001-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">1.2. Focus and organization of this survey</h3>
+  <p>The objective of this survey paper is to provide an extensive review of recent progress in the theory, implementation, and application of model predictive control techniques to legged and humanoid robotics. Several well-written survey papers [<span class="ref-lnk lazy-ref"><a data-rid="CIT0049 CIT0050 CIT0051 CIT0052" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>49–52</a></span>] and handbook articles [<span class="ref-lnk lazy-ref"><a data-rid="CIT0053 CIT0054 CIT0055" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>53–55</a></span>] on motion planning and control of legged and humanoid robots exist in the literature. Among them, [<span class="ref-lnk lazy-ref"><a data-rid="CIT0054" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>54</a></span>] surveyed MPC for adaptive walking pattern generation and [<span class="ref-lnk lazy-ref"><a data-rid="CIT0055" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>55</a></span>] discussed multi-contact MPC with a predetermined contact sequence. However, as mentioned previously, the application of MPC to legged and humanoid robots has increased rapidly ever since the publication of these surveys, and several important theoretical and technical developments have not been addressed in the existing surveys. The original contribution of this paper is twofold. First, we reviewed numerical algorithms of MPC that are particularly efficient for robotic problems, which is often discussed in research on MPC robotic applications but has not been extensively reviewed yet in the aforementioned surveys. Second, we provide an extensive survey of the recent developments in MPC for legged and humanoid robots including the most recent topics such as contact-implicit and whole-body MPC. The target period for this survey is approximately two decades, from the early 2000s to the present. To ensure reliability, we have avoided citing papers that have appeared only on pre-print servers such as arXiv.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Model predictive control of legged and humanoid robots: models and algorithms</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Katayama%2C+Sotaro"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Katayama%2C+Sotaro"><span class="NLM_given-names">Sotaro</span> Katayama</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Murooka%2C+Masaki"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Murooka%2C+Masaki"><span class="NLM_given-names">Masaki</span> Murooka</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tazaki%2C+Yuichi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tazaki%2C+Yuichi"><span class="NLM_given-names">Yuichi</span> Tazaki</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/01691864.2023.2168134">https://doi.org/10.1080/01691864.2023.2168134</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>09 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Summary of legged robot systems that utilizes MPC.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="false" id="T0001-table-wrapper">
+    <a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The organization of the rest of this survey is as follows. In Section&nbsp;<a href="#S002">2</a>, a brief review of dynamical systems of legged robots is provided. In Section&nbsp;<a href="#S003">3</a>, the theory and algorithms for MPC are reviewed from a general perspective. In Section&nbsp;<a href="#S004">4</a>, MPC methods specific to legged and humanoid robots are reviewed. Section&nbsp;<a href="#S005">5</a> presents concluding remarks and future prospects.</p>
+ </div>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i8" class="section-heading-2">2. Dynamical system models of legged robots</h2>
+ <div id="S002-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">2.1. Dynamical models with different levels of detail</h3>
+  <p>Because legged robots have many degrees of freedom, a mathematical model that fully describes its dynamic and kinematic characteristics can be very high-dimensional and complex. It is, therefore, unrealistic to rely entirely on such complex models for implementing MPC with a long prediction horizon, for which real-time update is a strong requirement. For capturing and utilizing the dynamics of legged robots in different levels of detail, mathematical models with various degrees of abstraction and dimensionality have been proposed. The complexity of a model strongly influences the computational complexity of MPC algorithms and the variety of motions that can be generated. In the following, models widely used for MPC are briefly reviewed in the complex-to-simple order.</p>
+ </div>
+ <div id="S002-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">2.2. Whole-body dynamics</h3>
+  <p>The whole-body dynamics (WBD, also known as rigid-body dynamics or multi-body dynamics) is a model that represents a robot as a floating-base mechanical system comprising multiple rigid bodies connected by joints (see Figure&nbsp;<a href="#F0001">1</a>(a)). Its equation of motion is expressed as follows. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mi>
+         M
+        </mi>
+        <mo>
+         (
+        </mo>
+        <mi mathvariant="bold-italic">
+         q
+        </mi>
+        <mo>
+         )
+        </mo>
+        <mrow>
+         <mover>
+          <mi mathvariant="bold-italic">
+           v
+          </mi>
+          <mo>
+           ˙
+          </mo>
+         </mover>
+        </mrow>
+        <mo>
+         +
+        </mo>
+        <mi>
+         h
+        </mi>
+        <mo>
+         (
+        </mo>
+        <mi mathvariant="bold-italic">
+         q
+        </mi>
+        <mo>
+         ,
+        </mo>
+        <mi mathvariant="bold-italic">
+         v
+        </mi>
+        <mo>
+         )
+        </mo>
+        <mo>
+         =
+        </mo>
+        <msup>
+         <mi>
+          S
+         </mi>
+         <mrow>
+          <mi mathvariant="sans-serif">
+           T
+          </mi>
+         </mrow>
+        </msup>
+        <mi mathvariant="bold-italic">
+         τ
+        </mi>
+        <mo>
+         +
+        </mo>
+        <mi>
+         J
+        </mi>
+        <mo>
+         (
+        </mo>
+        <mi mathvariant="bold-italic">
+         q
+        </mi>
+        <msup>
+         <mo>
+          )
+         </mo>
+         <mrow>
+          <mi mathvariant="sans-serif">
+           T
+          </mi>
+         </mrow>
+        </msup>
+        <mi mathvariant="bold-italic">
+         λ
+        </mi>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span>Here, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0023.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      q
+     </mi>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0024.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      v
+     </mi>
+    </math></span>, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0025.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      τ
+     </mi>
+    </math></span> are the generalized coordinate, velocity, and torque of the system, <i>M</i> is the inertia matrix, <i>h</i> is the Coriolis-centrifugal term, <i>S</i> is the selection matrix that specifies actuated joints, and <i>J</i> is the contact Jacobian. The domain of the generalized coordinate <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0026.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      q
+     </mi>
+    </math></span> is <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0027.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mi mathvariant="normal">
+       S
+      </mi>
+      <mi mathvariant="normal">
+       E
+      </mi>
+     </mrow><mo>
+      (
+     </mo><mn>
+      3
+     </mn><mo>
+      )
+     </mo><mo>
+      ×
+     </mo><msup>
+      <mrow>
+       <mi mathvariant="double-struck">
+        R
+       </mi>
+      </mrow>
+      <mrow>
+       <msub>
+        <mi>
+         n
+        </mi>
+        <mrow>
+         <mi mathvariant="normal">
+          j
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+     </msup>
+    </math></span>, where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0028.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       n
+      </mi>
+      <mrow>
+       <mi mathvariant="normal">
+        j
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> is the number of joints. Here, the orientation of the base link is parameterized either by a unit quaternion or Euler angles. The contact force vector <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0029.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0029.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      λ
+     </mi>
+    </math></span> is a concatenation of all contact forces; <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0030.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0030.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      λ
+     </mi><mo>
+      =
+     </mo><mo>
+      [
+     </mo><msubsup>
+      <mi mathvariant="bold-italic">
+       λ
+      </mi>
+      <mn>
+       1
+      </mn>
+      <mrow>
+       <mi mathvariant="sans-serif">
+        T
+       </mi>
+      </mrow>
+     </msubsup><mo>
+      ,
+     </mo><msubsup>
+      <mi mathvariant="bold-italic">
+       λ
+      </mi>
+      <mn>
+       2
+      </mn>
+      <mrow>
+       <mi mathvariant="sans-serif">
+        T
+       </mi>
+      </mrow>
+     </msubsup><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><msubsup>
+      <mi mathvariant="bold-italic">
+       λ
+      </mi>
+      <mrow>
+       <msub>
+        <mi>
+         n
+        </mi>
+        <mrow>
+         <mi mathvariant="normal">
+          c
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+      <mrow>
+       <mi mathvariant="sans-serif">
+        T
+       </mi>
+      </mrow>
+     </msubsup><msup>
+      <mo>
+       ]
+      </mo>
+      <mrow>
+       <mi mathvariant="sans-serif">
+        T
+       </mi>
+      </mrow>
+     </msup>
+    </math></span>, where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0031.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0031.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi mathvariant="bold-italic">
+       λ
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub>
+    </math></span> is the contact force acting on the <i>i</i>th contact point. In rigid contact model, the contact force <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0032.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0032.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      λ
+     </mi>
+    </math></span> is determined to satisfy the complementarity between contact force and contact acceleration at each contact point. Moreover, to avoid slipping, each contact force must be inside the friction cone associated with that contact point. See, for example, [<span class="ref-lnk lazy-ref"><a data-rid="CIT0056" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>56</a></span>] for more details on the whole-body dynamics.</p>
+  <div class="figure figureViewer" id="F0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Model predictive control of legged and humanoid robots: models and algorithms</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Katayama%2C+Sotaro"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Katayama%2C+Sotaro"><span class="NLM_given-names">Sotaro</span> Katayama</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Murooka%2C+Masaki"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Murooka%2C+Masaki"><span class="NLM_given-names">Masaki</span> Murooka</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tazaki%2C+Yuichi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tazaki%2C+Yuichi"><span class="NLM_given-names">Yuichi</span> Tazaki</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/01691864.2023.2168134">https://doi.org/10.1080/01691864.2023.2168134</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>09 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1. </span> Dynamical models with different dimensionality.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/medium/tadr_a_2168134_f0001_ob.jpg" loading="lazy" height="126" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0001">
+   <p class="captionText"><span class="captionLabel">Figure 1. </span> Dynamical models with different dimensionality.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0001">
+   <div class="figureFootNote-F0001"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S002-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i13">2.3. Centroidal dynamics</h3>
+  <p>The centroidal dynamics equation given below describes the dynamics of the center of mass and the total angular momentum (see Figure <a href="#F0001">1</a>(b)). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mi>
+         m
+        </mi>
+        <msub>
+         <mrow>
+          <mover>
+           <mi mathvariant="bold-italic">
+            p
+           </mi>
+           <mo>
+            ¨
+           </mo>
+          </mover>
+         </mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           c
+          </mi>
+          <mi mathvariant="normal">
+           o
+          </mi>
+          <mi mathvariant="normal">
+           m
+          </mi>
+         </mrow>
+        </msub>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          f
+         </mi>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            c
+           </mi>
+          </mrow>
+         </mrow>
+        </msub>
+        <mo>
+         −
+        </mo>
+        <mi>
+         m
+        </mi>
+        <mi mathvariant="bold-italic">
+         g
+        </mi>
+       </mtd>
+      </mtr>
+      <mtr>
+       <mtd>
+        <mrow>
+         <mover>
+          <mi mathvariant="bold-italic">
+           L
+          </mi>
+          <mo>
+           ˙
+          </mo>
+         </mover>
+        </mrow>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          τ
+         </mi>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            c
+           </mi>
+          </mrow>
+         </mrow>
+        </msub>
+        <mo>
+         +
+        </mo>
+        <mo>
+         (
+        </mo>
+        <mi mathvariant="bold-italic">
+         r
+        </mi>
+        <mo>
+         −
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          p
+         </mi>
+         <mrow>
+          <mi mathvariant="normal">
+           c
+          </mi>
+          <mi mathvariant="normal">
+           o
+          </mi>
+          <mi mathvariant="normal">
+           m
+          </mi>
+         </mrow>
+        </msub>
+        <mo>
+         )
+        </mo>
+        <mo>
+         ×
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          f
+         </mi>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            c
+           </mi>
+          </mrow>
+         </mrow>
+        </msub>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span>Here, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0033.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0033.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi mathvariant="bold-italic">
+       p
+      </mi>
+      <mrow>
+       <mi mathvariant="normal">
+        c
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        m
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0034.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0034.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      L
+     </mi>
+    </math></span> are the position of the center of mass (CoM, also called the center of gravity, CoG) and the total angular momentum with respect to the CoM. Moreover, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0035.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0035.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi mathvariant="bold-italic">
+       f
+      </mi>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         c
+        </mi>
+       </mrow>
+      </mrow>
+     </msub>
+    </math></span> is the total contact force and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0036.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0036.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi mathvariant="bold-italic">
+       τ
+      </mi>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         c
+        </mi>
+       </mrow>
+      </mrow>
+     </msub>
+    </math></span> is the total contact moment around the point of application <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0037.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0037.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      r
+     </mi>
+    </math></span>, which can be chosen arbitrarily. The 6D vector consisting of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0038.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0038.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi mathvariant="bold-italic">
+       f
+      </mi>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         c
+        </mi>
+       </mrow>
+      </mrow>
+     </msub>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0039.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0039.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi mathvariant="bold-italic">
+       τ
+      </mi>
+      <mrow>
+       <mrow>
+        <mi mathvariant="normal">
+         c
+        </mi>
+       </mrow>
+      </mrow>
+     </msub>
+    </math></span> is called the total contact wrench.</p>
+  <p>The centroidal dynamics can be rigorously derived from the whole-body dynamics&nbsp;(<a href="#M0001">1</a>) without approximation. The relationship between the whole-body and centroidal dynamics is well described in&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>57</a></span>].</p>
+  <p>One difficulty of the centroidal dynamics is that the relationship between the angular momentum <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0040.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0040.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      L
+     </mi>
+    </math></span> and the robot's posture is not explicit. A frequently used approach is the single rigid-body dynamics (SRBD) approximation which expresses the angular momentum as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0041.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0041.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      L
+     </mi><mo>
+      =
+     </mo><mi>
+      I
+     </mi><mi mathvariant="bold-italic">
+      ω
+     </mi>
+    </math></span>, where <i>I</i> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0042.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0042.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      ω
+     </mi>
+    </math></span> are the base link's inertia tensor and angular velocity, respectively. This approximation is only valid if the inertia tensor does not change drastically depending on the robot's posture, and therefore, is often used for MPC of quadrupeds with light-weight legs [<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>26</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>30</a></span>]. One limitation of single rigid-body approximation is that it cannot express movements involving dynamical changes of the inertia tensor, such as changing the posture in the air&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>58</a></span>].</p>
+ </div>
+ <div id="S002-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">2.4. Contact models</h3>
+  <p>With the whole-body and centroidal dynamics models, the contacts are often modeled as constraints on the kinematics. When the contact sequence (e.g. gait patterns and contact points) is given, the contacts are typically expressed as equality constraints. Let <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0043.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0043.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      r
+     </mi><mo>
+      (
+     </mo><mi mathvariant="bold-italic">
+      q
+     </mi><mo>
+      )
+     </mo>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0044.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0044.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mover>
+       <mi>
+        r
+       </mi>
+       <mo>
+        ¯
+       </mo>
+      </mover>
+     </mrow>
+    </math></span> be the stacks of positions of bodies in contacts and given contact points, respectively. The contact constraint is then given by <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mi>
+         r
+        </mi>
+        <mo>
+         (
+        </mo>
+        <mi mathvariant="bold-italic">
+         q
+        </mi>
+        <mo>
+         )
+        </mo>
+        <mo>
+         −
+        </mo>
+        <mrow>
+         <mover>
+          <mi mathvariant="bold-italic">
+           r
+          </mi>
+          <mo>
+           ¯
+          </mo>
+         </mover>
+        </mrow>
+        <mo>
+         =
+        </mo>
+        <mn>
+         0.
+        </mn>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span>Alternatively, one can consider contact velocity or contact acceleration constraints, i.e. time derivative and second time derivatives of&nbsp;(<a href="#M0003">3</a>), respectively. Note that instead of the position <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0045.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0045.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      r
+     </mi><mo>
+      (
+     </mo><mi mathvariant="bold-italic">
+      q
+     </mi><mo>
+      )
+     </mo>
+    </math></span> and given contact point <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0046.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0046.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mover>
+       <mi>
+        r
+       </mi>
+       <mo>
+        ¯
+       </mo>
+      </mover>
+     </mrow>
+    </math></span>, the distance between the body and point (e.g. the height of a foot from the ground) or its time derivative is also utilized to determine the horizontal contact positions through the MPC optimization.</p>
+  <p>In contrast, when the planning problem involves the decision-making on the contact sequence, the underlying dynamics must be modeled so that various possibilities can be considered in the problems. A typical way is to model the contact dynamics using the <i>complementarity constraints</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>59</a></span>]. An intuitive example of the complementarity constraints expresses on/off of a point contact: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mi>
+         φ
+        </mi>
+        <mo>
+         (
+        </mo>
+        <mi mathvariant="bold-italic">
+         q
+        </mi>
+        <mo>
+         )
+        </mo>
+        <mo>
+         ≥
+        </mo>
+        <mn>
+         0
+        </mn>
+        <mo>
+         ,
+        </mo>
+        <msub>
+         <mi>
+          f
+         </mi>
+         <mi>
+          N
+         </mi>
+        </msub>
+        <mo>
+         ≥
+        </mo>
+        <mn>
+         0
+        </mn>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         φ
+        </mi>
+        <mo>
+         (
+        </mo>
+        <mi>
+         q
+        </mi>
+        <mo>
+         )
+        </mo>
+        <msub>
+         <mi>
+          f
+         </mi>
+         <mi>
+          N
+         </mi>
+        </msub>
+        <mo>
+         =
+        </mo>
+        <mn>
+         0
+        </mn>
+        <mo>
+         ,
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0047.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0047.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      φ
+     </mi><mo>
+      (
+     </mo><mi mathvariant="bold-italic">
+      q
+     </mi><mo>
+      )
+     </mo>
+    </math></span> denotes the distance between the robot's body and the environment, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0048.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0048.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       f
+      </mi>
+      <mi>
+       N
+      </mi>
+     </msub>
+    </math></span> denotes the corresponding normal contact force. While the complementarity constraints can rigorously model the unilateral aspect of contacts, the optimization problems are generally hard to solve. More computationally tractable but inaccurate contact models have been proposed to mitigate such difficulties [<span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>31</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0060" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>60</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0061" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>61</a></span>]. These models can be regarded as soft contact models and approximations of the complementarity constraints. Neunert et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>31</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0060" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>60</a></span>] modeled the contacts via a mass-spring-damper system, which is simple but leads to a stiff dynamical system and inaccuracy. Todorov [<span class="ref-lnk lazy-ref"><a data-rid="CIT0061" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>61</a></span>] proposed an analytically invertible and differentiable contact model used in MuJoCo simulator [<span class="ref-lnk lazy-ref"><a data-rid="CIT0062" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>62</a></span>]. However, it still lacks physical accuracy compared with the rigorous rigid contact models, e.g. allowing penetration between rigid objects, as seen in a contact model comparison of&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0063" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>63</a></span>].</p>
+ </div>
+ <div id="S002-S2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">2.5. Linear inverted pendulum mode</h3>
+  <p>The linear inverted pendulum mode, initially proposed in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0064" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>64</a></span>], describes the movement of the CoM as a linear second-order ordinary differential equation (ODE). Initially proposed as a 2D dynamical model, it has been generalized extensively in later studies [<span class="ref-lnk lazy-ref"><a data-rid="CIT0065" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>65</a></span>]. The LIPM can be directly derived from the centroidal dynamics with an additional assumption that no tilting moment act around the CoM. Some earlier studies claim that the LIPM is valid only under the lumped mass assumption; that is, the whole mass is concentrated around the CoM, but this assumption is, though sufficient, not necessary. Its derivation can be found in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>50</a></span>].</p>
+  <p>The 3D LIPM equation is expressed as follows. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <msub>
+         <mrow>
+          <mover>
+           <mi mathvariant="bold-italic">
+            p
+           </mi>
+           <mo>
+            ¨
+           </mo>
+          </mover>
+         </mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           c
+          </mi>
+          <mi mathvariant="normal">
+           o
+          </mi>
+          <mi mathvariant="normal">
+           m
+          </mi>
+         </mrow>
+        </msub>
+        <mo>
+         =
+        </mo>
+        <mfrac>
+         <mn>
+          1
+         </mn>
+         <msup>
+          <mi>
+           T
+          </mi>
+          <mn>
+           2
+          </mn>
+         </msup>
+        </mfrac>
+        <mo>
+         (
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          p
+         </mi>
+         <mrow>
+          <mi mathvariant="normal">
+           c
+          </mi>
+          <mi mathvariant="normal">
+           o
+          </mi>
+          <mi mathvariant="normal">
+           m
+          </mi>
+         </mrow>
+        </msub>
+        <mo>
+         −
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          p
+         </mi>
+         <mrow>
+          <mi mathvariant="normal">
+           z
+          </mi>
+          <mi mathvariant="normal">
+           m
+          </mi>
+          <mi mathvariant="normal">
+           p
+          </mi>
+         </mrow>
+        </msub>
+        <mo>
+         )
+        </mo>
+        <mo>
+         −
+        </mo>
+        <mi mathvariant="bold-italic">
+         g
+        </mi>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span>Here, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0049.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0049.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi mathvariant="bold-italic">
+       p
+      </mi>
+      <mrow>
+       <mi mathvariant="normal">
+        c
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        m
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> is the CoM, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0050.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0050.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi mathvariant="bold-italic">
+       p
+      </mi>
+      <mrow>
+       <mi mathvariant="normal">
+        z
+       </mi>
+       <mi mathvariant="normal">
+        m
+       </mi>
+       <mi mathvariant="normal">
+        p
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> is the ZMP, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0051.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0051.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      g
+     </mi><mo>
+      =
+     </mo><mo>
+      [
+     </mo><mn>
+      0
+     </mn><mo>
+      ,
+     </mo><mn>
+      0
+     </mn><mo>
+      ,
+     </mo><mi>
+      g
+     </mi><msup>
+      <mo>
+       ]
+      </mo>
+      <mrow>
+       <mi mathvariant="sans-serif">
+        T
+       </mi>
+      </mrow>
+     </msup>
+    </math></span> is the acceleration of gravity, and <i>T</i> is an arbitrary constant (more generally, it can be time-varying). In a simple setup where the CoM maintains a constant height <i>h</i> from the ground, the condition that the z-component of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0052.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0052.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mrow>
+       <mover>
+        <mi mathvariant="bold-italic">
+         p
+        </mi>
+        <mo>
+         ¨
+        </mo>
+       </mover>
+      </mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        c
+       </mi>
+       <mi mathvariant="normal">
+        o
+       </mi>
+       <mi mathvariant="normal">
+        m
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> is 0 gives <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0053.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0053.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      T
+     </mi><mo>
+      =
+     </mo><msqrt>
+      <mfrac>
+       <mi>
+        h
+       </mi>
+       <mi>
+        g
+       </mi>
+      </mfrac>
+     </msqrt>
+    </math></span>. Because the LIPM is a second-order linear ODE, it yields a closed-form solution. This characteristic is extremely useful for planning long trajectories with a small number of decision variables.</p>
+  <p>The LIPM has been used extensively for walking pattern generation and stabilization control of bipedal and humanoid robots. Theoretically, the LIPM is applicable not only to bipedal locomotion but to general-legged locomotion. However, its application to non-biped robots such as quadrupeds is relatively rare (see Section&nbsp;<a href="#S004-S2001">4.1</a>).</p>
+ </div>
+ <div id="S002-S2006" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i20">2.6. Stability criteria based on contacts</h3>
+  <p>It is essential to consider contact stability in the planning and control of legged locomotion. That is, generated trajectories must be supported by the distribution of valid contact forces. The CoM-based static stability criterion was used in early studies. Namely, the robot is statically stable if the ground projection of its CoM is inside the support region. However, this conservative stability criterion inevitably leads to static walking, which is impractical in terms of walking speed. For dynamic walking, the ZMP-based stability criterion is used instead. The ZMP (zero (tilting) moment point) or the CoP (center of pressure) is a point at which the tangential components of the net contact moment are zero. In coplanar contact cases (i.e. when all contact points lie on a single common plane), the condition that the ZMP is inside the convex hull of contact points is a necessary condition for surface contact stability. It is not generally sufficient because it neglects friction constraint (in other words, it assumes that the friction coefficient is large enough). Consideration of friction was discussed in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0065" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>65</a></span>]. For non-coplanar contact cases, the feasible set of the ZMP or total contact wrench can be still defined but are difficult to compute explicitly. Instead, some recent studies treated contact forces of multiple contact points as decision variables and impose contact stability constraints in optimization.</p>
+  <p>The CoM-based static stability is too conservative, while the ZMP/contact wrench-based criteria merely ensure the existence of valid contact force distribution at every instant. A theoretical framework that treats true dynamical stability (a property of a dynamical system that its state can be kept inside a bounded region indefinitely) in the context of legged locomotion has been developed as the capturability theory [<span class="ref-lnk lazy-ref"><a data-rid="CIT0066" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>66</a></span>]. The robot is said to be in an <i>N</i>-step capturable state if it can be brought to a halt within <i>N</i> walking steps. In particular, the robot is 0-step capturable if the instantaneous capture point (ICP) is inside the support region. It is a natural extension of the classical CoM-based static stability criterion. The capturability criterion is used to ensure the closed-loop stability of MPC&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>37</a></span>].</p>
+ </div>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i21" class="section-heading-2">3. MPC algorithms</h2>
+ <p>Before reviewing the robotic applications of MPC, we provide an overview of MPC algorithms. Figure&nbsp;<a href="#F0002">2</a> shows the classification of solution approaches to MPC problems, i.e. <i>optimal control problems</i> (OCPs). As shown in Figure <a href="#F0002">2</a>, the solution approaches to MPC problems are roughly divided into three methods: the <i>Hamilton-Jacobi-Bellman equation (dynamic programming)</i>, <i>indirect methods</i> (e.g. Pontryagin's maximum principle), and <i>direct methods</i>. However, the two former approaches are difficult to use for practical robotic problems that involve nonlinear and high-dimensional constrained MPC problems. Therefore, this survey focuses on the direct methods in which the MPC problems are transformed into nonlinear programs (NLPs) and solved by numerical optimization techniques.</p>
+ <div class="figure figureViewer" id="F0002">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Model predictive control of legged and humanoid robots: models and algorithms</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Katayama%2C+Sotaro"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Katayama%2C+Sotaro"><span class="NLM_given-names">Sotaro</span> Katayama</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Murooka%2C+Masaki"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Murooka%2C+Masaki"><span class="NLM_given-names">Masaki</span> Murooka</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tazaki%2C+Yuichi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tazaki%2C+Yuichi"><span class="NLM_given-names">Yuichi</span> Tazaki</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/01691864.2023.2168134">https://doi.org/10.1080/01691864.2023.2168134</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>09 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 2. </span> Overview of solution approaches of MPC.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/medium/tadr_a_2168134_f0002_ob.jpg" loading="lazy" height="224" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0002">
+  <p class="captionText"><span class="captionLabel">Figure 2. </span> Overview of solution approaches of MPC.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0002">
+  <div class="figureFootNote-F0002"></div>
+ </div>
+ <p></p>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i23">3.1. Linear MPC</h3>
+  <p>If the dynamical system and constraints are linear and the cost function is quadratic, the MPC is classified as <i>linear MPC</i>. The NLPs of the direct methods are then reduced to quadratic programs (QPs). Dedicated QP solvers have been developed, such as active-set [<span class="ref-lnk lazy-ref"><a data-rid="CIT0067" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>67</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0068" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>68</a></span>], interior point [<span class="ref-lnk lazy-ref"><a data-rid="CIT0069 CIT0070 CIT0071" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>69–71</a></span>], and alternating direction method of multipliers (ADMM)-based methods [<span class="ref-lnk lazy-ref"><a data-rid="CIT0072" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>72</a></span>]. Their efficiency typically depends on problem settings, e.g. numbers of optimization variables and inequality constraints. A comprehensive review of QP solvers for MPC can be found in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0073" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>73</a></span>].</p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i24">3.2. Nonlinear MPC</h3>
+  <p>If the dynamical systems or constraints are nonlinear or the cost function is nonconvex, the MPC optimization problem is classified as a nonlinear (or nonconvex) MPC problem. A challenge in nonlinear MPC is that we must solve an NLP problem within a predefined sampling time of MPC, which is typically small as shown in Table&nbsp;<button class="ref showTableEventRef" data-id="T0001">1</button>. Refs. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0074" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>74</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0075" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>75</a></span>] are pioneer works on nonlinear MPC. These two works utilize tangential predictors to track the solution manifold of the NLP and perform only one inexact Newton iteration to update the solution at each time. Such ideas were further studied in&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0076" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>76</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0077" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>77</a></span>].</p>
+  <p>On the other hand, improving the computational speed of solving the NLPs arising in nonlinear MPC has gained attention. In particular, the <i>Newton-type methods</i> such as <i>sequential quadratic programming</i> (SQP) methods and (nonlinear) <i>interior point</i> (IP) methods (specifically, primal-dual IP method) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0078" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>78</a></span>] have been developed along with efficient general-purpose NLP solvers such as Snopt [<span class="ref-lnk lazy-ref"><a data-rid="CIT0079" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>79</a></span>] and Ipopt [<span class="ref-lnk lazy-ref"><a data-rid="CIT0080" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>80</a></span>]. Developments in active-set QP solvers for MPC, such as [<span class="ref-lnk lazy-ref"><a data-rid="CIT0067" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>67</a></span>] and [<span class="ref-lnk lazy-ref"><a data-rid="CIT0068" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>68</a></span>], have also pushed the efficiency of SQP methods for MPC. SQP methods, particularly with active-set QP solvers, can leverage warm-start but lack efficiency for large-scale problems. However, IP methods can treat large-scale problems efficiently while they cannot leverage warm-start. These general-purpose NLP solvers or SQP methods with active-set QP solvers still lack computational efficiency. Therefore, it is still challenging to implement real-time MPC for fast, large-scale, and complicated robotic systems.</p>
+ </div>
+ <div id="S003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i25">3.3. Structure-exploiting Newton-type methods for nonlinear MPC problems</h3>
+  <p>To further improve the computational efficiency of nonlinear MPC, researchers have attempted to exploit the structure of the NLP problems of the direct methods of MPC. The NLP problems for MPC, particularly of single shooting and multiple-shooting methods, have special structures [<span class="ref-lnk lazy-ref"><a data-rid="CIT0081" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>81</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0082" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>82</a></span>]. As the multiple-shooting method is more suitable for nonlinear MPC than the single shooting methods in terms of computational speed and convergence property [<span class="ref-lnk lazy-ref"><a data-rid="CIT0082" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>82</a></span>], we show an example of the structured NLP of the multiple-shooting method. Let <i>N</i> be the length of the horizon, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0054.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0054.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi mathvariant="bold-italic">
+       x
+      </mi>
+      <mn>
+       0
+      </mn>
+     </msub><mo>
+      ,
+     </mo><mo>
+      ⋯
+     </mo><mo>
+      ,
+     </mo><msub>
+      <mi mathvariant="bold-italic">
+       x
+      </mi>
+      <mi>
+       N
+      </mi>
+     </msub>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0055.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0055.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi mathvariant="bold-italic">
+       u
+      </mi>
+      <mn>
+       0
+      </mn>
+     </msub><mo>
+      ,
+     </mo><mo>
+      ⋯
+     </mo><mo>
+      ,
+     </mo><msub>
+      <mi mathvariant="bold-italic">
+       u
+      </mi>
+      <mrow>
+       <mi>
+        N
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+     </msub>
+    </math></span> be the state and control input of the system over the horizon, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0056.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0056.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mover>
+       <mi mathvariant="bold-italic">
+        x
+       </mi>
+       <mo>
+        ¯
+       </mo>
+      </mover>
+     </mrow>
+    </math></span> be the given initial state. Then, the NLP is given as <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6a) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <mi></mi>
+        <munder>
+         <mo movablelimits="true" form="prefix">
+          min
+         </mo>
+         <mrow>
+          <msub>
+           <mi mathvariant="bold-italic">
+            x
+           </mi>
+           <mn>
+            0
+           </mn>
+          </msub>
+          <mo>
+           ,
+          </mo>
+          <mo>
+           …
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <msub>
+           <mi mathvariant="bold-italic">
+            x
+           </mi>
+           <mi>
+            N
+           </mi>
+          </msub>
+          <mo>
+           ,
+          </mo>
+          <msub>
+           <mi mathvariant="bold-italic">
+            u
+           </mi>
+           <mn>
+            0
+           </mn>
+          </msub>
+          <mo>
+           ,
+          </mo>
+          <mo>
+           …
+          </mo>
+          <mo>
+           ,
+          </mo>
+          <msub>
+           <mi mathvariant="bold-italic">
+            u
+           </mi>
+           <mrow>
+            <mi>
+             N
+            </mi>
+            <mo>
+             −
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+          </msub>
+         </mrow>
+        </munder>
+        <msub>
+         <mi>
+          V
+         </mi>
+         <mi>
+          N
+         </mi>
+        </msub>
+        <mo>
+         (
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          x
+         </mi>
+         <mi>
+          N
+         </mi>
+        </msub>
+        <mo>
+         )
+        </mo>
+        <mo>
+         +
+        </mo>
+        <munderover>
+         <mo>
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           i
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           0
+          </mn>
+         </mrow>
+         <mrow>
+          <mi>
+           N
+          </mi>
+          <mo>
+           −
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+        </munderover>
+        <msub>
+         <mi>
+          l
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo>
+         (
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          x
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo>
+         ,
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          u
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo>
+         )
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6a) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(6b) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <mrow>
+         <mi mathvariant="normal">
+          s
+         </mi>
+         <mo>
+          .
+         </mo>
+         <mi mathvariant="normal">
+          t
+         </mi>
+         <mo>
+          .
+         </mo>
+        </mrow>
+        <mtext>
+         &nbsp;
+        </mtext>
+        <msub>
+         <mi mathvariant="bold-italic">
+          x
+         </mi>
+         <mn>
+          0
+         </mn>
+        </msub>
+        <mo>
+         =
+        </mo>
+        <mrow>
+         <mover>
+          <mi mathvariant="bold-italic">
+           x
+          </mi>
+          <mo>
+           ¯
+          </mo>
+         </mover>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(6b) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0008.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0008" class="disp-formula-label">(6c) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <msub>
+         <mi mathvariant="bold-italic">
+          x
+         </mi>
+         <mrow>
+          <mi>
+           i
+          </mi>
+          <mo>
+           +
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+        </msub>
+        <mo>
+         =
+        </mo>
+        <msub>
+         <mi>
+          f
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo>
+         (
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          x
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo>
+         ,
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          u
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo>
+         )
+        </mo>
+        <mo>
+         ,
+        </mo>
+        <mspace width="1em"></mspace>
+        <mi>
+         i
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         0
+        </mn>
+        <mo>
+         ,
+        </mo>
+        <mo>
+         …
+        </mo>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         N
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ,
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0008" class="disp-formula-label">(6c) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0009.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0009" class="disp-formula-label">(6d) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <msub>
+         <mi>
+          g
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo>
+         (
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          x
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo>
+         ,
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          u
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo>
+         )
+        </mo>
+        <mo>
+         ≤
+        </mo>
+        <mn>
+         0
+        </mn>
+        <mo>
+         ,
+        </mo>
+        <mspace width="1em"></mspace>
+        <mi>
+         i
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         0
+        </mn>
+        <mo>
+         ,
+        </mo>
+        <mo>
+         …
+        </mo>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         N
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ,
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0009" class="disp-formula-label">(6d) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0010.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0010" class="disp-formula-label">(6e) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <msub>
+         <mi>
+          g
+         </mi>
+         <mi>
+          N
+         </mi>
+        </msub>
+        <mo>
+         (
+        </mo>
+        <msub>
+         <mi mathvariant="bold-italic">
+          x
+         </mi>
+         <mi>
+          N
+         </mi>
+        </msub>
+        <mo>
+         )
+        </mo>
+        <mo>
+         ≤
+        </mo>
+        <mn>
+         0
+        </mn>
+        <mo>
+         ,
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0010" class="disp-formula-label">(6e) </span></span></span></span>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0057.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0057.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       V
+      </mi>
+      <mi>
+       N
+      </mi>
+     </msub><mo>
+      (
+     </mo><msub>
+      <mi mathvariant="bold-italic">
+       x
+      </mi>
+      <mi>
+       N
+      </mi>
+     </msub><mo>
+      )
+     </mo>
+    </math></span> denotes the given terminal cost function <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0058.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0058.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       l
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo>
+      (
+     </mo><msub>
+      <mi mathvariant="bold-italic">
+       x
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo>
+      ,
+     </mo><msub>
+      <mi mathvariant="bold-italic">
+       u
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo>
+      )
+     </mo>
+    </math></span> denotes the given cost function,&nbsp;(<a href="#M0008">6c</a>) denotes the discrete-time state equation, and&nbsp;(<a href="#M0009">6d</a>) and&nbsp;(<a href="#M0010">6e</a>) denote the given inequality constraints. Note that we can obtain the NLP for the single shooting method by eliminating <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0059.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0059.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi mathvariant="bold-italic">
+       x
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub>
+    </math></span> from the decision variables via&nbsp;(<a href="#M0007">6b</a>) and&nbsp;(<a href="#M0008">6c</a>). Here, we treat the inequality constraints&nbsp;(<a href="#M0009">6d</a>) and&nbsp;(<a href="#M0010">6e</a>) using the IP methods. Let <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0060.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0060.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="normal">
+      Δ
+     </mi><msub>
+      <mi mathvariant="bold-italic">
+       x
+      </mi>
+      <mn>
+       0
+      </mn>
+     </msub><mo>
+      ,
+     </mo><mo>
+      ⋯
+     </mo><mo>
+      ,
+     </mo><mi mathvariant="normal">
+      Δ
+     </mi><msub>
+      <mi mathvariant="bold-italic">
+       x
+      </mi>
+      <mi>
+       N
+      </mi>
+     </msub>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0061.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0061.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="normal">
+      Δ
+     </mi><msub>
+      <mi mathvariant="bold-italic">
+       u
+      </mi>
+      <mn>
+       0
+      </mn>
+     </msub><mo>
+      ,
+     </mo><mo>
+      ⋯
+     </mo><mo>
+      ,
+     </mo><mi mathvariant="normal">
+      Δ
+     </mi><msub>
+      <mi mathvariant="bold-italic">
+       u
+      </mi>
+      <mrow>
+       <mi>
+        N
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+     </msub>
+    </math></span> be the Newton steps of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0062.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0062.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi mathvariant="bold-italic">
+       x
+      </mi>
+      <mn>
+       0
+      </mn>
+     </msub><mo>
+      ,
+     </mo><mo>
+      ⋯
+     </mo><mo>
+      ,
+     </mo><msub>
+      <mi mathvariant="bold-italic">
+       x
+      </mi>
+      <mi>
+       N
+      </mi>
+     </msub>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0063.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0063.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi mathvariant="bold-italic">
+       u
+      </mi>
+      <mn>
+       0
+      </mn>
+     </msub><mo>
+      ,
+     </mo><mo>
+      ⋯
+     </mo><mo>
+      ,
+     </mo><msub>
+      <mi mathvariant="bold-italic">
+       u
+      </mi>
+      <mrow>
+       <mi>
+        N
+       </mi>
+       <mo>
+        −
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+     </msub>
+    </math></span>. The computation of the Newton steps, which is one of the most time-consuming aspects of the Newton-type iteration, can then be reduced to the following QP subproblem [<span class="ref-lnk lazy-ref"><a data-rid="CIT0082" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>82</a></span>]: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0011.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0011" class="disp-formula-label">(7a) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <mi></mi>
+        <munder>
+         <mo movablelimits="true" form="prefix">
+          min
+         </mo>
+         <mrow>
+          <mstyle scriptlevel="1">
+           <mtable rowspacing="0.1em" columnspacing="0em" displaystyle="false">
+            <mtr>
+             <mtd>
+              <mi mathvariant="normal">
+               Δ
+              </mi>
+              <msub>
+               <mi mathvariant="bold-italic">
+                x
+               </mi>
+               <mn>
+                0
+               </mn>
+              </msub>
+              <mo>
+               ,
+              </mo>
+              <mo>
+               …
+              </mo>
+              <mo>
+               ,
+              </mo>
+              <mi mathvariant="normal">
+               Δ
+              </mi>
+              <msub>
+               <mi mathvariant="bold-italic">
+                x
+               </mi>
+               <mi>
+                N
+               </mi>
+              </msub>
+              <mo>
+               ,
+              </mo>
+             </mtd>
+            </mtr>
+            <mtr>
+             <mtd>
+              <mi mathvariant="normal">
+               Δ
+              </mi>
+              <msub>
+               <mi mathvariant="bold-italic">
+                u
+               </mi>
+               <mn>
+                0
+               </mn>
+              </msub>
+              <mo>
+               ,
+              </mo>
+              <mo>
+               …
+              </mo>
+              <mo>
+               ,
+              </mo>
+              <mi mathvariant="normal">
+               Δ
+              </mi>
+              <msub>
+               <mi mathvariant="bold-italic">
+                u
+               </mi>
+               <mrow>
+                <mi>
+                 N
+                </mi>
+                <mo>
+                 −
+                </mo>
+                <mn>
+                 1
+                </mn>
+               </mrow>
+              </msub>
+             </mtd>
+            </mtr>
+           </mtable>
+          </mstyle>
+         </mrow>
+        </munder>
+        <mfrac>
+         <mn>
+          1
+         </mn>
+         <mn>
+          2
+         </mn>
+        </mfrac>
+        <msup>
+         <mrow>
+          <mo>
+           [
+          </mo>
+          <mtable rowspacing="4pt" columnspacing="1em">
+           <mtr>
+            <mtd>
+             <mi mathvariant="normal">
+              Δ
+             </mi>
+             <msub>
+              <mi mathvariant="bold-italic">
+               x
+              </mi>
+              <mi>
+               N
+              </mi>
+             </msub>
+            </mtd>
+           </mtr>
+           <mtr>
+            <mtd>
+             <mn>
+              1
+             </mn>
+            </mtd>
+           </mtr>
+          </mtable>
+          <mo>
+           ]
+          </mo>
+         </mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           T
+          </mi>
+         </mrow>
+        </msup>
+        <mrow>
+         <mo>
+          [
+         </mo>
+         <mtable rowspacing="4pt" columnspacing="1em">
+          <mtr>
+           <mtd>
+            <msub>
+             <mi>
+              P
+             </mi>
+             <mi>
+              N
+             </mi>
+            </msub>
+           </mtd>
+           <mtd>
+            <msub>
+             <mi>
+              p
+             </mi>
+             <mi>
+              N
+             </mi>
+            </msub>
+           </mtd>
+          </mtr>
+          <mtr>
+           <mtd>
+            <msubsup>
+             <mi>
+              p
+             </mi>
+             <mi>
+              N
+             </mi>
+             <mrow>
+              <mi mathvariant="normal">
+               T
+              </mi>
+             </mrow>
+            </msubsup>
+           </mtd>
+           <mtd>
+            <mn>
+             1
+            </mn>
+           </mtd>
+          </mtr>
+         </mtable>
+         <mo>
+          ]
+         </mo>
+        </mrow>
+        <mrow>
+         <mo>
+          [
+         </mo>
+         <mtable rowspacing="4pt" columnspacing="1em">
+          <mtr>
+           <mtd>
+            <mi mathvariant="normal">
+             Δ
+            </mi>
+            <msub>
+             <mi mathvariant="bold-italic">
+              x
+             </mi>
+             <mi>
+              N
+             </mi>
+            </msub>
+           </mtd>
+          </mtr>
+          <mtr>
+           <mtd>
+            <mn>
+             1
+            </mn>
+           </mtd>
+          </mtr>
+         </mtable>
+         <mo>
+          ]
+         </mo>
+        </mrow>
+       </mtd>
+      </mtr>
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <mi></mi>
+        <mspace width="1em"></mspace>
+        <mo>
+         +
+        </mo>
+        <mfrac>
+         <mn>
+          1
+         </mn>
+         <mn>
+          2
+         </mn>
+        </mfrac>
+        <msup>
+         <mrow>
+          <mo>
+           [
+          </mo>
+          <mtable rowspacing="4pt" columnspacing="1em">
+           <mtr>
+            <mtd>
+             <mi mathvariant="normal">
+              Δ
+             </mi>
+             <msub>
+              <mi mathvariant="bold-italic">
+               x
+              </mi>
+              <mi>
+               i
+              </mi>
+             </msub>
+            </mtd>
+           </mtr>
+           <mtr>
+            <mtd>
+             <mi mathvariant="normal">
+              Δ
+             </mi>
+             <msub>
+              <mi mathvariant="bold-italic">
+               u
+              </mi>
+              <mi>
+               i
+              </mi>
+             </msub>
+            </mtd>
+           </mtr>
+           <mtr>
+            <mtd>
+             <mn>
+              1
+             </mn>
+            </mtd>
+           </mtr>
+          </mtable>
+          <mo>
+           ]
+          </mo>
+         </mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           T
+          </mi>
+         </mrow>
+        </msup>
+        <mrow>
+         <mo>
+          [
+         </mo>
+         <mtable rowspacing="4pt" columnspacing="1em">
+          <mtr>
+           <mtd>
+            <msub>
+             <mi>
+              Q
+             </mi>
+             <mi>
+              i
+             </mi>
+            </msub>
+           </mtd>
+           <mtd>
+            <msub>
+             <mi>
+              S
+             </mi>
+             <mi>
+              i
+             </mi>
+            </msub>
+           </mtd>
+           <mtd>
+            <msub>
+             <mi>
+              q
+             </mi>
+             <mi>
+              i
+             </mi>
+            </msub>
+           </mtd>
+          </mtr>
+          <mtr>
+           <mtd>
+            <msubsup>
+             <mi>
+              S
+             </mi>
+             <mi>
+              i
+             </mi>
+             <mrow>
+              <mi mathvariant="normal">
+               T
+              </mi>
+             </mrow>
+            </msubsup>
+           </mtd>
+           <mtd>
+            <msub>
+             <mi>
+              R
+             </mi>
+             <mi>
+              i
+             </mi>
+            </msub>
+           </mtd>
+           <mtd>
+            <msub>
+             <mi>
+              r
+             </mi>
+             <mi>
+              i
+             </mi>
+            </msub>
+           </mtd>
+          </mtr>
+          <mtr>
+           <mtd>
+            <msubsup>
+             <mi>
+              q
+             </mi>
+             <mi>
+              i
+             </mi>
+             <mrow>
+              <mi mathvariant="normal">
+               T
+              </mi>
+             </mrow>
+            </msubsup>
+           </mtd>
+           <mtd>
+            <msubsup>
+             <mi>
+              r
+             </mi>
+             <mi>
+              i
+             </mi>
+             <mrow>
+              <mi mathvariant="normal">
+               T
+              </mi>
+             </mrow>
+            </msubsup>
+           </mtd>
+           <mtd>
+            <mn>
+             1
+            </mn>
+           </mtd>
+          </mtr>
+         </mtable>
+         <mo>
+          ]
+         </mo>
+        </mrow>
+        <mrow>
+         <mo>
+          [
+         </mo>
+         <mtable rowspacing="4pt" columnspacing="1em">
+          <mtr>
+           <mtd>
+            <mi mathvariant="normal">
+             Δ
+            </mi>
+            <msub>
+             <mi mathvariant="bold-italic">
+              x
+             </mi>
+             <mi>
+              i
+             </mi>
+            </msub>
+           </mtd>
+          </mtr>
+          <mtr>
+           <mtd>
+            <mi mathvariant="normal">
+             Δ
+            </mi>
+            <msub>
+             <mi mathvariant="bold-italic">
+              u
+             </mi>
+             <mi>
+              i
+             </mi>
+            </msub>
+           </mtd>
+          </mtr>
+          <mtr>
+           <mtd>
+            <mn>
+             1
+            </mn>
+           </mtd>
+          </mtr>
+         </mtable>
+         <mo>
+          ]
+         </mo>
+        </mrow>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0011" class="disp-formula-label">(7a) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0012.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0012" class="disp-formula-label">(7b) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <mrow>
+         <mi mathvariant="normal">
+          s
+         </mi>
+         <mo>
+          .
+         </mo>
+         <mi mathvariant="normal">
+          t
+         </mi>
+         <mo>
+          .
+         </mo>
+        </mrow>
+        <mtext>
+         &nbsp;
+        </mtext>
+        <mi mathvariant="normal">
+         Δ
+        </mi>
+        <msub>
+         <mi mathvariant="bold-italic">
+          x
+         </mi>
+         <mn>
+          0
+         </mn>
+        </msub>
+        <mo>
+         =
+        </mo>
+        <mrow>
+         <mover>
+          <mi mathvariant="bold-italic">
+           x
+          </mi>
+          <mo>
+           ¯
+          </mo>
+         </mover>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0012" class="disp-formula-label">(7b) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_m0013.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0013" class="disp-formula-label">(7c) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <mi mathvariant="normal">
+         Δ
+        </mi>
+        <msub>
+         <mi mathvariant="bold-italic">
+          x
+         </mi>
+         <mrow>
+          <mi>
+           i
+          </mi>
+          <mo>
+           +
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+        </msub>
+        <mo>
+         =
+        </mo>
+        <msub>
+         <mi>
+          A
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mi mathvariant="normal">
+         Δ
+        </mi>
+        <msub>
+         <mi mathvariant="bold-italic">
+          x
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo>
+         +
+        </mo>
+        <msub>
+         <mi>
+          B
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mi mathvariant="normal">
+         Δ
+        </mi>
+        <msub>
+         <mi mathvariant="bold-italic">
+          u
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo>
+         +
+        </mo>
+        <msub>
+         <mi>
+          b
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo>
+         ,
+        </mo>
+        <mspace width="1em"></mspace>
+        <mi>
+         i
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         0
+        </mn>
+        <mo>
+         ,
+        </mo>
+        <mo>
+         …
+        </mo>
+        <mo>
+         ,
+        </mo>
+        <mi>
+         N
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ,
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0013" class="disp-formula-label">(7c) </span></span></span></span>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0064.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0064.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       A
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo>
+      :=
+     </mo><msub>
+      <mi mathvariant="normal">
+       ∇
+      </mi>
+      <mi>
+       x
+      </mi>
+     </msub><mi>
+      f
+     </mi><mo>
+      (
+     </mo><msub>
+      <mi mathvariant="bold-italic">
+       x
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo>
+      ,
+     </mo><msub>
+      <mi mathvariant="bold-italic">
+       u
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo>
+      )
+     </mo>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0065.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0065.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       B
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo>
+      :=
+     </mo><msub>
+      <mi mathvariant="normal">
+       ∇
+      </mi>
+      <mi>
+       u
+      </mi>
+     </msub><mi>
+      f
+     </mi><mo>
+      (
+     </mo><msub>
+      <mi mathvariant="bold-italic">
+       x
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo>
+      ,
+     </mo><msub>
+      <mi mathvariant="bold-italic">
+       u
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo>
+      )
+     </mo>
+    </math></span>. The coefficient matrices in the quadratic cost function of&nbsp;(<a href="#M0011">7a</a>) are derived from the derivatives of the Lagrangian of the NLP&nbsp;(<a href="#M0006">6a</a>) and some matrix manipulations related to IP methods. Here, we omitted the detailed derivations of the coefficient matrices, but they can be found, e.g. in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0078" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>78</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0082" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>82</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0083" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>83</a></span>]. According to&nbsp;(<a href="#M0011">7a</a>), the arising QP subproblems of IP methods take the same structure as unconstrained time-varying linear-quadratic OCPs. Note that we can have the same QP subproblems in the inner iterations of <i>Augmented Lagrangian</i> (AL) methods. Efficient MPC algorithms that leverage the unconstrained LQR structure to compute the Newton steps were proposed in&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0083 CIT0084 CIT0085 CIT0086" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>83–86</a></span>].</p>
+  <div id="S003-S2003-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i34">3.3.1. Riccati recursion</h4>
+   <p><i>Riccati recursion</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0083" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>83</a></span>], which corresponds to <i>dynamic programming</i> for the linear-quadratic OCP&nbsp;(<a href="#M0011">7a</a>), has gained popularity both in MPC and robotics communities as it can compute the Newton step in <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0066.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0066.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       O
+      </mi><mo>
+       (
+      </mo><mi>
+       N
+      </mi><mo>
+       )
+      </mo>
+     </math></span> computational burden. This contrasts the general NLP solvers and SQP methods with active-set QP solvers in which the Newton step computation typically requires <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0067.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0067.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       O
+      </mi><mo>
+       (
+      </mo><msup>
+       <mi>
+        N
+       </mi>
+       <mn>
+        3
+       </mn>
+      </msup><mo>
+       )
+      </mo>
+     </math></span> time-complexity. In the MPC community, IP methods are typically used with Riccati recursion for inequality constraints [<span class="ref-lnk lazy-ref"><a data-rid="CIT0083" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>83</a></span>]. An efficient open-source IP solver with Riccati recursion is developed in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0070" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>70</a></span>], and a nonlinear MPC toolbox based on it is developed in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0087" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>87</a></span>].</p>
+   <p>Treating the equality constraints, which often represent the contact constraints as stated in Section&nbsp;2.4, with the Riccati recursion-type methods is another issue because IP methods cannot be used. A simple way is to use AL methods [<span class="ref-lnk lazy-ref"><a data-rid="CIT0088" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>88</a></span>], which generally lack convergence speed, however. Variants of the Riccati recursion-type methods to treat the equality constraints have been proposed&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>28</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0089 CIT0090 CIT0091" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>89–91</a></span>].</p>
+  </div>
+  <div id="S003-S2003-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i35">3.3.2. Differential dynamic programming</h4>
+   <p>Riccati recursion-based Newton's methods are often interpreted as differential dynamic programming (DDP) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0092" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>92</a></span>] in the robotics community. Also, its Gauss-Newton counterpart is called an iterative linear quadratic regulator (iLQR) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0093" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>93</a></span>]. Variants of DPP and iLQR have been proposed, such as sequential linear quadratic (SLQ) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>28</a></span>] and feasible-driven DDP [<span class="ref-lnk lazy-ref"><a data-rid="CIT0094" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>94</a></span>]. In robotic applications, a variant of IP methods [<span class="ref-lnk lazy-ref"><a data-rid="CIT0095" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>95</a></span>] is often used to treat inequality constraints with DDP-type methods. AL methods are also used, e.g. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0088" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>88</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0096" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>96</a></span>], because they have the same unconstrained LQR structure as&nbsp;(<a href="#M0011">7a</a>) in the inner Newton-type iteration.</p>
+   <p>If the MPC problem is deterministic, DDP-type methods are almost identical to the Riccati recursion-based Newton (or Gauss-Newton) method for the single shooting method (see Chapter 8 of [<span class="ref-lnk lazy-ref"><a data-rid="CIT0082" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>82</a></span>]). From this point of view, it is easy to implement ‘DDP/iLQR-like methods with inequality constraints’ in deterministic MPC by using the Riccati recursion to solve the QP subproblems of nonlinear IP methods. This is considered challenging in the robotics community [<span class="ref-lnk lazy-ref"><a data-rid="CIT0088" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>88</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0095" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>95</a></span>]. Further, it is trivial to implement ‘multiple shooting DDP/iLQR-like methods’ just by using the Riccati recursion in solving the QP subproblems of multiple shooting NLPs [<span class="ref-lnk lazy-ref"><a data-rid="CIT0081" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>81</a></span>]. This is also recognized as nontrivial in the robotics community&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0094" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>94</a></span>].</p>
+  </div>
+ </div>
+ <div id="S003-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i36">3.4. MPC with hybrid systems/complementarity constraints</h3>
+  <p>When the contact sequence and contact timings are fixed in MPC, e.g. when a higher-level contact planner provides them, MPC can be implemented by the above numerical methods, in principle. In contrast, when MPC involves the decision-making on the contact sequence, the robotic systems with contacts have to be modeled such as a hybrid system [<span class="ref-lnk lazy-ref"><a data-rid="CIT0097" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>97</a></span>] or using complementarity constraints as stated in Section&nbsp;<a href="#S002-S2004">2.4</a>. The aforementioned numerical methods are then no longer applicable. Alternatively, the approximated soft contact models introduced in Section&nbsp;<a href="#S002-S2004">2.4</a> are used to incorporate the decision-making on the contact sequence into MPC even with the above numerical methods. However, it has limitations as reviewed in Section&nbsp;<a href="#S002-S2004">2.4</a>. Its applications are introduced later in Section&nbsp;<a href="#S004-S2003-S3002">4.3.2</a>.</p>
+  <p>When the robotic systems are modeled as hybrid systems, MPC is typically implemented as a mixed-integer program (MIP) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0098" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>98</a></span>], in which the discrete variables are introduced explicitly. However, MIPs are hard to implement in real time owing to exponentially growing computational time [<span class="ref-lnk lazy-ref"><a data-rid="CIT0098" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>98</a></span>]. Recently, suboptimal solution methods [<span class="ref-lnk lazy-ref"><a data-rid="CIT0099" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>99</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0100" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>100</a></span>] and MPC-specific solution methods [<span class="ref-lnk lazy-ref"><a data-rid="CIT0101" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>101</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0102" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>102</a></span>] have been studied. When the robotic systems are modeled using the complementarity constraints, the resultant OCP is often termed as <i>contact-implicit trajectory optimization</i> (CITO), whose pioneer work is [<span class="ref-lnk lazy-ref"><a data-rid="CIT0103" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>103</a></span>]. A solution method of the CITO is using <i>mathematical programs with complementarity constraints</i> (MPCC) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0104" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>104</a></span>], which solves the optimization problems under complementarity constraints. The MPCC approach was first utilized for the CITO in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0105" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>105</a></span>]. However, MPCC inherently lacks constraint qualifications such as linear independence constraint qualification (LICQ), which causes numerical ill-conditionings [<span class="ref-lnk lazy-ref"><a data-rid="CIT0104" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>104</a></span>]. Moreover, numerical alleviations for such problems [<span class="ref-lnk lazy-ref"><a data-rid="CIT0106" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>106</a></span>] often lead to undesirable stationary points [<span class="ref-lnk lazy-ref"><a data-rid="CIT0107" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>107</a></span>]. An alternative approach for the CITO is <i>bilevel optimization</i> (BO) methods [<span class="ref-lnk lazy-ref"><a data-rid="CIT0103" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>103</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0108 CIT0109 CIT0110" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>108–110</a></span>], whose solution can be a solution to MPCC under certain conditions [<span class="ref-lnk lazy-ref"><a data-rid="CIT0111" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>111</a></span>]. However, BO problems also involve combinatorial structure and are therefore hard to solve in general [<span class="ref-lnk lazy-ref"><a data-rid="CIT0112" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>112</a></span>].</p>
+ </div>
+ <div id="S003-S2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i37">3.5. MPC of switched systems</h3>
+  <p>Even when the contact sequence is given, we can further optimize the contact timings or <i>switching times</i>, which is classified as OCP of <i>switched systems</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0113" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>113</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0114" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>114</a></span>]. A classical solution approach for OCP of switched systems is to decompose the optimization problem into two stages: one is for switching times and the other is for state and control trajectory [<span class="ref-lnk lazy-ref"><a data-rid="CIT0113" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>113</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0115" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>115</a></span>]. This two-stage approach has been successfully applied for offline motion planning [<span class="ref-lnk lazy-ref"><a data-rid="CIT0116" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>116</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0117" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>117</a></span>]. However, it lacks computational speed and a local convergence guarantee, making it difficult to realize MPC. Another approach is to optimize the switching times, state, and control simultaneously in Newton-type methods [<span class="ref-lnk lazy-ref"><a data-rid="CIT0114" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>114</a></span>]. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0114" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>114</a></span>], the simultaneous optimization problems were solved by the off-the-shelf NLP solvers such as [<span class="ref-lnk lazy-ref"><a data-rid="CIT0080" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>80</a></span>]. However, their applications are also limited to offline trajectory optimization due to inefficient computation of the general NLP solvers, and it is still challenging to optimize the contact timings online.</p>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i38" class="section-heading-2">4. MPC applications for legged robots</h2>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i39">4.1. MPC with LIPM</h3>
+  <p>For bipedal robots, MPC based on the LIPM has been widely used. This model is linear to the horizontal position of the CoM and is time-invariant if the CoM is constrained in a plane. The ZMP is equivalent to the center of pressure on the sole and must lie within the convex hull of the foot support region. MPC is used to plan a CoM trajectory that satisfies this ZMP constraint.</p>
+  <p>As an early approach, instead of explicitly considering the ZMP constraint, a method was proposed to minimize the error with the reference ZMP trajectory&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>16</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0118" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>118</a></span>]. This method, also called <i>preview control</i>&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0119" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>119</a></span>], is computationally efficient because the solution is written in closed form using the solution of the Riccati equation. However, inequality constraints cannot be considered. The reference ZMP trajectory is determined based on the footstep sequence obtained in the preprocessing footstep planning&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0053" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>53</a></span>]. Graph search&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0120" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>120</a></span>] is widely used for footstep planning&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0121" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>121</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0122" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>122</a></span>], but mathematical optimizations have also been used in recent years&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0123" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>123</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0124" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>124</a></span>]. Many extensions have been made to CoM trajectory generation based on preview control; for example, in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0125" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>125</a></span>], the angular momentum trajectory was generated simultaneously with the CoM trajectory.</p>
+  <p>Owing to improved computational performance and efficient QP solvers, linear MPC that explicitly considers inequality constraints of ZMP has come into use&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0126" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>126</a></span>]. See [<span class="ref-lnk lazy-ref"><a data-rid="CIT0054" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>54</a></span>] for a survey of linear MPC for bipedal robots. Linear MPC is formulated as QP and solved in real time by coarsening the horizon sample. Some MPCs impose an equality constraint on the capture point or DCM at the horizon terminal, which is specific to MPCs based on the LIPM&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>29</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>37</a></span>]. As the CoM height changes along a predefined trajectory, the system becomes linear time-varying, which can be solved with linear MPC without significant change in computational cost&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0127" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>127</a></span>]. Control inputs at sampling points within the horizon are often used as decision variables, but several attempts have been proposed to reduce the dimension of the variables. For example, in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>29</a></span>], the ZMP trajectory was expressed as a polynomial function, and the coefficients of the polynomial function are used as decision variables. In addition, in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>21</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>42</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0128" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>128</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0129" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>129</a></span>], by analytically solving the linear differential equation of the LIPM, the CoM at the timing of footstep switching was derived in closed form, eliminating the fine sampling within the horizon.</p>
+  <p>A major extension of linear MPC in bipedal walking is the simultaneous planning of CoM trajectory and foot placement sequence&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>29</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>37</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0128" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>128</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0130" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>130</a></span>]. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0131" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>131</a></span>], <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0068.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0068.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       l
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </math></span>- and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0069.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0069.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       l
+      </mi>
+      <mrow>
+       <mi mathvariant="normal">
+        ∞
+       </mi>
+      </mrow>
+     </msub>
+    </math></span>-norm were used in the regularization of foot placement instead of the commonly used <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0070.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tadr20/0/tadr20.ahead-of-print/01691864.2023.2168134/20230219/images/tadr_a_2168134_ilm0070.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       l
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub>
+    </math></span>-norm, so that the foot placement modification is sparse. Linear MPCs that can simultaneously plan CoM trajectory and foot placement sequence have also been proposed, using the first-order dynamics of the DCM instead of the LIPM&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0132" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>132</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0133" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>133</a></span>]. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0133" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>133</a></span>], the angular momentum trajectory was also planned with the CoM trajectory and foot placement sequence, using the dynamics of the DCM. Furthermore, MPCs beyond the framework of linear MPCs have also been proposed for planning foot placement&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>27</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0132" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>132</a></span>], although they can no longer be formulated as QP. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0132" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>132</a></span>], the MPC was represented as an MIP by approximating the trigonometric functions required to describe the foot orientation as piecewise linear functions with 0–1 variables&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0123" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>123</a></span>]. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>27</a></span>], the nonlinear MPC was solved by SQP, taking into account the nonconvex constraints representing the obstacle avoidance of the feet. There are also some methods&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>18</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>24</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0134" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>134</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0135" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>135</a></span>] in which the foot placement modification was treated in a different computational process other than the MPC for CoM trajectory generation.</p>
+  <p>Another major extension of linear MPC in bipedal walking is to account for external forces in the robot's hands. In linear MPC, external forces are treated in different ways; in&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0136" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>136</a></span>] they were included in the state of the LIPM, in&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>33</a></span>] they were included in the control input, and in&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0137" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>137</a></span>] they were considered as offsets of the model. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0138" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>138</a></span>], whether hand contact is necessary to avoid a fall due to disturbances was determined in linear MPC by introducing slack variables in ZMP's inequality constraints. Morisawa et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0139" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>139</a></span>] extended the LIPM by introducing a point corresponding to ZMP that accounts for hand contacts and represented the dynamics of multi-contact motion as a linear system.</p>
+  <p>The dynamics of bipedal walking become nonlinear if the horizontal and vertical positions of the CoM are considered as state variables. Some MPCs treat nonlinear systems and plan the three-dimensional trajectory of the CoM&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0140 CIT0141 CIT0142" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>140–142</a></span>]. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0140" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>140</a></span>], DDP was applied to plan the CoM trajectory, omitting ZMP's inequality constraints. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0141" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>141</a></span>], using the three-dimensional position of the CoM as decision variables, the ZMP constraints were expressed as quadratic constraints, and the nonconvex quadratically constrained quadratic program (QCQP) was solved by the SQP method. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0142" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>142</a></span>], by setting bounds on the LIPM time constant, the nonlinearity caused by the CoM vertical motion was avoided, and the three-dimensional CoM trajectory and foot placement sequence were simultaneously planned using linear MPC.</p>
+  <p>As a supplement, we present several methods for planning bipedal CoM trajectory without using linear MPC, formulated as QP. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0134" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>134</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0143" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>143</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0144" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>144</a></span>], the CoM trajectory was efficiently planned by integrating the first-order dynamics of the capture point or DCM in the reverse direction. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0135" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>135</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0145" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>145</a></span>], an analytical solution to the linear MPC problem with boundary conditions was derived. MPCs based on the LIPM have been applied mainly to bipedal and humanoid robots, but have also been applied to quadruped robots&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>41</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0129" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>129</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0146" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>146</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0147" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>147</a></span>].</p>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i40">4.2. MPC with centroidal dynamics and SRBD models</h3>
+  <p>The LIPM does not explicitly consider friction constraints on contact forces and is, therefore, inappropriate for handling non-coplanar contacts. The centroidal dynamics&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0148" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>148</a></span>] is a model based on the Newton-Euler equation for solving this problem and is widely used in humanoid and quadrupedal robots.</p>
+  <div id="S004-S2002-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i41">4.2.1. Application to humanoid robots</h4>
+   <p>The centroidal dynamics model is used to plan and control humanoid multi-contact motion in which the feet and hands make non-coplanar contacts. See survey&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0055" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>55</a></span>] for some MPCs in humanoid multi-contact motion. The difficulty of the centroidal dynamics model compared to the LIPM is that it has nonlinearity in the rotational dynamics&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0055" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>55</a></span>].</p>
+   <p>Several MPC-based methods&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>22</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0149 CIT0150 CIT0151 CIT0152 CIT0153 CIT0154" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>149–154</a></span>] that mitigate this nonlinearity in some way and avoid MPC with computationally expensive nonconvex optimization are presented. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>22</a></span>], the nonlinear terms in the rotational dynamics were neglected to construct a linear MPC, formulated as a QP, under the contact force constraints. Audren et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0149" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>149</a></span>] focused on the fact that the rotational dynamics can be represented as a linear system by predetermining the CoM vertical motion. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0150" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>150</a></span>], the rotational dynamics were approximated linearly by assuming a convex region for the CoM and by treating the upper bound of the angular momentum. Fernbach et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0151" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>151</a></span>] eliminate the nonlinear term in the rotational dynamics by representing the CoM trajectory as a Bezier curve parameterized by a one-degree-of-freedom decision variable. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0152" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>152</a></span>], nonlinear trajectory optimization was attributed to QCQP by expressing the nonlinear term in rotational dynamics as the difference between two convex functions. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0153" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>153</a></span>], a linear MPC is constructed with a system that linearizes the rotational dynamics while considering the effect of the angular momentum generated by the motion of each link. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0150" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>150</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0154" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>154</a></span>], the friction constraints at each contact point were integrated and converted to CoM acceleration constraints, and CoM acceleration was used instead of contact forces as the decision variables for linear MPC to reduce the dimension of the variables.</p>
+   <p>In contrast, MPCs that use NLP solvers to solve nonconvex optimization have also emerged. Because nonconvex optimization is computationally expensive, the early methods were positioned as offline trajectory optimization rather than online MPC. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0155 CIT0156 CIT0157" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>155–157</a></span>], trajectory generation of CoM and angular momentum under a centroidal dynamics model was formulated as a nonlinear optimization and solved offline by an off-the-shelf SQP solver. Nonlinear trajectory optimization can recently be solved online with the MPC scheme owing to improvements in computational performance and optimization algorithms. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>57</a></span>], nonlinear MPC with learned kinematic reachability was solved by the multiple-shooting method using the OCP solver. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0046" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>46</a></span>], the centroidal trajectory and contact position sequence were simultaneously planned online considering a nonlinear centroidal dynamics model.</p>
+   <p>Furthermore, by using a full-body model for kinematic constraints and a centroidal dynamics model for dynamic constraints, a method of simultaneously planning centroidal and joint position trajectories while avoiding high-dimensional full-body dynamics has been proposed&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0155" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>155</a></span>]. Chignoli et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0158" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>158</a></span>] further imposed constraints on the speed-torque relationship of the actuators.</p>
+  </div>
+  <div id="S004-S2002-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i42">4.2.2. Application to quadrupedal robots</h4>
+   <p>Centroidal dynamics-based MPCs were also applied for quadrupedal robots which typically involve point contacts in their feet. Existing quadrupedal robots, such as MIT Mini Cheetah, were designed such that the weights of limbs are small relative to the whole-body weight. For such hardware, the single rigid-body dynamics (SRBD) model is a simple and powerful model that can simplify the MPC optimization problem while accurately capturing the dynamics. Di Carlo et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>30</a></span>] achieved fast and highly dynamic motion of a quadrupedal robot via a fast linear MPC in which the robot dynamics were approximated by the (linearized) SRBD model, and the contact forces of feet (i.e. ground reaction forces (GRFs)) were treated as the control input to the SRBD model. When the weights of limbs are negligibly small compared with the base and a lower-level joint controller can track the GRFs from MPC quickly, the SRBD-based simplified model can be accurate. Ding et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0159" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>159</a></span>] further improved the SRBD-based linear MPC in terms of linearization of the rotation and achieved acrobatic motion on a quadrupedal robot. In&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0160" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>160</a></span>], because the nonlinearity of rotational dynamics is due to the cross-product, the nonlinear trajectory optimization was solved by alternately solving two types of QPs with one variable fixed in the cross-product term.</p>
+   <p>Nonlinear MPC is also applied with the SRBD and centroidal dynamics models. Refs. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>26</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>32</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>34</a></span>] incorporated the contact positions as the optimization variables in the linearized SRBD-based MPC of [<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>30</a></span>]. The resultant optimization problem was nonlinear; therefore, a nonlinear MPC was implemented for the problem. Rathod et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>45</a></span>] formulated a nonlinear MPC with a nonlinear SRBD model to capture the nonlinear rotational dynamics and achieved quadrupedal walking that can traverse over a large obstacle only with on-board embedded computation. Further, Refs. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>28</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0095" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>95</a></span>] applied nonlinear MPC for the nonlinear SRBD and full-body kinematics model, in which the GRFs and joint velocities were treated as the control input to the dynamical systems. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>40</a></span>], instead of the nonlinear SRBD model, the centroidal momentum matrix (CMM) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0148" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>148</a></span>] was used with the full-kinematics in nonlinear MPC, which is the same formulation of the offline trajectory optimization of [<span class="ref-lnk lazy-ref"><a data-rid="CIT0155" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>155</a></span>]. The CMM enabled us to consider the exact CoM dynamics, including the weights of limbs in MPC, while the SRBD-based methods ignored it. The full-kinematic model (and the CMM) are versatile so that they can realize dynamic loco-manipulation tasks [<span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>40</a></span>] of ALMA [<span class="ref-lnk lazy-ref"><a data-rid="CIT0161" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>161</a></span>], locomotion under safety constraints [<span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>39</a></span>], and wheeled-legged control [<span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>38</a></span>]. In contrast to the aforementioned research assuming the predefined contact sequence, recent research reported the successful online CITO [<span class="ref-lnk lazy-ref"><a data-rid="CIT0048" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>48</a></span>] with the centroidal dynamics model with some simplifications on the problem, e.g. frictional complementarity constraints were neglected.</p>
+  </div>
+ </div>
+ <div id="S004-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i43">4.3. MPC with full-body models (whole-body MPC)</h3>
+  <div id="S004-S2003-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i44">4.3.1. Developments in rigid-body dynamics algorithms</h4>
+   <p>MPC with whole-body (full-body) dynamics, called <i>whole-body MPC</i>, had been challenging owing to the large problem size of the NLP and the high computational cost of the whole-body dynamics and their derivatives. Therefore, early studies on whole-body MPC were limited, e.g. linear MPC based on linearly approximated dynamics, as studied in the computer graphics community [<span class="ref-lnk lazy-ref"><a data-rid="CIT0162" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>162</a></span>]. This has come closer to reality owing to the developments in computational algorithms of the whole-body dynamics and their derivatives, namely, <i>rigid-body dynamics algorithms</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0056" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>56</a></span>]. Well-known rigid-body dynamics algorithms are the recursive Newton-Euler algorithm (RNEA) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0163" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>163</a></span>] for inverse dynamics computation and the articulated body algorithm (ABA) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0164" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>164</a></span>] for forward dynamics computation. Carpentier et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0165" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>165</a></span>] proposed efficient forward dynamics computation under a closed-kinematic chain or rigid contacts.</p>
+   <p>For MPC, the computational efficiency of derivatives of rigid-body dynamics is also critical. Neunert et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0166" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>166</a></span>] proposed automatics differentiation of the RNEA and ABA. Carpentier et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0167" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>167</a></span>] proposed analytical derivatives of the RNEA and ABA and achieved faster computation than the automatic differentiation. Singh et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0168" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>168</a></span>] further improved the computational efficiency of the analytical derivatives using spatial vector algebra. Also, Ayusawa and Yoshida [<span class="ref-lnk lazy-ref"><a data-rid="CIT0169" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>169</a></span>] proposed analytical derivatives of forward and inverse dynamics computations. Nganga and Wensin [<span class="ref-lnk lazy-ref"><a data-rid="CIT0170" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>170</a></span>] proposed an automatic differentiation of the second-order derivatives rigid-body dynamics in direct OCPs to improve the convergence speed of the Newton-type method with the exact Hessian, which is an extension of [<span class="ref-lnk lazy-ref"><a data-rid="CIT0171" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>171</a></span>].</p>
+   <p>Some software have been developed to efficiently compute rigid-body dynamics and their derivatives. <span class="monospace">RobCoGen</span> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0172" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>172</a></span>] is an open-source C++ code-generation tool supporting the RNEA, ABA, and automatic differentiations of these algorithms [<span class="ref-lnk lazy-ref"><a data-rid="CIT0166" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>166</a></span>]. <span class="monospace">Pinocchio</span> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0173" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>173</a></span>] is an open-source C++ library for RNEA, ABA, and the analytical derivatives of the RNEA and ABA [<span class="ref-lnk lazy-ref"><a data-rid="CIT0167" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>167</a></span>].</p>
+  </div>
+  <div id="S004-S2003-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i45">4.3.2. State-of-the-art and challenges</h4>
+   <p>Researchers can try the whole-body MPC because of the above developments in dynamics and their derivatives computation. Because the whole-body MPC is based on accurate full-body robot dynamics, it can achieve energy-efficient, reasonable, and highly dynamic motions for various problems. The whole-body MPC does not involve limitations on hardware platforms, working environment, and desired tasks, which can arise in MPC based on reduced-order models, i.e. the SRBD and centroidal dynamics models, due to the problem approximations. In the following, we introduce the researches that successfully implemented the whole-body MPC. The following MPC methods utilized Riccati recursion (specifically iLQR) to perform Newton-type iteration efficiently.</p>
+   <p>Refs. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>23</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>31</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>36</a></span>] formulated whole-body MPC problems with approximated soft contact models that are introduced in Section&nbsp;<a href="#S002-S2004">2.4</a>. Ref. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>23</a></span>] was the first study that realized the whole-body MPC in both simulation and real robot hardware. It utilized the analytically invertible and smooth contact model of [<span class="ref-lnk lazy-ref"><a data-rid="CIT0061" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>61</a></span>]. Ishihara et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>36</a></span>] utilized the same contact model and proposed a hierarchical MPC strategy based on a singular perturbation technique to improve the control performance for fast dynamics. Neunert et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>31</a></span>] implemented whole-body MPC with a contact model approximation based on the mass-spring-damper model. Neunert et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>31</a></span>] also leveraged the automatic differentiation of the rigid-body dynamics proposed in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0166" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>166</a></span>] while [<span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>23</a></span>] relied on slower finite differentiation. As stated in Section &nbsp;<a href="#S002-S2004">2.4</a>, these studies based on approximated contact models do not require the prespecified contact sequence and enable fast dynamics computation while lacking the solution's accuracy. Note that the offline trajectory optimization based on these contact models has also been studied, e.g. early in the computer graphics community&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0174" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>174</a></span>].</p>
+   <p>In contrast, Refs. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0094" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>94</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0175" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>175</a></span>] formulated whole-body MPC problems taking the rigid contacts into account under the given contact sequence. Specifically, the rigid collisions and contact acceleration constraints were explicitly considered as utilized for the offline trajectory optimization in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0176" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>176</a></span>]. Further, Mastalli et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0094" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>94</a></span>] leveraged the efficient derivative computations of rigid-body dynamics of [<span class="ref-lnk lazy-ref"><a data-rid="CIT0167" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>167</a></span>]. Dantec et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>44</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>47</a></span>] realized whole-body MPC of a humanoid robot using the algorithm of [<span class="ref-lnk lazy-ref"><a data-rid="CIT0094" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>94</a></span>]. These rigid contact-based MPC can determine the control action by taking the future impact dynamics (i.e. instantaneous changes in the state due to impacts) into account, which cannot be achieved in the aforementioned MPC based on reduced-order models.</p>
+   <p>While whole-body MPC has been implemented in various robotic problems, computational challenges remain. First, the full-body dynamics involve high nonlinearity, which requires many Newton-type iterations and reduces the reliability of the numerical optimization solvers. For example, Dantec et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>44</a></span>] proposed to give an initial guess using the histories of the MPC solutions to improve the too-slow convergence speed of the whole-body MPC. Further, the computational burdens of dynamics and their derivatives and that of the Newton-type iterations still requires a long computational time, particularly compared with the simple SRBD model in which the computational cost of dynamics and Newton-type iterations is small.</p>
+  </div>
+ </div>
+ <div id="S004-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i46">4.4. Software for MPC of robotic systems</h3>
+  <p>The robotic MPC problems, particularly in complicated models such as the centroidal dynamics model with full-kinematics or whole-body dynamics, involve complicated and variable MPC problem structures due to contacts. Moreover, rigid-body kinematics and dynamics calculations are required in solving optimization problems, which are difficult to implement only with the general NLP modeling tool [<span class="ref-lnk lazy-ref"><a data-rid="CIT0177" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>177</a></span>] or nonlinear MPC tool [<span class="ref-lnk lazy-ref"><a data-rid="CIT0087" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>87</a></span>]. Dedicated software for robotic MPC problems has been developed to interface with these difficulties. <span class="monospace">Control-toolbox</span> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0178" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>178</a></span>] is a toolbox that implements MPC algorithms such as iLQR and SQP and has interfaces for rigid-body library <span class="monospace">RobCoGen</span> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0172" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>172</a></span>]. <span class="monospace">ocs2</span> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0179" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>179</a></span>] is a collection of optimal control solvers such as the iLQR-type method for switched systems [<span class="ref-lnk lazy-ref"><a data-rid="CIT0180" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>180</a></span>] and SQP methods. In <span class="monospace">ocs2</span>, an approximated IP method [<span class="ref-lnk lazy-ref"><a data-rid="CIT0095" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>95</a></span>] and AL methods are implemented to treat constraints. It also supports interfacing the switched systems, i.e. robotic systems with contacts, and has robotic MPC examples such as MPC with the SRBD/centroidal dynamics model and the full-kinematics model using <span class="monospace">Pinocchio</span> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0173" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>173</a></span>]. <span class="monospace">Crocoddyl</span> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0094" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>94</a></span>] implemented iLQR-type methods for whole-body dynamics with rigid contacts in which <span class="monospace">Pinocchio</span> was used to efficiently compute rigid-body dynamics and their derivatives. It can treat box constraints on the control input efficiently. <span class="monospace">robotic</span> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0181" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>181</a></span>] implemented the same whole-body dynamics with rigid contacts model based on <span class="monospace">Pinocchio</span> as <span class="monospace">Crocoddyl</span>. It utilized the nonlinear IP method for general inequality constraints and implemented the multiple-shooting method with Riccati recursion.</p>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i47" class="section-heading-2">5. Conclusion</h2>
+ <p>This survey paper reviewed the recent development of model predictive control methods in legged and humanoid robotics. Section&nbsp;<a href="#S002">2</a> gave an overview of dynamical models of robotic systems. Section&nbsp;<a href="#S003">3</a> reviewed MPC algorithms that are particularly suitable for robotic problems. Section&nbsp;<a href="#S004">4</a> reviewed MPC methods for legged and humanoid robots. In the following, we point out open problems in the MPC of robotic systems.</p>
+ <p>First, ensuring the closed-loop stability is an unsolved problem. It is particularly difficult in whole-body MPC compared to trajectory generation MPC based on the reduced-order models because we must handle high-dimensional models with a short prediction horizon (due to the heavy computation cost). Some recent studies on combining <i>control Lyapunov functions</i> with MPC [<span class="ref-lnk lazy-ref"><a data-rid="CIT0182" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>182</a></span>] and imposing <i>passivity</i> in whole-body control [<span class="ref-lnk lazy-ref"><a data-rid="CIT0183 CIT0184 CIT0185" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>183–185</a></span>] are expected to provide insights to tackling this issue.</p>
+ <p>Second, reducing the computation cost of MPC is still an everlasting problem, particularly with on-board computation. In the MPC based on reduced-order models, there is a low-level controller that determines joint commands from the solution to MPC. It will be then a practical way to compensate for the computational inefficiency of MPC via the low-level controller such as the <i>control barrier function</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0186" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>186</a></span>] as presented in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>39</a></span>]. Whole-body MPC is challenging even with off-board computation. Recent advances in rigid-body algorithms such as [<span class="ref-lnk lazy-ref"><a data-rid="CIT0165" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>165</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0168" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>168</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0170" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>170</a></span>] will potentially reduce the computational burden of whole-body MPC.</p>
+ <p>The third problem is robustness against disturbances and model mismatches. This is particularly problematic in whole-body MPC since the control commands are directly sent to the actuators. In contrast, MPC based on the reduced-order models are inherently inaccurate and the low-level controllers such as QP-based whole-body controllers typically try to compensate for the modeling error. Possible approaches are <i>robust MPC</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0187" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>187</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0188" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>188</a></span>] and <i>stochastic MPC</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0189" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>189</a></span>], in which the uncertainties are explicitly considered in the MPC formulation. Other possibilities are data-driven approaches such as the combination of MPC and adaptive-control [<span class="ref-lnk lazy-ref"><a data-rid="CIT0190" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>190</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0191" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>191</a></span>] or reinforcement learning methods&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0192" data-reflink="_i48 _i49" href="#"><span class="off-screen">Citation</span>192</a></span>].</p>
+</div>

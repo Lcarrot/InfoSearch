@@ -1,0 +1,2313 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">1. Introduction</h2>
+ <p>Urban Functional Zones (UFZs) refer to the basic geographical units that aggregate local socio-economic attributes in cities, expressed as different land use categories (e.g. residential, industrial, and commercial). UFZs usually engage the characterized types of human social activities. While cities are open and complex giant systems (Batty <span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2008</a></span>), there exist inevitable deviations between regional planning policies and actual resource allocation in the urbanization process. Appropriately identifying UFZs can help policy-makers better understand the urban functional structure before making decisions and further optimize urban planning, promoting the coupling of the human-land system and the sustainable development of city (Sun et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2013</a></span>; Feng et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2019</a></span>; Huang and Wang <span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2019</a></span>; Yu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0074" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>; Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0084" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>; Zheng et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0085" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>).</p>
+ <p>Traditional methods of exploring urban functions mainly relied on the cadastral census data, which had the shortcomings of high subjectivity, high cost, and poor timeliness (Liu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>). With the rapid development of global urbanization (Berry <span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2008</a></span>; Ritchie and Roser <span class="ref-lnk lazy-ref"><a data-rid="CIT0052" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2018</a></span>), traditional data cannot meet the demand of mining urban texture and socio-spatial structure. As the remote sensing technology emerged, a large number of studies attempted to analyze optical remote sensing images (Zhou et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0086" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Du et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>;Lu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>), nighttime lighting images (Huang, Zhao, and Song <span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2018</a></span>; Gong et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Huang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>), microwave remote sensing images (Tu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0060" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Zong et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0087" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>), LiDAR data (Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0079" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017a</a></span>; Sanlang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0054" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>), multi-angle remote sensing images (Huang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>), and other remote sensing data have been used to identify UFZs and delineate the spatial patterns or functional expression of UFZs. The spatial morphological characteristics of UFZs can be captured from the explicit physical features such as geometric, spectral, texture, and radar scattering coefficients of remote sensing data, but the socio-economic characteristics lacked. As such, it is difficult to accurately distinguish the socio-economic UFZs using remote sensing data only.</p>
+ <p>In recent years, urban big data has driven new research practices in UFZ identification. Mobile phone data (Tu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>; Dong, Wang, and Liu <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>; Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0081" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>b), GPS trajectory data (Houssou, Guillaume, and Prigent <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2019</a></span>; Du et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Hu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>), traffic smart card data (Long and Shen <span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2015</a></span>), social media data (Huang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Wen and Li <span class="ref-lnk lazy-ref"><a data-rid="CIT0063" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>; Mawuenyegah, Li, and Xu <span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>), street view data (Li, Zhang, and Li <span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>; Cao et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2018</a></span>; Ye et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0072" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>), Point of Interest (POI) data (Jiang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2015</a></span>; Bao et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>; Gao, Janowicz, and Couclelis <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>; Yao et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0071" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>; Chen et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2018</a></span>; Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0078" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2018</a></span>; Zhai et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0077" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2019</a></span>; Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0080" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2019</a></span>; Andrade, Alves, and Bento <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Bao et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Gong et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Xu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0068" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Zong et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0087" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Cai <span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>; Gao, Janowicz, and Couclelis <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>; Hu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>; Niu and Silva <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>; Qian et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>; Sun et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>; Wang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0062" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>; Wu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0064" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>; Xu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0067" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>; Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0081" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>b; Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0083" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021c</a></span>; Lu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>; Qin et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0051" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>), and other social-sensing data have been used by many scholars to explore the socio-spatial structure of cities and the functional semantics of regions. Among them, POI data is one of the most popular and accessible sources of social sensing data for urban computing (Andrade, Alves, and Bento <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>), carrying abundant semantics of socio-economic information. In addition, POI data is less biased compared with other types of data with biased sampling, e.g. social media data is biased towards the younger generation, and mobility data is biased towards certain areas.</p>
+ <p>A variety of methods have been used in the existing POI-based studies to identify UFZs, such as predefining rules (Song et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0055" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2018</a></span>) and extracting low-level features (e.g. frequencies) of POIs to roughly identify UFZs using machine learning methods (Jiang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2015</a></span>; Hu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2016</a></span>; Gong et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Tu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0060" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Zong et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0087" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>). These methods missed the relation between POI data and regional socio-economic characteristics. Natural Language Processing (NLP) methods are promising solutions to understand the potential relation between POI data and socio-economic characteristics from a textual description perspective and have been increasingly used for UFZ identification (Chen, Xu, and Gong <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>). Corpus generally refers to a substantial collection of organized texts in the NLP domain (Ng and Zelle <span class="ref-lnk lazy-ref"><a data-rid="CIT0046" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>1997</a></span>). Correspondingly, geo-corpus is constructed with geospatial data (e.g. POI data used in this work) under specific sampling strategies within a region. As such, NLP methods can effectively paraphrase the potential relation between POI data and regional socio-economic characteristics in a geo-corpus (i.e. urban functions of a region), which is similar to understanding the relation between words and sentences or paragraphs in a corpus. Earlier studies mainly tried Term Frequency-Inverse Document Frequency (TF-IDF) (Yuan, Zheng, and Xie <span class="ref-lnk lazy-ref"><a data-rid="CIT0075" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2012</a></span>; Yuan et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0076" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2015</a></span>; Qian et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>), Latent Dirichlet Allocation (LDA) (Yuan, Zheng, and Xie <span class="ref-lnk lazy-ref"><a data-rid="CIT0075" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2012</a></span>; Yuan et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0076" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2015</a></span>; Chen, Huang, and Xu <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>; Xing and Meng <span class="ref-lnk lazy-ref"><a data-rid="CIT0066" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2018</a></span>; Chang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020a</a></span>), and other topic models to infer regional functional semantics and achieved higher accuracy compared to the aforementioned methods. However, the adapted Bag-of-Words (BOW)-based geo-corpuses constructed by those NLP methods are unordered, which lack the sequential and contextual information. The unordered means that there is no order or sequence among the words in the BOW-based geo-corpus, which is similar to the unordered things in a bag. In contrast, the sequential and contextual information refers to the order and sequence of words within documents. Since different sequences and contexts of words result in the different meanings of the words and even the whole document, the sequences of POIs in a geo-corpus affects understanding the urban functions of the zone to which the above-mentioned geo-corpus corresponds. In other words, they ignore the spatial relation and spatial interaction of POIs, which is helpful to capture the spatial heterogeneity of UFZ semantics and plays an important role in accurately identifying UFZs. For instance, it is difficult for the topic model to distinguish two categories of UFZs with similar POI statistical frequency features but different spatial distributions. As such, it is important to take the sequential and contextual information of POIs into consideration for UFZ identification.</p>
+ <p>The spatial distribution patterns of POIs show how POIs distribute in space in terms of their geographical locations. The pattern can be used to determine how POIs are related to the socio-economic characteristics and functions of UFZs. In other words, POIs are spatially dependent on the neighboring POIs as well as some geographical objects. For instance, POIs of the commercial type tend to be distributed near the streets, POIs of residential type tend to be distributed around the center of UFZs, and POIs of kindergarten type tend to be distributed around the POIs of residential type. The spatial distribution patterns of POIs can be determined by specific sampling strategies in this work. To take the spatial distribution patterns of POIs into consideration for UFZ identification, POI spatial relation-based geo-corpus construction approaches have been utilized. They capture the corresponding spatial distribution patterns depending on specific POI sampling strategies. In practice, Yao et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0071" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>) constructed geo-corpus based on the greedy algorithm that calculates the order of POIs by returning the shortest distance among them, which captures the local spatial co-occurrence distribution information of POIs. The Word2Vec model was introduced to embed regional geo-semantics by training the geo-corpus, following which a random forest classifier was trained to identify UFZs. Similar approaches were adopted by Xiang (<span class="ref-lnk lazy-ref"><a data-rid="CIT0065" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>) and Yang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0070" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>) to construct geo-corpus, and yielded regional feature vectors in combination with Word2Vec model for UFZ identification. Different attempts have been made for constructing geo-corpuses using the distance-based sampling strategies. Zhai et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0077" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2019</a></span>) used each POI as a sampling point to search for the surrounding K-nearest POIs to construct geo-corpus, enhancing the spatial context with Information Theoretic, Distance Lagged (ITDL). Sun et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>) used the centroid of each parcel as the sampling point and sequentially sampled POIs within the parcel based on point pair distances to construct geo-corpuses to train Word2Vec model. Niu and Silva (<span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>) used random points generated based on roads as sampling points, sequentially sampled the POIs in the buffer of each sampling point according to the point pair distances, and aggregated the POIs sequences in each parcel into documents to construct geo-corpus for training Doc2Vec model to identify UFZs. Recently, the network-based sampling strategies were adopted to construct geo-corpuses to capture the spatial distributions of POIs. Huang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>) sampled POIs by spatially explicit random walk in a network structure, and captured both local and long-range spatial co-occurrence distribution patterns of POIs.</p>
+ <p>Although the aforementioned studies attempted to construct geo-corpuses with different POI sampling strategies to achieve excellent performance for UFZ identification supported by powerful NLP models, there still exist certain shortcomings. The single-spatial distribution pattern of POIs refers to the spatial distribution pattern which captured by a single geo-corpus. It is difficult to accurately portray UFZs using the information dominated by a single-spatial distribution pattern of POIs. In contrast, the multi-spatial distribution patterns of POIs refer to multiple spatial distribution patterns which are captured by multiple geo-corpuses. The fusion of multi-spatial distribution patterns of POIs is likely to provide more comprehensive information to portray UFZs. In addition, similar to the semantics of words being influenced by context, the geo-semantics of UFZs are also influenced by the spatial interactions of POIs. The interaction strength between different types of POIs inevitably varies, which is also a problem ignored in existing studies. The interaction strength between different types of POIs refers to the extent a POI spatially interacts with different POIs. Normally, the interaction strength is closely related to the social influence of POIs. The greater the social influence of POIs, the higher the interaction strength. In other words, those POIs with high social influence usually have a large area they potentially interact with other POIs in space (i.e. high interaction strength). The social influence was computed by the Baidu search platform in this work. For instance, the POIs of university type usually have a higher interaction strength with other POIs compared to the POIs of phone booth type since the social influence of a university is larger than a phone booth, and further resulting in a richer context for the POIs of university type. Furthermore, the contribution of different geo-corpus-dominated POI spatial distribution patterns to UFZ identification is unclear.</p>
+ <p>To fill the above research gaps, this study proposed a UFZ identification method by capturing multi-spatial distribution patterns of POIs. First, we develop a geo-corpus construction approach that takes POI spatial interaction into account, and introduce three existing geo-corpus construction approaches to obtain UFZ embeddings with Word2Vec model. The POI spatial distribution information of UFZ embeddings is enhanced by feature combination. By testing the UFZ identification performance of UFZ embeddings under different feature combination modes, it reveals which spatial distribution pattern of POIs contributes the most. The main contributions of this study are summarized as follows.</p>
+ <ul class="NLM_list NLM_list-list_type-bullet">
+  <li><p class="inline">A geo-corpus construction approach that takes POI spatial interaction into account and can interpret POI data into an effective geo-corpus.</p></li>
+  <li><p class="inline">A UFZ identification method that can effectively enhance the semantic information of UFZ embedding by capturing multi-spatial distribution patterns from several geo-corpuses.</p></li>
+  <li><p class="inline">A performance evaluation of the contribution of different spatial distribution patterns and their different combination modes to UFZ identification.</p></li>
+ </ul>
+ <p></p>
+ <p>This study contributes to understanding urban spatial structure and identifying UFZs through measuring the spatial distribution patterns of POIs, which provides references for urban decision makers and planners.</p>
+ <p>The remaining sections of this paper are organized as follows. Section <a href="#S002">2</a> describes the study area and experimental data. Section <a href="#S003">3</a> introduces the methodological workflow and details. The results of all experiments are demonstrated and discussed in Section <a href="#S004">4</a>. Finally, we conclude the study and provide recommendations for future work in Section <a href="#S005">5</a>.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">2. Study area and data description</h2>
+ <p>The area within the fifth ring road of Beijing, China, was chosen as our study area (<a href="#F0001">Figure 1</a>). Beijing is the political, scientific, cultural and educational center and one of the most developed cities in China. Beijing is a complex urban system with various functions with regard to the urban land use structure, making it a good area for UFZ studies.</p>
+ <div class="figure figureViewer" id="F0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> (a) The spatial distribution of the POI data and the road data. (b) Overview of the study area. (c) The spatial distribution of the POI kernel density. (d) The spatial distribution of three levels of the road network.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0001_ob.jpg" loading="lazy" height="377" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> (a) The spatial distribution of the POI data and the road data. (b) Overview of the study area. (c) The spatial distribution of the POI kernel density. (d) The spatial distribution of three levels of the road network.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0001">
+  <div class="figureFootNote-F0001"></div>
+ </div>
+ <p></p>
+ <p>Two types of data in the study area were used in this study, namely road network data and POI data.</p>
+ <ol class="NLM_list NLM_list-list_type-order">
+  <li><p class="inline">Road network data is vector line data, which represents urban roads such as primary roads, secondary roads, and tertiary roads. It is usually used in studies to portray urban texture and constrain urban geographical units. The road network data for this study (<a href="#F0001">Figure 1</a> [a, d]) was acquired from the open-source platform Open Street Map<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>1</sup></a></span> (OSM). OSM is currently the most popular source of urban road data, and it is a crowdsourcing project with the advantages of fast data updates, free access, high data quality and other advantages (Wang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0061" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2013</a></span>; Hong and Yao <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2019</a></span>).</p></li>
+  <li><p class="inline">POI data is vector point data used to simplify the expression of geographic entities in the city. POI data labels naturally carry rich socioeconomic semantic information, which can reflect human urban socioeconomic activities. In practice, POI data can be effectively and reliably used in UFZ identification studies (Gong et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Cai et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>; Xu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0069" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>; Yang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0070" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>).</p></li>
+ </ol>
+ <p></p>
+ <p>The POI data for this study (<a href="#F0001">Figure 1</a> [a, c]) was obtained in 2018 through the application program interface of Amap<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0002" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>2</sup></a></span> (a.k.a. Gaode map), one of the largest map service providers in China, which can supply POI data with comprehensive coverage. Each POI has multiple attributes, including name, geographic coordinates, detailed address, and three levels of types (Big-type, Mid-type, and Sub-type). By counting the POI Sub-types and their frequencies of the raw POI dataset, its rank-frequency distribution presents a long tail (<a href="#F0002">Figure 2</a> [a]). It has been demonstrated that natural language follows a power-law distribution (Li <span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2018</a></span>). In order to investigate whether POI data is suitable to be processed using NLP technology in our case, we further fit the POI data with a rank-frequency distribution as a line with a high coefficient of 0.954 after transforming POI data to a logarithmic coordinate (<a href="#F0002">Figure 2</a> [b]). It reveals that this POI dataset follows a power-law distribution, which is similar to the natural language. This indicates the feasibility of combining NLP technology with POI data for UFZ identification in this study.</p>
+ <div class="figure figureViewer" id="F0002">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 2. </span> Rank-frequency plot for POI Sub-types. (a) Rank-frequency plot and (b) Rank-frequency log plot.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0002_ob.jpg" loading="lazy" height="192" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0002">
+  <p class="captionText"><span class="captionLabel">Figure 2. </span> Rank-frequency plot for POI Sub-types. (a) Rank-frequency plot and (b) Rank-frequency log plot.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0002">
+  <div class="figureFootNote-F0002"></div>
+ </div>
+ <p></p>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i7" class="section-heading-2">3. Methodology</h2>
+ <p>The overall framework of this study is illustrated in <a href="#F0003">Figure 3</a>, which consists of four main steps. (1) Data preprocessing and spatial unit generation. The raw POI data and road network data were first preprocessed, based on which the spatial units were generated. (2) Constructing geo-corpus with POIs. POIs were mapped to the corresponding spatial units, and four different geo-corpuses were constructed according to the corresponding approaches to capture different POI spatial distribution patterns. (3) Generating embeddings of UFZs. The Word2Vec model was trained on the four geo-corpuses to learn the POI embeddings. The UFZ embeddings were obtained by averaging the sum of the internal POI embeddings of each UFZ. t-SNE dimension-reduction algorithm and K-means clustering algorithm were further implemented to investigate whether the embeddings generated by the proposed method were effective and applicable. (4) Identifying UFZs based on random forest model. The categories of UFZs were obtained by classifying the UFZ embeddings using the random forest model. The confusion matrix was used to evaluate the accuracy of the classification results. Furthermore, a set of combination experiments were designed to explore the contribution of each geo-corpus construction approach to the UFZ identification results.</p>
+ <div class="figure figureViewer" id="F0003">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 3. </span> An overall framework of the proposed approach.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0003_ob.jpg" loading="lazy" height="450" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0003">
+  <p class="captionText"><span class="captionLabel">Figure 3. </span> An overall framework of the proposed approach.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0003">
+  <div class="figureFootNote-F0003"></div>
+ </div>
+ <p></p>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">3.1. Data preprocessing and spatial unit generation</h3>
+  <p>We cleaned the raw POI data, including removing duplicate POIs, eliminating POIs with missing attributes, and eliminating POI types that were not meaningful to UFZ (e.g. place names and addresses). Ultimately, over 240,000 POIs in the study area were obtained. The specific Big-type and Mid-type of POIs and their hierarchical relationships are shown in <a href="#F0004">Figure 4</a>.</p>
+  <div class="figure figureViewer" id="F0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> POI taxonomy tree map for 12 Big-types with 100 Mid-types.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0004_ob.jpg" loading="lazy" height="487" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> POI taxonomy tree map for 12 Big-types with 100 Mid-types.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0004">
+   <div class="figureFootNote-F0004"></div>
+  </div>
+  <p></p>
+  <p>Irregular parcels based on the spatial segmentation of road networks is the most popular method for generating spatial units among UFZ studies. The urban road network guides the development of urban spatial structure and fits the realistic urban form. In this study, we segmented the urban space based on road network to generate the spatial units for UFZ analysis and aggregating POI data for geo-corpus construction. In this study, we referred to the method of Liu and Long (<span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2016</a></span>) to obtain spatial units, which consists of the following three steps (see <a href="#F0005">Figure 5</a>).</p>
+  <ol class="NLM_list NLM_list-list_type-alpha-lower">
+   <li><p class="inline">Road network data pre-processing. We selected the original OSM road categories<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0003" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>3</sup></a></span>, i.e. ‘motorway’, ‘trunk’, and ‘primary’ as primary roads, ‘secondary’ as secondary roads, and ‘tertiary’ as tertiary roads to generate parcels. The ‘unclassified’ and ‘residential’ roads were deleted because they were considered to be the weakest socio-economic carrying capacity of the road network. Subsequently, all overhanging roads were extended until the topology could be connected. Those roads that were extended more than 100 m but still overhanging and independent were deleted.</p></li>
+   <li><p class="inline">Road expansion. Buffer zones of different distances were calculated for each road to represent the road space instead. The buffer distance was set according to Zhang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0082" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017b</a></span>), which was set to 40 m (rendered in red in <a href="#F0005">Figure 5</a>[b]), 20 m (rendered in green in <a href="#F0005">Figure 5</a>[b]), and 10 m (rendered in blue in <a href="#F0005">Figure 5</a>[b]) for the primary roads, secondary roads, and tertiary roads, respectively.</p></li>
+   <li><p class="inline">Road space removal. By removing the road space from the urban geographic space, we finally obtained irregular spatial units.</p></li>
+  </ol>
+  <div class="figure figureViewer" id="F0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> Obtaining spatial units based on road network.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0005_ob.jpg" loading="lazy" height="114" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> Obtaining spatial units based on road network.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0005">
+   <div class="figureFootNote-F0005"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">3.2. Constructing geo-corpus with POIs</h3>
+  <p>Inspired by Yuan, Zheng, and Xie (<span class="ref-lnk lazy-ref"><a data-rid="CIT0075" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2012</a></span>), the geo-corpus was analogized to a corpus in natural language, and we considered each UFZ as a separate document. Considering the POI Sub-type is complex and redundant for identifying UFZs (Hu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>; Huang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>) and the POI Big-type contains too little information, we treated the Mid-types of POIs as words, and transformed the spatial location of POIs into textual organization structure. We assumed that the occurrence of spatial interaction between POIs within their influence area can be analogous to the semantic interaction between words and their context. The influence area was determined by the social influence of the POIs, e.g. a university is supposed to interact spatially with wider other POIs than a phone booth. Based on the above ideas, we developed a new approach for geo-corpus construction considering the spatial interaction between POIs, which consists of two stages, namely the constructing stage and the formatting stage (<a href="#F0006">Figure 6</a>). The constructing stage mainly follows the following three steps.</p>
+  <div class="figure figureViewer" id="F0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 6. </span> The process of the proposed geo-corpus construction approach.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0006image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0006_ob.jpg" loading="lazy" height="412" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0006">
+   <p class="captionText"><span class="captionLabel">Figure 6. </span> The process of the proposed geo-corpus construction approach.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0006">
+   <div class="figureFootNote-F0006"></div>
+  </div>
+  <p></p>
+  <p>Step 1. Determining the order of the documents (i.e. UFZs). First, we calculated the pairwise distances between centroids of all spatial units. The pair of centroids composing the largest distance (denoted as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      D
+     </mi><mi>
+      o
+     </mi><msub>
+      <mi>
+       c
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      D
+     </mi><mi>
+      o
+     </mi><msub>
+      <mi>
+       c
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub>
+    </math></span>) were taken as the endpoints of the UFZ sequence. The greedy algorithm-based shortest path method (Yao et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0071" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>) can associate the POIs and UFZs in an effective organized form based on their spatial relation. This method was adopted to obtain the sequential sequence of all UFZs (i.e. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo fence="false" stretchy="false">
+      {
+     </mo><mi>
+      D
+     </mi><mi>
+      o
+     </mi><msub>
+      <mi>
+       c
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub><mo>
+      ,
+     </mo><mspace width="thickmathspace"></mspace><mi>
+      D
+     </mi><mi>
+      o
+     </mi><msub>
+      <mi>
+       c
+      </mi>
+      <mn>
+       2
+      </mn>
+     </msub><mo>
+      ,
+     </mo><mspace width="thickmathspace"></mspace><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ,
+     </mo><mspace width="thickmathspace"></mspace><mi>
+      D
+     </mi><mi>
+      o
+     </mi><msub>
+      <mi>
+       c
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo fence="false" stretchy="false">
+      }
+     </mo>
+    </math></span>) by calculating the shortest sequence from one endpoint to another endpoint via other UFZ centroids.</p>
+  <p>Step 2. Determining the order of the sentences within each document. In this step, each POI was used to label a separate sentence. For <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      D
+     </mi><mi>
+      o
+     </mi><msub>
+      <mi>
+       c
+      </mi>
+      <mn>
+       1
+      </mn>
+     </msub>
+    </math></span>, the sequence of sentences within it, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      D
+     </mi><mi>
+      o
+     </mi><msub>
+      <mi>
+       c
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo>
+      =
+     </mo><mo fence="false" stretchy="false">
+      {
+     </mo><mi>
+      S
+     </mi><mi>
+      e
+     </mi><msub>
+      <mi>
+       n
+      </mi>
+      <mrow>
+       <mn>
+        1
+       </mn>
+       <mi>
+        i
+       </mi>
+      </mrow>
+     </msub><mo>
+      ,
+     </mo><mspace width="thickmathspace"></mspace><mi>
+      S
+     </mi><mi>
+      e
+     </mi><msub>
+      <mi>
+       n
+      </mi>
+      <mrow>
+       <mn>
+        2
+       </mn>
+       <mi>
+        i
+       </mi>
+      </mrow>
+     </msub><mo>
+      ,
+     </mo><mspace width="thickmathspace"></mspace><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ,
+     </mo><mspace width="thickmathspace"></mspace><mi>
+      S
+     </mi><mi>
+      e
+     </mi><msub>
+      <mi>
+       n
+      </mi>
+      <mrow>
+       <mi>
+        m
+       </mi>
+       <mi>
+        i
+       </mi>
+      </mrow>
+     </msub><mo fence="false" stretchy="false">
+      }
+     </mo>
+    </math></span>, was obtained following the similar calculation process of Step 1. The iterative calculation yielded the sequence of sentences for all UFZs.</p>
+  <p>Step 3. Determining the order of the words within each sentence. According to the above, each POI interacts spatially with other POIs in its influence area. The spatial interaction is usually realized by urban roads. Considering that the roads in Beijing are generally oriented north–south and east–west, the POIs in its influence area were sampled sequentially based on Manhattan distance. The specific influence area of each POI is supposed to be aligned with the social influence area of each POI. Inspired by Liu et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020a</a></span>) and considering that the Baidu search platform is one of the most popular search engines in China, we searched the Baidu entries of each POI Mid-types (i.e. ‘Mid-types’ ‘Beijing’) through web crawler technology, and the number of returned search results was regarded as its social influence in Beijing. Subsequently, the social influence of all POI Mid-types was linearly scaled to the interval of 100-300, which was transformed into an influence distance of 100m-300 m. Each POI in the UFZ was treated as a sentence sampling point and a sample point (i.e. a word) for making up other sentences. By calculating the point-pair distance between the sampling point and other POIs, a POI sequence (i.e. a sentence) was arranged in ascending order of point-pair distance. For the <i>m-th</i> sentence in the <i>i-th</i> document, the sampling yields its word sequence as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      S
+     </mi><mi>
+      e
+     </mi><msub>
+      <mi>
+       n
+      </mi>
+      <mi>
+       m
+      </mi>
+     </msub><mo>
+      =
+     </mo><mo fence="false" stretchy="false">
+      {
+     </mo><msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <msub>
+        <mi>
+         m
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msub>
+       <mn>
+        1
+       </mn>
+      </mrow>
+     </msub><mo>
+      ,
+     </mo><mspace width="thickmathspace"></mspace><msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <msub>
+        <mi>
+         m
+        </mi>
+        <mn>
+         1
+        </mn>
+       </msub>
+       <mn>
+        2
+       </mn>
+      </mrow>
+     </msub><mo>
+      ,
+     </mo><mspace width="thickmathspace"></mspace><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ⋅
+     </mo><mo>
+      ,
+     </mo><mspace width="thickmathspace"></mspace><msub>
+      <mi>
+       w
+      </mi>
+      <mrow>
+       <msub>
+        <mi>
+         m
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msub>
+       <msub>
+        <mi>
+         n
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msub>
+      </mrow>
+     </msub><mo fence="false" stretchy="false">
+      }
+     </mo>
+    </math></span>. As POIs interact within the same UFZ or with different UFZs, we take both POIs within the same UFZ and POIs in different UFZs into account in this sampling step. The sentences of each document were then obtained.</p>
+  <p>Formatting stage: As a result of the constructing stage, we established sequential relationships between documents, sequential relationships between sentences in each document, and sequential relationships between words in each sentence. Eventually, the geo-corpus of the study area was constructed from the above structural information and converted it into text form.</p>
+  <p>In order to enhance the POI spatial distribution information and approximate more realistic geo-semantics of UFZ, three state-of-the-art geo-corpus construction approaches proposed by Yao et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0071" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>) (denoted as Approach A), Sun et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>) (denoted as Approach B), and Niu and Silva (<span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>) (denoted as Approach C), which are described in Section <a href="#S001">1</a>, were used for subsequent combination experiments and as baseline approaches to compare with our proposed approach. The dominant POI spatial distribution patterns captured by the four geo-corpus construction approaches are elaborated as follows.</p>
+  <p><b><i>Pattern P:</i></b> Our proposed approach, i.e. Approach P, captures the spatial distribution information of POIs by considering the spatial dependency as well as the interaction strength between different types of POIs. The spatial distribution pattern of POIs captured by Approach P is denoted as Pattern P.</p>
+  <p><b><i>Pattern A:</i></b> As illustrated in <a href="#F0007">Figure 7</a> (a), Approach A (Yao et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0071" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>) searches the nearest neighbor POIs based on the greedy algorithm to capture the local spatial co-occurrence distribution information of POIs. The spatial distribution pattern of POIs captured by Approach A is denoted as Pattern A.</p>
+  <div class="figure figureViewer" id="F0007">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 7. </span> Schematic diagram of the geo-corpus construction approaches. (a) Approach A. (b) Approach B. (c) Approach C.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0007image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0007_ob.jpg" loading="lazy" height="135" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0007">
+   <p class="captionText"><span class="captionLabel">Figure 7. </span> Schematic diagram of the geo-corpus construction approaches. (a) Approach A. (b) Approach B. (c) Approach C.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0007">
+   <div class="figureFootNote-F0007"></div>
+  </div>
+  <p></p>
+  <p><b><i>Pattern B:</i></b> As illustrated in <a href="#F0007">Figure 7</a> (b), Approach B (Sun et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>) selects the centroid of each UFZ as the sampling point, and captures the spatial distribution information regarding the POI-to-UFZ tendency, i.e. whether different types of POIs tend to be deployed in the centroid or periphery of UFZs. The spatial distribution pattern of POIs captured by Approach B is denoted as Pattern B.</p>
+  <p><b><i>Pattern C:</i></b> As illustrated in <a href="#F0007">Figure 7</a> (c), Approach C (Niu and Silva <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>) randomly selects points that are evenly distributed on the road within UFZs as sampling points, and captures the spatial distribution information regarding the POI-to-road tendency, i.e. for each category of UFZ, whether different types of POIs tend to be deployed closer to the road or distant from the road. The spatial distribution pattern of POIs captured by Approach C is denoted as Pattern C.</p>
+ </div>
+ <div id="S003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">3.3. Generating embeddings of UFZs</h3>
+  <div id="S003-S2003-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i16">3.3.1. Generating POI embeddings with Word2Vec model</h4>
+   <p>Word2Vec is a neural language model (Mikolov et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2013a</a></span>) that can embed the geo-semantics of POI into a high-dimensional semantic space (Yao et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0071" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>). The Word2Vec model contains two types of neural network architecture, which are Continuous Bag-of-Words (CBOW) and Skip-Gram (SG). Compared with the SG architecture, the CBOW architecture is easier to learn POI spatial contextual features (Yu and Dredze <span class="ref-lnk lazy-ref"><a data-rid="CIT0073" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2014</a></span>; Yao et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0071" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>). Therefore, the CBOW architecture was chosen to train the geo-corpus in this study. The CBOW architecture predicts the current POI through contextual POIs within a window (Mikolov et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2013b</a></span>). In short, its objective is to maximize the average log probability to predict the central POI within the given context (<a href="#M0001">Equation 1</a>). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_m0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       L
+      </mi><mo stretchy="false">
+       (
+      </mo><mi>
+       θ
+      </mi><mo stretchy="false">
+       )
+      </mo><mo>
+       =
+      </mo><mstyle displaystyle="true" scriptlevel="0">
+       <mrow>
+        <mfrac>
+         <mn>
+          1
+         </mn>
+         <mi>
+          T
+         </mi>
+        </mfrac>
+       </mrow>
+       <msubsup>
+        <mo movablelimits="false">
+         ∑
+        </mo>
+        <mrow>
+         <mi>
+          t
+         </mi>
+         <mo>
+          =
+         </mo>
+         <mn>
+          1
+         </mn>
+        </mrow>
+        <mi>
+         T
+        </mi>
+       </msubsup>
+       <mrow>
+        <mi>
+         log
+        </mi>
+        <mo>
+         ⁡
+        </mo>
+        <mi>
+         p
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <msub>
+         <mi>
+          w
+         </mi>
+         <mi>
+          t
+         </mi>
+        </msub>
+        <mo fence="false" stretchy="false">
+         |
+        </mo>
+        <msubsup>
+         <mi>
+          w
+         </mi>
+         <mrow>
+          <mi>
+           t
+          </mi>
+          <mo>
+           −
+          </mo>
+          <mi>
+           c
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           t
+          </mi>
+          <mo>
+           +
+          </mo>
+          <mi>
+           c
+          </mi>
+         </mrow>
+        </msubsup>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mrow>
+      </mstyle>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span>where <i>T</i> refers to the size of the geo-corpus. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0007.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </math></span> is the <i>i-th</i> central POI, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0008.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        w
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         c
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         +
+        </mo>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msubsup>
+     </math></span> is a context POIs set obtained based on <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0009.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </math></span> and the sampling window <i>c</i>.</p>
+   <p>The conditional probabilities <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0010.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       p
+      </mi><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub><mo fence="false" stretchy="false">
+       |
+      </mo><msubsup>
+       <mi>
+        w
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         c
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         +
+        </mo>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msubsup><mo stretchy="false">
+       )
+      </mo>
+     </math></span> is calculated using the softmax function as follows: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_m0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       p
+      </mi><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub><mo fence="false" stretchy="false">
+       |
+      </mo><msubsup>
+       <mi>
+        w
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         c
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         +
+        </mo>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msubsup><mo stretchy="false">
+       )
+      </mo><mo>
+       =
+      </mo><mstyle displaystyle="true" scriptlevel="0">
+       <mrow>
+        <mfrac>
+         <mrow>
+          <mi>
+           exp
+          </mi>
+          <mo>
+           ⁡
+          </mo>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mo>
+           −
+          </mo>
+          <mi>
+           E
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <msub>
+           <mi>
+            w
+           </mi>
+           <mi>
+            t
+           </mi>
+          </msub>
+          <mo>
+           ,
+          </mo>
+          <mspace width="thickmathspace"></mspace>
+          <msubsup>
+           <mi>
+            w
+           </mi>
+           <mrow>
+            <mi>
+             t
+            </mi>
+            <mo>
+             −
+            </mo>
+            <mi>
+             c
+            </mi>
+           </mrow>
+           <mrow>
+            <mi>
+             t
+            </mi>
+            <mo>
+             +
+            </mo>
+            <mi>
+             c
+            </mi>
+           </mrow>
+          </msubsup>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo stretchy="false">
+           )
+          </mo>
+         </mrow>
+         <mrow>
+          <msubsup>
+           <mo movablelimits="false">
+            ∑
+           </mo>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mo>
+             =
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+           <mi>
+            T
+           </mi>
+          </msubsup>
+          <mrow>
+           <mi>
+            exp
+           </mi>
+           <mo>
+            ⁡
+           </mo>
+           <mo stretchy="false">
+            (
+           </mo>
+           <mo>
+            −
+           </mo>
+           <mi>
+            E
+           </mi>
+           <mo stretchy="false">
+            (
+           </mo>
+           <msub>
+            <mi>
+             w
+            </mi>
+            <mi>
+             t
+            </mi>
+           </msub>
+           <mo>
+            ,
+           </mo>
+           <mspace width="thickmathspace"></mspace>
+           <msubsup>
+            <mi>
+             w
+            </mi>
+            <mrow>
+             <mi>
+              t
+             </mi>
+             <mo>
+              −
+             </mo>
+             <mi>
+              c
+             </mi>
+            </mrow>
+            <mrow>
+             <mi>
+              t
+             </mi>
+             <mo>
+              +
+             </mo>
+             <mi>
+              c
+             </mi>
+            </mrow>
+           </msubsup>
+           <mo stretchy="false">
+            )
+           </mo>
+           <mo stretchy="false">
+            )
+           </mo>
+          </mrow>
+         </mrow>
+        </mfrac>
+       </mrow>
+      </mstyle>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span>where <i>E</i> is an energy function and is calculated with <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0011.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       E
+      </mi><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub><mo>
+       ,
+      </mo><mspace width="thickmathspace"></mspace><msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub><mo stretchy="false">
+       )
+      </mo><mo>
+       =
+      </mo><mo>
+       −
+      </mo><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub><mo>
+       ,
+      </mo><mspace width="thickmathspace"></mspace><msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub><mo stretchy="false">
+       )
+      </mo>
+     </math></span>.</p>
+   <p>The model training process used the stochastic gradient descent algorithm to obtain the optimal embeddings of POIs. The four modal POI embeddings were learned by training the four geo-corpuses constructed in Section <a href="#S003">3</a>.<a href="#S002">2</a>. As mentioned earlier, the construction strategy of each geo-corpus can capture a single spatial distribution pattern of POIs. This means, the embeddings learned based on different geo-corpuses can convey the corresponding main POI spatial distribution information.</p>
+   <p>Differing from the linear context of words in natural languages with only forward and backward directions, the actual spatial context of POIs are coupled by multi-spatial distribution patterns. The embeddings that incorporate more spatial distribution information are closer to the realistic geo-semantics. It is assumed that the embeddings of type i POI learned based on the four constructed geo-corpuses are <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0012.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       P
+      </mi><mi>
+       O
+      </mi><mi>
+       I
+      </mi><mi>
+       E
+      </mi><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        i
+       </mi>
+       <mi>
+        P
+       </mi>
+      </msub><msub>
+       <mo stretchy="false">
+        )
+       </mo>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ×
+        </mo>
+        <mi>
+         n
+        </mi>
+       </mrow>
+      </msub>
+     </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0013.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       P
+      </mi><mi>
+       O
+      </mi><mi>
+       I
+      </mi><mi>
+       E
+      </mi><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        i
+       </mi>
+       <mi>
+        A
+       </mi>
+      </msub><msub>
+       <mo stretchy="false">
+        )
+       </mo>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ×
+        </mo>
+        <mi>
+         n
+        </mi>
+       </mrow>
+      </msub>
+     </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0014.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       P
+      </mi><mi>
+       O
+      </mi><mi>
+       I
+      </mi><mi>
+       E
+      </mi><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        i
+       </mi>
+       <mi>
+        B
+       </mi>
+      </msub><msub>
+       <mo stretchy="false">
+        )
+       </mo>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ×
+        </mo>
+        <mi>
+         n
+        </mi>
+       </mrow>
+      </msub>
+     </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0015.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       P
+      </mi><mi>
+       O
+      </mi><mi>
+       I
+      </mi><mi>
+       E
+      </mi><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        i
+       </mi>
+       <mi>
+        C
+       </mi>
+      </msub><msub>
+       <mo stretchy="false">
+        )
+       </mo>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ×
+        </mo>
+        <mi>
+         n
+        </mi>
+       </mrow>
+      </msub>
+     </math></span>. Subsequently, the combination of the four modal embeddings was implemented based on vector concatenation. The combined embeddings of type i POIs can be described as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0016.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       P
+      </mi><mi>
+       O
+      </mi><mi>
+       I
+      </mi><mi>
+       E
+      </mi><mo stretchy="false">
+       (
+      </mo><mi>
+       i
+      </mi><msub>
+       <mo stretchy="false">
+        )
+       </mo>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ×
+        </mo>
+        <mn>
+         4
+        </mn>
+        <mi>
+         n
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><mo stretchy="false">
+       [
+      </mo><mi>
+       P
+      </mi><mi>
+       O
+      </mi><mi>
+       I
+      </mi><mi>
+       E
+      </mi><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        i
+       </mi>
+       <mi>
+        P
+       </mi>
+      </msub><msub>
+       <mo stretchy="false">
+        )
+       </mo>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ×
+        </mo>
+        <mi>
+         n
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><mi>
+       P
+      </mi><mi>
+       O
+      </mi><mi>
+       I
+      </mi><mi>
+       E
+      </mi><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        i
+       </mi>
+       <mi>
+        A
+       </mi>
+      </msub><msub>
+       <mo stretchy="false">
+        )
+       </mo>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ×
+        </mo>
+        <mi>
+         n
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><mspace width="thickmathspace"></mspace><mi>
+       P
+      </mi><mi>
+       O
+      </mi><mi>
+       I
+      </mi><mi>
+       E
+      </mi><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        i
+       </mi>
+       <mi>
+        B
+       </mi>
+      </msub><msub>
+       <mo stretchy="false">
+        )
+       </mo>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ×
+        </mo>
+        <mi>
+         n
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><mspace width="thickmathspace"></mspace><mi>
+       P
+      </mi><mi>
+       O
+      </mi><mi>
+       I
+      </mi><mi>
+       E
+      </mi><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        i
+       </mi>
+       <mi>
+        C
+       </mi>
+      </msub><msub>
+       <mo stretchy="false">
+        )
+       </mo>
+       <mrow>
+        <mn>
+         1
+        </mn>
+        <mo>
+         ×
+        </mo>
+        <mi>
+         n
+        </mi>
+       </mrow>
+      </msub><mo stretchy="false">
+       ]
+      </mo>
+     </math></span>. Finally, this approach yielded the embeddings of all POIs, representing their geo-semantics.</p>
+   <p>The t-Distributed Stochastic Neighbor Embedding (t-SNE) is a reliable dimension-reduction algorithm (Maaten and Hinton <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2008</a></span>), which is generally better than other algorithms (e.g. principal component analysis) for high dimensionality (Liu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020b</a></span>). We used the t-SNE algorithm to project the embeddings of each POI Mid-types from a high-dimensional semantic space to a three-dimensional sub-semantic space for visual analysis (Liu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020b</a></span>; Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0083" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021c</a></span>; Huang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>). Theoretically, POIs with similar functions in space own similar angles and orientations in the semantic space (Yao et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0071" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>). In other words, POIs with similar geo-semantics are closer in the semantic space. This can be used to validate the effectiveness of POI combined embeddings for distinguishing UFZ semantics.</p>
+  </div>
+  <div id="S003-S2003-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i19">3.3.2. Generating UFZ embeddings</h4>
+   <p>Previous studies have shown that the geo-semantics of a UFZ can be effectively depicted by a weighted average vector of all POIs within the UFZ (Yao et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0071" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>; Yang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0070" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>). Thus, the embeddings of the UFZ are obtained by averaging the embeddings of all POIs enclosed. The embeddings representing the geo-semantics of the <i>j-th</i> UFZ can be mathematically defined as follows. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_m0003.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       U
+      </mi><mi>
+       F
+      </mi><mi>
+       Z
+      </mi><msub>
+       <mi>
+        E
+       </mi>
+       <mi>
+        j
+       </mi>
+      </msub><mo>
+       =
+      </mo><mstyle displaystyle="true" scriptlevel="0">
+       <mrow>
+        <mfrac>
+         <mrow>
+          <msubsup>
+           <mo movablelimits="false">
+            ∑
+           </mo>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mo>
+             =
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+           <mi>
+            N
+           </mi>
+          </msubsup>
+          <mrow>
+           <mi>
+            P
+           </mi>
+           <mi>
+            O
+           </mi>
+           <mi>
+            I
+           </mi>
+           <msub>
+            <mi>
+             E
+            </mi>
+            <mrow>
+             <mi>
+              i
+             </mi>
+             <mo>
+              ,
+             </mo>
+             <mi>
+              j
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+         </mrow>
+         <mi>
+          N
+         </mi>
+        </mfrac>
+       </mrow>
+      </mstyle>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span>where <i>POIE<sub>i,j</sub></i> refers to the embeddings of <i>i-th</i> type POI in <i>j-th</i> UFZS, and <i>N</i> is the number of POIs in <i>j-th</i> UFZ.</p>
+   <p>Ultimately, we obtained the embeddings of all UFZs in the study area by <a href="#M0003">Equation 3</a>. Cosine similarity was used to measure the geo-semantic similarity between UFZs. The cosine similarity between two UFZs is calculated from their embedding as follows. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_m0004.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       C
+      </mi><mi>
+       o
+      </mi><mi>
+       s
+      </mi><mi>
+       S
+      </mi><mi>
+       i
+      </mi><mi>
+       m
+      </mi><mo stretchy="false">
+       (
+      </mo><mi>
+       X
+      </mi><mo>
+       ,
+      </mo><mspace width="thickmathspace"></mspace><mi>
+       Y
+      </mi><mo stretchy="false">
+       )
+      </mo><mo>
+       =
+      </mo><mstyle displaystyle="true" scriptlevel="0">
+       <mrow>
+        <mfrac>
+         <mrow>
+          <mi>
+           X
+          </mi>
+          <mo>
+           ⋅
+          </mo>
+          <mi>
+           Y
+          </mi>
+         </mrow>
+         <mrow>
+          <mo fence="false" stretchy="false">
+           ‖
+          </mo>
+          <mi>
+           X
+          </mi>
+          <mo fence="false" stretchy="false">
+           ‖
+          </mo>
+          <mo fence="false" stretchy="false">
+           ‖
+          </mo>
+          <mi>
+           Y
+          </mi>
+          <mo fence="false" stretchy="false">
+           ‖
+          </mo>
+         </mrow>
+        </mfrac>
+       </mrow>
+       <mo>
+        =
+       </mo>
+       <mstyle displaystyle="true" scriptlevel="0">
+        <mrow>
+         <mfrac>
+          <mrow>
+           <msubsup>
+            <mo movablelimits="false">
+             ∑
+            </mo>
+            <mrow>
+             <mi>
+              i
+             </mi>
+             <mo>
+              =
+             </mo>
+             <mn>
+              1
+             </mn>
+            </mrow>
+            <mi>
+             n
+            </mi>
+           </msubsup>
+           <mrow>
+            <msub>
+             <mi>
+              X
+             </mi>
+             <mi>
+              i
+             </mi>
+            </msub>
+            <msub>
+             <mi>
+              Y
+             </mi>
+             <mi>
+              i
+             </mi>
+            </msub>
+           </mrow>
+          </mrow>
+          <mrow>
+           <msqrt>
+            <msubsup>
+             <mo movablelimits="false">
+              ∑
+             </mo>
+             <mrow>
+              <mi>
+               i
+              </mi>
+              <mo>
+               =
+              </mo>
+              <mn>
+               1
+              </mn>
+             </mrow>
+             <mi>
+              n
+             </mi>
+            </msubsup>
+            <mrow>
+             <msubsup>
+              <mi>
+               X
+              </mi>
+              <mi>
+               i
+              </mi>
+              <mn>
+               2
+              </mn>
+             </msubsup>
+            </mrow>
+           </msqrt>
+           <msqrt>
+            <msubsup>
+             <mo movablelimits="false">
+              ∑
+             </mo>
+             <mrow>
+              <mi>
+               i
+              </mi>
+              <mo>
+               =
+              </mo>
+              <mn>
+               1
+              </mn>
+             </mrow>
+             <mi>
+              n
+             </mi>
+            </msubsup>
+            <mrow>
+             <msubsup>
+              <mi>
+               Y
+              </mi>
+              <mi>
+               i
+              </mi>
+              <mn>
+               2
+              </mn>
+             </msubsup>
+            </mrow>
+           </msqrt>
+          </mrow>
+         </mfrac>
+        </mrow>
+       </mstyle>
+      </mstyle>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span>where <i>X<sub>i</sub></i> and <i>Y<sub>i</sub></i> refer to their corresponding UFZ embeddings.</p>
+   <p>In order to confirm the availability of UFZ embeddings for subsequently feeding the classifier to identify UFZs, it is crucial to test the semantic discrimination of UFZ embeddings and whether the geo-semantics of UFZ embeddings representation are correlated with the actual UFZ functional categories.</p>
+   <p>Based on the pairwise geo-semantics distance (i.e. cosine distance, which is equal to one minus the cosine similarity) of UFZs, K-means algorithm was used to implement clustering of the UFZ embeddings with similar geo-semantics. Exploring whether UFZ embeddings have an explicit clustering pattern helps verify the semantic discrimination of embeddings. Meanwhile, whether the clustering pattern is consistent with reality verifies whether there is a correlation between the geo-semantics of UFZ embeddings representation and the actual UFZ functions. Silhouette coefficient (Rousseeuw <span class="ref-lnk lazy-ref"><a data-rid="CIT0053" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>1987</a></span>) was used as a criterion to determine the optimal prior parameter K for the K-means algorithm. Given a UFZ embedding i, the average distance between i and other UFZ embeddings in the same class is denoted as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0017.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        a
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </math></span>, and the average distance between i and all UFZ embeddings in the next closest class is denoted as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0018.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        b
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </math></span>, then the silhouette coefficient can be calculated as follows: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_m0005.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        S
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub><mo>
+       =
+      </mo><mstyle displaystyle="true" scriptlevel="0">
+       <mrow>
+        <mfrac>
+         <mrow>
+          <msub>
+           <mi>
+            b
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msub>
+          <mo>
+           −
+          </mo>
+          <msub>
+           <mi>
+            a
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msub>
+         </mrow>
+         <mrow>
+          <mo movablelimits="true" form="prefix">
+           max
+          </mo>
+          <mo stretchy="false">
+           (
+          </mo>
+          <msub>
+           <mi>
+            a
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msub>
+          <mo>
+           ,
+          </mo>
+          <mspace width="thickmathspace"></mspace>
+          <msub>
+           <mi>
+            b
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msub>
+          <mo stretchy="false">
+           )
+          </mo>
+         </mrow>
+        </mfrac>
+       </mrow>
+      </mstyle>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span>The silhouette coefficient of the clustering results was obtained by averaging the silhouette coefficient of all UFZ embeddings. The range of silhouette coefficient is [−1, 1], and the higher values (close to 1) indicate the better clustering results.</p>
+  </div>
+ </div>
+ <div id="S003-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i23">3.4. Identifying UFZs based on random forest model</h3>
+  <div id="S003-S2004-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i24">3.4.1. Random forest classification</h4>
+   <p>The random forest (RF) model is an ensemble learning algorithm consisting of multiple uncorrelated decision trees, which can well avoid overfitting and variable correlation problems (Breiman <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2001</a></span>). It has been widely used for UFZ classification (Du, Zhang, and Zhang <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2015</a></span>; Yao et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0071" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>; Zhang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0082" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017b</a></span>; Xing and Meng <span class="ref-lnk lazy-ref"><a data-rid="CIT0066" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2018</a></span>; Chang et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020b</a></span>; Niu and Silva <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>; Wu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0064" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>). In this study, the RF model was used to learn the relationship between UFZ embeddings and urban functional categories to implement classification of all UFZs.</p>
+   <p>For the set of N UFZs with features (i.e. UFZ embeddings) of dimension M, the Bootstrap aggregating (i.e. Bagging) method was used to randomly sample them with put-back. All trees were pruning-free trained on a randomly selected set of samples. Due to the Bagging sampling method, about 1/3 of the samples were unsampled out-of-bag (OOB) data. The OOB error was used to represent the generalization error of the decision tree.</p>
+   <p>We optimized the random forest model by balancing the two critical parameters, namely max_features and n_estimators. The max_features refers to the number of features used at each node to generate a tree. The n_estimators refers to the number of trees. The grid search method based on the OOB accuracy was used for RF parameter optimization. The optimal combination of parameters was used to train the model, and the major voting of all decision trees inside the trained model was taken as the final UFZ classification result.</p>
+  </div>
+  <div id="S003-S2004-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i25">3.4.2. Gini index for feature importance analysis</h4>
+   <p>Although the corresponding UFZ classification was achieved for the combined embeddings by the trained RF model, the contribution of each modal features to the classification in the combined embeddings needed further discussion, which helped us to assess the different impacts of POI spatial distribution patterns on the geo-semantics of UFZs. This study quantified the importance of feature variables on the classification of the RF model based on the Gini index (Strobl, Boulesteix, and Augustin <span class="ref-lnk lazy-ref"><a data-rid="CIT0056" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2007</a></span>; Du, Zhang, and Zhang <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2015</a></span>). For a given feature variable, its feature importance is equal to the average decrease of Gini after the split of this feature node. The Gini index can be defined as follows. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_m0006.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       G
+      </mi><mi>
+       I
+      </mi><mo stretchy="false">
+       (
+      </mo><mi>
+       p
+      </mi><mo stretchy="false">
+       )
+      </mo><mo>
+       =
+      </mo><mn>
+       1
+      </mn><mo>
+       −
+      </mo><msubsup>
+       <mo movablelimits="false">
+        ∑
+       </mo>
+       <mrow>
+        <mi>
+         k
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+       <mi>
+        K
+       </mi>
+      </msubsup><mrow>
+       <mspace width="thinmathspace"></mspace>
+       <msubsup>
+        <mi>
+         p
+        </mi>
+        <mi>
+         k
+        </mi>
+        <mn>
+         2
+        </mn>
+       </msubsup>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6) </span></span></span></span>where <i>k</i> represents the <i>k-th</i> category and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0019.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/tjde_a_2160841_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mi>
+        k
+       </mi>
+      </msub>
+     </math></span> refers to the probability of a sample belonging to category <i>k</i>.</p>
+  </div>
+  <div id="S003-S2004-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i27">3.4.3. Validation</h4>
+   <p>The ground truth (i.e. actual categories of UFZs) are crucial to validate our method and the training of the RF model. Referring to the classification of urban land in the ‘Code for classification of urban and rural land use and planning standards of development land (GB50137)’, which was issued by the Ministry of Housing and Urban-Rural Development of China in 2011, the UFZs in the study area are divided into five categories, namely, residential zone (R, land for residential and corresponding service facilities), industrial zone (M, land for industrial and mining enterprises), administrative and public service zone (A, land for administrative, cultural, educational, scientific research, sports, health, and other institutions and facilities), and business zone (B, land for commercial, business, entertainment and recreation facilities), and green space (G, public open space such as park green space, protective green space, and plaza). Referring to the Baidu e-maps<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0004" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>4</sup></a></span> (including street view image layer and high-resolution remote sensing image layer) that was accessed in 2022, the ground truth of each UFZ was manually labeled as the above five UFZ categories. With regard to the inevitable mixed functional zones (Dovey and Pafka <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>), we labeled their functional categories based on the dominant functional category within the UFZs.</p>
+   <p>In this study, the confusion matrix was used to evaluate the classification results, while four metrics, namely Overall accuracy (OA), Kappa coefficient (Kappa), Producer's accuracy (PA), and User's accuracy (UA) to quantify the results accuracy from four aspects. OA indicates the ratio between the number of correctly classified UFZs and the overall number of UFZs, and measures the probability that for each random UFZ, the UFZ classification result is consistent with the ground truth. Kappa evaluates the consistency between the overall UFZ classification results and the ground truth. PA indicates the conditional probability that the classification result is consistent with a random sample of the actual UFZ sample. UA indicates the conditional probability of a random UFZ sample in the classification results whose functional category is consistent with the ground truth.</p>
+   <p>To further assess the effects of different POI spatial distribution patterns on UFZ geo-semantic representations under different coupling mechanisms, a total of 15 combination experiments were designed in this study (see <button class="ref showTableEventRef" data-id="T0001">Table 1</button>). Different combination strategies were tried for four modal POI embeddings learned based on different geo-corpuses to calculate the corresponding UFZ embeddings. The four combination modes include single feature mode (Mode 0), two-two feature combination mode (Mode 1), three-three feature combination mode (Mode 2), and four-four feature combination mode (Mode 3), corresponding to experiment 1∼4, 5 ∼10, 11∼14, and 15.</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Experiments design based on four combination modes.</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F17538947.2022.2160841&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <p></p>
+  </div>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i28" class="section-heading-2">4. Results and discussion</h2>
+ <p>This study used Python 3 and ArcGIS 10 on Windows 10 (×64) to implement the experiments. Geopandas<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0005" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>5</sup></a></span> for Python and ArcGIS were used for geoprocessing, including generating spatial units and constructing geo-corpus. Pandas<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0006" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>6</sup></a></span> for Python and Numpy<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0007" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>7</sup></a></span> for Python were used for scientific calculations. Gensim<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0008" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>8</sup></a></span> for Python was used to run the Word2Vec models. Scikit-learn<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0009" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>9</sup></a></span> for Python was used to conduct machine learning algorithms such as RF classification, t-SNE dimensionality reduction, and K-means clustering.</p>
+ <p>Using the method described in Section <a href="#S003">3</a>.<a href="#S001">1</a>, the study area was segmented into 1,258 irregular parcels by the road network, which were used as spatial units of the UFZs.</p>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i29">4.1. POI embeddings</h3>
+  <p>Based on the approaches introduced in Section <a href="#S003">3</a>.<a href="#S002">2</a>, the POIs in geographic space were transformed into the corresponding four different sets of texts with contextual information, i.e. four geo-corpuses. Among them, sentences with less than three words (POIs) were removed from the geo-corpuses to avoid the sparse meaning and randomness generated by short sentences (Niu and Silva <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>), and documents without sentences (spatial units) were excluded in this study. Subsequently, each geo-corpus was used independently to train the Word2Vec model.</p>
+  <p>With regard to the deployment of the Word2Vec model, we set the output vector dimension to 20 (Niu and Silva <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>), the size of the context window to 3, and the number of epochs to 500, keeping the default settings of the Python library for the other parameters.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0010" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>10</sup></a></span> We learned four modal POI embeddings from the four geo-corpuses, representing the geo-semantics of POIs under the influence of different spatial distribution patterns. Subsequently. The four modal embeddings were features combined based on the method described in Section <a href="#S003">3</a>.<a href="#S003">3</a>.<a href="#S001">1</a>, and finally, the POI embeddings fusing the four spatial distribution information were obtained.</p>
+  <p>Subsequently, we deployed the t-SNE dimension-reduction algorithm to visually analyze the POI embeddings. We set the hyperparameters of t-SNE including perplexity to 6.5, iteration number to 10000, n_components to 3, and other parameters to keep the default settings of the Python library.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0011" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>11</sup></a></span> With the t-SNE algorithm, POI embeddings were mapped into a three-dimensional sub-semantic space (<a href="#F0008">Figure 8</a>). It shows that the POIs with close distance in the sub-semantic space, of which the Mid-types labels also exhibit similar functional attributes. For example, the right side of <a href="#F0008">Figure 8</a> shows the semantic relationship and the actual types of POIs in the local space. It can be seen that POIs are distributed in two clusters in the lower left and upper right corners. The POIs in the lower left corner all refer to education and culture related functions (e.g. Archives Hall, Library, School, and Research). The POIs in the lower left corner indicate educational and cultural related functions (e.g. Archives Hall, Library, School, Research Institution, Culture Palace, and Arts Organization), and the POIs in the upper right corner are almost all governmental organization services (e.g. Governmental and School Groups Related, Public Security Organization, Governmental Organization, Social group, and Traffic Vehicle Management). The POIs in these two groups are generally oriented towards public services. This is consistent with our assumption that if the geographic attributes of POIs are similar, their semantic distance is close. Therefore, the obtained POI embeddings can effectively represent the geo-semantics of POIs and be further used to represent UFZ embeddings.</p>
+  <div class="figure figureViewer" id="F0008">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 8. </span> POI-type semantic subspace with a local space.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0008image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0008_ob.jpg" loading="lazy" height="209" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0008">
+   <p class="captionText"><span class="captionLabel">Figure 8. </span> POI-type semantic subspace with a local space.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0008">
+   <div class="figureFootNote-F0008"></div>
+  </div>
+  <p></p>
+  <p>The static POI embeddings trained by the Word2Vec model fixed the geo-semantics of POIs, while the dynamic geo-semantics would be more applicable to the different geo-semantics represented by POIs in different spatial contexts, i.e. the actual geo-semantics of POIs may be different in different configuration environments. The Bidirectional Encoder Representation from Transformer (BERT) model of NLP technology will be considered to further explore the POI dynamic geo-semantics in the future.</p>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i31">4.2. UFZ embeddings</h3>
+  <p>The UFZ embeddings corresponding to 878 spatial units were calculated from 1,258 spatial units by <a href="#M0003">Equation 3</a>. Those 380 spatial units with sparse data were not enough to learn UFZ embeddings and were excluded from the study. Subsequently, we calculated the cosine similarity between all pairwise UFZ embeddings corresponding to the 878 spatial units based on <a href="#M0004">Equation 4</a> to measure the geo-semantic similarity between two UFZs. In other words, the more similar the functional attributes between two UFZs are, the higher the cosine similarity is (close to 1). As shown in <a href="#F0009">Figure 9</a>, we retrieved the pairwise geo-semantics similarity between UFZs.</p>
+  <div class="figure figureViewer" id="F0009">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 9. </span> The pairwise similarities between UFZs.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0009image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0009_ob.jpg" loading="lazy" height="271" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0009">
+   <p class="captionText"><span class="captionLabel">Figure 9. </span> The pairwise similarities between UFZs.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0009">
+   <div class="figureFootNote-F0009"></div>
+  </div>
+  <p></p>
+  <p>Subsequently, the UFZs were clustered using the K-means algorithm based on the cosine similarity that had been obtained between all UFZs. The K values were set from 4 to 16 for the silhouette coefficient to test the performance. As shown in <a href="#F0010">Figure 10</a>, the highest silhouette coefficient was returned when K = 4 and 5, indicating that this is the optimal K value to achieve better clustering results. Considering that the UFZ in this study was divided into five categories, K = 5 was chosen for further analysis and validation.</p>
+  <div class="figure figureViewer" id="F0010">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 10. </span> Changes of clustering effect of different K values.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0010image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0010_ob.jpg" loading="lazy" height="248" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0010">
+   <p class="captionText"><span class="captionLabel">Figure 10. </span> Changes of clustering effect of different K values.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0010">
+   <div class="figureFootNote-F0010"></div>
+  </div>
+  <p></p>
+  <p>Based on the K-means algorithm, the UFZs were grouped into five clusters. We reordered <a href="#F0009">Figure 9</a> by the corresponding clusters of UFZs. As shown in <a href="#F0011">Figure 11</a>, the pairwise similarity distribution pattern of UFZs is consistent with the clustering results of K-means, presenting as five red matrices on the diagonal and corresponding to the five clustering categories. The results reveal that the UFZs within the same cluster have high similarity in geo-semantics and differ significantly from those UFZs enclosed by other clusters. The ground truth from Baidu e-maps supports such observation. For instance, we randomly selected six sample zones (i.e. Zone A∼F) from cluster #4, and after comparing them with Baidu e-maps, Zone A∼F corresponded to six famous locations in Beijing, namely Summer Palace, Taoranting Park, Beihai Park, Taiyanggong Park. The results of K-means show that our UFZ embeddings are semantic discriminative and able to represent the actual UFZs. However, K-means as an unsupervised method cannot explain the explicit functional categories of each cluster directly. Supervised classification methods based on the training data are considered for further identification of UFZs.</p>
+  <div class="figure figureViewer" id="F0011">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 11. </span> The pairwise similarity between UFZs ranked by K-means-based cluster, and locations and remote sensing images of the six sample zones in cluster #4.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0011image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0011_ob.jpg" loading="lazy" height="351" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0011">
+   <p class="captionText"><span class="captionLabel">Figure 11. </span> The pairwise similarity between UFZs ranked by K-means-based cluster, and locations and remote sensing images of the six sample zones in cluster #4.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0011">
+   <div class="figureFootNote-F0011"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S004-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i35">4.3. UFZ identification</h3>
+  <div id="S004-S2003-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i36">4.3.1. Classification results</h4>
+   <p>The above results show that UFZ embeddings can be effectively used for the RF model to implement UFZ classification. The overall dataset of UFZ embeddings with ground truth labels was randomly split into two datasets with the ratio of 7:3, which were used as the training set and the test set, respectively. The training set was used for model tuning and model training, and the test set was used to evaluate the classification accuracy.</p>
+   <p>First, we deployed the grid search method to build the optimal model. We set max_features from 2 to 40 with an interval of 2, n_estimators from 2 to 200 with an interval of 5 and calculated the OOB accuracy of all parameter combinations by 10-fold cross-validation. As shown in <a href="#F0012">Figure 12</a>, higher accuracy appeared at max_features = 12. The OOB score increases rapidly at first with increasing n estimators, and then levels off. The optimal combination of parameters was max_features = 10 and n_estimators = 172, which yielded the highest OOB accuracy.</p>
+   <div class="figure figureViewer" id="F0012">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>28 December 2022
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 12. </span> The matrix of OOB accuracy with different combinations of max_features and n_estimators.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0012image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0012_ob.jpg" loading="lazy" height="379" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0012">
+    <p class="captionText"><span class="captionLabel">Figure 12. </span> The matrix of OOB accuracy with different combinations of max_features and n_estimators.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0012">
+    <div class="figureFootNote-F0012"></div>
+   </div>
+   <p></p>
+   <p>Subsequently, the RF model was built based on the training set for predicting the categories of all UFZs in the study area, and the accuracy was evaluated using the test set. The classification experiments including random splits of the training and test sets that followed the ratio of seven to three repeated 100 times to reduce the unreliability of the classification results. The UFZ classification results of our proposed approach are rendered in <a href="#F0014">Figure 14</a> (15) and the corresponding confusion matrix is shown in <button class="ref showTableEventRef" data-id="T0002">Table 2</button>.</p>
+   <div class="figure figureViewer" id="F0014">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>28 December 2022
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 14. </span> Classification results of UFZs. (0) Ground truth. (1) ∼ (15) Results of experiment 1 ∼ 15, and experiment 15 corresponds to our proposed method. Sparse zones refer to spatial units that are excluded from the study.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0014image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0014_ob.jpg" loading="lazy" height="500" width="481"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0014">
+    <p class="captionText"><span class="captionLabel">Figure 14. </span> Classification results of UFZs. (0) Ground truth. (1) ∼ (15) Results of experiment 1 ∼ 15, and experiment 15 corresponds to our proposed method. Sparse zones refer to spatial units that are excluded from the study.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0014">
+    <div class="figureFootNote-F0014"></div>
+   </div>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Confusion matrix of classification results. (R: residential zone. A: administrative and public service zone. M: industrial zone. B: business zone. G: green space).</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F17538947.2022.2160841&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <p></p>
+  </div>
+  <div id="S004-S2003-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i39">4.3.2. Feature importance analysis</h4>
+   <p>For the 80-dimensional combined UFZ embeddings learned from the four geo-corpuses (i.e. P, A, B, C), the feature variables of 0∼19, 19∼39, 40∼59 and 60∼79 dimensions came from P, A, B, and C, respectively. The relative importance of the 80 feature variables in the combined UFZ embeddings for the whole classification was tested according to Section <a href="#S003">3</a>.<a href="#S003">3</a>.<a href="#S002">2</a> and plotted in order of importance in <a href="#F0013">Figure 13</a>. As seen in <a href="#F0013">Figure 13</a>, the importance of the feature variables is evenly distributed. We counted the sum of feature importance from each geo-corpus. The differences in the importance of the features are not significant, and the standard deviation of the importance of the four-modal features is 0.011, indicating that each modal POI spatial distribution information does not differ significantly in the classification contribution. Among them, the features generated by Approach B have the lowest feature importance, and the features generated by Approach P and C have slightly lower importance than the features generated by Approach A. It reveals that the four geo-corpuses capture valid spatial distribution patterns, and their contribution can be ranked as follows, Pattern A (captured by Approach A) &gt; Pattern B (captured by Approach B) &gt; pattern P (captured by Approach P) &gt; Pattern C (captured by Approach C). Considering that Approach P, B, and C all adopt a central-context pairs-based (Hu et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2020</a></span>) sampling strategy, there may be a certain degree of homogeneous information, resulting in the features generated by Approach A being prominent slightly more than the others.</p>
+   <div class="figure figureViewer" id="F0013">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>28 December 2022
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 13. </span> Feature variable importance ranking for UFZ classification.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0013image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0013_ob.jpg" loading="lazy" height="200" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0013">
+    <p class="captionText"><span class="captionLabel">Figure 13. </span> Feature variable importance ranking for UFZ classification.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0013">
+    <div class="figureFootNote-F0013"></div>
+   </div>
+   <p></p>
+  </div>
+  <div id="S004-S2003-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i41">4.3.3. Comparison of different-modal features combination</h4>
+   <p>Based on the feature combination method described in Section <a href="#S003">3</a>.<a href="#S003">3</a>.<a href="#S001">1</a>, the four types of POI embeddings derived from the Approach P, A, B, and C were combined according to the different modes of the designed experiments in <button class="ref showTableEventRef" data-id="T0001">Table 1</button> to yield the corresponding UFZ embeddings, which are in total 15 experiments. The UFZ embeddings were used to implement the UFZ classification according to the method in Section <a href="#S003">3</a>.<a href="#S004">4</a>.<a href="#S001">1</a>. The UFZ classification results of all experiments were rendered in <a href="#F0014">Figure 14</a>, and the accuracy evaluation of all results was listed in <button class="ref showTableEventRef" data-id="T0003">Table 3</button>. The bolded numbers indicate the maximum value within each combination mode in <button class="ref showTableEventRef" data-id="T0003">Table 3</button>.</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Accuracy evaluation. (*: feature combination mode. R: residential zone. A: administrative and public service zone. M: industrial zone. B: business zone. G: green space).</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="T0003-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0003&amp;doi=10.1080%2F17538947.2022.2160841&amp;downloadType=CSV"> Download CSV</a><a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <p></p>
+   <p>The 15 experiments in <button class="ref showTableEventRef" data-id="T0003">Table 3</button> respectively adopted different combination modes of the spatial distribution patterns (see <button class="ref showTableEventRef" data-id="T0001">Table 1</button>). Among them, experiment 15 (corresponding to Mode 3, i.e. our proposed approach) combined the four categories of spatial distribution patterns of POIs indicated by A, B, C, and P, respectively. The accuracy of experiment 15 is significantly higher than the remaining 14 experiments, which indicates that our proposed method can effectively integrate all POI spatial distribution information to achieve the optimal classification performance. The experimental results of Mode 0 illustrate that there is a slight difference in performance among the four geo-corpus construction approaches ranked as A &gt; B &gt; <i>P</i> &gt; C. All of them can identify UFZs with high accuracy. This indicates that the four spatial distribution patterns do not differ much in their ability to represent the true geo-semantics of UFZs, but the Pattern A is better for distinguishing UFZs. Interestingly, the performance of different geo-corpus construction approaches vary for identifying different categories of UFZs. Approach P has the best identification performance for administrative and public service zone and industrial zone, Approach A has the best identification performance for residential zone, Approach B has the best identification performance for business zone, and Approach C has the best identification performance for green space. This indicates that there is a tendency of geo-semantic representation of POI spatial distribution patterns, i.e. POI spatial distribution patterns have different ability to distinguish UFZs of different categories. Pattern P (captured by Approach P) is optimal for identifying administrative and public service zone and industrial zone, Pattern A (captured by Approach A) is optimal for identifying residential zone, Pattern B (captured by Approach B) is optimal for identifying business zone, and Pattern C (captured by Approach C) is optimal for identifying green space. In addition, for almost all experiments, the identification performance on industrial zone and green space are the worst, obtaining low UA while PA is higher.</p>
+   <p>There is difference between the accuracy of the results obtained by the proposed method and the baseline work (Yao et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0071" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2017</a></span>; Niu and Silva <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>; Sun et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>). The possible reasons are as follows. First, the identification methods are not completely consistent since we only referred to the approaches of geo-corpus construction while the classification methods may be different. Second, the study areas are different. There is inevitable structural difference between different cities. The more mature the cities, the more complex their urban structure is, which makes it relatively more difficult to identify accurate UFZs. Finally, the time inconsistency among the data used in this study, e.g. the ground truth data was obtained in 2022 and POI data was obtained in 2018, may lead to a certain deviation between the ground truth and the UFZs we identified. An exploration study to investigate such deviation can be further conducted, if the POI data in 2022 can be fully collected.</p>
+   <p>Although the geo-corpus construction approach proposed in this study is able to achieve the most advanced performance level on the UFZ identification task, it still performs slightly lower than Approach A and B in terms of OA and Kappa. This may be the same as the worst performing Approach C, which suffers from some oversampling problems, i.e. it is easy to sample some homogeneous samples in POI intensive areas leading to overfitting of the model (Niu and Silva <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>). Though both Approach P and C attempted to prevent oversampling, e.g. Approach C set a 50 m interval to generate random sampling points for roads, and Approach P sets different sampling distances for different sampling points based on social influence to prevent oversampling. However, this repeated sampling method inevitably has oversampling problems. A potential solution relies on the enhancement factor based on the distance decay effect can be used for weighting POI sampling to further optimize the sampling strategy of the Approach P and suppress the POI oversampling problem in geo-corpus construction.</p>
+   <p>The method proposed in this study has difficulties in industrial zone and green space identification, i.e. all experiments designed do not identify industrial zone and green space well. This is consistent with the results of the UFZ identification study based on POI (Sun et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2021</a></span>). This difficulty can be attributed to the POI data. Considering that the performance of the study method relies heavily on the quality of the training data, and that the actual POI data have fewer POI description for industrial types and open land types compared to other types. The simplified representation of geographical entities by POIs suppresses some POIs that occupy a large area to some extent (e.g. parks and barbershops may be sampled as a separate POI). Therefore, integrating Area of Interests (AOI) data, remote sensing image data and other multi-source data can be a way to improve the classification accuracy. Some dynamic urban data sources (e.g. trajectory data, smart card data, and social media data) and static urban data sources (e.g. street view images and remote sensing images) can also be considered for integration with POI data to further explore potential regional geo-information.</p>
+   <p>Moreover, as shown in <a href="#F0015">Figure 15</a>, we visualize the average OA and Kappa of all experiments for each combination mode that are shown in <button class="ref showTableEventRef" data-id="T0003">Table 3</button>. The average OA and Kappa of Mode 3 show a significant improvement relative to Mode 0 (Δ<sub>OA </sub>= 0.085, Δ<sub>Kappa </sub>= 0.122), which indicates that the proposed combination method can efficiently exploit more potential of POI data. Apparently, the classification performance steadily increases in steps from Mode 0 to Mode 3 (the average increase is Δ<sub>OA </sub>= 0.028, Δ<sub>Kappa </sub>= 0.041), which means that each additional combination of spatial distribution information increases the classification OA by approximately 0.028 and Kappa by approximately 0.041. This also verifies our previous assumption that the more spatial distribution information, the more accurate the UFZ embeddings are in representing the geo-semantics of the UFZ. Although the overall identification performance increases with increasing modes, there is no improvement in identification accuracy for green space. This suggests that several geo-corpuses used in this study do not seem to capture a valid POI distribution pattern for green space.</p>
+   <div class="figure figureViewer" id="F0015">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Identifying urban functional zones by capturing multi-spatial distribution patterns of points of interest</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Qin%2C+Quan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qin%2C+Quan"><span class="NLM_given-names">Quan</span> Qin</a> <a href="https://orcid.org/0000-0002-7540-4371"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Shishuo"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Shishuo"><span class="NLM_given-names">Shishuo</span> Xu</a> <a href="https://orcid.org/0000-0002-7635-5436"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Du%2C+Mingyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Du%2C+Mingyi"><span class="NLM_given-names">Mingyi</span> Du</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Songnian"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Songnian"><span class="NLM_given-names">Songnian</span> Li</a> <a href="https://orcid.org/0000-0002-8244-5681"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/17538947.2022.2160841">https://doi.org/10.1080/17538947.2022.2160841</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>28 December 2022
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 15. </span> Box plot of different feature combination modes.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0015image" src="/na101/home/literatum/publisher/tandf/journals/content/tjde20/2022/tjde20.v015.i01/17538947.2022.2160841/20230209/images/medium/tjde_a_2160841_f0015_ob.jpg" loading="lazy" height="270" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0015">
+    <p class="captionText"><span class="captionLabel">Figure 15. </span> Box plot of different feature combination modes.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0015">
+    <div class="figureFootNote-F0015"></div>
+   </div>
+   <p></p>
+  </div>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i43" class="section-heading-2">5. Conclusions and future work</h2>
+ <p>This paper presented an integrated approach to identify UFZs by capturing multi-spatial distribution patterns of POIs. Distinct from previous model-driven studies that focus on exploring different NLP or deep learning models to extract more effective POI data features to accurately identify UFZs, the proposed method starts from the perspective of explaining the mechanism of how discrete POI data perceives UFZ geo-semantics, and enhances the POI spatial distribution information of UFZ embeddings by capturing multi-spatial distribution patterns.</p>
+ <p>The results show that: <b>1</b>. The POI embeddings and UFZ embeddings obtained by the proposed method that consider multi-spatial distribution patterns of POIs can effectively represent the geo-semantics and can be further used to classify UFZs more accurately, with a significant performance improvement (Δ<sub>OA </sub>= 8.5% and Δ<sub>Kappa </sub>= 0.122) relative to the methods from existing studies that only consider a single spatial distribution pattern of POIs. <b>2</b>. The contribution of each geo-corpus construction approach to UFZ identification results was investigated by measuring the importance of the features corresponding to each approach. Our developed geo-corpus approach (i.e. Approach P) takes the effects of POI spatial interaction into account and can achieve the most advanced level of performance available in existing studies. <b>3</b>. The embeddings that combine more spatial distribution information can represent more accurate geo-semantics. The more POI spatial distribution patterns considered, the better UFZ identification performance. For each new distribution pattern combined, OA increases by 2.8% on average and Kappa by 0.041.</p>
+ <p>In conclusion, the proposed method of capturing POI multi-spatial distribution patterns to identify UFZs can effectively identify UFZs and obtain significant improvement compared to those baseline methods. This study can provide a new way of understanding urban socio-spatial structure from the perspective of POI spatial distribution patterns, which can help scientific urban planning, urban construction, and urban renewal. The proposed method can extract POI embeddings and UFZ embeddings that represent realistic geo-semantics, which has great potential for more application scenarios such as POI recommendation and commercial site selection. As POI data has been widely used and easily accessible ubiquitous data source, the proposed method can be extended or transferred to more POI-related urban studies related to, e.g. health, mobility, and community studies (Psyllidis et al. <span class="ref-lnk lazy-ref"><a data-rid="CIT0049" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>2022</a></span>).</p>
+ <p>The proposed approach may be further improved by fusing multi-source data. Some dynamic urban data sources (e.g. trajectory data, smart card data, and social media data) and static urban data sources (e.g. street view images, remote sensing images, and AOI) can also be considered for integration with POI data to further explore potential regional geo-information. On the one hand, it can make up for the limitations of single POI data. On the other hand, image data carrying urban physical characteristics can help delineate the morphology of UFZ finer and minimize the effect of the Modifiable Areal Unit Problem (MAUP) (Openshaw and Taylor <span class="ref-lnk lazy-ref"><a data-rid="CIT0048" data-reflink="_i46 _i47" href="#"><span class="off-screen">Citation</span>1979</a></span>) on UFZ identification. Furthermore, we will consider introducing the BERT model to explore the dynamic geo-semantics of POIs.</p>
+</div>

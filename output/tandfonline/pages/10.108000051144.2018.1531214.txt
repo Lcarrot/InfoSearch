@@ -1,0 +1,834 @@
+<div id="S001" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">1. Introduction</h2>
+ <p>With the widespread use of social networks and the developments in information technology growing at a fast pace, access to information has become easier, and it has become increasingly important to obtain useful and clear information from such networks. The rapid increase in the amount of data has also caused an increase in the amount of non-structural data. As long as it is not processed, data is stored as a meaningless mass in databases, and it becomes difficult for people to discover knowledge [<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>1</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>2</a></span>].</p>
+ <p>Data mining is a part of knowledge discovery research and collaborates with research areas such as statistics, machine learning and pattern recognition [<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>3</a></span>]. The difference that separates text mining from data mining emerges here. Specifically, text mining uses uniform texts that are obtained through natural language processing rather than databases with a known or well-formed dataset. The language of the text and the meaning that it carries may vary according to purpose. Text mining methods alone do not produce results that understand the content. Therefore, expressions involving complex structures should be classified in a meaningful way using natural language processing techniques. The inferred view may be the mood, the decision, or the thought that the user wants to express about a subject.</p>
+ <p>Natural language processing research includes artificial intelligence studies, often integrated with linguistic knowledge [<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>4</a></span>]. Based on these studies, the aim can be to analyze and summarize research articles, automatically participate in a conversation or answer questions, and carry out translations between languages [<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>5</a></span>]. Besides general information about the language, there is also a need for a domain or task-specific knowledge that should be perceived independent of the general structure of a language [<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>6</a></span>].</p>
+ <p>With the rise of the Internet, social networks have become the most data-rich platforms. Thus, it has become necessary to carry out data and text mining studies on these networks [<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>7</a></span>]. One of the most popular social network platforms is Foursquare. It is an environment where people can share their complaints and pleasures about the venues they visited [<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>8</a></span>]. In this study, recommendations about the venues on the Foursquare platform were used as the data source. A web-based, multilingual, real-time knowledge discovery and decision support platform that identifies positive, negative and neutral user thoughts about foods, beverages and venues was developed by using natural language processing and text mining techniques.</p>
+ <p>In cases where there are no decision support systems, evaluating people’s feelings and thoughts can take a very long time. For this reason, there is a need for mechanisms that will help the user make decisions very quickly and almost instantaneously. It is an inconvenient process for a social media user to decide whether or not to go to a venue by reading hundreds or even thousands of recommendations. The development of an intelligent decision support system will eliminate such problems, enabling faster and more efficient analysis of sentiments and the automatic identification of opinions. In our system, as the first step, the words in users’ recommendations are organized, and misspelling is corrected by applying natural language processing pipeline. The data is organized through the pipeline that is composed of diacritic restorer, vowelizer, spelling corrector and normalizer components. In the restoration phase, ASCII characters are converted to proper Turkish representations. However, the restored text may contain shortened words. Therefore, as the next phase, vowelizer restores the omitted vowels. Finally, misspelled words are corrected by spelling corrector and normalization process is applied by using state of the art text normalizer for Turkish. The organized data are then classified as positive, negative, or neutral according to feelings and thoughts by employing text mining techniques. As the final step, the system identifies whether a venue near the user’s location was liked; which food and/or beverage in a venue was most liked by analyzing the data. Thus, the user is given the opportunity to make relatively quick and informed choice based on the developed system instead of reading all the recommendations from nearby venues.</p>
+ <p>The rest of this paper is organized as follows. In Section&nbsp;2, we review the recent work. In Section&nbsp;3, we present our methodology regarding the developed decision support system and our Real-Time Social Knowledge Discovery Algorithm (RT-SKDA). In Section&nbsp;4, we share our results. In Section&nbsp;5, we conclude with recommendations for future work.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">2. Related work</h2>
+ <p>Most of the recent work in this field has been developed for major languages such as English. Morphologically rich languages are addressed sparsely [<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>9</a></span>]. The one-to-one translation of the rules and algorithms used in the English language is not quite possible in the Turkish language or other languages due to the formal differences. Therefore, the studies to be done in other languages should be carried out with collaborative efforts of native linguists or native or foreign engineers who are very knowledgeable about the language they are working on. Natural language processing (NLP) does not include fixed algorithms, and it is necessary to understand a given problem, find the solution, and develop the most appropriate tools. When developing our tool, we mainly focused on Turkish language and researched into the recent studies conducted for this language. However, to show the applicability of our approach in other languages, we also researched into the studies involving English language and conducted experiments for this language.</p>
+ <p>In this context, Delibas et al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>10</a></span>] focused on the formal analysis of Turkish by using natural language processing techniques. The aim was to find the spelling mistakes in the Turkish text and to sort and correct these mistakes. Their results showed that a higher success rate was achieved than in previous studies.</p>
+ <p>İlhan et al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>11</a></span>] developed a question-and-answer system and used natural language processing and text mining techniques. In this way, the questions that were obtained were subjected to the preliminary process of data mining, and keywords were determined. The weights of these keywords in the text were established, and an appropriate answer was generated according to the usage rate in the text.</p>
+ <p>Pang et al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>12</a></span>] suggested a method for the subjective areas of a document using text classification techniques. This technique was adapted for sentiment analysis, and a sentiment classification was carried out. The most effective result was obtained using the Support Vector Machine (SVM) classification algorithm.</p>
+ <p>Vural et al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>13</a></span>] presented a framework for sentiment analysis of Turkish text documents. Researchers customized SentiStrength sentiment analysis library by translating its lexicon to Turkish. Movie reviews were used to classify the polarity. For performance evaluation, they used a large corpus of Turkish movie reviews obtained from a popular Turkish social media site. The results showed that they achieved a fairly good classification accuracy that approached the performance of supervised classification methods.</p>
+ <p>Go et al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>14</a></span>] used 8,00,000 positive and 8,00,000 negative Twitter messages as a dataset. They performed sentiment analysis using distant supervision method. They employed Naive Bayes, SVM, and Maximum Entropy methods of machine learning algorithms for this purpose. They combined and analyzed the data using bigrams and unigrams and achieved 83% accuracy through the Maximum Entropy method.</p>
+ <p>Trieu et al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>15</a></span>] proposed a novel method for classifying news from social media. They proposed to vectorize articles with TD2V and applied the Doc2Vec approach for Twitter-based universal document representation. Furthermore, they applied retrieval and automatic query expansion to obtain the most relevant labelled documents. The results showed that they achieved better classification accuracy than existing methods on different datasets.</p>
+ <p>Agarwal et al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>16</a></span>] used the Twitter social media platform as a data source and tagged the obtained data by hand. They performed a binary (positive, negative) and ternary (positive, negative, neutral) classification. They applied Tree Kernel, Senti-Feature, and Unigram models on the data. According to their experiments, the Senti-Feature and Unigram models gave the best result in the binary classification, and Tree Kernel and Senti-Feature in the ternary classification.</p>
+ <p>Saif et al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>17</a></span>] used Twitter comments as a data source. They categorized 60,000 Twitter comments that they collected by classifying them in a binary (positive, negative) manner. They also performed classification studies with Naive Bayes (NB) and N-grams, and the best result was obtained in the binary classification with a success rate of 86.3%.</p>
+ <p>Habernal et al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>18</a></span>] used Facebook social media platform to collect 10,000 set of comments and grouped them as positive, negative, and neutral. They tried to classify the comments as binary (positive, negative) and ternary (positive, negative, neutral) by using traditional classification algorithms. They achieved a 90% success rate in the binary classification and a 69% success rate in the ternary classification.</p>
+ <p>Katz et al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>19</a></span>] used TripAdvisor as a dataset that consists of 30,000 comments, including 24,930 positive and 5070 negative, and used a total of 2000 comments from IMDB, which included 1000 comments with positive polarity and 1000 comments with negative polarity. They created ConSent, a content-based sentiment analysis model. They extracted the features of keywords by identifying them in the text and classified documents according to these features in a second stage. Authors stated that the method they developed had almost the same success rate as the SVM method.</p>
+ <p>Yıldırım et al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>20</a></span>] stated that sentiment analysis studies generally focused on English texts. They carried out natural language processing studies on social media texts for the Turkish language, which has a very rich morphological structure. They manually tagged 12,790 comments collected via Twitter (3541 positive, 4249 negative and 5000 neutral). They had 78.83% success on Turkish texts in their sentiment analysis process that was conducted through ternary classification.</p>
+ <p>Kilic et al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>21</a></span>] used academic articles as a dataset and measured the success of classifying the articles by employing text mining techniques. The dataset created for feature selection was composed of abstracts of 2000 articles from 50 different journals. They categorized the dataset into Science and Engineering, and Social Sciences and Humanities. The Confusion Matrix was used to evaluate the success of the classification algorithms. Using the K-nearest neighbours (k-NN) algorithm, the category to which the other publications belonged was detected with an accuracy of 96.67%. This ratio was 91.32% and 86.53%, respectively in Naive Bayes and J48 algorithms.</p>
+ <p>Kürkçü et al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>22</a></span>] used 81,174 comments from the Twitter accounts of news agencies as a dataset. In order to determine the interaction levels of users, they carried out an analysis in terms of the number of tweets, retweets, and likes. In their analysis, authors analyzed the interaction levels of the news tweets within 48 hours, how often the tweets that were sent at certain times of the day were retweeted and liked by users, and the ratios of the total number of retweets.</p>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">3. Method</h2>
+ <p>Sentiment analysis and natural language processing studies have been intensively developed for the English language. Due to the differences in the structures of languages, it is harder to apply these rules in other languages. Therefore, the most efficient method to be employed when building sentiment analysis systems is the employment of tools with language-specific features. Although building resources for each language is costly, it is the most accurate way to be followed [<span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>23</a></span>].</p>
+ <p>Within the scope of this study, we aimed at developing a flexible, language independent model. A special attention is paid to Turkish and applicability of our model to other languages (mainly English) was showed through experiments. Furthermore, the developed method was compared with other classification algorithms adapted for Turkish.</p>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">3.1. Dataset collection</h3>
+  <p>Foursquare is a social media tool that allows mobile users to read and offer recommendations on venues that are near them. The required dataset was obtained from recommendations about venues that were listed on the Foursquare social media platform. A total of 7086 Turkish and 6943 English recommendations were collected from different venues. Figure&nbsp;<a href="#F0001">1</a> shows our data collection process.</p>
+  <div class="figure figureViewer" id="F0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>10 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1. </span> Data collection process.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2018/taut20.v059.i03-04/00051144.2018.1531214/20181212/images/medium/taut_a_1531214_f0001_ob.jpg" loading="lazy" height="183" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0001">
+   <p class="captionText"><span class="captionLabel">Figure 1. </span> Data collection process.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0001">
+   <div class="figureFootNote-F0001"></div>
+  </div>
+  <p></p>
+  <p>The recommendations were filtered by using “query = food” parameter when consuming Foursquare’s Application Programming Interface (API). A web application<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>1</sup></a></span> was developed within the scope of this study. Figure&nbsp;<a href="#F0002">2</a> shows the home page of our application where the sample venues and available operations are presented. Sample recommendations related to a venue is shown in Figure&nbsp;<a href="#F0003">3</a>.</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>10 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Sample venues and available operations.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2018/taut20.v059.i03-04/00051144.2018.1531214/20181212/images/medium/taut_a_1531214_f0002_oc.jpg" loading="lazy" height="304" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Sample venues and available operations.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <div class="figure figureViewer" id="F0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>10 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> Sample recommendations related to a venue.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2018/taut20.v059.i03-04/00051144.2018.1531214/20181212/images/medium/taut_a_1531214_f0003_oc.jpg" loading="lazy" height="188" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> Sample recommendations related to a venue.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0003">
+   <div class="figureFootNote-F0003"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">3.2. Feature selection</h3>
+  <p>Feature selection is the most commonly used method for data classification such as data mining and machine learning. Before the classification process, the meaningless words need to be identified and eliminated. The feature selection and pre-processing stages that are used in the field of text mining are applied to remove unnecessary words and convert them to the appropriate form [<span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>24</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>25</a></span>].</p>
+  <p>Feature selection is employed to determine the most valuable and deterministic variables from the data obtained from Foursquare. The features that are specified in the data are actually the words of that text. Before selecting a feature, and during the cleanup stage of pre-processing, frequently used words, punctuation marks, adverbs, and verbs are searched in the dataset. By doing so, the words that do not contribute to the sentiment analysis to make interpretations are eliminated. When the unnecessary data are eliminated, it is easier to detect the words that change the result of interpretation. At the same time, the collected data are reduced to the level that the computer can handle. The higher the consistency rate in the feature selection method, the higher the success rate will be.</p>
+  <p>In our study, the dataset was manually processed, unnecessary words were removed, and the misspelled words were corrected. Each recommendation was separated into individual sentences according to the meaning of the sentence. The result of this action is stored as a separate dataset and is used for the purpose of establishing the ground truth when comparing the success of our approach. Binary (positive, negative) classifications were carried out for the English sentences, and binary (positive, negative) and ternary (positive, negative, neutral) classifications for the Turkish sentences. Furthermore, the names of specific food items and beverages were tagged in the sentences. Table&nbsp;<button class="ref showTableEventRef" data-id="T0001">1</button> shows a sample binary classification and Table&nbsp;<button class="ref showTableEventRef" data-id="T0002">2</button> shows the ternary classification. During the tagging process, 0 was used for negative sentences, 1 for positive sentences, and 2 for neutral sentences.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>10 October 2018
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 1. Sample binary classification.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F00051144.2018.1531214&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>10 October 2018
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 2. Sample ternary classification.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F00051144.2018.1531214&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i13">3.3. Text mining</h3>
+  <p>Text mining is the process of obtaining structured data from the data source. Operations such as subject extraction, sentiment analysis, text classification and summarization can be performed [<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>26</a></span>]. In this research, we applied the text mining process in five steps as follows:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline">Data collection and selection</p></li>
+   <li><p class="inline">Removing unnecessary expressions from the data</p></li>
+   <li><p class="inline">Feature extraction</p></li>
+   <li><p class="inline">Data structuring</p></li>
+  </ul> In the first step, the data were obtained in real time from the venue. The most significant problem in text mining is that the data are not structural. Therefore, the data cannot be processed directly by the computer because of missing and incorrect information, broken content, informal or slang words and advertisements. In the second step, the data were pre-processed and cleaned in order to make a meaningful interpretation. In the third step, feature selection and feature extraction techniques were applied to each record of collected data. With this process, unnecessary expressions were removed from the collected data, and the data were tagged. For the fourth step, text mining techniques were carried out simultaneously with natural language processing studies. For this purpose, Istanbul Technical University Turkish Natural Language Processing (ITU NLP) Web Service [<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>27</a></span>] was used to detect misspelled words in the data that was made usable, and structural data were obtained.
+  <p></p>
+ </div>
+ <div id="S003-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">3.4. Natural language processing</h3>
+  <p>Language has great importance for humanity because it enables people to communicate with each other. New words are frequently added to or subtracted from languages, but the structure and rules of languages have remained unchanged for a long time [<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>5</a></span>].</p>
+  <p>Natural language processing (NLP) focuses on computer-assisted language processing. The main task of natural language processing is to design and implement computer systems that will analyze and interpret a natural language [<span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>28</a></span>]. People who are working in the field of natural language processing endeavour to process language using the results linguists have produced based on their studies [<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>5</a></span>]. Application areas where natural language processing is used are as follows:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline">Grammar analysis</p></li>
+   <li><p class="inline">Database management</p></li>
+   <li><p class="inline">Speech recognition</p></li>
+   <li><p class="inline">Translation</p></li>
+   <li><p class="inline">Text summarization</p></li>
+   <li><p class="inline">Document management</p></li>
+  </ul> In this stage, our goal was to find spelling errors using natural language processing techniques and correct these errors with the highest success rate. As shown in Figure&nbsp;<a href="#F0004">4</a>, the following procedures were carried out: 
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline">Checking for spelling errors in texts</p></li>
+   <li><p class="inline">Suggesting correct words for misspelled words</p></li>
+   <li><p class="inline">Correcting the spelling errors that were found</p></li>
+  </ul> Many problems were encountered when these texts were processed such as: 
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline">Irregular and misspelled words</p></li>
+   <li><p class="inline">Text slicing</p></li>
+   <li><p class="inline">Semantical ambiguities</p></li>
+   <li><p class="inline">Slang words</p></li>
+  </ul> Furthermore, we observed that the recommendations collected from social media often had grammar or punctuation errors. Use of abbreviations, the presence of local speech, use of words with different meanings, and incomplete sentences complicated the natural language processing step. In order to correct a spelling error, the misspelled word is first identified, and then the word that is most similar in spelling to this word is selected. This new word is checked to determine whether there are missing letters or whether the letters are in the wrong places. Misspelled words are edited according to the rules of the words. 
+  <div class="figure figureViewer" id="F0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>10 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> Word correction process.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2018/taut20.v059.i03-04/00051144.2018.1531214/20181212/images/medium/taut_a_1531214_f0004_ob.jpg" loading="lazy" height="346" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> Word correction process.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0004">
+   <div class="figureFootNote-F0004"></div>
+  </div>
+  <p></p>
+  <p>In this context, we utilized the ITU Turkish NLP Web Service which contains native language processing tools and APIs for Turkish. Figure&nbsp;<a href="#F0005">5</a> shows the result of an edited sentence in the sentence editing menu of our application that consumes ITU Turkish NLP Web Service API.</p>
+  <div class="figure figureViewer" id="F0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>10 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> Input sentence and edited sentence.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2018/taut20.v059.i03-04/00051144.2018.1531214/20181212/images/medium/taut_a_1531214_f0005_oc.jpg" loading="lazy" height="196" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> Input sentence and edited sentence.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0005">
+   <div class="figureFootNote-F0005"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S003-S2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i17">3.5. Sentiment analysis</h3>
+  <p>Sentiment analysis is a field of study that evaluates people’s feelings and opinions and analyzes their opinions about a subject through a written language [<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>29</a></span>]. With the advancement in information technology, the increased use of the Internet has led to an increase in the number of users in social media environments. People are now expressing their feelings and thoughts on social networks. Sentiment analysis is used to classify these thoughts according to their positive and negative status [<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>30</a></span>]. Due to the increased data flow worldwide, sentiment analysis has become one of the most active research fields of natural language processing and text mining.</p>
+  <p>Sentiment analysis in a text or the sentimentality of that text is generally represented by binary classifications. For example:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline">Positive/Negative</p></li>
+   <li><p class="inline">Like/Dislike</p></li>
+   <li><p class="inline">Good/Bad</p></li>
+  </ul> Furthermore, sentiment analysis is applied in many applications with different features [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>12</a></span>]: 
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline">Question and answer systems</p></li>
+   <li><p class="inline">Suggestion systems</p></li>
+   <li><p class="inline">Summarization and citation analysis</p></li>
+   <li><p class="inline">Applications in different fields such as politics and sociology</p></li>
+   <li><p class="inline">Practices in business and government intelligence</p></li>
+  </ul> In the literature, two main approaches are highlighted for sentiment analysis. The first one is based on machine learning algorithms. The second approach utilizes dictionary of words to identify the sentiment polarity [<span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>31</a></span>]. Machine learning methods require labelled training set to build the classifier and the performance of the classifier is improved by using language dependent sentiment lexicons.
+  <p></p>
+  <p>In this research, in order to perform multilingual sentiment analysis, we applied dictionary-based approach and took advantage of domain specific knowledge. Furthermore, we applied commonly employed machine learning algorithm, Naïve Bayes, for comparing the results with our approach. For sentiment analysis, it was first necessary to determine the words that contain emotions. For this purpose, we created an extensive dictionary for adjectives for the target language, tagged the adjectives as positive and negative and assigned a score for each adjective. If the words contained in the sentences were included in our dictionary, the emotions of the sentence were determined by adding the scores of the words and taking their average. Table&nbsp;<button class="ref showTableEventRef" data-id="T0003">3</button> lists some of the adjectives in our dictionary used in sentiment analysis.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>10 October 2018
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 3. Sample adjectives in the dictionary.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0003&amp;doi=10.1080%2F00051144.2018.1531214&amp;downloadType=CSV"> Download CSV</a><a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>To see the effect of machine translation on sentiment analysis, the unstructured data were translated from Turkish to English using the Google Translate API [<span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>32</a></span>]. For sentiment analysis process, Google Cloud Natural Language API [<span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i37 _i38 _i39" href="#"><span class="off-screen">Citation</span>33</a></span>], which does not support Turkish, was used. Table&nbsp;<button class="ref showTableEventRef" data-id="T0004">4</button> shows the result of a sample sentiment analysis using these services. Different forms (containing typos or local speech) of the Turkish sentence “Kahve çok lezzetliydi”/ “The coffee was very tasty” were created and tested.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>10 October 2018
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 4. Sentiment analysis using Google APIs.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0004&amp;doi=10.1080%2F00051144.2018.1531214&amp;downloadType=CSV"> Download CSV</a><a data-id="T0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>As concluded from the table above, misspelled words and local speech directly affect the result of sentiment analysis. Although all sentences had the same meaning, the API failed to assign the same sentiment score to each one. This shows that natural language analysis is a necessary step. Furthermore, the API does not check whether the sentence is related to a food or beverage, meaning that domain-specific knowledge is ignored. In our system, we not only attempted to find out whether the sentence was positive or negative but to also extract domain specific knowledge. In order to do this, an extensive list of foods and beverages was created in addition to the list of adjectives. Creating a food and beverage list is mandatory because of cultural and cuisine differences, no direct translation of traditional foods, and nonexistence of these foods in other cultures.</p>
+  <p>If there was a word from the list of food and beverage items in the sentence, such sentences were identified before performing sentiment analysis step. In this way, unnecessary recommendations about the venue were eliminated. Sentiment analyses were conducted on the filtered sentences to find out which food or beverage was mentioned and whether it was liked or not. Figure&nbsp;<a href="#F0006">6</a> shows the results of sentence editing and sentiment analysis processes for a given recommendation in our system. The recommendation consists of three separate sentences. Each sentence contains misspelled words and food/beverage information.</p>
+  <div class="figure figureViewer" id="F0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>10 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 6. </span> Sentence editing and sentiment analysis.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0006image" src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2018/taut20.v059.i03-04/00051144.2018.1531214/20181212/images/medium/taut_a_1531214_f0006_oc.jpg" loading="lazy" height="383" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0006">
+   <p class="captionText"><span class="captionLabel">Figure 6. </span> Sentence editing and sentiment analysis.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0006">
+   <div class="figureFootNote-F0006"></div>
+  </div>
+  <div class="figure figureViewer" id="F0007">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>10 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 7. </span> Sentiment analysis and scoring flow.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0007image" src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2018/taut20.v059.i03-04/00051144.2018.1531214/20181212/images/medium/taut_a_1531214_f0007_ob.jpg" loading="lazy" height="500" width="287"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0007">
+   <p class="captionText"><span class="captionLabel">Figure 7. </span> Sentiment analysis and scoring flow.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0007">
+   <div class="figureFootNote-F0007"></div>
+  </div>
+  <p></p>
+  <p>The scoring was done in a way that positive word received +1, negative words received −1, and neutral ones received 0. A classification was performed according to the names of the food and beverage items. The food or beverage that was mentioned the most and whether it was liked or not was determined. As seen in the above figure, all foods/beverages were correctly identified, and all misspelled words were successfully corrected. At the end of the page, the most liked food or beverage was shown. Additionally, the sentiment about the venue was also presented. The data used during sentiment analysis was listed under the menu named Adjectives. The list of food and beverage items used during the interpretation stage was listed on the Meals &amp; Drinks menu. The open and collaborative nature of the system allows anyone to add adjectives or food and beverage items. The larger the number of items in the data list, the better the accuracy of classification and sentiment analysis studies. The flow of the sentiment analysis and scoring stages are shown in Figure&nbsp;<a href="#F0007">7</a>.</p>
+ </div>
+ <div id="S003-S2006" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i22">3.6. Sentiment API generation</h3>
+  <p>Our Sentiment API Generation Module makes it easier to build the sentiment analysis process as a service by employing RT-SKDA and turning user specifications into code for different languages. Figure&nbsp;<a href="#F0008">8</a> shows the flow of the API generation module.</p>
+  <div class="figure figureViewer" id="F0008">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>10 October 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 8. </span> Sentiment API generation flow.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0008image" src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2018/taut20.v059.i03-04/00051144.2018.1531214/20181212/images/medium/taut_a_1531214_f0008_oc.jpg" loading="lazy" height="296" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0008">
+   <p class="captionText"><span class="captionLabel">Figure 8. </span> Sentiment API generation flow.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0008">
+   <div class="figureFootNote-F0008"></div>
+  </div>
+  <p></p>
+  <p>The flow of the system is as follows:</p>
+  <ol class="NLM_list NLM_list-list_type-order">
+   <li><p class="inline">User enters the system, clicks “Generate API” menu and selects the language that he wants to build the sentiment analysis service for.</p></li>
+   <li><p class="inline">User adds related dictionaries in Dictionary Creation Module or uses pre-built dictionaries. The dictionaries can be updated; new words can be added.</p></li>
+   <li><p class="inline">User plugs his own language specific NLP service or any other service developed by typing the web service URL. The service must return the results in string format.</p></li>
+   <li><p class="inline">Web Service Generation Module uses the information from previous stages and passes them to RT-SKDA as parameters. Finally, RT-SKDA is built as a web service and a URL is generated for further use.</p></li>
+   <li><p class="inline">User consumes the generated web service and obtains the sentiment analysis results.</p></li>
+  </ol> Developing an API for sentiment analysis purpose can be difficult task when there are many internal and external dependencies for text mining, natural language processing, social network crawling processes. Therefore, our system saves time for social network-based sentiment analysis and enables faster service development and better collaboration with researchers who are working in this field.
+  <p></p>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i24" class="section-heading-2">4. Discussion and results</h2>
+ <p>The Success Rate menu shows the results of the RT-SKDA in addition to Naive Bayes (WEKA) and manual observation. This is shown in Figure&nbsp;<a href="#F0009">9</a>.</p>
+ <div class="figure figureViewer" id="F0009">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>10 October 2018
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 9. </span> Success rate menu.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0009image" src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2018/taut20.v059.i03-04/00051144.2018.1531214/20181212/images/medium/taut_a_1531214_f0009_oc.jpg" loading="lazy" height="367" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0009">
+  <p class="captionText"><span class="captionLabel">Figure 9. </span> Success rate menu.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0009">
+  <div class="figureFootNote-F0009"></div>
+ </div>
+ <p></p>
+ <p>In order to test the real-time performance of the developed system, experiments were carried out on real-time data. For this purpose, the Nearby Venues menu was added as shown in Figure&nbsp;<a href="#F0010">10</a>.</p>
+ <div class="figure figureViewer" id="F0010">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>10 October 2018
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 10. </span> Nearby venues menu.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0010image" src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2018/taut20.v059.i03-04/00051144.2018.1531214/20181212/images/medium/taut_a_1531214_f0010_oc.jpg" loading="lazy" height="214" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0010">
+  <p class="captionText"><span class="captionLabel">Figure 10. </span> Nearby venues menu.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0010">
+  <div class="figureFootNote-F0010"></div>
+ </div>
+ <p></p>
+ <p>Tests can be conducted according to the location coordinates selected from the Nearby Venues menu. When any one of the listed venues is selected, the recommendations are gathered from Foursquare, RT-SKDA is applied to the recommendations, and the results are displayed on the screen.</p>
+ <p>In addition to the sentiment analysis, a food and beverage dataset was created to find out the most liked item of the venue. Ultimately, it is possible to create datasets for many different subjects or areas, where RT-SKDA can be applied and sentiment analyses can be carried out.</p>
+ <p>In order to test the accuracy of the classification, binary (positive, negative) and ternary (positive, negative, neutral) classification experiments were conducted. In addition, the Naive Bayes algorithm was applied. Binary and ternary classification results for Turkish are shown in Tables&nbsp;<button class="ref showTableEventRef" data-id="T0005">5</button> and <button class="ref showTableEventRef" data-id="T0006">6</button>. We applied the Confusion Matrix method to find the sentiment classification accuracy and the results are presented in Table&nbsp;<button class="ref showTableEventRef" data-id="T0007">7</button>.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 October 2018
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 5. Binary classification results for Turkish.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0005-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0005&amp;doi=10.1080%2F00051144.2018.1531214&amp;downloadType=CSV"> Download CSV</a><a data-id="T0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 October 2018
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 6. Ternary classification results for Turkish.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0006-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0006&amp;doi=10.1080%2F00051144.2018.1531214&amp;downloadType=CSV"> Download CSV</a><a data-id="T0006" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 October 2018
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 7. Classification accuracy for Turkish.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0007-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0007&amp;doi=10.1080%2F00051144.2018.1531214&amp;downloadType=CSV"> Download CSV</a><a data-id="T0007" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <p>A high accuracy was obtained when comparing RT-SKDA with other traditional machine learning methods that have been implemented for the Turkish language. Table&nbsp;<button class="ref showTableEventRef" data-id="T0008">8</button> shows the comparison of our method with similar studies applied for the Turkish language.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 October 2018
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 8. Comparison with similar studies for Turkish.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0008-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0008&amp;doi=10.1080%2F00051144.2018.1531214&amp;downloadType=CSV"> Download CSV</a><a data-id="T0008" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <p>Furthermore, to show the applicability of our approach in other languages, we conducted our experiments for English. Google APIs and Naïve Bayes approach are applied. Binary and ternary classification results for English are shown in Tables&nbsp;<button class="ref showTableEventRef" data-id="T0009">9</button> and <button class="ref showTableEventRef" data-id="T0010">10</button>. Table&nbsp;<button class="ref showTableEventRef" data-id="T0011">11</button> shows our classification accuracy.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 October 2018
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 9. Binary classification results for English.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0009-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0009&amp;doi=10.1080%2F00051144.2018.1531214&amp;downloadType=CSV"> Download CSV</a><a data-id="T0009" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 October 2018
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 10. Ternary classification results for English.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0010-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0010&amp;doi=10.1080%2F00051144.2018.1531214&amp;downloadType=CSV"> Download CSV</a><a data-id="T0010" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">A real-time social network-based knowledge discovery system for decision making</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Y%C3%BCksel%2C+As%C4%B1m+Sinan"><span class="NLM_given-names">Asım Sinan</span> Yüksel</a> <a href="http://orcid.org/0000-0003-1986-5269" class="extLink">http://orcid.org/0000-0003-1986-5269</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tan%2C+Fatma+G%C3%BCl%C5%9Fah"><span class="NLM_given-names">Fatma Gülşah</span> Tan</a> <a href="http://orcid.org/0000-0002-2748-0396" class="extLink">http://orcid.org/0000-0002-2748-0396</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/00051144.2018.1531214">https://doi.org/10.1080/00051144.2018.1531214</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>10 October 2018
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><b>Table 11. Classification accuracy for English.</b></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0011-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0011&amp;doi=10.1080%2F00051144.2018.1531214&amp;downloadType=CSV"> Download CSV</a><a data-id="T0011" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <p>Finally, we conducted a separate experiment to see the effect of up votes and down votes on classification performance. As recommendations were obtained from Foursquare, the number of people who agreed and who did not agree with these recommendations were also obtained. These numbers were added to the score based on whether the sentence was positive or not. We observed that votes did not have an effect on the classification accuracy. Additionally, these up/down votes were not available in every recommendation.</p>
+ <p>Along with the classification, we aimed to find which food or beverage was liked the most in the venue. Accordingly, the food and beverage items that were liked were correctly identified for 107 out of 128 venues. This number dropped to 91 when the NB method was used. We note that increasing the number of venues and recommendations will increase the accuracy.</p>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i34" class="section-heading-2">5. Conclusions and future work</h2>
+ <p>Social network-based intelligence is an indispensable technique for venue owners to measure customer satisfaction. In this way, whether the venue is liked or not is found as well as which food and beverage items are liked most. The effect created on social media can be closely monitored, and correct steps can be taken when necessary. We anticipate that our tool will be an important analytical tool for venue owners to determine how their venue is perceived on social media, to intervene quickly to correct deficiencies at times of crisis, to determine the success rates of products, and to better position their businesses against competitors.</p>
+ <p>We can think of the result of this study – being carried out on social media – as being directly proportional to customer satisfaction. Recommendations made about a venue do not remain private between the user and the venue owner but instead spread across the entire social network. Such data become impossible to follow by the user after a while. Therefore, both users and venue owners need decision support systems by which they can quickly, automatically, and accurately analyze the recommendations made on social platforms. Decision support systems are crucial for accelerating the decision-making process, achieving superiority in a competitive environment, rapidly identifying data to be used for performance enhancement, and creating reports that can be used to increase productivity. In this direction, a multilingual decision support system was developed, which is flexible, easily adaptable, able to improve itself, easy to use, responds quickly, and eliminates the need for the user to read thousands of recommendations one by one. With the developed decision support system, recommendations about a venue are grouped into three categories – positive, negative, and neutral. At the same time, the food or beverage that was liked the most is found and shown to the user, along with whether the venue was liked or not. RT-SKDA can be further developed to work domain independently, support many languages so that it provides successful results for different domains and languages. Finally, the developed system can be transformed into an application that will work on mobile devices.</p>
+</div>

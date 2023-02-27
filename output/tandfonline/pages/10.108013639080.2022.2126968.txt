@@ -1,0 +1,1390 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">Introduction</h2>
+ <p>Given the increasing use of information technologies (IT) in the labour market, IT training is growing in importance. However, valuable IT training should constitute more than just learning a particular IT skill without any context, because on-the-job IT skills are typically combined with a set of related skills that complement the IT technology and knowledge. For example, when workers learn computer numerical control (CNC), they would also need to have good knowledge of lathing and milling, material properties, how to read manufacturing plans or how to execute production plans with CNC to be able to use the technology effectively. The question of teaching IT skills combined with a package of complementary skills has so far been neglected in the economics literature. However, knowing how such skills packages look like is crucial to design training programmes that are intended to provide workers with skills required during times of increased digitalisation (see e.g., Spöttl and Windelband <span class="ref-lnk lazy-ref"><a data-rid="cit0039" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2021</a></span>, focusing on how nine occupational fields will need to adapt due to the fourth industrial revolution).</p>
+ <p>So far, empirical studies on IT skills and labour market outcomes focus on just IT software, programming languages, or hardware in job postings (Atalay et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Buchmann, Buchs, and Gnehm <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>), on elaborate self-reports of IT skills (Borghans and ter Weel <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2006</a></span>), or on IT use for basic problem-solving (Falck, Heimisch-Roecker, and Wiederhold <span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>). However, an empirical analysis of how effective IT training for the workplace is and should be combined with other technical or nontechnical skills, i.e., skills packages with IT skills, is still missing in the literature.</p>
+ <p>In this paper, we investigate how IT skills are taught in broader skills packages in extensive vocational education and training (VET) training curricula in the context of three- or four-year dual apprenticeship training programmes in Switzerland, which cover approximately two-thirds of the Swiss labour force, i.e., all middle-skilled workers. We analyse how such skills packages with IT skills are related to labour market outcomes of graduates of the respective training programmes. Such dual VET at the upper-secondary education level is based on legally binding curricula for on-the-job training in a company that employs the apprentice (approx. 80% of the time) and school-based learning in a special vocational school (approx. 20% of the time). Finishing such a dual VET degree offers well-defined pathways to vocational tertiary education options (see Backes-Gellner and Geel <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2014</a></span> for the Swiss system; Jaik and Wolter <span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2019</a></span> for the occupational choice process in Switzerland).</p>
+ <p>Our skills data include text as data from 166 vocational training curricula with an average of 44 pages each. Studies that manually analyse curricula from dual VET have shown in other contexts that their content, for example its degree of specificity, is important for labour market outcomes (e.g., Eggenberger, Rinawi, and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Eggenberger and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>).<a href="#en0001"><sup>1</sup></a> We dig deeper and look at the content and how particular skills are combined in typical ‘skills packages with IT skills’ and how these skill packages relate to labour market outcomes of the respective VET graduates. Our labour market data are from the Swiss Social Protection and Labour Market Survey (SESAM), which contains individual data from a representative sample of the Swiss working population.</p>
+ <p>As the curricula of the 166 Swiss occupations are very detailed and thus provide extensive text bodies (in total 8,102 pages), we apply natural language processing (NLP) methods, i.e., machine learning applied to texts, to analyse the content of these curriculum texts. In doing so, we built on a recent strand of empirical literature in economics, sociology and other related disciplines that has applied automatic text analysis—primarily searching for specific keywords—to job postings (Buchmann, Buchs, and Gnehm <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>; Brown and Souto-Otero <span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>; Deming and Kahn <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2017</a></span>; Grinis <span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2019</a></span>; Schultheiss et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>). We extend this literature by introducing a new type of text, i.e., vocational training curricula, and by applying an innovative methodological approach for our content analysis, i.e., topic modelling.<a href="#en0002"><sup>2</sup></a> It uses an <i>unsupervised</i> NLP algorithm that can be applied to a large body of text without predefined vocabulary, thereby helping to recognise text patterns in vast curriculum texts and to identify typical skills packages. Our unsupervised algorithm clearly detects four different skills packages with IT, each of them comprising different IT skills and other technical and nontechnical skills: first, a skills package with CNC/Computer-Aided Design (CAD) including e.g., planning of material, manufacturing, testing; second, a skills package with system technologies including e.g., process orientation, assembly, technical documentation; third, a skills package with IT-applications including e.g., project management, independent handling, orders; and fourth, a skills package with control technologies including e.g., knowledge on moulding, cutting tools, practice-oriented understanding.</p>
+ <p>Our empirical analyses show how the four identified skills packages with IT are associated with labour market outcomes, such as wages and employment.<a href="#en0003"><sup>3</sup></a> Our results show that workers trained in a skills package with IT have higher wages and a higher employment probability, compared to those without training in such a skills package with IT. In the wage analysis, when comparing the size effects of the four different skills packages with each other, the results indicate that the skills package with IT-applications has higher wage returns than the three other skills packages with IT, i.e., with control technologies, with CNC/CAD, and with system technologies. While the importance of IT-applications is also shown in previous studies (e.g., Atalay et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span> demonstrate the increase of skills in IT-applications required in job postings), our results also emphasise that the skills package with IT-applications comprises not only IT-applications but also project management.</p>
+ <p>Additional analyses address the potential concern that skills packages with IT skills may only occur in cognitively demanding occupations, in which case we would measure only the labour market effect of cognitively demanding occupations and not capture the effect of IT skills packages. To proxy the cognitive skill requirements of an occupation (independently from the skills packages from the text analysis), we use an external database that provides the ‘cognitive requirement levels’ for each Swiss VET occupation (Goetze and Aksu <span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>). Our additional empirical analyses reveal that our previous results do not change structurally, i.e., the positive relationships between our skills packages with IT and their labour market outcomes are not just the effect of cognitively more demanding occupations.</p>
+ <p>In sum, our paper provides evidence that efficient IT training is taught in skills packages that combine IT skills with a range of other, complementary skills. Conceptually, IT skills packages contain the respective IT skill with complementary skills such as technical, organisational, social or other noncognitive skills. These additional skills make the use of the IT skills more efficient due to complementarity effects. For example, learning CNC is only valuable if workers have knowledge on material properties, are able to read manufacturing plans and are familiar with testing. Workers having the combination of such skills achieve a higher quality in the production process or are better able to efficiently address complications in the production process. In contrast, workers with only CNC skills and limited or no knowledge of material properties—or who are not able to read manufacturing plans, or who are not familiar with testing—would fail to do so. Thus workers who possess the whole skills package with the respective IT skills are more valuable for firms than workers who only possess a single IT skill without the corresponding complementary skills. As a result, we expect firms to pay higher wages for workers possessing such complementary skills packages. Empirically, we find four different skills packages with IT. We show what skills they consist of and demonstrate how they are related to labour market outcomes. Thus, our study provides novel conceptual ideas and empirical evidence on the importance of teaching coherent packages of skills that include important IT skills together with the most relevant complementary technical and nontechnical skills.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">Background on skills packages with IT</h2>
+ <p>In this section, we propose our concept of skills packages with IT. Subsequently, we provide an overview of two approaches using text data sources, curricula and job postings, to measure skills.</p>
+ <div id="s0002-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">Concept of skills packages with IT</h3>
+  <p>We outline the concept of skills packages with IT in three steps. First, we present the empirical research on IT skills, i.e., all skills that help workers handle, apply, and use information technologies (Falck, Heimisch-Roecker, and Wiederhold <span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>). Second, we add a training perspective that considers skills packages with IT. Third, we conceptually link the empirical studies and the training perspective.</p>
+  <p>Empirical studies on IT skills and labour market outcomes go back to Krueger (<span class="ref-lnk lazy-ref"><a data-rid="cit0029" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>1993</a></span>) who studied how wages correlate with the use of computers in the workplace. In contrast, DiNardo and Pischke (<span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>1997</a></span>) discussed that the approach of measuring workers’ computer use does not adequately represent IT skills. Recent studies contribute additional approaches to measuring IT skills. This research—for example—analyses the effects of mentioning IT software, languages, or hardware in job postings (Atalay et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Buchmann, Buchs, and Gnehm <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>) or how IT workers value using the newest technologies drawing on employer reviews (Tambe, Xuan, and Cappelli <span class="ref-lnk lazy-ref"><a data-rid="cit0040" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>). Further studies use workers’ self-reported IT skills (Borghans and ter Weel <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2006</a></span>) or assess basic problem-solving using IT (Falck, Heimisch-Roecker, and Wiederhold <span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>). To date, empirical research tends to view IT skills as handling one or a few particular IT skills and misses to consider how IT skills are actually taught (i.e., a training perspective).</p>
+  <p>Shedding light on IT skills from a training perspective, we propose that IT skills are taught with other skills during IT training and that different forms of these IT trainings exist. Vocational training curricula reflect IT training and skills.<a href="#en0004"><sup>4</sup></a> Curricula, such as those of Swiss VET occupations define the content of the training, i.e., they contain detailed descriptions of skills. Extensive final examinations guarantee that when entering the labour market, VET graduates possess the skills required for their occupation (Eggenberger, Rinawi, and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>). Such curricula show how IT skills are trained effectively, thereby demonstrating the training perspective of IT skills. To illustrate the training perspective, we describe another example—besides the one of CNC skills mentioned in the introduction: Learning how to use software is not only about the functionality of the software but also on how to accomplish specific professional tasks (e.g., a commercial employee who does the bookkeeping) with this software in the context of the production or service process—meaning that a specific IT task is always connected to other tasks and knowledge. Only with the combination of these skills, workers are able to efficiently perform the bookkeeping for a department or firm. Thus, simply learning the functionality of a software does not suffice, but a worker needs to combine software skills with, for example, basic knowledge of accounting.</p>
+  <p>To conceptually link the empirical studies and the training perspective, we extend the theoretical arguments drawn from Lazear’s (<span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2009</a></span>) skills-weights approach. This approach introduces the idea that training programmes or workers’ human capital should be considered as ‘skill bundles’ that contain a variety of different single skills with different weights. For example, Eggenberger, Rinawi, and Backes-Gellner (<span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>) analyse skill bundles at the occupational level; i.e., an occupational training programme consists of a combination of single skills that are needed in the respective occupation. The study of Eggenberger, Rinawi, and Backes-Gellner (<span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>) was recently extended by a new study introducing IT skills as a particular category of single skills (Eggenberger and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>). They distinguish between generic and expert IT skills and show that <i>generic</i> IT skills positively correlate with earnings after involuntary separations for workers with specific occupational skill bundles. However, this study does not investigate how IT skills are combined with other, technical or nontechnical skills in different occupations.</p>
+  <p>Our approach argues that instead of just considering IT skills as single skills, it is—particularly from a training perspective—also important to consider that single IT skills are not or should not be taught individually but together with a set of other skills that are used complementary in the typical workplaces and occupations for such IT skills. In our approach, each occupation has a large number of single skills that are typically combined in empirically clearly identifiable skills packages. Some of these skills packages include IT, some not, some skills packages have a higher IT content and others a lower IT content. We thus have an empirical profile of the skills packages for each occupation. For each occupation, we have a weight for all its skills packages with IT. This weight represents the importance of this IT skills package in the training of this occupation and in this sense also provides a training perspective on IT skills.</p>
+ </div>
+ <div id="s0002-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">Approaches to measure skills</h3>
+  <p>For our empirical analyses, we decided to use training curricula as a text data source instead of job postings, which have mainly been used in previous literature. We do so because analysing training curricula has two major benefits over analysing job postings for our purpose: First, while the texts of job postings mainly <i>name</i> a couple of skills that are currently required in the workplace for a certain occupation, the texts of VET training curricula (in the countries with dual VET programmes such as Switzerland or Germany) extensively <i>define</i> and <i>elaborate</i> the skills that are taught and required in an occupation (and that workers are guaranteed to have because of mandatory examinations).<a href="#en0005"><sup>5</sup></a> Second, in contrast to job postings that can always only name a few, currently important skills due to the very limited space of job ads, the curriculum texts describe all skills that workers acquire during their extensive training period (three to four years). Because of their goal and brevity, job postings can always only just mention the skills that are the most important for the recruiting process at the particular point in time, but these skills are of course surrounded by many other skills that remain unnamed. The unnamed skills may still be implied in the job ads because they are part of common knowledge in a particular industry or occupational field—but for a text analysis they would nevertheless be invisible. Therefore, we prefer to use the more comprehensive VET curriculum texts for our analysis of skills packages rather than job postings.</p>
+  <p>To operationalise and empirically measure skills from texts using machine learning, we also discuss different types of methods that can be used to extract the information from the texts in job postings (e.g., Atalay et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Buchmann, Buchs, and Gnehm <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>; Brown and Souto-Otero <span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>; Deming and Kahn <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2017</a></span>) or in curriculum texts (e.g., Eggenberger, Rinawi, and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Eggenberger and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>; Janssen and Mohrenweiser <span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+  <p>The first approach focuses on measuring the skill requirements in job postings, ads that occur naturally as data in text form, with machine-learning methods. These methods process unstructured texts to organise the information inherent in them (Gentzkow, Kelly, and Taddy <span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2019</a></span>), because compared to conventional data sources (e.g., occupational skills databases), original texts as data are likely to contain more detailed information than, for example, survey information. Atalay et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>), Buchmann, Buchs, and Gnehm (<span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>), Brown and Souto-Otero (<span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>), Deming and Kahn (<span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2017</a></span>), Grinis (<span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2019</a></span>), and Schultheiss et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>) show that job posting texts contain relevant labour market information. Atalay et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>) even demonstrate that job posting texts reflect the evolution of work better than the growth or decline of job titles.</p>
+  <p>A second approach is based on vocational training curricula that define the content of training and thus offer insights into the acquired skills. For example, this method is applied for studying the dual VET systems in Germany and Switzerland (Eggenberger, Rinawi, and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Jansen, de Grip, and Kriechel <span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2017</a></span>; Janssen and Mohrenweiser <span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Eggenberger and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>). In previous studies, researchers manually analyse the skills described in vocational training curricula and then link the skills with labour market outcomes (Eggenberger, Rinawi, and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>). In contrast to these manual analyses, our study is the first to apply machine-learning methods to curricula, and following our study, recently, some studies have also analysed curricula using machine-learning methods (Eggenberger and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>, or Kiener, Gnehm, and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>).</p>
+  <p>Both strands of literature, the studies on job postings (e.g., Atalay et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Buchmann, Buchs, and Gnehm <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>; Deming and Kahn <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2017</a></span>) and the studies on curricula (e.g., Eggenberger, Rinawi, and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Eggenberger and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>; Janssen and Mohrenweiser <span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>), have in common that they define their skills a priori, i.e., they used predefined vocabulary and—if they use NLP methods and not a manual analysis—they primarily apply supervised NLP methods. Using predefined vocabulary is useful when the research focuses on one or a few particular skills they are interested in. In this case, researchers can use specific keywords that capture the single skills instead of a primarily data-driven unsupervised NLP method like ours (see section ‘Identifying skills packages with IT in training curricula’). Given that our paper is interested in finding patterns of skill combinations in curricula that we cannot define a priori but want to identify empirically, i.e., skills packages that are typically taught together in the context of vocational training, we decided not to use a method that requires a priori definitions of a predefined (small selection) of single skills but rather a method that avoids the need for a priori definitions. Thus, we use a topic modelling method that does not require a priori definitions or categorisation but is able to detect hidden, i.e., latent, within-text structures called topics (details are provided in the section ‘Identifying skills packages with IT in training curricula’).</p>
+ </div>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i7" class="section-heading-2">Data</h2>
+ <p>The data we use to measure skills packages with IT, hereafter called ‘skills data’, are vocational training curricula, i.e., Swiss VET curricula. We use the curriculum texts for VET training as published on the online directory of the Swiss confederation for legally mandated dual vocational education and training programmes at the Federal level.<a href="#en0006"><sup>6</sup></a> In total, we cover the most important 166 Swiss VET curricula. The curricula are not only extensive (a total of 8,102 pages, averaging 44 pages for each curriculum) but also rich in content (a total of approximately 1.5 million words, averaging 8,030 words for each curriculum).</p>
+ <p>In addition to the skills data, we use SESAM data on the labour market. The dataset comprises detailed information for a representative sample of the Swiss population. The SESAM links data from the Swiss Labour Force Survey (SLFS) with information from different social insurance registers and has a rolling panel structure (Federal Statistical Office <span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2011</a></span>). The Federal Statistical Office connects the information from the survey with administrative data. We build a panel between 2010 and 2016 similar to Balestra and Backes-Gellner (<span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2017</a></span>), Eggenberger, Rinawi, and Backes-Gellner (<span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>) or Eggenberger and Backes-Gellner (<span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>), who constructed a panel for earlier years. In 2010, the Statistics Office changed the survey frequency thus we only use the data after 2010 to have a consistent time series for our analysis.<a href="#en0007"><sup>7</sup></a></p>
+ <p>Among the variables in the SESAM are our dependent variables, i.e., the administrative wage data on the gross income from employment per year and the employment status. The SESAM data also include characteristics such as age, gender, worktime percentage, and nationality. Relevant variables for the matching and sampling procedure are two variables: the ‘level of education’ variable (we use with VET diploma at the upper-secondary level) and the variable on the ‘training occupation’ (i.e., in which occupation the worker was originally trained).</p>
+ <p>We match the skills data and the individual labour market data at the occupational level.<a href="#en0008"><sup>8</sup></a> The labour market data from the SESAM includes the variable on the original training occupation, which for individuals with a VET education corresponds to the occupations covered by the curricula. We link the codes for the occupations from the two datasets following Eggenberger, Rinawi, and Backes-Gellner (<span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>), who did a similar matching for earlier curricula.<a href="#en0009"><sup>9</sup></a></p>
+ <p>Having described the data, we present how we obtain the measures for different skills packages with IT from our skills data using the NLP method in the following section. Subsequently, we present the labour market analyses.</p>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i8" class="section-heading-2">Identifying ‘skills packages with IT’ in vocational training curricula</h2>
+ <p>We use NLP methods that combine techniques from machine learning with linguistics and help analyse vast quantities of text to identify the skills packages in curriculum texts. Such computational methods for text analyses create many new opportunities for economic research (Gentzkow, Kelly, and Taddy <span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2019</a></span>). Previous text analyses based on manual coding needed a priori definitions and categories; in other words, the categories were defined before an individual coded the texts (Quinn et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2010</a></span>). One example of such manual categorisation of skills is found in the study of Eggenberger, Rinawi, and Backes-Gellner (<span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>) who manually categorised Swiss occupational skill bundles. The topic modelling approach we use<a href="#en0010"><sup>10</sup></a> does not require such a priori definitions or categorisation but detects hidden, i.e., latent, within-text structures called topics (Grimmer and Stewart <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2013</a></span>). We use these topics to represent the skills packages that are prescribed and defined in the VET curricula. We are the first who measure skills packages as an operationalisation of the theoretical concept of skills packages as outlined in the section ‘Concept of skills packages with IT’.</p>
+ <p>Topic modelling has never before been applied to vocational training curricula. Thus far, applications of topic modelling have been used to analyse Twitter, news data, speeches, or scientific abstracts in political, communication and marketing research (Amado et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Benites-Lazaro, Giatti, and Giarolla <span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Maier et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Reisenbichler and Reutterer <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2019</a></span>). An example of a previous application focusing on economics research studies how topics in economic research evolve over time through applying topic modelling to full texts of articles in the JSTOR database (Ambrosino et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+ <p>In our application, the topics represent skills packages because we use curriculum texts as a database. The schematic illustration presents our NLP process (<a href="#f0001">Figure 1</a>). The process starts with occupational curricula and ends in a measure for skills packages with IT by occupation. We apply two methods: first, topic modelling, i.e., the main NLP method (explained in subsection ‘Main NLP method’), and second, the interpretation tool (explained in subsection ‘Interpretation tool’). Finally, the last subsection shows the resulting skills packages with IT.</p>
+ <div class="figure figureViewer" id="f0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">IT skills in vocational training curricula and labour market outcomes</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Kiener%2C+Fabienne"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiener%2C+Fabienne"><span class="NLM_given-names">Fabienne</span> Kiener</a> <a href="https://orcid.org/0000-0001-7884-1385"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Gnehm%2C+Ann-Sophie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Gnehm%2C+Ann-Sophie"><span class="NLM_given-names">Ann-Sophie</span> Gnehm</a> <a href="https://orcid.org/0000-0001-5846-4025"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Clematide%2C+Simon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Clematide%2C+Simon"><span class="NLM_given-names">Simon</span> Clematide</a> <a href="https://orcid.org/0000-0003-1365-0662"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Backes-Gellner%2C+Uschi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Backes-Gellner%2C+Uschi"><span class="NLM_given-names">Uschi</span> Backes-Gellner</a> <a href="https://orcid.org/0000-0002-7511-9757"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/13639080.2022.2126968">https://doi.org/10.1080/13639080.2022.2126968</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>27 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> NLP methods.</p>
+    </div><span class="NLM_attrib"><i>Notes</i>: Authors’ schematic illustration of the use of NLP methods. The italics show the algorithms and techniques. The oval text boxes represent hyper-parameters and input by the researchers.</span>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/cjew20/2022/cjew20.v035.i06-07/13639080.2022.2126968/20221128/images/medium/cjew_a_2126968_f0001_oc.jpg" loading="lazy" height="240" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-f0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> NLP methods.</p><span class="NLM_attrib"><i>Notes</i>: Authors’ schematic illustration of the use of NLP methods. The italics show the algorithms and techniques. The oval text boxes represent hyper-parameters and input by the researchers.</span>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-f0001">
+  <div class="figureFootNote-f0001"></div>
+ </div>
+ <p></p>
+ <div id="s0004-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">Main NLP method</h3>
+  <p>Our main NLP method is topic modelling, which we apply to vocational training curricula. The topic-modelling algorithm detects topics (patterns) within vast quantities of text. We use a topic-modelling algorithm called nonnegative matrix factorisation (NMF) (for a mathematical explanation, see Gillis <span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2014</a></span> or for applications, see Lee and Seung <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>1999</a></span>; Shahnaz et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0037" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2006</a></span>; Tjioe et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0041" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2008</a></span>; Quinn et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2010</a></span>; Yan et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0043" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2013</a></span>). NMF uses matrix factorisation, i.e., a method in linear algebra. Applying NMF to curricula factorises the curricula into two matrices: ‘Words by Topics’, which shows the words importance for each topic, and ‘Topics by Documents’, which shows the distribution of the topics over the documents, i.e., in our case curricula. As a simplified example, words by topics shows words on ‘developing something’, and topics by documents shows that the topic occurs in the training curriculum of an information technologist or in the curriculum of a photographer (see appendix A for a more elaborate example).</p>
+  <p>To calculate the matrices ‘Words by Topics’ and ‘Topics by Documents’, the topic-modelling algorithm requires the number of topics as the most important hyper-parameter set by the researcher. We evaluate the optimal number of topics with a method that tests how coherent the topics are in terms of the similarity or differences among words. Specifically, we use a word-intrusion method where humans detect random ‘intrusion words’ in words by topic. The better the detection of the intrusion word, the more semantically coherent the topic is (Chang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2009</a></span>). Typically, researchers choose three possible numbers of topics for testing (e.g., Maier et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>). We chose the possible numbers of topics according to previous research,<a href="#en0011"><sup>11</sup></a> and executed the word intrusion procedure with 12, 24, and 48 topics. In our case, 12 topics were an optimal number based on the semantic coherence of the topics. Up to this point, the decisions are rather generic and the IT content of a topic has not been of any relevance. Only in the next step we analyse the content of a topic and evaluate whether they contain IT content or not. To do so, we use a so-called interpretation tool.</p>
+ </div>
+ <div id="s0004-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">Interpretation tool</h3>
+  <p>The interpretation tool helps identify the content of the skills packages, i.e., topics, with IT or with other content. Because we want to find IT vocabulary in topics, our interpretation tool is similar to a dictionary. To automatically build a dictionary, we want to draw from a large text database that is not the curriculum texts themselves but that contains texts belonging to a domain similar to curricula. We decided to use job postings due to availability and closeness to the labour market. The interpretation tool starts with a corpus of 1.15 million online job ads from 2014 through 2018 (i.e., the task description, required skills and personal characteristics).<a href="#en0012"><sup>12</sup></a> We use dense continuous word representations, ‘word embeddings’, as a technique to calculate word similarities. This technique relies on the context of words, and words in similar contexts have a similar meaning.<a href="#en0013"><sup>13</sup></a></p>
+  <p>The interpretation tool helps us analyse whether the 100 most important words in each topic match the IT vocabulary of the job ads. To do that, we take some words from the matrix ‘Words by Topics’ that are related to IT. We name them ‘IT input words’. Then, the interpretation tool shows words similar to the IT input words, resulting in an IT vocabulary that we apply to the words by topics (see the complete list of IT vocabulary in the appendix A).<a href="#en0014"><sup>14</sup></a></p>
+  <p>Overall, the interpretation tool supports us in defining the content of the topics through an automatically created distributional dictionary. Thus the interpretation tool helps us make our contribution to unsupervised topic modelling, which is—according to Gentzkow, Kelly, and Taddy (<span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2019</a></span>) and Quinn et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2010</a></span>)—the interpretation of the topics. Our resulting skills packages do not exclusively depend on subjective interpretations of researchers but also on the objective dictionary from job ads. By doing so, we extend the traditional use of topic modelling in social sciences and the analysis of skills in curriculum texts.</p>
+ </div>
+ <div id="s0004-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i12">The resulting skills packages with IT</h3>
+  <p>Our NLP methods result in a measure of skills packages with IT that can be found in the occupational curricula. Conceptually, we argued that skills packages with IT contain IT skills and other, complementary technical and nontechnical skills and our empirical measures of skills packages with IT follow this concept. Empirically, after the algorithm calculates the skills packages and assigns a weight for each skills package, i.e., topic, for each curriculum (topics over documents), the interpretation tool helps to identify the skills packages with IT (analysing the words by topic). In total, our method detects four skills packages with IT (for skills packages without IT, see <button class="ref showTableEventRef" data-id="t0012">Table B1</button> in the appendix). Within these four skills packages with IT, we also have the words that occur in addition to the IT vocabulary, i.e., further skills and competences in this skills package that are not related to IT. The table below shows the words, which describe IT skills or other skills, in the skills packages with IT as well as the most important occupations that contain the respective skills package.</p>
+  <p>We name the first package in <button class="ref showTableEventRef" data-id="t0001">Table 1</button> ‘Skills Package with CNC/CAD’ because the following three IT words (in the 100 most important words of the skills package) occur: CNC, manufacturing technologies and CAD. Other important words in the skills package are manufacturing, documenting, production documentation, and planning material. Thus the skills package with CNC/CAD typically also includes complementary skills, such as planning the material. A mechanical engineer has the highest weight for this skills package. The weight here represents the importance of the skills package for the occupation and is determined by the algorithm. The weight has a value between zero and one. The skills package with CNC/CAD occurs in many occupations: Sixty out of 166 occupations have a positive weight for this skills package.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">IT skills in vocational training curricula and labour market outcomes</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Kiener%2C+Fabienne"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiener%2C+Fabienne"><span class="NLM_given-names">Fabienne</span> Kiener</a> <a href="https://orcid.org/0000-0001-7884-1385"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Gnehm%2C+Ann-Sophie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Gnehm%2C+Ann-Sophie"><span class="NLM_given-names">Ann-Sophie</span> Gnehm</a> <a href="https://orcid.org/0000-0001-5846-4025"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Clematide%2C+Simon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Clematide%2C+Simon"><span class="NLM_given-names">Simon</span> Clematide</a> <a href="https://orcid.org/0000-0003-1365-0662"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Backes-Gellner%2C+Uschi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Backes-Gellner%2C+Uschi"><span class="NLM_given-names">Uschi</span> Backes-Gellner</a> <a href="https://orcid.org/0000-0002-7511-9757"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/13639080.2022.2126968">https://doi.org/10.1080/13639080.2022.2126968</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>27 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Skills packages with IT.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F13639080.2022.2126968&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>We name the second package ‘Skills package with System Technologies’ because it mainly includes IT words about system technologies. Other important words are electrotechnical, technical documentation, assembly, and process orientation. The skills package with system technologies is important for electrical occupations. However, more than 40 out of 166 occupations have a positive weight for this skills package, i.e., it is to a smaller extent rather common in the Swiss labour market.</p>
+  <p>We name the third package ‘Skills package with IT-Applications’ because it has very high content of words about applications of IT. This skills package also comprises skills in e.g., project management. This skills package has a high weight in the curriculum of—and is thus very important for—information technologists. In other occupations, this skills package is less important: For example, the occupation with the fourth highest weight for the skills package with IT-applications, mediamatic (an occupation that combines marketing and information technologies), already has a much lower weight than the information technologist. On the other hand, this skills package with IT-applications also occurs in many occupations but with a rather low weight (54 out of 166 occupations).</p>
+  <p>We name the fourth package ‘Skills package with Control Technologies’ because it includes a variety of IT words about control technologies. The non-IT words in this package are mainly about casting and moulding. Fifty-one out of 166 occupations have a positive weight for the skills package with control technologies so it is also rather broadly used on the Swiss labour market.</p>
+  <p>In brief, the detailed illustration of the skills packages with IT shows that each skills package contains different IT and different other technical and nontechnical skills. In preparation of the labour market analyses, we further emphasise that our skills packages with IT differ from each other (because skills packages with IT are not significantly correlated). Simultaneously, each skills package with IT occurs in a substantial share of the occupations (between 43 and 60 out of 166 occupations).</p>
+  <p>While the main contribution of identifying our four skills packages with IT is to show that—and how—IT skills are trained in context, we can also relate them to results from previous literature on IT skills and compare how their definition of IT skills correspond to our skills packages. We take as an example three studies that investigate IT skills, which are closest to the ones we also identified. Although these studies investigate only single IT skills, they provide a first indication of the importance of <i>our skills packages</i> because <i>their single IT skills</i> are also comprised in our skills packages:</p>
+  <p>First, Atalay et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>) study the increased mentioning of office software or programming languages in job postings. Atalay et al.’s (<span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>) findings show that firms demand these single IT skills more and more between 1960 to 2000. In our paper, we identify the skills package with IT-applications, which comprises the single IT skills of Atalay et al.’s (<span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>) study as well as other skills such as project management or the processing of orders. Second, Buchmann, Buchs, and Gnehm (<span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>) investigate, among others, CAD and CNC skills as industry-specific single IT skills, documenting that job postings increasingly mention these single skills in the last three decades. In our paper, we detect a skills package with CNC/CAD, which includes these single IT skills as well as other skills such as how to plan material, manufacturing skills or testing. Third, Eggenberger and Backes-Gellner (<span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>) present, among others, an IT skill they call ‘developing microcontroller systems’, showing how this expert IT skill relates to job separations of workers with specific skill bundles. This single IT skill also occurs in our skills package with system technologies, which includes process orientation, assembly and technical documentation.</p>
+  <p>Overall, these examples demonstrate that previous research focusing on single IT skills identifies important IT skills that are also part of our skills packages with IT. However, our skills packages with IT go beyond the concept of single skills and show with which other (technical or nontechnical) skills these IT skills are typically combined and thus can be considered as complementary skills. In the next section, we show that the combination of these skills is indeed valuable on the labour market.</p>
+ </div>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i13" class="section-heading-2">Skills packages with IT and labour market outcomes</h2>
+ <p>We investigate the relationship between the four different skills packages with IT and labour market outcomes, such as wages and employment probability. For each of the two labour market outcomes, we start with the sample, explain the specification, and present the results.</p>
+ <div id="s0005-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">Wages</h3>
+  <p>Our sample includes the data from 2010 through 2016 for the working population, defined as individuals aged 18 to 64<a href="#en0015"><sup>15</sup></a> who receive a positive labour income, i.e., who were employed.<a href="#en0016"><sup>16</sup></a> We study the curricula of VET occupations, and thus we restrict the sample to graduates of vocational education and training.<a href="#en0017"><sup>17</sup></a> As the dataset includes the worktime percentage of each worker, we can calculate the full-time equivalents of the annual administrative wages. We exclude observations with outlying wages (i.e., first and last percentiles). Moreover, we only include individuals with values for our control variables of age, gender, and nationality.</p>
+  <p>Our sample comprises 89,259 observations from 56,014 individuals, 57% of whom are men and 43% of whom are women. More than half of the individuals are Swiss citizens. The annual average wage in full-time equivalents over all observations is CHF 80,851 (see <a href="#f0002">Figure B1</a> histogram of wages in the appendix). We standardise the measures of the different skills packages with IT on the sample. <button class="ref showTableEventRef" data-id="t0002">Table 2</button> displays summary statistics.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">IT skills in vocational training curricula and labour market outcomes</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Kiener%2C+Fabienne"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiener%2C+Fabienne"><span class="NLM_given-names">Fabienne</span> Kiener</a> <a href="https://orcid.org/0000-0001-7884-1385"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Gnehm%2C+Ann-Sophie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Gnehm%2C+Ann-Sophie"><span class="NLM_given-names">Ann-Sophie</span> Gnehm</a> <a href="https://orcid.org/0000-0001-5846-4025"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Clematide%2C+Simon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Clematide%2C+Simon"><span class="NLM_given-names">Simon</span> Clematide</a> <a href="https://orcid.org/0000-0003-1365-0662"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Backes-Gellner%2C+Uschi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Backes-Gellner%2C+Uschi"><span class="NLM_given-names">Uschi</span> Backes-Gellner</a> <a href="https://orcid.org/0000-0002-7511-9757"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/13639080.2022.2126968">https://doi.org/10.1080/13639080.2022.2126968</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>27 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Summary statistics: Wage sample.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F13639080.2022.2126968&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>To analyse the relationship between wages and skills packages with IT, we use a Mincer-type wage regression. The independent variable is the log of annual wages (in full-time equivalents). Measures of the skills packages with IT, i.e., the skills package with CNC/CAD, the skills package with system technologies, the skills package with IT-applications, and the skills package with control technologies, are based on original training occupations of each individual, which should not change over time. We control for the individual characteristics of gender, age, age squared, and being Swiss. We decided to only control for characteristics that are not influenced by the training occupation such that we do not include ‘bad controls’ (e.g., industry or firm size, see Angrist and Pischke <span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2009</a></span>, for the definition of ‘bad controls’). We also control for the year of the observation (i.e., year fixed effects).</p>
+  <p>Our labour market data allow for constructing a rolling panel structure (Balestra and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2017</a></span>; Eggenberger, Rinawi, and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Eggenberger and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>). Because we have observations of individuals for more than one year, we use a pooled ordinary least squares (OLS) model. We cluster standard errors on training occupations, because the ‘level of treatment’, i.e., skills packages with IT are measured, in the curricula of training occupations.</p>
+  <p>
+   <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/cjew20/2022/cjew20.v035.i06-07/13639080.2022.2126968/20221128/images/cjew_a_2126968_um0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/cjew20/2022/cjew20.v035.i06-07/13639080.2022.2126968/20221128/images/cjew_a_2126968_um0001.gif&quot;}"><span class="mml-formula"></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left" rowspacing=".5em" columnspacing="thickmathspace">
+       <mtr>
+        <mtd></mtd>
+        <mtd>
+         <mo stretchy="false">
+          (
+         </mo>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            I
+           </mi>
+          </mrow>
+         </mrow>
+         <mo stretchy="false">
+          )
+         </mo>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mi>
+          l
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          g
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <mi>
+          w
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          g
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            e
+           </mi>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mo>
+             ,
+            </mo>
+            <mi>
+             t
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+         <mo stretchy="false">
+          )
+         </mo>
+         <mo>
+          =
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mn>
+            0
+           </mn>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mrow>
+            <mn>
+             1
+            </mn>
+            <mo>
+             −
+            </mo>
+            <mn>
+             4
+            </mn>
+           </mrow>
+          </msub>
+         </mrow>
+         <mi>
+          S
+         </mi>
+         <mi>
+          k
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          l
+         </mi>
+         <mi>
+          l
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mi>
+          P
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          k
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          g
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mspace width="thinmathspace"></mspace>
+         <mi>
+          w
+         </mi>
+         <mrow>
+          <mo>
+           /
+          </mo>
+         </mrow>
+         <mi>
+          I
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            T
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mn>
+            5
+           </mn>
+          </msub>
+         </mrow>
+         <mi>
+          g
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          n
+         </mi>
+         <mi>
+          d
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            r
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msub>
+         </mrow>
+        </mtd>
+       </mtr>
+       <mtr>
+        <mtd></mtd>
+        <mtd>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mn>
+            6
+           </mn>
+          </msub>
+         </mrow>
+         <mi>
+          a
+         </mi>
+         <mi>
+          g
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            e
+           </mi>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mo>
+             ,
+            </mo>
+            <mi>
+             t
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mn>
+            7
+           </mn>
+          </msub>
+         </mrow>
+         <mi>
+          a
+         </mi>
+         <mi>
+          g
+         </mi>
+         <msubsup>
+          <mi>
+           e
+          </mi>
+          <mrow>
+           <mi>
+            i
+           </mi>
+           <mo>
+            ,
+           </mo>
+           <mi>
+            t
+           </mi>
+          </mrow>
+          <mn>
+           2
+          </mn>
+         </msubsup>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mn>
+            8
+           </mn>
+          </msub>
+         </mrow>
+         <mi>
+          S
+         </mi>
+         <mi>
+          w
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            s
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mrow>
+            <mn>
+             9
+            </mn>
+            <mo>
+             −
+            </mo>
+            <mn>
+             16
+            </mn>
+           </mrow>
+          </msub>
+         </mrow>
+         <mi>
+          y
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            r
+           </mi>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mo>
+             ,
+            </mo>
+            <mi>
+             t
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            ε
+           </mi>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mo>
+             ,
+            </mo>
+            <mi>
+             t
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math></span>
+   </disp-formula-group></p>
+  <p>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/cjew20/2022/cjew20.v035.i06-07/13639080.2022.2126968/20221128/images/cjew_a_2126968_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/cjew20/2022/cjew20.v035.i06-07/13639080.2022.2126968/20221128/images/cjew_a_2126968_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      t
+     </mi><mo>
+      =
+     </mo><mn>
+      2010
+     </mn><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><mn>
+      2016
+     </mn><mo>
+      ;
+     </mo><mrow>
+      <mrow>
+       <mi>
+         
+       </mi>
+      </mrow>
+     </mrow><mi>
+      i
+     </mi><mo>
+      =
+     </mo><mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><mi>
+      N
+     </mi>
+    </math></span>.</p>
+  <p>We analyse whether the wage return differs between (a) workers with any skills package with IT vs. workers without and (b) workers that have one or the other of the four different skills packages with IT. We first regress the log of wage on each skills package with IT separately and then include all skills packages with IT.</p>
+  <p>The first main result constitutes that workers with any skills packages with IT receive higher wage returns than workers without skills packages with IT: For each of the four skills package with IT (i.e., the skills package with CNC/CAD, the skills package with system technologies, the skills package with IT-applications, and the skills package with control technologies), we find statistically significant positive relationships with wages in comparison to workers without any IT skills package (see <button class="ref showTableEventRef" data-id="t0003">Table 3</button>).</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">IT skills in vocational training curricula and labour market outcomes</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Kiener%2C+Fabienne"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiener%2C+Fabienne"><span class="NLM_given-names">Fabienne</span> Kiener</a> <a href="https://orcid.org/0000-0001-7884-1385"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Gnehm%2C+Ann-Sophie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Gnehm%2C+Ann-Sophie"><span class="NLM_given-names">Ann-Sophie</span> Gnehm</a> <a href="https://orcid.org/0000-0001-5846-4025"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Clematide%2C+Simon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Clematide%2C+Simon"><span class="NLM_given-names">Simon</span> Clematide</a> <a href="https://orcid.org/0000-0003-1365-0662"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Backes-Gellner%2C+Uschi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Backes-Gellner%2C+Uschi"><span class="NLM_given-names">Uschi</span> Backes-Gellner</a> <a href="https://orcid.org/0000-0002-7511-9757"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/13639080.2022.2126968">https://doi.org/10.1080/13639080.2022.2126968</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>27 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Wages and skills packages with IT: Main analysis.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F13639080.2022.2126968&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The second main result shows that the positive wage returns of workers with any skills package with IT differ depending on which skills package with IT they have: Comparing the size of the coefficients, the fifth regression in <button class="ref showTableEventRef" data-id="t0003">Table 3</button> displays a coefficient of 0.058 for the skills package with IT-applications (i.e., workers with the skills package with IT-applications receive higher wages by 5.8% compared to workers without an IT skills package), followed by the coefficient of 0.054 for the skills package with control technologies, the coefficient of 0.027 for the skills package with CNC/CAD, and finally, the coefficient of 0.019 for the skills package with system technologies. To further explore whether the wage returns (i.e., coefficients in fifth regression in <button class="ref showTableEventRef" data-id="t0003">Table 3</button>) between the different skills packages with IT indeed differ from each other, we also investigate their pairwise F-tests: The coefficients for the different skills package with IT are significantly different from each other (see <button class="ref showTableEventRef" data-id="t0013">Table B2</button> in the appendix).<a href="#en0018"><sup>18</sup></a> In other words, each skills package with IT receives a different wage return.</p>
+  <p>Having shown the main results, we also investigate whether the relationships between the skills packages with IT and wages depend on the controls. Thus we add our controls one by one to the regression with skills packages with IT (see <button class="ref showTableEventRef" data-id="t0014">Table B3</button> in appendix). The analysis shows that the coefficients for the skills packages with IT mostly change when adding gender (and only slightly for age or being Swiss). A concern of our skills packages with IT could be that other skills packages (those without IT) would diminish the previously shown main wage results. However, even when we add dummies for the skills packages without IT to our specification, the coefficients for the skills packages with IT remain positive and significant (see <button class="ref showTableEventRef" data-id="t0015">Table B4</button> in appendix). Thus our additional analyses support our main result of statistically significant positive relationships between each skills package with IT and wages.</p>
+ </div>
+ <div id="s0005-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i16">Employment</h3>
+  <p>The employment analysis uses a different sample than the wage analysis, because for analysing the employment probability, we do not only focus on the working population but we can also include unemployed individuals.<a href="#en0019"><sup>19</sup></a> We still restrict the sample to individuals aged 18 to 64 with VET as the highest education level. As in the previous sample, we only include individuals with values for the control variables (age, gender, Swiss nationality).<a href="#en0020"><sup>20</sup></a></p>
+  <p>Our new sample comprises 99,822 observations from 61,752 individuals, of whom 92% (8%) are employed (unemployed). A total of 56% are men and 44% are women. Seventy percent of the individuals have a Swiss citizenship. We standardised the measures of the different skills packages with IT on the employment sample. <button class="ref showTableEventRef" data-id="t0004">Table 4</button> displays summary statistics of the variables.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">IT skills in vocational training curricula and labour market outcomes</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Kiener%2C+Fabienne"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiener%2C+Fabienne"><span class="NLM_given-names">Fabienne</span> Kiener</a> <a href="https://orcid.org/0000-0001-7884-1385"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Gnehm%2C+Ann-Sophie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Gnehm%2C+Ann-Sophie"><span class="NLM_given-names">Ann-Sophie</span> Gnehm</a> <a href="https://orcid.org/0000-0001-5846-4025"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Clematide%2C+Simon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Clematide%2C+Simon"><span class="NLM_given-names">Simon</span> Clematide</a> <a href="https://orcid.org/0000-0003-1365-0662"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Backes-Gellner%2C+Uschi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Backes-Gellner%2C+Uschi"><span class="NLM_given-names">Uschi</span> Backes-Gellner</a> <a href="https://orcid.org/0000-0002-7511-9757"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/13639080.2022.2126968">https://doi.org/10.1080/13639080.2022.2126968</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>27 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 4. </span> Summary statistics: Employment sample.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0004&amp;doi=10.1080%2F13639080.2022.2126968&amp;downloadType=CSV"> Download CSV</a><a data-id="t0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>We estimate a simple linear probability model to analyse the relationship between employment and skills packages with IT. The independent variable is binary, being employed or not, and we choose the linear probability model following Angrist and Pischke (<span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2009</a></span>). We use the measures for different skills packages with IT standardised on the employment sample. We also control for age, age squared, gender, Swiss nationality and years. Again, we cluster standard errors on training occupations due to the same reasoning as in the wage analyses (the ‘level of treatment’—skills packages with IT—are measured in the curricula of training occupations).</p>
+  <p>
+   <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/cjew20/2022/cjew20.v035.i06-07/13639080.2022.2126968/20221128/images/cjew_a_2126968_um0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/cjew20/2022/cjew20.v035.i06-07/13639080.2022.2126968/20221128/images/cjew_a_2126968_um0002.gif&quot;}"><span class="mml-formula"></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left" rowspacing=".5em" columnspacing="thickmathspace">
+       <mtr>
+        <mtd></mtd>
+        <mtd>
+         <mo stretchy="false">
+          (
+         </mo>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            I
+           </mi>
+           <mi mathvariant="normal">
+            I
+           </mi>
+          </mrow>
+         </mrow>
+         <mo stretchy="false">
+          )
+         </mo>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            P
+           </mi>
+           <mi mathvariant="normal">
+            r
+           </mi>
+          </mrow>
+         </mrow>
+         <mo stretchy="false">
+          (
+         </mo>
+         <mi>
+          e
+         </mi>
+         <mi>
+          m
+         </mi>
+         <mi>
+          p
+         </mi>
+         <mi>
+          l
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          y
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          d
+         </mi>
+         <mo>
+          =
+         </mo>
+         <mn>
+          1
+         </mn>
+         <mrow>
+          <mrow>
+           <mrow>
+            <mo>
+             |
+            </mo>
+           </mrow>
+           <mi mathvariant="normal">
+            X
+           </mi>
+          </mrow>
+         </mrow>
+         <mo stretchy="false">
+          )
+         </mo>
+         <mo>
+          =
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mn>
+            0
+           </mn>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mrow>
+            <mn>
+             1
+            </mn>
+            <mo>
+             −
+            </mo>
+            <mn>
+             4
+            </mn>
+           </mrow>
+          </msub>
+         </mrow>
+         <mi>
+          S
+         </mi>
+         <mi>
+          k
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          l
+         </mi>
+         <mi>
+          l
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mi>
+          P
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          k
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          g
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mspace width="thinmathspace"></mspace>
+         <mi>
+          w
+         </mi>
+         <mrow>
+          <mo>
+           /
+          </mo>
+         </mrow>
+         <mi>
+          I
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            T
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mn>
+            5
+           </mn>
+          </msub>
+         </mrow>
+         <mi>
+          g
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          n
+         </mi>
+         <mi>
+          d
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            r
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mn>
+            6
+           </mn>
+          </msub>
+         </mrow>
+         <mi>
+          a
+         </mi>
+         <mi>
+          g
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            e
+           </mi>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mo>
+             ,
+            </mo>
+            <mi>
+             t
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+         <mspace width="thinmathspace"></mspace>
+        </mtd>
+       </mtr>
+       <mtr>
+        <mtd></mtd>
+        <mtd>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mspace width="thinmathspace"></mspace>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mn>
+            7
+           </mn>
+          </msub>
+         </mrow>
+         <mi>
+          a
+         </mi>
+         <mi>
+          g
+         </mi>
+         <msubsup>
+          <mi>
+           e
+          </mi>
+          <mrow>
+           <mi>
+            i
+           </mi>
+           <mo>
+            ,
+           </mo>
+           <mi>
+            t
+           </mi>
+          </mrow>
+          <mn>
+           2
+          </mn>
+         </msubsup>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mn>
+            8
+           </mn>
+          </msub>
+         </mrow>
+         <mi>
+          S
+         </mi>
+         <mi>
+          w
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            s
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            β
+           </mi>
+           <mrow>
+            <mn>
+             9
+            </mn>
+            <mo>
+             −
+            </mo>
+            <mn>
+             16
+            </mn>
+           </mrow>
+          </msub>
+         </mrow>
+         <mi>
+          y
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mrow>
+          <msub>
+           <mi>
+            r
+           </mi>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mo>
+             ,
+            </mo>
+            <mi>
+             t
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            ε
+           </mi>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mo>
+             ,
+            </mo>
+            <mi>
+             t
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math></span>
+   </disp-formula-group></p>
+  <p>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/cjew20/2022/cjew20.v035.i06-07/13639080.2022.2126968/20221128/images/cjew_a_2126968_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/cjew20/2022/cjew20.v035.i06-07/13639080.2022.2126968/20221128/images/cjew_a_2126968_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      t
+     </mi><mo>
+      =
+     </mo><mn>
+      2010
+     </mn><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><mn>
+      2016
+     </mn><mo>
+      ;
+     </mo><mrow>
+      <mrow>
+       <mi>
+         
+       </mi>
+      </mrow>
+     </mrow><mi>
+      i
+     </mi><mo>
+      =
+     </mo><mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><mi>
+      N
+     </mi>
+    </math></span></p>
+  <p>Our analyses show whether the probability of being employed differs between (a) workers with any skills package with IT vs. workers without and (b) workers that have one or the other of the four different skills packages with IT. The first main result is that workers with any skills package with IT have a higher employment probability than workers without a skills package with IT (see <button class="ref showTableEventRef" data-id="t0005">Table 5</button>).</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">IT skills in vocational training curricula and labour market outcomes</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Kiener%2C+Fabienne"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiener%2C+Fabienne"><span class="NLM_given-names">Fabienne</span> Kiener</a> <a href="https://orcid.org/0000-0001-7884-1385"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Gnehm%2C+Ann-Sophie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Gnehm%2C+Ann-Sophie"><span class="NLM_given-names">Ann-Sophie</span> Gnehm</a> <a href="https://orcid.org/0000-0001-5846-4025"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Clematide%2C+Simon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Clematide%2C+Simon"><span class="NLM_given-names">Simon</span> Clematide</a> <a href="https://orcid.org/0000-0003-1365-0662"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Backes-Gellner%2C+Uschi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Backes-Gellner%2C+Uschi"><span class="NLM_given-names">Uschi</span> Backes-Gellner</a> <a href="https://orcid.org/0000-0002-7511-9757"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/13639080.2022.2126968">https://doi.org/10.1080/13639080.2022.2126968</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>27 September 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 5. </span> Employment and skills packages with IT: Main analysis.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0005-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0005&amp;doi=10.1080%2F13639080.2022.2126968&amp;downloadType=CSV"> Download CSV</a><a data-id="t0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The second main result shows that between workers with different skills packages with IT, the employment probability varies: The fifth regression in <button class="ref showTableEventRef" data-id="t0005">Table 5</button> shows the coefficient of 0.012 for the skills package with CNC/CAD (i.e., workers with the skills package with CNC/CAD have a higher employment probability by 1.2 percentage points compared to workers without an IT skills package), followed by the coefficient of 0.008 for the skills package with system technologies, the coefficient of 0.007 for the skills package with control technologies, and finally, the coefficient of 0.005 for the skills package with IT-applications. In contrast to the results of the wage returns, the skills package with IT-applications correlates with the lowest probability of being employed. To further explore whether the employment probabilities (i.e., coefficients in fifth regression in <button class="ref showTableEventRef" data-id="t0005">Table 5</button>) between the different skills packages with IT indeed differ from each other, we also investigate their pairwise F-tests: The coefficients of the skills package with CNC/CAD, the one with IT-applications and the one with system technologies are statistically significant different from each other; however, the coefficient of the skills package with control technologies is not different from the others (see <button class="ref showTableEventRef" data-id="t0016">Table B5</button> in the appendix).</p>
+  <p>To investigate whether the relationship between the skills packages with IT and the employment probability depends on the controls, we show in additional regressions that the coefficients of the skills packages with IT change only slightly when adding the controls one by one (see <button class="ref showTableEventRef" data-id="t0017">Table B6</button> in the appendix). In parallel to the wage analysis, we also address the possible concern whether including skills packages without IT diminishes the main employment result; thus we add dummies for the skills packages without IT to our specification. The coefficients for the skills packages with IT remain positive and significant, with the exception of the coefficient of the skills package with control technologies, which is no longer significant possibly due to potential multicollinearity (see <button class="ref showTableEventRef" data-id="t0018">Table B7</button> in appendix). Therefore, our additional analyses further demonstrate our main result: Individuals trained in skills packages with IT have a higher probability of being employed.</p>
+ </div>
+</div>
+<div id="s0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i18" class="section-heading-2">Additional analyses of skills packages with IT, requirement levels, and labour market outcomes</h2>
+ <p>In this section, we address one potential concern about our analyses in more detail, that is, the cognitive level of skills and tasks that are required in certain occupations. The question is whether skills packages with IT only occur in cognitively demanding occupations. If so, then the positive relationships of skills packages with IT and labour market outcomes may be only due to the higher cognitive ability of the individuals. Besides addressing this concern, our additional analysis adds to the studies that use PIACC data on IT use for problem-solving as IT skills (Falck, Heimisch-Roecker, and Wiederhold <span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>) and in another study as a part of cognitive skills (Shields and Sandoval Hernandez <span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>). To evaluate this concern, we include the intellectual requirement levels of occupations in our analyses. The requirement level reflects the cognitive difficulty level of a VET occupation resulting from the average of an expert assessment (between 1 and 100) in maths, school language, natural sciences, and a first foreign language (see Goetze and Aksu <span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>, for the methodology; Jaik and Wolter <span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2019</a></span> or Wolter and Zumbuehl <span class="ref-lnk lazy-ref"><a data-rid="cit0042" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2017</a></span> for studies using the data).<a href="#en0021"><sup>21</sup></a></p>
+ <p>Because the requirement levels are not available for all VET occupations, we had to build a slightly smaller wage<a href="#en0022"><sup>22</sup></a> and employment<a href="#en0023"><sup>23</sup></a> sample for these analyses. Occupations that include IT may be cognitively demanding; thus we expect positive correlations between requirement levels and skills packages with IT. The correlation table below (<button class="ref showTableEventRef" data-id="t0006">Table 6</button>) shows that requirement levels are positively correlated with the skills package with CNC/CAD, the skills package with IT-applications, and the skills package with control technologies. In contrast, the skills package with system technologies is slightly negatively correlated with the requirement levels, meaning that occupations with the skills package with system technologies have a low requirement level. Thus not every skills package with IT needs to be positively correlated with requirement levels—a result that further emphasises the importance of distinguishing different skills packages with IT.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">IT skills in vocational training curricula and labour market outcomes</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Kiener%2C+Fabienne"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiener%2C+Fabienne"><span class="NLM_given-names">Fabienne</span> Kiener</a> <a href="https://orcid.org/0000-0001-7884-1385"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Gnehm%2C+Ann-Sophie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Gnehm%2C+Ann-Sophie"><span class="NLM_given-names">Ann-Sophie</span> Gnehm</a> <a href="https://orcid.org/0000-0001-5846-4025"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Clematide%2C+Simon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Clematide%2C+Simon"><span class="NLM_given-names">Simon</span> Clematide</a> <a href="https://orcid.org/0000-0003-1365-0662"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Backes-Gellner%2C+Uschi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Backes-Gellner%2C+Uschi"><span class="NLM_given-names">Uschi</span> Backes-Gellner</a> <a href="https://orcid.org/0000-0002-7511-9757"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/13639080.2022.2126968">https://doi.org/10.1080/13639080.2022.2126968</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>27 September 2022
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 6. </span> Skills packages with IT and requirement levels: Correlations.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0006-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0006&amp;doi=10.1080%2F13639080.2022.2126968&amp;downloadType=CSV"> Download CSV</a><a data-id="t0006" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <p>We compare our baseline regression of wages with a regression that includes requirement levels. The regression with requirement levels shows that three out of the four skills packages with IT still have positive and significant coefficients. The central coefficient in the wage regression, that for the skills package with IT-applications, is smaller than it was (now 0.035, before 0.059, i.e., adding requirement levels, workers with the skills package with IT-applications receive higher wages by 3.5% compared to workers without any IT skills packages) but is still larger than the coefficients for the other skills packages. Additionally, the analysis supports that our measures of skills packages with IT have additional explanatory power for wages of different occupations even when including their intellectual requirement levels (see <button class="ref showTableEventRef" data-id="t0007">Table 7</button>, comparing R squared of regressions two and three).</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">IT skills in vocational training curricula and labour market outcomes</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Kiener%2C+Fabienne"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiener%2C+Fabienne"><span class="NLM_given-names">Fabienne</span> Kiener</a> <a href="https://orcid.org/0000-0001-7884-1385"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Gnehm%2C+Ann-Sophie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Gnehm%2C+Ann-Sophie"><span class="NLM_given-names">Ann-Sophie</span> Gnehm</a> <a href="https://orcid.org/0000-0001-5846-4025"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Clematide%2C+Simon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Clematide%2C+Simon"><span class="NLM_given-names">Simon</span> Clematide</a> <a href="https://orcid.org/0000-0003-1365-0662"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Backes-Gellner%2C+Uschi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Backes-Gellner%2C+Uschi"><span class="NLM_given-names">Uschi</span> Backes-Gellner</a> <a href="https://orcid.org/0000-0002-7511-9757"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/13639080.2022.2126968">https://doi.org/10.1080/13639080.2022.2126968</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>27 September 2022
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 7. </span> Wages, skills packages with IT, and requirement levels: Additional analysis.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0007-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0007&amp;doi=10.1080%2F13639080.2022.2126968&amp;downloadType=CSV"> Download CSV</a><a data-id="t0007" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <p>Similar to the wage regression, adding requirement levels to the employment regression also adds explanatory power (see <button class="ref showTableEventRef" data-id="t0008">Table 8</button>, comparing R squared of regressions two and three). The coefficients of 0.007 for the skills package with system technologies is still significantly positive. This coefficient means that—adding requirement levels—workers with the skills package with system technologies have a higher employment probability by 0.7 percentage points compared to workers without any IT skills packages. In contrast to the coefficient of the skills package with system technologies, the coefficients of the other skills packages with IT are nonsignificant when including requirement levels. Comparing the wage regressions and the employment regressions, the requirement levels have more impact on the relationships between skills packages with IT and the employment probability than the ones between skills packages with IT and wages. In other words, while individuals possessing skills packages with IT have higher wages irrespective of the cognitive requirements, skills packages with IT are not the only driver of a higher employment probability, because cognitive requirements also explain part of the relationship.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">IT skills in vocational training curricula and labour market outcomes</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Kiener%2C+Fabienne"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kiener%2C+Fabienne"><span class="NLM_given-names">Fabienne</span> Kiener</a> <a href="https://orcid.org/0000-0001-7884-1385"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Gnehm%2C+Ann-Sophie"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Gnehm%2C+Ann-Sophie"><span class="NLM_given-names">Ann-Sophie</span> Gnehm</a> <a href="https://orcid.org/0000-0001-5846-4025"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Clematide%2C+Simon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Clematide%2C+Simon"><span class="NLM_given-names">Simon</span> Clematide</a> <a href="https://orcid.org/0000-0003-1365-0662"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Backes-Gellner%2C+Uschi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Backes-Gellner%2C+Uschi"><span class="NLM_given-names">Uschi</span> Backes-Gellner</a> <a href="https://orcid.org/0000-0002-7511-9757"><img src="/templates/jsp/images/orcid.png"></a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/13639080.2022.2126968">https://doi.org/10.1080/13639080.2022.2126968</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>27 September 2022
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 8. </span> Employment, skills packages with IT, and requirement levels: Additional analysis.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="t0008-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0008&amp;doi=10.1080%2F13639080.2022.2126968&amp;downloadType=CSV"> Download CSV</a><a data-id="t0008" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <p>Our additional analyses further emphasise the need for a differentiated view of the different skills packages with IT. Additionally, requirement levels do not completely remove the explanatory power of the skills packages with IT. Thus the additional analyses address the concern that skills packages with IT only occur in cognitively demanding occupations. In other words, these analyses demonstrate that the positive labour market outcomes associated with skills packages with IT are not primarily driven by cognitively demanding occupations.</p>
+</div>
+<div id="s0007" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i19" class="section-heading-2">Conclusion</h2>
+ <p>This paper first conceptually introduces ‘skills packages’ as an important analytical category for labour market outcomes. We argue that labour market-oriented IT training needs to teach IT skills in combination with complementary technical and nontechnical skills. This results in training curricula typically containing comprehensive skills packages with IT skills rather than just single IT skills without the necessary complementary skills. Second, we empirically identify four skills packages with IT skills that are currently relevant in the Swiss labour market, i.e., in a highly innovative and internationally competitive economy. We show the major elements of these skills packages with IT and how they correspond to labour market outcomes of individuals graduating with the respective skills packages. The four skills packages with IT based on applying an unsupervised NLP algorithm to occupational training curricula are the following: first, a skills package that revolves around <i>CNC/CAD</i> skills and includes e.g., knowledge of materials, testing, and work safety; second, a skills package that revolves around <i>system technologies</i>, including e.g., process orientation or technical documentation; third, a skills package that revolves around <i>IT-applications</i>, including e.g., project management, assembling and working economically; fourth, a skills package that revolves around <i>control technologies</i>, including e.g., knowledge on moulding or cutting tools. Our empirical findings emphasise that the combination of IT skills with other technical and nontechnical skills is important and indicate how efficient IT training programmes can be developed in the future.</p>
+ <p>Our labour market analyses show higher wage returns and a higher employment probability for workers with any skills package with IT compared to workers without an IT skills package. Moreover, the positive wage returns and employment probabilities vary across the different skills packages with IT. Thus the labour market analyses further stress that a differentiated view is important. Furthermore, we examine how our main results are connected to the cognitive requirement levels of the tasks in a given occupation and the workers selecting into these occupations, which we proxy with the intellectual requirement levels of each occupation. Our results show that even though the cognitive requirement levels and skills packages with IT are correlated, the different skills packages with IT still improve the explanatory power regarding labour market outcomes. Thus, our results are not only driven by differences in cognitive abilities.</p>
+ <p>While economic returns are one important—and rather easily obtainable—indicator for the value of such skills packages, they may also bring other types of values, e.g., the individuals’ satisfaction of receiving such training or firms’ cost-benefit of training such skills packages. These are therefore certainly valuable avenues for future research. However, we argue that economic returns for the individuals are already a very important aspect of possible returns to study the value of skills packages with IT, because they (a) contribute to the workers' financial well-being—possibly across their whole labour market career—and (b) are a strong indicator of how firms value such skills packages. The importance of economic returns is also stressed by further research that studies noncognitive skills and wage returns demonstrating the relevance of investigating such relationships (Kiener, Gnehm, and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>).</p>
+ <p>Our main contribution to the economics literature is (a) to show that typical IT training consists of skills packages with IT, (b) to illustrate how these skills packages with IT look like, and (c) to emphasise their importance for labour market outcomes such as wages and the employment probability. Whereas the economics literature has dealt with IT skills as ‘single’ skills (e.g., Atalay et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2018</a></span>; Buchmann, Buchs, and Gnehm <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>; Borghans and ter Weel <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2006</a></span>; Falck, Heimisch-Roecker, and Wiederhold <span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>, or Eggenberger and Backes-Gellner <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>), we conceptually and empirically study skills packages with IT, which go beyond the view of ‘single’ IT skills but rather stress the relevance of a ‘package of skills’ (i.e., a combination of IT skills with complementary technical and nontechnical skills). Given that we add a novel training perspective by investigating skills packages with IT and do not know in advance how the skills packages with IT look like, we do not have an a priori, specific definition of the skills at the start of the empirical investigations.</p>
+ <p>Methodologically, this paper also introduces a novel way of measuring skills packages with IT showing how skills can be measured in vast quantities of texts with an unsupervised NLP method. Using a large body of text as a data source is a recent development in economics or sociological research and our method is applicable to text as data (but not to other data sources). We particularly contribute to the current research on skills in job postings because we apply a novel method that needs fewer a priori definitions than many previously used methods. Thus future studies on job postings may adopt our method. Furthermore, the method can also be applied to other online curriculum databases where curriculum texts are available to the international research audience, such as e.g., the Open Syllabus Project at Columbia University, which collects millions of digital curricula in its database and makes them available to the public.</p>
+ <p>Moreover, our results lead to recommendations for policy makers who want to prepare workers for the increasing diffusion of IT. The policy recommendations apply for dual apprenticeship systems as well as systems implementing work-related training such as the UK (see e.g., Fettes, Evans, and Kashefpakdel <span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i22 _i23 _i24" href="#"><span class="off-screen">Citation</span>2020</a></span>, who stress the importance of ‘putting skills to work’ and how context matters). Specifically, we show results regarding the success of different IT trainings as indicated by labour market outcomes. We argue that when deciding on policy changes (for example curriculum designs), policy makers should recognise the importance of skills packages with IT and what they may look like. A successful IT training consists of skills packages with IT and its complementary set of skills that are typically used in the workplace. For example, a skills package with IT-applications should also include, e.g., project management, which helps improve the efficiency of any type of IT-application and thus elevates the productivity of the single IT skill.</p>
+</div>

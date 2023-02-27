@@ -1,0 +1,1235 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">1. Introduction</h2>
+ <p>Nowadays, social media has become a platform where numerous users publish and exchange information at any time and in any place. On social media, every user acts as an intelligent sensor that collects and shares information about their local environment (Goodchild, <span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2007a</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2007b</a></span>) . The huge amount of real-time information crowdsourced in social media can be used to study individuals’ status, opinions, and behaviours. With the increasing popularity of GPS-enabled mobile devices, messages on social media can be associated with geographical locations. In emergency conditions, people are turning to social media to obtain the latest information and to share opinions in their social networks. Social media not only opens another channel for broadcasting but also allows for two-way communication between emergency managers and the public. The utility of social media for hazard response has two fundamental functions: (a) as a tool to monitor emerging crises and events as transmitted by users; (b) as an effective means of communicating emergency information to a broad audience (Goodchild, <span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2007a</a></span>).</p>
+ <p>In recent years, the big data collected from social media platforms have been utilized to support disaster management in various ways. Social media data contributed by volunteer users provide first-hand information about disaster situations in real-time and real places (Kent and Capello <span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2013</a></span>; Li et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2018</a></span>). Spatio-temporal distributions of disaster-related social media data can be used as proxies to evaluate community resilience and social disparities (Zou et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2018</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2019</a></span>). Additionally, government agencies and emergency response organizations use social media to broadcast official announcements and situational updates to individuals and communities in affected areas (J. Kim and Hastak <span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2018</a></span>). To improve the efficiency of disaster information dissemination, studies have been conducted to examine the effects of various social network structures on user behaviours in disasters (Jiang, Li, and Cutter <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2019</a></span>; J. Kim and Hastak <span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2018</a></span>). Empirical evidence shows that disaster information disseminated in various types of media can influence people’s perception of disaster risk (Västfjäll et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2008</a></span>; Wahlberg and Sjoberg <span class="ref-lnk lazy-ref"><a data-rid="cit0033" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2000</a></span>), attitude towards climate change (Lowe et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2006</a></span>), and their knowledge and intentions of coping with potential disasters and the long-term climate change (Houston et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2015</a></span>). Thus, effective communication of disaster information prior to disasters can also increase the likelihood of individuals engaging in disaster preparedness activities (Y.-C. Kim and Kang <span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2010</a></span>) and create coordination and social connections to improve community resilience (Alexander <span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2014</a></span>).</p>
+ <p>Given the strong ability for information dissemination, social media is considered as an effective tool to build community resilience through effective communication of disaster information (Dufty <span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2012</a></span>). As the primary means of information diffusion in Twitter, retweet function allows an original tweet to spread extensively across user networks, creating bi-directional information flows between emergency manager to individual citizens. To effectively apply social media platforms for disaster management, it is critical to answer (a) what are the prevailing topics on social media under a disastrous condition; (b) which topic/topics spread more extensively over the geographic space; (c) what is the spatial diffusion pattern (i.e. directions of information flows) of the disaster-related information. Answers to these questions would require interdisciplinary efforts that integrate geography and information science.</p>
+ <p>As an attempt to answer these questions, this article presents an exploratory analysis of the information diffusion pattern of Twitter messages (retweets) in Winter Storm Diego, which hit the Southeast United States between 7 December 2018 and 10 December 2018. This storm was one of the most popular topics on Twitter during the impact period. In addition to the affected areas, storm-related tweets also drew extensive attention in areas that are not directly affected by the disaster. This study applied natural language processing (NLP) to extract latent topics in the storm-related tweets and used spatial analysis methods to investigate the spatial diffusion patterns of topics in this storm. The results can improve the understanding of information diffusion on social media during natural hazards. The findings of the analyses can provide support for disaster relief, information communication and broadcasting through social media platforms.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">2. Study Area and Data Collection</h2>
+ <div id="s0002-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">2.1 Study Area</h3>
+  <p>This study focuses on Winter Storm Diego in the 2018–2019 winter. Diego dumped heavy snow and damaging ice, and resulted in extensive travel delay, power outage, and property damage across the southeast region of the United States (<a href="#f0001">Figure 1</a>). Diego was formed on 5 December and dissipated on 10 December. <a href="#f0001">Figure 1</a> shows the affected regions where winter weather watches or winter weather warnings were issued by the National Weather Services. In this storm, Charlotte (North Carolina) received the heaviest snowfall since 1997 from Winter Storm Diego. Lubbock (Texas) also left one of the snowiest calendar days on its record. To avoid change blindness and improve the visualization (Fish, Goldsberry, and Battersby <span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2011</a></span>), the impact areas of Winter Storm Diego were highlighted in all following maps (<a href="#f0007">Figure 7</a>, <a href="#f0009">Figure 9</a>, &amp; <a href="#f0011">Figure 11</a>).</p>
+  <div class="figure figureViewer" id="f0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 August 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1. </span> The impact areas and non-affected areas in Winter Storm Diego. The impact areas (red) are places where Winter Storm watches and/or alarms were issued.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/medium/tagi_a_1954086_f0001_oc.jpg" loading="lazy" height="324" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0001">
+   <p class="captionText"><span class="captionLabel">Figure 1. </span> The impact areas and non-affected areas in Winter Storm Diego. The impact areas (red) are places where Winter Storm watches and/or alarms were issued.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0001">
+   <div class="figureFootNote-f0001"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0002-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">2.2 Data collection</h3>
+  <p>Tweets containing the keywords related to the storm were collected using Python and the standard Twitter streaming API (Twitter Inc. <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2019</a></span>). Using the keywords including ‘winter’, ‘storm’, ‘snow’, ‘freezing rain’, ‘ice’, and ‘frozen’, more than 1 million tweets were collected from 6 December to 12 December. Tweets collected by the streaming API represent a random sample of tweets generated in real-time. The collected data are in JavaScript Object Notation (JSON) format, and were later parsed into records with attributes, such as the user ID, text message, counts of favourite, post time, location, and Twitter status. However, based on the Twitter streaming logical rules (Twitter Inc. <span class="ref-lnk lazy-ref"><a data-rid="cit0031" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2019</a></span>), streaming with multiple keywords is a union query that collects tweets containing any one of the keywords. Due to the ambiguous semantics of the keywords, many of the collected tweets were irrelevant to the storm (e.g. tweets containing ‘<b>ice</b>-cream’, ‘<b>frozen</b> yogurt’). To eliminate the irrelevant tweets, an additional screening process was conducted to select tweets that contain words ‘Diego’ (excluding San Diego), ‘winter storm’, ‘winterstorm’, ‘snowstorm’, ‘snow storm’, ‘snowmageddon’. At this step, 47,604 tweets were kept after the screening.</p>
+ </div>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i8" class="section-heading-2">3. Analysis</h2>
+ <p>The traditional methods to identify information diffusion patterns are through social network and hashtags (Huang and Wong <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2016</a></span>; Jiang, Li, and Cutter <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2019</a></span>; Kent and Capello <span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2013</a></span>). User networks (e.g. followers and friends) represent how users are connected in the social media, but cannot fully express information diffusion pattern between users. Similarly, hashtags are used as keywords to associate tweets to various topics, but cannot convey complete messages of the tweets. Tweets quoting the same hashtags may be generated by unrelated users and express very different meanings. Also, hashtags are often used in established communities for relatively mature topics. In a rapidly emerging event such as a winter storm, new hashtags are only known by limited Twitter users, and tracing the hashtag can limit the capture of&nbsp;diffusion process. In other words, tracing hashtags can only capture a partial (perhaps biased) sample of information flows. In our analysis, tweets with hashtags only occupies less than 40% in all the 47,604 selected tweets. Unlike tracing hashtags, tracing retweets can capture full messages of tweets and link the information flows among users. Therefore, this analysis utilizes retweets to track information diffusion in this storm.</p>
+ <div id="s0003-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">3.1 Identifying Retweets</h3>
+  <p>Each tweet has three possible statuses: origin, retweet, and quote. Retweets are reposted or forwarded messages of original tweets (origin), while quoted tweets (quote) include the original tweets and some new comments. In this study, quoted tweets are considered as a type of retweets. Different from original tweets, retweets never carry geotags. Quoted tweets and retweets store the text content of the original tweet in the ‘text’ field embedded under the ‘retweet_status’ attribute. Thus, quoted tweets and retweets can be linked to the original tweets by matching the text contents of original tweets. After preprocessing, we found that some tweets with an origin status are actually copied from other users. In Twitter, many users and robots copy popular tweets and repost as their original tweets to increase followers and popularity (Edwards et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2014</a></span>). In the collected data, 1.78% of original tweets are identified as copied tweets (372 copied tweets out of 20,928 screened original tweets). Such copied tweets were detected by comparing the posting times. Among original tweets with the identical text messages, the one with the earliest posting time was identified as the real original tweets. In this study, copied original tweets were also considered as retweets since they also facilitate the spread of the original tweets. Retweets without identifiable original tweets within the streaming time frame were excluded. After labelling the retweets and original tweets, the number of retweets for each original tweet is counted using Equation 1. <disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/tagi_a_1954086_m0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/tagi_a_1954086_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">Eq 1 </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mo form="prefix">
+        Re
+       </mo>
+      </mrow><mi>
+       t
+      </mi><mi>
+       w
+      </mi><mi>
+       e
+      </mi><mi>
+       e
+      </mi><mi>
+       t
+      </mi><mspace width="thinmathspace"></mspace><mi>
+       C
+      </mi><mi>
+       o
+      </mi><mi>
+       u
+      </mi><mi>
+       n
+      </mi><mi>
+       t
+      </mi><mo>
+       =
+      </mo><mfenced open="{" close="">
+       <mrow>
+        <mtable rowspacing="4pt" columnspacing="1em">
+         <mtr>
+          <mtd>
+           <mrow>
+            <mtable rowspacing="4pt" columnspacing="1em">
+             <mtr>
+              <mtd>
+               <msub>
+                <mrow>
+                 <msub>
+                  <mrow>
+                   <msub>
+                    <mi>
+                     N
+                    </mi>
+                    <mrow>
+                     <mi>
+                      d
+                     </mi>
+                     <mi>
+                      u
+                     </mi>
+                     <mi>
+                      p
+                     </mi>
+                     <mi>
+                      l
+                     </mi>
+                     <mi>
+                      i
+                     </mi>
+                     <mi>
+                      c
+                     </mi>
+                     <mi>
+                      a
+                     </mi>
+                     <mi>
+                      t
+                     </mi>
+                     <mi>
+                      e
+                     </mi>
+                     <mi>
+                      d
+                     </mi>
+                     <mspace width="thinmathspace"></mspace>
+                     <mi>
+                      t
+                     </mi>
+                     <mi>
+                      w
+                     </mi>
+                     <mi>
+                      e
+                     </mi>
+                     <mi>
+                      e
+                     </mi>
+                     <mi>
+                      t
+                     </mi>
+                     <mi>
+                      s
+                     </mi>
+                    </mrow>
+                   </msub>
+                  </mrow>
+                  <mrow>
+                   <mo>
+                    −
+                   </mo>
+                   <mn>
+                    1
+                   </mn>
+                  </mrow>
+                 </msub>
+                </mrow>
+                <mrow>
+                 <mspace width="thinmathspace"></mspace>
+                 <mspace width="thinmathspace"></mspace>
+                 <mspace width="thinmathspace"></mspace>
+                 <mspace width="thinmathspace"></mspace>
+                 <mi>
+                  i
+                 </mi>
+                 <mi>
+                  f
+                 </mi>
+                 <mspace width="thinmathspace"></mspace>
+                 <mi>
+                  o
+                 </mi>
+                 <mi>
+                  r
+                 </mi>
+                 <mi>
+                  i
+                 </mi>
+                 <mi>
+                  g
+                 </mi>
+                 <mi>
+                  i
+                 </mi>
+                 <mi>
+                  n
+                 </mi>
+                 <mi>
+                  a
+                 </mi>
+                 <mi>
+                  l
+                 </mi>
+                 <mspace width="thinmathspace"></mspace>
+                 <mi>
+                  t
+                 </mi>
+                 <mi>
+                  w
+                 </mi>
+                 <mi>
+                  e
+                 </mi>
+                 <mi>
+                  e
+                 </mi>
+                 <mi>
+                  t
+                 </mi>
+                 <mspace width="thinmathspace"></mspace>
+                 <mi>
+                  i
+                 </mi>
+                 <mi>
+                  s
+                 </mi>
+                 <mspace width="thinmathspace"></mspace>
+                 <mi>
+                  f
+                 </mi>
+                 <mi>
+                  o
+                 </mi>
+                 <mi>
+                  u
+                 </mi>
+                 <mi>
+                  n
+                 </mi>
+                 <mi>
+                  d
+                 </mi>
+                </mrow>
+               </msub>
+              </mtd>
+             </mtr>
+            </mtable>
+           </mrow>
+          </mtd>
+         </mtr>
+         <mtr>
+          <mtd>
+           <mrow>
+            <mtable rowspacing="4pt" columnspacing="1em">
+             <mtr>
+              <mtd>
+               <msub>
+                <mrow>
+                 <mrow>
+                  <msub>
+                   <mi>
+                    N
+                   </mi>
+                   <mrow>
+                    <mi>
+                     d
+                    </mi>
+                    <mi>
+                     u
+                    </mi>
+                    <mi>
+                     p
+                    </mi>
+                    <mi>
+                     l
+                    </mi>
+                    <mi>
+                     i
+                    </mi>
+                    <mi>
+                     c
+                    </mi>
+                    <mi>
+                     a
+                    </mi>
+                    <mi>
+                     t
+                    </mi>
+                    <mi>
+                     e
+                    </mi>
+                    <mi>
+                     d
+                    </mi>
+                    <mspace width="thinmathspace"></mspace>
+                    <mi>
+                     t
+                    </mi>
+                    <mi>
+                     w
+                    </mi>
+                    <mi>
+                     e
+                    </mi>
+                    <mi>
+                     e
+                    </mi>
+                    <mi>
+                     t
+                    </mi>
+                    <mi>
+                     s
+                    </mi>
+                   </mrow>
+                  </msub>
+                 </mrow>
+                </mrow>
+                <mrow>
+                 <mspace width="thinmathspace"></mspace>
+                 <mspace width="thinmathspace"></mspace>
+                 <mi>
+                  i
+                 </mi>
+                 <mi>
+                  f
+                 </mi>
+                 <mspace width="thinmathspace"></mspace>
+                 <mi>
+                  o
+                 </mi>
+                 <mi>
+                  r
+                 </mi>
+                 <mi>
+                  i
+                 </mi>
+                 <mi>
+                  g
+                 </mi>
+                 <mi>
+                  i
+                 </mi>
+                 <mi>
+                  n
+                 </mi>
+                 <mi>
+                  a
+                 </mi>
+                 <mi>
+                  l
+                 </mi>
+                 <mspace width="thinmathspace"></mspace>
+                 <mi>
+                  t
+                 </mi>
+                 <mi>
+                  w
+                 </mi>
+                 <mi>
+                  e
+                 </mi>
+                 <mi>
+                  e
+                 </mi>
+                 <mi>
+                  t
+                 </mi>
+                 <mspace width="thinmathspace"></mspace>
+                 <mi>
+                  i
+                 </mi>
+                 <mi>
+                  s
+                 </mi>
+                 <mspace width="thinmathspace"></mspace>
+                 <mi>
+                  n
+                 </mi>
+                 <mi>
+                  o
+                 </mi>
+                 <mi>
+                  t
+                 </mi>
+                 <mspace width="thinmathspace"></mspace>
+                 <mi>
+                  f
+                 </mi>
+                 <mi>
+                  o
+                 </mi>
+                 <mi>
+                  u
+                 </mi>
+                 <mi>
+                  n
+                 </mi>
+                 <mi>
+                  d
+                 </mi>
+                </mrow>
+               </msub>
+              </mtd>
+             </mtr>
+            </mtable>
+           </mrow>
+          </mtd>
+         </mtr>
+        </mtable>
+       </mrow>
+      </mfenced>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">Eq 1 </span></span></span></span>
+   </disp-formula-group></p>
+  <p>Next, based on the retweet count, the tweets with more than 10 retweets were classified into the popular group while the tweets with 1–10 retweets were classified into the unpopular group. Word frequencies were generated to compare the textual contents between the two groups. These analyses aim to compare the contents (topics) of the popular tweets that have been widely spread with the other tweets.</p>
+ </div>
+ <div id="s0003-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">3.2 Natural Language Processing (NLP)</h3>
+  <p>Three types of NLP tools were utilized for text mining. First, to recognize informative words from the tweet texts, the Python package spaCy and NLTK were used (Isaak and Michael <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2016</a></span>; Honnibal and Montani <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2017</a></span>; Paramkusham <span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2017</a></span>). Owing to spaCy’s strong ability in syntactic parsing, disorganized and lengthy texts in tweets were tokenized and lemmatized to informative keywords. Second, Gensim, which is a Python package for LDA (Řehůřek and Sojka <span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2011</a></span>), was used for classifying tweets into different topics. LDA is one of the most popular unsupervised soft-clustering methods and has been frequently applied in topic modelling (Blei, Ng, and Jordan <span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2003</a></span>; Resch, Usländer, and Havas <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2018</a></span>). As shown in the previous studies, LDA can detect topics covering different aspects in a crisis (Imran et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2015</a></span>; Kireyev, Palen, and Anderson <span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2009</a></span>). Gensim trains an LDA model that categorizes texts into different topics. The output of Gensim includes the percentage contribution of each tweet to the topic, which represents the importance the topic within that tweet. Third, the lexicon-based Python package VADER (Valence Aware Dictionary for sEntiment Reasoning) was used for sentiment analysis, which can help understand public opinions and perception towards the storm-related information (Caragea et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2014</a></span>; Zou et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+  <div id="s0003-s2002-s3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i12">3.2.1 Topic Modelling</h4>
+   <p>A Python program was developed to clean the tweet contents by removing stop words, newline characters, single quotes, punctuations, numbers, and extra white spaces. Using spaCy’s English multi-task CNN trained on OntoNotes (Honnibal and Montani <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2017</a></span>), the cleaned tweets were then tokenized and lemmatized to words with clear denotation. Word dictionary, term-document frequency, and the corpus of tweets were generated afterwards and fed into the LDA training model in the following step. Next, using Gensim, the popular tweets were categorized into different topics according to the topic coherence of their contents. Topic coherence measures the semantic similarity among the words in the topic (Aletras and Stevenson <span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2013</a></span>). By comparing the coherence of each model under different numbers of topics (<a href="#f0004">Figure 4</a>), the optimal number of topics with the best performance (i.e. highest coherence) was selected. At the optimal condition, popular tweets were categorized into six topics. Principal keywords of each topics are listed (<button class="ref showTableEventRef" data-id="t0001">Table 1</button>). Observing salient components in each topic, topics were then combined into four major topics. Results of the topic modelling can be found in <a href="#s0004-s2002">Section 4.2</a>.</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 August 2021
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Tweet classification in six topics (topic principal components are keywords that accounted for a large proportion of the variance in each topic)</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F19475683.2021.1954086&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <p></p>
+  </div>
+  <div id="s0003-s2002-s3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i13">3.2.2 Sentiment Analysis</h4>
+   <p>Using the Python package NLTK (Paramkusham <span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2017</a></span>), word stemming was conducted to reduce inflections of words to their root forms. Then, the textual content in a tweet was tokenized and assigned a sentiment score ranging from −1 (most negative) to 1 (most positive) through the VADER package. The sentiment score of each original tweet was attached to its retweets for further analysis. The average sentiment per topic is calculated using <a href="#m0002">Eq 2</a>: <disp-formula-group>
+     <span class="NLM_disp-formula-image disp-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/tagi_a_1954086_m0002.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/tagi_a_1954086_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">Eq 2 </span></span></span></span>
+     <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        S
+       </mi><mi>
+        e
+       </mi><mi>
+        n
+       </mi><mi>
+        t
+       </mi><mi>
+        i
+       </mi><mi>
+        m
+       </mi><mi>
+        e
+       </mi><mi>
+        n
+       </mi><mrow>
+        <msub>
+         <mi>
+          t
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+       </mrow><mo>
+        =
+       </mo><mrow>
+        <mfrac>
+         <mrow>
+          <msubsup>
+           <mrow>
+            <mo>
+             ∑
+            </mo>
+           </mrow>
+           <mrow>
+            <mi>
+             j
+            </mi>
+            <mo>
+             =
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+           <mrow>
+            <mrow>
+             <msub>
+              <mi>
+               N
+              </mi>
+              <mi>
+               i
+              </mi>
+             </msub>
+            </mrow>
+           </mrow>
+          </msubsup>
+          <mi>
+           S
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           m
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mrow>
+           <msub>
+            <mi>
+             t
+            </mi>
+            <mrow>
+             <mi>
+              i
+             </mi>
+             <mo>
+              ,
+             </mo>
+             <mi>
+              j
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mo>
+           ∗
+          </mo>
+          <mi>
+           C
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mi>
+           n
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           r
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           b
+          </mi>
+          <mi>
+           u
+          </mi>
+          <mi>
+           t
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mi>
+           o
+          </mi>
+          <mrow>
+           <msub>
+            <mi>
+             n
+            </mi>
+            <mrow>
+             <mi>
+              i
+             </mi>
+             <mo>
+              ,
+             </mo>
+             <mi>
+              j
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+         </mrow>
+         <mrow>
+          <mrow>
+           <msub>
+            <mi>
+             N
+            </mi>
+            <mi>
+             i
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+        </mfrac>
+       </mrow>
+      </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">Eq 2 </span></span></span></span>
+    </disp-formula-group></p>
+   <p>where <i>i</i> is the iterator in topics, <i>j</i> is the iterator in tweets, is the number of tweets in the <i>i</i>th topic, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/tagi_a_1954086_ilm0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/tagi_a_1954086_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       C
+      </mi><mi>
+       o
+      </mi><mi>
+       n
+      </mi><mi>
+       t
+      </mi><mi>
+       r
+      </mi><mi>
+       i
+      </mi><mi>
+       b
+      </mi><mi>
+       u
+      </mi><mi>
+       t
+      </mi><mi>
+       i
+      </mi><mi>
+       o
+      </mi><mrow>
+       <msub>
+        <mi>
+         n
+        </mi>
+        <mrow>
+         <mi>
+          i
+         </mi>
+         <mo>
+          ,
+         </mo>
+         <mi>
+          j
+         </mi>
+        </mrow>
+       </msub>
+      </mrow>
+     </math></span> is the percentage contribution of the <i>i</i>th topic in the <i>j</i>th tweet to all other topics, which was calculated using Gensim.</p>
+  </div>
+ </div>
+ <div id="s0003-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">3.3 Geocoding</h3>
+  <p>Geographic locations (user locations) of the original tweets and retweets were identified to analyse the direction of information diffusion. Since the retweets do not have any accurate geographic information, such as geotags, we used locations in user profiles as the origins and destinations of retweets. The Google Geocoding API was applied to convert textual descriptions of user locations into geographic coordinates (Google, Inc. <span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2020</a></span>). To boost the speed of the geocoding and reduce the cost for the Google Geocoding API usage, the user locations were collapsed into a list of unique locations by removing duplicated locations. By doing so, the size of this unique list of user locations shrinks to 27.79% of the total user locations. The following types of user locations that do not represent a meaningful geographic location were removed:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline">Blank results from Google Geocoding API, such as ‘Justin Bieber’s Heart’</p></li>
+   <li><p class="inline">Manually detected meaningless or ambiguous locations, such as ‘Earth’, ‘Studio 1A’, ‘Unknown’</p></li>
+   <li><p class="inline">Locations outside the Contiguous United States (CONUS)</p></li>
+   <li><p class="inline">Locations referring to the whole country, such as ‘USA’ or ‘United States’ which do not provide meaningful geographic information within the CONUS</p></li>
+  </ul>
+  <p></p>
+  <p>Finally, 5,928 tweets (31.5% of the total 18,807 popular tweets) with a meaningful location were geocoded into geographic coordinates using the Google Geocoding API. The geocoded locations below the state level (e.g. county or street level) were applied for visualizing information diffusion and the sentiment distribution (<a href="#s0004-s2004">Section 4.4</a> to <a href="#s0004-s2007">4.7</a>). Linking the locations of an original tweet and its retweet can create a path of information diffusion. Depending on whether the locations are within or outside the storm impact areas, the retweets can be classified into the following diffusion directions:</p>
+  <ol class="NLM_list NLM_list-list_type-order">
+   <li><p class="inline">In-In: both the original tweet and the retweet are within the impact areas.</p></li>
+   <li><p class="inline">In-Out: the original tweet is in the impact areas and retweet is outside the impact areas.</p></li>
+   <li><p class="inline">Out-In: the original tweet is outside the impact areas and retweet is within the impact areas.</p></li>
+   <li><p class="inline">Out-Out: both the original tweet and the retweet are outside the impact areas.</p></li>
+  </ol>
+  <p></p>
+ </div>
+ <div id="s0003-s2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i16">3.4 Spatial Analyses</h3>
+  <p>The following steps were applied to analyse the spatial pattern of information diffusion through retweets. First, ratios of retweets in the four diffusion directions were compared among the four topics. A high ratio of retweets in the ‘In-In’ diffusion direction implies that the topics only circulate within the impact areas. A high ratio of the ‘In-Out’ direction means that the tweets are originally posted in the impact areas and are retweeted by people from the outside. The ‘Out-In’ direction represents topics that are generated outside of the impact areas but are retweeted in the impact areas. The ‘Out-Out’ direction includes topics that are generated and circulating outside of the impact areas. The comparison of these diffusion directions informs the spatial pattern of storm-related information diffusion among Twitter users.</p>
+  <p>Second, standard deviational ellipse (SDE) was applied on retweets with valid geographic locations to measure the spatial dispersion of the four storm-related topics. The size and orientation of an ellipse indicate the extent of spatial dispersion and orientation of the topics, respectively. A larger ellipse indicates the retweets spread more extensively over space. The orientation of the ellipse indicates the direction in which the retweets may spread further. Four ellipses were created for the four topics to visualize and compare their spatial diffusion patterns.</p>
+  <p>Third, the average diffusion distances of the four topics were calculated to analyse spatial extent of information diffusion. The diffusion distance is the average geodesic distance between original tweets and their retweets in a topic, which indicates how far the topic can be spread in space. To understand the distance decay patterns of retweets among different topics, proportions of retweets in four topics to all retweets were calculated and compared at each distance.</p>
+  <p>Fourth, choropleth maps of county-level sentiment were created for the CONUS to understand the spatial distribution of sentiment among different topics. Mean sentiment was calculated among counties for each topic at four directions. This analysis attempts to reveal public awareness under the threat of the storm and give an insight of spatial variation of public perception.</p>
+  <p>Finally, noting that public opinions in the non-affected areas show a unique distribution pattern from those in the impacted areas among four topics, kernel density maps were utilized to analyse the spatial distribution of retweets located outside the impact areas. This analysis aims to explain the spatial variation of public perceptions and identify spatial clusters where people pay attention to a storm that did not directly affect them. Higher attention to the storm event may indicate higher awareness of and preparedness for disaster risk. To understand how outside people respond to storm-related information, eight kernel density maps were created and compared for all retweets outside the impact areas, which include retweets in an In-Out or Out-Out diffusion direction.</p>
+ </div>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i17" class="section-heading-2">4. Results</h2>
+ <div id="s0004-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">4.1 Word Frequency</h3>
+  <p>The number of original tweets with different retweet counts is shown in <a href="#f0002">Figure 2</a>. In general, the number of tweets decreases as the retweet count increases. Among all 47,604 tweets, 25,432 are retweets, occupying 53.4% of the total tweets. A total of 10,443 (21.9% of the total 47,604 tweets) tweets do not have any retweets during our streamed period. Only 27 original tweets were retweeted over 100 times. Among the 37,161 tweets with at least one retweet, the number of tweets with over 10 retweets is 18,807 (50.6%), while the number of tweets with less than 10 retweets is 18,354 (49.4%). So, we used the threshold of 10 retweets to split the 37,161 tweets into the popular group (&gt;10 retweets) and unpopular group (1–10 retweets). The popular group originates from the 509 original tweets while the unpopular group originates from 8,891 original tweets. In addition, 684 retweets cannot find their origins within the streamed period and were excluded.</p>
+  <div class="figure figureViewer" id="f0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 August 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Frequencies of original tweets with different numbers of retweets (log scale in y-axis).</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0002image" src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/medium/tagi_a_1954086_f0002_b.gif" loading="lazy" height="252" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Frequencies of original tweets with different numbers of retweets (log scale in y-axis).</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0002">
+   <div class="figureFootNote-f0002"></div>
+  </div>
+  <p></p>
+  <p>The top 20 most frequent words in the popular group (retweet count more than 10) and the unpopular group (retweet count between 1 and 10) were compared (<a href="#f0003">Figure 3</a>). Both groups share some common frequent words. Many of the words are related to the storm impacts (‘power’, ‘warn’, ‘watch’), time (e.g. ‘sunday, ‘december’) and location (e.g. ‘southeast’), indicating that the public are interested in situational information of the storm. The differences between the two rankings imply latent topics that make tweets more popular (i.e. having more retweets). For instance, ‘power’ is the most frequent words in the popular tweet group, as well as words indicating locational information, such as ‘carolina’ and ‘north’. Additionally, words about adverse impacts such as ‘power’ and ‘cancel’ are ranked high in popular group.</p>
+  <div class="figure figureViewer" id="f0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 August 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> The top 20 most frequent words in the popular group (left) and the unpopular group (right). The same words in the two groups are linked by lines. The line width indicates the ranking difference in the two groups, and the line colours indicate the increase and decrease in the ranking positions in the two groups.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0003image" src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/medium/tagi_a_1954086_f0003_oc.jpg" loading="lazy" height="500" width="319"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> The top 20 most frequent words in the popular group (left) and the unpopular group (right). The same words in the two groups are linked by lines. The line width indicates the ranking difference in the two groups, and the line colours indicate the increase and decrease in the ranking positions in the two groups.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0003">
+   <div class="figureFootNote-f0003"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0004-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i21">4.2 Topics in Popular Retweets</h3>
+  <p>To further uncover the latent topics of the popular tweets, the study used LDA models with different topic numbers in the Python package Gensim. The coherence score reaches the peak (0.5713) when tweets are classified in 6 topics (<a href="#f0004">Figure 4</a>). The topic classification results are listed (<button class="ref showTableEventRef" data-id="t0001">Table 1</button>).</p>
+  <div class="figure figureViewer" id="f0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 August 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> LDA model training result: the upper limit of topics was set to 10 to ensure the result to be interpretable; 509 unique popular original tweets were processed in these models.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0004image" src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/medium/tagi_a_1954086_f0004_oc.jpg" loading="lazy" height="305" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> LDA model training result: the upper limit of topics was set to 10 to ensure the result to be interpretable; 509 unique popular original tweets were processed in these models.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0004">
+   <div class="figureFootNote-f0004"></div>
+  </div>
+  <p></p>
+  <p>Next, topics in the same theme were further combined. Referring to the tweet classification in (Lachlan et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2016</a></span>), topics containing common principal components (highlighted in bold and underscore) in <button class="ref showTableEventRef" data-id="t0001">Table 1</button> were combined into 4 major topics in <button class="ref showTableEventRef" data-id="t0002">Table 2</button>. The common principal components in Topic 1 are related to impacts on work, such as ‘work’ and ‘register’, thus we categorized&nbsp;Topic 1 as ‘Impact on work’. Topic 2 has principal components related to forecasts and was labelled as ‘Forecasts’. Topic 3, 4, and 5 all contain principal components related to the impacts on life’. For example, Topic 3 and 4 focus on general impacts related to power outage and flight cancel, and Topic 5 focuses on specific household impacts, such as fireplace and stove. Thus Topic 3, 4, and 5 were combined into a general topic labelledas ‘Impact on life’. Topic 6, which has ‘photo’ and ‘picture’ as its principal components, was categorized as ‘Pictures and Photos’.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>06 August 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Summarized topics of tweets (after geocoding and screening)</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F19475683.2021.1954086&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0004-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i23">4.3 Directions of retweets</h3>
+  <p>After the geocoding and screening process, 5,834 retweets (31% of all popular retweets) have valid county-level locations within the CONUS. The count of retweets is shown in <button class="ref showTableEventRef" data-id="t0003">Table 3</button> by their origins and destinations. The majority (52.9%) of retweets are spread from outside to outside (Out-Out), indicating widespread interests on this storm. The second major diffusion direction is from inside to inside (In-In), indication locally circulated information. The information diffused from inside to outside (In-Out) and from outside to inside (Out-In) are in relatively lower numbers.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>06 August 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> The number of retweets by diffusion direction</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F19475683.2021.1954086&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The ratios of retweets in the four different topics are demonstrated (<a href="#f0005">Figure 5</a>). The lower ratios of tweets received in the affected areas would indicate higher attention paid by people outside of the affected areas, which potentially imply more extensive diffusion of these topic categories. Tweets in the topic ‘Impact on work’ have the lowest ratio of reception in the impact areas. In contrast, tweets about ‘Forecasts’ have a higher ratio of retweets in the affected areas, meaning that these types of tweets draw more local attention than outside.</p>
+  <div class="figure figureViewer" id="f0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 August 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> The ratio of retweets by diffusion direction in affected areas.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0005image" src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/medium/tagi_a_1954086_f0005_oc.jpg" loading="lazy" height="158" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> The ratio of retweets by diffusion direction in affected areas.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0005">
+   <div class="figureFootNote-f0005"></div>
+  </div>
+  <p></p>
+  <p>The counts of retweets by each diffusion direction and topic are shown (<a href="#f0006">Figure 6</a>). Among the four diffusion directions, Out-Out tweets has the highest volume, followed by In-In tweets, and In-Out tweets, while Out-in tweets occupy the smallest number. Tweets in topic ‘Pictures and Photos’ occupy large quantities in the Out-Out and Out-In direction, indicating photos and pictures generated by outside users are widely dispersed to all places. Tweets in ‘Impact on life’ are also widely retweeted in three directions except the Out-In direction, representing the strong statewide interests and concerns on the life impacted by the storm. It also indicates that a majority of tweets in ‘Impact on life’ are posted by local users.</p>
+  <div class="figure figureViewer" id="f0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 August 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 6. </span> Number of tweets by each topic and diffusion direction.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0006image" src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/medium/tagi_a_1954086_f0006_oc.jpg" loading="lazy" height="173" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0006">
+   <p class="captionText"><span class="captionLabel">Figure 6. </span> Number of tweets by each topic and diffusion direction.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0006">
+   <div class="figureFootNote-f0006"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0004-s2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i26">4.4 Standard Deviational Ellipse</h3>
+  <p>Standard deviational ellipse (SDE), which is also known as directional distribution, is a centrographic method to measure geographic concentration. In this study, SDE was applied to analyse spatial distribution patterns of the retweets in the four topics. The spatial extent of the diffusion in each topic is indicated by the size of the SDE. The shape (major and minor axis) and orientation of the SDE show the spatial directional distribution of the retweet topic. The centroid of an SDE indicates the centre of the distribution.</p>
+  <p>As shown in <button class="ref showTableEventRef" data-id="t0004">Table 4</button> and <a href="#f0007">Figure 7</a>, tweets on different topics have different sizes of SDEs. ‘Pictures and Photos’ tweets have the largest SDEs in size, followed by the ‘Impact on life’ tweets, which indicate relatively larger diffusion extents of these topics. ‘Forecasts’ and ‘Impact on work’ tweets have the smallest diffusion extents (i.e. smallest SDE), which implies the attention to this topic is spatially concentrated around the centroid. Due to the local concentration of the impact (on both work and life) and forecast tweets, the centres of their SDEs are the easternmost. On the contrary, ‘Pictures &amp; Photos’ tweets have the westernmost centroid due to the extensive attention to this topic from the West Coast.</p>
+  <div class="figure figureViewer" id="f0007">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 August 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 7. </span> Standard Deviational Ellipses of retweets in the Contiguous United States (CONUS).</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0007image" src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/medium/tagi_a_1954086_f0007_oc.jpg" loading="lazy" height="301" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0007">
+   <p class="captionText"><span class="captionLabel">Figure 7. </span> Standard Deviational Ellipses of retweets in the Contiguous United States (CONUS).</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0007">
+   <div class="figureFootNote-f0007"></div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>06 August 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 4. </span> Parameters of SDE</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0004&amp;doi=10.1080%2F19475683.2021.1954086&amp;downloadType=CSV"> Download CSV</a><a data-id="t0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0004-s2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i28">4.5 Diffusion Distance Assessment</h3>
+  <p>Diffusion distances were calculated between locations of original tweets and their retweets. The distances indicate the diffusion ability of the topics. The density plot (<a href="#f0008">Figure 8a</a>) shows that a large number of retweets are concentrated within a short distance (~250 km) from the original tweets, and the number declines as the distance increases. Such a distance decay pattern reflects that the retweets are generally concentrated around the original tweets. In other words, people tend to pay attention to information originated in nearby places. Among four topics, the density of ‘Forecasts’ tweets has the sharpest decline from the original tweet (at 0 km diffusion distance), while retweets in other topics have a slower decline. ‘Forecasts’ tweets dominate within a&nbsp;short distance and quickly decline when the distance increases (<a href="#f0008">Figure 8b</a>). The ‘Impact on life’ and ‘Pictures and Photos’ tweets start to gain popularity as the distance increases. These different diffusion patterns imply that tweet contents (topics) are a potential factor contributing to the information diffusion over the geographic space.</p>
+  <div class="figure figureViewer" id="f0008">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 August 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 8. </span> Kernel density (a) and kernel density proportion (b) of retweets in varying distance (km) from the original tweets in four topics.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0008image" src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/medium/tagi_a_1954086_f0008_oc.jpg" loading="lazy" height="188" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0008">
+   <p class="captionText"><span class="captionLabel">Figure 8. </span> Kernel density (a) and kernel density proportion (b) of retweets in varying distance (km) from the original tweets in four topics.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0008">
+   <div class="figureFootNote-f0008"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0004-s2006" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i30">4.6 Spatial Distribution of Sentiments</h3>
+  <p>To further understand public perception on the hazard, average sentiment scores were calculated in counties to show the spatial distribution of public perception to the storm. A total of 5,834 retweets with a location below county-level were processed within 799 counties in the CONUS and the result is demonstrated (<a href="#f0009">Figure 9</a>). Counties tend to have positive sentiments within the impact areas (−0.003&nbsp;±&nbsp;0.196) compared with the non-impact areas (−0.038&nbsp;±&nbsp;0.203). Only few counties within the impact areas have a low average sentiment score (red colour), while a large number of counties with low sentiment are outside of the impact area. This pattern may indicate that people outside the impact areas were more concerned about the storm than people from the inside.</p>
+  <div class="figure figureViewer" id="f0009">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 August 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 9. </span> Average sentiment score of retweets by each county.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0009image" src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/medium/tagi_a_1954086_f0009_oc.jpg" loading="lazy" height="311" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0009">
+   <p class="captionText"><span class="captionLabel">Figure 9. </span> Average sentiment score of retweets by each county.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0009">
+   <div class="figureFootNote-f0009"></div>
+  </div>
+  <p></p>
+  <p>To precisely examine the public perception from both the impact and non-impact areas, average sentiment scores&nbsp;in the four topics and four diffusion directions were calculated by <a href="#m0002">Equation 2</a> (<a href="#f0010">Figure 10</a>). In the Out-Out retweets, the average sentiment scores in all the four topics are low (negative), with the ‘Impact on life’ topic being the lowest. The ‘Forecasts’ tweets in the In-Out direction have the highest sentiment score among all categories. Surprisingly, the ‘Impact on work’ retweets have a high (positive) sentiment score in the In-In and Out-In diffusion directions, implying people in the impact areas are more optimistic to this issue than those from outside. ‘Pictures and Photos’ tweets have a negative sentiment in all diffusion directions except the In-In direction with a small positive value. In general, retweets spread to the non-impact areas (In-Out and Out-Out) have lower sentiments than those in the impact areas (In-In and Out-In). This finding reveals that people outside the affected area may be more concerned about the storm than people in the affected area.</p>
+  <div class="figure figureViewer" id="f0010">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 August 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 10. </span> Average sentiment in each topic by diffusion direction using Equation 2.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0010image" src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/medium/tagi_a_1954086_f0010_oc.jpg" loading="lazy" height="225" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0010">
+   <p class="captionText"><span class="captionLabel">Figure 10. </span> Average sentiment in each topic by diffusion direction using Equation 2.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0010">
+   <div class="figureFootNote-f0010"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0004-s2007" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i33">4.7 Kernel Density Maps of Retweets in the Non-affected Areas</h3>
+  <p>Based on the fact that retweets from the non-impact areas are&nbsp;different from impact areas, kernel density maps in <a href="#f0011">Figure 11</a> were applied to show hotspots of retweets in the non-affected areas in both Out-Out and In-Out directions. The density maps highlight places where people pay attention to a disaster that did not affect their areas. These maps also reflect public interest in different topics of tweets and latent connections between places. Hotspots of retweets are generally clustered in populated areas, such as Washington D.C. and New York City in the East Coast and Los Angeles and Seattle in the West Coast (<a href="#f0011">Figure 11</a>). High density of ‘Forecasts’ and ‘Pictures and Photos’ retweets can also be found in Atlanta and Dallas, two large metropolitans near the impact areas.</p>
+  <div class="figure figureViewer" id="f0011">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Analysing Information Diffusion in Natural Hazards using Retweets - a Case Study of 2018 Winter Storm Diego</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Xu%2C+Jinwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Xu%2C+Jinwen"><span class="NLM_given-names">Jinwen</span> Xu</a> <a href="https://orcid.org/0000-0001-9663-5737"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Qiang%2C+Yi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Qiang%2C+Yi"><span class="NLM_given-names">Yi</span> Qiang</a> <a href="https://orcid.org/0000-0002-6872-8837"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/19475683.2021.1954086">https://doi.org/10.1080/19475683.2021.1954086</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 August 2021
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 11. </span> Kernel density map of retweets in non-affected areas relating to (a) ‘Impact on work’; (b) ‘Forecasts’; (c) ‘Impact on life’; (d) ‘Pictures and Photos’.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0011image" src="/na101/home/literatum/publisher/tandf/journals/content/tagi20/2022/tagi20.v028.i02/19475683.2021.1954086/20220606/images/medium/tagi_a_1954086_f0011_oc.jpg" loading="lazy" height="500" width="402"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0011">
+   <p class="captionText"><span class="captionLabel">Figure 11. </span> Kernel density map of retweets in non-affected areas relating to (a) ‘Impact on work’; (b) ‘Forecasts’; (c) ‘Impact on life’; (d) ‘Pictures and Photos’.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0011">
+   <div class="figureFootNote-f0011"></div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i35" class="section-heading-2">5. Discussion</h2>
+ <p>This study utilized retweets to analyse spatial pattern of information diffusion in a winter storm. The findings derived in this study can be used to improve information broadcasting and communication in disaster preparation, mitigation, and emergency response. First, the spatial pattern of information flows through retweets varies among different topics. People in the impact areas like to retweet the topics of ‘Forecasts’ and ‘Impact on life’ posted by local users (i.e. the In-In direction). People outside of the impact areas tend to pay attention to ‘Impact on life’ and ‘Pictures &amp; Photos’ generated by users outside of the impact areas. In all the four topics, the number of retweets in the In-Out direction is similar to the opposite direction (Out-In), but the dominant topic in each direction is different, indicating local interests in the outside pictures and photos and statewide interests in the impact on local users’ life.</p>
+ <p>Second, retweets in different topics have different spatial concentration and diffusion distance. The declining density of retweets in increasing diffusion distance (discussed <a href="#s0004-s2005">Section 4.5</a>) implies that people tend to pay attention to and communicate information generated in their proximity. However, the pattern of distance decay varies among different topics. Retweets in the ‘Forecasts’ topic have a relatively shorter diffusion distance. In contrast, retweets about ‘Pictures and Photos’ and ‘Impact on life’ can spread further to distant places. This finding informs that tweets with pictures can better catch attention from people who were not directly affected by the hazards.</p>
+ <p>Third, retweets in non-affected areas have lower (negative) sentiment scores compared with the affected areas. For example, the sentiment score of retweets on ‘Impact on work’ and ‘Forecasts’ is negative in the Out-Out direction but is positive in the In-In direction. Possibly due to the lack of first-hand information about the storm, people outside the impact areas may negatively perceive the storm impacts and spread tweets that express worrisome and pessimistic sentiment. In contrast, people in the impact areas have a better understanding of the situation and are less worried about the impacts. This finding informs that updated and transparent information can potentially mitigate panics and pessimistic emotion caused by hazardous events.</p>
+ <p>Last but not least, as shown in the kernel density maps, large cities, where population and news media are concentrated, play an important role in disseminating the hazard-related tweets. The hotspot of retweets in large cities is possibly due to the high population density and the concentration of media industry (e.g. ABC News, Fox News) that have been actively reporting the storm event in their Twitter accounts. The high density of ‘Forecast’ and ‘Pictures and Photos’ retweets in Atlanta is possibly due to proximity of this city to the impact areas so that people pay more attention to the storm. The high density near Dallas (Texas) in (Figure 11b1 &amp; d1) may be formed similarly. People in this area have been paying close attention to the potential storm by retweeting the storm-related tweets.</p>
+ <p>Despite the interesting results, the following improvements should be considered in future studies. In addition to tweet contents (topics), the underlying social networks can also affect the diffusion pattern of the retweets. Retweets can spread in a long distance due to strong connectivity between users. Using Twitter streaming API to construct user networks through the following relation can help resolve this issue. Besides, the registered locations in user profile, which are used to geolocate tweets and retweets, have uncertainty in their accuracy. The estimates of diffusion distance can be skewed if the user location is different from the tweet location. Future analysis should include an improved screening method to select tweets with reliable locations. Additionally, the biased user demographics (Jiang, Li, and Ye <span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2019</a></span>; Sloan et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0029" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2013</a></span>) and geographic disparities of social media access (Zou et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2019</a></span>), such as limited access to the elderly, the poverty, and the minority,&nbsp;may lead to environmental injustice issues when using social media as a disaster management tool (Lai <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2019</a></span>; Spagnoletti, Resca, and Sæbø <span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i38 _i39 _i40" href="#"><span class="off-screen">Citation</span>2015</a></span>). The spatial patterns of information diffusion in this analysis are related to geographical disparities of hazard risk communication and social media use in a natural hazard. In future works, more in-depth analyses should be conducted to understand such disparities and effective measures should be&nbsp;developed to communicate hazard information in underrepresented communities on social media.</p>
+</div>
+<div id="s0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i36" class="section-heading-2">6. Conclusion</h2>
+ <p>This study utilized NLP techniques and spatial analyses to explore the information diffusion patterns in Twitter during a winter storm. The analysis explored the prevailing topics in Twitter and how tweets in these topics are spread over the geographic space through retweets. The analyses projected the information diffusion in the cyberworld into the geographic space, which increased our understanding about how hazard-related information spread geographically through social networks in Twitter. The spatial extents, directions, concentration and sentiment of retweets in four major topics were analysed and discussed. A distance decay pattern of retweet density was observed in all the four topics with varying decay rates. The findings confirm the distance decay of spatial interaction, which is a fundamental geographical theory, are also valid for information diffusion in the cyberworld. In other words, the distance decay pattern implies that people more likely to respond to information generated from nearby locations than distant locations. Overall, this study tested a suite of analytical methods to study geographic phenomena on social media. The application in the winter storm provides actionable information for developing communication strategies to disseminate hazard-related information.</p>
+</div>

@@ -1,0 +1,708 @@
+<div id="s0001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">Introduction</h2>
+ <p>A user’s favorable judgment of a product affects purchase behavior and brand loyalty to that product. Previously, product functional differences or low prices were the most critical factors in product purchase. Still, developers know that it is difficult to differentiate products in terms of performance, functional characteristics, and price as the technology level gap between companies narrows. For this reason, recent companies are focusing on improving appealing quality to maximize customer satisfaction in product and service development (Kim et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018a</a></span>; Park et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0043" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019</a></span>; Ryu, Son, and Kim <span class="ref-lnk lazy-ref"><a data-rid="cit0047" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2020</a></span>). Therefore, the focus is on product development to satisfy the affective needs of customers expressed in subjective and abstract ways, such as aesthetic experience and affective satisfaction. To quantitatively interpret the affective quality sought by customers–, affective analysis was introduced in product development. The sentiment analysis methodologies have been applied to various products, such as automobiles, mobile phones, TVs, chairs, etc., because they can quantify customers’ conceptual and implicit needs (Kim <span class="ref-lnk lazy-ref"><a data-rid="cit0025" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2021</a></span>; Son and Kim <span class="ref-lnk lazy-ref"><a data-rid="cit0049" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2023</a></span>).</p>
+ <p>Various studies related to affective analysis are proposed to understand customers’ affective quality and apply it to product development (Henson et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0017" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2006</a></span>; Park et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0043" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019;</a></span> Jain et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0020" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2022a</a></span>). Especially, methodologies were developed to collect affective vocabulary to quantitatively measure the customer’s emotion or impression of the product (Kim et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0029" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018b</a></span>; Lee et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0034" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2020</a></span>). The most commonly used methods are literature research and interviews but collecting customer sentiment can cause problems. When performing affective evaluation for users, it is difficult to comprehensively grasp the results obtained from various age groups, genders, and ethnic groups, since evaluation experiments are generally performed on a small number of subjects (Moon et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0041" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019</a></span>). For this reason, it is difficult to generalize the model of affects derived based on the experimental results, and the possibility of bias due to the designer’s intention cannot be excluded (Kim et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018a</a></span>).</p>
+ <p>To overcome this limitation, various studies on affective models’ development through text mining techniques are being conducted (Jabreel et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0019" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2021</a></span>; Kim et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0027" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019b;</a></span> Kitsios et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0032" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2021</a></span>; Yang et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0055" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2020</a></span>). Text mining refers to a technology that processes meaningful and valuable information in unstructured texts through natural language processing (NLP), and NLP is a computer understanding, analyzing, and interpreting the language used by humans in everyday life. It refers to a series of processes that make it possible (Collobert et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0008" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2011</a></span>). Recently, various attempts have been made to understand customers’ emotions through customer reviews on the web. Users can evaluate various experiences while using products and share opinions (Fang and Zhan <span class="ref-lnk lazy-ref"><a data-rid="cit0013" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2015</a></span>). e-commerce platforms such as Amazon utilize a system that allows only those who have purchased a product to give product reviews and ratings. Analyzing this can be used to improve the product by understanding users’ real feelings about the product (Son and Kim <span class="ref-lnk lazy-ref"><a data-rid="cit0049" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2023</a></span>). In addition, as the population using various forms of social media on the web is increasing, and the age range is becoming more diverse (Auxier and Anderson <span class="ref-lnk lazy-ref"><a data-rid="cit0003" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2021</a></span>), web-based text mining has an advantage in deriving generalization of the results by dealing with a relatively large number of data compared to existing affective classification methods such as user surveys and expert interviews.</p>
+ <p>NLP generally goes through tokenization, cleaning, stemming, and lemmatization, among which tokenization is the process of dividing a given corpus into units called tokens. The morpheme analysis tokenizer was mainly used in the existing Korean-based online review for sentiment analysis (Lim and Kim <span class="ref-lnk lazy-ref"><a data-rid="cit0035" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2014</a></span>). However, online product reviews include many new words, such as abbreviations, slang/jargon, and emoticons (Vidal, Ares, and Jaeger <span class="ref-lnk lazy-ref"><a data-rid="cit0054" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018</a></span>), and these buzzwords spread quickly and are used for a short period (Hashimoto et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0016" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2021</a></span>). In general, out-of-vocabulary (OOV) issues, which are not defined in advance, frequently occur in sentiment analysis, translation, and document restoration and occur because input language cannot be processed because there is no dictionary or database. Therefore, various attempts are being made to solve this problem in the field of NLP (Arora and Kansal <span class="ref-lnk lazy-ref"><a data-rid="cit0002" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019</a></span>; Kaewpitakkun, Shirai, and Mohd <span class="ref-lnk lazy-ref"><a data-rid="cit0023" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2014</a></span>; Pota et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0045" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019</a></span>).</p>
+ <p>Recently, Google proposed SentencePiece, a sub-word text tokenizer. It was possible to generate a vocabulary model including OOV by learning a sub-word model based on sentences entered in the text without depending on a specific language. A previous study on sentiment analysis on English, Japanese, Chinese, and French customer reviews improved accuracy using SentencePiece. Therefore, it is necessary to examine the applicability of SentencePiece to improve the accuracy of affective classification based on product reviews using Korean.</p>
+ <p>In a situation where competition among companies due to technological development is intensifying, it is emerging as one of the core values of corporate management to identify the various types of experiences that occur when customers use products or services and systematically manage affective quality.</p>
+ <p>The research goal of this study is to compare and evaluate the performance of tokenizers, which is one of the critical technologies for advancing customers’ emotional classification through NLP. In particular, this study aims to identify a tokenizer that can reflect the characteristics of online product reviews that contain non-verbal expressions, abbreviations, slang, and neologisms. This study confirmed whether the performance of SentencePiece used in other languages, such as English and French, is the same in Korean. For evaluation, Mecab-Ko, a supervised learning-based tokenizer with proven effectiveness as a Korean tokenizer, was selected, and smartphone online product reviews were used as evaluation data. The authors would like to compare and evaluate the performance of a learning-based tokenizer and propose an algorithm that can optimize the classification performance for improving customer sentiment classification through NLP.</p>
+</div>
+<div id="s0002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">Background</h2>
+ <div id="s0002-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i4">Sentiment Analysis and Online Customer Reviews</h3>
+  <p>Sentiment analysis grasps different levels of human emotions toward a product or service through NLP methods (Liu <span class="ref-lnk lazy-ref"><a data-rid="cit0039" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2012;</a></span> Farha and Magdy <span class="ref-lnk lazy-ref"><a data-rid="cit0014" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2021</a></span>). Due to the proliferation of online reviews, social media, and multimedia sharing platforms, vast amounts of text data in digital form have been accumulated on the web. Sentiment analysis has grown to be the most active research field in NLP. User opinions are the output of human activities using products and services and are a significant factor influencing the decision-making of others. In addition, its importance has spread to the omnidirectional domain (Balbi, Misuraca, and Scepi <span class="ref-lnk lazy-ref"><a data-rid="cit0004" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+  <p>Online customer reviews are defined as reviews of products posted on the website (Rose, Hair, and Clark <span class="ref-lnk lazy-ref"><a data-rid="cit0046" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2011</a></span>). The e-WOM (electronic word of mouse) expressed through online review provides product experiences such as product quality, price, and purchase reviews. The online retail market represented by Amazon allows customers to express their values and experiences freely, and these expressions can influence other people’s choices (Gruen, Osmonbekov, and Czaplewski <span class="ref-lnk lazy-ref"><a data-rid="cit0015" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2006</a></span>). Therefore, online store managers strive to manage e-WOM effectively and efficiently (Litvin, Goldsmith, and Pan <span class="ref-lnk lazy-ref"><a data-rid="cit0038" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2008</a></span>).</p>
+  <p>In the product design area, interest in ways to meet customer needs in terms of affective experience in customers is increasing. Based on e-WOM, many studies have been conducted to identify the affective experiences of customers from various perspectives (Duarte, E Silva, and Ferreira <span class="ref-lnk lazy-ref"><a data-rid="cit0011" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018</a></span>; Yoo, Sanders, and Moon <span class="ref-lnk lazy-ref"><a data-rid="cit0056" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2013</a></span>). These studies investigate the effects of e-WOM on customer’s affective experience, preference, and ultimately purchase intention and behavior (Decker and Trusov <span class="ref-lnk lazy-ref"><a data-rid="cit0010" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2010</a></span>). Recently, studies have been mainly conducted to classify affective experience in online reviews using learning algorithms such as artificial neural networks (ANN) and support vector machines (SVM) (Jain et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0022" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2021</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="cit0021" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2022b</a></span>).</p>
+ </div>
+ <div id="s0002-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">SentencePiece</h3>
+  <p>SentencePiece, proposed by Kudo and Richardson (<span class="ref-lnk lazy-ref"><a data-rid="cit0033" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018</a></span>), is an unsupervised text tokenizer and decoder for a neural network-based text generation model. SentencePiece is implemented with byte-pair encoding (BPE), a two-sub-word classification algorithm, and a unigram language model by extending the learning concept directly from the original sentence. The basic principle of BPE is to compress the strings by merging the strings that appear most in the text corpus and repeat the process of merging and adding high-frequency strings repeatedly until the size of the vocabulary set reaches the desired level.</p>
+  <p>SentencePiece consists of four components: Normalizer, Trainer, Encoder, and Decoder. Normalizer is a step to standardize semantically equivalent Unicode characters in a normalized form, and Trainer is a step to learn a sub-word segmentation model in the normalized corpus. The encoder is a process of normalizing input text and tokenizing in sub-word order using the sub-word model trained by Trainer. Finally, the Decoder is a step of converting sub-word order into normalized text. SentencePiece has the advantage that it does not depend on the form or characteristics of the language as it performs word separation according to the frequency of appearance without prior knowledge of each language, such as morphemes.</p>
+  <p>Because of these advantages, previous studies using SentencePiece in sentiment analysis of web reviews have been reported (Polignano et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0044" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019</a></span>). Bérard et al. (<span class="ref-lnk lazy-ref"><a data-rid="cit0007" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019</a></span>) used the concept of SentencePiece to translate restaurant reviews into English-French. They proposed task-specific measurement indicators based on sentiment analysis or translation accuracy for each domain. Su, Yu, and Luo (<span class="ref-lnk lazy-ref"><a data-rid="cit0050" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2020</a></span>) proposed XLNetCN, a new algorithm that complements pre-training-based models such as BERT and XLNet, mainly used in emotion analysis. They verified the superiority of the proposed model through restaurant and notebook review data. Bataa and Wu (<span class="ref-lnk lazy-ref"><a data-rid="cit0006" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019</a></span>) conducted a Japanese sentiment analysis based on transfer learning using SentencePiece. However, few studies have conducted sentiment analysis based on SentencePiece on product reviews written in Korean. Since the excellence of SentencePiece was investigated when analyzing emotions in various languages, it is necessary to conduct a study on Korean-based product reviews.</p>
+ </div>
+</div>
+<div id="s0003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i6" class="section-heading-2">Method</h2>
+ <div id="s0003-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">Target Sample &amp; Data Source</h3>
+  <p>In this study, DANAWA (<a class="ext-link" href="http://www.danawa.com" target="_blank">www.danawa.com</a>), the largest price comparison site in Korea, crawled about 160,000 product reviews corresponding to the smartphone category. Among them, 153,257 product reviews were finally extracted by refining the contents of duplicates, product reviews in a form other than text such as emoticons, products with no or only stars, and those with less than two words.</p>
+  <p>In addition, in this study, we omitted the general pre-processing of NLP because we tried to find the possibility that various types of abbreviations, slang words, and inscriptions used on the web can more accurately classify customer emotions in reviews used.</p>
+  <p>To perform labeling to indicate positives and negatives using the product review data of the DANAWA site, the rating information evaluated for the smartphone purchased by the customer was used in the product review data. Ratings are rated and can be rated by 1–5 customers. In this study, the product review data corresponding to the ratings of 5 stars and 4 stars were considered positive. The review data corresponding to the ratings of 1, 2, and 3 stars were considered negative, and labeling was performed.</p>
+ </div>
+ <div id="s0003-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i8">Tokenization</h3>
+  <p>In this study, two types of tokenization methods were compared to compare and evaluate the performance of Korean tokenization: Mecab-Ko, a Korean morpheme analysis engine, and SentencePiece. Looking at comparative studies related to morpheme analysis, there was a performance difference for each POS tagger proposed for each language (Alluhaibi et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0001" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2021</a></span>). Mecab-Ko is one of the morpheme analyzers widely used to tokenize Korean sentences (Moon et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0042" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2022</a></span>). In the existing studies on POS tagger for Korean, it has been reported that the performance of Mecab based on the Sejong corpus is superior to that of other analyzers. Therefore, in this research, Mecab-Ko was selected as a supervised learning-based morpheme analyzer for comparative study. SentencePiece is a new tokenization method for neural network machine translation of unsupervised text based on a data-centric approach (Kudo and Richardson <span class="ref-lnk lazy-ref"><a data-rid="cit0033" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018</a></span>).</p>
+  <p>Unlike the map-based approach, SentencePiece does not require pre-tokenized data sets, so it is more suitable for text corpora containing mixed language or words that are not in the dictionary. One of the critical differences between the SentencePiece algorithm and the general morpheme analysis engine is specifying the number of tokens in advance. According to Taniguchi, Konomi, and Goda (<span class="ref-lnk lazy-ref"><a data-rid="cit0051" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019</a></span>), selecting an appropriate number of tokens is essential because the number of tokens affects the classification accuracy of the SentencePiece algorithm. In the case of SentencePiece, the optimal k was set to 5000, 10000, 15000, 20000, 25000, and 30,000. In addition, Mecab-Ko and SentencePiece must use UTF-8 encoded text as input values. All product review texts collected in DANAWA used as target sites in this study were UTF-8 encoded, separate encoding Used without conversion.</p>
+ </div>
+ <div id="s0003-s2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">Classification Algorithms and Performance Index</h3>
+  <p>In this study, five types of supervised learning-based classification algorithms: Naive Bayes (NB), k-nearest neighbors (kNN), Support Vector Machine (SVM), artificial neural networks (ANN), and long short-term memory recurrent neural networks (LSTM-RNN) were used to evaluate the performance of sentiment classification in Korean products reviews. Especially, the LSTM-RNN algorithm was adopted in this study for comparison with the existing machine-learning method. Since the performance of LSTM-RNN has been proven in studies related to sentiment analysis in the existing NLP, LSTM-RNN was selected as a representative instead of Convolutional Neural Networks (CNN) and Recurrent Neural Networks (RNN) in this study (Lin et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0036" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2020</a></span>).</p>
+  <p>NB is a probabilistic classification algorithm based on Bayes’ Theorem. Given a class, this algorithm assumes that all properties are independent of each other and is generally used widely to reduce parameters. The NB consists of Bayesian rules, conditional independence assumptions, and classification rules for input data. Compared to other complex graphic models, NB has the advantage that the number of data required to estimate parameters required for classification is small. kNN is an algorithm that calculates the distance between a training sample and a test sample in a data set and classifies it based on adjacent elements. It has the advantage of straightforward interpretation and short calculation time. SVM is mainly used for classification problems as a supervised learning model for pattern recognition and data analysis (Kim et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0028" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2018a</a></span>). This algorithm aims to find a hyperplane that can maximize the margins in the feature space where the data is mapped.</p>
+  <p>ANN is a statistical learning algorithm modeled by simulating human brain neural networks (Zou, Han, and So <span class="ref-lnk lazy-ref"><a data-rid="cit0057" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2008</a></span>). In general, to achieve reliable performance, this model requires many interconnected neurons (Kim et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0026" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019a</a></span>). According to the signaling method, the neural network model is divided into a feed forward NN and a recurrent NN and is applied and utilized in research related to deep learning.</p>
+  <p>RNN was developed to model sequence data. RNN forms a cyclic structure in which hidden nodes are connected to edges with a certain direction in the neural network structure and is a structure that can receive input and output regardless of the size of sequence data (Lipton, Berkowitz, and Elkan <span class="ref-lnk lazy-ref"><a data-rid="cit0037" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2015</a></span>). To solve this problem, Hochreiter and Schmidhuber (<span class="ref-lnk lazy-ref"><a data-rid="cit0018" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>1997</a></span>) proposed the concept of a Long Short-Term Memory (LSTM) cell. In the structure of LSTM, a long-term cell in a neural network learns a part to remember, a part to delete, and a part of reading as it passes through each stage. In addition, the current input vector and the previous short-term state are injected into different fully connected layers.</p>
+  <p>To evaluate the classification performance of the model derived through machine learning, four performance indicators: Accuracy, Precision, Recall, and F1 were used (See <a href="#m0001">Eq. (1)</a>-(<a href="#m0004">4</a>)). These indicators were calculated according to four criteria: true positive (T<sub>P</sub>), true negative (T<sub>N</sub>), False positive (F<sub>P</sub>), and False negative (F<sub>N</sub>). Evaluating the learning model’s performance can be understood as the relationship between the actual data values and the values derived from the model. Accuracy represents the proportion of exactly fit across the entire case. In other words, it is calculated as the rate of classifying reviews that were “positive” as “positive” in actual data and classifying reviews that were “negative” as “negative.” The recall rate is calculated as the ratio of what was classified as “positive” by the learning model among “positive” in the actual data. Finally, precision is the proportion of what the learning model classifies as “positive” for the actual review to be “positive.”<disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2175112/20230209/images/uaai_a_2175112_m0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2175112/20230209/images/uaai_a_2175112_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       A
+      </mi><mi>
+       c
+      </mi><mi>
+       c
+      </mi><mi>
+       u
+      </mi><mi>
+       r
+      </mi><mi>
+       a
+      </mi><mi>
+       c
+      </mi><mi>
+       y
+      </mi><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <mrow>
+          <msub>
+           <mi>
+            T
+           </mi>
+           <mi>
+            p
+           </mi>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            T
+           </mi>
+           <mi>
+            n
+           </mi>
+          </msub>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <msub>
+           <mi>
+            T
+           </mi>
+           <mi>
+            p
+           </mi>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            T
+           </mi>
+           <mi>
+            n
+           </mi>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            F
+           </mi>
+           <mi>
+            p
+           </mi>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            F
+           </mi>
+           <mi>
+            n
+           </mi>
+          </msub>
+         </mrow>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0001" class="disp-formula-label">(1) </span></span></span></span>
+   </disp-formula-group><disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2175112/20230209/images/uaai_a_2175112_m0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2175112/20230209/images/uaai_a_2175112_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       P
+      </mi><mi>
+       r
+      </mi><mi>
+       e
+      </mi><mi>
+       c
+      </mi><mi>
+       i
+      </mi><mi>
+       s
+      </mi><mi>
+       i
+      </mi><mi>
+       o
+      </mi><mi>
+       n
+      </mi><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <mrow>
+          <msub>
+           <mi>
+            T
+           </mi>
+           <mi>
+            p
+           </mi>
+          </msub>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <msub>
+           <mi>
+            T
+           </mi>
+           <mi>
+            p
+           </mi>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            F
+           </mi>
+           <mi>
+            p
+           </mi>
+          </msub>
+         </mrow>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0002" class="disp-formula-label">(2) </span></span></span></span>
+   </disp-formula-group><disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2175112/20230209/images/uaai_a_2175112_m0003.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2175112/20230209/images/uaai_a_2175112_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       R
+      </mi><mi>
+       e
+      </mi><mi>
+       c
+      </mi><mi>
+       a
+      </mi><mi>
+       l
+      </mi><mi>
+       l
+      </mi><mo>
+       =
+      </mo><mrow>
+       <mfrac>
+        <mrow>
+         <mrow>
+          <msub>
+           <mi>
+            T
+           </mi>
+           <mi>
+            p
+           </mi>
+          </msub>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <msub>
+           <mi>
+            T
+           </mi>
+           <mi>
+            p
+           </mi>
+          </msub>
+         </mrow>
+         <mo>
+          +
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            T
+           </mi>
+           <mi>
+            n
+           </mi>
+          </msub>
+         </mrow>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0003" class="disp-formula-label">(3) </span></span></span></span>
+   </disp-formula-group><disp-formula-group>
+    <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2175112/20230209/images/uaai_a_2175112_m0004.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2175112/20230209/images/uaai_a_2175112_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+    <span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mi>
+       F
+      </mi><mn>
+       1
+      </mn><mo>
+       =
+      </mo><mn>
+       2
+      </mn><mrow>
+       <mfrac>
+        <mrow>
+         <mi>
+          p
+         </mi>
+         <mi>
+          r
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          n
+         </mi>
+         <mo>
+          ×
+         </mo>
+         <mi>
+          r
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          l
+         </mi>
+         <mi>
+          l
+         </mi>
+        </mrow>
+        <mrow>
+         <mi>
+          p
+         </mi>
+         <mi>
+          r
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          n
+         </mi>
+         <mo>
+          +
+         </mo>
+         <mi>
+          r
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          l
+         </mi>
+         <mi>
+          l
+         </mi>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="m0004" class="disp-formula-label">(4) </span></span></span></span>
+   </disp-formula-group></p>
+ </div>
+ <div id="s0003-s2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">Verification of Performance Index</h3>
+  <p>In this study, model verification was performed to verify the classification performance calculated through the learning model. Since a training model developed for a specific data set may not accurately classify other data sets, cross-validation of the proposed model is required. If the performance of the model is evaluated by performing cross-validation, since the entire data set is used for evaluation, there is an advantage of preventing overfitting that specific data is used for evaluation. In this paper, 10-fold cross-validation was used to verify the classification performance of each learning algorithm. 10-fold cross-validation divides the entire data set into ten subsets as shown in <a href="#f0001">Figure 1</a> below, performs ten evaluations, calculates the average value of the derived performance index, and evaluates the performance of the model.</p>
+  <div class="figure figureViewer" id="f0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A study on the evaluation of tokenizer performance in natural language processing</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Choo%2C+Sanghyun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Choo%2C+Sanghyun"><span class="NLM_given-names">Sanghyun</span> Choo</a> <a href="https://orcid.org/0000-0002-8884-3437"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Wonjoon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Wonjoon"><span class="NLM_given-names">Wonjoon</span> Kim</a> <a href="https://orcid.org/0000-0001-5177-8072"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08839514.2023.2175112">https://doi.org/10.1080/08839514.2023.2175112</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>09 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1. </span> Illustrative of 10-fold cross-validation in this study.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0001image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2175112/20230209/images/medium/uaai_a_2175112_f0001_oc.jpg" loading="lazy" height="246" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0001">
+   <p class="captionText"><span class="captionLabel">Figure 1. </span> Illustrative of 10-fold cross-validation in this study.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0001">
+   <div class="figureFootNote-f0001"></div>
+  </div>
+  <p></p>
+  <p>The overall flow of this research is shown in <a href="#f0002">Figure 2</a> below. First, product reviews and star ratings are crawled on Danawa (<a class="ext-link" href="http://www.dananwa.com" target="_blank">www.dananwa.com</a>), the most extensive website providing product information in South Korea. Next, product reviews are tokenized with Mecab-Ko, a morpheme analyzer, and based on the number of tokens derived from this, k, the number of tokens of SentencePiece, is determined (5k to 30k in this study), and tokenization is performed. Finally, Mecab-Ko and SentencePiece were compared through four performance indicators (accuracy, F1-score, precision, and recall) for each of the five pre-selected classification algorithms.</p>
+  <div class="figure figureViewer" id="f0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A study on the evaluation of tokenizer performance in natural language processing</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Choo%2C+Sanghyun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Choo%2C+Sanghyun"><span class="NLM_given-names">Sanghyun</span> Choo</a> <a href="https://orcid.org/0000-0002-8884-3437"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Wonjoon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Wonjoon"><span class="NLM_given-names">Wonjoon</span> Kim</a> <a href="https://orcid.org/0000-0001-5177-8072"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08839514.2023.2175112">https://doi.org/10.1080/08839514.2023.2175112</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>09 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Illustrative of overall research flow.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0002image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2175112/20230209/images/medium/uaai_a_2175112_f0002_oc.jpg" loading="lazy" height="343" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Illustrative of overall research flow.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0002">
+   <div class="figureFootNote-f0002"></div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="s0004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i17" class="section-heading-2">Results</h2>
+ <div id="s0004-s2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i18">Comparative Analysis of Supervised/Unsupervised Learning Tokenizer by Classification Algorithm</h3>
+  <p>The results of evaluating the performance of the positive and negative classification algorithm for customer sentiment analysis are shown in <button class="ref showTableEventRef" data-id="t0001 t0002 t0003 t0004">Tables 1–4</button> below.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A study on the evaluation of tokenizer performance in natural language processing</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Choo%2C+Sanghyun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Choo%2C+Sanghyun"><span class="NLM_given-names">Sanghyun</span> Choo</a> <a href="https://orcid.org/0000-0002-8884-3437"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Wonjoon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Wonjoon"><span class="NLM_given-names">Wonjoon</span> Kim</a> <a href="https://orcid.org/0000-0001-5177-8072"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2175112">https://doi.org/10.1080/08839514.2023.2175112</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>09 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> The results of accuracy for SentencePiece and Mecab-Ko each classification algorithm.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0001&amp;doi=10.1080%2F08839514.2023.2175112&amp;downloadType=CSV"> Download CSV</a><a data-id="t0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A study on the evaluation of tokenizer performance in natural language processing</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Choo%2C+Sanghyun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Choo%2C+Sanghyun"><span class="NLM_given-names">Sanghyun</span> Choo</a> <a href="https://orcid.org/0000-0002-8884-3437"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Wonjoon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Wonjoon"><span class="NLM_given-names">Wonjoon</span> Kim</a> <a href="https://orcid.org/0000-0001-5177-8072"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2175112">https://doi.org/10.1080/08839514.2023.2175112</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>09 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> The results of precision for SentencePiece and Mecab-Ko each classification algorithm.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0002&amp;doi=10.1080%2F08839514.2023.2175112&amp;downloadType=CSV"> Download CSV</a><a data-id="t0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A study on the evaluation of tokenizer performance in natural language processing</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Choo%2C+Sanghyun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Choo%2C+Sanghyun"><span class="NLM_given-names">Sanghyun</span> Choo</a> <a href="https://orcid.org/0000-0002-8884-3437"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Wonjoon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Wonjoon"><span class="NLM_given-names">Wonjoon</span> Kim</a> <a href="https://orcid.org/0000-0001-5177-8072"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2175112">https://doi.org/10.1080/08839514.2023.2175112</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>09 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> The results of recall for SentencePiece and Mecab-Ko each classification algorithm.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0003&amp;doi=10.1080%2F08839514.2023.2175112&amp;downloadType=CSV"> Download CSV</a><a data-id="t0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A study on the evaluation of tokenizer performance in natural language processing</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Choo%2C+Sanghyun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Choo%2C+Sanghyun"><span class="NLM_given-names">Sanghyun</span> Choo</a> <a href="https://orcid.org/0000-0002-8884-3437"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Wonjoon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Wonjoon"><span class="NLM_given-names">Wonjoon</span> Kim</a> <a href="https://orcid.org/0000-0001-5177-8072"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/08839514.2023.2175112">https://doi.org/10.1080/08839514.2023.2175112</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>09 February 2023
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 4. </span> The results of F1-score for SentencePiece and Mecab-Ko each classification algorithm.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="t0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=t0004&amp;doi=10.1080%2F08839514.2023.2175112&amp;downloadType=CSV"> Download CSV</a><a data-id="t0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The analysis reveals that with respect to accuracy and recall, the unsupervised learning-based tokenizer SentencePiece outperformed the supervised learning-based tokenizer Mecab-Ko when applied to the NB, for all the selected numbers of tokens. However, when the number of tokens was 5000, the kNN, ANN, and LSTM-RNN demonstrated lower accuracy than Mecab-Ko. The results from SentencePiece, when using the five algorithms, showed that accuracy was dependent on the number of tokens, with significant variations observed in the kNN algorithm. Additionally, LSTM-RNN exhibited the highest accuracy among all algorithms for all tokens, while NB had the lowest accuracy, except when the number of tokens was 5000. In the case of Mecab-Ko, LSTM-RNN still demonstrated the highest accuracy, while NB had the lowest.</p>
+  <p>The result of comparing the accuracy &amp; F1-score of each algorithm according to the number of tokens is shown in <a href="#f0003 f0004">Figures 3–4</a> below.</p>
+  <div class="figure figureViewer" id="f0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A study on the evaluation of tokenizer performance in natural language processing</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Choo%2C+Sanghyun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Choo%2C+Sanghyun"><span class="NLM_given-names">Sanghyun</span> Choo</a> <a href="https://orcid.org/0000-0002-8884-3437"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Wonjoon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Wonjoon"><span class="NLM_given-names">Wonjoon</span> Kim</a> <a href="https://orcid.org/0000-0001-5177-8072"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08839514.2023.2175112">https://doi.org/10.1080/08839514.2023.2175112</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>09 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> Result of the accuracy for token number of SentencePiece of each learning algorithm.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0003image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2175112/20230209/images/medium/uaai_a_2175112_f0003_oc.jpg" loading="lazy" height="300" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> Result of the accuracy for token number of SentencePiece of each learning algorithm.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0003">
+   <div class="figureFootNote-f0003"></div>
+  </div>
+  <div class="figure figureViewer" id="f0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A study on the evaluation of tokenizer performance in natural language processing</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Choo%2C+Sanghyun"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Choo%2C+Sanghyun"><span class="NLM_given-names">Sanghyun</span> Choo</a> <a href="https://orcid.org/0000-0002-8884-3437"><img src="/templates/jsp/images/orcid.png"></a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Kim%2C+Wonjoon"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Kim%2C+Wonjoon"><span class="NLM_given-names">Wonjoon</span> Kim</a> <a href="https://orcid.org/0000-0001-5177-8072"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/08839514.2023.2175112">https://doi.org/10.1080/08839514.2023.2175112</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>09 February 2023
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> Result of the F1-score for token number of SentencePiece of each learning algorithm.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="f0004image" src="/na101/home/literatum/publisher/tandf/journals/content/uaai20/2023/uaai20.v037.i01/08839514.2023.2175112/20230209/images/medium/uaai_a_2175112_f0004_oc.jpg" loading="lazy" height="283" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-f0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> Result of the F1-score for token number of SentencePiece of each learning algorithm.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-f0004">
+   <div class="figureFootNote-f0004"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="s0004-s2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i21">Performance Verification of Classification Analysis by Tokenizer</h3>
+  <p>In order to verify the statistical significance of the classification accuracy between morpheme analysis and SentencePiece, this study compared the SentencePiece results and morpheme analysis results for the specific number of tokens with the highest accuracy for each algorithm using the paired-sample t-test. In the verification, ANN and LSTM-RNN, which showed high performance among the five algorithms, were targeted. As mentioned in Section 4.1, when the number of tokens of SentencePiece is 20,000, the value of the classification performance index of the two algorithms was the highest. Furthermore, ANN and LSTM-RNN were selected for performance comparison in this study because they are derived algorithms based on neural networks. For the verification experiment, training and test data were randomly selected from the entire data set at a ratio of 90:10 and repeated 100 times for each algorithm.</p>
+  <p>Two algorithms for each tokenizer before performing the paired-sample t-test: the Kolmogorov-Smirnov test and the Shapiro-Wilk test to check the normality of the performance indicator data of ANN and LSTM-RNN. As a result of the test, the p-value in all data is greater than 0.05, so the data can be considered to have normality. As a result of the paired sample t-test, it was found that there were statistically significant differences (p-value &lt; 0.05) in all three performance indicators in two algorithms: ANN and LSTM-RNN.</p>
+ </div>
+</div>
+<div id="s0005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i22" class="section-heading-2">Discussion</h2>
+ <p>The purpose of this study is to provide clear information on affective quality to companies or related stakeholders by proposing a method for upgrading the classification of affective experiences in customers expressed and exchanged on the web. It is expected to help companies make decisions by accurately identifying information and feedback on the quality of products and services provided to customers. This study compared the performance of SentencePiece, a sub-word tokenizer designed for neural network-based text processing, and Mecab-Ko, a morpheme-based tokenizer, when classifying customer emotions based on product review data from a price comparison site. This study confirmed that SentencePiece, an unsupervised learning tokenizer, is suitable for affective analysis studies using Korean product review data. SentencePiece can be applied to an end-to-end system for sentiment analysis based on review data because it can tokenize sub-words and convert the text of sentences into a time series of token IDs.</p>
+ <p>In this study, the representative affective factors of customers expressed in online reviews were selected as “positive” and “negative,” and a total of four products, which a product that people use a lot in daily life and can receive enough affective experience, were selected as the target product. Three algorithms were adopted to confirm the classification performance, and the tokenizer’s classification performance was examined in terms of accuracy, precision, recall, and F1 score.</p>
+ <p>According to van der Heijden, Abnar, and Shutova (<span class="ref-lnk lazy-ref"><a data-rid="cit0053" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2020</a></span>), it was confirmed that the Bert model using the word piece embedding method showed optimized performance in various languages such as English, Dutch, Spanish, etc. In this study, it was also confirmed that the model using the SentencePiece tokenizer showed better performance than the model using the morpheme analyzer.</p>
+ <p>From the perspective of research for sentiment analysis, it was confirmed that ANN showed superior performance compared to other algorithms among machine learning models (Kalarani and Selva Brunda <span class="ref-lnk lazy-ref"><a data-rid="cit0024" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019</a></span>). There was almost no performance difference between ANN and SVM in Korean customer review data. Since SVM shows a high performance when the number of classes is small (Tian et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0052" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2017</a></span>), it seems necessary to expand the results of this study in the future to compare the performance in various Korean review datasets.</p>
+ <p>In the research for sentiment classification using customer reviews, it has been confirmed through many studies that LSTM-RNNs guarantee high performance (Monika, Deivalakshmi, and Janet <span class="ref-lnk lazy-ref"><a data-rid="cit0040" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019</a></span>; Singh et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0048" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2022</a></span>). It has been reported that LSTM-RNN shows excellent performance compared to other algorithms in sentiment analysis for Korean (Eom, Yun, and Byeon <span class="ref-lnk lazy-ref"><a data-rid="cit0012" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2022</a></span>; Kim and Song <span class="ref-lnk lazy-ref"><a data-rid="cit0030" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2022</a></span>), and the same results were obtained in this study. Therefore, LSTM-RNN can be regarded as a suitable classification algorithm for Korean-based sentiment analysis. Recently, methods that improve RNN or combine CNN and RNN, such as Bidirectional RNN and Bi-LSTM, are being used in sentiment analysis (Basiri et al. <span class="ref-lnk lazy-ref"><a data-rid="cit0005" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2021</a></span>; Colón-Ruiz and Segura-Bedmar <span class="ref-lnk lazy-ref"><a data-rid="cit0009" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2020</a></span>). Therefore, it is expected that in the future Korean sentiment analysis research, it will be possible to research to improve classification performance by improving the algorithm based on RNN.</p>
+ <p>According to Taniguchi, Konomi, and Goda (<span class="ref-lnk lazy-ref"><a data-rid="cit0051" data-reflink="_i25 _i26" href="#"><span class="off-screen">Citation</span>2019</a></span>), the SentencePiece algorithm, unlike other morpheme classifiers, requires specifying the number of tokens, which significantly impacts classification results. In fact, in their study, it was confirmed that there is a difference in predictive performance when the number of tokens is 1500, 3500, and 5500. It was confirmed that similar results were obtained in this study. All algorithms showed differences in performance index according to k, and in general, performance improved as the number of k increased, but performance decreased after a certain level. This is because overfitting occurs when the number of tokens is large compared to the size of the entire document. Therefore, through this study, it can be seen that it is necessary to perform the task of finding an appropriate k when performing sentiment analysis based on product reviews written in Korean.</p>
+</div>
+<div id="s0006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i23" class="section-heading-2">Conclusion</h2>
+ <p>This study aims to develop a tokenizer and classification algorithm to evaluate sentiment on Korean product reviews effectively. Customer opinions for sentiment analysis were collected through the comparison shopping website in Korea. For sentiment analysis using NLP, two types of tokenizers were compared and evaluated with five classification algorithms.</p>
+ <p>It was considering why the SentencePiece-based tokenizer showed superior performance compared to the morpheme analysis-based tokenizer in the problem of sensibility classification in online product reviews. In the case of online product reviews, typos, inscriptions, and nonstandard words are compared to news articles or patent documents. Because there are many, the result of morpheme analysis, such as Mecab-Ko, seems to be lower. In addition, SentencePiece, which combines and learns mode expressions based on a text corpus of more than a specific volume, groups meaningful expressions based on the same syllable sequence that people mainly use in product reviews for particular products.</p>
+ <p>Therefore, it seems that through the SentencePiece tokenizer, it is possible to give specific meanings to terms related to abbreviations or slang words, which are frequently used by users above a certain level in evaluating products but are not defined in advance. In addition, in the present era, where customer expectations and requirements for products and services are increasingly complex and there are many alternatives, it has become an essential element of corporate management for companies to respond to customer needs immediately. By expanding the results obtained through this study, it is expected to be used to classify positive and negative emotions about products and services and classify various factors that can subdivide affective quality.</p>
+ <p>The limitations of this study and future research tasks are as follows. First, this study utilized review data for smartphone to confirm the performance of customer sentiment classification. However, since the sensibility of each product is often different in existing studies, it is necessary to conduct research from a comprehensive perspective on various products in the future. Second, there is a need to try to improve the classification accuracy of the tokenizer by additionally utilizing deep learning-based performance evaluation algorithms such as CNN, MobileNet, etc. that have not been used in the study.</p>
+</div>

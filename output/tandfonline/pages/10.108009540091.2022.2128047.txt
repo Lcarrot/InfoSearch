@@ -1,0 +1,2304 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">1. Introduction</h2>
+ <p>Text classification is a fundamental task in the field of natural language processing (NLP) and has an extensive range of applications in practice, such as article organisation, sentiment analysis (Xu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2020</a></span>), opinion mining (Bai et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2018</a></span>), spam filtering, and recommendation systems (Gemmis et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2015</a></span>), etc. Text representation is an essential part of text classification. Text is composed of words arranged in a certain order, and different word orders can represent different meanings. According to human reading habits, distinguishing the attributes of words (e.g. subject, predicate, object) and analysing the syntactic structure of the text are the basis for understanding the semantics of text. Therefore, the information hidden in the word sequences and syntactic structure of the text will have a non-negligible impact on the text representation. Traditional machine learning based methods feature vectors are usually high-dimensional and sparse, which makes feature extraction difficult and ignores the semantic information of the text. Over the years, various neural network models have been successfully applied to text representation under their excellent feature learning capabilities. Among them, Recurrent Neural Network (RNN) (Mikolov et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2010</a></span>), Convolutional Neural Network (CNN) (Jaderberg et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2016</a></span>; Wang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2016</a></span>), Transformer (Vaswani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2017</a></span>), and their variants are the representative neural network models. However, these deep learning models ignore the non-contiguous and long-range text semantic information. Recently, Graph Neural Network (GNN) has attracted much academic attention and has been successfully applied to natural language processing, which treats a text sequence as a graph structure. Defferrard et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2016</a></span>) first used graph convolutional neural networks for text classification tasks and outperformed traditional CNN models. Yao et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2019</a></span>) constructed a corpus-level text graph and used graph convolutional neural networks to transform the text classification task into a node classification task. Huang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2019</a></span>) introduced a message passing mechanism in the graph neural network to reduce memory consumption.</p>
+ <p>However, the current GNN-based classification methods have three main drawbacks. First, the contextual relationship of words in each document is ignored, and the original word order information of the text is lost after transforming the text into a graph structure representation. Second, it does not consider that words will have different importance in different documents. Third, constructing a graph for the whole corpus can cause high memory consumption because multiple edges are needed. Moreover, because the structure and parameters of the graph of such models depend on the entire corpus, the test set must be included when constructing the graph, which is difficult to modify after training, so it cannot be directly used in new documents.</p>
+ <p>Therefore, we propose a text classification model based on LSTM and graph attention network (GAT) based on the above problems. The model first builds a separate graph for each document in the corpus by dependent syntactic analysis, then captures the contextual information of words by LSTM, and uses GAT to learn the importance of different neighbouring nodes. Finally, the feature representation of all nodes in the graph is summarised to generate semantic embeddings of the text graph for label prediction. The text classification is turned into a graph classification problem.</p>
+ <p>The research contribution of this paper has three main aspects.</p>
+ <ul class="NLM_list NLM_list-list_type-bullet">
+  <li><p class="inline">Instead of building one text graph for all documents (including test set), our model generates a separate graph for each input document. In this way, our model does not need to retrain parameters when processing new documents, which is convenient for online testing.</p></li>
+  <li><p class="inline">We use the dependency syntax analysis tool in the construction of the text graph to obtain the syntactic structure information of the text. We obtain the context information of the text through LSTM, which solves the problem that the nodes in the graph lose the order information of the original text.</p></li>
+  <li><p class="inline">We use a graph attention network to update the representation of a node by assigning different weights to its neighbours. This increases the influence of important words while reducing the influence of irrelevant data.</p></li>
+ </ul>
+ <p></p>
+ <p>The rest of this paper is organised as follows. Section <a href="#S002">2</a> reviews some related work on text classification. Section <a href="#S003">3</a> describes the structure of our model in detail. Section <a href="#S004">4</a> presents the results of our experiments. Section <a href="#S005">5</a> concludes the paper and points out some of our future work.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">2. Related work</h2>
+ <p>Traditional machine learning-based text classification models are less time-consuming to train, such as Support Vector Machine (SVM), Naive Bayesian (NB) (Liang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2020</a></span>), decision trees, k-means, etc. This text classification method trains in pre-classified texts, then builds a specified classifier, and finally classifies texts with unknown class labels. Compared with knowledge engineering-based text classification methods, this approach can be applied to text collections in various domains, and the classification accuracy is improved to some extent. However, such models require feature engineering, consume a lot of human and material resources, and have disadvantages such as sparse feature vectors, dimensional explosion, and difficult feature extraction. Words are the smallest unit of language, and the vector representation of words determines how machine learning models are built. The task of NLP first deals with the word, which is the smallest semantic unit of the text. Usually, each word in the thesaurus is typically represented as a high-dimensional vector (the dimension is the size of thesaurus). Only one dimension of the vector has a value of 1, which represents the position of the current word in the vocabulary, and other dimensions have a value of 0. Although this one-hot word representation method is simple and effective, it is prone to the problem of dimension disaster (Aggarwal &amp; Zhai, <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2012</a></span>). And it only symbolises words, which is independent between words. It can’t reflect the semantic similarity between words, and can’t consider the text word order information. Traditional text representation models include Boolean models, vector space models, probability models, and graph space models. However, these traditional methods of text representation lack the ability of semantic representation.</p>
+ <p>Deep learning can automatically extract the essential feature representation of the data by learning multiple times, avoiding a lot of manual extraction of features, and achieving high accuracy in classification tasks. CNN has the ability to exploit the translational invariance of data, local connectivity, etc., which makes them popular in computer vision and natural language processing (Khan et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2020</a></span>). Kim (<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2014</a></span>) used CNN for text classification for the first time and proposed a CNN that inputs static and dynamic word vectors into two channels of CNN respectively and uses multiple convolution cores. The CNN model is characterised by the ability of convolutional operations to capture text features at different levels in parallel, pooling operations to capture local features of text effectively, and high computational efficiency. RNN is more suitable for NLP than CNN because of its timing and the ability to process variable-length input and explore long-term dependence (Yin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2017</a></span>). However, RNNs suffer from the semantic bias problem, in which words at the back of the sentence occupy a more critical position relative to words at the front, which affects the semantic accuracy of the whole sentence. Therefore, LSTM (Hochreiter &amp; Schmidhuber, <span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>1997</a></span>) proposed by scholars selectively forgets the previous information and solves RNN gradient explosion and gradient disappearance problems. In recent years, the attention mechanism has attracted extensive attention in the academic community. The attention mechanism imitates the human perception (Vaswani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2017</a></span>), which can focus attention on more important parts and be applied to various tasks of NLP. However, such models based on RNN and CNN focus on the localisation of words and lack information between distant, non-contiguous words.</p>
+ <p>As more and more data are represented in the form of graphs, previous neural networks cannot be directly applied to graphs. Driven by the strong demand for practical applications and potential research value, GNN has attracted extensive academic attention and has been successfully applied to natural language processing (Pal et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2020</a></span>), including text classification (Defferrard et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2016</a></span>), sequence tagging (Zhang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2018</a></span>), machine translation (Bastings et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2017</a></span>), etc. Graph neural network is a neural model, which captures graph dependencies through message passing between graph nodes (Zhou et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2020</a></span>). Yao et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2019</a></span>) introduced graph convolutional neural networks (GCN) to multi-class text classification tasks and proposed TextGCN. TextGCN builds a heterogeneous graph for the whole corpus and treats documents and words as two classes of nodes. It transforms text classification into a node classification problem (Wang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2021</a></span>). Global word co-occurrence information can be captured by using a fixed-size sliding window for all documents to collect lexical co-occurrence statistics. Zhang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2020</a></span>) proposed to create edges by considering lexical co-occurrence relations within a certain window when constructing a graph for each document and used gated graph neural networks to learn word representations based on local structure. Finally, word nodes are incorporated into document embeddings. Huang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2019</a></span>) proposed a new GNN-based message-passing model that uses smaller sliding windows to obtain local co-occurrence relations of words to generate text graphs, which reduces the number of edges and memory consumption. Veličković et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2018</a></span>) proposed a Graph Attention Networks (GAT) incorporating an attention mechanism, a new type of GCN. It uses a vector embedding representation of each node and a self-attentive mechanism to learn the weight relationship between nodes and then update the representation of nodes by passing information through this relationship, which has achieved good performance on node classification datasets. Hu et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2019</a></span>) constructed a heterogeneous graph attention network model (HGAT) based on a dual attention mechanism, which uses a dual-level attention mechanism, including node-level and type-level attention, to achieve semi-supervised text classification considering the heterogeneity of various types of information. Liu et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2021</a></span>) introduced the attention diffusion mechanism in GNN to capture the context information of indirect neighbours in a single layer. In addition, node level attention technology is introduced to obtain more accurate document level representation. Jia and Wang (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2022</a></span>) proposed an enhanced capsule network text classification model (Syntax-ATCapsNet), which uses graph convolution neural network to encode syntactic dependency trees, constructs multiple heads of attention to encode dependencies in text sequences, and finally improves the effect of text classification through the fusion of capsule network and semantic information. Wang et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2022</a></span>) proposed an inductive text classification model, which uses one-way GCN for message transmission without pre trained word embedding under the condition of limited training set.</p>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i4" class="section-heading-2">3. The proposed method</h2>
+ <p>Our model consists of three modules: syntax module, LSTM module, and GAT module. The syntax module uses the Stanford CoreNLP tool to analyse the syntactic dependency tree of the text and represents it with an adjacency matrix, so that the syntactic information of the text is extracted. At the same time, the LSTM module encodes the word order information of the text to form the feature representation of words. Finally, based on the syntax and word order information extracted by the syntactic module and the LSTM module, the GAT module outputs the word embeddings with attention through the two-layer GAT. We use max-pooling on all word embedding vectors in a single text to obtain the maximum value in each dimension, generate the embedded representation of the text, and classify the text. The overall network structure is shown in Figure <a href="#F0001">1</a>.</p>
+ <div class="figure figureViewer" id="F0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">A text classification method based on LSTM and graph attention network</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Wang%2C+Haitao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Wang%2C+Haitao"><span class="NLM_given-names">Haitao</span> Wang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Fangbing"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Fangbing"><span class="NLM_given-names">Fangbing</span> Li</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2128047">https://doi.org/10.1080/09540091.2022.2128047</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>06 October 2022
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> The architecture of our model. The figure shows the processing of a single text.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/medium/ccos_a_2128047_f0001_oc.jpg" loading="lazy" height="224" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> The architecture of our model. The figure shows the processing of a single text.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0001">
+  <div class="figureFootNote-F0001"></div>
+ </div>
+ <p></p>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">3.1. Syntax module</h3>
+  <p>We regard each text as a graphic structure, which helps us learn the information between long-distance, discontinuous words. The purpose of this module is to convert each input text into a text graph. First, we use the natural language processing tool Stanford CoreNLP to analyse the dependency syntax of the input sentence (Jia &amp; Wang, <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2022</a></span>), generate the syntactic dependency tree of the sentence, and construct the text graph according to the syntactic dependency tree obtained from the analysis. In order to enrich text features, text graph is regarded as undirected graph <i>G </i>=<i> </i>(<i>V, E</i>), which is represented by adjacency matrix&nbsp;<i>A</i>. <i>V</i>(<i>|V| </i>=<i> n</i>) and <i>E</i> are the sets of nodes and edges, respectively. Nodes represent words, and edges represent the existence of syntactic dependency between two words. The syntax dependency tree of the example sentence “The woman wrote a book” is shown in Figure <a href="#F0002">2</a>. “Woman” is the subject of the predicate “wrote”, and “book” is the direct object of “wrote”. The adjacency matrix corresponding to this example is shown in Figure <a href="#F0003">3</a>.</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A text classification method based on LSTM and graph attention network</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Wang%2C+Haitao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Wang%2C+Haitao"><span class="NLM_given-names">Haitao</span> Wang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Fangbing"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Fangbing"><span class="NLM_given-names">Fangbing</span> Li</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2128047">https://doi.org/10.1080/09540091.2022.2128047</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 October 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> The example of syntactic dependency tree.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/medium/ccos_a_2128047_f0002_oc.jpg" loading="lazy" height="206" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> The example of syntactic dependency tree.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <div class="figure figureViewer" id="F0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A text classification method based on LSTM and graph attention network</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Wang%2C+Haitao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Wang%2C+Haitao"><span class="NLM_given-names">Haitao</span> Wang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Fangbing"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Fangbing"><span class="NLM_given-names">Fangbing</span> Li</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2128047">https://doi.org/10.1080/09540091.2022.2128047</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 October 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> The adjacency matrix of the example sentence.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/medium/ccos_a_2128047_f0003_ob.jpg" loading="lazy" height="435" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> The adjacency matrix of the example sentence.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0003">
+   <div class="figureFootNote-F0003"></div>
+  </div>
+  <p></p>
+  <p>Compared with previous graph construction methods, our textual graph construction method can significantly reduce the number of nodes and edges and reduce memory consumption.</p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">3.2. LSTM module</h3>
+  <p>The LSTM is a variation of RNN, which can better contact the context and process data serially. LSTM has an internal mechanism called “gate”. It can retain and delete information through input gate, forgetting gate, and output gate. LSTM is composed of several neural units, and its structure (<a class="ext-link" href="https://colah.github.io/posts/2015-08-Understanding-LSTMs" target="_blank">https://colah.github.io/posts/2015-08-Understanding-LSTMs</a>) is shown in Figure <a href="#F0004">4</a>.</p>
+  <div class="figure figureViewer" id="F0004">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A text classification method based on LSTM and graph attention network</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Wang%2C+Haitao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Wang%2C+Haitao"><span class="NLM_given-names">Haitao</span> Wang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Fangbing"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Fangbing"><span class="NLM_given-names">Fangbing</span> Li</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2128047">https://doi.org/10.1080/09540091.2022.2128047</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 October 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 4. </span> The architecture of LSTM.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/medium/ccos_a_2128047_f0004_oc.jpg" loading="lazy" height="318" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0004">
+   <p class="captionText"><span class="captionLabel">Figure 4. </span> The architecture of LSTM.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0004">
+   <div class="figureFootNote-F0004"></div>
+  </div>
+  <p></p>
+  <p>In the figure <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        C
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> is the state of the previous neuron, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        h
+       </mi>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> is the output of the previous neuron, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> is the current input, and <i>σ</i> is the Sigmoid function, which together determine the output <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        h
+       </mi>
+       <mi>
+        t
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> of the current neuron. The gate is adjusted using the Sigmoid function so that the output value of the gate is a value between 0 and 1 (Liu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2016</a></span>). The forgetting gate ignores all previous memories when it is 0, and the output gate ignores the newly calculated states when it is 0.</p>
+  <p>The feature representation of a node is initialised by word embedding, and the feature matrix containing all node embeddings is represented by matrix <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      X
+     </mi><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mi>
+         m
+        </mi>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span>, where <i>m</i> is the dimension of the feature vector. We take the matrix <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      X
+     </mi><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mi>
+         m
+        </mi>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span> as the input to the LSTM, and then through LSTM, we can get the feature matrix <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      H
+     </mi><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mi>
+         m
+        </mi>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span> containing text sequence information.</p>
+ </div>
+ <div id="S003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">3.3. GAT module</h3>
+  <p>After generating a text graph for each text, we pass and update the information between nodes through GAT to obtain the node representation containing text syntax and sequence information. The graph attention mechanism is different from the self-attention mechanism (Veličković et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2018</a></span>). The self-attention mechanism assigns attention weights to all nodes in the document. The graph attention mechanism does not need to know the whole graph structure in advance. It can flexibly assign different weights to different numbers of neighbour nodes, and can be processed in parallel on all nodes in the graph, with high computational efficiency.</p>
+  <p>There are two inputs to GAT. One is the feature matrix <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      H
+     </mi><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         x
+        </mi>
+        <mi>
+         m
+        </mi>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span> output by the LSTM module, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      H
+     </mi><mo>
+      =
+     </mo><mo fence="false" stretchy="false">
+      {
+     </mo><mrow>
+      <mrow>
+       <msub>
+        <mrow>
+         <mrow>
+          <mover>
+           <mi>
+            h
+           </mi>
+           <mo stretchy="false">
+            →
+           </mo>
+          </mover>
+         </mrow>
+        </mrow>
+        <mn>
+         1
+        </mn>
+       </msub>
+      </mrow>
+      <mo>
+       ,
+      </mo>
+      <mrow>
+       <msub>
+        <mrow>
+         <mrow>
+          <mover>
+           <mi>
+            h
+           </mi>
+           <mo stretchy="false">
+            →
+           </mo>
+          </mover>
+         </mrow>
+        </mrow>
+        <mn>
+         2
+        </mn>
+       </msub>
+      </mrow>
+      <mo>
+       ,
+      </mo>
+      <mo>
+       ⋯
+      </mo>
+      <mo>
+       ,
+      </mo>
+      <mrow>
+       <msub>
+        <mrow>
+         <mrow>
+          <mover>
+           <mi>
+            h
+           </mi>
+           <mo stretchy="false">
+            →
+           </mo>
+          </mover>
+         </mrow>
+        </mrow>
+        <mi>
+         n
+        </mi>
+       </msub>
+      </mrow>
+     </mrow><mo fence="false" stretchy="false">
+      }
+     </mo>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mrow>
+        <mover>
+         <mi>
+          h
+         </mi>
+         <mo stretchy="false">
+          →
+         </mo>
+        </mover>
+       </mrow>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mi>
+        m
+       </mi>
+      </msup>
+     </mrow>
+    </math></span>. The other input is the adjacency matrix <i>A</i> obtained through the syntax module, from which GAT can obtain the neighbour relationship of nodes. The output of GAT is the updated new node feature matrix <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msup>
+      <mi>
+       H
+      </mi>
+      <mrow>
+       <mi mathvariant="normal">
+        ′
+       </mi>
+      </mrow>
+     </msup><mo>
+      =
+     </mo><mo fence="false" stretchy="false">
+      {
+     </mo><mrow>
+      <msubsup>
+       <mrow>
+        <mover>
+         <mi>
+          h
+         </mi>
+         <mo stretchy="false">
+          →
+         </mo>
+        </mover>
+       </mrow>
+       <mn>
+        1
+       </mn>
+       <mrow>
+        <mi mathvariant="normal">
+         ′
+        </mi>
+       </mrow>
+      </msubsup>
+      <mo>
+       ,
+      </mo>
+      <msubsup>
+       <mrow>
+        <mover>
+         <mi>
+          h
+         </mi>
+         <mo stretchy="false">
+          →
+         </mo>
+        </mover>
+       </mrow>
+       <mn>
+        2
+       </mn>
+       <mrow>
+        <mi mathvariant="normal">
+         ′
+        </mi>
+       </mrow>
+      </msubsup>
+      <mo>
+       ,
+      </mo>
+      <mo>
+       ⋯
+      </mo>
+      <mo>
+       ,
+      </mo>
+      <msubsup>
+       <mrow>
+        <mover>
+         <mi>
+          h
+         </mi>
+         <mo stretchy="false">
+          →
+         </mo>
+        </mover>
+       </mrow>
+       <mi>
+        n
+       </mi>
+       <mrow>
+        <mi mathvariant="normal">
+         ′
+        </mi>
+       </mrow>
+      </msubsup>
+     </mrow><mo fence="false" stretchy="false">
+      }
+     </mo>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mrow>
+       <mover>
+        <mi>
+         h
+        </mi>
+        <mo stretchy="false">
+         →
+        </mo>
+       </mover>
+      </mrow>
+      <mi>
+       i
+      </mi>
+      <mrow>
+       <mi mathvariant="normal">
+        ′
+       </mi>
+      </mrow>
+     </msubsup><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <msup>
+         <mi>
+          m
+         </mi>
+         <mrow>
+          <mi mathvariant="normal">
+           ′
+          </mi>
+         </mrow>
+        </msup>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span>. The single-layer graph neural network updates the node representation as follows. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mrow>
+         <msub>
+          <mi mathvariant="bold-italic">
+           e
+          </mi>
+          <mrow>
+           <mi>
+            i
+           </mi>
+           <mi>
+            j
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mi>
+         L
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         a
+        </mi>
+        <mi>
+         k
+        </mi>
+        <mi>
+         y
+        </mi>
+        <mi>
+         R
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         L
+        </mi>
+        <mi>
+         U
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mrow>
+         <mrow>
+          <msup>
+           <mrow>
+            <mrow>
+             <mover>
+              <mi mathvariant="bold-italic">
+               a
+              </mi>
+              <mo stretchy="false">
+               →
+              </mo>
+             </mover>
+            </mrow>
+           </mrow>
+           <mi>
+            T
+           </mi>
+          </msup>
+         </mrow>
+         <mo stretchy="false">
+          [
+         </mo>
+         <mrow>
+          <mi mathvariant="bold-italic">
+           W
+          </mi>
+          <mrow>
+           <msub>
+            <mrow>
+             <mrow>
+              <mover>
+               <mi>
+                h
+               </mi>
+               <mo stretchy="false">
+                →
+               </mo>
+              </mover>
+             </mrow>
+            </mrow>
+            <mi>
+             i
+            </mi>
+           </msub>
+          </mrow>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+          <mi mathvariant="bold-italic">
+           W
+          </mi>
+          <mrow>
+           <msub>
+            <mrow>
+             <mrow>
+              <mover>
+               <mi>
+                h
+               </mi>
+               <mo stretchy="false">
+                →
+               </mo>
+              </mover>
+             </mrow>
+            </mrow>
+            <mi>
+             j
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+         <mo stretchy="false">
+          ]
+         </mo>
+        </mrow>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mrow>
+         <msub>
+          <mi mathvariant="bold-italic">
+           a
+          </mi>
+          <mrow>
+           <mi>
+            i
+           </mi>
+           <mi>
+            j
+           </mi>
+          </mrow>
+         </msub>
+        </mrow>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mi>
+         s
+        </mi>
+        <mi>
+         o
+        </mi>
+        <mi>
+         f
+        </mi>
+        <mi>
+         t
+        </mi>
+        <mi>
+         m
+        </mi>
+        <mi>
+         a
+        </mi>
+        <mrow>
+         <msub>
+          <mi>
+           x
+          </mi>
+          <mi>
+           j
+          </mi>
+         </msub>
+        </mrow>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mrow>
+         <mrow>
+          <msub>
+           <mi>
+            e
+           </mi>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mi>
+             j
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+        </mrow>
+        <mo stretchy="false">
+         )
+        </mo>
+        <mo>
+         =
+        </mo>
+        <mfrac>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            exp
+           </mi>
+          </mrow>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mrow>
+           <mrow>
+            <msub>
+             <mi>
+              e
+             </mi>
+             <mrow>
+              <mi>
+               i
+              </mi>
+              <mi>
+               j
+              </mi>
+             </mrow>
+            </msub>
+           </mrow>
+          </mrow>
+          <mo stretchy="false">
+           )
+          </mo>
+         </mrow>
+         <mrow>
+          <msub>
+           <mrow>
+            <mo movablelimits="false">
+             ∑
+            </mo>
+           </mrow>
+           <mrow>
+            <mi>
+             k
+            </mi>
+            <mo>
+             ∈
+            </mo>
+            <mrow>
+             <msub>
+              <mi>
+               N
+              </mi>
+              <mi>
+               i
+              </mi>
+             </msub>
+            </mrow>
+           </mrow>
+          </msub>
+          <mo>
+           ⁡
+          </mo>
+          <mrow>
+           <mi mathvariant="normal">
+            exp
+           </mi>
+          </mrow>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mrow>
+           <mrow>
+            <msub>
+             <mi>
+              e
+             </mi>
+             <mrow>
+              <mi>
+               i
+              </mi>
+              <mi>
+               k
+              </mi>
+             </mrow>
+            </msub>
+           </mrow>
+          </mrow>
+          <mo stretchy="false">
+           )
+          </mo>
+         </mrow>
+        </mfrac>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <msubsup>
+         <mrow>
+          <mover>
+           <mi>
+            h
+           </mi>
+           <mo stretchy="false">
+            →
+           </mo>
+          </mover>
+         </mrow>
+         <mi>
+          i
+         </mi>
+         <mrow>
+          <mrow>
+           <mrow>
+            <mi mathvariant="normal">
+             ′
+            </mi>
+           </mrow>
+          </mrow>
+         </mrow>
+        </msubsup>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mi>
+         σ
+        </mi>
+        <mrow>
+         <mo>
+          (
+         </mo>
+         <mrow>
+          <munder>
+           <mrow>
+            <mo movablelimits="false">
+             ∑
+            </mo>
+           </mrow>
+           <mrow>
+            <mi>
+             j
+            </mi>
+            <mi>
+             ϵ
+            </mi>
+            <mrow>
+             <msub>
+              <mi>
+               N
+              </mi>
+              <mi>
+               i
+              </mi>
+             </msub>
+            </mrow>
+           </mrow>
+          </munder>
+          <mo>
+           ⁡
+          </mo>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mrow>
+           <msub>
+            <mi>
+             a
+            </mi>
+            <mrow>
+             <mi>
+              i
+             </mi>
+             <mi>
+              j
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mi mathvariant="bold-italic">
+           W
+          </mi>
+          <mrow>
+           <msub>
+            <mrow>
+             <mrow>
+              <mover>
+               <mi>
+                h
+               </mi>
+               <mo stretchy="false">
+                →
+               </mo>
+              </mover>
+             </mrow>
+            </mrow>
+            <mi>
+             j
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+         <mo stretchy="false">
+          )
+         </mo>
+         <mo>
+          )
+         </mo>
+        </mrow>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span></p>
+  <p>Where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi mathvariant="bold-italic">
+        e
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mi>
+         j
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> is a single-layer feedforward neural network, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mrow>
+        <mover>
+         <mi mathvariant="bold-italic">
+          a
+         </mi>
+         <mo stretchy="false">
+          →
+         </mo>
+        </mover>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msup>
+     </mrow><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <mn>
+         2
+        </mn>
+        <msup>
+         <mi>
+          m
+         </mi>
+         <mrow>
+          <mi mathvariant="normal">
+           ′
+          </mi>
+         </mrow>
+        </msup>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span> is a shared parameter vector, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      W
+     </mi><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <msup>
+         <mi>
+          m
+         </mi>
+         <mrow>
+          <mi mathvariant="normal">
+           ′
+          </mi>
+         </mrow>
+        </msup>
+        <mo>
+         ×
+        </mo>
+        <mi>
+         m
+        </mi>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span> is a shared weight matrix of linear transformations that transform the input features into higher-level features to obtain sufficient expressiveness. Both <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0016.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msup>
+       <mrow>
+        <mover>
+         <mi mathvariant="bold-italic">
+          a
+         </mi>
+         <mo stretchy="false">
+          →
+         </mo>
+        </mover>
+       </mrow>
+       <mi>
+        T
+       </mi>
+      </msup>
+     </mrow>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0017.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi mathvariant="bold-italic">
+      W
+     </mi>
+    </math></span> are parameters that can be learned by neural networks. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0018.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mo stretchy="false">
+       |
+      </mo>
+     </mrow><mrow>
+      <mo stretchy="false">
+       |
+      </mo>
+     </mrow>
+    </math></span> denotes the splicing operation of the vectors. <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0019.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        N
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> is the first-order neighbour of node <i>i</i> in the graph. To make the coefficients easy to compare among different nodes, we normalise <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0020.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi mathvariant="bold-italic">
+        e
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mi>
+         j
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> using softmax to obtain the attention coefficient <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0021.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi mathvariant="bold-italic">
+        a
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mi>
+         j
+        </mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </math></span> between <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0022.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mrow>
+        <mover>
+         <mi>
+          h
+         </mi>
+         <mo stretchy="false">
+          →
+         </mo>
+        </mover>
+       </mrow>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0023.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mrow>
+        <mover>
+         <mi>
+          h
+         </mi>
+         <mo stretchy="false">
+          →
+         </mo>
+        </mover>
+       </mrow>
+       <mi>
+        j
+       </mi>
+      </msub>
+     </mrow>
+    </math></span>. The node feature representation after the update is obtained by Equation (3).</p>
+  <p>To stabilise the learning process of the model, we use a multi-headed attention mechanism. The hidden states of the nodes are calculated by using K independent attention mechanisms through Equation (3), and then the K outputs are stitched together as the input of the next layer. The overall calculation process is shown in Equation (4). After one graph attention layer calculation, only the information of the first-order neighbours of the node can be aggregated. We capture the information of the higher-order neighbours of the node by overlaying two-layer GAT to enrich the feature representation of the node. The second layer of GAT is computed as shown in Equation (5), and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0024.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mi>
+       a
+      </mi>
+      <mrow>
+       <mi>
+        i
+       </mi>
+       <mi>
+        j
+       </mi>
+      </mrow>
+      <mrow>
+       <mi mathvariant="normal">
+        ′
+       </mi>
+      </mrow>
+     </msubsup>
+    </math></span> is the attention coefficient between the spliced node vectors to obtain the final representation of the word nodes <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0025.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msup>
+      <mi>
+       H
+      </mi>
+      <mrow>
+       <mi mathvariant="normal">
+        ′
+       </mi>
+       <mi mathvariant="normal">
+        ′
+       </mi>
+      </mrow>
+     </msup><mo>
+      =
+     </mo><mo fence="false" stretchy="false">
+      {
+     </mo><mrow>
+      <msubsup>
+       <mrow>
+        <mover>
+         <mi>
+          h
+         </mi>
+         <mo stretchy="false">
+          →
+         </mo>
+        </mover>
+       </mrow>
+       <mn>
+        1
+       </mn>
+       <mrow>
+        <msup>
+         <mi></mi>
+         <mrow>
+          <mi mathvariant="normal">
+           ′
+          </mi>
+          <mi mathvariant="normal">
+           ′
+          </mi>
+         </mrow>
+        </msup>
+       </mrow>
+      </msubsup>
+      <mo>
+       ,
+      </mo>
+      <msubsup>
+       <mrow>
+        <mover>
+         <mi>
+          h
+         </mi>
+         <mo stretchy="false">
+          →
+         </mo>
+        </mover>
+       </mrow>
+       <mn>
+        2
+       </mn>
+       <mrow>
+        <msup>
+         <mi></mi>
+         <mrow>
+          <mi mathvariant="normal">
+           ′
+          </mi>
+          <mi mathvariant="normal">
+           ′
+          </mi>
+         </mrow>
+        </msup>
+       </mrow>
+      </msubsup>
+      <mo>
+       ,
+      </mo>
+      <mo>
+       ⋯
+      </mo>
+      <mo>
+       ,
+      </mo>
+      <msubsup>
+       <mrow>
+        <mover>
+         <mi>
+          h
+         </mi>
+         <mo stretchy="false">
+          →
+         </mo>
+        </mover>
+       </mrow>
+       <mi>
+        n
+       </mi>
+       <mrow>
+        <msup>
+         <mi></mi>
+         <mrow>
+          <mi mathvariant="normal">
+           ′
+          </mi>
+          <mi mathvariant="normal">
+           ′
+          </mi>
+         </mrow>
+        </msup>
+       </mrow>
+      </msubsup>
+     </mrow><mo fence="false" stretchy="false">
+      }
+     </mo>
+    </math></span>, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0026.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mrow>
+       <mover>
+        <mi>
+         h
+        </mi>
+        <mo stretchy="false">
+         →
+        </mo>
+       </mover>
+      </mrow>
+      <mi>
+       i
+      </mi>
+      <mrow>
+       <msup>
+        <mi></mi>
+        <mrow>
+         <mi mathvariant="normal">
+          ′
+         </mi>
+         <mi mathvariant="normal">
+          ′
+         </mi>
+        </mrow>
+       </msup>
+      </mrow>
+     </msubsup><mo>
+      ∈
+     </mo><mrow>
+      <msup>
+       <mrow>
+        <mrow>
+         <mi mathvariant="double-struck">
+          R
+         </mi>
+        </mrow>
+       </mrow>
+       <mrow>
+        <msup>
+         <mi>
+          m
+         </mi>
+         <mrow>
+          <mi mathvariant="normal">
+           ′
+          </mi>
+          <mi mathvariant="normal">
+           ′
+          </mi>
+         </mrow>
+        </msup>
+       </mrow>
+      </msup>
+     </mrow>
+    </math></span>. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <msubsup>
+         <mrow>
+          <mover>
+           <mi>
+            h
+           </mi>
+           <mo stretchy="false">
+            →
+           </mo>
+          </mover>
+         </mrow>
+         <mi>
+          i
+         </mi>
+         <mrow>
+          <mrow>
+           <mi mathvariant="normal">
+            ′
+           </mi>
+          </mrow>
+         </mrow>
+        </msubsup>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mrow>
+         <mo stretchy="false">
+          |
+         </mo>
+        </mrow>
+        <msubsup>
+         <mrow>
+          <mo stretchy="false">
+           |
+          </mo>
+         </mrow>
+         <mrow>
+          <mi>
+           K
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mi>
+          K
+         </mi>
+        </msubsup>
+        <mrow>
+         <mi>
+          σ
+         </mi>
+        </mrow>
+        <mrow>
+         <mo>
+          (
+         </mo>
+         <mrow>
+          <munder>
+           <mrow>
+            <mo movablelimits="false">
+             ∑
+            </mo>
+           </mrow>
+           <mrow>
+            <mi>
+             j
+            </mi>
+            <mi>
+             ϵ
+            </mi>
+            <mrow>
+             <msub>
+              <mi>
+               N
+              </mi>
+              <mi>
+               i
+              </mi>
+             </msub>
+            </mrow>
+           </mrow>
+          </munder>
+          <mo>
+           ⁡
+          </mo>
+          <mo stretchy="false">
+           (
+          </mo>
+          <msubsup>
+           <mi>
+            a
+           </mi>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mi>
+             j
+            </mi>
+           </mrow>
+           <mi>
+            k
+           </mi>
+          </msubsup>
+          <mrow>
+           <msup>
+            <mi mathvariant="bold-italic">
+             W
+            </mi>
+            <mi>
+             k
+            </mi>
+           </msup>
+          </mrow>
+          <mrow>
+           <msub>
+            <mrow>
+             <mrow>
+              <mover>
+               <mi>
+                h
+               </mi>
+               <mo stretchy="false">
+                →
+               </mo>
+              </mover>
+             </mrow>
+            </mrow>
+            <mi>
+             j
+            </mi>
+           </msub>
+          </mrow>
+         </mrow>
+         <mo stretchy="false">
+          )
+         </mo>
+         <mo>
+          )
+         </mo>
+        </mrow>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <msubsup>
+         <mrow>
+          <mover>
+           <mi>
+            h
+           </mi>
+           <mo stretchy="false">
+            →
+           </mo>
+          </mover>
+         </mrow>
+         <mi>
+          i
+         </mi>
+         <mrow>
+          <mrow>
+           <mrow>
+            <mi mathvariant="normal">
+             ′
+            </mi>
+            <mi mathvariant="normal">
+             ′
+            </mi>
+           </mrow>
+          </mrow>
+         </mrow>
+        </msubsup>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mi>
+         σ
+        </mi>
+        <mrow>
+         <mo>
+          (
+         </mo>
+         <mrow>
+          <munder>
+           <mrow>
+            <mo movablelimits="false">
+             ∑
+            </mo>
+           </mrow>
+           <mrow>
+            <mi>
+             j
+            </mi>
+            <mi>
+             ϵ
+            </mi>
+            <mrow>
+             <msub>
+              <mi>
+               N
+              </mi>
+              <mi>
+               i
+              </mi>
+             </msub>
+            </mrow>
+           </mrow>
+          </munder>
+          <mo>
+           ⁡
+          </mo>
+          <mo stretchy="false">
+           (
+          </mo>
+          <msubsup>
+           <mi>
+            a
+           </mi>
+           <mrow>
+            <mi>
+             i
+            </mi>
+            <mi>
+             j
+            </mi>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mi mathvariant="normal">
+              ′
+             </mi>
+            </mrow>
+           </mrow>
+          </msubsup>
+          <mi mathvariant="bold-italic">
+           W
+          </mi>
+          <msubsup>
+           <mrow>
+            <mover>
+             <mi>
+              h
+             </mi>
+             <mo stretchy="false">
+              →
+             </mo>
+            </mover>
+           </mrow>
+           <mi>
+            j
+           </mi>
+           <mrow>
+            <mrow>
+             <mi mathvariant="normal">
+              ′
+             </mi>
+            </mrow>
+           </mrow>
+          </msubsup>
+         </mrow>
+         <mo stretchy="false">
+          )
+         </mo>
+         <mo>
+          )
+         </mo>
+        </mrow>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span>Finally, the information of all nodes in the text graph after updating is fused to generate graph-level features for subsequent label prediction. We turn text classification into a graph classification task. We use maximum pooling to obtain the most important node data as the feature representation of the text graph, and then obtain the predicted labels by softmax: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        y
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow><mo>
+      =
+     </mo><mrow>
+      <mtext>
+       softmax
+      </mtext>
+     </mrow><mo stretchy="false">
+      (
+     </mo><mrow>
+      <mrow>
+       <mtext>
+        Maxpool
+       </mtext>
+      </mrow>
+      <mo stretchy="false">
+       (
+      </mo>
+      <mrow>
+       <msup>
+        <mi>
+         H
+        </mi>
+        <mrow>
+         <mi mathvariant="normal">
+          ′
+         </mi>
+         <mi mathvariant="normal">
+          ′
+         </mi>
+        </mrow>
+       </msup>
+      </mrow>
+      <mo stretchy="false">
+       )
+      </mo>
+     </mrow><mo stretchy="false">
+      )
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(6) </span></span></span></span>The purpose of training is to minimise the cross-entropy loss between the true and predicted labels, and the loss function is defined as <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(7) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      l
+     </mi><mi>
+      o
+     </mi><mi>
+      s
+     </mi><mi>
+      s
+     </mi><mo>
+      =
+     </mo><mo>
+      −
+     </mo><munderover>
+      <mrow>
+       <mo movablelimits="false">
+        ∑
+       </mo>
+      </mrow>
+      <mrow>
+       <mi>
+        i
+       </mi>
+       <mo>
+        =
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+      <mi>
+       N
+      </mi>
+     </munderover><mo>
+      ⁡
+     </mo><mrow>
+      <msub>
+       <mi>
+        g
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow><mi>
+      log
+     </mi><mo>
+      ⁡
+     </mo><mrow>
+      <msub>
+       <mi>
+        y
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(7) </span></span></span></span>where <i>N</i> is the number of documents, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0027.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        g
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> is the actual label of the document, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0028.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/ccos_a_2128047_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <msub>
+       <mi>
+        y
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow>
+    </math></span> is the predicted label of the document.</p>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i19" class="section-heading-2">4. Experiments</h2>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i20">4.1. Experimental setup</h3>
+  <p>This paper selects Python 3.7 development environment, and downloads pytorch, numpy and other toolkits through Anaconda. The experiment is carried out on the development platform with 2-core CPU and 16GB memory. To validate the effectiveness of our proposed model, we conducted experiments on the following five datasets: two subsets R52 and R8 of the Reuters 21578 dataset, a movie review dataset MR of with binary sentiment classification, the 23-class single-label medical literature Ohsumed from the MEDLINE database, and the large movie review dataset IMDb. Table <button class="ref showTableEventRef" data-id="T0001">1</button> lists the statistical information of the datasets, and Prop.NW denotes the proportion of new words in the test set.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A text classification method based on LSTM and graph attention network</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Wang%2C+Haitao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Wang%2C+Haitao"><span class="NLM_given-names">Haitao</span> Wang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Fangbing"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Fangbing"><span class="NLM_given-names">Fangbing</span> Li</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2128047">https://doi.org/10.1080/09540091.2022.2128047</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>06 October 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Summary statistics of datasets.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F09540091.2022.2128047&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>We compare our model with the following 10 baseline models.</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline">CNN (Kim, <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2014</a></span>): The first use of convolutional neural networks for text classification tasks, using pre-trained word vectors and maximum pooling operations to obtain text representations.</p></li>
+   <li><p class="inline">LSTM (Liu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2016</a></span>): The model uses the last hidden state as a representation of the whole text. Pre-trained word vectors are used in our experiments.</p></li>
+   <li><p class="inline">Bi-LSTM: is a bi-directional LSTM that uses pre-trained word embeddings.</p></li>
+   <li><p class="inline">fastText (Joulin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2016</a></span>): A simple and efficient text classification method that does not require initialisation with pre-trained word vectors and is faster to train than a typical neural network.</p></li>
+   <li><p class="inline">Bert (Devlin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2018</a></span>): Bidirectional Encoder Representations from Transformer. It is a very advanced natural language processing framework.</p></li>
+   <li><p class="inline">Graph-CNN (Defferrard et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2016</a></span>): a graph CNN model that operates convolutions over word embedding similarity graphs, in which Chebyshev filter is used.</p></li>
+   <li><p class="inline">TextGCN (Yao et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2019</a></span>): A model for text classification using GCN, which constructs a big picture for the entire corpus.</p></li>
+   <li><p class="inline">InducT-GCN (Wang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2022</a></span>): An inductive text classification model based on GCN, which uses less parameters and space than TextGCN.</p></li>
+   <li><p class="inline">Syntax-AT-Capsule (Jia &amp; Wang, <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2022</a></span>): An enhanced capsule network text classification model, which uses GCN as a submodule to encode the syntactic dependency tree and extract the syntactic information in the text.</p></li>
+   <li><p class="inline">Text-level-GNN (Huang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i28 _i29" href="#"><span class="off-screen">Citation</span>2019</a></span>): uses GNN for message passing between nodes, which builds text graphs for a text individually.</p></li>
+  </ul>
+  <p></p>
+  <p>For all datasets, we randomly divide the training set in the ratio of 9:1 as the training and validation sets in our experiments. We use 300-dimensional Glove pre-trained word embeddings as the input features. We use Adam as the optimisation algorithm with <i>L</i><sub>2</sub> weight decay rate of 10<sup>−4</sup>, learning rate set to 0.0005, batch size set to 32, and add a dropout layer to prevent model overfitting and set the dropout ratio to 0.5. In the graph attention module, we use the graph attention mechanism with <i>K</i> = 8 for the first layer and single-headed attention for classification in the second layer. We stop training if the validation loss does not decrease for 10 consecutive epochs. For comparison purposes, the baseline model uses the same 300-dimensional Glove word embedding and uses the default parameter configuration.</p>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i21">4.2. Experimental results</h3>
+  <p>Table <button class="ref showTableEventRef" data-id="T0002">2</button> shows the comparison of the accuracy of our model and the other ten baseline text classification models on the test set. We take the mean ± standard deviation of the results of running the model 10 times as the test results. Table <button class="ref showTableEventRef" data-id="T0003">3</button> records the F1-score of each classification model.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A text classification method based on LSTM and graph attention network</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Wang%2C+Haitao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Wang%2C+Haitao"><span class="NLM_given-names">Haitao</span> Wang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Fangbing"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Fangbing"><span class="NLM_given-names">Fangbing</span> Li</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2128047">https://doi.org/10.1080/09540091.2022.2128047</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>06 October 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Test accuracy (%) of various models on five datasets. OOM: out of memory (&gt;16GB).</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F09540091.2022.2128047&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A text classification method based on LSTM and graph attention network</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Wang%2C+Haitao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Wang%2C+Haitao"><span class="NLM_given-names">Haitao</span> Wang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Fangbing"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Fangbing"><span class="NLM_given-names">Fangbing</span> Li</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2128047">https://doi.org/10.1080/09540091.2022.2128047</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>06 October 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> F1-score (%) of various models on five datasets. OOM: out of memory (&gt;16GB).</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0003&amp;doi=10.1080%2F09540091.2022.2128047&amp;downloadType=CSV"> Download CSV</a><a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>It can be observed that our model outperforms other baseline models and the graph-based approach generally outperforms general neural network approaches such as CNN and LSTM. This shows that by converting the text to a graph-structured data representation, the model can be more flexible in accessing the hidden information in the text since each node can have a different number of neighbours. LSTM performs better than CNN. CNN pays more attention to the local information in the text, and LSTM can capture the context semantic information of the text. FastText uses N-gram and bag of words model as text features and performs well in experiments on various data sets. Although Bert performs well on all five datasets, it requires a lot of memory and longer training time. On MR, Bert outperforms GNN-based models thanks to large-scale pre-training. Furthermore, the text in MR is shorter, which limits the message passing ability of the graph structure. The reason why our model performs better than TextGCN and Text-level-GNN on MR dataset is that sentiment analysis requires a higher word order, and the different order of words will directly affect the category of text. TextGCN, Text-level-GNN and other models based on GNN don’t utilise the word order information of the text, while the LSTM module in our model can capture the word order information of the text. TextGCN builds a graph for the whole corpus, and the short text of MR dataset limits the ability of message-passing between document nodes and word nodes. The result of Text-level-GNN on Ohsumed is poor because Ohsumed is a long text dataset, and the number of training set is less than the test set. This indicates that the Text-level-GNN model ignores the important global and long-distant semantic information in a long text, and has poor inductive learning ability of text.</p>
+  <p>Table <button class="ref showTableEventRef" data-id="T0004">4</button> compares the number of edges in the text graph between the two representative GNN-based models and our model. As can be seen from the table, the number of edges in the graph in our model is significantly less than that in TextGCN and Text-level-GNN, which indicates that our model can significantly reduce memory consumption. TextGCN builds edges based on the co-occurrence of words within a fixed-size sliding window for the whole corpus, and the graph also includes edges between document nodes and word nodes. Text-level-GNN similarly connects words that occur simultaneously within a reasonably sized sliding window. In contrast, the edges in our model are generated based on the syntactic dependencies of the text, which can efficiently obtain important information about the text and reduce unnecessary edges. At the same time, we can also obtain the information between long-distance words according to the syntactic information, which is not limited by the size of the sliding window.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A text classification method based on LSTM and graph attention network</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Wang%2C+Haitao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Wang%2C+Haitao"><span class="NLM_given-names">Haitao</span> Wang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Fangbing"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Fangbing"><span class="NLM_given-names">Fangbing</span> Li</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2128047">https://doi.org/10.1080/09540091.2022.2128047</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>06 October 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 4. </span> Comparison of the number of edges in the model. OOM: out of memory(&gt;16GB).</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0004&amp;doi=10.1080%2F09540091.2022.2128047&amp;downloadType=CSV"> Download CSV</a><a data-id="T0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>Figure <a href="#F0005">5</a> shows the comparison of the training speed of our model and Text-level-GNN on MR and R8. It can be seen that our model has high accuracy after the first epoch on both MR and R8, and even our model can get the optimal model in the 5th epoch on MR, and the optimal model on R8 can be obtained within 20 epochs. This indicates that the GAT module in our model can quickly capture the words with high impact on the text classification results, give it a correspondingly large attention weight, and continuously adjust it to reach the optimum in subsequent training.</p>
+  <div class="figure figureViewer" id="F0005">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A text classification method based on LSTM and graph attention network</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Wang%2C+Haitao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Wang%2C+Haitao"><span class="NLM_given-names">Haitao</span> Wang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Fangbing"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Fangbing"><span class="NLM_given-names">Fangbing</span> Li</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2128047">https://doi.org/10.1080/09540091.2022.2128047</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 October 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 5. </span> Comparison of model training speed. The left panel is the result on MR and the right panel is the result on R8.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/medium/ccos_a_2128047_f0005_oc.jpg" loading="lazy" height="161" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0005">
+   <p class="captionText"><span class="captionLabel">Figure 5. </span> Comparison of model training speed. The left panel is the result on MR and the right panel is the result on R8.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0005">
+   <div class="figureFootNote-F0005"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S004-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i23">4.3. Parameter sensitivity</h3>
+  <p>As shown in Figure <a href="#F0006">6</a>, we compared different head-count attention mechanisms on the MR and R52 datasets. As the number of heads K increases, the test accuracy gradually improves. However, when K &gt; 8, the average accuracy no longer improves. This indicates that too few attention heads cannot obtain enough information to calculate the attention weights among words and cannot capture the keywords that affect the text classification results more accurately, while too many attention heads may capture some information with interference and slow down the model training and spend more time.</p>
+  <div class="figure figureViewer" id="F0006">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A text classification method based on LSTM and graph attention network</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Wang%2C+Haitao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Wang%2C+Haitao"><span class="NLM_given-names">Haitao</span> Wang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Fangbing"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Fangbing"><span class="NLM_given-names">Fangbing</span> Li</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2128047">https://doi.org/10.1080/09540091.2022.2128047</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 October 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 6. </span> Test accuracy by using GAT with different numbers of heads.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0006image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/medium/ccos_a_2128047_f0006_oc.jpg" loading="lazy" height="315" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0006">
+   <p class="captionText"><span class="captionLabel">Figure 6. </span> Test accuracy by using GAT with different numbers of heads.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0006">
+   <div class="figureFootNote-F0006"></div>
+  </div>
+  <p></p>
+  <p>To test the inductive performance of our model for word feature representation, we randomly selected training sets with different percentages from 0.5% to 1 on the MR dataset and tested the accuracy of these models separately using the original test sets. We did experiments with 0.5%, 5%, 10%, 20%, 50%, and 100% training sets, respectively, and the results are shown in Figure <a href="#F0007">7</a>. Using fewer training sets means more new words in the test set. As can be seen from the figure, the accuracy of our model can outperform the baseline model by about 10% when using only 0.5% of the training set (20 labelled documents per class), which indicates that our model has inductive learning ability and the more new words that are not seen in the test set, the more obvious the gain of our model.</p>
+  <div class="figure figureViewer" id="F0007">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">A text classification method based on LSTM and graph attention network</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Wang%2C+Haitao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Wang%2C+Haitao"><span class="NLM_given-names">Haitao</span> Wang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Fangbing"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Fangbing"><span class="NLM_given-names">Fangbing</span> Li</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2128047">https://doi.org/10.1080/09540091.2022.2128047</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>06 October 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 7. </span> Test accuracy by using different percent of training data ranging from 0.005 to 1 on MR.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0007image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/2022/ccos20.v034.i01/09540091.2022.2128047/20230104/images/medium/ccos_a_2128047_f0007_oc.jpg" loading="lazy" height="296" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0007">
+   <p class="captionText"><span class="captionLabel">Figure 7. </span> Test accuracy by using different percent of training data ranging from 0.005 to 1 on MR.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0007">
+   <div class="figureFootNote-F0007"></div>
+  </div>
+  <p></p>
+  <p>To further analyse our model, we performed an ablation study, and Table <button class="ref showTableEventRef" data-id="T0005">5</button> shows the experimental results.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">A text classification method based on LSTM and graph attention network</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Wang%2C+Haitao"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Wang%2C+Haitao"><span class="NLM_given-names">Haitao</span> Wang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Li%2C+Fangbing"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Li%2C+Fangbing"><span class="NLM_given-names">Fangbing</span> Li</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2128047">https://doi.org/10.1080/09540091.2022.2128047</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>06 October 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 5. </span> Results of the ablation study. We run all models 5 times and averaged the results.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0005-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0005&amp;doi=10.1080%2F09540091.2022.2128047&amp;downloadType=CSV"> Download CSV</a><a data-id="T0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>In (1), we remove the LSTM module. As can be seen from Table <button class="ref showTableEventRef" data-id="T0005">5</button>, the performance drop on MR is more obvious. The accuracy decreases slightly on the other three datasets. This is because the word order information has a greater impact on the text of the MR dataset. Therefore, the importance of the LSTM module in our model is more evident on MR.</p>
+  <p>In (2), we change max-pooling to mean-pooling and use mean-pooling for word embeddings in the text to generate an embedding representation of the text. This is similar to the pooling operation on CNNs. In the original model, the nodes obtain new representations from the received messages by obtaining the maximum value of each dimension individually. From the experimental results, it can be seen that max-pooling can achieve better results. max-pooling highlights the most important node data and provides non-linear features, which helps to obtain better results.</p>
+  <p>In (3), we reduce 1 layer of the GAT network. And the results indicate a decrease in the performance of the model. The relatively large drop on Ohsumed indicates that the second-order neighbours of long texts still contain important information and can have a non-negligible impact on the classification results. Also, this proves the necessity of our setting up two layers of GAT to take the information of the second-order neighbours.</p>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i26" class="section-heading-2">5. Conclusion and future work</h2>
+ <p>In this paper, we proposed a new inductive text classification model based on LSTM and GAT. Each text has a separate structural graph and turns the text classification problem into a graph classification problem. Our model captures word order information and syntactic information of the text and can build edges without the limitation of inter-word distance, while the graph attention network attenuates the influence of noisy data and increases the weight of important words. Experiments on multiple datasets demonstrate the effectiveness of our model, being able to learn inductive representations of words on a limited number of labelled documents, and significantly reducing memory consumption. However, because our model uses syntactic analysis tools, it suffers from the problem of long training time when processing texts with an average length of 200 words or more. Future work will investigate unsupervised graph-attentive text classification models, or make full use of little label data to improve classification performance. Apart from that, we can study how to extend node features to improve classification performance.</p>
+</div>

@@ -1,0 +1,1713 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">1. Introduction</h2>
+ <p>Question Answering (QA) involves building systems that are able to automatically respond to questions posed by humans in a natural language. Text based Question Answering tasks can be formulated as information retrieval problems where we want to find the documents that answer a certain question, extract the potential answers from the documents and rank them, or as reading comprehension problems where the task is to find the answer (also called span) from a context passage of text. While Question Answering tasks can encompass visual (context being image), open domain, multimodal (context can be image/video/audio/text) or focus on common sense reasoning tasks, in this work we focus on text-based reading comprehension. Reading comprehension models have great practical value especially for industry purposes as a properly trained reading comprehension model can function as a chatbot for answering frequently asked questions. The driver behind progress of question answering research has been the curation of multiple high-quality large reading comprehension datasets and release of models performing well on these datasets. However, for low resource languages like Bengali similar efforts to annotate large high-quality reading comprehension datasets can be costly and challenging due to lack of skilled annotators, awareness and Bengali specific NLP tools.</p>
+ <p>To create a QA system, we can train models from scratch or use transfer learning. Due to lack of QA specific large dataset in Bengali training models from scratch is unfeasible, so we use transfer learning. Transfer learning refers to adapting a pretrained model for one domain or task to another domain or task. In the context of NLP unsupervised language models like BERT, ELMO, ULMFIT (Devlin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>; Peters et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0056" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>; Howard &amp; Ruder, <span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>) trained on large linguistic corpora have been successfully adapted to downstream tasks like classification, named entity recognition, question answering and machine translation. The experiments from (Lample &amp; Conneau, <span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>; Devlin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>; Wu &amp; Dredze, <span class="ref-lnk lazy-ref"><a data-rid="CIT0081" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>), showed that with pretrained language representation models trained on multilingual corpora such as multilingual BERT zero-shot learning is feasible for several natural language processing tasks including NER, POS, machine translation. Zero shot transfer learning refers to use a pretrained model on a new task without using any labelled examples for supervised training. The idea is to solve a task without receiving any sample of that respective task during training. The reason that this process is efficient is because the model has the ability to perform extractive question answering, but not necessarily in the desired language. Existing research (Hsu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) on cross-lingual transfer learning on reading comprehension datasets showed successful results using multilingual BERT for zero shot reading comprehension. The authors found that multi-BERT fine-tuned on training set in source language and evaluated on a target language showed comparable performance to models trained from scratch and that m-BERT model has the ability to transfer between low lexical similarity language pairs such as English and Chinese. We found that zero shot transfer of reading comprehension on Bengali language has not been studied at all and the currently available cross-lingual benchmark reading comprehension datasets such as XQuAD (Artetxe et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) and MLQA (Lewis et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) also have not added Bengali as a benchmark language. To the best of our knowledge this is the first work systematically comparing cross-lingual transfer ability of multi-BERT on Bengali in a zero-shot setting with fine-tuned transformer models on synthetic corpus. We depicted our workflow in <a href="#F0001">Figure 1</a>, We also evaluate our model on a human annotated small question answering dataset for comparison. The contributions of our work are following:</p>
+ <ul class="NLM_list NLM_list-list_type-bullet">
+  <li><p class="inline">We use the multilingual BERT model for zero shot transfer learning and fine-tune it on our synthetic training dataset on the task of Bengali reading comprehension. We also use other variants of BERT model ike RoBERTa (Liu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) and DistilBERT (Sanh et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0064" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) for comparison on both zero shot and fine-tuned model setting.</p></li>
+  <li><p class="inline">The purpose of this paper seeks to contribute a way of identifying passages within a paragraph and answering specific questions in relation to the paragraph given with relevant details provided within the paragraph. As such, this model seeks to save time, make it accessible and benefit, among other things, kids, people with attention deficit hyperactive disorders, or even adults who are seeking specific answers from any form of literature which may otherwise be very time consuming to review thoroughly.</p></li>
+  <li><p class="inline">We have translated a large subset of SQuAD 2.0 (Rajpurkar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>) from English to Bengali and used this synthetic training set for training and testing our model. While creating this synthetic dataset, we have implemented fuzzy matching to preserve the quality of answers after translation.</p></li>
+  <li><p class="inline">We have created a human annotated Bengali reading comprehension dataset collected from popular Bangla Wikipedia Articles for evaluation of our models.</p></li>
+  <li><p class="inline">We conduct a human survey and compare the results with performances of BERT multilingual and other variants of BERT model, using both fine-tuning technique and zero-shot learning.</p>
+   <div class="figure figureViewer" id="F0001">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 1. </span> Simplified diagram of our approach and curated datasets and models.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0001_oc.jpg" loading="lazy" height="216" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0001">
+    <p class="captionText"><span class="captionLabel">Figure 1. </span> Simplified diagram of our approach and curated datasets and models.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0001">
+    <div class="figureFootNote-F0001"></div>
+   </div><p></p></li>
+ </ul>
+ <p></p>
+ <p>The remainder of the paper is organized as follows: Section 2 presents the related work that has been done QA domain for English, Bangla and other languages. Section 3 discusses the variants of BERT models we have used in our experiments. Section 4 discusses how we constructed our dataset. Section 5 and 6 present our evaluation metric and experiment findings, followed by the survey on children in section 7. Finally, sections 8,9 and 10 present our error analysis, impact of the project in the context of Bangladesh and conclusion.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">2. Related works</h2>
+ <p>In this section, we discuss the progress on reading comprehension tasks in English and attempts from other languages to replicate the progress, specifically highlighting the benchmark datasets and how translated datasets have been used in other languages for training QA models. We also discuss early attempts of creating QA systems in Bengali language and the limitations and challenges faced in Bengali.</p>
+ <div id="S002-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i6">2.1. Question answering in English</h3>
+  <p>Early attempts on reading comprehension tasks include Deep Read (Hirschman et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>1999</a></span>) and MCTest (Richardson et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0061" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2013</a></span>). From 2015–2016, there have been multiple attempts at curating large scale question answering datasets for English such as CNN/Daily Mail Corpus (Hermann et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2015</a></span>), SQuAD 1.0 (Rajpurkar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2016</a></span>), RACE (Lai et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2017</a></span>), SQuAD 2.0 (Rajpurkar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>), QuAC (Choi et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2015</a></span>), CoQA (Reddy et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0060" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>) and Natural Question Corpus (Kwiatkowski et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>). For English language domain specific QA datasets like NewsQA (Trischler et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0073" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2017</a></span>), TriviaQA (Joshi et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2017</a></span>) are also available. Out of these datasets SQuAD 1.1 and SQuAD 2.0 are widely used benchmarks with human performance baselines and also have been included in NLP language understanding evaluation benchmark leaderboards like GLUE (Wang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0077" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>) and SUPERGLUE (Wang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0076" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>).</p>
+  <p>Since Question Answering literature is broad and extensive, many survey and review papers has been written recently on this topic (Zhang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0089" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>; Baradaran et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2020</a></span>; Gupta &amp; Rawat, <span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2020</a></span>), however, we categorize the relevant literature similar to the taxonomy introduced by Zeng et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0087" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2020</a></span>) where 57 MRC (machine reading comprehension) tasks have been categorized based on different characteristics, evaluation metric in <button class="ref showTableEventRef" data-id="T0001">Table 1</button>. We also add how non-English languages have curated their own corpus for MRC in <button class="ref showTableEventRef" data-id="T0002">Table 2</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 1. Overview of QA datasets in English.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F24751839.2020.1833136&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 2. Overview of SQuAD like QA datasets in different languages.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F24751839.2020.1833136&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>As seen in <a href="#F0002">Figure 2</a>, Question answering tasks can be classified into multiple variations like general reading comprehension, where the task is to predict an answer from a given context passage and a question about that passage. Other varieties include open domain question answering, where the input is a large collection of unstructured text, multimodal QA where the context passages include other media like video, image, audio etc. instead of only text, common sense QA tasks where the answers require the model to have common sense or world knowledge, complex reasoning tasks where reasoning skills are expected, conversational QA systems where unlike MRC tasks where the context passages are independent of each other, the input is a series of dialogues and cross-lingual QA where the questions and the context passages are of different languages.</p>
+  <p>Corpus, question and answers can also have different subtypes (Zeng et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0087" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2020</a></span>). Unit of corpus can be varied like single/multiple passages, documents, URL, paragraphs with images, only images, video clips and more. Questions can be natural text, cloze style (a sentence with a placeholder for both text or images like fill in the blanks questions for children), or synthetic (instead of a grammatically correct question the question is a list of words, e.g. ‘US president lives in’). Answers can be a span extracted from the context passage (constraint is the span is a part of the context passage), free-form (the answer does not have to be a part of the context passage) or multiple-choice answers including yes/no. The datasets also vary in their complexity, size, source and the chosen evaluation metrics.</p>
+  <p>QA systems are classified into 9 different types of evaluation metrics according to (Zeng et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0087" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2020</a></span>), but commonly used metrics are: Precision, Recall, Accuracy (in general custom defined for datasets), F1, Exact Match, ROUGE, BLEU, METEOR and HEQ. For multiple choice/cloze datasets accuracy is generally used, for multimodal tasks accuracy is defined customly (e.g RecipeQA), for span prediction tasks such as ours Exact Match and F1 score has been used in both our work for Bengali and in other languages in section 2.2. Many of the metrics like ROUGE, BLEU and METEOR are derived from other areas of NLP like neural machine translation and text summarization. Organized overview of the English MRC tasks has been added in <button class="ref showTableEventRef" data-id="T0001">Table 1</button>.</p>
+ </div>
+ <div id="S002-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">2.2. Question answering in non-English languages</h3>
+  <p>For low resource languages curating large reading comprehension datasets are often impossible due to lack of native language speakers, large monolingual corpora, skilled annotators and cost of curating large datasets with correct labels. However there has been work on translating English QA datasets to Arabic (Mozannar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>), Korean (Lee et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>), Hindi (Gupta et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) and Spanish (Carrino et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) question answering systems where they translated English data like SQuAD 1.1 (Rajpurkar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>) to their respective languages and used transformer models for transfer learning in training their own QA systems; we also closely follow these works in training our Bengali systems. Translated datasets have also been used in making cross lingual benchmark datasets like XQuAD (Artetxe et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) and MLQA (Lewis et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>).</p>
+  <p>Aside from using translated dataset, there has also been attempts of curating large question answering datasets in multiple other languages including French (d'Hoffschmidt et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2020</a></span>), Korean (Lim et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0046" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>), Russian (Efimov et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2020</a></span>), Chinese (Cui et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>; Shao et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0066" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>) and benchmark models like QANet (Yu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0086" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>), BiDAF (Seo et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0065" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2016</a></span>), BERT (Devlin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>) have been trained on them. In contrast to gathering translated or human annotated dataset for model training, zero shot transfer learning where pretrained models were evaluated directly on a new language after task specific training on question answering has also been attempted on reading comprehension tasks (Artetxe et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>; Hsu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>; Siblini et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0067" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>). To the best of our knowledge none of similar work have ever been attempted on Bengali so far. <button class="ref showTableEventRef" data-id="T0002">Table 2</button> presents an overview of QA in different datasets.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 3. Translated dataset statistics in the # of tokens and characters.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0003&amp;doi=10.1080%2F24751839.2020.1833136&amp;downloadType=CSV"> Download CSV</a><a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 4. Results from the zero shot setting experiments where we evaluate the pretrained models directly on the validation set.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0004&amp;doi=10.1080%2F24751839.2020.1833136&amp;downloadType=CSV"> Download CSV</a><a data-id="T0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 5. DistilBERT and RoBERTa results broken down by answerable vs unanswerable questions.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0005-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0005&amp;doi=10.1080%2F24751839.2020.1833136&amp;downloadType=CSV"> Download CSV</a><a data-id="T0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 6. Results from training the models on the translated training dataset for 5 epochs.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0006-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0006&amp;doi=10.1080%2F24751839.2020.1833136&amp;downloadType=CSV"> Download CSV</a><a data-id="T0006" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 7. Evaluation on a human annotated dataset of 134 questions from 53 paragraphs.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0007-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0007&amp;doi=10.1080%2F24751839.2020.1833136&amp;downloadType=CSV"> Download CSV</a><a data-id="T0007" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 8. Exact Match and F1 scores from all models in zero shot and fine-tuned setting.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0008-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0008&amp;doi=10.1080%2F24751839.2020.1833136&amp;downloadType=CSV"> Download CSV</a><a data-id="T0008" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2020
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 9. Survey Results for zero-shot and fine-tuned models according to grades.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0009-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0009&amp;doi=10.1080%2F24751839.2020.1833136&amp;downloadType=CSV"> Download CSV</a><a data-id="T0009" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S002-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i17">2.3. Question answering in Bengali</h3>
+  <p>Compared to the maturity of question answering research in English, due to lack of fundamental natural language processing resources and scarcity of data Bengali question answering research is at its infancy. Majority of the QA research in Bengali can be grouped into attempts of creating question classification systems to be used as a component of a full-fledged question answering system or building factoid-like question answering systems using information retrieval centric techniques.</p>
+  <p>Banerjee and Bandyopadhyay (<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2012</a></span>) first attempted to build a question classification system for Bengali by extracting lexical, syntactic and semantic features like wh-word or interrogative words existence and position, question length, end marker, Parts of Speech (POS) tags etc to classify questions into nine categories. The issues they faced were the existence of numerous interrogative words in Bengali compared to English, the fact that Bengali interrogatives can appear in any part of the sentence and lack of high-quality NLP tools like POS tagger, NER system and benchmark corpora. Nirob et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0052" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2017</a></span>) also built a question classification system with similar feature extraction methods along with using uni-grams as features with support vector machines.</p>
+  <p>Banerjee et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2014</a></span>) attempted to build the first Bengali factoid question answering system called BFQA, a complex IR system that classifies questions, retrieves relevant sentences, ranks them and extracts correct answers. BQAS (Hoque et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2015</a></span>), a bilingual question answering system that can generate and answer fact-based questions from Bengali and English documents was also built. Islam and Nurul Huda (<span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) also implemented a similar QA system that extracts relevant answers from multiple documents and gives specific answers for time related questions. However, to best of our knowledge no attempt with deep learning techniques on SQuAD like reading comprehension datasets so far has been made in Bengali previously.</p>
+ </div>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i18" class="section-heading-2">3. Models</h2>
+ <p>In a typical NLP pipeline a text is initially tokenized, encoded to numerical vectors and then fed as input to the models. To encode the words as numerical vectors many different representations so far has been consider like Bag of Words, tf-idf, Word2Vec, GLOVE, FastText, each with their own limitations. In BOW representation each word is assigned to a one-hot-encoded vector, however as the vocabulary grows this approach has its limitations. Tf-idf representations have been used in early age information retrieval systems, however it relies heavily on term overlaps between query and the document and unable to learn more complex representations. Word2Vec, GLOVE and FastText are considered distributed representations where the semantic relationship between different words are learnt, out of these FastText is able to handle out of vocabulary words since it relies on learning character level n-gram representations, however FastText can not handle Polysemy(a word can have different possible meaning based on its context). For a complex task like question answering having contextualized word representations (where the word embeddings take context into account by looking at the entire sentence) is very important. While models like BiDAF (Seo et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0065" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2016</a></span>), DocQA (Clark &amp; Gardner, <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2017</a></span>), DrQA (Chen et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2017</a></span>) showed good performance on SquAD 1.1 leaderboard, all of the current high performing models in SquAD 2.0 use variations of BERT based models which can produce contextualized representations of words. Since we wanted to create a benchmark dataset and models for deep learning based Bengali Question Answering work, we followed the approaches from Russian (SberQuAD), Spanish (SquAD-es), Arabic and French language (details in section 2.2) and focused on training multilingual BERT models with contextualized representations.</p>
+ <p>While the ideal would have been to train BERT models from scratch on Bengali and then fine-tuning them for QA in Bengali, as a low resource language Bengali does not have large unsupervised text datasets like English. Transfer learning in NLP context generally refers to learning embedding or language representation in an unsupervised setting over a large corpus and then modifying the architecture for task specific enhancements. Also, since transfer learning requires significantly less data and training compared to training from scratch, due to lack of computational resources and data it is more advantageous for us to use transfer learning models pretrained on large multilingual corpus like Wikipedia of different language. From that inspiration we have chosen BERT (Devlin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>), DistilBERT (Sanh et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0064" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>), a compressed version of the original BERT and RoBERTA (Liu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) as our chosen models for prototyping a Bengali question answering solution. The components of the models and our hyperparameters are described in the following sections.</p>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i19">3.1 BERT</h3>
+  <p>BERT (Devlin et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>) refers to a neural network pretraining technique called <b>B</b>idirectional <b>E</b>ncoder <b>R</b>epresentation from <b>T</b>ransformers. Due to its excellent performance in several NLP tasks on GLUE (Wang et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0076" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) including SQuAD 1.1 and SQuAD 2.0. There have been many other architectures that are variants of BERT. It has recently been included in Google Search too. BERT is based on transformers which processes words in relation to all the other words in a sentence instead of looking at them one by one. This allows BERT to look at contexts both before and after a particular word and helps it to pick up features of a language.</p>
+  <div id="S003-S2001-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i20">3.1.1. BERT architecture</h4>
+   <p>BERT makes use of the transformer architecture (Vaswani et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0074" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2017</a></span>) which uses the self-attention mechanism to learn contextual relationships between words and sub-words. In general, the transformer architecture uses encoder-decoder method, an encoder for reading the sequence of inputs and the decoder that creates predictions for the actual task. Sequence to sequence models based on RNN or LSTM architectures reads the sequence left-to-right or right-to-left, but transformer encoder reads the entire input sequence at once. BERT however only uses the encoder half of the transformer. BERT base architecture has 12 transformer blocks, 768 hidden size and 12 attention heads, total around 110M parameters. BERT large architecture has 24 transformer blocks, 1024 hidden size and 16 attention blocks with a staggering number of 340M parameters. Input for BERT is a sequence of tokens which are mapped to embedding vectors and then processed in the transformer blocks. The output of the encoder is a sequence of vectors indexed to tokens each of hidden size H.</p>
+  </div>
+  <div id="S003-S2001-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i21">3.1.2. Input representation</h4>
+   <p>Input representation for BERT can handle both a single sentence and a pair of sentences representation e.g (Question, Answer) in a single token sequence. A sentence is considered to be an arbitrary span of contiguous text rather than a linguistic sentence. A sequence can be one sentence or two sentences concatenated together.</p>
+   <p>Word piece tokenization is used with a 30k vocabulary. First token of every sequence is always a special token called the [CLS] token. For classification tasks the final hidden state assigned to the CLS token is used as input. If pair of sentences are given as input then the sentences are separated using a separator token [SEP]. Segment embedding are also used to indicate whether a sentence is from sentence 1 or 2. The final input to the model is the summation of the token embedding, segment embedding and positional embedding.</p>
+  </div>
+  <div id="S003-S2001-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i22">3.1.3. Pretraining BERT</h4>
+   <p>Traditionally language models are trained to predict the next word from a sequence of word, either from left-to-right or right-to-left. For example, ‘The cat is sitting' would be the context and the next target word would be ‘on'. However, BERT is pretrained using two unsupervised tasks called masked language modelling and next sentence prediction.</p>
+   <p><b>Masked Language Modelling:</b> To train a deep bidirectional representation of the input BERT masks some percentage of the input tokens at random and then predict those masked tokens for training. The final output vectors from the encoder are fed into a softmax layer over the vocabulary to get the word predictions.</p>
+   <p><b>Next Sentence Prediction:</b> Many downstream NLP tasks like question answering is based on understanding the relationship between two sentences which is not directly captured by language modelling. In order to capture sentence level relationships, the unsupervised task of next sentence prediction is added. For generating examples of this task in each example 50% of the time the next sentence is the real next sentence and other half of the time it is a random sentence from the corpus.</p>
+  </div>
+  <div id="S003-S2001-S3004" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i23">3.1.4. BERT for question answering</h4>
+   <p>With the utilization of pre-trained BERT models, we can use pre-trained memory data of sentence structure, language, and grammar related memory of huge corpus of millions, or billions, of commented on preparing models, that it has been trained on. The pre-trained model would then be able to be adjusted on little information NLP errands like question answering and sentiment analysis, bringing about notable performance enhancements compared to training on these datasets from scratch.</p>
+   <p>BERT model is slightly modified for the question answering task. Given the question and the context the total sequence is considered to be a single packed sequence. The question is assigned the segment A embedding and the passage is given the sentence B embedding. Two new vectors of same dimensionality as the output vectors is added, the start vector and the end vector. The probability of a word being the start of answer span is computed as the dot product between the output representation of the word and the start vector followed by a softmax over the set of words in the passage. The probability of a word being the end of span is also calculated by Equation (1). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/tjit_a_1833136_m0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/tjit_a_1833136_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        P
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub><mo>
+       =
+      </mo><mstyle>
+       <mrow>
+        <mfrac>
+         <mrow>
+          <msup>
+           <mi>
+            e
+           </mi>
+           <mrow>
+            <mi>
+             S
+            </mi>
+            <mo>
+             .
+            </mo>
+            <msub>
+             <mi>
+              T
+             </mi>
+             <mi>
+              i
+             </mi>
+            </msub>
+           </mrow>
+          </msup>
+         </mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           Σ
+          </mi>
+          <msup>
+           <mi>
+            e
+           </mi>
+           <mrow>
+            <mi>
+             S
+            </mi>
+            <mo>
+             .
+            </mo>
+            <msub>
+             <mi>
+              T
+             </mi>
+             <mi>
+              j
+             </mi>
+            </msub>
+           </mrow>
+          </msup>
+         </mrow>
+        </mfrac>
+       </mrow>
+      </mstyle>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span></p>
+   <p>The score of a candidate span from ith word to jth word is defined as S.Ti + E.Tj.and the maximum scoring span where j&gt;=i is used as a prediction. The training objective is the sum of the log-likelihoods of the correct start and end positions. For SQuAD 2.0 for questions that do not have any answer start and end spans are considered to be at the CLS token.</p>
+  </div>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i25">3.2. DistilBERT</h3>
+  <p>DistilBERT (Sanh et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0064" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) is a compressed version of BERT where knowledge distillation technique was used to compress the BERT architecture. Using knowledge distillation in the pretraining phase of BERT it was possible to reduce the size of a BERT model by 40% while retaining 97% of its language understanding capabilities and being 60% faster. For training it uses a triplet loss combining language modelling, distillation and cosine embedding loss. Model compression techniques like knowledge distillation is motivated by the desire to deploy massive architectures like transformers to low computing resource environment as well as reducing training time and computational cost.</p>
+  <div id="S003-S2002-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i26">3.2.1. Knowledge distillation</h4>
+   <p>Knowledge Distillation (Hinton et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0001a" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2015</a></span>) is a compression technique where a smaller compact model is trained to reproduce the behaviour of a larger model or an ensemble of models. The larger model is often called the teacher and the smaller model is called the student. In knowledge distillation the student network minimizes a loss function where the target is the distribution of class probabilities predicted by the teacher. This probability distribution generally has the correct class at a high probability while the other classes have near zero probability. Knowledge Distillation can be thought of the teacher network teaching the student how to produce outputs like itself. Both of the networks are fed same input. While the target of the teacher network are the actual labels, the student network is rewarded for mimicking the behaviour of the teacher network.</p>
+   <p>The student is trained with a distillation loss over the soft target probabilities of the teacher. Following softmax temperature is also used where t controls the smoothness of the output distribution. It is shown in Equation (2). <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/tjit_a_1833136_um0001.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/tjit_a_1833136_um0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        L
+       </mi>
+       <mrow>
+        <mi>
+         c
+        </mi>
+        <mi>
+         e
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><mspace width="thickmathspace"></mspace><mi mathvariant="normal">
+       Σ
+      </mi><msub>
+       <mi>
+        t
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub><mo>
+       +
+      </mo><mi>
+       l
+      </mi><mi>
+       o
+      </mi><mi>
+       g
+      </mi><mo>
+       (
+      </mo><mrow>
+       <msub>
+        <mi>
+         s
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msub>
+      </mrow><mo>
+       )
+      </mo>
+     </math></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/tjit_a_1833136_m0002.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/tjit_a_1833136_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mrow>
+       <mspace width="thickmathspace"></mspace>
+      </mrow><msub>
+       <mi>
+        p
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub><mo>
+       =
+      </mo><mstyle>
+       <mrow>
+        <mfrac>
+         <mrow>
+          <mi>
+           e
+          </mi>
+          <mi>
+           x
+          </mi>
+          <mi>
+           p
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           x
+          </mi>
+          <mi>
+           p
+          </mi>
+          <mrow>
+           <mspace width="thickmathspace"></mspace>
+          </mrow>
+          <mfenced open="(" close=")">
+           <mrow>
+            <mstyle displaystyle="true">
+             <mrow>
+              <mfrac>
+               <mrow>
+                <msub>
+                 <mi>
+                  z
+                 </mi>
+                 <mi>
+                  i
+                 </mi>
+                </msub>
+               </mrow>
+               <mi>
+                t
+               </mi>
+              </mfrac>
+             </mrow>
+            </mstyle>
+           </mrow>
+          </mfenced>
+          <mrow>
+           <mspace width="thickmathspace"></mspace>
+          </mrow>
+         </mrow>
+         <mrow>
+          <mi mathvariant="normal">
+           Σ
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           x
+          </mi>
+          <mi>
+           p
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           x
+          </mi>
+          <mi>
+           p
+          </mi>
+          <mrow>
+           <mspace width="thickmathspace"></mspace>
+          </mrow>
+          <mfenced open="(" close=")">
+           <mrow>
+            <mstyle displaystyle="true">
+             <mrow>
+              <mfrac>
+               <mrow>
+                <msub>
+                 <mi>
+                  z
+                 </mi>
+                 <mi>
+                  i
+                 </mi>
+                </msub>
+               </mrow>
+               <mi>
+                t
+               </mi>
+              </mfrac>
+             </mrow>
+            </mstyle>
+           </mrow>
+          </mfenced>
+          <mrow>
+           <mspace width="thickmathspace"></mspace>
+          </mrow>
+         </mrow>
+        </mfrac>
+       </mrow>
+      </mstyle>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span></p>
+  </div>
+  <div id="S003-S2002-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i29">3.2.2. DistilBERT architecture</h4>
+   <p>The student network is a small transformer architecture which is trained with the supervision of a larger transformer architecture (BERT-base) and initialized from the layers of the teacher architecture. The number of layers is reduced by a factor 2 and other minor modifications like removing token type embedding and poolers are also done. DistilBERT was also trained on the same corpus like the original BERT model, a concatenation of English Wikipedia with other large datasets. The training loss is a linear combination of distillation loss and supervised training loss (in this case masked language modelling loss) as the next sentence prediction objective was dropped. A cosine embedding loss was also added to align the embedding of the student and the teacher transformer network.</p>
+  </div>
+ </div>
+ <div id="S003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i30">3.4. RoBERTa</h3>
+  <p>Introduced by Facebook, RoBERTa (Robustly Optimized BERT Pretraining Approach) (Liu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>), is a retraining of BERT with various adjustments to improve performance. These include: expanding the batch size, training the model for a more extended timeframe, and over larger data. This helps in refining the perplexity for the masked language model goal, and the end-task accuracy. The next sentence prediction (NSP) goal of BERT was eliminated. RoBERTa also introduced dynamic masking so that the masked tokens were changed during training epochs and used 160 GB of text for pretraining.</p>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i31" class="section-heading-2">4. Dataset collection</h2>
+ <p>Since Bangla is a low resource language and so far, there has been no crowdsourced human annotated reading comprehension dataset collected in Bangla so far, we translated a large benchmark dataset of reading comprehension from English to Bangla to create a synthetic training set. However, for evaluation purposes and in hope of creating a human annotated QA dataset for Bengali for future work, a second dataset from Bengali Wikipedia was also curated.</p>
+ <p>We used the SQuAD 2.0 (Stanford Question Answering Dataset, Rajpurkar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>), a reading comprehension dataset, composed of questions annotated by crowd workers on a selection of Wikipedia articles for the training dataset that was translated to Bengali. The answer to each question is a section of the text (a span) of the corresponding reading passage. Our experiments were performed based on two datasets: Translated subset of SQuAD 2.0 training dataset from English to Bengali and a human annotated benchmark evaluation dataset gathered from Bengali Wikipedia passages.</p>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i32">4.1. Bengali-SQuAD (Translated)</h3>
+  <p>While the crowd sourced annotated dataset has been built for model evaluation, training data obtained by translation had enough noise that can be sufficient for model training. Similar synthetic data obtained by translation of SQuAD 1.1 (Rajpurkar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2016</a></span>) has been used in training Arabic (Mozannar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>), Korean (Lee et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>), Hindi (Gupta et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) and Spanish (Carrino et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) Question Answering systems. Recently launched MLQA (Lewis et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) and XQuAD (Artetxe et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) cross lingual parallel QA datasets also use translated SQuAD to multiple popular languages like Spanish, Chinese, German, Arabic etc. for cross lingual question answering.</p>
+  <p>Stanford Question Answering Dataset (SQuAD) (Rajpurkar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2016</a></span>), is a large-scale reading comprehension dataset collected in English with annotations from crowd workers. The dataset contains around 100k QA pairs from 442 topics. For each topic there is a set of passages and for each passage QA pairs are annotated by marking the span or the part of text that answers the question. SQuAD 2.0 (Rajpurkar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>) poses a more challenging task by adding 50k more adversarial questions to the dataset where the questions are impossible to answer. The adversarial questions are introduced so that QA systems built with the dataset are capable of understanding when a question cannot be answered as well as answer the possible questions properly. Since SQuAD 2.0 dataset contains a leaderboard for model comparison along with a human baseline score, SQuAD 2.0 was chosen for translation to Bengali to create synthetic training data.</p>
+  <p>Google cloud translation API was used to translate the context, question and answers of SQuAD 2.0 samples for 294 articles. We then randomly split the data into 80:20 split for training and validation sets. The 235 training topics consisted of 11,588 paragraphs and 73,812 question answer pairs, while 59 validation topics consisted of 17,607 questions and 2714 paragraphs. Out of 73,812 question answer pairs in the training set 36,067 questions are answerable and 37,745 questions are unanswerable. Out of 17,607 question answer pairs in the test set 8166 questions are answerable and 9441 questions are impossible to answer from the context.</p>
+  <p>The format of the dataset mimics that of SQuAD 2.0. Each sample in the dataset is a triplet of context paragraph, question and answer structured like the following:</p>
+  <div class="quote">
+   <p>• context: The paragraph or text from which the question is asked</p>
+  </div>
+  <div class="quote">
+   <p>• qas: A list of questions and answers. The list contains the following:</p>
+   <p>-id: A unique id for the question</p>
+   <p>- question: A question.</p>
+   <p>– is_impossible: A Boolean value indicating if a question can be answered correctly from the provided context.</p>
+   <p>– answers: A list that contains following:</p>
+   <p>     * answer: The answer to the question</p>
+   <p>     * answer_start: The starting index of the answer in the context</p>
+  </div>
+  <p></p>
+  <div id="S004-S2001-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i33">4.1.1. Examples and basic statistics</h4>
+   <p>We summarize the dataset statistics in <button class="ref showTableEventRef" data-id="T0003">Table 3</button> with general statistics. <a href="#F0003">Figure 3</a> shows a sample translated SQuAD 2.0 context paragraph with a question and marked span in the context colour coded to show the similarity between context span and answer. <a href="#F0004">Figure 4</a> shows question, answer and context length histograms for the translated dataset.</p>
+   <div class="figure figureViewer" id="F0002">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 2. </span> Classification of QA literature based on task characteristics, corpus, evaluation metric, question and answer type.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0002_oc.jpg" loading="lazy" height="269" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0002">
+    <p class="captionText"><span class="captionLabel">Figure 2. </span> Classification of QA literature based on task characteristics, corpus, evaluation metric, question and answer type.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0002">
+    <div class="figureFootNote-F0002"></div>
+   </div>
+   <div class="figure figureViewer" id="F0003">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 3. </span> Sample Bangla Translated SQuAD context, question and answer.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0003_oc.jpg" loading="lazy" height="75" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0003">
+    <p class="captionText"><span class="captionLabel">Figure 3. </span> Sample Bangla Translated SQuAD context, question and answer.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0003">
+    <div class="figureFootNote-F0003"></div>
+   </div>
+   <div class="figure figureViewer" id="F0004">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 4. </span> Question Answer and Context paragraph length histograms (in characters). Data corruption due to translation errors.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0004image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0004_oc.jpg" loading="lazy" height="311" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0004">
+    <p class="captionText"><span class="captionLabel">Figure 4. </span> Question Answer and Context paragraph length histograms (in characters). Data corruption due to translation errors.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0004">
+    <div class="figureFootNote-F0004"></div>
+   </div>
+   <div class="figure figureViewer" id="F0005">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 5. </span> Context, Question and Answer of corrupted samples. Answer and the context has been highlighted by blue underline to show the mismatch.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0005image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0005_oc.jpg" loading="lazy" height="287" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0005">
+    <p class="captionText"><span class="captionLabel">Figure 5. </span> Context, Question and Answer of corrupted samples. Answer and the context has been highlighted by blue underline to show the mismatch.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0005">
+    <div class="figureFootNote-F0005"></div>
+   </div>
+   <div class="figure figureViewer" id="F0006">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 6. </span> Using HTML tags to preserve the quality of translation.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0006image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0006_oc.jpg" loading="lazy" height="156" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0006">
+    <p class="captionText"><span class="captionLabel">Figure 6. </span> Using HTML tags to preserve the quality of translation.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0006">
+    <div class="figureFootNote-F0006"></div>
+   </div>
+   <div class="figure figureViewer" id="F0007">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 7. </span> Actual Translation vs Fuzzy Translation.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0007image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0007_ob.jpg" loading="lazy" height="500" width="214"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0007">
+    <p class="captionText"><span class="captionLabel">Figure 7. </span> Actual Translation vs Fuzzy Translation.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0007">
+    <div class="figureFootNote-F0007"></div>
+   </div>
+   <div class="figure figureViewer" id="F0008">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 8. </span> User interface for collecting Bengali data for evaluation.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0008image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0008_oc.jpg" loading="lazy" height="294" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0008">
+    <p class="captionText"><span class="captionLabel">Figure 8. </span> User interface for collecting Bengali data for evaluation.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0008">
+    <div class="figureFootNote-F0008"></div>
+   </div>
+   <div class="figure figureViewer" id="F0009">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 9. </span> BERT model and finetuning on Bangla data.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0009image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0009_oc.jpg" loading="lazy" height="315" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0009">
+    <p class="captionText"><span class="captionLabel">Figure 9. </span> BERT model and finetuning on Bangla data.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0009">
+    <div class="figureFootNote-F0009"></div>
+   </div>
+   <div class="figure figureViewer" id="F0010">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 10. </span> Sample question from grade three questionnaire.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0010image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0010_ob.jpg" loading="lazy" height="157" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0010">
+    <p class="captionText"><span class="captionLabel">Figure 10. </span> Sample question from grade three questionnaire.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0010">
+    <div class="figureFootNote-F0010"></div>
+   </div>
+   <div class="figure figureViewer" id="F0011">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 11. </span> Annotated survey answers from children.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0011image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0011_ob.jpg" loading="lazy" height="114" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0011">
+    <p class="captionText"><span class="captionLabel">Figure 11. </span> Annotated survey answers from children.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0011">
+    <div class="figureFootNote-F0011"></div>
+   </div>
+   <div class="figure figureViewer" id="F0012">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 12. </span> Distribution of Bangla Interrogatives in our translated question data.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0012image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0012_oc.jpg" loading="lazy" height="294" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0012">
+    <p class="captionText"><span class="captionLabel">Figure 12. </span> Distribution of Bangla Interrogatives in our translated question data.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0012">
+    <div class="figureFootNote-F0012"></div>
+   </div>
+   <div class="figure figureViewer" id="F0013">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 13. </span> Samples of correctly predicted answers.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0013image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0013_ob.jpg" loading="lazy" height="208" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0013">
+    <p class="captionText"><span class="captionLabel">Figure 13. </span> Samples of correctly predicted answers.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0013">
+    <div class="figureFootNote-F0013"></div>
+   </div>
+   <div class="figure figureViewer" id="F0014">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 14. </span> Samples of incorrectly predicted answers.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0014image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0014_ob.jpg" loading="lazy" height="254" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0014">
+    <p class="captionText"><span class="captionLabel">Figure 14. </span> Samples of incorrectly predicted answers.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0014">
+    <div class="figureFootNote-F0014"></div>
+   </div>
+   <div class="figure figureViewer" id="F0015">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>23 November 2020
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 15. </span> Attention Visualization for the BERT model on Bangla data.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0015image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0015_oc.jpg" loading="lazy" height="284" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0015">
+    <p class="captionText"><span class="captionLabel">Figure 15. </span> Attention Visualization for the BERT model on Bangla data.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0015">
+    <div class="figureFootNote-F0015"></div>
+   </div>
+   <p></p>
+   <p>After translation we found by observation that the context, questions and answers were translated of high quality in general and the meanings of the sentences were preserved. However, neural machine translation tends to be context aware. Identical words and phrases in the context passages and the questions/answers can be translated differently based on the context words which violates the constraint that the answer of a question should be in the span of the passage for the reading comprehension task. We found that in many instances data was corrupted (<a href="#F0005">Figure 5</a>) due to translation errors such as minor spelling mistakes, insertion of special characters and inconsistent translations of words and phrases in the answer and the paragraph where the answer could no longer be found from the context. For named entities specifically minor mistakes like insertion of vowels at the end of the name can change the meaning.</p>
+   <p>These issues also occurred in the Arabic (Mozannar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) QA system where they found the machine translation was unable to recognize named entities without context and thus transliterated them instead of translating them and for Arabic specifically minor typographic errors like adding glyphs in wrong places can vastly change the meaning of the sentences and Korean (Lee et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>) model where they found filtering noisy question-answer pairs out they could enhance the performance of the system.</p>
+   <p>An alternative approach for translating using Google Cloud Translation – Basic, is to use HTML tags like in <a href="#F0006">Figure 6</a>. The API does not translate the HTML tags, but it translates the text between the text to the extent possible. Often in this case the order of html tags in the output changes, because after translation the order of words may change due to the difference between the languages. This technique may be used to better retrieve the corresponding answer.</p>
+  </div>
+  <div id="S004-S2001-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i48">4.1.2. Fuzzy answer matching</h4>
+   <p>To handle the data corruption issue, we used fuzzy string matching to find the approximate answer from the context by comparing to the span. We compute the Levenshtein Distance between the translated Bengali answer and all possible spans of the translated context paragraph to find near matches in an approximate substring search. If we can find an approximate match in the given edit distance of min (10, answer_length/2), we replace the substring in the context to match with the answer. If the minimum edit distance is larger than the constraint, we drop the answer and treat it as an impossible to answer question from the context. Following this approach (<a href="#F0007">Figure 7</a>), we have been able to recover the majority of corrupted answers.</p>
+  </div>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i49">4.2. Bengali question answering evaluation dataset (CrowdSourced)</h3>
+  <p>To compare our models for evaluation, a human annotated small test set with questions written in Standard Bengali was also collected using Bengali Wikipedia articles. We collected 330 Bengali Wikipedia articles using mean number of views over a week as a measure of popularity of the topic in November, 2019. We used Wikipedia-API, a python wrapper for Wikipedia’s official API for scraping which provides texts, sections, links, categories and other information from articles. The articles covered a huge range of topics including religious, historical and political figures, pages of specific countries and organizations and more.</p>
+  <p>Then we split the text of each article into context paragraphs and filtered paragraphs with less than 600 characters. This resulted in 2306 unique context paragraphs. These paragraphs were annotated using CDQA (Closed Domain Question Answering) Suite Annotation tool and 300 question answer pairs were gathered for test purposes. We will use the paragraph sets to create a larger human annotated dataset for further experiments.</p>
+  <p>During annotation the annotator is shown a context paragraph and can add questions using the tool (<a href="#F0008">Figure 8</a>). For each question the annotator selects the smallest span of the context that answers the question. For questions that do not have any answer the annotator keeps the answer field empty. For each paragraph we collected at least three question-answer pairs.</p>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i50" class="section-heading-2">5. Evaluation metrics</h2>
+ <p>We follow the metrics for comparison in the English SQuAD leaderboard, exact match (EM) score and F1 score.</p>
+ <div id="S005-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i51">5.1. Exact match</h3>
+  <p>This is a binary (true/false) metric that measures the percentage of predictions that match any of the ground truth answers exactly. For a question if the predicted answer and the ground truth answers are exactly the same then the score is 1, otherwise 0. For example, if the predicted answer is ‘Einstein' and ground truth is ‘Albert Einstein', EM or exact match will be 0. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/tjit_a_1833136_um0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/tjit_a_1833136_um0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      E
+     </mi><mi>
+      M
+     </mi><mo>
+      =
+     </mo><mspace width="thickmathspace"></mspace><mstyle>
+      <mrow>
+       <mfrac>
+        <mrow>
+         <msubsup>
+          <mrow>
+           <mo>
+            ∑
+           </mo>
+          </mrow>
+          <mrow>
+           <mi>
+            i
+           </mi>
+           <mo>
+            =
+           </mo>
+           <mn>
+            1
+           </mn>
+          </mrow>
+          <mi>
+           N
+          </mi>
+         </msubsup>
+         <mo>
+          ⁡
+         </mo>
+         <mi>
+          F
+         </mi>
+         <mo>
+          (
+         </mo>
+         <mrow>
+          <msub>
+           <mi>
+            x
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msub>
+         </mrow>
+         <mo>
+          )
+         </mo>
+        </mrow>
+        <mi>
+         N
+        </mi>
+       </mfrac>
+      </mrow>
+     </mstyle>
+    </math></span></p>
+  <p>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/tjit_a_1833136_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/tjit_a_1833136_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      F
+     </mi><mo>
+      (
+     </mo><mrow>
+      <msub>
+       <mi>
+        x
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </mrow><mo>
+      )
+     </mo><mo>
+      =
+     </mo><mrow>
+      <mspace width="thickmathspace"></mspace>
+     </mrow><mfenced open="{" close="">
+      <mrow>
+       <mtable rowspacing="4pt" columnspacing="1em">
+        <mtr>
+         <mtd>
+          <mrow>
+           <mn>
+            1
+           </mn>
+           <mo>
+            ,
+           </mo>
+           <mspace width="thickmathspace"></mspace>
+           <mi>
+            i
+           </mi>
+           <mi>
+            f
+           </mi>
+           <mspace width="thickmathspace"></mspace>
+           <mi>
+            p
+           </mi>
+           <mi>
+            r
+           </mi>
+           <mi>
+            e
+           </mi>
+           <mi>
+            d
+           </mi>
+           <mi>
+            i
+           </mi>
+           <mi>
+            c
+           </mi>
+           <mi>
+            t
+           </mi>
+           <mi>
+            e
+           </mi>
+           <mi>
+            d
+           </mi>
+           <mspace width="thickmathspace"></mspace>
+           <mi>
+            a
+           </mi>
+           <mi>
+            n
+           </mi>
+           <mi>
+            s
+           </mi>
+           <mi>
+            w
+           </mi>
+           <mi>
+            e
+           </mi>
+           <mi>
+            r
+           </mi>
+           <mo>
+            =
+           </mo>
+           <mi>
+            c
+           </mi>
+           <mi>
+            o
+           </mi>
+           <mi>
+            r
+           </mi>
+           <mi>
+            r
+           </mi>
+           <mi>
+            e
+           </mi>
+           <mi>
+            c
+           </mi>
+           <mi>
+            t
+           </mi>
+           <mspace width="thickmathspace"></mspace>
+           <mi>
+            a
+           </mi>
+           <mi>
+            n
+           </mi>
+           <mi>
+            s
+           </mi>
+           <mi>
+            w
+           </mi>
+           <mi>
+            e
+           </mi>
+           <mi>
+            r
+           </mi>
+          </mrow>
+         </mtd>
+        </mtr>
+        <mtr>
+         <mtd>
+          <mrow>
+           <mn>
+            0
+           </mn>
+           <mo>
+            ,
+           </mo>
+           <mi>
+            o
+           </mi>
+           <mi>
+            t
+           </mi>
+           <mi>
+            h
+           </mi>
+           <mi>
+            e
+           </mi>
+           <mi>
+            r
+           </mi>
+           <mi>
+            w
+           </mi>
+           <mi>
+            i
+           </mi>
+           <mi>
+            s
+           </mi>
+           <mi>
+            e
+           </mi>
+          </mrow>
+         </mtd>
+        </mtr>
+       </mtable>
+      </mrow>
+     </mfenced>
+    </math></span>.</p>
+ </div>
+ <div id="S005-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i53">5.2. F1 score</h3>
+  <p>F1 score is a less strict metric than exact match calculated as the harmonic mean of precision and recall. Precision and recall are calculated while treating the prediction and the ground truth answers as bag of tokens. Precision is the fraction of predicted text tokens which are present in the ground truth text. Recall is the fraction of ground truth tokens that are present in the prediction. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/tjit_a_1833136_um0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/tjit_a_1833136_um0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      F
+     </mi><mn>
+      1
+     </mn><mspace width="thinmathspace"></mspace><mo>
+      =
+     </mo><mspace width="thinmathspace"></mspace><mn>
+      2
+     </mn><mo>
+      ∗
+     </mo><mspace width="thickmathspace"></mspace><mstyle>
+      <mrow>
+       <mfrac>
+        <mrow>
+         <mi>
+          P
+         </mi>
+         <mi>
+          r
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          n
+         </mi>
+         <mo>
+          ∗
+         </mo>
+         <mspace width="thickmathspace"></mspace>
+         <mi>
+          R
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          l
+         </mi>
+         <mi>
+          l
+         </mi>
+        </mrow>
+        <mrow>
+         <mi>
+          P
+         </mi>
+         <mi>
+          r
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          s
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          n
+         </mi>
+         <mo>
+          +
+         </mo>
+         <mi>
+          R
+         </mi>
+         <mi>
+          e
+         </mi>
+         <mi>
+          c
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          l
+         </mi>
+         <mi>
+          l
+         </mi>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </mstyle>
+    </math></span>For the ‘Einstein' example, the precision is 100% as the answer is a subset of the ground truth, but the recall is 50% as out of two ground truth tokens [‘Albert',‘Einstein'] only one is predicted, so resulting F1 score is 66.67%.</p>
+  <p>If a question has multiple answer then the answer that gives the maximum F1 score is taken as ground truth. F1 score is also averaged over the entire dataset to get the total score.</p>
+ </div>
+</div>
+<div id="S006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i55" class="section-heading-2">6. Experiments and results</h2>
+ <div id="S006-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i56">6.1. Zero-Shot transfer with BERT and variants</h3>
+  <p>BERT based models are first trained on a language modelling task such as masked language modelling and next sentence prediction in case of BERT, then the last hidden layer is modified in a task specific manner for fine-tuning the pretrained model to perform well on that specific task like question answering. Zero shot cross lingual transfer learning (Conneau et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>; Pires et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0057" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) in the NLP context refers to transferring a model which is trained to solve a specific task in a source language to solve that specific task in a different language. Initially we get our baseline results using the zero-shot setting, where we use pretrained transformer models fine-tuned on English question answering task and check their performance on the Bengali evaluation dataset following similar research on Chinese (Hsu et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>), French (d'Hoffschmidt et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2020</a></span>) and Japanese (Siblini et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0067" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) language. In the next section we fine-tune these models further with our translated Bengali SQuAD dataset and compare the baselines with the fine-tuned models.</p>
+  <p>In our experiments we leverage the pretrained models provided by Transformers library of Huggingface (Wolf et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0080" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) which provides ready-to-use implementations and pretrained weights for multiple transformer-based models such as BERT, RoBERTa, GPT-2 or DistilBERT, which achieved state of the art performance on multiple NLP tasks like text classification, data retrieving, question answering, and text generation. The pretrained m-BERT model has 110 million parameters, 12 layers, H=768 and 12 self-attention heads and it is very computationally expensive to fine-tune directly on BERT. However, we have been able to evaluate our translated test set with the m-BERT model. The pretrained multilingual BERT from Google was pretrained on a corpora of 104 languages including Bengali. Data in different languages were concatenated to one another without any special pre-processing while training m-BERT.</p>
+  <p>We finetuned multilingual BERT (<a href="#F0009">Figure 9</a>), a compressed version of BERT called DistilBERT and RoBERTa, another variant of BERT pretrained on only English corpora as our selected models on our translated synthetic Bengali dataset and compared our results with the zero-shot setting. For the zero shot results we fine-tuned the models for 2 epochs on the English SQuAD dataset to teach them about the task of question answering and evaluated directly on the Bangla translated dataset. Following hyperparameters were used for all models during training on both English and Bengali corpus in the next section, however for further experiments we trained on Bengali translated set and increased the number of epochs to 5.</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline"><b>learning_rate</b>: 5e-5. The initial learning rate for Adam.</p></li>
+   <li><p class="inline"><b>max_seq_length</b>: 384. The maximum total input sequence length after WordPiece tokenization. Sequences longer than this will be truncated, and sequences shorter than this are padded.</p></li>
+   <li><p class="inline"><b>docs_stride</b>: 128.When splitting up a long document into chunks, how much stride to take between chunks.</p></li>
+   <li><p class="inline"><b>max_query_length</b>: 64. The maximum number of tokens for the question. Questions longer than this will be truncated to this length.</p></li>
+   <li><p class="inline"><b>max_answer_length:</b> 30. The maximum length of an answer that can be generated.</p></li>
+   <li><p class="inline"><b>train_batch_size</b>: 8. Batch size per GPU/CPU for training.</p></li>
+   <li><p class="inline"><b>gradient_accumulation_steps</b>: 8. Number of backward steps to accumulate before making an update.</p></li>
+   <li><p class="inline"><b>activation</b>: GELU. Gaussian Error Linear Unit.</p></li>
+  </ul>
+  <p></p>
+  <p><button class="ref showTableEventRef" data-id="T0004">Table 4</button> contains the results we obtained from the experiments in the zero-shot setting.</p>
+ </div>
+ <div id="S006-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i57">6.2. Fine-Tuning on translated train data with BERT variants</h3>
+  <p>After performing the zero shot experiments, we wanted to compare the models finetuned on the translated train Bengali-SQuAD data. For finetuning we trained the DistilBERT, ALBERT and RoBERTa models on our translated synthetic training set for 5 epochs with the same hyperparameters. Note that the data corruption issue mentioned in section 4 was resolved by the fuzzy answer matching for preprocessing and all experiments followed are done on this preprocessed dataset instead of the raw translations. As the models already gained knowledge of language specific structure and semantics from pretraining, adapting them to Bengali question answering task requires a small dataset only to get overall good results. We have shown the results we obtained from DistilBERT and RoBERTa in <button class="ref showTableEventRef" data-id="T0005">Table 5</button>.</p>
+  <p>To see the impact of fine-tuning on a larger dataset we augmented our translated dataset with more topics and collected the Bangla-SQuAD dataset described earlier. After fine-tuning on this synthetic training set for 5 epochs with the same hyperparameters we get the results shown in <button class="ref showTableEventRef" data-id="T0006">Table 6</button>. We found on a large dataset to get similar results we would have to train longer. Our next set of experiments will focus on training the models longer and adding more human annotated dataset to the training set. As running the experiments is computationally expensive and each model takes around 24 h to train only for 5 epochs in our low-cost computation environment, we really require better hardware for improved results.</p>
+ </div>
+ <div id="S006-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i58">6.3. Evaluation on human annotated data</h3>
+  <p>We evaluate our zero shot and fine-tuned models on the Bengali Question Answering Evaluation dataset from section 4. Results are given in <button class="ref showTableEventRef" data-id="T0007">Table 7</button>.</p>
+ </div>
+ <div id="S006-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i59">6.4. Computational cost</h3>
+  <p>According to BERT official implementations from Google Research pretraining BERT from scratch is computationally expensive and to pre-train a BERT-Base on a single preemptible Cloud TPU v2, may take about 2 weeks at a cost of about $500 USD. DistilBERT training requires 4x less time than BERT and RoBERTa is more computationally extensive as its trained on 160 GB data compared to BERT(16GB data). In our lab 16 GB NVIDIA gpu was used to fine tune the models. While the zero shot experiments only require inference and can be done in an hour, the fine-tuning experiments for BERT and DistilBERT took more than 24 h and RoBERTa took around 3 days. We believe with better hardware and GPU our models will be able to reach significantly better performance even with synthetic data.</p>
+ </div>
+</div>
+<div id="S007" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i60" class="section-heading-2">7. Survey on Bangladeshi children</h2>
+ <p>Our purpose on surveying on Bangladeshi children was to experiment with data from a real-life application. Wikipedia is an enormous database, but it is also formal and does not reflect the practical use of Bengali language. In Bangladesh's primary education sector, books such as Bangla Literature and Social Science provide a much more realistic use of the language. The primary education sector in Bangladesh is primarily focused on reading comprehension style learning. The children are tested mainly on the basis of multiple-choice questions or brief questions from short passages. With the rate of students and teachers being poor relative to the population in primary schools, we decided to see if in the primary education sector, it was possible to use machine reading comprehension techniques. Many other reading comprehension datasets in English have also used school science curriculum previously (ARC, OpenBookQA,SciTail,TQA) (details in section 2.1), so our studies are also grounded in historical work. Also, in the SQuAD 2.0 (Rajpurkar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>) and previous versions, a human baseline score of (EM 86.831 and F1 89.452) was provided for the dataset by analyzing answers from human annotators. Since there has been no dataset collected and no study on human baseline score for reading comprehension tasks in Bangladesh historically, we decided to compare our model performance with humans by experimenting on children.</p>
+ <div id="S007-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i61">7.1. Questionnaire design and experiment</h3>
+  <p>Annotated survey questions and passages (<a href="#F0010">Figure 10</a>) were given to children for answering and same passages was given to the model for prediction. We compare the performance of Bangladeshi children for Bengali QA reading comprehension tasks against our model in this section.</p>
+  <p>To compare the results of our model with the question answer ability of real human beings we surveyed children of grade three and four from Cambrian College, Dhaka. We designed our questionnaire from the National Curriculum and Textbook Board (NCTB) of grade three and grade four Bengali textbooks. From the textbooks randomly three to four-line length passages were first selected. Then we annotated questions and answers from those passages. Each passage had two questions with answers and one question which is impossible to answer from the passages. A sample of these from grade 3 questionnaire is given below:</p>
+  <p>We made the following design for experiments. In SQuAD 1.1 and 2.0 (Rajpurkar et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2016</a></span>, <span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2018</a></span>) to establish human performance each question was annotated by three separate human annotators. Then the middle answer was considered as ground truth and other answers were considered as predictions. Since in the child survey the children are not annotating the answers, but only answering questions, we ensured each passage was given to at least three children. If we had given each question to only one child and for any reason the child would be unable to answer the question, then we wouldn’t be able to compare performance for those questions. From the answers we gather for each question, we pick the most frequent answer as a human prediction.</p>
+  <p>We collected 40 passages from grade three and four textbooks. Grade three and grade four students were surveyed separately. 20 passages were from grade three textbook and 20 passages were from grade four textbook. Each passage contained three questions and we had in total 40 × 3 = 120 question answers. Out of these 40 questions were impossible to answer. We collected around 200 student responses for these questions. We found that children often were unable to answer the questions and, in some cases, declined to do the survey as they found the survey out of their reading skill level.</p>
+  <p>To compare with model performances as we had annotated the ground truth answers by ourselves previously, we took the annotated dataset and used SQuAD 2.0 evaluation script to compare our results.</p>
+ </div>
+ <div id="S007-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i62">7.2. Survey results</h3>
+  <p>We found that grade three students achieved an EM and F1 score of 71.66 and 80.52 respectively. For grade four questionnaire children baseline results were 30 and F1 score of 54 respectively. We also merged both of the results and the total EM and F1 was 50.83 and 67.32 for 120 questions. For the questions students did not make any answer we treated the ‘ ‘ empty string as an answer. Average answer length for grade 3 questions was 17.61 and grade 4 questions were 27.56.</p>
+  <p>For each question, we maintain question id, text and 3 answers (<a href="#F0011">Figure 11</a>). Final answer for a question is collected by majority vote. Compared to that results from our zero shot and fine-tuned models are given in <button class="ref showTableEventRef" data-id="T0008">Table 8</button> for all survey questions.</p>
+  <p>In Table 9, the scores are shown for grade 3 and grade 4 students separately.</p>
+  <p>We found that the DistilBERT fine-tuned model performed best on this survey dataset. The reason is possibly that the BERT model is computationally costly and we should have trained the BERT model further to gain significant results and RoBERTa model is not pretrained in Bangla. But DistilBERT is both fast to train (compared to the other two), and has fewer parameters. We found grade three questions performed worse than grade four questions in general, perhaps related to question difficulty. Contrary to that all models underperformed in the grade 3 dataset, while children were able to answer the questions quite well. The teachers mentioned one of the grade 3 classrooms we surveyed were quite gifted, perhaps this has impacted the results.</p>
+ </div>
+</div>
+<div id="S008" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i63" class="section-heading-2">8. Results and Discussion</h2>
+ <p>We found zero-shot model results were consistent with previous research on other languages but the fine-tuned models on larger translated datasets underperformed. We believe the reason is two: Our dataset has a 50:50 distribution of answerable and unanswerable questions while the original SQuAD 2.0 dataset has 75:25 distribution of answerable and unanswerable questions, and the second reason is we have not trained the models long enough for the large dataset. Since transformer models are very resource consuming perhaps, we should train our models for longer, 3–5 days long for 15–20 epochs instead of only 5 epochs.</p>
+ <p>Also, our data is translated with Google Translate while the original SQuAD 2.0 is using human annotated high-quality data. If we collect more data like the original dataset and annotate them by hand it’s possible the performance will increase much more. <a href="#F0012">Figure 12</a> contains which Bengali interrogatives showed up in our dataset frequently.</p>
+ <p>Samples from Question-Answer pairs with predicted answers and actual answers are given below (<a href="#F0013">Figure 13</a>). Since the data quality is not as good as human annotated data it is possible even humans would have trouble comprehending answers in some cases.</p>
+ <p>In the case of incorrect answers (<a href="#F0014">Figure 14</a>) there are two cases. There can be predicted answers that have some portion of the correct answers, but not an exact match and there can also be predicted answers that are far away from the correct answer. We show examples of both cases in the following samples.</p>
+ <p>We have also tried to peek inside what the model sees by using a visualization library made for BERT called BERTviz (Vig, <span class="ref-lnk lazy-ref"><a data-rid="CIT0075" data-reflink="_i68 _i70" href="#"><span class="off-screen">Citation</span>2019</a></span>) which is a tool for visualizing transformer models. In <a href="#F0015">Figure 15</a> we check word piece tokenization for a sample Bengali question and how it considers all the other word pieces in the sentence when forming the representation for each word to be used in downstream question answering tasks.</p>
+ <p>A demo of our work can be seen in the following prototype deployed model represented in <a href="#F0016">Figure 16</a>. We also want to Curate more bangla QA datasets for reasoning/synthesis, multiple choice, visual question answering datasets, experimenting with different models of retriever and reader models and creating question generation models.</p>
+ <div class="figure figureViewer" id="F0016">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2020
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 16. </span> Deployed Streamlit demo for Bangla Question Answering web application.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0016image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0016_oc.jpg" loading="lazy" height="500" width="432"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0016">
+  <p class="captionText"><span class="captionLabel">Figure 16. </span> Deployed Streamlit demo for Bangla Question Answering web application.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0016">
+  <div class="figureFootNote-F0016"></div>
+ </div>
+ <p></p>
+</div>
+<div id="S009" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i65" class="section-heading-2">9. Future work</h2>
+ <p>Information processing by machines from reading comprehension is a task of great potential. We have only begun the Bengali language studies, experimenting with a few language models. To run our experiments and evaluate the results, we plant to explore newer and more advanced language models. With good performance, we can transform this into a deployable web interface ready for development. Demand for this form of product is growing in the education sector, in the healthcare industry, telecom industry, and many more. Call centres that rely solely on data workers will profit primarily from such an application, which can respond to their requests much more precisely than anything like a web search. We can also make our reader model to expand to an open domain question answering system. The reading comprehension task assumes there is a passage given already and we simply have to retrieve the answer from the passage, but the more realistic open domain QA systems retrieve information from a set of large unstructured collection of documents where we first have to retrieve the relevant passages/documents to be able to find the answer. <a href="#F0017">Figure 17</a> demonstrates one such pipeline.</p>
+ <div class="figure figureViewer" id="F0017">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Deep learning based question answering system in Bengali</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Tahsin+Mayeesha%2C+Tasmiah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Tahsin+Mayeesha%2C+Tasmiah"><span class="NLM_given-names">Tasmiah</span> Tahsin Mayeesha</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Md+Sarwar%2C+Abdullah"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Md+Sarwar%2C+Abdullah"><span class="NLM_given-names">Abdullah</span> Md Sarwar</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Rahman%2C+Rashedur+M"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Rahman%2C+Rashedur+M"><span class="NLM_given-names">Rashedur M.</span> Rahman</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/24751839.2020.1833136">https://doi.org/10.1080/24751839.2020.1833136</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>23 November 2020
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 17. </span> Pipeline for Open Domain Question Answering.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0017image" src="/na101/home/literatum/publisher/tandf/journals/content/tjit20/2021/tjit20.v005.i02/24751839.2020.1833136/20210520/images/medium/tjit_a_1833136_f0017_oc.jpg" loading="lazy" height="110" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0017">
+  <p class="captionText"><span class="captionLabel">Figure 17. </span> Pipeline for Open Domain Question Answering.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0017">
+  <div class="figureFootNote-F0017"></div>
+ </div>
+ <p></p>
+ <p>In future, we would also like to scale up our models and datasets, try different models like ALBERT, XLM-ROBERTA, expand our work to cross lingual question answering where the context passage and the question can be of different languages. We expect after improving the quality of these baseline models more we would be able to publish our models and dataset as open source benchmark models and datasets that other industry users or research projects would be able to finetune further on their specific domain. For example, a healthcare company may choose to create a healthcare question answering chatbot based on their data and answer frequently asked questions. Government users can refine the system for creating legal chatbots and telecom companies can also create similar bots. Also, we can release the fine-tuned models embedding vectors as word vectors because they can be reused as components of other models. Word2Vec, FastText and many other language models are released as open source word vectors to be reused as multipurpose components of other models. HuggingFace has a recently developed model publishing platform, and we expect to publish our QA models there as first benchmark Bangla QA models soon.</p>
+</div>
+<div id="S010" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i67" class="section-heading-2">10. Conclusion</h2>
+ <p>Question Answering, formulated as a problem of information retrieval, is an important section of NLP with the potential to be utilized in numerous tasks of high value. Given a context passage, a model is trained to be able to answer questions from the given passage. The recent rise in powerful language models like BERT and its variants has made it possible for all kinds of language processing tasks to make great progress. Bengali is still an unexplored language in NLP, so much so that our current work is the first work to successfully apply the transformer model to Bengali Question Answering and setting up a benchmark. We demonstrate that in the initial stages of the prototyping of a data-heavy deep learning model such as transformers, even a translation-based data collection approach can also be used. This opens up a wider use of the Bengali language in the NLP since the lack of accessible Bengali data has been one of the key concerns for researchers. The BERT embeddings trained in the context of Question Answering with translated SQuAD can be used elsewhere and our model can also be finetuned for newly collected corpus for specific domains such as telecoms, healthcare, and e-commerce industry chatbots. In both fine-tuned and zero-shot environments, we also address a comprehensive study of BERT and its variant models and how they work with a low-resource language such as Bengali. Based on common topics related to Bengali culture, we also curated a human annotated QA dataset on Bengali and finally compared our model output with that of Bengali children to set a benchmark for future work.</p>
+</div>

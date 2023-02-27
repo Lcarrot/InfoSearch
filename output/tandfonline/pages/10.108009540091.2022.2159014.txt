@@ -1,0 +1,3509 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">1. Introduction</h2>
+ <p>Named Entity Recognition (NER) plays an essential role in multiple downstream NLP applications such as information retrieval (Guo et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2009</a></span>), question answering (Aliod et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2006</a></span>), and knowledge graph construction (Etzioni et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2005</a></span>). It is intended to identify the entity boundaries and classify them into predefined categories (such as person, location, organisation, etc.). With the widespread application of neural networks recently, various neural approaches such as bidirectional long short-term memory (Bi-LSTM) (Ma &amp;&nbsp;Hovy,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2016</a></span>), convolutional neural network (CNN) (Chiu &amp;&nbsp;Nichols,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2016</a></span>), or recently pre-trained language models (PLMs) (Akbik et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2018</a></span>) for NER have been proposed. Looking at the current development of NER, there are two main challenges:</p>
+ <ul class="NLM_list NLM_list-list_type-bullet">
+  <li><p class="inline">Dependence on massive labelled data: neural NER models are highly successful for languages/domains with a large amount of labelled data. However, most low-resource languages (such as Malay, Tamil, etc.) do not have enough labelled data to train fully supervised models (Lin et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2020</a></span>).</p></li>
+  <li><p class="inline">Boundary recognition error (BRE): One of the significant elements influencing NER performance is BRE (Li et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2021</a></span>). In our preliminary experiments, we found that the current NER models are insufficient in recognising the entity boundaries (especially for long entities). Therefore, a solution to the BRE problem is urgently needed.</p></li>
+ </ul>
+ <p></p>
+ <p>As the official language of Malaysia, Brunei, and Singapore, Malay belongs to Malayo-Polynesian branch in the Austronesian language family. According to Word tips<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>1</sup></a></span>, the total number of Malay speakers is over 19 million, of which 16 million are native speakers. Faced with massive raw data in Malay, it is particularly significant to utilise NLP technology to extract pattern information. Unfortunately, Malay is a low-resource language with scarce labelled resource and under-developed NLP technology. Malay NER applications are insufficient for the following reasons:</p>
+ <ul class="NLM_list NLM_list-list_type-bullet">
+  <li><p class="inline">Lack of large NER datasets: The Malay NER dataset construction was the subject of some earlier studies (Asmai et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2018</a></span>; Ulanganathan et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2017</a></span>). However, to the best of our knowledge, none of them is publicly available, and the data sizes are relatively small. In addition, fully manually labelled datasets are time and expert resource intensive and difficult to be widely used in low-resource languages.</p></li>
+  <li><p class="inline">Poor development of NER techniques: Since neural techniques rely heavily on abundant labelled data, as discussed above. Malay possesses quite limited labelled resources, therefore thwarts the neural methods applied to Malay (Morsidi et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2015</a></span>). Due to the data-hungry restriction, the majority of current studies are still based on rules and machine learning(ML).</p></li>
+ </ul>
+ <p></p>
+ <p>Facing the challenges above, it is necessary to explore an effective dataset construction method with automated strategies to alleviate the cost of manual annotation and to build neural NER models based on the constructed datasets for Malay language. In terms of dataset construction, given some specific cases that some low-resource languages have little labelled resources, while their homologous languages have certain labelled resources, and there are significant similarities between homologous languages such as Spanish-Portuguese and Indonesian-Malay (Ranaivo-Malançon,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2006</a></span>), a potential dataset construction method is borrowing from the datasets of homologous languages. To that end, we propose a dataset construction framework for Malay NER. 20,146 sentences make up our Malay NER dataset (MS-NER). The framework is divided into two components specifically: (1) preliminary dataset generation using homologous-language labelled datasets and rules, and (2) iterative optimisation, a semi-manual technique to iteratively optimise the dataset using NER models and manual audition. This is a trade-off method that could reduce the overhead of manual annotation compared with the fully manual construction method and ensure the dataset quality to a certain degree by means of manual audition compared with fully automated methods. It could potentially work for the languages whose homologous languages have labelled datasets.</p>
+ <p>As for Malay NER models, based on the constructed dataset, we first apply multiple advanced neural methods for Malay NER and systematically compare and analyse their performance. In addition, to alleviate the negative impact brought by the BRE, we propose a neural multi-task (MT) framework with a bidirectional revision (Bi-revision) mechanism (MTBR). Instead of auxiliary features, we treat boundary detection (BD) as an auxiliary task and take advantage of the relationships between two tasks in a more sophisticated and clever manner: (1) multi-task learning, which has a regularisation impact that can effectively reduce overfitting to NER, provides general representations of both tasks. (2) we leverage explicit boundary information to guide the model to locate and classify entities precisely. Specifically, the label probabilities of the BD task would explicitly revise that of the NER task (main task). However, one main concern is that BD prediction errors may negatively affect the NER outputs. To tackle the error propagation issue, we introduce a gated ignoring mechanism by using the hidden features of the NER module to determine the degree of the BD revision. Gated mechanism is widely used in multiple applications (Zhao et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0059" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2022</a></span>). Furthermore, a random probability is utilised to control whether the gate mechanism would take effect.</p>
+ <p>The following are this paper's main contributions:</p>
+ <ol class="NLM_list NLM_list-list_type-order">
+  <li><p class="inline">A dataset construction framework using homologous-language labelled datasets and iterative optimisation is proposed for Malay NER. The framework could be potentially applied to some specific homologous language pairs.</p></li>
+  <li><p class="inline">A large Malay NER dataset (MS-NER), which is composed of 20,146 sentences, is constructed and would be publicly available as a benchmark dataset.</p></li>
+  <li><p class="inline">A neural multi-task (MT) framework with a bidirectional revision (Bi-revision) mechanism is presented to tackle the Malay NER task (MTBR). MTBR achieves competitive performance compared with multiple single-task and multi-task baselines on MS-NER. Besides, we also evaluate MTBR in more languages, including a representative high-resource language English and a Malay-related language Indonesian, to show its effectiveness.</p></li>
+ </ol>
+ <p></p>
+ <p>The structure of this paper is as follows: The related works of the NER dataset and technique for high-resource and low-resource languages are highlighted in Section&nbsp;<a href="#S002">2</a> correspondingly. The procedure for constructing the MS-NER dataset is thoroughly described in Section&nbsp;<a href="#S003">3</a>. The specifics of the MTBR framework are discussed in Section&nbsp;<a href="#S004">4</a>. Section&nbsp;<a href="#S005">5</a> elaborates on the experimental setup and analyses the results. Finally, Section&nbsp;<a href="#S006">6</a> draws conclusions.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">2. Related work</h2>
+ <p>We briefly cover the work associated with this research in this section. We first review the well-known datasets of resource-rich languages and the construction methods for low-resource language datasets. Then we introduce some currently widely used and effective NER models and review some approaches for low-resource NER. Finally, we review some related works on Malay NER.</p>
+ <div id="S002-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i4">2.1. Dataset</h3>
+  <div id="S002-S2001-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i5">2.1.1. Well-known NER datasets</h4>
+   <p>Over recent years, quite a few NER datasets have been proposed. Here are some widely used datasets:</p>
+   <ul class="NLM_list NLM_list-list_type-bullet">
+    <li><p class="inline">CoNLL-2003 (Sang &amp;&nbsp;Meulder,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0046" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2003</a></span>) is considered to be one of the most widely used NER datasets for English and German. The dataset comes from news sentences on Reuters RCV1 corpus and includes four coarse-grained entity types: person, location, organisation, and miscellaneous;</p></li>
+    <li><p class="inline">OntoNotes (Hovy et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2006</a></span>) is a fairly large dataset for multiple languages. It consists of many tagsets including parse trees, relation, word sense disambiguation, and entity types. As for the NER task, the OntoNotes dataset is composed of 18 fine-grained entity types such as organisation, location, percentage, date, etc. It is one of the largest and most difficult benchmark datasets for NER due to the diverse range of data sources, which consists of over 2,945,000 tokens in total.</p></li>
+    <li><p class="inline">WNUT2017 shared task (Derczynski et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2017</a></span>) focuses on identifying peculiar, never-before-seen entities in the context of developing debates. It focuses on six entity types: location, person, group, corporation, product, and creative work.</p></li>
+   </ul>
+   <p></p>
+   <p>These datasets are completely manually annotated, mainly for high-resource languages. However, building an entire-manually labelled dataset takes time and a lot of specialised resources. It is difficult to widely apply to resource-poor languages. To reduce the expense of manual annotation, it is required to investigate an efficient dataset construction method with automated techniques.</p>
+  </div>
+  <div id="S002-S2001-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i6">2.1.2. Low-resource NER datasets</h4>
+   <p>To reduce the workload of manual annotation, one ideal solution is to automatically annotate the dataset. For example, a method is proposed by Menezes et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>) to automatically annotate a labelled dataset for NER by DBpedia and Wikipedia links and structured data. Due to their enormous size, the resulting dataset has a total of 87,769,158 tokens. In addition, distant supervision (Mintz et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2009</a></span>) is also an effective way to automatically construct labelled datasets by making use of domain gazetteers. Alfina et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2016</a></span>) proposed a dataset construction framework based on distant supervision for Indonesian NER. They first annotate a seed NER dataset with the gazetteer in Indonesian DBpedia and then propose some rules to modify the noisy labels in the seed dataset. The ANEA (Hedderich et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2021</a></span>) is another tool that provides the functionality to use distant supervision approaches in practice for many languages and named entity types. It also proposes a framework to iteratively improve the dataset and model during model training. Though automatically annotating datasets can sufficiently reduce the annotation load, some noises may exist in these fully automatic datasets without manual verification.</p>
+   <p>Tamil and Indonesian are representative Malay-related languages. Specifically, Tamil is a low-resource language which is also spoken in Singapore and Malaysia. In order to develop benchmark datasets for Indian Languages, AU-KBC conducted NER-shared work in Forum for Information Retrieval for Evaluation (FIRE) 2013 and 2014<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0002" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>2</sup></a></span>. The dataset is publicly available in English as well as in 4 Indian languages, including Bengali, Hindi, Malayalam, and Tamil. The NER benchmark for Tamil consists of 6096 and 1318 sentences, respectively, for training and testing. As for Indonesian, some studies present their efforts on Indonesian NER dataset construction with a series of automatic strategies (Alfina et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2016</a></span>,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2017</a></span>; Luthfi et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2014</a></span>). The final modified dataset is comprised of (training, development, test) sets with (19000, 1240, 737) sentences. In addition, Fu et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2021</a></span>) propose a method, which is based on distant supervision and manual audit, to build a large Indonesian NER dataset with 50098 sentences. Since Malay and Indonesian come from the same language family and share a high language similarity, we can potentially construct a Malay NER dataset based on current large Indonesian NER datasets.</p>
+  </div>
+  <div id="S002-S2001-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i7">2.1.3. Malay NER datasets</h4>
+   <p>Recently, some works have presented their effort to Malay NER dataset construction. Nevertheless, to the best of our knowledge, their quality and size are not satisfactory enough to support the development of neural technology. Additionally, none of them is released in the community. Table&nbsp;<button class="ref showTableEventRef" data-id="T0001">1</button> shows the detailed dataset statistics. “/” indicates that the information is not available.</p>
+   <div class="tableViewerArticleInfo hidden">
+    <span class="figViewerTitle">Towards Malay named entity recognition: an open-source dataset and a multi-task framework</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Fu%2C+Yingwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fu%2C+Yingwen"><span class="NLM_given-names">Yingwen</span> Fu</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Lin%2C+Nankai"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lin%2C+Nankai"><span class="NLM_given-names">Nankai</span> Lin</a> <a href="https://orcid.org/0000-0003-2838-8273"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Zhihe"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Zhihe"><span class="NLM_given-names">Zhihe</span> Yang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Jiang%2C+Shengyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jiang%2C+Shengyi"><span class="NLM_given-names">Shengyi</span> Jiang</a> <a href="https://orcid.org/0000-0002-6753-474X"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2159014">https://doi.org/10.1080/09540091.2022.2159014</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="tableView">
+    <div class="tableCaption">
+     <div class="short-legend">
+      <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Malay NER datasets.</p></h3>
+     </div>
+    </div>
+    <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+     <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F09540091.2022.2159014&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+    </div>
+   </div>
+   <p></p>
+   <p>Taking the above issues into account, this work seeks to construct a labelled dataset for Malay by automated means, while introducing a small amount of expert effort to ensure the quality of the dataset. When investigating related Malay language datasets, we found an interesting phenomenon that the Malay language have little labelled resource, while the Indonesian language (a homologous language of Malay) have certain labelled resources (Alfina et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2016</a></span>,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2017</a></span>; Fu et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2021</a></span>), and there are significant similarities between them. Therefore, a potential dataset construction method is borrowing from the datasets of Indonesian. This method can also be extended to other homologous languages.</p>
+  </div>
+ </div>
+ <div id="S002-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i8">2.2. Method</h3>
+  <p>We first discuss some existing NER models in this subsection, respectively, for high-resource and low-resource languages. Our next step is to do a thorough literature review on Malay NER.</p>
+  <div id="S002-S2002-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i9">2.2.1. NER for high-resource language</h4>
+   <p>There has been an increase in NER research in recent years. Conditional Random Fields (CRF) (McCallum,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2003</a></span>) and Hidden Markov Models (Zhou &amp;&nbsp;Su,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0060" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2002</a></span>) within handcrafted features are examples of traditional ML approaches to NER. Modern neural NER methods combine character embeddings produced from CNN layer or Bi-LSTM layers with pre-trained word embeddings (Mikolov et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2013</a></span>; Pennington et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2014</a></span>). According to Lample et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2016</a></span>) and Ma and&nbsp;Hovy&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2016</a></span>), a Bi-LSTM layer receives these features before perhaps being followed by a CRF layer.</p>
+   <p>Recently, fine-tuned pre-trained language models (PLMs) such as ELMO (Akbik et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2018</a></span>) and BERT (Devlin et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>) are also popular for NER. These models may encode semantic and syntactic information of tokens in the context. Later, NER is carried out using these context-aware embeddings. In particular, these PLMs are connected to a softmax classifier to perform entity label classification.</p>
+   <p>Most of these methods are evaluated in large-size CoNLL-2003 and OntoNotes datasets. However, the current NER models treat NER as a sequence labelling task without explicit use of entity boundary information, and hence they are insufficient in recognising the entity boundaries, especially for long entities to a certain degree.</p>
+  </div>
+  <div id="S002-S2002-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i10">2.2.2. NER for low-resource language</h4>
+   <p>As mentioned above that most languages, especially low-resource languages, do not have enough labelled data to train such fully supervised models. Most of the NER models for low-resource are based on data augmentation, distant supervision, or cross-lingual transfer (Hedderich et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2021</a></span>).</p>
+   <p>Data augmentation can modify features on the existing samples without changing the label, thereby obtaining new samples. There are multiple pieces of research being proposed for low-resource NER with data augmentation techniques (Dai &amp;&nbsp;Adel,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2020</a></span>), such as word replacement (Wei &amp;&nbsp;Zou,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0051" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>), mention replacement (Raiman &amp;&nbsp;Miller,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0043" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2017</a></span>), swap words (Wei &amp;&nbsp;Zou,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0051" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>), generative models (Xia et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0055" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>), etc.</p>
+   <p>Cross-lingual NER has recently been put out as a viable option to effectively address the data-hungry issue for NER with limited resources. This method attempts to transfer knowledge from a source language, which is typically a high-resource language with a wealth of labelled data, to a target language, which is typically a low-resource language with little to no labelled data. Cross-lingual NER techniques can roughly be divided into three categories: knowledge distillation (KD)-based, data transfer-based, and model transfer-based.</p>
+   <ul class="NLM_list NLM_list-list_type-bullet">
+    <li><p class="inline">Data transfer-based approach aims to build a pseudo labelled dataset for a target language by projecting alignment information such as parallel resources and machine translation from a source language (Jain et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>; Mayhew et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2017</a></span>; Ni et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2017</a></span>). Then, the target NER model is trained on this pseudo labelled dataset.</p></li>
+    <li><p class="inline">Model transfer-based approach aims to directly apply the source-language trained model with language-independent features to target language (Keung et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>; Wu &amp;&nbsp;Dredze,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0054" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>; Zirikly,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0061" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2015</a></span>).</p></li>
+    <li><p class="inline">Recently, some works extend knowledge distillation (KD) in cross-lingual NER based on a teacher-student training framework (Wu et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0052" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2020a</a></span>,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0053" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2020b</a></span>). The idea is to produce pseudo labels for target language data using a source-language NER model without external resources.</p></li>
+   </ul>
+   <p></p>
+   <p>Due to huge language differences (such as word order, grammar, etc.), cross-language NER seems difficult to achieve satisfactory results in target languages.</p>
+   <p>As for the NER task of Tamil and Indonesian, open-source benchmark datasets facilitate the use of supervised methods. For Tamil NER, the FIRE 2014 shared task attracts multiple systems such as CRF (Prabhakar et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0042" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2014</a></span>), SVM, and their combination(Abinaya et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2014</a></span>). Naive Bayes is also used for Tamil NER (Srinivasan &amp;&nbsp;Subalalitha,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0048" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>). Recently, Anbukkarasi et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2022</a></span>) employ deep learning technology and construct a GRU model based on the Multilingual Universal Sentence Encoder for Tamil NER. The abundance of NER resources in Indonesian has brought about the widespread use of neural NER techniques. Specifically, Gunawan et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2018</a></span>) construct a hybrid Bi-LSTM and CNN model for Indonesian NER. The performance of neural models incorporating word- and character-level features in Indonesian conversational texts is examined by Kurniawan and&nbsp;Louvan&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2018</a></span>). Besides, transfer learning is recently introduced to tackle the task. To enhance the performance of Indonesian NER, Ikhwantri&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>) suggests fine-tuning PLMs from high-resource to low-resource languages. Kosasih and&nbsp;Khodra&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2018</a></span>) explore a transfer learning framework to transfer knowledge from a part-of-speech tagging system to a NER system.</p>
+  </div>
+  <div id="S002-S2002-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i11">2.2.3. Malay NER</h4>
+   <p>Most current research on Malay NER is based on rules and ML. Alfred et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2014</a></span>) utilise a rule-based methodology to recognise named entities in Malay texts. This work centre on designing rules based on the POS tagging features and contextual features. Ulanganathan et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0050" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2017</a></span>) use CRF to construct a Malay language NER engine (Mi-NER) based on a POS tagger. Furthermore, Sulaiman et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0049" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2017</a></span>) explore using Stanford NER and Illinois NER technologies to find Malay-named entities. By combining fuzzy c-means and the K-nearest neighbours algorithm, Asmai et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2018</a></span>) propose an improved Malay NER model for crime texts. Salleh et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0045" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2017</a></span>) propose a conceptual model of Automatic Malay NER that uses the CRF method to identify entities from unstructured Malay text data. By using a projection technique to project entity labels from an English corpus to a Malay corpus, Zamin and&nbsp;Bakar&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0056" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2015</a></span>) conduct cross-lingual transfer from English to Malay. The Dice Coefficient function and the bigram scoring technique with domain-specific rules are used for projection. Sharum et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0047" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2011</a></span>) propose to recognise names in unstructured Malay text documents based on POS features and semantic rules.</p>
+   <p>The models above are all based on different non-public datasets, and there is no authoritative benchmark for the Malay NER task. This paper aims to develop an effective dataset construction method to relieve the annotation workload for Malay language. In addition, based on the constructed dataset, an effective neural model based on multi-task learning for Malay NER is explored. The dataset and model have the potential to set up a new baseline for follow-up research.</p>
+  </div>
+ </div>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i12" class="section-heading-2">3. Dataset construction</h2>
+ <p>The foundation for the advancement of NLP technology is high-quality datasets. However, as far as we are aware, there are no NER datasets in Malay that are open-source. Additionally, fully human-annotated NER datasets are costly and time-consuming, and are therefore only in a small amount. In order to lessen the load of manual annotation, a semi-manual strategy is introduced to build a Malay NER dataset.</p>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i13">3.1. Dataset design</h3>
+  <p>Indonesian and Malay are close languages that have high lexical similarity (Ranaivo-Malançon,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0044" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2006</a></span>). Based on this language feature, we propose to construct a Malay preliminary dataset from the existing Indonesian datasets (Alfina et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2016</a></span>,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2017</a></span>; Fu et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2021</a></span>). In addition, some rules Alfred et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2014</a></span>) are leveraged to detect entities in Malay texts to expand the preliminary dataset. After that, a semi-manual method is proposed to iteratively update the dataset and the model (introduced in Section&nbsp;<a href="#S004">4</a>).</p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">3.2. Data sources</h3>
+  <p>We build the dataset using Malay new articles. We crawl articles from Malay news websites that include articles on a variety of subjects, such as politics, economics, society, military, etc. The websites are displayed in Table&nbsp;<button class="ref showTableEventRef" data-id="T0002">2</button>. We separate paragraphs into individual sentences and then choose 30,000 sentences at random for annotation. Besides, we construct a large Malay vocabulary with 81,691 tokens from the news articles.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Towards Malay named entity recognition: an open-source dataset and a multi-task framework</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fu%2C+Yingwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fu%2C+Yingwen"><span class="NLM_given-names">Yingwen</span> Fu</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Lin%2C+Nankai"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lin%2C+Nankai"><span class="NLM_given-names">Nankai</span> Lin</a> <a href="https://orcid.org/0000-0003-2838-8273"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Zhihe"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Zhihe"><span class="NLM_given-names">Zhihe</span> Yang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Jiang%2C+Shengyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jiang%2C+Shengyi"><span class="NLM_given-names">Shengyi</span> Jiang</a> <a href="https://orcid.org/0000-0002-6753-474X"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2159014">https://doi.org/10.1080/09540091.2022.2159014</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 2. </span> Data source.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F09540091.2022.2159014&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S003-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">3.3. Dataset construction</h3>
+  <p>As shown in Figure&nbsp;<a href="#F0001">1</a>, the construction process consists of two parts: preliminary construction and iterative optimisation.</p>
+  <ol class="NLM_list NLM_list-list_type-order">
+   <li><p class="inline">Collect the existing Indonesian NER datasets and separate them into individual sentences. Search whether all tokens of each sentence exist in the Malay dictionary. If so, add the sentence to the preliminary dataset; otherwise, discard it.</p></li>
+   <li><p class="inline">Expand the preliminary dataset within the unlabelled Malay sentences according to the rules. Only the sentences having entities are considered.</p></li>
+  </ol>
+  <div class="figure figureViewer" id="F0001">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Towards Malay named entity recognition: an open-source dataset and a multi-task framework</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Fu%2C+Yingwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fu%2C+Yingwen"><span class="NLM_given-names">Yingwen</span> Fu</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Lin%2C+Nankai"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lin%2C+Nankai"><span class="NLM_given-names">Nankai</span> Lin</a> <a href="https://orcid.org/0000-0003-2838-8273"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Zhihe"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Zhihe"><span class="NLM_given-names">Zhihe</span> Yang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Jiang%2C+Shengyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jiang%2C+Shengyi"><span class="NLM_given-names">Shengyi</span> Jiang</a> <a href="https://orcid.org/0000-0002-6753-474X"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2159014">https://doi.org/10.1080/09540091.2022.2159014</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 1. </span> Dataset construction process. It consists of two parts: preliminary construction and iterative optimisation.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/medium/ccos_a_2159014_f0001_oc.jpg" loading="lazy" height="135" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0001">
+   <p class="captionText"><span class="captionLabel">Figure 1. </span> Dataset construction process. It consists of two parts: preliminary construction and iterative optimisation.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0001">
+   <div class="figureFootNote-F0001"></div>
+  </div>
+  <p></p>
+  <p>Through the above two steps, a seed dataset is constructed consisting of 20,146 sentences. However, the dataset constructed in these ways often suffers from mislabelling errors. Therefore, we propose the following steps to optimise the dataset.</p>
+  <ol class="NLM_list NLM_list-list_type-order">
+   <li><p class="inline">Use all labelled sentences for both model training and testing.</p></li>
+   <li><p class="inline">Manually audit the sentences with different labels in two stages. Two auditors are hired to audit each sentence in order to guarantee the audited sentence quality. Ask a different auditor to review the sentences if two audit results dispute. The annotators are native speakers of the Malay language or have a post-graduate degree in Malay. The audit guideline is shown in Table&nbsp;<button class="ref showTableEventRef" data-id="T0003">3</button>.</p></li>
+   <li><p class="inline">Re-train the model with the audited dataset.</p></li>
+   <li><p class="inline">Repeat steps (1)–(3) until the dataset and the model converge.</p></li>
+  </ol>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Towards Malay named entity recognition: an open-source dataset and a multi-task framework</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fu%2C+Yingwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fu%2C+Yingwen"><span class="NLM_given-names">Yingwen</span> Fu</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Lin%2C+Nankai"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lin%2C+Nankai"><span class="NLM_given-names">Nankai</span> Lin</a> <a href="https://orcid.org/0000-0003-2838-8273"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Zhihe"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Zhihe"><span class="NLM_given-names">Zhihe</span> Yang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Jiang%2C+Shengyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jiang%2C+Shengyi"><span class="NLM_given-names">Shengyi</span> Jiang</a> <a href="https://orcid.org/0000-0002-6753-474X"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2159014">https://doi.org/10.1080/09540091.2022.2159014</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Audit guideline.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0003&amp;doi=10.1080%2F09540091.2022.2159014&amp;downloadType=CSV"> Download CSV</a><a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S003-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i17">3.4. Analysis of MS-NER</h3>
+  <p>The dataset contains 20,146 sentences with three entity categories: person (e.g. Sabrina Shawali), location (e.g. Brunei Darussalam), and organisation (e.g. UMNO Bahagian Besut). In the actual setup, the iteration number is set as 3 because there is no difference between the results of the dataset in the training and testing phases after 3 iterations, which in turn indicates that the dataset construction process has converged. We randomly choose 2,000 sentences from the corpus for manual verification to assess the corpus's quality, and the labelling error rate was 0.1 %.</p>
+  <p>Building seed datasets from existing datasets in the homogeneous language and semi-manual iterative optimisation strategy can greatly increase the speed of dataset annotation and reduce the cost required for manual annotation. Thus, it has the potential to migrate to specific language pairs and domain pairs in the industry. One prerequisite, which tends to be a concern, is the existence of a homogenous language for the target language and the availability of relevant labelled data for that homogenous language. Also, the similarity between the target language and the homogenous language needs to be high enough to ensure the quality of the seed dataset to a certain extent.</p>
+  <p>As for experiments, the dataset is (80%, 10%, 10%) divided into training, validation, and testing for subsequent experiments in BIO format. A labelled example is presented in Table&nbsp;<button class="ref showTableEventRef" data-id="T0004">4</button>.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Towards Malay named entity recognition: an open-source dataset and a multi-task framework</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fu%2C+Yingwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fu%2C+Yingwen"><span class="NLM_given-names">Yingwen</span> Fu</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Lin%2C+Nankai"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lin%2C+Nankai"><span class="NLM_given-names">Nankai</span> Lin</a> <a href="https://orcid.org/0000-0003-2838-8273"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Zhihe"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Zhihe"><span class="NLM_given-names">Zhihe</span> Yang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Jiang%2C+Shengyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jiang%2C+Shengyi"><span class="NLM_given-names">Shengyi</span> Jiang</a> <a href="https://orcid.org/0000-0002-6753-474X"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2159014">https://doi.org/10.1080/09540091.2022.2159014</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 4. </span> An example of MS-NER.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0004&amp;doi=10.1080%2F09540091.2022.2159014&amp;downloadType=CSV"> Download CSV</a><a data-id="T0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i18" class="section-heading-2">4. Model</h2>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i19">4.1. Overview</h3>
+  <p>Consider a sentence <i>S</i> with <i>L</i> tokens <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mrow>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msub>
+      </mrow>
+      <mrow>
+       <mi>
+        i
+       </mi>
+       <mo>
+        =
+       </mo>
+       <mn>
+        1
+       </mn>
+      </mrow>
+      <mi>
+       L
+      </mi>
+     </msubsup>
+    </math></span>, we, respectively, assign each token <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       w
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub>
+    </math></span> with start label <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mi>
+       y
+      </mi>
+      <mi>
+       s
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msubsup>
+    </math></span> and end label <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mi>
+       y
+      </mi>
+      <mi>
+       e
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msubsup>
+    </math></span> for the BD task and entity label <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msubsup>
+      <mi>
+       y
+      </mi>
+      <mrow>
+       <mi>
+        n
+       </mi>
+       <mi>
+        e
+       </mi>
+       <mi>
+        r
+       </mi>
+      </mrow>
+      <mi>
+       i
+      </mi>
+     </msubsup>
+    </math></span> for the NER task. In addition, we introduce a span classification for the BD module to assign one of four entity labels (<b>PER, LOC, ORG, and O</b>) <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       y
+      </mi>
+      <mrow>
+       <mrow>
+        <mi>
+         a
+        </mi>
+        <mi>
+         u
+        </mi>
+       </mrow>
+       <mi mathvariant="normal">
+        _
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </mrow>
+     </msub>
+    </math></span> for span representations.</p>
+  <p>Following the overview in Figure&nbsp;<a href="#F0002">2</a>, MTBR in this paper is a multi-task model consisting of two modules, respectively, for BD and NER tasks. The BD module is meant to recognise the entity spans with two classifiers (respectively, for start and end predictions), along with another classifier that classifies the spans as corresponding entity labels. The NER module is to predict the NER labels for each token. The token representation from the encoder is universally shared in the downstream two tasks. In addition to implicitly improving the contextual representation of NER through the vanilla multi-task framework, the span classifier is designed to explicitly revise the NER outputs through a gated ignoring mechanism. Two tasks are trained simultaneously.</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Towards Malay named entity recognition: an open-source dataset and a multi-task framework</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Fu%2C+Yingwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fu%2C+Yingwen"><span class="NLM_given-names">Yingwen</span> Fu</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Lin%2C+Nankai"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lin%2C+Nankai"><span class="NLM_given-names">Nankai</span> Lin</a> <a href="https://orcid.org/0000-0003-2838-8273"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Zhihe"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Zhihe"><span class="NLM_given-names">Zhihe</span> Yang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Jiang%2C+Shengyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jiang%2C+Shengyi"><span class="NLM_given-names">Shengyi</span> Jiang</a> <a href="https://orcid.org/0000-0002-6753-474X"><img src="/templates/jsp/images/orcid.png"></a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/09540091.2022.2159014">https://doi.org/10.1080/09540091.2022.2159014</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>28 December 2022
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> The MTBR framework structure. Due to space limitation, [B-P, I-P, B-L, I-L, B-O, I-O, O] in the figure represents [B-PER, I-PER, B-LOC, I-LOC, B-ORG, I-ORG, OTHER].</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/medium/ccos_a_2159014_f0002_oc.jpg" loading="lazy" height="175" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> The MTBR framework structure. Due to space limitation, [B-P, I-P, B-L, I-L, B-O, I-O, O] in the figure represents [B-PER, I-PER, B-LOC, I-LOC, B-ORG, I-ORG, OTHER].</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i21">4.2. Encoder</h3>
+  <p>The pre-trained BERT (Devlin et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>) is utilised as our encoder for contextual representations <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       h
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub>
+    </math></span>. It is noted that other network structures such as LSTM are also suitable for the encoder here. It is formulated as: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       h
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo>
+      =
+     </mo><mi>
+      B
+     </mi><mi>
+      E
+     </mi><mi>
+      R
+     </mi><mi>
+      T
+     </mi><mo stretchy="false">
+      (
+     </mo><msub>
+      <mi>
+       w
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub><mo stretchy="false">
+      )
+     </mo>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span> After obtaining the token representations from the encoder, we apply two separate MLPs to create different representations <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mo stretchy="false">
+      (
+     </mo><msubsup>
+      <mi>
+       h
+      </mi>
+      <mi>
+       i
+      </mi>
+      <mrow>
+       <mi>
+        b
+       </mi>
+       <mi>
+        d
+       </mi>
+      </mrow>
+     </msubsup><mrow>
+      <mo>
+       /
+      </mo>
+     </mrow><msubsup>
+      <mi>
+       h
+      </mi>
+      <mi>
+       i
+      </mi>
+      <mrow>
+       <mi>
+        n
+       </mi>
+       <mi>
+        e
+       </mi>
+       <mi>
+        r
+       </mi>
+      </mrow>
+     </msubsup><mo stretchy="false">
+      )
+     </mo>
+    </math></span> for the (BD/NER) modules. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2a) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <msubsup>
+         <mi>
+          h
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mrow>
+          <mi>
+           b
+          </mi>
+          <mi>
+           d
+          </mi>
+         </mrow>
+        </msubsup>
+        <mo>
+         =
+        </mo>
+        <mi>
+         M
+        </mi>
+        <mi>
+         L
+        </mi>
+        <msub>
+         <mi>
+          P
+         </mi>
+         <mrow>
+          <mi>
+           b
+          </mi>
+          <mi>
+           d
+          </mi>
+         </mrow>
+        </msub>
+        <mo stretchy="false">
+         (
+        </mo>
+        <msub>
+         <mi>
+          h
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2a) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(2b) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd></mtd>
+       <mtd>
+        <msubsup>
+         <mi>
+          h
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mrow>
+          <mi>
+           n
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           r
+          </mi>
+         </mrow>
+        </msubsup>
+        <mo>
+         =
+        </mo>
+        <mi>
+         M
+        </mi>
+        <mi>
+         L
+        </mi>
+        <msub>
+         <mi>
+          P
+         </mi>
+         <mrow>
+          <mi>
+           n
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           r
+          </mi>
+         </mrow>
+        </msub>
+        <mo stretchy="false">
+         (
+        </mo>
+        <msub>
+         <mi>
+          h
+         </mi>
+         <mi>
+          i
+         </mi>
+        </msub>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(2b) </span></span></span></span></p>
+ </div>
+ <div id="S004-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i25">4.3. BD module</h3>
+  <div id="S004-S2003-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i26">4.3.1. Standard BD</h4>
+   <p>We use two token-wise classifiers to predict the start and end positions of entities. The contextual representation <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0009.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        h
+       </mi>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         b
+        </mi>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msubsup>
+     </math></span> is sent to an MLP classifier for boundary label prediction of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0010.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </math></span>. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0004.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(3a) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+       <mtr>
+        <mtd></mtd>
+        <mtd>
+         <msubsup>
+          <mi>
+           p
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+         <mo>
+          =
+         </mo>
+         <mi>
+          s
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          f
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          m
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          x
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <msub>
+          <mi>
+           W
+          </mi>
+          <mi>
+           s
+          </mi>
+         </msub>
+         <mo>
+          ⋅
+         </mo>
+         <msubsup>
+          <mi>
+           h
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mrow>
+           <mi>
+            b
+           </mi>
+           <mi>
+            d
+           </mi>
+          </mrow>
+         </msubsup>
+         <mo>
+          +
+         </mo>
+         <msub>
+          <mi>
+           b
+          </mi>
+          <mi>
+           s
+          </mi>
+         </msub>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(3a) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0005.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(3b) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+       <mtr>
+        <mtd></mtd>
+        <mtd>
+         <msubsup>
+          <mi>
+           p
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+         <mo>
+          =
+         </mo>
+         <mi>
+          s
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          f
+         </mi>
+         <mi>
+          t
+         </mi>
+         <mi>
+          m
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          x
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <msub>
+          <mi>
+           W
+          </mi>
+          <mi>
+           e
+          </mi>
+         </msub>
+         <mo>
+          ⋅
+         </mo>
+         <msubsup>
+          <mi>
+           h
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mrow>
+           <mi>
+            b
+           </mi>
+           <mi>
+            d
+           </mi>
+          </mrow>
+         </msubsup>
+         <mo>
+          +
+         </mo>
+         <msub>
+          <mi>
+           b
+          </mi>
+          <mi>
+           e
+          </mi>
+         </msub>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(3b) </span></span></span></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0011.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mi>
+        s
+       </mi>
+      </msub>
+     </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0012.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mi>
+        e
+       </mi>
+      </msub>
+     </math></span> are fully connected matrices, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0013.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        b
+       </mi>
+       <mi>
+        s
+       </mi>
+      </msub>
+     </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0014.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        b
+       </mi>
+       <mi>
+        e
+       </mi>
+      </msub>
+     </math></span> are bias vectors.</p>
+  </div>
+  <div id="S004-S2003-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i29">4.3.2. Span classification</h4>
+   <p>After obtaining the entity boundaries, to better prompt the training of the NER task, we further introduce a task that classifies the spans as corresponding entity labels. We define consecutive tokens between the nearest pair of the start and end boundaries as a to-be-label entity and the tokens outside the boundaries as non-entities. Assuming that there are <i>K</i> spans in sentence <i>S</i>, we calculate the <i>k</i>-th summarised span representation and the label by averaging the task-specific representations <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0015.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        v
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+       </mrow>
+       <mi>
+        k
+       </mi>
+      </msubsup>
+     </math></span> in their corresponding boundaries <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0016.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0016.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mo stretchy="false">
+       (
+      </mo><mi>
+       i
+      </mi><mo>
+       ,
+      </mo><mi>
+       j
+      </mi><mo stretchy="false">
+       )
+      </mo>
+     </math></span>. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0006.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0006.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(4) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        v
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+       </mrow>
+       <mi>
+        k
+       </mi>
+      </msubsup><mo>
+       =
+      </mo><mfrac>
+       <mn>
+        1
+       </mn>
+       <mrow>
+        <mi>
+         j
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         i
+        </mi>
+        <mo>
+         +
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+      </mfrac><munderover>
+       <mo>
+        ∑
+       </mo>
+       <mrow>
+        <mi>
+         t
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mi>
+         i
+        </mi>
+       </mrow>
+       <mi>
+        j
+       </mi>
+      </munderover><msubsup>
+       <mi>
+        h
+       </mi>
+       <mi>
+        t
+       </mi>
+       <mrow>
+        <mi>
+         b
+        </mi>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msubsup>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0006" class="disp-formula-label">(4) </span></span></span></span> Later, the entity representation <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0017.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0017.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        v
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+       </mrow>
+       <mi>
+        k
+       </mi>
+      </msubsup>
+     </math></span> is fed into an MLP classifier to predict its entity tag. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0007.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0007.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(5) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+       </mrow>
+       <mi>
+        k
+       </mi>
+      </msubsup><mo>
+       =
+      </mo><mi>
+       s
+      </mi><mi>
+       o
+      </mi><mi>
+       f
+      </mi><mi>
+       t
+      </mi><mi>
+       m
+      </mi><mi>
+       a
+      </mi><mi>
+       x
+      </mi><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+       </mrow>
+      </msub><mo>
+       ⋅
+      </mo><msubsup>
+       <mi>
+        v
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+       </mrow>
+       <mi>
+        k
+       </mi>
+      </msubsup><mo>
+       +
+      </mo><msub>
+       <mi>
+        b
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+       </mrow>
+      </msub><mo stretchy="false">
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0007" class="disp-formula-label">(5) </span></span></span></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0018.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0018.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0019.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0019.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        b
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> are connected matric and bias vectors, respectively.</p>
+  </div>
+  <div id="S004-S2003-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i32">4.3.3. Loss</h4>
+   <p>For the BD task, we minimise two cross-entropy (CE) losses of the start and end boundaries <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0020.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0020.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mrow>
+        <mi mathvariant="script">
+         L
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         b
+        </mi>
+        <mi>
+         d
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><msubsup>
+       <mrow>
+        <mi mathvariant="script">
+         L
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         b
+        </mi>
+        <mi>
+         d
+        </mi>
+       </mrow>
+       <mi>
+        s
+       </mi>
+      </msubsup><mo>
+       +
+      </mo><msubsup>
+       <mrow>
+        <mi mathvariant="script">
+         L
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         b
+        </mi>
+        <mi>
+         d
+        </mi>
+       </mrow>
+       <mi>
+        e
+       </mi>
+      </msubsup>
+     </math></span> and a CE loss <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0021.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0021.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mrow>
+        <mi mathvariant="script">
+         L
+        </mi>
+       </mrow>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> for span classification. The weighted sum of two losses is the total loss, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0022.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0022.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </math></span> in this paper is 0.5. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0008.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0008.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0008" class="disp-formula-label">(6a) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+       <mtr>
+        <mtd></mtd>
+        <mtd>
+         <msubsup>
+          <mrow>
+           <mi mathvariant="script">
+            L
+           </mi>
+          </mrow>
+          <mrow>
+           <mi>
+            b
+           </mi>
+           <mi>
+            d
+           </mi>
+          </mrow>
+          <mi>
+           s
+          </mi>
+         </msubsup>
+         <mo>
+          =
+         </mo>
+         <mfrac>
+          <mn>
+           1
+          </mn>
+          <mi>
+           L
+          </mi>
+         </mfrac>
+         <munderover>
+          <mo>
+           ∑
+          </mo>
+          <mrow>
+           <mi>
+            i
+           </mi>
+           <mo>
+            =
+           </mo>
+           <mn>
+            1
+           </mn>
+          </mrow>
+          <mi>
+           L
+          </mi>
+         </munderover>
+         <mi>
+          C
+         </mi>
+         <mi>
+          E
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <msubsup>
+          <mi>
+           p
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+         <mo>
+          ,
+         </mo>
+         <msubsup>
+          <mi>
+           y
+          </mi>
+          <mi>
+           s
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0008" class="disp-formula-label">(6a) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0009.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0009.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0009" class="disp-formula-label">(6b) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+       <mtr>
+        <mtd></mtd>
+        <mtd>
+         <msubsup>
+          <mrow>
+           <mi mathvariant="script">
+            L
+           </mi>
+          </mrow>
+          <mrow>
+           <mi>
+            b
+           </mi>
+           <mi>
+            d
+           </mi>
+          </mrow>
+          <mi>
+           e
+          </mi>
+         </msubsup>
+         <mo>
+          =
+         </mo>
+         <mfrac>
+          <mn>
+           1
+          </mn>
+          <mi>
+           L
+          </mi>
+         </mfrac>
+         <munderover>
+          <mo>
+           ∑
+          </mo>
+          <mrow>
+           <mi>
+            i
+           </mi>
+           <mo>
+            =
+           </mo>
+           <mn>
+            1
+           </mn>
+          </mrow>
+          <mi>
+           L
+          </mi>
+         </munderover>
+         <mi>
+          C
+         </mi>
+         <mi>
+          E
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <msubsup>
+          <mi>
+           p
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+         <mo>
+          ,
+         </mo>
+         <msubsup>
+          <mi>
+           y
+          </mi>
+          <mi>
+           e
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0009" class="disp-formula-label">(6b) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0010.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0010.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0010" class="disp-formula-label">(7) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+       <mtr>
+        <mtd></mtd>
+        <mtd>
+         <msub>
+          <mi>
+           L
+          </mi>
+          <mrow>
+           <mi>
+            s
+           </mi>
+           <mi>
+            p
+           </mi>
+          </mrow>
+         </msub>
+         <mo>
+          =
+         </mo>
+         <mfrac>
+          <mn>
+           1
+          </mn>
+          <mi>
+           K
+          </mi>
+         </mfrac>
+         <munderover>
+          <mo>
+           ∑
+          </mo>
+          <mrow>
+           <mi>
+            k
+           </mi>
+           <mo>
+            =
+           </mo>
+           <mn>
+            1
+           </mn>
+          </mrow>
+          <mi>
+           K
+          </mi>
+         </munderover>
+         <mi>
+          C
+         </mi>
+         <mi>
+          E
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <msubsup>
+          <mi>
+           p
+          </mi>
+          <mrow>
+           <mi>
+            s
+           </mi>
+           <mi>
+            p
+           </mi>
+          </mrow>
+          <mi>
+           k
+          </mi>
+         </msubsup>
+         <mo>
+          ,
+         </mo>
+         <msubsup>
+          <mi>
+           y
+          </mi>
+          <mrow>
+           <mrow>
+            <mi>
+             a
+            </mi>
+            <mi>
+             u
+            </mi>
+           </mrow>
+           <mi mathvariant="normal">
+            _
+           </mi>
+           <mrow>
+            <mi>
+             n
+            </mi>
+            <mi>
+             e
+            </mi>
+            <mi>
+             r
+            </mi>
+           </mrow>
+          </mrow>
+          <mi>
+           k
+          </mi>
+         </msubsup>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0010" class="disp-formula-label">(7) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0011.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0011.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0011" class="disp-formula-label">(8) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+       <mtr>
+        <mtd></mtd>
+        <mtd>
+         <msub>
+          <mrow>
+           <mi mathvariant="script">
+            L
+           </mi>
+          </mrow>
+          <mn>
+           1
+          </mn>
+         </msub>
+         <mo>
+          =
+         </mo>
+         <msub>
+          <mi>
+           w
+          </mi>
+          <mn>
+           1
+          </mn>
+         </msub>
+         <msub>
+          <mrow>
+           <mi mathvariant="script">
+            L
+           </mi>
+          </mrow>
+          <mrow>
+           <mi>
+            b
+           </mi>
+           <mi>
+            d
+           </mi>
+          </mrow>
+         </msub>
+         <mo>
+          +
+         </mo>
+         <mo stretchy="false">
+          (
+         </mo>
+         <mn>
+          1
+         </mn>
+         <mo>
+          −
+         </mo>
+         <msub>
+          <mi>
+           w
+          </mi>
+          <mn>
+           1
+          </mn>
+         </msub>
+         <mo stretchy="false">
+          )
+         </mo>
+         <msub>
+          <mrow>
+           <mi mathvariant="script">
+            L
+           </mi>
+          </mrow>
+          <mrow>
+           <mi>
+            s
+           </mi>
+           <mi>
+            p
+           </mi>
+          </mrow>
+         </msub>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0011" class="disp-formula-label">(8) </span></span></span></span></p>
+  </div>
+ </div>
+ <div id="S004-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i37">4.4. NER module</h3>
+  <div id="S004-S2004-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i38">4.4.1. Standard NER</h4>
+   <p>The contextual representation <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0023.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0023.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        h
+       </mi>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msubsup>
+     </math></span> for NER module is sent to an MLP classifier for entity label prediction of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0024.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0024.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </math></span>. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0012.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0012.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0012" class="disp-formula-label">(9) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+       <mi>
+        i
+       </mi>
+      </msubsup><mo>
+       =
+      </mo><mi>
+       s
+      </mi><mi>
+       o
+      </mi><mi>
+       f
+      </mi><mi>
+       t
+      </mi><mi>
+       m
+      </mi><mi>
+       a
+      </mi><mi>
+       x
+      </mi><mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub><mo>
+       ⋅
+      </mo><msubsup>
+       <mi>
+        h
+       </mi>
+       <mi>
+        i
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msubsup><mo>
+       +
+      </mo><msub>
+       <mi>
+        b
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub><mo stretchy="false">
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0012" class="disp-formula-label">(9) </span></span></span></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0025.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0025.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> is a fully connected matrix, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0026.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0026.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        b
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> is a bias vector.</p>
+  </div>
+  <div id="S004-S2004-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i40">4.4.2. Bi-revision mechanism</h4>
+   <p>In addition to implicitly improving the NER performance within the vanilla multi-task framework, we assume that the output probabilities of span classification can further revise the result of the NER module. Conversely, to reduce the error propagation caused by the BD task, the NER module is conducive to verifying the revision of the BD task. Thus, we utilise the label probabilities of the span classification through a gated ignoring mechanism to obtain an adjusted probability for the NER module. Specifically, we first need to align the label probabilities of the span classification and NER tasks, as in Figure&nbsp;<a href="#F0003">3</a>. For each token, the span classification module outputs the probability value <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0027.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0027.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><mo stretchy="false">
+       [
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         p
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         l
+        </mi>
+        <mi>
+         o
+        </mi>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         o
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         g
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mi>
+        o
+       </mi>
+      </msub><mo stretchy="false">
+       ]
+      </mo>
+     </math></span> of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0028.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0028.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        y
+       </mi>
+       <mrow>
+        <mi>
+         a
+        </mi>
+        <mi>
+         u
+        </mi>
+        <mi mathvariant="normal">
+         _
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+       <mi>
+        i
+       </mi>
+      </msubsup>
+     </math></span>. Each type of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0029.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0029.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        y
+       </mi>
+       <mrow>
+        <mi>
+         a
+        </mi>
+        <mi>
+         u
+        </mi>
+        <mi mathvariant="normal">
+         _
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+       <mi>
+        i
+       </mi>
+      </msubsup>
+     </math></span> except for Other label corresponds to two <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0030.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0030.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        y
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+       <mi>
+        i
+       </mi>
+      </msubsup>
+     </math></span> labels (for instance, PER label corresponds to B-PER and I-PER labels). So, we transform <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0031.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0031.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> to <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0032.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0032.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+        <mi mathvariant="normal">
+         _
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         w
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><mo stretchy="false">
+       [
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         b
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         p
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         p
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         b
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         l
+        </mi>
+        <mi>
+         o
+        </mi>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         l
+        </mi>
+        <mi>
+         o
+        </mi>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         b
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         o
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         g
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         o
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         g
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mi>
+        o
+       </mi>
+      </msub><mo stretchy="false">
+       ]
+      </mo>
+     </math></span>. If <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0033.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0033.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        w
+       </mi>
+       <mi>
+        i
+       </mi>
+      </msub>
+     </math></span> is the first token of the detected entity, the values of <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0034.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0034.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         p
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         l
+        </mi>
+        <mi>
+         o
+        </mi>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         o
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         g
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mi>
+        o
+       </mi>
+      </msub><mo stretchy="false">
+       )
+      </mo>
+     </math></span> are assigned to <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0035.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0035.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         b
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         p
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         b
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         l
+        </mi>
+        <mi>
+         o
+        </mi>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         b
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         o
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         g
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mi>
+        o
+       </mi>
+      </msub><mo stretchy="false">
+       )
+      </mo>
+     </math></span>, or they are assigned to <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0036.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0036.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mo stretchy="false">
+       (
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         p
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         l
+        </mi>
+        <mi>
+         o
+        </mi>
+        <mi>
+         c
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mo>
+         −
+        </mo>
+        <mi>
+         o
+        </mi>
+        <mi>
+         r
+        </mi>
+        <mi>
+         g
+        </mi>
+       </mrow>
+      </msub><mo>
+       ,
+      </mo><msub>
+       <mi>
+        p
+       </mi>
+       <mi>
+        o
+       </mi>
+      </msub><mo stretchy="false">
+       )
+      </mo>
+     </math></span>. Only the label probabilities of the predicted spans in the BD module would affect that in the NER module. After obtaining the aligned probability <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0037.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0037.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+        <mi mathvariant="normal">
+         _
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         w
+        </mi>
+       </mrow>
+       <mi>
+        i
+       </mi>
+      </msubsup>
+     </math></span>, we calculate the revised NER probability as: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0013.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0013.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0013" class="disp-formula-label">(10) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msubsup>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <msup>
+         <mi>
+          r
+         </mi>
+         <mo>
+          ′
+         </mo>
+        </msup>
+       </mrow>
+       <mi>
+        i
+       </mi>
+      </msubsup><mo>
+       =
+      </mo><msubsup>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+       <mi>
+        i
+       </mi>
+      </msubsup><mo>
+       +
+      </mo><msubsup>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         s
+        </mi>
+        <mi>
+         p
+        </mi>
+        <mi mathvariant="normal">
+         _
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         w
+        </mi>
+       </mrow>
+       <mi>
+        i
+       </mi>
+      </msubsup>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0013" class="disp-formula-label">(10) </span></span></span></span> As stated above, we introduce the gated ignoring mechanism to alleviate the error propagation of the BD outputs. It consists of two components: a gate mechanism that determines the degree of probability revision: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0014.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0014.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0014" class="disp-formula-label">(11) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+       <mtr>
+        <mtd></mtd>
+        <mtd>
+         <mi>
+          g
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          t
+         </mi>
+         <msub>
+          <mi>
+           e
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msub>
+         <mo>
+          =
+         </mo>
+         <mi>
+          s
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          g
+         </mi>
+         <mi>
+          m
+         </mi>
+         <mi>
+          o
+         </mi>
+         <mi>
+          i
+         </mi>
+         <mi>
+          d
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <msub>
+          <mi>
+           W
+          </mi>
+          <mi>
+           g
+          </mi>
+         </msub>
+         <mo>
+          ⋅
+         </mo>
+         <msubsup>
+          <mi>
+           h
+          </mi>
+          <mi>
+           i
+          </mi>
+          <mrow>
+           <mi>
+            n
+           </mi>
+           <mi>
+            e
+           </mi>
+           <mi>
+            r
+           </mi>
+          </mrow>
+         </msubsup>
+         <mo>
+          +
+         </mo>
+         <msub>
+          <mi>
+           b
+          </mi>
+          <mi>
+           g
+          </mi>
+         </msub>
+         <mo stretchy="false">
+          )
+         </mo>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0014" class="disp-formula-label">(11) </span></span></span></span> <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0015.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0015.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0015" class="disp-formula-label">(12) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+       <mtr>
+        <mtd></mtd>
+        <mtd>
+         <msubsup>
+          <mi>
+           p
+          </mi>
+          <mrow>
+           <mi>
+            n
+           </mi>
+           <mi>
+            e
+           </mi>
+           <msup>
+            <mi>
+             r
+            </mi>
+            <mo>
+             ′
+            </mo>
+           </msup>
+          </mrow>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+         <mo>
+          =
+         </mo>
+         <msubsup>
+          <mi>
+           p
+          </mi>
+          <mrow>
+           <mi>
+            n
+           </mi>
+           <mi>
+            e
+           </mi>
+           <mi>
+            r
+           </mi>
+          </mrow>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+         <mo>
+          +
+         </mo>
+         <mi>
+          g
+         </mi>
+         <mi>
+          a
+         </mi>
+         <mi>
+          t
+         </mi>
+         <msub>
+          <mi>
+           e
+          </mi>
+          <mi>
+           i
+          </mi>
+         </msub>
+         <mo>
+          ⋅
+         </mo>
+         <msubsup>
+          <mi>
+           p
+          </mi>
+          <mrow>
+           <mi>
+            s
+           </mi>
+           <mi>
+            p
+           </mi>
+           <mi mathvariant="normal">
+            _
+           </mi>
+           <mi>
+            n
+           </mi>
+           <mi>
+            e
+           </mi>
+           <mi>
+            w
+           </mi>
+          </mrow>
+          <mi>
+           i
+          </mi>
+         </msubsup>
+        </mtd>
+       </mtr>
+      </mtable>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0015" class="disp-formula-label">(12) </span></span></span></span> where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0038.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0038.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        W
+       </mi>
+       <mi>
+        g
+       </mi>
+      </msub>
+     </math></span> is a fully connected matrix, <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0039.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0039.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        b
+       </mi>
+       <mi>
+        g
+       </mi>
+      </msub>
+     </math></span> is a bias vector. And a random probability <i>p</i> with a threshold <i>α</i> to control the gate mechanism: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0016.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0016.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0016" class="disp-formula-label">(13) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         f
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         a
+        </mi>
+        <mi>
+         l
+        </mi>
+        <mi mathvariant="normal">
+         _
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub><mo>
+       =
+      </mo><mrow>
+       <mo>
+        {
+       </mo>
+       <mtable columnalign="left left" rowspacing=".2em" columnspacing="1em" displaystyle="false">
+        <mtr>
+         <mtd>
+          <msubsup>
+           <mi>
+            p
+           </mi>
+           <mrow>
+            <mi>
+             n
+            </mi>
+            <mi>
+             e
+            </mi>
+            <mi>
+             r
+            </mi>
+           </mrow>
+           <mi>
+            i
+           </mi>
+          </msubsup>
+         </mtd>
+         <mtd>
+          <mrow>
+           <mrow>
+            <mi mathvariant="normal">
+             p
+            </mi>
+            <mo>
+             &gt;
+            </mo>
+            <mi>
+             α
+            </mi>
+           </mrow>
+          </mrow>
+         </mtd>
+        </mtr>
+        <mtr>
+         <mtd>
+          <msubsup>
+           <mi>
+            p
+           </mi>
+           <mrow>
+            <mi>
+             n
+            </mi>
+            <mi>
+             e
+            </mi>
+            <msup>
+             <mi>
+              r
+             </mi>
+             <mo>
+              ′
+             </mo>
+            </msup>
+           </mrow>
+           <mi>
+            i
+           </mi>
+          </msubsup>
+         </mtd>
+         <mtd>
+          <mrow>
+           <mi mathvariant="normal">
+            otherwise
+           </mi>
+          </mrow>
+         </mtd>
+        </mtr>
+       </mtable>
+       <mo fence="true" stretchy="true" symmetric="true"></mo>
+      </mrow>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0016" class="disp-formula-label">(13) </span></span></span></span></p>
+   <div class="figure figureViewer" id="F0003">
+    <div class="hidden figureViewerArticleInfo">
+     <span class="figViewerTitle">Towards Malay named entity recognition: an open-source dataset and a multi-task framework</span>
+     <div class="articleAuthors articleInfoSection">
+      <div class="authorsHeading">
+       All authors
+      </div>
+      <div class="authors">
+       <a class="entryAuthor" href="/action/doSearch?Contrib=Fu%2C+Yingwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fu%2C+Yingwen"><span class="NLM_given-names">Yingwen</span> Fu</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Lin%2C+Nankai"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lin%2C+Nankai"><span class="NLM_given-names">Nankai</span> Lin</a> <a href="https://orcid.org/0000-0003-2838-8273"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Zhihe"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Zhihe"><span class="NLM_given-names">Zhihe</span> Yang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Jiang%2C+Shengyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jiang%2C+Shengyi"><span class="NLM_given-names">Shengyi</span> Jiang</a> <a href="https://orcid.org/0000-0002-6753-474X"><img src="/templates/jsp/images/orcid.png"></a>
+      </div>
+     </div>
+     <div class="articleLowerInfo articleInfoSection">
+      <div class="articleLowerInfoSection articleInfoDOI">
+       <a href="https://doi.org/10.1080/09540091.2022.2159014">https://doi.org/10.1080/09540091.2022.2159014</a>
+      </div>
+      <div class="articleInfoPublicationDate articleLowerInfoSection border">
+       <h6>Published online:</h6>28 December 2022
+      </div>
+     </div>
+    </div>
+    <div class="figureThumbnailContainer">
+     <div class="figureInfo">
+      <div class="short-legend">
+       <p class="captionText"><span class="captionLabel">Figure 3. </span> Probability alignment. If <span class="NLM_disp-formula-image inline-formula rs_preserve">
+         <noscript>
+          <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0040.gif" alt="">
+         </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0040.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+         <math>
+          <msub>
+           <mi>
+            w
+           </mi>
+           <mi>
+            i
+           </mi>
+          </msub>
+         </math></span> is the first token of the detected entity, the probabilities would flow towards the black arrow; otherwise they would flow towards the red arrow.</p>
+      </div>
+     </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/medium/ccos_a_2159014_f0003_oc.jpg" loading="lazy" height="80" width="500"></a>
+     <div class="figureDownloadOptions">
+      <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+     </div>
+    </div>
+   </div>
+   <div class="hidden rs_skip" id="fig-description-F0003">
+    <p class="captionText"><span class="captionLabel">Figure 3. </span> Probability alignment. If <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0040.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0040.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <msub>
+        <mi>
+         w
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msub>
+      </math></span> is the first token of the detected entity, the probabilities would flow towards the black arrow; otherwise they would flow towards the red arrow.</p>
+   </div>
+   <div class="hidden rs_skip" id="figureFootNote-F0003">
+    <div class="figureFootNote-F0003"></div>
+   </div>
+   <p></p>
+  </div>
+  <div id="S004-S2004-S3003" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i46">4.4.3. Loss</h4>
+   <p>We minimise a cross-entropy loss <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0041.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0041.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mrow>
+        <mi mathvariant="script">
+         L
+        </mi>
+       </mrow>
+       <mn>
+        2
+       </mn>
+      </msub>
+     </math></span> on <span class="NLM_disp-formula-image inline-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0042.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0042.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         f
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         a
+        </mi>
+        <mi>
+         l
+        </mi>
+        <mi mathvariant="normal">
+         _
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+      </msub>
+     </math></span> for NER task. <span class="NLM_disp-formula-image disp-formula rs_preserve">
+     <noscript>
+      <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0017.gif" alt="">
+     </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0017.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0017" class="disp-formula-label">(14) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+     <math>
+      <msub>
+       <mrow>
+        <mi mathvariant="script">
+         L
+        </mi>
+       </mrow>
+       <mn>
+        2
+       </mn>
+      </msub><mo>
+       =
+      </mo><mfrac>
+       <mn>
+        1
+       </mn>
+       <mi>
+        L
+       </mi>
+      </mfrac><munderover>
+       <mo>
+        ∑
+       </mo>
+       <mrow>
+        <mi>
+         i
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mn>
+         1
+        </mn>
+       </mrow>
+       <mi>
+        L
+       </mi>
+      </munderover><mi>
+       C
+      </mi><mi>
+       E
+      </mi><mo stretchy="false">
+       (
+      </mo><msubsup>
+       <mi>
+        p
+       </mi>
+       <mrow>
+        <mi>
+         f
+        </mi>
+        <mi>
+         i
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         a
+        </mi>
+        <mi>
+         l
+        </mi>
+        <mi mathvariant="normal">
+         _
+        </mi>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+       <mi>
+        i
+       </mi>
+      </msubsup><mo>
+       ,
+      </mo><msubsup>
+       <mi>
+        y
+       </mi>
+       <mrow>
+        <mi>
+         n
+        </mi>
+        <mi>
+         e
+        </mi>
+        <mi>
+         r
+        </mi>
+       </mrow>
+       <mi>
+        i
+       </mi>
+      </msubsup><mo stretchy="false">
+       )
+      </mo>
+     </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0017" class="disp-formula-label">(14) </span></span></span></span></p>
+  </div>
+ </div>
+ <div id="S004-S2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i48">4.5. Training and inference</h3>
+  <p>In each iteration, the proposed model simultaneously trains two tasks (BD and NER) end-to-end. The overall training loss is as follows: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0018.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_m0018.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0018" class="disp-formula-label">(15) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mi mathvariant="script">
+       L
+      </mi>
+     </mrow><mo>
+      =
+     </mo><msub>
+      <mrow>
+       <mi mathvariant="script">
+        L
+       </mi>
+      </mrow>
+      <mn>
+       1
+      </mn>
+     </msub><mo>
+      +
+     </mo><msub>
+      <mrow>
+       <mi mathvariant="script">
+        L
+       </mi>
+      </mrow>
+      <mn>
+       2
+      </mn>
+     </msub>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0018" class="disp-formula-label">(15) </span></span></span></span> During inference, we utilise the output in the NER module as the final output.</p>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i50" class="section-heading-2">5. Experiment</h2>
+ <div id="S005-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i51">5.1. Baseline models</h3>
+  <p>Most current Malay NER models are based on rules and ML. Because of their high cost and poor portability, they are not used as baselines in this paper. We compare MTBR with some advanced NER single-task and multi-task models:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline">In NeuralNER (Lample et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2016</a></span>), word features are extracted using a Bi-LSTM layer, and the features are subsequently fed to a CRF layer for entity label prediction.</p></li>
+   <li><p class="inline">A CNN layer is used by CNNs-BiLSTM (Chiu &amp;&nbsp;Nichols,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2016</a></span>) to extract character features. These features are sent to a Bi-LSTM layer, and then a softmax layer is used to make the final prediction.</p></li>
+   <li><p class="inline">For the CNNs-Bi-LSTM-CRF (Ma &amp;&nbsp;Hovy,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2016</a></span>) model's final prediction, a CRF layer is used rather than a softmax layer.</p></li>
+   <li><p class="inline">ELMO-softmax (Akbik et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2018</a></span>) uses a pre-trained ELMO model as the encoder to extract context-aware features. These features are passed to a softmax classifier for final prediction.</p></li>
+   <li><p class="inline">BERT-softmax (Devlin et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>)is similar to ELMO-softmax and uses the pre-trained ELMO as the encoder.</p></li>
+   <li><p class="inline">BERT-CRF is similar to BERT-softmax, which uses a CRF layer instead of a softmax classifier for final prediction.</p></li>
+   <li><p class="inline">BERT-MRC (Li et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2020</a></span>) formulate the NER task as a machine reading comprehension (MRC) task and propose a unified MRC framework for different kinds of NER tasks.</p></li>
+   <li><p class="inline">For the purpose of detecting entity boundaries, Bi-LSTM-PN (Li et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2021</a></span>) employs BiLSTM as the encoder and another LSTM with pointer networks as the decoder. The predicted entity chunks are then categorised using a softmax classifier. We re-implement this baseline in accordance with Li et al.&nbsp;(<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2021</a></span>) by training two tasks in a multi-task framework and adding one softmax layer for the NER task.</p></li>
+   <li><p class="inline">Another multi-task system called MT-BERT (Zhao et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>) uses pre-trained BERT as the encoder to jointly train a number of tasks in an end-to-end manner. In this study, we use this system to jointly train NER and BD problems.</p></li>
+   <li><p class="inline">MT-MED (Zhao et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0058" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2019</a></span>) is another multi-task framework with explicit interaction between multiple tasks. In this paper, we re-implement this framework to jointly train BD and NER tasks.</p></li>
+  </ul>
+  <p></p>
+  <p>We also train a GloVe (Pennington et al.,&nbsp;<span class="ref-lnk lazy-ref"><a data-rid="CIT0041" data-reflink="_i60 _i61" href="#"><span class="off-screen">Citation</span>2014</a></span>) embedding for NeuralNER, CNNs-BiLSTM, and CNNs-Bi-LSTM-CRF as well as an ELMO model for ELMO-softmax with massive Malay news articles. Additionally, Bahasa-BERT<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0003" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>3</sup></a></span> is utilised as the encoder for all BERT-based models.</p>
+ </div>
+ <div id="S005-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i52">5.2. Model setups</h3>
+  <p>Our model is based on PyTorch<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0004" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>4</sup></a></span> with HuggingFace's Transformers<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0005" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>5</sup></a></span> package in one single NVIDIA Quadro RTX 8000. The model setups are shown in Table&nbsp;<button class="ref showTableEventRef" data-id="T0005">5</button>. As for the evaluation metrics, we report the precision, recall, and F1 score of multiple NER models.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Towards Malay named entity recognition: an open-source dataset and a multi-task framework</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fu%2C+Yingwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fu%2C+Yingwen"><span class="NLM_given-names">Yingwen</span> Fu</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Lin%2C+Nankai"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lin%2C+Nankai"><span class="NLM_given-names">Nankai</span> Lin</a> <a href="https://orcid.org/0000-0003-2838-8273"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Zhihe"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Zhihe"><span class="NLM_given-names">Zhihe</span> Yang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Jiang%2C+Shengyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jiang%2C+Shengyi"><span class="NLM_given-names">Shengyi</span> Jiang</a> <a href="https://orcid.org/0000-0002-6753-474X"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2159014">https://doi.org/10.1080/09540091.2022.2159014</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 5. </span> Model settings.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0005-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0005&amp;doi=10.1080%2F09540091.2022.2159014&amp;downloadType=CSV"> Download CSV</a><a data-id="T0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S005-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i53">5.3. Main performance</h3>
+  <p>The first section of Table&nbsp;<button class="ref showTableEventRef" data-id="T0006">6</button> presents the results of multiple previous top-performing single-task NER systems. We can see that some improvements to NER performance are made at the CNN layer for char-level representation. And it seems that adding a CRF layer on Bi-LSTM-CNNs cannot bring significant improvements. Among these previous studies, fine-tuned language models (ELMO, mBERT, and Bahasa-BERT) significantly outperform classic neural models represented by Bi-LSTM-CNNs-CRF. In addition, it is worthwhile to note that ELMO works slightly better than mBERT, we hold the idea that ELMO is Malay-oriented that is pre-trained in Malay news articles whereas mBERT is pre-trained in corpora of multiple languages and focuses on learning language-independent knowledge, leading to insufficient language-specific knowledge for Malay NER. Besides, Bahasa-BERT achieves the best performance in all language models, so we leverage it as our encoder for the follow-up experiments. Among the Bahasa-BERT-based models, Bahasa-BERT-CRF tends to work slightly better than Bahasa-BERT-softmax in this case, and Bahasa-BERT-MRC achieves the best performance in all single-task frameworks.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Towards Malay named entity recognition: an open-source dataset and a multi-task framework</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fu%2C+Yingwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fu%2C+Yingwen"><span class="NLM_given-names">Yingwen</span> Fu</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Lin%2C+Nankai"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lin%2C+Nankai"><span class="NLM_given-names">Nankai</span> Lin</a> <a href="https://orcid.org/0000-0003-2838-8273"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Zhihe"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Zhihe"><span class="NLM_given-names">Zhihe</span> Yang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Jiang%2C+Shengyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jiang%2C+Shengyi"><span class="NLM_given-names">Shengyi</span> Jiang</a> <a href="https://orcid.org/0000-0002-6753-474X"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2159014">https://doi.org/10.1080/09540091.2022.2159014</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 6. </span> Main performance.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0006-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0006&amp;doi=10.1080%2F09540091.2022.2159014&amp;downloadType=CSV"> Download CSV</a><a data-id="T0006" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The second part of Table&nbsp;<button class="ref showTableEventRef" data-id="T0006">6</button> reports the results of some multi-task models. In most cases, the performances of multi-task models outperform those of single-task models with the same encoder (Bi-LSTM-PN vs Bi-LSTM-CNNs, Bi-LSTM-MT-MED vs Bi-LSTM-CNNs-CRF, MT-BERT vs Bahasa-BERT-softmax). We also experiment with different encoders for the proposed MTBR framework, and the experimental results show that MTBR consistently achieves some performance gains over each single-task model, ranging from 1.44% to 1.81% in F1 score. This illustrates the effectiveness of the BD auxiliary task, which provides knowledge that can significantly improve the NER performance.</p>
+  <p>Taking a closer look at the multi-task models, we can see that MT-BERT outperforms Bi-LSTM-PN and MT-MED, which should be credited to pre-trained language models represented by BERT. In addition, MTBR(Bi-LSTM-CNNs) has a certain performance improvement of 1.44% and 0.60% in F1 score compared to both Bi-LSTM-PN and MT-MED, indicating that the proposed framework stimulates the potential of the BD task to the NER task in a more advanced interaction way. MTBR(Bahasa-BERT) obtains the best performance by improving more than 1.3% in F1 score over the best baseline model MT-BERT. Because of the novel design of the Bi-revision mechanism, MTBR can utilise not only the general representations of different tasks but also label probabilities of different tasks. Hence, MTBR obtains significant improvements compared with multi-task models and single-task models. Meanwhile, we could see that the MTBR(Bahasa-BERT) tends to outperform multiple baselines, which could be regarded as the new baseline method.</p>
+ </div>
+ <div id="S005-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i54">5.4. Ablation study</h3>
+  <p>To evaluate the effectiveness of different components in MTBR, we remove a certain part of the model for ablation study and the results are presented in Table&nbsp;<button class="ref showTableEventRef" data-id="T0007">7</button>. Results show that almost every component can boost the whole MTBR. It seems that MTBR can make full use of the advantages of multi-task learning from different perspectives. Removing each of them would generally lead to a performance drop. Our analysis of the observations is drawn as follows.</p>
+  <ol class="NLM_list NLM_list-list_type-order">
+   <li><p class="inline"><i>w/o</i> Boundary Detection: in this experiment, we remove the BD task and MTBR degenerates into a vanilla single-task model. Within the multi-task framework, the BD task contributes to boosting the NER performance with an improvement of 1.81% in F1 score, which should be credited to its BRE correction capability.</p></li>
+   <li><p class="inline"><i>w/o</i> Bi-revision: in this experiment, we remove the Bi-revision mechanism and the model degenerates into a vanilla multi-task model. This setting causes a performance drop of 1.35 on the F1 score. However, the model could achieve some performance gains compared to the vanilla single-task model. This illustrates that fusing the BD auxiliary task can improve the NER performance, but training both tasks simultaneously without external strategies may prevent the two tasks from interacting sufficiently and cannot fully exploit the potential of the BD task. In contrast, Bi-revision can explicitly fuse the outputs of the two tasks, allowing the BD output to effectively revise the NER output, thus further boosting the NER task.</p></li>
+   <li><p class="inline"><i>w/o</i> Gated Ignoring Mechanism: in this experiment, we remove the <span class="NLM_disp-formula-image inline-formula rs_preserve">
+      <noscript>
+       <img src="/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0043.gif" alt="">
+      </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/ccos20/0/ccos20.ahead-of-print/09540091.2022.2159014/20221228/images/ccos_a_2159014_ilm0043.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+      <math>
+       <mi>
+        g
+       </mi><mi>
+        a
+       </mi><mi>
+        t
+       </mi><msub>
+        <mi>
+         e
+        </mi>
+        <mi>
+         i
+        </mi>
+       </msub>
+      </math></span> and let the BD output probability all add up to the NER output probability as Equation&nbsp;(<a href="#M0013">10</a>). This leads to a performance drop of 0.57% in F1 score. The gated ignoring mechanism can verify the correctness of the revision and control the degree of revision of the auxiliary task. It can well alleviate error propagation caused the prediction error in the BD module.</p></li>
+   <li><p class="inline"><i>w/o</i> random probability: in this experiment, we remove the random probability and use the revised probability all the time as Equation&nbsp;(<a href="#M0015">12</a>). Using the gated ignoring mechanism seems to enhance the model to some extend. Using a random probability to control whether BD revision is applied could further reduce error propagation. However, how BD revision could be more effectively controlled needs further exploration, which is left for future work.</p></li>
+  </ol>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Towards Malay named entity recognition: an open-source dataset and a multi-task framework</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fu%2C+Yingwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fu%2C+Yingwen"><span class="NLM_given-names">Yingwen</span> Fu</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Lin%2C+Nankai"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lin%2C+Nankai"><span class="NLM_given-names">Nankai</span> Lin</a> <a href="https://orcid.org/0000-0003-2838-8273"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Zhihe"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Zhihe"><span class="NLM_given-names">Zhihe</span> Yang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Jiang%2C+Shengyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jiang%2C+Shengyi"><span class="NLM_given-names">Shengyi</span> Jiang</a> <a href="https://orcid.org/0000-0002-6753-474X"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2159014">https://doi.org/10.1080/09540091.2022.2159014</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 7. </span> Performance of different modules.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0007-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0007&amp;doi=10.1080%2F09540091.2022.2159014&amp;downloadType=CSV"> Download CSV</a><a data-id="T0007" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S005-S2005" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i55">5.5. BRE analysis</h3>
+  <p>Since we explicitly introduce an auxiliary task of boundary recognition, BRE tends to decline. Table&nbsp;<button class="ref showTableEventRef" data-id="T0008">8</button> compares the ratios of BRE in different models. Our proposed MTBR framework with the BD auxiliary task can significantly reduce BRE, thus improving the NER performance.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Towards Malay named entity recognition: an open-source dataset and a multi-task framework</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fu%2C+Yingwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fu%2C+Yingwen"><span class="NLM_given-names">Yingwen</span> Fu</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Lin%2C+Nankai"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lin%2C+Nankai"><span class="NLM_given-names">Nankai</span> Lin</a> <a href="https://orcid.org/0000-0003-2838-8273"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Zhihe"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Zhihe"><span class="NLM_given-names">Zhihe</span> Yang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Jiang%2C+Shengyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jiang%2C+Shengyi"><span class="NLM_given-names">Shengyi</span> Jiang</a> <a href="https://orcid.org/0000-0002-6753-474X"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2159014">https://doi.org/10.1080/09540091.2022.2159014</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 8. </span> BRE analysis.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0008-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0008&amp;doi=10.1080%2F09540091.2022.2159014&amp;downloadType=CSV"> Download CSV</a><a data-id="T0008" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S005-S2006" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i56">5.6. Case study</h3>
+  <p>Table&nbsp;<button class="ref showTableEventRef" data-id="T0009">9</button> shows some representative cases in different modules of the proposed MTBR in this paper. From the first and second examples, we can see that the BD module can effectively revise the boundary and label of the entity in the NER module. In the first example, “Tan Sri Dr Mohd Irwan Seregar Abdullah” is an extra-long person entity and feeding it directly in the NER model for prediction would cause boundary detection error. In contrast, the BD module can correctly identify the boundary of the entity because it explicitly learns the boundary information of the entity and then pass this information through the Bi-revision mechanism to the NER model and effectively revise the entity boundaries. And in the second example, the polysemous word “Thailand” is likely to lead to ambiguity i.e. “Thailand” itself refers to a “LOC”, but in “Kelab Wartawan Asing Thailand”, it is part of an “ORG”, but the NER module incorrectly identifies “Thailand” as a “LOC” and identifies “Kelab Wartawan Asing” as an “ORG”, resulting in incorrect identification of the entity boundary, which can be effectively revised by the BD module. Moreover, in the third example, the BD module incorrectly identifies “Brahim's Dewina” as a “PER” and the NER module correctly identifies “Brahim's Dewina” as an “ORG”, if the output of the BD module is simply revised for the output of the NER module, it would cause error transmission. While in MTBR, the “gate” mechanism of the NER module can lower the threshold of transmitting information in the BD module to reject its revision. This demonstrates that our model can revise the output of the NER module through the BD module, while effectively preventing the error transmission of the BD module.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Towards Malay named entity recognition: an open-source dataset and a multi-task framework</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fu%2C+Yingwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fu%2C+Yingwen"><span class="NLM_given-names">Yingwen</span> Fu</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Lin%2C+Nankai"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lin%2C+Nankai"><span class="NLM_given-names">Nankai</span> Lin</a> <a href="https://orcid.org/0000-0003-2838-8273"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Zhihe"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Zhihe"><span class="NLM_given-names">Zhihe</span> Yang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Jiang%2C+Shengyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jiang%2C+Shengyi"><span class="NLM_given-names">Shengyi</span> Jiang</a> <a href="https://orcid.org/0000-0002-6753-474X"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2159014">https://doi.org/10.1080/09540091.2022.2159014</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 9. </span> Case study. MTBR gives all correct predictions in these cases.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0009-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0009&amp;doi=10.1080%2F09540091.2022.2159014&amp;downloadType=CSV"> Download CSV</a><a data-id="T0009" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S005-S2007" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i57">5.7. Evaluation on more languages</h3>
+  <p>To verify the effectiveness of the proposed model MTBR, we compare MTBR and the baseline methods on more languages, including a representative high-resource language English (en, CoNLL-2003 dataset) and a Malay-related language Indonesian (id, IDNER dataset). Notably, we use BERT-base-cased<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0006" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>6</sup></a></span> and mBERT, respectively, for English and Indonesian. The F1 scores are shown in Table&nbsp;<button class="ref showTableEventRef" data-id="T0010">10</button>, and we can see that in addition to MS-NER, the proposed MTBR model also works well in two evaluated datasets. Besides, MTBR with BERT as encoder achieves the best performance with an F1 score of 93.36% and 91.13%, respectively, in English and Indonesian. This demonstrates the effectiveness of MTBR and that it can be widely extended to languages other than Malay.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Towards Malay named entity recognition: an open-source dataset and a multi-task framework</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Fu%2C+Yingwen"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Fu%2C+Yingwen"><span class="NLM_given-names">Yingwen</span> Fu</a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Lin%2C+Nankai"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Lin%2C+Nankai"><span class="NLM_given-names">Nankai</span> Lin</a> <a href="https://orcid.org/0000-0003-2838-8273"><img src="/templates/jsp/images/orcid.png"></a>, <a class="entryAuthor" href="/action/doSearch?Contrib=Yang%2C+Zhihe"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Yang%2C+Zhihe"><span class="NLM_given-names">Zhihe</span> Yang</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=Jiang%2C+Shengyi"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Jiang%2C+Shengyi"><span class="NLM_given-names">Shengyi</span> Jiang</a> <a href="https://orcid.org/0000-0002-6753-474X"><img src="/templates/jsp/images/orcid.png"></a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/09540091.2022.2159014">https://doi.org/10.1080/09540091.2022.2159014</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>28 December 2022
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 10. </span> MTBR performance on more languages.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0010-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0010&amp;doi=10.1080%2F09540091.2022.2159014&amp;downloadType=CSV"> Download CSV</a><a data-id="T0010" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+</div>
+<div id="S006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i58" class="section-heading-2">6. Conclusion</h2>
+ <p>For Malay named entity recognition (NER), we present a dataset construction framework based on homologous-language labelled datasets and iterative optimisation to construct a Malay NER dataset (MS-NER). The proposed framework tends to work for the languages whose homologous languages have labelled datasets. In addition, previous studies demonstrate the potential benefits of the boundary detection (BD) task for NER. Based on MS-NER, we further explore how the BD task can improve NER performance and propose a neural multi-task framework with a bidirectional revision (Bi-revision) mechanism (MTBR), taking both model transfer and label transfer of BD task into account to improve the NER performance. We also systematically evaluate and analyse some advanced neural NER models widely used for English on MS-NER. Experimental results show that MTBR can obtain competitive performance over multiple baselines in MS-NER. The dataset and model would be made available to the general public as a new benchmark.</p>
+</div>

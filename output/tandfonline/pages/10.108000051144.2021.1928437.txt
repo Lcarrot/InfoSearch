@@ -1,0 +1,1733 @@
+<div id="S001" class="NLM_sec NLM_sec-type_intro NLM_sec_level_1">
+ <h2 id="_i2" class="section-heading-2">1. Introduction</h2>
+ <p>Natural language processing (NLP) deals with the understanding of language meaning. Almost all NLP tasks of practical interest, ranging from information retrieval and machine translation to question answering and chatbots, hinge on the ability to recognize the meaning of <i>words</i>. The task is aggravated by the fact that words can have different meanings depending on the context in which they are used. NLP has traditionally relied on two approaches to word meaning [<span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>1</a></span>]: <i>relational semantics</i> and <i>distributional semantics</i>. The former uses the notion of a <i>sense</i> and defines word meaning by sense relations (synonymy, hypernymy, hyponymy, etc.) that the word bears to other words. For instance, one sense of “road” is synonymous to “route”, while the other sense is synonymous with “means”. The practical application of this idea is WordNet [<span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>2</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>3</a></span>], a lexical database for English organized according to sense relations, which has been used for numerous NLP tasks.</p>
+ <p>Distributional semantics [<span class="ref-lnk lazy-ref"><a data-rid="CIT0004" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>4</a></span>] also adopts the relational view, but, instead of sense relations, it considers the relations between words co-occurring in sentences. The principle is best summarized by the <i>distributional hypothesis</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>5</a></span>], which posits that the meaning of a word can be deduced by observing the word's contexts. For instance, one sense of the word “road” is defined by it occurring together with words “car” and “traffic”. The distributional approach is the cornerstone of recent neural approaches to NLP [<span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>6</a></span>], which gave rise to extensive research on pretrained language models for contextualized word representations (e.g.&nbsp;[<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>7</a></span>]).</p>
+ <p>Recently, a third approach to word meaning, especially apt for representing word meaning in context, has received increased attention in NLP: <i>lexical substitution</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>8</a></span>]. A lexical substitute is a meaning-preserving replacement for a word in context. For example, certain contexts warrant the substitution of “road” with “street”, while for others “way” would be more suitable. The meaning of the word in context is then taken to correspond to the set of its lexical substitutes, also known as a <i>paraset</i> (<i>paraphrase set</i>). The task of automatically producing lexical substitutes has attracted considerable attention in NLP (e.g. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>9</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>10</a></span>]), and various models have been proposed that rely on system-produced substitutes for word meaning representation (e.g. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>11</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>12</a></span>]).</p>
+ <p>While lexical substitution (LS) intuitively appears to be a sensible approach to representing word meaning in context, it is by no means evident how it relates to sense-based representation. However, determining the correspondence between substitute- and sense-based meaning is important for at least two reasons. Firstly, many practical NLP applications require, for a given word in context, to explicitly identify its sense from a sense inventory such as WordNet, as in the <i>word sense disambiguation</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>13</a></span>] task, or to group together contexts pertaining to the same sense, as in the <i>word sense</i> <i>induction</i> (WSI) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>14</a></span>] task. Secondly, even when detecting senses is not an end goal in itself, it is important to have a way of validating substitution-based representations, which can be achieved by comparing it to the more established sense-based representation.</p>
+ <p>Our work aims to fill the above-mentioned gap by investigating the viability of using lexical substitutes for representing word meaning in context. We present an empirical study that quantifies the correspondence between substitute- and sense-based meaning representations. To this end, we compile a high-quality lexical sample dataset in English, with human-produced lexical substitutes and sense labels from two well-established sense inventories, WordNet 2020 [<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>3</a></span>] and OntoNotes [<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>15</a></span>].</p>
+ <p>Furthermore, as recent work has demonstrated the efficacy of system-produced lexical substitutes for word meaning representation, we directly compare human- and system-produced lexical substitutes to determine the performance gap between the two. Lastly, we investigate to what extent the results translate to a typical semantic task, namely WSI, where we consider simple WSI models and a state-of-the-art WSI model based on substitutes produced by a neural language model [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>12</a></span>]. More concretely, our study addresses the following research questions:</p>
+ <p></p>
+ <ul class="NLM_list NLM_list-list_type-bullet">
+  <li><p class="inline">RQ1: To what extent does word meaning representation based on lexical substitutes correspond to sense-based meaning representation?</p></li>
+  <li><p class="inline">RQ2: Does the correspondence significantly deteriorate if system-produced substitutes are used in lieu of human-produced ones?</p></li>
+  <li><p class="inline">RQ3: Is there a difference between human- and system-produced substitutes when used for the WSI task?</p></li>
+ </ul>
+ <p></p>
+ <p>The three research questions define a roadmap for vindicating the use of lexical substitutes in NLP systems. The departing question, addressed by RQ1, is the very plausibility of using lexical substitutes as a means for representing contextualized word meaning. Assuming this question is answered in the affirmative, and acknowledging the high costs of human-produced lexical substitutes, the next question, duly addressed by RQ2, considers whether automatically-produced substitutes are fit for the same job. Lastly, since NLP is about solving real-life tasks, findings eventually have to be validated on external benchmark tasks to be considered practically relevant, which is what RQ3 addresses using WSI as the prototypical lexicosemantic NLP task.</p>
+ <p>We argue that the above questions are crucial for validating the use of LS in NLP. To the best of our knowledge, our study is the first to address these questions. A secondary contribution of our work is the first dataset in English annotated with both sense annotations (single- and multi-sense) and lexical substitutes, where the latter are collected using a robust three-step annotation procedure. We make this dataset publicly available in hope of fostering further research on this topic.</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i3" class="section-heading-2">2. Related work</h2>
+ <p>Our study relates to two strands of NLP research: lexical substitution (LS) and word sense induction (WSI). We next review the most prominent work from these two tasks.</p>
+ <div id="S002-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i4">2.1. Lexical substitution</h3>
+  <p>LS was first introduced at the SemEval-2007 shared task [<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>8</a></span>] and since attracted mostly unsupervised machine learning approaches, with an exception of a few feature-based supervised models [<span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>16</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>17</a></span>]. The early unsupervised models computed similarities between the distributional representations of the context, target word, and the candidates to produce a ranking of plausible candidates [<span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>18</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>19</a></span>]. The more recent models rely on pretrained neural language models [<span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>9</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0010" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>10</a></span>]. For training and evaluation of LS systems, a number of standard datasets have been compiled. Besides the dataset compiled for SemEval-2007 [<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>8</a></span>], the most popular ones are CoInCo [<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>20</a></span>] and TWSI 2.0 [<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>21</a></span>], covering a sizable number of words annotated through crowdsourcing efforts.</p>
+  <p>Another line of research focuses on the use of LS for semantic modelling. In [<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>11</a></span>], LS was used to build substitute-based word representations, which were then tested on the semantic similarity task and a series of extrinsic benchmarks, including dependency parsing and sentiment analysis. In contrast, the study in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>22</a></span>] used LS as a testbed for evaluating other representations, more specifically, compositional distributional semantic models.</p>
+  <p>While there exists ample work on LS systems and their applications, only a handful of studies addressed the key question of how LS corresponds to sense-based word meaning. The study in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>23</a></span>] used lexical substitutes as one of the tools to investigate how well words can be partitioned into senses. The results indicate that partitionability can be quantified quite well with intra-clustering clusterability measures based on lexical substitutes. Similarly, the study in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>20</a></span>] compared lexical substitutes to WordNet synsets (synonym sets) by devising a heuristic mapping between the two. The study showed that, while lexical substitutes correspond rather well to WordNet senses, they often induce subtle sense distinctions not covered by WordNet. Our study also investigates the relation between substitutes and senses but, instead of relying on heuristic mapping, we quantify the correspondence between LS and sense-based meaning representation by directly comparing the LS and sense-based similarity measures. We also explore to what extent that correspondence translates to the WSI task.</p>
+ </div>
+ <div id="S002-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i5">2.2. Word sense induction</h3>
+  <p>WSI is a well-established NLP task that attracted many different approaches [<span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>13</a></span>]. The early approaches used <i>context clustering</i>, which involves computing the distributional vectors of the observed word's contexts and grouping them into a number of sense clusters [<span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>14</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>24</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>25</a></span>]. Subsequent approaches used <i>clustering word co-occurrence graphs</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>26</a></span>] and <i>probabilistic clustering</i>, in which word sense induction is formalized as a generative model [<span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>27</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>28</a></span>].</p>
+  <p>Since the WSI task requires the representation of word meaning in context, it is a natural candidate for using LS for meaning representation. Indeed, the currently best-performing WSI approaches rely on LS as a means of capturing word meaning. The first such approach [<span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>29</a></span>] included a simple 4-gram language model to generate lexical substitutes, which were then used to build a distributional model over word-substitute pairs. The more recent works opted for specialized LS models over standard language models, and also incorporated substitutes in a more straightforward manner. For instance, the approach in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>30</a></span>] relied on separate context and paraset representations (i.e. their similarities) to measure how similar the individual instances are. Apart from using the then-current state-of-the-art LS model, they also experimented with using human-produced lexical substitutes and showed that this leads to considerable performance improvements. The current state-of-the-art WSI model, proposed in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>12</a></span>], uses context only as an input for the pretrained BERT language model [<span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>7</a></span>]. Their WSI model then samples substitutes from the vocabulary, represents them as bag-of-words vectors, and clusters them using hierarchical agglomerative clustering (HAC). In our study, we evaluate the model of [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>12</a></span>] and compare it against a similar model with human-produced substitutes to determine the performance gap between the two.</p>
+  <p>When it comes to data, WSI models are almost exclusively evaluated on datasets from two shared tasks, SemEval 2010 [<span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>31</a></span>] and SemEval 2013 [<span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>32</a></span>]. The former is based around data labelled with single-sense annotations, while the latter uses multi-sense data, which is also reflected in the choice of evaluation metrics. Work in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>30</a></span>] complemented a subset of SemEval 2010 data with additional LS annotations. We use the dataset of [<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>30</a></span>] as a starting point for our study, but expand it with (multi-)sense annotations from a different sense inventory and refine the original lexical substitutes for quality. To the best of our knowledge, there is no other dataset for the English language annotated with both lexical substitutes and (multi-)sense word labels.</p>
+ </div>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i6" class="section-heading-2">3. Dataset annotation</h2>
+ <p>Our study uses the dataset from [<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>30</a></span>] as a starting point, which in turn is a subset of SemEval-2010 dataset [<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>15</a></span>]. The SemEval dataset covers 50 verbs and 50 nouns across 8,915 contexts sampled from OntoNotes [<span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>15</a></span>], a large linguistic resource with several annotation layers, including word senses. These were collected using an iterative process of refining the sense inventory and re-annotating the instances until a satisfactory inter-annotator agreement was reached. The study in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>30</a></span>] used a subset of this dataset consisting of 20 words (10 nouns and 10 verbs) across 1000 contexts, each additionally annotated with lexical substitutes. While we could in principle use this dataset to answer our research questions, as it is annotated with both lexical substitutes and word senses, it nonetheless suffers from two serious shortcomings that could threaten the validity of our study: (1) it is restricted to a single-sense (and arguably less standard) sense inventory (OntoNotes) and (2) the quality of lexical substitutes is manifestly low. To address this, we expanded and improved on both annotation layers: we additionally annotated word senses using the newly-released English WordNet 2020 [<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>3</a></span>] and we revised all lexical substitutes. The subsequent sections detail the two annotation efforts. Table&nbsp;<button class="ref showTableEventRef" data-id="T0001">1</button> summarizes the three datasets and the differences between them, while Table&nbsp;<button class="ref showTableEventRef" data-id="T0002">2</button> shows examples from our dataset.</p>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">Representing word meaning in context via lexical substitutes</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Alagi%C4%87%2C+Domagoj"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alagi%C4%87%2C+Domagoj"><span class="NLM_given-names">Domagoj</span> Alagić</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=%C5%A0najder%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/%C5%A0najder%2C+Jan"><span class="NLM_given-names">Jan</span> Šnajder</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/00051144.2021.1928437">https://doi.org/10.1080/00051144.2021.1928437</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>18 May 2021
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 1. </span> Datasets summary (ON = OntoNotes, WN = English WordNet 2020).</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F00051144.2021.1928437&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <div class="tableViewerArticleInfo hidden">
+  <span class="figViewerTitle">Representing word meaning in context via lexical substitutes</span>
+  <div class="articleAuthors articleInfoSection">
+   <div class="authorsHeading">
+    All authors
+   </div>
+   <div class="authors">
+    <a class="entryAuthor" href="/action/doSearch?Contrib=Alagi%C4%87%2C+Domagoj"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alagi%C4%87%2C+Domagoj"><span class="NLM_given-names">Domagoj</span> Alagić</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=%C5%A0najder%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/%C5%A0najder%2C+Jan"><span class="NLM_given-names">Jan</span> Šnajder</a>
+   </div>
+  </div>
+  <div class="articleLowerInfo articleInfoSection">
+   <div class="articleLowerInfoSection articleInfoDOI">
+    <a href="https://doi.org/10.1080/00051144.2021.1928437">https://doi.org/10.1080/00051144.2021.1928437</a>
+   </div>
+   <div class="articleInfoPublicationDate articleLowerInfoSection border">
+    <h6>Published online:</h6>18 May 2021
+   </div>
+  </div>
+ </div>
+ <div class="tableView">
+  <div class="tableCaption">
+   <div class="short-legend">
+    <h3><p class="captionText"><span class="captionLabel">Table 2. </span> A few instances from our dataset, together with their WordNet 2020 sense labels and refined lexical substitutes.</p></h3>
+   </div>
+  </div>
+  <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+   <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F00051144.2021.1928437&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+  </div>
+ </div>
+ <p></p>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i7">3.1. Complementary annotation of word senses</h3>
+  <p>While OntoNotes annotations provided in the SemEval-2020 dataset are unquestionably of high quality, all sense inventories introduce certain biases with respect to sense definitions and granularity. Thus, to improve the validity of our study, we decided to consider two complementary sense inventories: besides using the OntoNotes labels, we annotated all instances with sense labels from the recently-introduced English WordNet 2020 [<span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>3</a></span>]. Unlike OntoNotes, we opted for multi-sense annotations, i.e. allowing one word in context to be labelled with a number of senses. Considering that no sense inventory can ensure contexts of completely disjoint senses, we believe that allowing multi-sense labels could bring us potentially valuable insights into the problem of capturing word meaning in context. Another side benefit of having WordNet annotations is that, in contrast to OntoNotes and its sense inventory, WordNet is freely available and more widely used, which increases the practical value of our results.</p>
+  <p>To obtain the annotations, we asked five near-native speakers of English to label each instance (a target word in context) with appropriate WordNet 2020 senses. We allowed the annotators to select more than one sense if they found it necessary, e.g. in case of overly ambiguous contexts. In case they deemed no sense appropriate for a given context, they were asked to select the “None of the above” (NOTA) option.</p>
+  <p>The complete sense annotation took 38 person-hours. On average, the annotators selected multiple senses for 75 instances (9% of total instances) and selected NOTA for 32 instances (3.8%). Taking into account the low number of multi-sense annotations, we calculated the inter-annotator agreement only on the single-sense annotations, thus avoiding the notorious issue of calculating agreement on multilabel annotations. We used the Cohen's <i>κ</i> averaged over all ten annotator pairs: the observed agreement is 0.61, which is considered a substantial agreement [<span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>33</a></span>].</p>
+  <p>To obtain the final WordNet sense labels for each of the instances, we decided to adopt two strategies, each yielding a different dataset variant:</p>
+  <p></p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline"><span class="smallcaps smallerCapital">WN-Single</span>&nbsp;– The word sense label is obtained via majority voting. In case of a tie, the instance is dropped;</p></li>
+   <li><p class="inline"><span class="smallcaps smallerCapital">WN-Multi</span>&nbsp;– Only senses chosen by the majority (i.e. three or more) of annotators are included in the final set of word senses of an instance. If none of the senses passed that threshold, the instance is dropped.</p></li>
+  </ul>
+  <p></p>
+  <p>Table&nbsp;<button class="ref showTableEventRef" data-id="T0002">2</button> shows sense annotations (represented by WordNet 2020 glosses) for a few instances from our dataset.</p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i8">3.2. Revising lexical substitutes</h3>
+  <p>Our manual inspection of the lexical substitutes dataset from [<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>30</a></span>] revealed deficiencies in the quality and consistency of annotations. More concretely, for many instances some of the substitutes provided by the annotators are arguably not preserving the meaning of the target word. What is more, in some cases the annotators were not consistent and provided substitutes not for the target word itself but for a surrounding sequence of words encompassing the target word, typically when the target word was part of a multiword expression (e.g. the target “road” in expression “down the road”).</p>
+  <p>As the above issues would jeopardize the validity of our study, we decided to thoroughly revise the annotations. The revision was carried out in two steps. In the first step, we (the authors) manually inspected all substitute annotations across all instances aggregated across the five annotators, and identified the cases where one of the substitutes pertained to a multiword expression containing the target word. For instances in which all substitutes pertained to an expression, we revised the target word to be that particular expression if it was a semantically opaque expression (e.g. a phrasal verb), otherwise we discarded the instance. Conversely, for instances in which only some substitutes pertained to the expression, while others pertained to the individual target word, we removed only the former substitutes. In this step, we also corrected the spelling errors in the substitutes and lemmatized all substitutes. After this step, we ended up with 837 instances.</p>
+  <p>In the second revision step, we asked five annotators to go through all lexical substitutes and, without providing any of their own, discard the ones that they think do not preserve sentence meaning to a high degree or with which the sentence does not sound natural (while ignoring minimal syntactic alternations of context, e.g. differences in prepositions or articles). To obtain the revised lexical substitute sets (parasets) for an instance, we simply took all the substitutes that any of the five annotators decided to keep (i.e. we took the substitute union). This resulted in ∼20% fewer lexical substitutes, indicating that this step was justified. In the end, this step took 56 person-hours.</p>
+  <p>With the two revision steps following the original annotation, the annotation can conceptually be conceived as consisting of three steps: (1) <i>elicitation</i>, in which annotators are asked to provide as many substitutes as they can think of, with the aim of not missing any relevant substitute, (2) <i>clean-up</i>, where experts manually revise the substitutes for consistency, and (3) <i>filtering</i>, where substitutes are checked again by the annotators and the low-quality substitutes are removed. We argue that this three-step procedure is optimal in the sense that it ensures high quality while at the same time preserving high coverage.</p>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i9" class="section-heading-2">4. Word meaning in context via lexical substitutes</h2>
+ <p>As argued in the introduction, the use of LS for representing word meaning in context raises the fundamental question of how this representation corresponds to word senses (RQ1). While it is clear that lexical substitutes do represent certain aspects of a word's meaning in context, the assumption is that it is in particular the sense-based meaning that is well represented. This assumption can be readily verified by comparing the contexts featuring the same target word: if a word's meaning in context indeed corresponds to senses, then the parasets should be identical for same-sense target words. In practice, however, due to granularity mismatch, as well as nuanced differences in meaning observed by Kremer et&nbsp;al. [<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>20</a></span>], we intuitively expect the sets of substitutes for same-sense words not to be perfectly identical but rather highly similar. In virtue of that, the extent to which substitute-based representation corresponds to sense-based representation can be taken to be equivalent to the degree of similarity between sets of lexical substitutes that correspond for same-sense words.</p>
+ <p>The experimental design of RQ1 is an operationalization of the above observation: we quantify the extent to which substitute-based representation correspond to sense-based representation by correlation analysis between similarities of parasets and sense matches. Furthermore, since similarities between parasets can be computed in a number of ways, we consider a number of standard similarity measures.</p>
+ <p>We then investigate how much the correspondence between substitute- and sense-based representation deteriorates if one switches to system-produced substitutes (RQ2). We follow the same experimental design as for RQ1, but use lexical substitutes predicted by a strong neural language model instead of substitutes provided by the annotators. From an NLP perspective, system-produced substitutes are easy to obtain, whereas human-produced substitutes constitute an ideal but unrealistic setup. The difference in correlation between the two determines the performance gap between word meaning representation based on system- and human-produced lexical substitutes. If this gap is not too large, using automatic LS systems for word meaning representation is a viable option.</p>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i10">4.1. Similarity measure correlation analysis</h3>
+  <p>The correlation analysis was carried out on pairs of instances from our dataset. First, we generated all possible pairs from all the instances (leaving out symmetric and reflexive pairs). After that, for each instance pair, we checked whether their word sense labels match (either <span class="smallcaps smallerCapital">WN-Single</span>&nbsp;or <span class="smallcaps smallerCapital">WN-Multi</span>), which resulted in a <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0001.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mrow>
+      <mrow>
+       <mstyle scriptlevel="0">
+        <mrow>
+         <mo maxsize="1.2em" minsize="1.2em">
+          (
+         </mo>
+        </mrow>
+       </mstyle>
+       <mfrac linethickness="0">
+        <mi>
+         N
+        </mi>
+        <mn>
+         2
+        </mn>
+       </mfrac>
+       <mstyle scriptlevel="0">
+        <mrow>
+         <mo maxsize="1.2em" minsize="1.2em">
+          )
+         </mo>
+        </mrow>
+       </mstyle>
+      </mrow>
+     </mrow>
+    </math></span>-sized binary similarity vector. We then repeated this process by using a similarity function that operates on pairs of parasets. Lastly, we computed the point-biserial correlation coefficient <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0002.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       r
+      </mi>
+      <mrow>
+       <mi>
+        p
+       </mi>
+       <mi>
+        b
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> between the two vectors.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>1</sup></a></span> The higher the value of the correlation coefficient, the more the similarity between substitutes corresponds to matches between senses, and, consequently, the more substitute-based meaning representation corresponds to sense-based meaning representation.</p>
+  <p>We experiment with a number of different paraset-based similarity measures, including both standard methods as well as some methods proposed in LS research:</p>
+  <ul class="NLM_list NLM_list-list_type-bullet">
+   <li><p class="inline"><span class="smallcaps smallerCapital">ParaExact</span>&nbsp;– 1 if both instances have the exact same paraset, 0 otherwise;</p></li>
+   <li><p class="inline"><span class="smallcaps smallerCapital">ParaDice</span>&nbsp;– Dice coefficient between the instances' parasets;</p></li>
+   <li><p class="inline"><span class="smallcaps smallerCapital">ParaJaccard</span>&nbsp;– Jaccard coefficient between the instances' parasets;</p></li>
+   <li><p class="inline"><span class="smallcaps smallerCapital">ParaGAP</span>&nbsp;– Generalized Average Precision (GAP) [<span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>34</a></span>] between the instances' parasets. As that the score depends on which out of the two parasets serves as the reference, we compute GAP for both cases and take the average;</p></li>
+   <li><p class="inline"><span class="smallcaps smallerCapital">ParaCosine</span>&nbsp;– Cosine similarity between parasets encoded as score-based bag-of-words vectors over the substitute vocabulary;</p></li>
+   <li><p class="inline"><span class="smallcaps smallerCapital">ParaCosineBin</span>&nbsp;– Cosine similarity between parasets encoded as binary bag-of-words vectors over the substitute vocabulary;</p></li>
+   <li><p class="inline"><span class="smallcaps smallerCapital">SenseExact</span>&nbsp;– 1 if both instances are labelled with the same word sense(s), 0 otherwise. Other measures are compared against this one.</p></li>
+  </ul>
+  <p></p>
+  <p>Above, “score” denotes a substitute's annotation frequency, i.e. how many annotators have provided that particular substitute for a given target word. In the case of <span class="smallcaps smallerCapital">ParaCosineBin</span>, this score is replaced with a binary variable. The results of the correlation analysis are shown in the left half of Table&nbsp;<button class="ref showTableEventRef" data-id="T0003">3</button>. We show correlations for the OntoNotes inventory and for WordNet inventory (for both <span class="smallcaps smallerCapital">WN-Single</span>&nbsp;and <span class="smallcaps smallerCapital">WN-Multi</span>). Correlation is the lowest for the most rigid measure, <span class="smallcaps smallerCapital">ParaExact</span>. This confirms our intuition, and the findings of [<span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>20</a></span>], that lexical substitutes capture nuanced differences in meaning that escape sense distinctions, rendering unlikely a perfect match between sets of substitutes for same-sense words. On the other hand, the situation with other measures is not as clear: most correlation scores are quite close to each other and it is difficult to pinpoint a clear winner. Interestingly, the simplest measures, <span class="smallcaps smallerCapital">ParaDice</span>&nbsp;and <span class="smallcaps smallerCapital">ParaJaccard</span>, perform rather well. As for the sense inventories, WordNet seems more suitable for paraset-based similarity measures than OntoNotes, which is evident by the somewhat larger correlation scores. When comparing single-sense and multi-sense labels, we observe no major difference in correlation scores, which is expected since only a small fraction of instances was annotated with multi-sense labels (cf.&nbsp;Section&nbsp;<a href="#S003-S2001">3.1</a>). In conclusion, we observe substantial positive correlation for all considered paraset-based similarity measures, with the effect size depending on the choice of sense inventory.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Representing word meaning in context via lexical substitutes</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Alagi%C4%87%2C+Domagoj"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alagi%C4%87%2C+Domagoj"><span class="NLM_given-names">Domagoj</span> Alagić</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=%C5%A0najder%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/%C5%A0najder%2C+Jan"><span class="NLM_given-names">Jan</span> Šnajder</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/00051144.2021.1928437">https://doi.org/10.1080/00051144.2021.1928437</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>18 May 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 3. </span> Correlation between <span class="smallcaps smallerCapital">SenseExact</span>&nbsp;and other paraset-based similarity measures (point-biserial correlation coefficient <span class="NLM_disp-formula-image inline-formula rs_preserve">
+        <noscript>
+         <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0003.gif" alt="">
+        </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0003.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+        <math>
+         <msub>
+          <mi>
+           r
+          </mi>
+          <mrow>
+           <mi>
+            p
+           </mi>
+           <mi>
+            b
+           </mi>
+          </mrow>
+         </msub>
+        </math></span>) for human- and system-produced lexical substitutes.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="false" id="T0003-table-wrapper">
+    <a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">4.2. System-produced lexical substitutes</h3>
+  <p>To obtain system-produced substitutes, we adopt the LSDP system of [<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>35</a></span>], used in the state-of-the-art WSI model of [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>12</a></span>]. The LSDP (<i>LS with Dynamic Patterns</i>) uses a language model to generate lexical substitutes by predicting the words that could replace the original target word. However, as simply doing so would allow the model to produce words that preserve merely the syntax but not the meaning, the authors introduced a clever trick, dubbed <i>dynamic patterns</i>, to alter the original context and make it more semantically constrained. For example, predicting the substitutes for target word “<i>brown</i>” in “<i>My dogs are brown</i>” by feeding the model “<i>My dogs are <sub>---</sub></i>” could result in words such as “<i>barking</i>”, “<i>beautiful</i>”, or “<i>outside</i>”. Using a pattern, however, the context will be altered to “<i>My dogs are brown (or even<sub>---</sub>)</i>”, which will hopefully steer the model into producing meaning-preserving substitutes of the target word. Since the language model may produce substitutes in inflected forms, an additional lemmatization step is applied to all substitutes.</p>
+  <p>For our experiments, we build the final instance parasets by simply taking the top 200 words produced by the BERT language model used in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>12</a></span>].<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0002" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>2</sup></a></span> BERT is a powerful language model built on top of the recently proposed attention-only neural network architecture [<span class="ref-lnk lazy-ref"><a data-rid="CIT0036" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>36</a></span>] and pretrained on large corpora. Considering its superb performance across many NLP tasks, its use for LS is very well justified.</p>
+  <p>To answer RQ2, we repeated the correlation analysis from Section&nbsp;<a href="#S004-S2001">4.1</a>, but this time with system-produced substitutes. Where necessary, we replaced substitute frequencies obtained for human-produced lexical substitutes with the model's substitute probabilities. The results are shown in the right half of Table&nbsp;<button class="ref showTableEventRef" data-id="T0003">3</button>. Comparing these correlations with those obtained with human-produced substitutes, we observe that using system-produced substitutes generally results in decreased correlations (0.076 on average). The difference is most pronounced for WordNet sense inventories: 0.071 and 0.079 for the best-performing measures on <span class="smallcaps smallerCapital">WN-Single</span>&nbsp;and <span class="smallcaps smallerCapital">WN-Multi</span>, respectively. Another observation is that the decrease in correlation is smaller for OntoNotes than for WordNet. In particular, the difference is negligible for the similarity measures that on OntoNotes perform the best, <span class="smallcaps smallerCapital">ParaDice</span>&nbsp;and <span class="smallcaps smallerCapital">ParaCosineBin</span>.</p>
+  <p>Taken together, the results indicate that there is indeed a performance gap between the human- and system-produced lexical substitutes, but its magnitude depends on the sense inventory used.</p>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i12" class="section-heading-2">5. Word sense induction with lexical substitutes</h2>
+ <p>The above experiments have shown that word meaning represented with human-produced lexical substitutes strongly correlates with sense-based meaning, but that the current performance gap is relatively large. This, however, does not entail that the gap will translate to downstream NLP tasks: it is conceivable that some NLP tasks will be robust to these differences, shrinking or even eliminating the performance gap. While here one could consider any of the numerous NLP tasks that build on word meaning representations, WSI seems the most natural choice given that it is a fundamental semantic task and also one that provides a direct link between substitute- and sense-based meaning representation. We therefore set to explore to what extent the decrease in correlation translates to performance on the WSI task (RQ3).</p>
+ <p>For this experiment, we consider (1) a number of simple WSI algorithms based on off-the-shelf clustering algorithms into which we incorporate our paraset-based similarity measures and (2) a state-of-the-art WSI model introduced in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>12</a></span>]. We next describe the WSI models, followed by experimental setup and results.</p>
+ <div id="S005-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i13">5.1. Simple WSI models</h3>
+  <p>To avoid introducing algorithmic biases that could obscure our findings, we chose to rely on two standard and widely used clustering algorithms that operate on instance pair (dis-)similarities: hierarchical agglomerative clustering (HAC) and affinity propagation (AP). Both algorithms have been used for WSI and yielded satisfactory results [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>12</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>30</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>35</a></span>]. We feed the algorithms with a (dis-)similarity matrix, computed by applying a particular paraset-based similarity measure across all instance pairs. Note that this design choice is in line with the similarity correlation analysis from Section&nbsp;<a href="#S004-S2001">4.1</a>, which used the same pairwise setup.</p>
+  <p>We used the readily-available implementations of <i>scikit-learn</i> [<span class="ref-lnk lazy-ref"><a data-rid="CIT0037" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>37</a></span>] for both HAC and AP. We kept all hyperparameters at their respective default values, and only modified the number of clusters <i>k</i> for the HAC algorithm (which requires setting it upfront). For this value, following [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>12</a></span>,<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>35</a></span>], we used the information about the actual number of senses: we set <i>k</i> to the average (AVG) and the maximum (MAX) number of word senses in the dataset (for each set of word sense annotations separately). We used <span class="smallcaps smallerCapital">ParaDice</span>, <span class="smallcaps smallerCapital">ParaCosine</span>, and <span class="smallcaps smallerCapital">ParaCosineBin</span> as similarity measures.</p>
+ </div>
+ <div id="S005-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i14">5.2. State-of-the-art WSI model</h3>
+  <p>The state-of-the-art WSI model introduced in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>12</a></span>] builds on the clustering-based approach from [<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>35</a></span>], which uses system-produced lexical substitutes. In this model, each word instance is associated with <i>R</i> representatives, each of which is composed of <i>N</i> lemmatized lexical substitutes sampled with replacement using LSDP with BERT (cf.&nbsp;Section&nbsp;<a href="#S004-S2002">4.2</a>). The sampled lexical substitutes are used to encode the representatives as one-hot vectors, which are then used to represent individual instances. Finally, all instances of a particular target word are encoded in this way and the resulting set of vectors is tf-idf weighted and clustered using HAC with cosine distance and average linkage. The process is repeated for every target word separately.</p>
+  <p>The described method results in a predefined number of hard clusters (i.e. each occurrence of a word belongs only to a single sense from the sense inventory). Soft clusters are obtained heuristically: the probability of an instance belonging to a cluster is obtained by computing the proportion of instance's representatives assigned to that particular cluster. Additionally, to sidestep the problem of using a fixed number of sense clusters (as in [<span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>35</a></span>]), the method starts with a relatively high number of clusters and then merges them heuristically. More specifically, after clustering into 10 clusters (i.e. senses), the most probable sense for each of the instances is computed, and “weak senses” are identified as those that occurred fewer than two times. The weak senses are then merged with the closest non-weak sense based on the cosine distance between their centroids. If there were any merges, the soft cluster assignment is repeated. We do not consider soft clustering in our experiments and leave it for future work.</p>
+ </div>
+ <div id="S005-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i15">5.3. Model evaluation</h3>
+  <p>The de-facto standard for WSI evaluation is the setup introduced in SemEval-2010, which we also adopt here. Although the original setup comprised two types of evaluation – supervised and unsupervised – following recent work [<span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>12</a></span>] we focus on the unsupervised measures, V-measure [<span class="ref-lnk lazy-ref"><a data-rid="CIT0038" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>38</a></span>] and paired F-measure [<span class="ref-lnk lazy-ref"><a data-rid="CIT0039" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>39</a></span>]. As these metrics are suitable only for single-sense annotations, we evaluated our models only on the OntoNotes and <span class="smallcaps smallerCapital">WN-Single</span>&nbsp;datasets.</p>
+  <p>We first describe the evaluation metrics. Let <i>w</i> be a target word with <i>N</i> instances (contexts). The instances are labelled with a set of sense labels <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0004.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      C
+     </mi><mo>
+      =
+     </mo><mo fence="false" stretchy="false">
+      {
+     </mo><msub>
+      <mi>
+       c
+      </mi>
+      <mi>
+       j
+      </mi>
+     </msub><mspace width="thinmathspace"></mspace><mrow>
+      <mo stretchy="false">
+       |
+      </mo>
+     </mrow><mspace width="thinmathspace"></mspace><mi>
+      j
+     </mi><mo>
+      =
+     </mo><mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mn>
+      2
+     </mn><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><mi>
+      n
+     </mi><mo fence="false" stretchy="false">
+      }
+     </mo>
+    </math></span> and are clustered into a number of clusters <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0005.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      K
+     </mi><mo>
+      =
+     </mo><mo fence="false" stretchy="false">
+      {
+     </mo><msub>
+      <mi>
+       k
+      </mi>
+      <mi>
+       j
+      </mi>
+     </msub><mspace width="thinmathspace"></mspace><mrow>
+      <mo stretchy="false">
+       |
+      </mo>
+     </mrow><mspace width="thinmathspace"></mspace><mi>
+      j
+     </mi><mo>
+      =
+     </mo><mn>
+      1
+     </mn><mo>
+      ,
+     </mo><mn>
+      2
+     </mn><mo>
+      ,
+     </mo><mo>
+      …
+     </mo><mo>
+      ,
+     </mo><mi>
+      m
+     </mi><mo fence="false" stretchy="false">
+      }
+     </mo>
+    </math></span>. Let <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0006.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0006.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      A
+     </mi><mo>
+      =
+     </mo><mo fence="false" stretchy="false">
+      {
+     </mo><msub>
+      <mi>
+       a
+      </mi>
+      <mrow>
+       <mi>
+        i
+       </mi>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub><mo fence="false" stretchy="false">
+      }
+     </mo>
+    </math></span> be the contingency matrix representing the clustering solution, such that <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0007.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0007.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       a
+      </mi>
+      <mrow>
+       <mi>
+        i
+       </mi>
+       <mi>
+        j
+       </mi>
+      </mrow>
+     </msub>
+    </math></span> denotes the number of instances labelled as <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0008.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0008.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       c
+      </mi>
+      <mi>
+       i
+      </mi>
+     </msub>
+    </math></span> that belong to cluster <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0009.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0009.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <msub>
+      <mi>
+       k
+      </mi>
+      <mi>
+       j
+      </mi>
+     </msub>
+    </math></span>.</p>
+  <p><i>V-measure.</i> This measure is a trade-off between two clustering properties: homogeneity and completeness. A clustering is <i>homogeneous</i> if all of its clusters contain only the instances of the same sense, while it is <i>complete</i> if all instances of the same sense belong to the same cluster. Homogeneity and completeness are measured via conditional entropy of the sense distribution given a clustering and via conditional entropy of the cluster distribution given a sense, respectively. Formally, homogeneity <i>h</i> is defined as: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_m0001.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_m0001.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mi>
+         h
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mrow>
+         <mo>
+          {
+         </mo>
+         <mtable columnalign="left left" rowspacing=".2em" columnspacing="1em" displaystyle="false">
+          <mtr>
+           <mtd>
+            <mn>
+             1
+            </mn>
+           </mtd>
+           <mtd>
+            <mrow>
+             <mi mathvariant="normal">
+              if
+             </mi>
+            </mrow>
+            <mspace width="thinmathspace"></mspace>
+            <mi>
+             H
+            </mi>
+            <mo stretchy="false">
+             (
+            </mo>
+            <mi>
+             C
+            </mi>
+            <mo>
+             ,
+            </mo>
+            <mi>
+             K
+            </mi>
+            <mo stretchy="false">
+             )
+            </mo>
+            <mo>
+             =
+            </mo>
+            <mn>
+             0
+            </mn>
+            <mo>
+             ,
+            </mo>
+           </mtd>
+          </mtr>
+          <mtr>
+           <mtd>
+            <mn>
+             1
+            </mn>
+            <mo>
+             −
+            </mo>
+            <mstyle displaystyle="true" scriptlevel="0">
+             <mfrac>
+              <mrow>
+               <mi>
+                H
+               </mi>
+               <mo stretchy="false">
+                (
+               </mo>
+               <mi>
+                C
+               </mi>
+               <mspace width="thinmathspace"></mspace>
+               <mrow>
+                <mo stretchy="false">
+                 |
+                </mo>
+               </mrow>
+               <mspace width="thinmathspace"></mspace>
+               <mi>
+                K
+               </mi>
+               <mo stretchy="false">
+                )
+               </mo>
+              </mrow>
+              <mrow>
+               <mi>
+                H
+               </mi>
+               <mo stretchy="false">
+                (
+               </mo>
+               <mi>
+                C
+               </mi>
+               <mo stretchy="false">
+                )
+               </mo>
+              </mrow>
+             </mfrac>
+            </mstyle>
+           </mtd>
+           <mtd>
+            <mrow>
+             <mi mathvariant="normal">
+              otherwise
+             </mi>
+             <mo>
+              .
+             </mo>
+            </mrow>
+           </mtd>
+          </mtr>
+         </mtable>
+         <mo fence="true" stretchy="true" symmetric="true"></mo>
+        </mrow>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0001" class="disp-formula-label">(1) </span></span></span></span>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0010.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0010.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      H
+     </mi><mo stretchy="false">
+      (
+     </mo><mi>
+      C
+     </mi><mspace width="thinmathspace"></mspace><mrow>
+      <mo stretchy="false">
+       |
+      </mo>
+     </mrow><mspace width="thinmathspace"></mspace><mi>
+      K
+     </mi><mo stretchy="false">
+      )
+     </mo>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0011.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0011.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      H
+     </mi><mo stretchy="false">
+      (
+     </mo><mi>
+      C
+     </mi><mo stretchy="false">
+      )
+     </mo>
+    </math></span> are defined as: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_m0002.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_m0002.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mi>
+         H
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         C
+        </mi>
+        <mspace width="thinmathspace"></mspace>
+        <mrow>
+         <mo stretchy="false">
+          |
+         </mo>
+        </mrow>
+        <mspace width="thinmathspace"></mspace>
+        <mi>
+         K
+        </mi>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mo>
+         −
+        </mo>
+        <munderover>
+         <mo>
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           k
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+          <mi>
+           K
+          </mi>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+         </mrow>
+        </munderover>
+        <munderover>
+         <mo>
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           c
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+          <mi>
+           C
+          </mi>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+         </mrow>
+        </munderover>
+        <mfrac>
+         <msub>
+          <mi>
+           a
+          </mi>
+          <mrow>
+           <mi>
+            c
+           </mi>
+           <mi>
+            k
+           </mi>
+          </mrow>
+         </msub>
+         <mi>
+          N
+         </mi>
+        </mfrac>
+        <mi>
+         log
+        </mi>
+        <mo>
+         ⁡
+        </mo>
+        <mrow>
+         <mfrac>
+          <msub>
+           <mi>
+            a
+           </mi>
+           <mrow>
+            <mi>
+             c
+            </mi>
+            <mi>
+             k
+            </mi>
+           </mrow>
+          </msub>
+          <mrow>
+           <munderover>
+            <mo>
+             ∑
+            </mo>
+            <mrow>
+             <mi>
+              c
+             </mi>
+             <mo>
+              =
+             </mo>
+             <mn>
+              1
+             </mn>
+            </mrow>
+            <mrow>
+             <mrow>
+              <mo stretchy="false">
+               |
+              </mo>
+             </mrow>
+             <mi>
+              C
+             </mi>
+             <mrow>
+              <mo stretchy="false">
+               |
+              </mo>
+             </mrow>
+            </mrow>
+           </munderover>
+           <msub>
+            <mi>
+             a
+            </mi>
+            <mrow>
+             <mi>
+              c
+             </mi>
+             <mi>
+              k
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+         </mfrac>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+       </mtd>
+      </mtr>
+      <mtr>
+       <mtd>
+        <mi>
+         H
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         C
+        </mi>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mo>
+         −
+        </mo>
+        <munderover>
+         <mo>
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           c
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+          <mi>
+           C
+          </mi>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+         </mrow>
+        </munderover>
+        <mfrac>
+         <mrow>
+          <munderover>
+           <mo>
+            ∑
+           </mo>
+           <mrow>
+            <mi>
+             k
+            </mi>
+            <mo>
+             =
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mo stretchy="false">
+              |
+             </mo>
+            </mrow>
+            <mi>
+             K
+            </mi>
+            <mrow>
+             <mo stretchy="false">
+              |
+             </mo>
+            </mrow>
+           </mrow>
+          </munderover>
+          <msub>
+           <mi>
+            a
+           </mi>
+           <mrow>
+            <mi>
+             c
+            </mi>
+            <mi>
+             k
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+         <mi>
+          n
+         </mi>
+        </mfrac>
+        <mi>
+         log
+        </mi>
+        <mo>
+         ⁡
+        </mo>
+        <mrow>
+         <mfrac>
+          <mrow>
+           <munderover>
+            <mo>
+             ∑
+            </mo>
+            <mrow>
+             <mi>
+              k
+             </mi>
+             <mo>
+              =
+             </mo>
+             <mn>
+              1
+             </mn>
+            </mrow>
+            <mrow>
+             <mrow>
+              <mo stretchy="false">
+               |
+              </mo>
+             </mrow>
+             <mi>
+              K
+             </mi>
+             <mrow>
+              <mo stretchy="false">
+               |
+              </mo>
+             </mrow>
+            </mrow>
+           </munderover>
+           <msub>
+            <mi>
+             a
+            </mi>
+            <mrow>
+             <mi>
+              c
+             </mi>
+             <mi>
+              k
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mi>
+           n
+          </mi>
+         </mfrac>
+        </mrow>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0002" class="disp-formula-label">(2) </span></span></span></span>Symmetrically, completeness <i>c</i> is defined as: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_m0003.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_m0003.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      c
+     </mi><mo>
+      =
+     </mo><mrow>
+      <mo>
+       {
+      </mo>
+      <mtable columnalign="left left" rowspacing=".2em" columnspacing="1em" displaystyle="false">
+       <mtr>
+        <mtd>
+         <mn>
+          1
+         </mn>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mi mathvariant="normal">
+           if
+          </mi>
+         </mrow>
+         <mspace width="thinmathspace"></mspace>
+         <mi>
+          H
+         </mi>
+         <mo stretchy="false">
+          (
+         </mo>
+         <mi>
+          K
+         </mi>
+         <mo>
+          ,
+         </mo>
+         <mi>
+          C
+         </mi>
+         <mo stretchy="false">
+          )
+         </mo>
+         <mo>
+          =
+         </mo>
+         <mn>
+          0
+         </mn>
+         <mo>
+          ,
+         </mo>
+        </mtd>
+       </mtr>
+       <mtr>
+        <mtd>
+         <mn>
+          1
+         </mn>
+         <mo>
+          −
+         </mo>
+         <mstyle displaystyle="true" scriptlevel="0">
+          <mfrac>
+           <mrow>
+            <mi>
+             H
+            </mi>
+            <mo stretchy="false">
+             (
+            </mo>
+            <mi>
+             K
+            </mi>
+            <mspace width="thinmathspace"></mspace>
+            <mrow>
+             <mo stretchy="false">
+              |
+             </mo>
+            </mrow>
+            <mspace width="thinmathspace"></mspace>
+            <mi>
+             C
+            </mi>
+            <mo stretchy="false">
+             )
+            </mo>
+           </mrow>
+           <mrow>
+            <mi>
+             H
+            </mi>
+            <mo stretchy="false">
+             (
+            </mo>
+            <mi>
+             K
+            </mi>
+            <mo stretchy="false">
+             )
+            </mo>
+           </mrow>
+          </mfrac>
+         </mstyle>
+        </mtd>
+        <mtd>
+         <mrow>
+          <mi mathvariant="normal">
+           otherwise
+          </mi>
+          <mo>
+           .
+          </mo>
+         </mrow>
+        </mtd>
+       </mtr>
+      </mtable>
+      <mo fence="true" stretchy="true" symmetric="true"></mo>
+     </mrow>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0003" class="disp-formula-label">(3) </span></span></span></span>where <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0012.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0012.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      H
+     </mi><mo stretchy="false">
+      (
+     </mo><mi>
+      K
+     </mi><mspace width="thinmathspace"></mspace><mrow>
+      <mo stretchy="false">
+       |
+      </mo>
+     </mrow><mspace width="thinmathspace"></mspace><mi>
+      C
+     </mi><mo stretchy="false">
+      )
+     </mo>
+    </math></span> and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0013.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0013.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      H
+     </mi><mo stretchy="false">
+      (
+     </mo><mi>
+      K
+     </mi><mo stretchy="false">
+      )
+     </mo>
+    </math></span> are defined as: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_m0004.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_m0004.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mi>
+         H
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         K
+        </mi>
+        <mspace width="thinmathspace"></mspace>
+        <mrow>
+         <mo stretchy="false">
+          |
+         </mo>
+        </mrow>
+        <mspace width="thinmathspace"></mspace>
+        <mi>
+         C
+        </mi>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mo>
+         −
+        </mo>
+        <munderover>
+         <mo>
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           c
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+          <mi>
+           C
+          </mi>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+         </mrow>
+        </munderover>
+        <munderover>
+         <mo>
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           k
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+          <mi>
+           K
+          </mi>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+         </mrow>
+        </munderover>
+        <mfrac>
+         <msub>
+          <mi>
+           a
+          </mi>
+          <mrow>
+           <mi>
+            c
+           </mi>
+           <mi>
+            k
+           </mi>
+          </mrow>
+         </msub>
+         <mi>
+          N
+         </mi>
+        </mfrac>
+        <mi>
+         log
+        </mi>
+        <mo>
+         ⁡
+        </mo>
+        <mrow>
+         <mfrac>
+          <msub>
+           <mi>
+            a
+           </mi>
+           <mrow>
+            <mi>
+             c
+            </mi>
+            <mi>
+             k
+            </mi>
+           </mrow>
+          </msub>
+          <mrow>
+           <munderover>
+            <mo>
+             ∑
+            </mo>
+            <mrow>
+             <mi>
+              k
+             </mi>
+             <mo>
+              =
+             </mo>
+             <mn>
+              1
+             </mn>
+            </mrow>
+            <mrow>
+             <mrow>
+              <mo stretchy="false">
+               |
+              </mo>
+             </mrow>
+             <mi>
+              K
+             </mi>
+             <mrow>
+              <mo stretchy="false">
+               |
+              </mo>
+             </mrow>
+            </mrow>
+           </munderover>
+           <msub>
+            <mi>
+             a
+            </mi>
+            <mrow>
+             <mi>
+              c
+             </mi>
+             <mi>
+              k
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+         </mfrac>
+        </mrow>
+        <mo>
+         ,
+        </mo>
+       </mtd>
+      </mtr>
+      <mtr>
+       <mtd>
+        <mi>
+         H
+        </mi>
+        <mo stretchy="false">
+         (
+        </mo>
+        <mi>
+         K
+        </mi>
+        <mo stretchy="false">
+         )
+        </mo>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mo>
+         −
+        </mo>
+        <munderover>
+         <mo>
+          ∑
+         </mo>
+         <mrow>
+          <mi>
+           k
+          </mi>
+          <mo>
+           =
+          </mo>
+          <mn>
+           1
+          </mn>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+          <mi>
+           K
+          </mi>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+         </mrow>
+        </munderover>
+        <mfrac>
+         <mrow>
+          <munderover>
+           <mo>
+            ∑
+           </mo>
+           <mrow>
+            <mi>
+             c
+            </mi>
+            <mo>
+             =
+            </mo>
+            <mn>
+             1
+            </mn>
+           </mrow>
+           <mrow>
+            <mrow>
+             <mo stretchy="false">
+              |
+             </mo>
+            </mrow>
+            <mi>
+             C
+            </mi>
+            <mrow>
+             <mo stretchy="false">
+              |
+             </mo>
+            </mrow>
+           </mrow>
+          </munderover>
+          <msub>
+           <mi>
+            a
+           </mi>
+           <mrow>
+            <mi>
+             c
+            </mi>
+            <mi>
+             k
+            </mi>
+           </mrow>
+          </msub>
+         </mrow>
+         <mi>
+          n
+         </mi>
+        </mfrac>
+        <mi>
+         log
+        </mi>
+        <mo>
+         ⁡
+        </mo>
+        <mrow>
+         <mfrac>
+          <mrow>
+           <munderover>
+            <mo>
+             ∑
+            </mo>
+            <mrow>
+             <mi>
+              c
+             </mi>
+             <mo>
+              =
+             </mo>
+             <mn>
+              1
+             </mn>
+            </mrow>
+            <mrow>
+             <mrow>
+              <mo stretchy="false">
+               |
+              </mo>
+             </mrow>
+             <mi>
+              C
+             </mi>
+             <mrow>
+              <mo stretchy="false">
+               |
+              </mo>
+             </mrow>
+            </mrow>
+           </munderover>
+           <msub>
+            <mi>
+             a
+            </mi>
+            <mrow>
+             <mi>
+              c
+             </mi>
+             <mi>
+              k
+             </mi>
+            </mrow>
+           </msub>
+          </mrow>
+          <mi>
+           n
+          </mi>
+         </mfrac>
+        </mrow>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0004" class="disp-formula-label">(4) </span></span></span></span>Finally, V-measure is calculated as the harmonic mean of homogeneity <i>h</i> and completeness <i>c</i>.</p>
+  <p><i>Paired F-measure.</i> This measure is a clustering counterpart to the regular F-measure [<span class="ref-lnk lazy-ref"><a data-rid="CIT0040" data-reflink="_i24 _i25" href="#"><span class="off-screen">Citation</span>40</a></span>]. First, we generate within-cluster instance pairs for every predicted and reference cluster. Let <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0014.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0014.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      F
+     </mi><mo stretchy="false">
+      (
+     </mo><mi>
+      K
+     </mi><mo stretchy="false">
+      )
+     </mo>
+    </math></span> be the set of instance pairs generated from the predicted clusters, and <span class="NLM_disp-formula-image inline-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0015.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_ilm0015.gif&quot;}"><span class="mml-formula"></span></span><span class="NLM_disp-formula inline-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mi>
+      F
+     </mi><mo stretchy="false">
+      (
+     </mo><mi>
+      C
+     </mi><mo stretchy="false">
+      )
+     </mo>
+    </math></span> analogously for the reference clusters. Then, paired F-measure <i>F</i> is defined as a harmonic mean of precision <i>P</i> and recall <i>R</i>: <span class="NLM_disp-formula-image disp-formula rs_preserve">
+    <noscript>
+     <img src="/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_m0005.gif" alt="">
+    </noscript><img src="//:0" alt="" class="mml-formula" data-formula-source="{&quot;type&quot; : &quot;image&quot;, &quot;src&quot; : &quot;/na101/home/literatum/publisher/tandf/journals/content/taut20/2021/taut20.v062.i02/00051144.2021.1928437/20210614/images/taut_a_1928437_m0005.gif&quot;}"><span class="mml-formula"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span><span class="NLM_disp-formula disp-formula rs_preserve"><img src="//:0" alt="" data-formula-source="{&quot;type&quot; : &quot;mathjax&quot;}">
+    <math>
+     <mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true">
+      <mtr>
+       <mtd>
+        <mi>
+         P
+        </mi>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mfrac>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+          <mi>
+           F
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           K
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ∩
+          </mo>
+          <mi>
+           F
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           C
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+          <mi>
+           F
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           K
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+         </mrow>
+        </mfrac>
+        <mo>
+         ,
+        </mo>
+        <mspace width="1em"></mspace>
+        <mi>
+         R
+        </mi>
+        <mo>
+         =
+        </mo>
+        <mfrac>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+          <mi>
+           F
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           K
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mo>
+           ∩
+          </mo>
+          <mi>
+           F
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           C
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+         </mrow>
+         <mrow>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+          <mi>
+           F
+          </mi>
+          <mo stretchy="false">
+           (
+          </mo>
+          <mi>
+           C
+          </mi>
+          <mo stretchy="false">
+           )
+          </mo>
+          <mrow>
+           <mo stretchy="false">
+            |
+           </mo>
+          </mrow>
+         </mrow>
+        </mfrac>
+        <mo>
+         ,
+        </mo>
+       </mtd>
+      </mtr>
+      <mtr>
+       <mtd>
+        <mi>
+         F
+        </mi>
+       </mtd>
+       <mtd>
+        <mi></mi>
+        <mo>
+         =
+        </mo>
+        <mfrac>
+         <mrow>
+          <mn>
+           2
+          </mn>
+          <mo>
+           ⋅
+          </mo>
+          <mi>
+           P
+          </mi>
+          <mi>
+           R
+          </mi>
+         </mrow>
+         <mrow>
+          <mi>
+           P
+          </mi>
+          <mo>
+           +
+          </mo>
+          <mi>
+           R
+          </mi>
+         </mrow>
+        </mfrac>
+       </mtd>
+      </mtr>
+     </mtable>
+    </math><span class="mathjaxLabel"><span class="disp_formula_label_div"><span id="M0005" class="disp-formula-label">(5) </span></span></span></span>Even though both V-measure and paired F-measure are devised as a trade-off between competing clustering properties, they should not be considered in isolation as they favour different clusterings. More concretely, the V-measure favours solutions with many clusters, whereas the paired F-measures penalizes them. To account for this, most studies report a geometric mean of the V-measure and the F-measure. We adopt the same metric here. To account for model non-determinism, we run the evaluation 10 times and average the scores.</p>
+ </div>
+ <div id="S005-S2004" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i21">5.4. Results</h3>
+  <p>Table&nbsp;<button class="ref showTableEventRef" data-id="T0004">4</button> shows the performance of the WSI models as the geometric mean of V-measure and F-measure for the different paraset similarity measures. The main observation pertains to RQ3: using human-produced lexical substitutes (the left half of the Table) still offers performance improvement over using system-produced substitutes (the right half of the table). However, the performance gap is modest (up to 0.15), in line with the results from Section&nbsp;<a href="#S004-S2002">4.2</a>. The paraset similarity measures perform similarly across all setups, with the exception of <span class="smallcaps smallerCapital">ParaCosine</span>&nbsp;when dealing with system-produced lexical substitutes. When it comes to sense annotations, we again observe that WordNet-based annotations perform better, which was also shown in the similarity correlation analysis.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Representing word meaning in context via lexical substitutes</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Alagi%C4%87%2C+Domagoj"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Alagi%C4%87%2C+Domagoj"><span class="NLM_given-names">Domagoj</span> Alagić</a> &amp; <a class="entryAuthor" href="/action/doSearch?Contrib=%C5%A0najder%2C+Jan"><span class="hlFld-ContribAuthor"></span></a><a href="/author/%C5%A0najder%2C+Jan"><span class="NLM_given-names">Jan</span> Šnajder</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/00051144.2021.1928437">https://doi.org/10.1080/00051144.2021.1928437</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>18 May 2021
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><p class="captionText"><span class="captionLabel">Table 4. </span> WSI performance (geometric mean of V-measure and F-measure) for different models and sense inventories with human- and system-produced substitutes.</p></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0004&amp;doi=10.1080%2F00051144.2021.1928437&amp;downloadType=CSV"> Download CSV</a><a data-id="T0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>Regarding the choice of the clustering algorithm, HAC emerged as the clear winner, at least when using default hyperparameters. Still, using AP does not yield much worse performance and may be a satisfactory option when information about the number of sense clusters is not available (which is a more realistic setup).</p>
+  <p>When comparing simple WSI models to the state-of-the-art WSI model, two observations are pertinent. First, when using human-produced lexical substitutes, the best-performing simple model for a sense inventory slightly overcomes the respective state-of-the-art model's performance. Second, when switching to the system-produced lexical substitutes, this ceases to be the case. However, the obtained performance is still in the same ballpark as that of the state-of-the-art model, which indicates that the state-of-the-art model may be overly complex. Admittedly, some of this complexity serves to obtain soft sense labels, something that our models cannot tackle.</p>
+  <p>In sum, this experiment has demonstrated that, while there is a difference between human- and system-produced substitutes when used for the WSI task, the performance gap is relatively small and probably not of practical significance. This means that, for the task of WSI, representing word meaning with system-produced substitutes yields comparable performance as when representing word meaning using human-produced substitutes, which in turn justifies the use of automated LS for WSI.</p>
+ </div>
+</div>
+<div id="S006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i22" class="section-heading-2">6. Conclusion</h2>
+ <p>Recent work in natural language processing has seen increased use of lexical substitution (LS) for representing word meaning in context, but it is not obvious how this representation corresponds to the more established sense-based meaning representation. This paper presented an empirical study of these questions. We found that there is a substantial positive correlation between substitute-based similarity and senses, contributing to the validity of the use of LS for word meaning representation. We also found that this correlation is generally lower for system-produced substitutes, but that the performance gap depends on the sense inventory used. Interestingly, we found that this performance gap mostly diminishes when system-produced substitutes are used for the WSI task, even with simple WSI models, justifying the use of automated LS for WSI.</p>
+ <p>There are a number of directions for future work, such as extending the study to more datasets and languages as well as investigating soft clustering approaches for graded-sense WSI. The treatment of multiword expressions and the interaction between context-based and substitute-based representations also merit further investigation.</p>
+</div>

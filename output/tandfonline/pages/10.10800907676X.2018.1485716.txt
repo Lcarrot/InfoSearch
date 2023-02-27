@@ -1,0 +1,354 @@
+<div id="S001" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i5" class="section-heading-2">1. Introduction</h2>
+ <p>Recent years have witnessed a growing influence of mono- and multilingual corpora not only in translation practice but also in theoretical and applied translation studies (TS). While even among advocates of this trajectory there is no consensus on whether corpus-based translation research is a well-established and independent paradigm in TS (most recently, e.g. Fantinuoli &amp; Zanettin, <span class="ref-lnk lazy-ref"><a data-rid="CIT0007" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2015</a></span>, p. 1; Hu, <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2016</a></span>, pp. v, 8, 26) or only a useful research method that still lacks robustness (e.g. Li, <span class="ref-lnk lazy-ref"><a data-rid="CIT0023" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2017</a></span>, p. 132), in terms of research output the impact of linguistic corpora is clearly noticeable and a trend that is likely to continue (Zanettin, Saldanha, &amp; Harding, <span class="ref-lnk lazy-ref"><a data-rid="CIT0035" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2015</a></span>, p. 180). Therefore, it comes as no surprise that there is demand for more translation-oriented corpora, both large, varied ones (i.a. Mikhailov &amp; Cooper, <span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2016</a></span>, pp. 1–2; Zanettin, <span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2013</a></span>, p. 30) and small but tightly controlled ones (Malamatidou, <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2018</a></span>; Zanettin, <span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2013</a></span>, p. 31). What is surprising, though, is that one of the largest multilingual parallel corpora available to date, the European Parliament Proceedings Parallel Corpus (Koehn, <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2005</a></span>), or Europarl, has received relatively little attention in TS, as evidenced by the exploratory bibliometric analyses in section 2 of the present paper. After all, corpora in as many languages as possible and not restricted to literary texts only are needed to increase the generalisability of findings in corpus-based TS (Hu, <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2016</a></span>, pp. 227–232; Olohan, <span class="ref-lnk lazy-ref"><a data-rid="CIT0028" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2004</a></span>, p. 190–191), thus reducing language-pair and genre bias of theoretical claims about translation. In view of its free availability, size, linguistic diversity, data authenticity, sentence-aligned architecture as well as homogeneity in terms of register, text type and subject domain, Europarl is a prime candidate for translation-oriented corpus inquiries. In order to promote and facilitate its use in corpus-based TS, this paper presents EuroparlExtract, a corpus processing toolkit for the extraction of bilingual parallel subcorpora, as well as mono- and bilingual comparable<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0001" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>1</sup></a></span> subcorpora, from the Europarl corpus. The toolkit aims to maximise the utility of Europarl, which, in its original release, is of limited value for translation research due to the inability to compile comparable subcorpora and so-called ‘directional’ subcorpora (Cartoni &amp; Meyer, <span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2012</a></span>, p. 2133), i.e. parallel corpora where the source and target languages are clearly identified for each language pair. In other words, EuroparlExtract addresses the disregard for translation directionality in the original Europarl corpus, as well as its inclusion in larger multi-corpus collections and query tools such as the Open Source Parallel Corpus (Tiedemann, <span class="ref-lnk lazy-ref"><a data-rid="CIT0031" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2012</a></span>) or Sketch Engine (Kilgarriff et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0020" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2014</a></span>). Europarl’s disregard for directionality manifests in bilingual subcorpora that not only mix up translation directions without making the actual source and target languages explicit, but also contain text pairs in which both the purported source and target text are, in fact, translations from another language (see section 3.1).</p>
+ <p>EuroparlExtract is driven by the aim of making the wealth of linguistic data contained in the Europarl corpus easily available to researchers and students in the field of TS and contrastive linguistics, even if they lack programming skills. It is therefore conceived as an addition to Europarl that aims to lower the barrier to corpus-based TS. Potential fields of application may include, for instance, translation teaching, but also research into the distinctive characteristics of translated texts (translation universals, translationese, language-specific or text-specific shining-through effects, etc.), contrastive issues (cross-linguistic correspondence and variation, directionality effects, etc.), translation quality or domain-specific phenomena in political, economic and legal texts (terminology, phraseology, etc.).</p>
+</div>
+<div id="S002" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i6" class="section-heading-2">2. Motivation</h2>
+ <p>Being one of the largest multilingual parallel corpora, the freely available Europarl corpus is used extensively in natural language processing (NLP, including computational linguistics and human language technology), most prominently in the field of machine translation. By contrast, the corpus has been far less influential in TS, despite the rise of data-driven research methods. Islam and Mehler (<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2012</a></span>, p. 2506) even claimed that Europarl has not been used at all in TS; this claim is somewhat mitigated by the following bibliometric analyses.</p>
+ <p>While mentions of Europarl in authoritative reference works on TS (e.g. Kenny, <span class="ref-lnk lazy-ref"><a data-rid="CIT0019" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2009</a></span>, p. 61) and in dedicated introductions to corpus-based TS (e.g. Hu, <span class="ref-lnk lazy-ref"><a data-rid="CIT0016" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2016</a></span>; Mikhailov &amp; Cooper, <span class="ref-lnk lazy-ref"><a data-rid="CIT0026" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2016</a></span>; Zanettin, <span class="ref-lnk lazy-ref"><a data-rid="CIT0033" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2012</a></span>) show that the corpus is known among translation scholars, only a very limited number of studies using Europarl data has been conducted so far. Thus, in the Translation Studies Bibliography (Gambier &amp; van Doorslaer, n.d.) there are only 18 publications that make reference to Europarl in the title or abstract. Similarly, a query in the Bibliography of Interpreting and Translation (BITRA) (Franco Aixelá, <span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2001</a></span>-<span class="ref-lnk lazy-ref"><a data-rid="CIT0008" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2017</a></span>) returns 15 publications mentioning Europarl. According to the impact summary provided by BITRA, Europarl has been cited by only nine publications. Taken together, the consulted bibliographies suggest, irrespective of their inherently incomplete coverage (Grbić, <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2013</a></span>, p. 21), that Europarl has had a noticeable yet relatively limited impact in TS.</p>
+ <p>As a complementary perspective to the query in manually curated TS bibliographies, a citation analysis based on Google Scholar data provides further evidence for the limited use of Europarl in corpus-based TS. At the time of writing (April 2018), Google Scholar lists 2,350 citations to Koehn’s (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2005</a></span>) publication of the Europarl corpus. In order to estimate how many of these citations can be attributed to the scholarly field of TS, the bibliographic information of the publications citing Koehn’s paper was retrieved with the free bibliometric software Publish or Perish (Harzing, <span class="ref-lnk lazy-ref"><a data-rid="CIT0014" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2016</a></span>). Google Scholar was given preference over alternative data sources supported by the software (Scopus, Web of Science, Crossref, Microsoft Academic), because it is the most appropriate source for citation comparisons across disciplines (Harzing, <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2011</a></span>, p. 237) and because it has by far the highest coverage in the humanities (Harzing &amp; Alakangas, <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2017</a></span>), which reflects the other sources’ limited coverage of non-journal publications (Harzing &amp; Alakangas, <span class="ref-lnk lazy-ref"><a data-rid="CIT0015" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2017</a></span>). One disadvantage of Google Scholar is that it limits the results of any query to the 1,000 top-cited items (Harzing, <span class="ref-lnk lazy-ref"><a data-rid="CIT0013" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2011</a></span>, 173). Thus, the retrieved sample of works citing Europarl is potentially biased against TS publications and towards high-impact NLP publications. Upon retrieval of bibliographic data, all citing works from the sample were manually classified into scholarly fields according to the editorial information provided online (e.g. in the aims and scope section of journal websites). The classification scheme was determined inductively by the author of this paper, taking into account the main scope of the respective journals, volumes or book series. Conference proceedings were classified according to the main conference topic, and theses according to authors’ affiliations. Ambiguous cases, such as interdisciplinary and multi-thematic publications, were resolved by choosing the subject of publications as specified by publishers’ subject catalogues. In short, it was not the topic of the citing works that was decisive for classification, but the addressed research community. For example, papers on computer-assisted translation would be assigned to TS if published in <i>Perspectives – Studies in Translation Theory and Practice</i> and to NLP if published in the proceedings of the <i>Annual Meeting of the Association for Computational Linguistics</i>. This procedure yielded seven scholarly fields to which Europarl citations can be assigned:</p>
+ <ul class="NLM_list NLM_list-list_type-bullet">
+  <li><p class="inline">NLP, including human language technology, computational linguistics and artificial intelligence</p></li>
+  <li><p class="inline">TS</p></li>
+  <li><p class="inline">contrastive linguistics</p></li>
+  <li><p class="inline">terminology and lexicography</p></li>
+  <li><p class="inline">corpus linguistics</p></li>
+  <li><p class="inline">other linguistic fields, e.g. theoretical linguistics, general linguistics, language teaching, English linguistics, psycholinguistics, etc.</p></li>
+  <li><p class="inline">other academic fields, e.g. psychology, political science, human–computer interaction, library science, digital humanities, general science, etc.</p></li>
+ </ul>
+ <p></p>
+ <p>The fully classified sample of citing works, including the rules for coding the works into categories and explanations for borderline cases, is provided as supplementary material. As shown in <a href="#F0001">Figure 1</a>, the vast majority (92.1%) of the 1,000 analysed works were published in NLP publications. TS accounts only for 1.9% of the citations; in <a href="#F0001">Figure 1</a> TS is grouped with contrastive linguistics, corpus linguistics and terminology/lexicography (3.8% of all citations), because on the one hand it is known that translation scholars do not publish exclusively in dedicated TS journals or series (Grbić, <span class="ref-lnk lazy-ref"><a data-rid="CIT0012" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2013</a></span>, p. 21) and on the other hand it is hard to draw clear-cut boundaries between TS and neighbouring disciplines – note that, for instance, TS and contrastive linguistics can be regarded as two cooperative fields with increasing mutual cross-fertilization (Vandepitte &amp; De Sutter, <span class="ref-lnk lazy-ref"><a data-rid="CIT0032" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2013</a></span>).</p>
+ <div class="figure figureViewer" id="F0001">
+  <div class="hidden figureViewerArticleInfo">
+   <span class="figViewerTitle">Optimising the Europarl corpus for translation studies with the EuroparlExtract toolkit</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Ustaszewski%2C+Michael"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ustaszewski%2C+Michael"><span class="NLM_given-names">Michael</span> Ustaszewski</a> <a href="http://orcid.org/0000-0002-2000-5920" class="extLink">http://orcid.org/0000-0002-2000-5920</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0907676X.2018.1485716">https://doi.org/10.1080/0907676X.2018.1485716</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>19 June 2018
+    </div>
+   </div>
+  </div>
+  <div class="figureThumbnailContainer">
+   <div class="figureInfo">
+    <div class="short-legend">
+     <p class="captionText"><span class="captionLabel">Figure 1. </span> Percentage of citations of Europarl according to field of study. Total number of citations = 1,000.</p>
+    </div>
+   </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0001image" src="/na101/home/literatum/publisher/tandf/journals/content/rmps20/2019/rmps20.v027.i01/0907676x.2018.1485716/20190304/images/medium/rmps_a_1485716_f0001_oc.jpg" loading="lazy" height="332" width="500"></a>
+   <div class="figureDownloadOptions">
+    <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+   </div>
+  </div>
+ </div>
+ <div class="hidden rs_skip" id="fig-description-F0001">
+  <p class="captionText"><span class="captionLabel">Figure 1. </span> Percentage of citations of Europarl according to field of study. Total number of citations = 1,000.</p>
+ </div>
+ <div class="hidden rs_skip" id="figureFootNote-F0001">
+  <div class="figureFootNote-F0001"></div>
+ </div>
+ <p></p>
+ <p>Even though the sample of Europarl citations is skewed and the classification of numerous interdisciplinary publications into distinct scholarly fields is a gross simplification, the bibliographic analyses provide quantitative evidence that the Europarl corpus has played only a minor role in corpus-based TS and related fields, whereas in NLP it is one of the most influential resources of recent years.</p>
+ <p>But why is it that Europarl is infrequently used in TS? One possible explanation is that the corpus contains several types of recurring and frequent errors (Graën, Batinic, &amp; Volk, <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2014</a></span>). Unlike NLP, where sheer corpus size may compensate for noise in the data, corpus-based TS (and corpus linguistics in general) usually prioritises data quality over data quantity. Another explanation is that Europarl has been explicitly designed and developed for statistical machine translation. Owing to that, the directionality of language pairs is not taken into account in the corpus, because the standard practice in the training of machine translation systems is to use all available bilingual data for a given language pair, irrespective of which of the two languages is the actual source language (Kurokawa, Goutte, &amp; Isabelle, <span class="ref-lnk lazy-ref"><a data-rid="CIT0022" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2009</a></span>, p. 85). It goes without saying that the disregard for translation directions is a serious shortcoming from the perspective of TS. However, information about the original language of texts actually <i>is</i> contained in Europarl source files in the form of metadata tags, but is ignored in the procedure employed by Koehn (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2005</a></span>) to generate bilingual parallel subcorpora for individual language pairs. Consequently, the information about translation direction is implicitly given in Europarl, but making it explicit is not entirely straightforward due to the architecture of the Europarl distribution (see section 3.1) and recurring metadata mark-up errors identified in Europarl by Graën et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2014</a></span>). Thus, the extraction of Europarl subcorpora that do account for directionality requires corpus pre-processing and programming skills. In order to avoid the duplication of effort in corpus-based TS, the EuroparlExtract toolkit aims to provide the research community with a freely and readily available Europarl distribution that includes the two fundamental types of translational corpora, viz. comparable and directional parallel corpora, thus meeting the requirements of translation and contrastive research.</p>
+</div>
+<div id="S003" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i8" class="section-heading-2">3. Related work</h2>
+ <div id="S003-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i9">3.1. The original Europarl corpus</h3>
+  <p>The Europarl corpus was obtained by automatically harvesting the proceedings of the European Parliament from its website.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0002" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>2</sup></a></span> The proceedings contain the edited and revised transcripts of all speeches delivered in plenary debates by the members of the European Parliament in their native languages, as well as the translations of the transcripts into all other official languages of the European Union (EU) (Bernardini, Ferraresi, &amp; Miličević, <span class="ref-lnk lazy-ref"><a data-rid="CIT0003" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2016</a></span>, pp. 68–69). In the Europarl corpus, the transcripts and translations for each day of debate are stored in one monolingual plain text file per language. The files (187,720 in total) also contain metadata tags indicating the identity of speakers and in which language statements were originally uttered. Thanks to the speaker identifiers, it is possible to match statements that correspond to each other across languages. <button class="ref showTableEventRef" data-id="T0001">Table 1</button> shows examples of corresponding statements from three Europarl files; the original language of transcribed statements and the source language of translated transcripts are indicated as ISO 639-1 two-letter codes in the <span class="monospace">LANGUAGE</span> attribute of the <span class="monospace">SPEAKER</span> tags: Example 1 is a speech originally given in Spanish and subsequently translated into German and English, respectively, whereas in Example 2 all three language versions are translations from an original speech in French.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Optimising the Europarl corpus for translation studies with the EuroparlExtract toolkit</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Ustaszewski%2C+Michael"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ustaszewski%2C+Michael"><span class="NLM_given-names">Michael</span> Ustaszewski</a> <a href="http://orcid.org/0000-0002-2000-5920" class="extLink">http://orcid.org/0000-0002-2000-5920</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0907676X.2018.1485716">https://doi.org/10.1080/0907676X.2018.1485716</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>19 June 2018
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 1. Samples of the German, English and Spanish monolingual Europarl files ep-11-05-09-018.txt (= proceedings of chapter 18 from May 9, 2011). Information about speaker and original language in metadata tags.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0001-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0001&amp;doi=10.1080%2F0907676X.2018.1485716&amp;downloadType=CSV"> Download CSV</a><a data-id="T0001" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>Apart from the monolingual source files, Europarl provides a set of pre-processing tools for the extraction of sentence-aligned bilingual parallel corpora. However, a major drawback is that the resulting corpora do not account for directionality. Take the English–German corpus, for instance, where no distinction between translations from English into German and the opposite direction is made and where large portions of text are not translations of each other but of other languages, such as the German and English samples in <button class="ref showTableEventRef" data-id="T0001">Table 1</button> originally uttered in Spanish and French, respectively.</p>
+  <p>The latest version of Europarl (v7),<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0003" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>3</sup></a></span> on which this paper is based, covers the period from 1996 to 2012. It includes 21 languages, which corresponds to the 23 official EU languages at the time of release, excluding Maltese and Gaelic. According to the Europarl website, which lacks figures for Bulgarian and Greek, the corpus totals around 600 million words across all languages, with amounts of monolingual data ranging from 7 million (Polish) to almost 55 million (Spanish) words. With the provided pre-processing tools, up to 210 non-directional bilingual parallel corpora can be generated.</p>
+ </div>
+ <div id="S003-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i11">3.2. Adaptations of the Europarl corpus</h3>
+  <p>A number of researchers have adapted the Europarl corpus for specific purposes in order to further enhance its usefulness and to compensate for some of its drawbacks. Graën et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2014</a></span>) have discovered and quantified various types of systematic errors that partly stem from the data-crawling and -processing procedures applied by Koehn (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2005</a></span>) and partly from imperfections in the European Parliament website. The most frequent error type is incorrectly coded metadata, e.g. information about speakers or the original language of speakers’ statements. As a matter of fact, Graën et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2014</a></span>, p. 225) estimated that half of all language identifiers erroneously appear within text segments instead of metadata mark-up tags. This is especially important with regard to the exploitation of Europarl in TS, because language identifiers, even improperly coded ones, are fundamental to the extraction of directional and comparable corpora, as outlined in section 4.1. Based on the error analysis, Graën et al. (<span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2014</a></span>) corrected several error types and additionally enriched the corpus. Their cleaned and structurally enriched version of the Europarl corpus is stored in XML format and made freely available as the Corrected &amp; Structured Europarl Corpus (CoStEP),<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0004" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>4</sup></a></span> mainly for the purpose of NLP tasks, such as part-of-speech tagging or parsing, and linguistic research in general.</p>
+  <p>Motivated by the observation that many existing multilingual and parallel corpora, including Europarl, are not suitable for TS, Islam and Mehler (<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2012</a></span>) addressed the disregard for directionality in Europarl (see section 3.1) by providing a customised version of Europarl. Contrary to CoStEP, they did not aim to clean and enrich Europarl, but to extract directional parallel data from it. The resulting corpus<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0005" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>5</sup></a></span> is encoded in the Text Encoding Initiative (TEI) format and comprises 414 sentence-aligned language pairs.</p>
+  <p>Along the same line, Cartoni and Meyer (<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2012</a></span>) extracted directional corpora from Europarl, too. In addition, they extracted comparable corpora that can be used to contrast (a) texts originally produced in a particular language with texts translated into that language (e.g. translated English vs non-translated English), and (b) translated texts in a particular language from different source languages (e.g. English translated from French vs English translated from German, and so on). The resulting Europarl-direct corpus<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0006" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>6</sup></a></span> comprises 14 directional subcorpora for seven language pairs provided in plain text format. An important aspect of their work is that they addressed the problem of incomplete metadata about the actual source language of speeches (see also the paragraph on related work carried out by Graën et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2014</a></span>) by extending available language identifiers to speeches that lack these identifiers. Since metadata about texts’ source languages is essential for the compilation of directional and comparable corpora, this metadata normalisation procedure increases the recall of text data during subcorpus extraction.</p>
+  <p>The three papers presented above share the same general idea of restructuring and redistributing Europarl data in customised formats. This is mainly achieved by normalising inconsistent or incomplete and exploiting untapped (meta-)data from the original Europarl distribution. EuroparlExtract, which will be explained in more detail in the following section, is similar to these three papers in that it has the same aims and partly takes similar approaches to data extraction. However, there are some important differences that provide added value: From the strategic point of view, EuroparlExtract maximises the recall of text data for all subcorpora, and thus their size, in order to get the most out of Europarl; and from a technical point of view it gives users more flexibility to customise extracted subcorpora in terms of language pair selection and output formats.</p>
+ </div>
+</div>
+<div id="S004" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i12" class="section-heading-2">4. Subcorpus extraction method</h2>
+ <div id="S004-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i13">4.1. Source language identification and statement matching</h3>
+  <p>This section describes how the EuroparlExtract toolkit uses metadata about the original language of Europarl speeches in order to extract comparable and directional subcorpora. The guiding principle behind the method is to gather as much relevant data as possible for each subcorpus, i.e. to maximise precision and recall of the extraction procedure. The reason for this decision is that Europarl contains data even for small languages and less common language pairs (e.g. Hungarian–Latvian) that are otherwise under-resourced in terms of corpus availability. Since data for these languages and language pairs is comparatively scarce in Europarl, it makes sense to maximise the amount of extracted data.</p>
+  <p>The necessary precondition for subcorpus extraction is the identification of the original language of statements in monolingual Europarl files. However, a major problem of Europarl is that a large number of statements have no metadata about the original language attached. Thus, in Europarl v7 there are 2,831,433 speaker identifiers across all 21 languages, but only 1,181,701 (41.7%) of them have non-empty language tags. Fortunately, for many statements without a proper language tag the language information can be found in corresponding statements in another language file. For instance, in Example 1 of <button class="ref showTableEventRef" data-id="T0002">Table 2</button> information about English being the original language is missing for the English and Spanish versions but is available in the German translation. The first step of the source language identification is thus to collect the language information from all speaker identifiers in all Europarl files in order to extend the available language identifiers to speaker identifiers without proper language tags. To this end, corresponding statements need to be matched across Europarl language files according to speaker identity and date of debate. This idea has been implemented by Cartoni and Meyer (<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2012</a></span>), too. Although this procedure largely increases the number of language-tagged statements, it does not fully exploit source language information available in Europarl: Frequently, language information is not indicated in the <span class="monospace">SPEAKER</span> metadata tags, but erroneously appears in parentheses within the speeches (see also Graën et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2014</a></span>, 223). These parenthesised language tags may either occur in addition to one or more proper language identifier for corresponding statements (see Example 2 of <button class="ref showTableEventRef" data-id="T0002">Table 2</button>), or be the sole language information if none of the language files contains a proper language identifier in the <span class="monospace">SPEAKER</span> tag (Example 3 of <button class="ref showTableEventRef" data-id="T0002">Table 2</button>). Contrary to Cartoni and Meyer (<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2012</a></span>),<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0007" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>7</sup></a></span> Europarl-Extract capitalises on parenthesised language tags as well, which helps to further increase the number of statements with clearly identified source languages. An evaluation of this procedure is provided in section 5.2.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Optimising the Europarl corpus for translation studies with the EuroparlExtract toolkit</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Ustaszewski%2C+Michael"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ustaszewski%2C+Michael"><span class="NLM_given-names">Michael</span> Ustaszewski</a> <a href="http://orcid.org/0000-0002-2000-5920" class="extLink">http://orcid.org/0000-0002-2000-5920</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0907676X.2018.1485716">https://doi.org/10.1080/0907676X.2018.1485716</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>19 June 2018
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 2. Examples of inconsistent and incorrectly encoded source language identifiers in Europarl source files.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0002-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0002&amp;doi=10.1080%2F0907676X.2018.1485716&amp;downloadType=CSV"> Download CSV</a><a data-id="T0002" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>One difficulty in exploiting parenthesised tags is that for some Slavic languages the string ‘(ES)’ in speeches does not necessarily represent the language code for Spanish, but may also be part of titles of regulations and directives, as in the Czech example <i>nařízení (ES) č. 562/2006</i> ‘Regulation (EC) No 562/2006’. Regular expressions were used to filter out such exceptions, thus avoiding incorrect source language identification.</p>
+  <p>The second step of the procedure consists in finding corresponding statements across languages by matching speakers’ names, rather than speaker IDs only. This step is necessary because the IDs are not perfectly matched across Europarl source files, which means that statements with the same ID number are not necessarily multilingual correspondences of each other but may have been uttered by different people. Matching speaker names is not entirely straightforward because of frequent misspellings and formatting errors, inconsistent naming conventions, multiple speaker names, the parallel use of the Latin, Greek and Cyrillic alphabets, as well as multilingual variants of the denomination of the title ‘President’ (see <button class="ref showTableEventRef" data-id="T0003">Table 3</button>). Consequently, simple string matching would not yield satisfactory results and would considerably decrease the recall of corresponding statements. Therefore, EuroparlExtract internally normalises speaker names (lowercasing; removal of punctuation, blanks and diacritics; normalisation of ligatures; Latinisation of Cyrillic and Greek characters; unification of multilingual president titles) and subsequently compares them using a simple edit-distance-based heuristic. Eventually, only statements that match each other across languages according to both ID and normalised speaker name are identified as corresponding statements in order to avoid noise in the data.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Optimising the Europarl corpus for translation studies with the EuroparlExtract toolkit</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Ustaszewski%2C+Michael"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ustaszewski%2C+Michael"><span class="NLM_given-names">Michael</span> Ustaszewski</a> <a href="http://orcid.org/0000-0002-2000-5920" class="extLink">http://orcid.org/0000-0002-2000-5920</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0907676X.2018.1485716">https://doi.org/10.1080/0907676X.2018.1485716</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>19 June 2018
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 3. Examples of inconsistencies in speaker names that require normalisation prior to statement matching.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0003-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0003&amp;doi=10.1080%2F0907676X.2018.1485716&amp;downloadType=CSV"> Download CSV</a><a data-id="T0003" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>The third and final step of source language identification is to resolve ambiguous source language information, i.e. cases of corresponding statements for which the first step of the procedure identified contradictory language tags across Europarl files, by majority voting: Each statement is assigned the language code whose count accounts for more than 60% of all language codes found for that statement in the proper and parenthesised language tags. The result of the source language identification and statement matching procedure is an internal representation of the metadata associated with all Europarl statements. The representation can be exported in comma-separated values (CSV) format and serves as the basis for subsequent subcorpus extraction.</p>
+ </div>
+ <div id="S004-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i16">4.2. Generation of output</h3>
+  <div id="S004-S2002-S3001" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i17">4.2.1. Command line interface</h4>
+   <p>Building upon the internal representation of Europarl statements described above, all statements relevant to particular subcorpora of choice are extracted from Europarl source files and stored as individual files in dedicated folders that indicate the translational status and language direction of texts. EuroparlExtract has a command line interface that allows users to specify corpus type (parallel or comparable), language combinations and output formats. In this way, subcorpora tailored to users’ specific needs can be extracted without any programming. EuroparlExtract is implemented in Python (version 3) and is freely available<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0008" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>8</sup></a></span> under an open source license.</p>
+   <p>As far as parallel corpora are concerned, data can be extracted either for selected language combinations individually or for all supported language directions in one go. The following output formats can be specified: sentence-aligned Translation Memory eXchange (TMX) files, sentence-aligned plain text files and non-aligned plain text files. Contrary to parallel corpora, comparable corpora consist of individual monolingual files in the chosen language(s) rather than of (aligned) bilingual bitexts. Comparable corpora can be extracted either for selected languages or for all supported languages at once.</p>
+  </div>
+  <div id="S004-S2002-S3002" class="NLM_sec NLM_sec_level_3">
+   <h4 class="section-heading-4" id="_i18">4.2.2. Sentence alignment</h4>
+   <p>EuroparlExtract uses Tan and Bond’s (<span class="ref-lnk lazy-ref"><a data-rid="CIT0030" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2014</a></span>) implementation of the Gale–Church algorithm (Gale &amp; Church, <span class="ref-lnk lazy-ref"><a data-rid="CIT0009" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>1993</a></span>) for parallel sentence alignment. To ensure the quality of the extracted data, statements with diverging numbers of paragraphs between source and target text are omitted in sentence alignment, which is consistent with the method applied by Koehn (<span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2005</a></span>, p. 81). Since the Gale–Church algorithm tends to produce incorrect alignments when portions of source and target texts differ strongly in terms of sentence segmentation (which may be the case if translators split one very long source sentence into many shorter target sentences), the sentence alignment procedure of EuroparlExtract omits all paragraphs that have more than twice the number of sentences of their respective counterpart in either source or target language. Although this restrictive measure reduces the quantity of sentence-aligned text in the extracted corpora, it minimises incorrect alignments and thus increases data quality, which is of paramount importance for research purposes. A further drawback of the alignment algorithm is that it occasionally produces empty alignments, i.e. sentences without matched counterparts. Given that such empty alignments result from alignment errors, a post-processing procedure merges unmatched segments at the beginning or end of paragraphs with adjacent segments to improve the alignment quality. All remaining cases of incorrectly produced empty alignments are discarded.</p>
+   <p>Note that no data are discarded if the non-aligned output format is chosen for parallel corpus extraction. This format may be the better choice, for instance, if the maximum possible amount of parallel data is to be extracted or if the research focus is on segmentation differences between source and target texts.</p>
+  </div>
+ </div>
+</div>
+<div id="S005" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i19" class="section-heading-2">5. Results of extraction</h2>
+ <div id="S005-S2001" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i20">5.1. Estimation of statement matching accuracy</h3>
+  <p>As outlined in section 4.1, EuroparlExtract aims to maximise recall and the precision of the extraction. The most error-prone part of the method is the identification of corresponding statements across languages based on normalised speaker names, which determines whether statements with identical IDs but divergent speaker names can be attributed to the same speaker irrespective of spelling variants (see <button class="ref showTableEventRef" data-id="T0003">Table 3</button>), or if they have been uttered by different speakers and should therefore be discarded rather than treated as corresponding statements. Across all Europarl language files there are 66,743 statements with identical speaker IDs but ambiguous speaker names, of which the EuroparlExtract heuristic disambiguated 54,978 as matching and discarded 11,765 as non-matching statements. Since there is no gold standard available to determine the accuracy of the matching heuristic, a manual evaluation based on the exported metadata representation file (see section 4.1) has been carried out. From the 54,978 disambiguated statements, a random sample of 3,000 statements (= 5.5%) was drawn from the CSV file. Out of these manually examined statements, only four were erroneously classified as matching statements by the matching heuristic, although in reality they were uttered by different speakers. Hence, there were only four false positives, which equals an error rate of 0.13%. Assuming this error rate for the whole set of statements with ambiguous speaker names, there are only 73 false positives in the entire corpus, which is a satisfactory result in view of the simplicity of the heuristic and overall size of the corpus. False negatives, i.e. statements discarded by the heuristic despite being corresponding statements, have not been evaluated, because from the perspective of data quality precision is more of a concern than recall.</p>
+ </div>
+ <div id="S005-S2002" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i21">5.2. Description of extracted corpora</h3>
+  <p><button class="ref showTableEventRef" data-id="T0004">Table 4</button> quantifies the output of the method described in section 4.1. Most importantly, the exploitation of parenthesised language identifiers in addition to proper language identifiers largely increases the number of statements that qualify for extraction, i.e. statements with language tags <i>and</i> unambiguously matched speaker identity: from 129,204 to 167,302 (+ 29.5%). Ultimately, 78.1% of all distinct Europarl statements meet the requirements for extraction.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Optimising the Europarl corpus for translation studies with the EuroparlExtract toolkit</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Ustaszewski%2C+Michael"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ustaszewski%2C+Michael"><span class="NLM_given-names">Michael</span> Ustaszewski</a> <a href="http://orcid.org/0000-0002-2000-5920" class="extLink">http://orcid.org/0000-0002-2000-5920</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0907676X.2018.1485716">https://doi.org/10.1080/0907676X.2018.1485716</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>19 June 2018
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 4. Number of Europarl statements yielded by source language identification and speaker matching procedure.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0004-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0004&amp;doi=10.1080%2F0907676X.2018.1485716&amp;downloadType=CSV"> Download CSV</a><a data-id="T0004" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>From the entire Europarl corpus, EuroparlExtract is able to extract 420 directional parallel subcorpora, i.e. all language combinations contained in Europarl. With regard to comparable corpora, two corpus sections can be distinguished for each language: one containing only texts originally produced in a given language, and one containing only texts translated into that language; the latter can be further subdivided according to source languages. In the translated section of comparable corpora, only the target side of each language combination is extracted, while information about the source language is used as metadata. Non-translated data can be extracted for 21 languages and translated data for 462 language combinations. Total sizes of the extracted corpora are shown in <button class="ref showTableEventRef" data-id="T0005">Table 5</button>. Interestingly, the difference in size between the aligned and non-aligned parallel corpus is only 4.6%, although due to data quality reasons the alignment procedure discards speeches and paragraphs unequally segmented across languages (see section 4.2). This indicates the overall quality of structural mark-up in Europarl on the one hand, and that Europarl translations tend to adhere to source text segmentation on the other.</p>
+  <div class="tableViewerArticleInfo hidden">
+   <span class="figViewerTitle">Optimising the Europarl corpus for translation studies with the EuroparlExtract toolkit</span>
+   <div class="articleAuthors articleInfoSection">
+    <div class="authorsHeading">
+     All authors
+    </div>
+    <div class="authors">
+     <a class="entryAuthor" href="/action/doSearch?Contrib=Ustaszewski%2C+Michael"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ustaszewski%2C+Michael"><span class="NLM_given-names">Michael</span> Ustaszewski</a> <a href="http://orcid.org/0000-0002-2000-5920" class="extLink">http://orcid.org/0000-0002-2000-5920</a>
+    </div>
+   </div>
+   <div class="articleLowerInfo articleInfoSection">
+    <div class="articleLowerInfoSection articleInfoDOI">
+     <a href="https://doi.org/10.1080/0907676X.2018.1485716">https://doi.org/10.1080/0907676X.2018.1485716</a>
+    </div>
+    <div class="articleInfoPublicationDate articleLowerInfoSection border">
+     <h6>Published online:</h6>19 June 2018
+    </div>
+   </div>
+  </div>
+  <div class="tableView">
+   <div class="tableCaption">
+    <div class="short-legend">
+     <h3><b>Table 5. Total sizes of extracted subcorpora in tokens. For parallel corpora, only target language tokens are counted.</b></h3>
+    </div>
+   </div>
+   <div class="tableDownloadOption" data-hascsvlnk="true" id="T0005-table-wrapper">
+    <a class="downloadButton btn btn-sm" role="button" href="/action/downloadTable?id=T0005&amp;doi=10.1080%2F0907676X.2018.1485716&amp;downloadType=CSV"> Download CSV</a><a data-id="T0005" class="downloadButton btn btn-sm displaySizeTable" href="#" role="button">Display Table</a>
+   </div>
+  </div>
+  <p></p>
+  <p>Due to the large number of language combinations in the extracted corpora, no breakdown of corpus size per language combination is presented here.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0009" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>9</sup></a></span> Instead, network visualisations of text quantity per language direction, generated with the <i>Gephi</i> software package (Bastian, Heymann, &amp; Jacomy, <span class="ref-lnk lazy-ref"><a data-rid="CIT0002" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2009</a></span>), are shown in <a href="#F0002">Figures 2</a> and <a href="#F0003">3</a>.</p>
+  <div class="figure figureViewer" id="F0002">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Optimising the Europarl corpus for translation studies with the EuroparlExtract toolkit</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Ustaszewski%2C+Michael"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ustaszewski%2C+Michael"><span class="NLM_given-names">Michael</span> Ustaszewski</a> <a href="http://orcid.org/0000-0002-2000-5920" class="extLink">http://orcid.org/0000-0002-2000-5920</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/0907676X.2018.1485716">https://doi.org/10.1080/0907676X.2018.1485716</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>19 June 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 2. </span> Text quantity in parallel subcorpus by languages. Node size and colour proportional to number of tokens translated into given language; weight and colour of directed edges proportional to number of tokens translated from given language.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0002image" src="/na101/home/literatum/publisher/tandf/journals/content/rmps20/2019/rmps20.v027.i01/0907676x.2018.1485716/20190304/images/medium/rmps_a_1485716_f0002_oc.jpg" loading="lazy" height="495" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0002">
+   <p class="captionText"><span class="captionLabel">Figure 2. </span> Text quantity in parallel subcorpus by languages. Node size and colour proportional to number of tokens translated into given language; weight and colour of directed edges proportional to number of tokens translated from given language.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0002">
+   <div class="figureFootNote-F0002"></div>
+  </div>
+  <div class="figure figureViewer" id="F0003">
+   <div class="hidden figureViewerArticleInfo">
+    <span class="figViewerTitle">Optimising the Europarl corpus for translation studies with the EuroparlExtract toolkit</span>
+    <div class="articleAuthors articleInfoSection">
+     <div class="authorsHeading">
+      All authors
+     </div>
+     <div class="authors">
+      <a class="entryAuthor" href="/action/doSearch?Contrib=Ustaszewski%2C+Michael"><span class="hlFld-ContribAuthor"></span></a><a href="/author/Ustaszewski%2C+Michael"><span class="NLM_given-names">Michael</span> Ustaszewski</a> <a href="http://orcid.org/0000-0002-2000-5920" class="extLink">http://orcid.org/0000-0002-2000-5920</a>
+     </div>
+    </div>
+    <div class="articleLowerInfo articleInfoSection">
+     <div class="articleLowerInfoSection articleInfoDOI">
+      <a href="https://doi.org/10.1080/0907676X.2018.1485716">https://doi.org/10.1080/0907676X.2018.1485716</a>
+     </div>
+     <div class="articleInfoPublicationDate articleLowerInfoSection border">
+      <h6>Published online:</h6>19 June 2018
+     </div>
+    </div>
+   </div>
+   <div class="figureThumbnailContainer">
+    <div class="figureInfo">
+     <div class="short-legend">
+      <p class="captionText"><span class="captionLabel">Figure 3. </span> Text quantity in comparable subcorpus by languages. For meaning of nodes and edges, see <a href="#F0002">Figure 2</a>.</p>
+     </div>
+    </div><a href="#" class="thumbnail" aria-label="thumbnail image"><img id="F0003image" src="/na101/home/literatum/publisher/tandf/journals/content/rmps20/2019/rmps20.v027.i01/0907676x.2018.1485716/20190304/images/medium/rmps_a_1485716_f0003_oc.jpg" loading="lazy" height="349" width="500"></a>
+    <div class="figureDownloadOptions">
+     <a href="#" class="downloadBtn btn btn-sm" role="button">Display full size</a>
+    </div>
+   </div>
+  </div>
+  <div class="hidden rs_skip" id="fig-description-F0003">
+   <p class="captionText"><span class="captionLabel">Figure 3. </span> Text quantity in comparable subcorpus by languages. For meaning of nodes and edges, see <a href="#F0002">Figure 2</a>.</p>
+  </div>
+  <div class="hidden rs_skip" id="figureFootNote-F0003">
+   <div class="figureFootNote-F0003"></div>
+  </div>
+  <p></p>
+  <p>As expected, the languages of countries that joined the EU at later enlargement rounds are less represented in the corpus, while English, French and German are most prominent. The two ‘outliers’ located at the margins of <a href="#F0003">Figure 3</a> stand for Gaelic and Maltese, for which no text data is available in Europarl. However, a total of 1,270,963 and 920,258 tokens, respectively, translated from these two languages into the remaining 21 EU languages can be found in the translated section of the comparable subcorpus.</p>
+  <p>The two subcorpora accumulate a huge amount of data in hundreds of language directions; in the highly compressed .tar.gz format, the entire parallel and comparable corpus occupies 2.6 GB and 1.5 GB of disk space, respectively. Both of them are freely and readily available for download.<span class="ref-lnk fn-ref-lnk lazy-ref"><a data-rid="EN0010" href="#" data-reflink="fn"><span class="off-screen">Footnote</span><sup>10</sup></a></span> Given that such large files and data quantities may be impractical to handle on the one hand, and that users are not necessarily interested in all the data on the other, users may prefer to extract data directly from the Europarl source release on demand according to their own requirements via the command line interface of Europarl Extract. This brings the additional advantage of having the possibility to customise the data in terms of output formats. EuroparlExtract comes with detailed step-by-step instructions, as well as all required pre- and post-processing tools, two of which – the sentence splitter and tokeniser – are based on third-party open-source software (Agerri, Bermudez, &amp; Rigau, <span class="ref-lnk lazy-ref"><a data-rid="CIT0001" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2014</a></span>; Koehn, <span class="ref-lnk lazy-ref"><a data-rid="CIT0021" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2005</a></span>). Currently, EuroparlExtract is optimised for Linux; support for other operating systems is planned in the future.</p>
+ </div>
+ <div id="S005-S2003" class="NLM_sec NLM_sec_level_2">
+  <h3 class="section-heading-3" id="_i26">5.3. Comparison with related work</h3>
+  <p>The main differences that distinguish EuroparlExtract from the related work reviewed in section 3.2 can be summarised as follows. First, Islam and Mehler (<span class="ref-lnk lazy-ref"><a data-rid="CIT0017" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2012</a></span>) did not extract comparable corpora, and their parallel corpora covered only 414, as compared to 420, language directions. In terms of size, their corpus totals approximately 86 million tokens, while EuroparlExtract is able to extract almost 480 million tokens of sentence-aligned data. Although the authors did not detail their extraction method, it appears that they did not capitalise on parenthesised language tags to maximise recall, which may explain the large difference in size. Apart from that, the only metadata available in their corpus is information about language directions, which means that it is impossible to assign portions of texts in a given language direction to particular speeches, speakers or dates. Thus, valuable information is not carried over from Europarl to the extracted data.</p>
+  <p>Second, with the aim of cleaning and restructuring Europarl, CoStEP (Graën et al., <span class="ref-lnk lazy-ref"><a data-rid="CIT0011" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2014</a></span>) has different yet partly overlapping aims. Notable methodological similarities between EuroparlExtract and CoStEP are the use of parenthesised language tags to maximally exploit available source language information, and the cross-linguistic detection of corresponding statements based on speaker names. The main difference is that CoStEP does not provide readily extracted comparable or parallel subcorpora, but requires using the XPath query language to identify relevant portions of data.</p>
+  <p>Finally, Europarl-direct is the work most similar to EuroparlExtract, especially in terms of the main target group and their data needs. However, Cartoni and Meyer (<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2012</a></span>) did not exploit parenthesised language tags, because they did not aim to maximise the quantity of extracted data. A quantitative comparison with EuroparlExtract data is not sensible because their extraction was based on an older and smaller version of Europarl (v6) and because their extracted corpora only cover the period from 1996 to 1999 for five language pairs. A further difference is that with EuroparlExtract users can compile and customise subcorpora on their own, whereas Europarl-direct offers additional language pairs only upon request.</p>
+ </div>
+</div>
+<div id="S006" class="NLM_sec NLM_sec_level_1">
+ <h2 id="_i27" class="section-heading-2">6. Conclusion</h2>
+ <p>Recently, advanced multivariate quantitative data analysis (e.g. De Sutter, Lefer, &amp; Delaere, <span class="ref-lnk lazy-ref"><a data-rid="CIT0006" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2017</a></span>; Ji, Oakes, Defeng, &amp; Hareide, <span class="ref-lnk lazy-ref"><a data-rid="CIT0018" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2017</a></span>; Mellinger &amp; Hanson, <span class="ref-lnk lazy-ref"><a data-rid="CIT0025" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2017</a></span>; Oakes &amp; Ji, <span class="ref-lnk lazy-ref"><a data-rid="CIT0027" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2012</a></span>) has been gaining momentum and thus promoting methodological innovation in (corpus-based) TS. Similarly, more comprehensive frameworks for the combination of different corpus types, as well as qualitative and quantitative methods, have emerged (Malamatidou, <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2018</a></span>). One of the keys to the fruitful application of state-of-the-art research methods is the availability of relevant, real-world translation data for a wide range of languages and text varieties. While building new corpora is one solution to satisfy the demand for translation corpora, the re-use and enrichment of existing resources is an efficient and less costly alternative. Despite a number of disadvantages, the highly multilingual Europarl corpus contains large quantities of relevant non-literary data for translation and contrastive research. Nevertheless, its impact on TS and contrastive linguistics has been merely moderate. The EuroparlExtract toolkit aims to facilitate the use of this resource by providing programming-free and open access to Europarl in a form that makes better use of translation-specific metadata. Depending on the underlying research questions, part or all of the extracted data may be used either as the sole or as complementary sources for corpus inquiry. Methodologically, the extracted subcorpora may be employed in research designs that pursue increased rigour by means of advanced statistics and/or by combining large-scale quantitative analyses with in-depth qualitative analyses of smaller corpora (Zanettin, <span class="ref-lnk lazy-ref"><a data-rid="CIT0034" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2013</a></span>, p. 31); for example, within the framework of corpus triangulation (Malamatidou, <span class="ref-lnk lazy-ref"><a data-rid="CIT0024" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2018</a></span>). Exploratory analyses of a qualitative nature could benefit from Europarl as well, because, due to its size, it may capture less frequent domain-specific phenomena. Therefore, the use of EuroparlExtract is <i>a priori</i> not restricted to particular research designs.</p>
+ <p>The major strength of EuroparlExtract is that it focuses on maximising the amount of extracted data by combining various sources of metadata from Europarl. At the same time, measures that decrease data quantity, but in exchange increase data quality, are taken. In this way, relevant research data, including under-resourced language pairs, is made more accessible to corpus-based TS. Customisation options and the support of various output formats are included to ensure the usability of the toolkit for users in the field of TS. Regarding the limitations of EuroparlExtract, an observation by Cartoni and Meyer (<span class="ref-lnk lazy-ref"><a data-rid="CIT0005" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2012</a></span>, p. 2134) needs to be mentioned: In Europarl there is no reliable information as to which texts have been translated directly from one language to another and which are the result of indirect translations via pivot languages. But even so, the coexistence of direct and indirect translations in Europarl may open new lines of research, because to date the vast majority of research into indirect translation has dealt with literary translation, largely neglecting non-literary texts (Pięta, <span class="ref-lnk lazy-ref"><a data-rid="CIT0029" data-reflink="_i30 _i31 _i33 _i34" href="#"><span class="off-screen">Citation</span>2017</a></span>, p. 200). A further limitation of EuroparlExtract is that the implemented third-party tool for sentence alignment struggles with unequally segmented source-target pairs, which is why some interesting and relevant text data have to be discarded for quality reasons. An improvement of the alignment procedure is left for future work.</p>
+ <p>In sum, EuroparlExtract is concerned with the sustainability of corpus exploitation. It is hoped that the re-use of Europarl will ease the demand for new translation-oriented multilingual corpora and thus help spur data-driven translation research.</p>
+</div>
