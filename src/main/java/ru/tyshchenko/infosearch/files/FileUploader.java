@@ -56,12 +56,16 @@ public class FileUploader {
         }
         Path filePath = dirPath.resolve("lemmas.txt");
         Files.createFile(filePath);
+        var result = new StringBuilder();
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(filePath.toFile())))) {
             for (Map.Entry<String, Set<String>> entry : lemmas.entrySet()) {
                 String lemma = entry.getKey();
                 Set<String> tokens = entry.getValue();
-                writer.write(lemma + " : " + tokens.stream().reduce("", (a, b) -> a + " " + b) + "\n");
+
+                tokens.forEach(token -> result.append(token).append(" "));
+                writer.write(lemma + " : " + result + "\n");
+                result.setLength(0);
             }
         }
     }

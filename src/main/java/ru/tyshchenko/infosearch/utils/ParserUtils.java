@@ -20,6 +20,7 @@ public class ParserUtils {
                         "(KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36")
                 .get();
     }
+
     @SneakyThrows
     public static String getSourceText(Path filePath) {
         return Jsoup.parse(Files.readString(filePath)).text();
@@ -27,10 +28,10 @@ public class ParserUtils {
 
     @SneakyThrows
     public static String getSourceTextFromFiles(Path dirPath) {
-        try(Stream<Path> walk = Files.walk(dirPath)) {
-            return walk.filter(Files::isRegularFile)
-                    .map(ParserUtils::getSourceText)
-                    .reduce("", (a, b) -> a + b);
+        var result = new StringBuilder();
+        try (Stream<Path> walk = Files.walk(dirPath)) {
+            walk.filter(Files::isRegularFile).map(ParserUtils::getSourceText).forEach(result::append);
         }
+        return result.toString();
     }
 }

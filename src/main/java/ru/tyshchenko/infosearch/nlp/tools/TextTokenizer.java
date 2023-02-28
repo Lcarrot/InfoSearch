@@ -23,7 +23,8 @@ public class TextTokenizer {
     public void tokenize() {
         fileUploader.uploadTokensInFile(nlpDocumentFactory.getCoreDocument(
                         ParserUtils.getSourceTextFromFiles(Path.of(path, "pages")))
-                .tokens().stream().map(CoreLabel::word)
+                .tokens().stream()
+                .map(CoreLabel::word)
                 .filter(word -> RegexUtils.ENGLISH_WORDS_REGEX.matcher(word).matches())
                 .collect(Collectors.toSet()));
     }
