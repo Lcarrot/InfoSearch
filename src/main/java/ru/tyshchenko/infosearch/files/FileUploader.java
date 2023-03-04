@@ -19,70 +19,21 @@ public class FileUploader {
     private String path;
 
     @SneakyThrows
-    public void uploadFile(String content, String name) {
-        Path dirPath = Path.of(path, "pages");
-        if (!Files.exists(dirPath)) {
-            Files.createDirectories(dirPath);
-        }
-        Path filePath = dirPath.resolve(name);
-        Files.createFile(filePath);
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(filePath.toFile())))) {
-            writer.write(content);
-        }
-    }
-
-    @SneakyThrows
-    public void uploadTokensInFile(Set<String> tokens) {
+    public Path getFilePath(String ... pathParts) {
         Path dirPath = Path.of(path);
-        if (!Files.exists(dirPath)) {
-            Files.createDirectories(dirPath);
+        if (pathParts.length == 0) {
+            return dirPath;
         }
-        Path filePath = dirPath.resolve("tokens.txt");
-        Files.createFile(filePath);
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(filePath.toFile())))) {
-            for (String token: tokens) {
-                writer.write(token + "\n");
+        for (int i = 0; i < pathParts.length - 1; i++) {
+            dirPath = Path.of(pathParts[i]);
+            if (!Files.exists(dirPath)) {
+                Files.createDirectories(dirPath);
             }
         }
-    }
-
-    @SneakyThrows
-    public void uploadLemmasInFile(Map<String, Set<String>> lemmas) {
-        Path dirPath = Path.of(path);
-        if (!Files.exists(dirPath)) {
-            Files.createDirectories(dirPath);
+        Path filePath = dirPath.resolve(pathParts[pathParts.length - 1]);
+        if (!Files.exists(filePath)) {
+            Files.createFile(filePath);
         }
-        Path filePath = dirPath.resolve("lemmas.txt");
-        Files.createFile(filePath);
-        var result = new StringBuilder();
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(filePath.toFile())))) {
-            for (Map.Entry<String, Set<String>> entry : lemmas.entrySet()) {
-                String lemma = entry.getKey();
-                Set<String> tokens = entry.getValue();
-
-                tokens.forEach(token -> result.append(token).append(" "));
-                writer.write(lemma + " : " + result + "\n");
-                result.setLength(0);
-            }
-        }
-    }
-
-    @SneakyThrows
-    public void saveIndexFile(List<Pair<String, String>> urlToName) {
-        Path dirPath = Path.of(path);
-        if (!Files.exists(dirPath)) {
-            Files.createDirectories(dirPath);
-        }
-        Path filePath = dirPath.resolve("index.txt");
-        Files.createFile(filePath);
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(filePath.toFile())))) {
-            for (Pair<String, String> pair: urlToName) {
-                writer.write(pair.getValue1() + " : " + pair.getValue0() + "\n");
-            }
-        }
+        return filePath;
     }
 }
