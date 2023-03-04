@@ -21,7 +21,7 @@ public class Task3Test {
 
     @Test
     void booleanSearch() {
-        fileSearch.findPathByExpression("result & !(spread | derive)")
+        fileSearch.findPathsByExpression("result & !(spread | derive)")
                 .forEach(path -> System.out.println("path: " + path));
     }
 }

@@ -38,7 +38,7 @@ public class SimpleFileSearch {
     }
 
     @SneakyThrows
-    public Set<String> findPathByExpression(String expression) {
+    public Set<String> findPathsByExpression(String expression) {
         return getExpressionResolver().resolve(expression);
     }
 }
