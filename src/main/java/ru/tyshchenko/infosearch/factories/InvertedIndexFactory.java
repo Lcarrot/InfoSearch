@@ -33,6 +33,7 @@ public class InvertedIndexFactory {
         files.forEach((path, content) -> {
             String fileName = path.getFileName().toString();
             Arrays.stream(content.split(" "))
+                    .map(String::toLowerCase)
                     .filter(tokenToIndex::containsKey)
                     .forEach(token -> tokenToIndex.get(token).getTokenToDocId().get(token).add(fileName));
         });
