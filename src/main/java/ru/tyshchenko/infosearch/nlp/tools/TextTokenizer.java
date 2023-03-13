@@ -13,7 +13,10 @@ import ru.tyshchenko.infosearch.utils.RegexUtils;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 public class TextTokenizer {
     @Value("${inner.files.output}")
     private String path;
+    private static final String FILE_NAME = "tokens.txt";
     private final FileUploader fileUploader;
     private final NlpDocumentFactory nlpDocumentFactory;
 
@@ -43,5 +47,10 @@ public class TextTokenizer {
                 writer.write(token + "\n");
             }
         }
+    }
+
+    @SneakyThrows
+    public Set<String> getTokens() {
+        return new HashSet<>(Files.readAllLines(Path.of(path, FILE_NAME)));
     }
 }

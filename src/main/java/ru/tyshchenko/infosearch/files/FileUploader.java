@@ -1,16 +1,11 @@
 package ru.tyshchenko.infosearch.files;
 
 import lombok.SneakyThrows;
-import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
 
 @Component
 public class FileUploader {
