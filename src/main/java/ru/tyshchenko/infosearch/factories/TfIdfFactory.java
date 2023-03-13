@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.tyshchenko.infosearch.nlp.tools.TextTokenizer;
 import ru.tyshchenko.infosearch.dto.TfIdf;
 import ru.tyshchenko.infosearch.nlp.tools.WordLemmatizer;
 import ru.tyshchenko.infosearch.utils.ParserUtils;
@@ -14,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -23,7 +21,6 @@ import static java.util.stream.Collectors.toMap;
 public class TfIdfFactory {
     @Value("${inner.files.output}")
     private String path;
-    private final TextTokenizer textTokenizer;
     private final WordLemmatizer wordLemmatizer;
 
     @SneakyThrows
