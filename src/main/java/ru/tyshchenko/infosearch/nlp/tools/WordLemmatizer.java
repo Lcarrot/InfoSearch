@@ -34,8 +34,12 @@ public class WordLemmatizer {
                 .filter(token -> RegexUtils.ENGLISH_WORDS_REGEX.matcher(token.word()).matches())
                 .collect(Collectors.toSet());
 
+        Set<String> tokenCheck = new HashSet<>();
         for (CoreLabel token : labels) {
-            map.computeIfAbsent(token.lemma(), k -> new HashSet<>()).add(token.word());
+            if (!tokenCheck.contains(token.word())) {
+                map.computeIfAbsent(token.lemma(), k -> new HashSet<>()).add(token.word());
+                tokenCheck.add(token.word());
+            }
         }
         uploadLemmasInFile(map);
     }
