@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 
 function Page() {
@@ -17,7 +17,7 @@ function Page() {
     return (
         <div>
             <div className='topic'>
-                <a href='/'><h1> На главную </h1></a>
+                <Link to='/'><h1> На главную </h1></Link>
                 <h1> Текст статьи </h1>
                 <a href={content.origin}> Оригинальная статья </a>
                 <p> {content.text} </p>
