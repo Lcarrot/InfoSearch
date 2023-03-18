@@ -9,7 +9,7 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TfIdf {
+public class FileWordCount {
     private String fileName;
     private Map<String, Long> tokenToCount;
     private Map<String, Long> lemmaToCount;

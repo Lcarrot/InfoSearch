@@ -40,7 +40,7 @@ public class InvertedIndexFactory {
         objectMapper.writeValue(fileUploader.getFilePath(filePath).toFile(), tokenToIndex.values());
     }
 
-    private Map<String, InvertedIndex> readTokenToInvertedIndex() {
+    public Map<String, InvertedIndex> readTokenToInvertedIndex() {
         Map<String, Set<String>> lemmaToTokens = lemmatizer.getTokensByLemmas();
         Map<String, InvertedIndex> tokenToIndex = new HashMap<>();
         for (Map.Entry<String, Set<String>> lemmaToToken : lemmaToTokens.entrySet()) {

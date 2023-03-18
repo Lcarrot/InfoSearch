@@ -2,9 +2,11 @@ package ru.tyshchenko.infosearch.factories;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.tyshchenko.infosearch.dto.TfIdf;
+import ru.tyshchenko.infosearch.dto.FileTfIdf;
+import ru.tyshchenko.infosearch.dto.FileWordCount;
 import ru.tyshchenko.infosearch.nlp.tools.WordLemmatizer;
 import ru.tyshchenko.infosearch.utils.ParserUtils;
 
@@ -32,11 +34,11 @@ public class TfIdfFactory {
                         .collect(toMap(Function.identity(), value -> entry.getKey())).entrySet())
                 .flatMap(Collection::stream)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-        List<TfIdf> dtoList = files.entrySet().stream().parallel().map(file -> buildTfidf(file.getKey().getFileName().toString(), file.getValue(), tokenToLemma)).toList();
+        List<FileWordCount> dtoList = files.entrySet().stream().parallel().map(file -> buildTfidf(file.getKey().getFileName().toString(), file.getValue(), tokenToLemma)).toList();
         Map<String, Integer> tokenToFileCount = new HashMap<>();
         Map<String, Integer> lemmasToFileCount = new HashMap<>();
 
-        for (TfIdf dto : dtoList) {
+        for (FileWordCount dto : dtoList) {
             for (String token : dto.getTokenToCount().keySet()) {
                 tokenToFileCount.put(token, tokenToFileCount.getOrDefault(token, 0) + 1);
             }
@@ -48,12 +50,27 @@ public class TfIdfFactory {
         Map<String, Double> tokenToIdf = calculateIdf(tokenToFileCount, files.size());
         Map<String, Double> lemmaToIdf = calculateIdf(lemmasToFileCount, files.size());
 
-        for (TfIdf dto : dtoList) {
+        for (FileWordCount dto : dtoList) {
             Map<String, Double> tokenToTf = calculateTf(dto.getTokenToCount());
             Map<String, Double> lemmaToTf = calculateTf(dto.getLemmaToCount());
             uploadTfidfForInFile(Path.of((path + "tfidf/tokens/" + dto.getFileName())), tokenToTf, tokenToIdf);
             uploadTfidfForInFile(Path.of((path + "tfidf/lemmas/" + dto.getFileName())), lemmaToTf, lemmaToIdf);
         }
+    }
+
+    @SneakyThrows
+    public FileTfIdf getFileIdf(String fileName) {
+        Map<String, Double> tokenToTfIdf = readWordToTfIdf("tfidf/tokens/" + fileName);
+        Map<String, Double> lemmaToTfIdf = readWordToTfIdf("tfidf/lemmas/" + fileName);
+        return FileTfIdf.builder().fileName(fileName).tokenTfIdf(tokenToTfIdf).lemmaTfIdf(lemmaToTfIdf).build();
+    }
+
+    @SneakyThrows
+    private Map<String, Double> readWordToTfIdf(String filePath) {
+        return Files.readAllLines(Path.of(path + filePath))
+                .stream().map(line ->
+                        line.split(" ")).map(parts -> new Pair<>(parts[0], Double.valueOf(parts[3])))
+                .collect(toMap(Pair::getValue0, Pair::getValue1));
     }
 
     private Map<String, Double> calculateTf(Map<String, Long> wordToCount) {
@@ -74,7 +91,7 @@ public class TfIdfFactory {
         return tokenToIdf;
     }
 
-    private TfIdf buildTfidf(String fileName, String content, Map<String, String> tokenToLemma) {
+    private FileWordCount buildTfidf(String fileName, String content, Map<String, String> tokenToLemma) {
         List<String> words = Arrays.stream(content.split(" ")).map(String::toLowerCase).toList();
         Set<String> tokens = tokenToLemma.keySet();
         Map<String, Long> tokenCount = new HashMap<>();
@@ -86,11 +103,12 @@ public class TfIdfFactory {
                 lemmasCount.put(lemmas, tokenCount.getOrDefault(lemmas, 0L) + 1);
             }
         }
-        return new TfIdf(fileName, tokenCount, lemmasCount);
+        return new FileWordCount(fileName, tokenCount, lemmasCount);
     }
 
     @SneakyThrows
-    private void uploadTfidfForInFile(Path filePath, Map<String, Double> wordToTf, Map<String, Double> wordToIdf) {
+    private void uploadTfidfForInFile(Path
+                                              filePath, Map<String, Double> wordToTf, Map<String, Double> wordToIdf) {
         try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
             for (Map.Entry<String, Double> entry : wordToTf.entrySet()) {
                 writer.write(entry.getKey() + " " + entry.getValue() + " " + wordToIdf.get(entry.getKey()) + " " + entry.getValue() * wordToIdf.get(entry.getKey()) + "\n");

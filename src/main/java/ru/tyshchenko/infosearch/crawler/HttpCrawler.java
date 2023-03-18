@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 @Component
@@ -53,9 +54,17 @@ public class HttpCrawler {
     private void saveIndexFile(List<Pair<String, String>> urlToName) {
         Path filePath = fileUploader.getFilePath("index.txt");
         try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
-            for (Pair<String, String> pair: urlToName) {
+            for (Pair<String, String> pair : urlToName) {
                 writer.write(pair.getValue1() + " : " + pair.getValue0() + "\n");
             }
         }
+    }
+
+@SneakyThrows
+    public String getSourceUrl(String fileName) {
+        return Files.readAllLines(fileUploader.getFilePath("index.txt")).stream()
+                .filter(line -> line.contains(fileName))
+                .map(line -> line.split(" : ")[1])
+                .findAny().orElseThrow(IllegalArgumentException::new);
     }
 }
